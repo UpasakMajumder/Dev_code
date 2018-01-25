@@ -11,6 +11,8 @@ using CMS.DocumentEngine;
 using Kadena.Models.Product;
 using CMS.Helpers;
 using CMS.DataEngine;
+using CMS.CustomTables;
+using Kadena.Models.CreditCard;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -93,6 +95,13 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => URLHelper.GetAbsoluteUrl(src.GetValue("ProductCategoryImage", string.Empty))))
                 .ForMember(dest => dest.ProductBordersEnabled, opt => opt.MapFrom(src => src.GetBooleanValue("ProductCategoryBordersEnabled", false)))
                 .AfterMap((src, dest) => dest.Border = new Border { Exists = src.GetBooleanValue("ProductCategoryBordersEnabled", false)});
+            CreateMap<CustomTableItem, Submission>()
+                .ForMember(dest => dest.SubmissionId, opt => opt.MapFrom(src => src.GetGuidValue("SubmissionId", Guid.Empty)))
+                .ForMember(dest => dest.AlreadyUsed, opt => opt.MapFrom(src => src.GetBooleanValue("AlreadyUsed", false)))
+                .ForMember(dest => dest.SiteId, opt => opt.MapFrom(src => src.GetIntegerValue("SiteId", 0)))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.GetIntegerValue("UserId", 0)))
+                .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.GetIntegerValue("CustomerId", 0)))
+                .ForMember(dest => dest.TokenSavedAndAuthorized, opt => opt.MapFrom(src => src.GetBooleanValue("TokenSavedAndAuthorized", false)));
         }
     }
 }

@@ -72,6 +72,7 @@ namespace Kadena2.Container.Default
             container.Register<IFileService, FileService>();
             container.Register<IDateTimeFormatter, DateTimeFormatter>();
             container.Register<ICreditCard3dsi, CreditCard3dsi>();
+            container.Register<ICreditCard3dsiDemo, CreditCard3dsiDemo>();
             container.Register<IPurchaseOrder, PurchaseOrder>();
             return container;
         }

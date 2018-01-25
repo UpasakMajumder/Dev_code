@@ -6,6 +6,7 @@ using Kadena2.MicroserviceClients.Contracts;
 using Kadena.Dto.CreditCard.MicroserviceRequests;
 using System.Threading.Tasks;
 using Kadena.Dto.CreditCard;
+using Kadena.Dto.CreditCard.MicroserviceResponses;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -15,9 +16,10 @@ namespace Kadena.BusinessLogic.Services
         private readonly IUserDataServiceClient userClient;
         private readonly IPaymentServiceClient paymentClient;
         private readonly IKenticoResourceService resources;
+        private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoLogger logger;
 
-        public CreditCardService(ISubmissionIdProvider submissionProvider, IUserDataServiceClient userClient, IPaymentServiceClient paymentClient, IKenticoResourceService resources, IKenticoLogger logger)
+        public CreditCardService(ISubmissionIdProvider submissionProvider, IUserDataServiceClient userClient, IPaymentServiceClient paymentClient, IKenticoResourceService resources, IKenticoUserProvider kenticoUsers, IKenticoLogger logger)
         {
             if (submissionProvider == null)
             {
@@ -35,6 +37,10 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(resources));
             }
+            if (kenticoUsers == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoUsers));
+            }
             if (logger == null)
             {
                 throw new ArgumentNullException(nameof(logger));
@@ -44,6 +50,7 @@ namespace Kadena.BusinessLogic.Services
             this.userClient = userClient;
             this.paymentClient = paymentClient;
             this.resources = resources;
+            this.kenticoUsers = kenticoUsers;
             this.logger = logger;
         }
 
@@ -52,7 +59,8 @@ namespace Kadena.BusinessLogic.Services
             var submission = new Submission()
             {
                 SubmissionId = Guid.NewGuid(),
-                AlreadyUsed = false
+                AlreadyUsed = false,
+                UserId = kenticoUsers.GetCurrentUser().UserId
             };
 
             submissionProvider.SaveSubmission(submission);
@@ -97,32 +105,40 @@ namespace Kadena.BusinessLogic.Services
             if (submission == null || !submission.AlreadyUsed)
             {
                 return false;
-            }
-
-            submissionProvider.DeleteSubmission(submissionGuid);
+            }            
 
             string userId = submission.UserId.ToString();
 
-            var tokenId = await CallSaveToken(userId, tokenData.Token); // TODO get user id from custom table if necessary
+            var tokenId = await SaveTokenToUserData(userId, tokenData.Token); 
 
             if (string.IsNullOrEmpty(tokenId))
             {
-                // TODO log and quit with error
+                logger.LogError("3DSi SaveToken", "Saving token to microservice failed");
+                return false;
             }
 
-            await CallAuthorizeAmount(userId, tokenId, tokenData.Token);
+            var authorizeResponse = await AuthorizeAmount(userId, tokenId, tokenData.Token);
+            if (!(authorizeResponse?.Succeeded ?? false))
+            {
+                logger.LogError("AuthorizeAmount", $"AuthorizeAmount failed, response:{Environment.NewLine}{authorizeResponse}");
+                return false;
+            }
 
-            // TODO check if Auth failed
 
-            // TODO pass data needet to finish the order
+            logger.LogInfo("AuthorizeAmount", "Info", $"AuthorizeAmount OK, response:{Environment.NewLine}{authorizeResponse}");
 
-            // TODO notify FE waiting request that it is done or failed
+            // TODO pass data needet to finish the order, are there some ?
+
+            submission.TokenSavedAndAuthorized = true;
+            submissionProvider.SaveSubmission(submission);
 
             return true;
         }
 
-
-        private async Task<string> CallSaveToken(string userId, string token)
+        /// <summary>
+        /// Saves the Token into UserData microservice
+        /// </summary>
+        private async Task<string> SaveTokenToUserData(string userId, string token)
         {
             var url = resources.GetSettingsKey("KDA_UserdataMicroserviceEndpoint");
 
@@ -146,9 +162,7 @@ namespace Kadena.BusinessLogic.Services
             return result.Payload.Result;
         }
 
-
-
-        private async Task CallAuthorizeAmount(string userId, string tokenId, string token)
+        private async Task<AuthorizeAmountResponseDto> AuthorizeAmount(string userId, string tokenId, string token)
         {
             var url = resources.GetSettingsKey("KDA_PaymentMicroserviceEndpoint");
 
@@ -171,15 +185,15 @@ namespace Kadena.BusinessLogic.Services
 
             var result = await paymentClient.AuthorizeAmount(authorizeAmountRequest);
 
-            if (result == null || !result.Success || result.Payload == null)
+            if (!(result?.Success ?? false) || result.Payload == null)
             {
                 var error = "Failed to call Payment microservice to AuthorizeAmount. " + result?.ErrorMessages;
-                logger.LogError("SaveToken", error);
-                return;
+                logger.LogError("AuthorizeAmount", error);
+                return null;
             }
 
-            //return result.Payload.
-        }
+            return result.Payload;            
+         }
 
         public bool CreditcardSaved(string submissionId)
         {
@@ -196,7 +210,7 @@ namespace Kadena.BusinessLogic.Services
                 return false;
             }
 
-            return false; // TODO
+            return submission.TokenSavedAndAuthorized;
         }
     }
 }

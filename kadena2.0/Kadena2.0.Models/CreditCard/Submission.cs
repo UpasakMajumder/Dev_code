@@ -12,9 +12,15 @@ namespace Kadena.Models.CreditCard
         /// </summary>
         public bool AlreadyUsed { get; set; } = true;
 
+        public int SiteId { get; set; }
+
         /// <summary>
         /// ID of user who requested to create this submission
         /// </summary>
         public int UserId { get; set; }
+
+        public int CustomerId { get; set; }
+
+        public bool TokenSavedAndAuthorized { get; set; }
     }
 }

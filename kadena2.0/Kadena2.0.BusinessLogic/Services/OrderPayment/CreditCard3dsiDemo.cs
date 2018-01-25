@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Kadena2.BusinessLogic.Services.OrderPayment
 {
-    public class CreditCard3dsi : ICreditCard3dsi
+    public class CreditCard3dsiDemo : ICreditCard3dsiDemo
     {
         private readonly IKenticoResourceService resources;
         private readonly IKenticoDocumentProvider documents;
 
-        public CreditCard3dsi(IKenticoResourceService resources, IKenticoDocumentProvider documents)
+        public CreditCard3dsiDemo(IKenticoResourceService resources, IKenticoDocumentProvider documents)
         {
             if (resources == null)
             {
@@ -30,8 +30,6 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         public async Task<SubmitOrderResult> PayByCard3dsi(OrderDTO orderData)
         {
             var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
-
-
 
             return await Task.FromResult(new SubmitOrderResult
             {

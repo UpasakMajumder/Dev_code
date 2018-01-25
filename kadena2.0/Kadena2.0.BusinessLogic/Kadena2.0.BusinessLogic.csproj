@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\ISubmissionService.cs" />
     <Compile Include="Contracts\IFileService.cs" />
     <Compile Include="Contracts\IProgramsService.cs" />
     <Compile Include="Contracts\IAddressBookService.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Contracts\IFavoritesService.cs" />
     <Compile Include="Contracts\IKListService.cs" />
     <Compile Include="Contracts\IMailTemplateService.cs" />
+    <Compile Include="Contracts\OrderPayment\ICreditCard3dsiDemo.cs" />
     <Compile Include="Contracts\Orders\IOrderListService.cs" />
     <Compile Include="Contracts\Orders\IOrderListServiceFactory.cs" />
     <Compile Include="Contracts\Orders\IOrderDetailService.cs" />
@@ -82,6 +84,8 @@
     <Compile Include="Factories\Checkout\ICheckoutPageFactory.cs" />
     <Compile Include="Factories\OrderListServiceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\SubmissionService.cs" />
+    <Compile Include="Services\OrderPayment\CreditCard3dsiDemo.cs" />
     <Compile Include="Services\Orders\OrderDetailService.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\ProgramsService.cs" />

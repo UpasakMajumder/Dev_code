@@ -3,12 +3,26 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using CMS.CustomTables;
 using System.Linq;
 using Kadena.Models.CreditCard;
+using System.Collections.Generic;
+using AutoMapper;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
     public class SubmissionIdProvider : ISubmissionIdProvider
     {
         private readonly string SubmissionsTable = "KDA.Submissions";
+
+        private readonly IMapper mapper;
+
+        public SubmissionIdProvider(IMapper mapper)
+        {
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+
+            this.mapper = mapper;
+        }
 
         public void SaveSubmission(Submission submission)
         {
@@ -28,8 +42,11 @@ namespace Kadena.WebAPI.KenticoProviders
                 
             }
 
+            submissionItem.SetValue("SiteId", submission.SiteId);
             submissionItem.SetValue("UserId", submission.UserId);
+            submissionItem.SetValue("CustomerId", submission.CustomerId);
             submissionItem.SetValue("AlreadyUsed", submission.AlreadyUsed);
+            submissionItem.SetValue("TokenSavedAndAuthorized", submission.TokenSavedAndAuthorized);
             submissionItem.Insert();
         }
 
@@ -39,15 +56,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 .WhereEquals("SubmissionId", submissionId)
                 .FirstOrDefault();
 
-            if (submission == null)
-                return null;
-
-            return new Submission()
-            {
-                SubmissionId = submission.GetGuidValue("SubmissionId", Guid.Empty),
-                AlreadyUsed = submission.GetBooleanValue("AlreadyUsed", true),
-                UserId = submission.GetIntegerValue("UserId", 0)
-            };            
+            return mapper.Map<Submission>(submission);
         }
 
         public void DeleteSubmission(Guid submissionId)
@@ -60,6 +69,17 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 CustomTableItemProvider.DeleteItem(submission);
             }
+        }
+
+        public IEnumerable<Submission> GetSubmissions(int siteId, int userId, int customerId)
+        {
+            var submissions = CustomTableItemProvider.GetItems(SubmissionsTable)
+                .WhereEquals("SiteId", siteId)
+                .WhereEquals("UserId", userId)
+                .WhereEquals("CustomerId", customerId)
+                .ToArray();
+
+            return submissions.Select(s => mapper.Map<Submission>(s));
         }
     }
 }
