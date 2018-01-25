@@ -82,7 +82,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         }
                     }
                     BindUsers(1);
-                    
+
                 }
 
                 btnAllocateProduct.Click += AllocateProduct_Click;
@@ -254,7 +254,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             string imagePath = string.Empty;
             try
             {
-                if (ddlProdCategory.SelectedIndex > 0 )
+                if (ddlProdCategory.SelectedIndex > 0)
                 {
                     UpdateProduct(productId);
                 }
@@ -368,15 +368,18 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     SKUName = ValidationHelper.GetString(txtShortDes.Text, string.Empty),
                     SKUNumber = ValidationHelper.GetString(ddlPosNo.SelectedValue, string.Empty),
                     SKUDescription = ValidationHelper.GetString(txtLongDes.Text, string.Empty),
-                    SKUPrice = ValidationHelper.GetDouble(txtEstPrice.Text, default(double)),
+                    SKUPrice = ValidationHelper.GetDouble(txtActualPrice.Text, default(double)),
                     SKUEnabled = ValidationHelper.GetBoolean(ddlStatus.SelectedValue, false),
                     SKUAvailableItems = ValidationHelper.GetInteger(txtQuantity.Text, 0),
                     SKUImagePath = ValidationHelper.GetString(imagePath, string.Empty),
                     SKUSiteID = CurrentSite.SiteID,
-                    SKUValidUntil = ValidationHelper.GetDate(txtExpDate.Text, DateTime.Now.Date),
                     SKUProductType = SKUProductTypeEnum.EProduct,
-                    SKUWeight = ValidationHelper.GetDouble(txtWeight.Text, default(double)),
+                    SKUWeight = ValidationHelper.GetDouble(txtWeight.Text, default(double))
                 };
+                if (!string.IsNullOrEmpty(txtExpDate.Text))
+                {
+                    newSkuProduct.SKUValidUntil = ValidationHelper.GetDateTime(txtExpDate.Text, DateTime.Now);
+                }
                 products.DocumentName = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
                 products.DocumentCulture = CurrentDocument.DocumentCulture;
                 SKUInfoProvider.SetSKUInfo(newSkuProduct);
@@ -416,6 +419,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 product.CategoryID = ValidationHelper.GetInteger(ddlProdCategory.SelectedValue, default(int));
                 product.EstimatedPrice = ValidationHelper.GetInteger(txtEstPrice.Text, default(int));
                 product.ProductName = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
+                product.State = ValidationHelper.GetInteger(ddlState.SelectedValue, default(int));
                 SKUInfo updateProduct = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", product.NodeSKUID).FirstObject;
                 if (updateProduct != null)
                 {
@@ -432,12 +436,12 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     updateProduct.SKUShortDescription = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
                     updateProduct.SKUDescription = ValidationHelper.GetString(txtLongDes.Text, string.Empty);
                     updateProduct.SKUPrice = ValidationHelper.GetDouble(txtActualPrice.Text, default(double));
-                    updateProduct.SKUValidUntil = ValidationHelper.GetDate(txtExpDate.Text, DateTime.Now.Date);
                     updateProduct.SKUEnabled = ValidationHelper.GetString(ddlStatus.SelectedValue, "1") == "1" ? true : false;
                     updateProduct.SKUSiteID = CurrentSite.SiteID;
                     updateProduct.SKUProductType = SKUProductTypeEnum.EProduct;
                     updateProduct.SKUAvailableItems = ValidationHelper.GetInteger(txtQuantity.Text, 0);
                     updateProduct.SKUWeight = ValidationHelper.GetDouble(txtWeight.Text, default(double));
+                    updateProduct.SKUValidUntil = ValidationHelper.GetDateTime(txtExpDate.Text, DateTime.MinValue);
                     SKUInfoProvider.SetSKUInfo(updateProduct);
                 }
                 product.Update();
@@ -479,16 +483,18 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             string folderName = libraryFolderName;
                             folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "InventoryProducts";
                             txtLongDes.Text = skuDetails.SKUDescription;
-                            txtEstPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
+                            txtEstPrice.Text = ValidationHelper.GetString(product.EstimatedPrice, string.Empty);
                             ddlPosNo.Items.Add(new ListItem(ValidationHelper.GetString(skuDetails.SKUNumber, string.Empty), ValidationHelper.GetString(skuDetails.SKUNumber, string.Empty)));
                             ddlPosNo.Enabled = false;
                             txtShortDes.Text = skuDetails.SKUName;
                             txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
                             ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
-                            imgProduct.ImageUrl =  ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty);
+                            imgProduct.ImageUrl = ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty);
                             imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
-                            txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToString("MM/dd/yyyy"), string.Empty);
-                            txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToShortDateString(), string.Empty);
+                            if(skuDetails.SKUValidUntil!=DateTime.MinValue)
+                            {
+                              txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToShortDateString(), string.Empty);
+                            }
                             txtQuantity.Text = ValidationHelper.GetString(skuDetails.SKUAvailableItems, string.Empty);
                             txtWeight.Text = ValidationHelper.GetString(skuDetails.SKUWeight, string.Empty);
                         }
@@ -754,7 +760,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     txtShortDes.Text = skuDetails.SKUName;
                     txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
                     ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
-                    imgProduct.ImageUrl =  ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty);
+                    imgProduct.ImageUrl = ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty);
                     imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
                     txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil, string.Empty);
                     txtQuantity.Text = ValidationHelper.GetString(skuDetails.SKUAvailableItems, string.Empty);
