@@ -60,10 +60,21 @@
 
         th {
           display: table-cell;
+          font-size: 10px;
         }
 
         td {
           display: table-cell;
+          font-size: 10px;
+
+          input {
+            width: 40px;
+          }
+
+          select {
+            width: auto;
+            height: 30px;
+          }
         }
       }
     }
