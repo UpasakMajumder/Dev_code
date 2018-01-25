@@ -1,6 +1,7 @@
 ﻿using CMS.Ecommerce;
 using Kadena.Models;
 using Kadena.Models.Checkout;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -55,5 +56,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
 
         bool UpdateCartQuantity(int cartItemID,int quantity);
+        List<int> GetUserIDsWithShoppingCart(int campaignID, int productType);
     }
 }

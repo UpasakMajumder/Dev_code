@@ -9,9 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CMS.Helpers;
-using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using Kadena2.Container.Default;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
 {
@@ -48,11 +49,15 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
         {
             try
             {
-                var usersWithShoppingCartItems = ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartCampaignID", openCampaignID)
-                                                                   .WhereEquals("ShoppingCartInventoryType", ProductType.PreBuy).ToList().Select(x => x.ShoppingCartUserID).Distinct().ToList();
+                var shoppingCartInfo = DIContainer.Resolve<IShoppingCartProvider>();
+                var usersWithShoppingCartItems = shoppingCartInfo.GetUserIDsWithShoppingCart(openCampaignID,Convert.ToInt32(ProductsType.PreBuy));
+                var userInfo = DIContainer.Resolve<IKenticoUserProvider>();
+                var orderTemplateSettingKey=DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_OrderReservationEmailTemplate ");
+                var failedOrderTemplateSettingKey = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_FailedOrdersEmailTemplate ");
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 usersWithShoppingCartItems.ForEach(shoppingCartUser =>
                 {
+                    var salesPerson = userInfo.GetUserByUserId(shoppingCartUser);
                     var loggedInUserCartIDs = ShoppingCartHelper.GetCartsByUserID(shoppingCartUser, ProductType.PreBuy);
                     loggedInUserCartIDs.ForEach(cart =>
                     {
@@ -62,6 +67,8 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                         var response = ShoppingCartHelper.ProcessOrder(Cart, Cart.ShoppingCartUserID, OrderType.prebuy, ordersDTO, shippingCost);
                         if (response != null && response.Success)
                         {
+                            ordersDTO.OrderID = response.Payload;
+                            ProductEmailNotifications.SendEmailNotification(ordersDTO, orderTemplateSettingKey, salesPerson);
                             ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
                         }
                         else
@@ -84,9 +91,9 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                           Reason = x.Item2
                       };
                   }).ToList();
-                var user = UserInfoProvider.GetUsers().WhereEquals("UserID", campaignClosingUserID).Column("Email").FirstOrDefault();
+                var user = userInfo.GetUserByUserId(campaignClosingUserID);
                 if (user?.Email != null)
-                    ProductEmailNotifications.SendEmail(EmailTemplate.PrebuyOrderStatusTemplate, user?.Email, list);
+                    ProductEmailNotifications.SendEmail(failedOrderTemplateSettingKey, user?.Email, list);
                 return ResHelper.GetString("KDA.OrderSchedular.TaskSuccessfulMessage");
             }
             catch (Exception ex)
