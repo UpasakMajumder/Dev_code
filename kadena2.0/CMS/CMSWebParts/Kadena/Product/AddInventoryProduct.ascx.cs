@@ -5,9 +5,7 @@ using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.KDA;
 using CMS.Ecommerce;
 using CMS.EventLog;
-using CMS.Globalization;
 using CMS.Helpers;
-using CMS.MediaLibrary;
 using CMS.Membership;
 using CMS.PortalEngine;
 using CMS.PortalEngine.Web.UI;
@@ -173,6 +171,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     if (item_check.Checked)
                     {
                         int index = lstUsers.FindIndex(item => item.UserID == ValidationHelper.GetInteger(((Label)ri.FindControl("lblUserid")).Text, 0));
+                        var userEmail = ValidationHelper.GetString(((Label)ri.FindControl("lblEmail")).Text, string.Empty);
                         if (index == -1)
                         {
                             AllocateProduct objAllocateProduct = new AllocateProduct();
@@ -181,6 +180,13 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             objAllocateProduct.EmailID = ValidationHelper.GetString(((Label)ri.FindControl("lblEmail")).Text, string.Empty);
                             objAllocateProduct.Quantity = ValidationHelper.GetInteger(((TextBox)ri.FindControl("txtAllQuantity")).Text, 0);
                             lstUsers.Add(objAllocateProduct);
+                        }
+                        else
+                        {
+                            if (lstUsers.Count > 0)
+                            {
+                                lstUsers.Where(x => x.EmailID == userEmail).FirstOrDefault().Quantity = ValidationHelper.GetInteger(((TextBox)ri.FindControl("txtAllQuantity")).Text, 0);
+                            }
                         }
                     }
                     else
