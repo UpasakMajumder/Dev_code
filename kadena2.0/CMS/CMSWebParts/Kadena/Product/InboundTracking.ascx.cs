@@ -9,6 +9,7 @@ using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.Constants;
+using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.Container.Default;
 using System;
@@ -1046,10 +1047,13 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         try
         {
+            int campaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, default(int));
             var client = DIContainer.Resolve<IKenticoCampaignsProvider>();
-            bool result = client.CloseCampaignIBTF(ValidationHelper.GetInteger(ddlCampaign.SelectedValue, default(int)));
+            bool result = client.CloseCampaignIBTF(campaignID);
+            var emailNotificationTemplate = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey(SiteContext.CurrentSiteID, "KDA_IBTFFinalizeEmailTemplate");
             if (result)
             {
+                ProductEmailNotifications.GetCampaignOrders(campaignID, emailNotificationTemplate);
                 btnClose.Enabled = false;
                 GetProducts();
                 Response.Cookies["status"].Value = QueryStringStatus.Updated;
