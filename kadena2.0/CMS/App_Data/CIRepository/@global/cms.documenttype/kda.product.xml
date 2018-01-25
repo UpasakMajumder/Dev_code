@@ -196,7 +196,7 @@
           </rule>
         </rules>
       </field>
-      <field allowempty="true" column="ProductArtworkLocation" columntype="file" dependsonanotherfield="true" guid="8371aa2b-ed56-4ae5-bc63-c891706af664" publicfield="false" visible="true">
+      <field allowempty="true" column="ProductArtwork" columntype="file" dependsonanotherfield="true" guid="be27356c-4058-467e-9f4a-a94fb0c67f0b" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Artwork Location/Digital Printing</fieldcaption>
           <visiblemacro ismacro="true">
@@ -207,6 +207,22 @@
           <Allowed_Extensions>pdf;bmp;gif;jpg;jpeg;png</Allowed_Extensions>
           <controlname>DirectUploadControl</controlname>
           <Extensions>custom</Extensions>
+        </settings>
+      </field>
+      <field allowempty="true" column="ProductArtworkLocation" columnsize="200" columntype="text" dependsonanotherfield="true" guid="8371aa2b-ed56-4ae5-bc63-c891706af664" publicfield="false">
+        <properties>
+          <fieldcaption>Artwork Location</fieldcaption>
+          <visiblemacro ismacro="true">
+            <![CDATA[{%ProductType.Contains("KDA.StaticProduct") || ProductType.Contains("KDA.POD")|(user)rostyslav.diachenko@actum.cz|(hash)3d645955acff13793a6946c9b89a0235da04d688a3ddd8604f41c8331bab792d%}]]>
+          </visiblemacro>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
         </settings>
       </field>
       <field column="ProductChiliTemplateID" columnsize="100" columntype="text" guid="34f919e5-2fce-49c6-bff9-e9f1a1f5049b" hasdependingfields="true" publicfield="false" visible="true">

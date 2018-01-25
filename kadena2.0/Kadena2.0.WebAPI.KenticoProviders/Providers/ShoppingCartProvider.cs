@@ -544,7 +544,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 SetAmount(cartItem, addedAmount + existingAmountInCart);
             }
 
-            SetArtwork(cartItem, productDocument.GetStringValue("ProductArtworkLocation", string.Empty));
+            SetArtwork(cartItem, productDocument.GetStringValue("ProductArtwork", string.Empty));
 
             RefreshPrice(cartItem, productDocument);
             SetCustomName(cartItem, newItem.CustomProductName);
