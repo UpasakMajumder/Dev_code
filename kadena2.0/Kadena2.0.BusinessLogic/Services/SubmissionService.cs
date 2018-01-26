@@ -37,9 +37,9 @@ namespace Kadena.BusinessLogic.Services
             this.userClient = userClient;
             this.kenticoUsers = kenticoUsers;
             this.kenticoSite = kenticoSite;
-        }
+        }      
 
-        public Submission GenerateSubmissionId()
+        public Submission GenerateNewSubmission(string orderJson = "")
         {
             int siteId = kenticoSite.GetKenticoSite().Id;
             int userId = kenticoUsers.GetCurrentUser().UserId;
@@ -55,34 +55,57 @@ namespace Kadena.BusinessLogic.Services
             var submission = new Submission()
             {
                 SubmissionId = Guid.NewGuid(),
-                AlreadyUsed = false,
+                AlreadyVerified = false,
+                Processed = false,
                 UserId = userId,
                 CustomerId = customerId,
-                SiteId = siteId
+                SiteId = siteId,
+                OrderJson = orderJson
             };
 
             submissionProvider.SaveSubmission(submission);
             return submission;
         }
 
-        public bool VerifySubmissionId(string submissionId)
+        public Submission GetSubmission(string submissionId)
         {
             var submissionGuid = Guid.Empty;
             if (!Guid.TryParse(submissionId, out submissionGuid))
             {
-                return false;
+                return null;
             }
 
-            var submission = submissionProvider.GetSubmission(submissionGuid);
+            return submissionProvider.GetSubmission(submissionGuid);
+        }
 
-            if (submission != null && !submission.AlreadyUsed)
+        public void SetAsProcessed(Submission submission)
+        {
+            submission.Processed = true;
+            submissionProvider.SaveSubmission(submission);
+        }
+
+        public bool VerifySubmissionId(string submissionId)
+        {
+            var submission = GetSubmission(submissionId);
+
+            if (submission != null && !submission.AlreadyVerified)
             {
-                submission.AlreadyUsed = true;
+                submission.AlreadyVerified = true;
                 submissionProvider.SaveSubmission(submission);
                 return true;
             }
 
             return false;
+        }
+
+        public void DeleteProcessedSubmission(Submission submission)
+        {
+            if (submission == null || !submission.Processed)
+            {
+                throw new Exception($"Attempting to DeleteProcessedSubmission with not processed submission {submission?.SubmissionId}");
+            }
+           
+            submissionProvider.DeleteSubmission(submission.SubmissionId);
         }
     }
 }

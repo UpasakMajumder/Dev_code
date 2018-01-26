@@ -3,7 +3,6 @@ using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
 using System;
-using System.Threading.Tasks;
 
 namespace Kadena2.BusinessLogic.Services.OrderPayment
 {
@@ -27,16 +26,15 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             this.documents = documents;
         }
 
-        public async Task<SubmitOrderResult> PayByCard3dsi(OrderDTO orderData)
+        public SubmitOrderResult PayByCard3dsi(OrderDTO orderData)
         {
             var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
 
-            return await Task.FromResult(new SubmitOrderResult
+            return new SubmitOrderResult
             {
                 Success = true,
                 RedirectURL = documents.GetDocumentUrl(insertCardUrl)
-            }
-            );
+            };
         }
     }
 }

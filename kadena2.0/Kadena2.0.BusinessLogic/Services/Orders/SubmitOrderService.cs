@@ -14,9 +14,10 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IShoppingCartProvider shoppingCart;
         private readonly IGetOrderDataService orderDataProvider;
         private readonly ICreditCard3dsi creditCard3dsi;
+        private readonly ICreditCard3dsiDemo creditCard3dsiDemo;
         private readonly IPurchaseOrder purchaseOrder;
 
-        public SubmitOrderService(IShoppingCartProvider shoppingCart, IGetOrderDataService orderDataProvider, ICreditCard3dsi creditCard3dsi, IPurchaseOrder purchaseOrder)
+        public SubmitOrderService(IShoppingCartProvider shoppingCart, IGetOrderDataService orderDataProvider, ICreditCard3dsi creditCard3dsi, ICreditCard3dsiDemo creditCard3dsiDemo, IPurchaseOrder purchaseOrder)
         {
             if (shoppingCart == null)
             {
@@ -30,6 +31,10 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 throw new ArgumentNullException(nameof(creditCard3dsi));
             }
+            if (creditCard3dsiDemo == null)
+            {
+                throw new ArgumentNullException(nameof(creditCard3dsiDemo));
+            }
             if (purchaseOrder == null)
             {
                 throw new ArgumentNullException(nameof(purchaseOrder));
@@ -38,6 +43,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.shoppingCart = shoppingCart;
             this.orderDataProvider = orderDataProvider;
             this.creditCard3dsi = creditCard3dsi;
+            this.creditCard3dsiDemo = creditCard3dsiDemo;
             this.purchaseOrder = purchaseOrder;
         }
 
@@ -51,6 +57,9 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 case "KDA.PaymentMethods.CreditCard":
                     return creditCard3dsi.PayByCard3dsi(orderData);
+
+                case "KDA.PaymentMethods.CreditCardDemo":
+                    return creditCard3dsiDemo.PayByCard3dsi(orderData);
 
                 case "KDA.PaymentMethods.PurchaseOrder":
                 case "KDA.PaymentMethods.MonthlyPayment":

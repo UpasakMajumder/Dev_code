@@ -68,25 +68,12 @@ namespace Kadena.WebAPI.Controllers
         /// FE calls this to find out if card was stored and authorized
         /// </summary>
         [HttpGet]
-        [Route("api/3dsi/creditcardSaved")]
+        [Route("api/3dsi/creditcarddone/{submissionId}")]
         [CustomerAuthorizationFilter]
-        public IHttpActionResult CreditcardSaved(string submissionId)
+        public IHttpActionResult CreditcardSaved([FromUri]string submissionId)
         {
             var success = service.CreditcardSaved(submissionId);
             return ResponseJson<bool>(success);
-        }
-
-        /// <summary>
-        /// FE calls this to get SubmissionID, which it will use to call 3DSi
-        /// </summary>
-        [HttpGet]
-        [Route("api/3dsi/getsubmissionid")]
-        [CustomerAuthorizationFilter]
-        public IHttpActionResult GetSubmissionId()
-        {
-            var submission = submissions.GenerateSubmissionId();
-            var responseDto = mapper.Map<GetSubmissionIdResponseDto>(submission);
-            return ResponseJson(responseDto);
         }
     }
 }

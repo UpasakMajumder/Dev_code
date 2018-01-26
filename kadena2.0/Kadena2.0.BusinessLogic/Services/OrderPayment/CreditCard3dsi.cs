@@ -12,27 +12,28 @@ using System;
 using System.Threading.Tasks;
 using Kadena.Helpers;
 using Newtonsoft.Json;
+using Kadena.BusinessLogic.Contracts;
 
 namespace Kadena2.BusinessLogic.Services.OrderPayment
 {
     public class CreditCard3dsi : ICreditCard3dsi
     {
-        private readonly ISubmissionIdProvider submissionProvider;
+        private readonly ISubmissionService submissionService;
         private readonly IUserDataServiceClient userClient;
         private readonly IPaymentServiceClient paymentClient;
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoLogger logger;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoDocumentProvider documents;
+        private readonly IKenticoSiteProvider kenticoSite;
         private readonly ISendSubmitOrder sendOrder;
         private readonly IShoppingCartProvider shoppingCart;
 
-
-        public CreditCard3dsi(ISubmissionIdProvider submissionProvider, IUserDataServiceClient userClient, IPaymentServiceClient paymentClient, IKenticoUserProvider kenticoUsers, IKenticoLogger logger, IKenticoResourceService resources, IKenticoDocumentProvider documents, ISendSubmitOrder sendOrder, IShoppingCartProvider shoppingCart)
+        public CreditCard3dsi(ISubmissionService submissionService, IUserDataServiceClient userClient, IPaymentServiceClient paymentClient, IKenticoUserProvider kenticoUsers, IKenticoLogger logger, IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoSiteProvider kenticoSite, ISendSubmitOrder sendOrder, IShoppingCartProvider shoppingCart)
         {
-            if (submissionProvider == null)
+            if (submissionService == null)
             {
-                throw new ArgumentNullException(nameof(submissionProvider));
+                throw new ArgumentNullException(nameof(submissionService));
             }
             if (userClient == null)
             {
@@ -58,6 +59,10 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             {
                 throw new ArgumentNullException(nameof(documents));
             }
+            if (kenticoSite == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoSite));
+            }
             if (sendOrder == null)
             {
                 throw new ArgumentNullException(nameof(sendOrder));
@@ -67,13 +72,14 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 throw new ArgumentNullException(nameof(shoppingCart));
             }
 
-            this.submissionProvider = submissionProvider;
+            this.submissionService = submissionService;
             this.userClient = userClient;
             this.paymentClient = paymentClient;
             this.kenticoUsers = kenticoUsers;
             this.logger = logger;
             this.resources = resources;
             this.documents = documents;
+            this.kenticoSite = kenticoSite;
             this.sendOrder = sendOrder;
             this.shoppingCart = shoppingCart;
         }
@@ -81,12 +87,8 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         public SubmitOrderResult PayByCard3dsi(OrderDTO orderData)
         {
             var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
-
-            var newSubmission = GenerateSubmissionId();
-            newSubmission.OrderJson = JsonConvert.SerializeObject(orderData, SerializerConfig.CamelCaseSerializer);
-
-            submissionProvider.SaveSubmission(newSubmission);
-
+            var orderJson = JsonConvert.SerializeObject(orderData, SerializerConfig.CamelCaseSerializer);
+            var newSubmission = submissionService.GenerateNewSubmission(orderJson);
             var redirectUrl = insertCardUrl.TrimEnd('/') + $"?submissionId={newSubmission.SubmissionId}";
 
             return new SubmitOrderResult
@@ -96,55 +98,16 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             };
         }
 
-        public Submission GenerateSubmissionId()
-        {
-            return new Submission()
-            {
-                SubmissionId = Guid.NewGuid(),
-                AlreadyUsed = false,
-                UserId = kenticoUsers.GetCurrentUser().UserId,
-                CustomerId = kenticoUsers.GetCurrentCustomer().Id,
-                // TODO site ID
-                Processed = false
-            };
-        }
-
-        public bool VerifySubmissionId(string submissionId)
-        {
-            var submissionGuid = Guid.Empty;
-            if (!Guid.TryParse(submissionId, out submissionGuid))
-            {
-                return false;
-            }
-
-            var submission = submissionProvider.GetSubmission(submissionGuid);
-
-            if (submission != null && !submission.AlreadyUsed)
-            {
-                submission.AlreadyUsed = true;
-                submissionProvider.SaveSubmission(submission);
-                return true;
-            }
-
-            return false;
-        }
-
         public async Task<bool> SaveToken(SaveTokenData tokenData)
         {
             if (tokenData == null || !tokenData.Approved)
             {
                 return false;
             }
+            
+            var submission = submissionService.GetSubmission(tokenData.SubmissionID);
 
-            var submissionGuid = Guid.Empty;
-            if (!Guid.TryParse(tokenData.SubmissionID, out submissionGuid))
-            {
-                return false;
-            }
-
-            var submission = submissionProvider.GetSubmission(submissionGuid);
-
-            if (submission == null || !submission.AlreadyUsed)
+            if (submission == null || !submission.AlreadyVerified)
             {
                 return false;
             }
@@ -182,9 +145,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 return false;
             }
 
-            submission.Processed = true;
-            submissionProvider.SaveSubmission(submission);
-
+            submissionService.SetAsProcessed(submission);
             return true;
         }
 
@@ -275,20 +236,26 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
         public bool CreditcardSaved(string submissionId)
         {
-            var submissionGuid = Guid.Empty;
-            if (!Guid.TryParse(submissionId, out submissionGuid))
+            var submission = submissionService.GetSubmission(submissionId);
+
+            int siteId = kenticoSite.GetKenticoSite().Id;
+            int userId = kenticoUsers.GetCurrentUser().UserId;
+            int customerId = kenticoUsers.GetCurrentCustomer().Id;
+
+            var submissonOwnerChecked = submission.CheckOwner(siteId, userId, customerId);
+
+            if (submission == null || !submission.AlreadyVerified)
             {
                 return false;
             }
 
-            var submission = submissionProvider.GetSubmission(submissionGuid);
-
-            if (submission == null || !submission.AlreadyUsed)
+            if (submission.Processed)
             {
-                return false;
+                submissionService.DeleteProcessedSubmission(submission);
+                return true;
             }
 
-            return submission.Processed;
+            return false;
         }
     }
 }

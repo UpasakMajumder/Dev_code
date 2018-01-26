@@ -10,7 +10,7 @@ namespace Kadena.Models.CreditCard
         /// Indicates if this submission was already used for verifying.
         /// Default is set to true to ensure proper intended initialization in the code
         /// </summary>
-        public bool AlreadyUsed { get; set; } = true;
+        public bool AlreadyVerified { get; set; } = true;
 
         public int SiteId { get; set; }
 
@@ -24,5 +24,12 @@ namespace Kadena.Models.CreditCard
         public bool Processed { get; set; }
 
         public string OrderJson { get; set; }
+
+        public bool CheckOwner(int siteId, int userId, int customerId)
+        {
+            return SiteId == siteId &&
+                   UserId == userId &&
+                   CustomerId == customerId;
+        }
     }
 }

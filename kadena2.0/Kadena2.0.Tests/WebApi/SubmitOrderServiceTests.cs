@@ -12,12 +12,14 @@ namespace Kadena.Tests.WebApi
         {
             var shoppingCart = new Mock<IShoppingCartProvider>();
             var card3dsi = new Mock<ICreditCard3dsi>();
+            var card3dsiDemo = new Mock<ICreditCard3dsiDemo>();
             var purchaseOrder = new Mock<IPurchaseOrder>();
             var orderData = new Mock<IGetOrderDataService>();
 
             return new SubmitOrderService(shoppingCart.Object,
                 orderData.Object,
                 card3dsi.Object,
+                card3dsiDemo.Object,
                 purchaseOrder.Object
             );
         }

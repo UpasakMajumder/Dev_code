@@ -69,9 +69,10 @@
           <ResolveMacros>True</ResolveMacros>
         </settings>
       </field>
-      <field allowempty="true" column="AlreadyUsed" columntype="boolean" guid="5c0499a1-106a-4c62-83b6-07d666585899" publicfield="false" visible="true">
+      <field allowempty="true" column="AlreadyVerified" columntype="boolean" guid="5c0499a1-106a-4c62-83b6-07d666585899" publicfield="false" visible="true">
         <properties>
           <defaultvalue>true</defaultvalue>
+          <fieldcaption>AlreadyVerified</fieldcaption>
         </properties>
         <settings>
           <controlname>CheckBoxControl</controlname>
