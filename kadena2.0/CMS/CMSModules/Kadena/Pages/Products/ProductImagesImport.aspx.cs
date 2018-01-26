@@ -75,11 +75,11 @@ namespace Kadena.CMSModules.Kadena.Pages.Products
             byte[] bytes;
             if (SelectedPageType.Equals(CampaignsProduct.CLASS_NAME))
             {
-                bytes = new ProductImagesTemplateService().GetTemplateFile<CampaignProductImageDto>(SelectedSiteID);
+                bytes = new TemplateServiceBase().GetTemplateFile<CampaignProductImageDto>(SelectedSiteID);
             }
             else
             {
-                bytes = new ProductImagesTemplateService().GetTemplateFile<ProductImageDto>(SelectedSiteID);
+                bytes = new TemplateServiceBase().GetTemplateFile<ProductImageDto>(SelectedSiteID);
             }
             var templateFileName = "productimages-upload-template.xlsx";
             WriteFileToResponse(templateFileName, bytes);
