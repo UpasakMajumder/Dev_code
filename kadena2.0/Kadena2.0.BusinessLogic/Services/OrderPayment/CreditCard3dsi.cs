@@ -28,8 +28,9 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         private readonly IKenticoSiteProvider kenticoSite;
         private readonly ISendSubmitOrder sendOrder;
         private readonly IShoppingCartProvider shoppingCart;
+        private readonly IGetOrderDataService orderDataProvider;
 
-        public CreditCard3dsi(ISubmissionService submissionService, IUserDataServiceClient userClient, IPaymentServiceClient paymentClient, IKenticoUserProvider kenticoUsers, IKenticoLogger logger, IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoSiteProvider kenticoSite, ISendSubmitOrder sendOrder, IShoppingCartProvider shoppingCart)
+        public CreditCard3dsi(ISubmissionService submissionService, IUserDataServiceClient userClient, IPaymentServiceClient paymentClient, IKenticoUserProvider kenticoUsers, IKenticoLogger logger, IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoSiteProvider kenticoSite, ISendSubmitOrder sendOrder, IShoppingCartProvider shoppingCart, IGetOrderDataService orderDataProvider)
         {
             if (submissionService == null)
             {
@@ -71,6 +72,10 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             {
                 throw new ArgumentNullException(nameof(shoppingCart));
             }
+            if (orderDataProvider == null)
+            {
+                throw new ArgumentNullException(nameof(orderDataProvider));
+            }
 
             this.submissionService = submissionService;
             this.userClient = userClient;
@@ -82,11 +87,13 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             this.kenticoSite = kenticoSite;
             this.sendOrder = sendOrder;
             this.shoppingCart = shoppingCart;
+            this.orderDataProvider = orderDataProvider;
         }
 
-        public SubmitOrderResult PayByCard3dsi(OrderDTO orderData)
+        public async Task<SubmitOrderResult> PayByCard3dsi(SubmitOrderRequest orderRequest)
         {
             var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
+            var orderData = await orderDataProvider.GetSubmitOrderData(orderRequest);
             var orderJson = JsonConvert.SerializeObject(orderData, SerializerConfig.CamelCaseSerializer);
             var newSubmission = submissionService.GenerateNewSubmission(orderJson);
             var redirectUrl = insertCardUrl.TrimEnd('/') + $"?submissionId={newSubmission.SubmissionId}";

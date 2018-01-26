@@ -1,5 +1,4 @@
-﻿using Kadena.Dto.SubmitOrder.MicroserviceRequests;
-using Kadena.Models.SubmitOrder;
+﻿using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
 using System;
@@ -26,7 +25,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             this.documents = documents;
         }
 
-        public SubmitOrderResult PayByCard3dsi(OrderDTO orderData)
+        public SubmitOrderResult PayByCard3dsi()
         {
             var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
 

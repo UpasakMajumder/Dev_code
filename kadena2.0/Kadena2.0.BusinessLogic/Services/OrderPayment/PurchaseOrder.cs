@@ -1,5 +1,4 @@
-﻿using Kadena.Dto.SubmitOrder.MicroserviceRequests;
-using Kadena.Models.SubmitOrder;
+﻿using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2._0.BusinessLogic.Contracts.Orders;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
@@ -14,8 +13,9 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         private readonly IKenticoResourceService resources;
         private readonly IKenticoDocumentProvider documents;
         private readonly ISendSubmitOrder sendOrder;
+        private readonly IGetOrderDataService orderDataProvider;
 
-        public PurchaseOrder(IShoppingCartProvider shoppingCart, IKenticoResourceService resources, IKenticoDocumentProvider documents, ISendSubmitOrder sendOrder)
+        public PurchaseOrder(IShoppingCartProvider shoppingCart, IKenticoResourceService resources, IKenticoDocumentProvider documents, ISendSubmitOrder sendOrder, IGetOrderDataService orderDataProvider)
         {
             if (shoppingCart == null)
             {
@@ -33,15 +33,21 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             {
                 throw new ArgumentNullException(nameof(sendOrder));
             }
+            if (orderDataProvider == null)
+            {
+                throw new ArgumentNullException(nameof(orderDataProvider));
+            }
 
             this.shoppingCart = shoppingCart;
             this.resources = resources;
             this.documents = documents;
             this.sendOrder = sendOrder;
+            this.orderDataProvider = orderDataProvider;
         }
 
-        public async Task<SubmitOrderResult> SubmitPOOrder(OrderDTO orderData)
+        public async Task<SubmitOrderResult> SubmitPOOrder(SubmitOrderRequest request)
         {
+            var orderData = await orderDataProvider.GetSubmitOrderData(request);
             var serviceResult = await sendOrder.SubmitOrderData(orderData);
 
             if (serviceResult.Success)
