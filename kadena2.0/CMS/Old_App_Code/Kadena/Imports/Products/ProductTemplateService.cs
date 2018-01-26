@@ -32,18 +32,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var indexOfChili1 = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ChiliTemplateID)).Order;
             var indexOfChili2 = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ChiliWorkgroupID)).Order;
             var indexOfChili3 = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ChiliPdfGeneratorSettingsID)).Order;
-            var indexOfUrl1 = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ImageURL)).Order;
-            var indexOfUrl2 = headers.FirstOrDefault(c => c.PropertyInfo.Name == nameof(ProductDto.ThumbnailURL)).Order;
 
             var guidFieldWidth = 256 * 36;
-            var urlFieldWidth = 256 * 100;
 
             sheet.SetColumnWidth(indexOfChili1, guidFieldWidth);
             sheet.SetColumnWidth(indexOfChili2, guidFieldWidth);
             sheet.SetColumnWidth(indexOfChili3, guidFieldWidth);
-
-            sheet.SetColumnWidth(indexOfUrl1, urlFieldWidth);
-            sheet.SetColumnWidth(indexOfUrl2, urlFieldWidth);
 
             return sheet;
         }
