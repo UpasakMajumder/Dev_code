@@ -7,7 +7,7 @@ namespace Kadena2.BusinessLogic.Contracts.OrderPayment
 {
     public interface ICreditCard3dsi
     {
-        Task<SubmitOrderResult> PayByCard3dsi(OrderDTO orderData);
+        SubmitOrderResult PayByCard3dsi(OrderDTO orderData);
         Task<bool> SaveToken(SaveTokenData tokenData);
         bool CreditcardSaved(string submissionId);
     }

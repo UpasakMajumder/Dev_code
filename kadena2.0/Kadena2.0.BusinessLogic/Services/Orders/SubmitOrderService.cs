@@ -16,15 +16,15 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly ICreditCard3dsi creditCard3dsi;
         private readonly IPurchaseOrder purchaseOrder;
 
-        public SubmitOrderService(IShoppingCartProvider shoppingCart, IGetOrderDataService orderData, ICreditCard3dsi creditCard3dsi, IPurchaseOrder purchaseOrder)
+        public SubmitOrderService(IShoppingCartProvider shoppingCart, IGetOrderDataService orderDataProvider, ICreditCard3dsi creditCard3dsi, IPurchaseOrder purchaseOrder)
         {
             if (shoppingCart == null)
             {
                 throw new ArgumentNullException(nameof(shoppingCart));
             }
-            if (orderData == null)
+            if (orderDataProvider == null)
             {
-                throw new ArgumentNullException(nameof(orderData));
+                throw new ArgumentNullException(nameof(orderDataProvider));
             }
             if (creditCard3dsi == null)
             {
@@ -36,7 +36,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
 
             this.shoppingCart = shoppingCart;
-            this.orderDataProvider = orderData;
+            this.orderDataProvider = orderDataProvider;
             this.creditCard3dsi = creditCard3dsi;
             this.purchaseOrder = purchaseOrder;
         }
@@ -50,12 +50,11 @@ namespace Kadena.BusinessLogic.Services.Orders
             switch (selectedPayment?.ClassName ?? string.Empty)
             {
                 case "KDA.PaymentMethods.CreditCard":
-                    return await creditCard3dsi.PayByCard3dsi(orderData);
+                    return creditCard3dsi.PayByCard3dsi(orderData);
 
                 case "KDA.PaymentMethods.PurchaseOrder":
                 case "KDA.PaymentMethods.MonthlyPayment":
                 case "NoPaymentRequired":
-                    
                     return await purchaseOrder.SubmitPOOrder(orderData);
 
                 case "KDA.PaymentMethods.PayPal":

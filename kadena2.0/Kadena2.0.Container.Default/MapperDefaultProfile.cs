@@ -173,7 +173,7 @@ namespace Kadena2.Container.Default
             CreateMap<OrderHead, OrderHeadDto>();
             CreateMap<Kadena.Dto.Order.OrderItemDto, CartItem>()
                 .ProjectUsing(s => new CartItem { SKUName = s.Name, Quantity = s.Quantity });
-            CreateMap<OrderDto, Order>();
+            CreateMap<RecentOrderDto, Order>();
             CreateMap<OrderListDto, OrderList>();
             CreateMap<CartItem, Kadena.Dto.RecentOrders.OrderItemDto>()
                 .ProjectUsing(s => new Kadena.Dto.RecentOrders.OrderItemDto { Name = s.SKUName, Quantity = s.Quantity.ToString() });

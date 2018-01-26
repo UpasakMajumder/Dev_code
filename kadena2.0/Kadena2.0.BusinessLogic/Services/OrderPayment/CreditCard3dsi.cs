@@ -1,5 +1,4 @@
-﻿using Newtonsoft;
-using Kadena.Dto.CreditCard;
+﻿using Kadena.Dto.CreditCard;
 using Kadena.Dto.CreditCard.MicroserviceRequests;
 using Kadena.Dto.CreditCard.MicroserviceResponses;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
@@ -11,6 +10,8 @@ using Kadena2.BusinessLogic.Contracts.OrderPayment;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Threading.Tasks;
+using Kadena.Helpers;
+using Newtonsoft.Json;
 
 namespace Kadena2.BusinessLogic.Services.OrderPayment
 {
@@ -23,10 +24,11 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         private readonly IKenticoLogger logger;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoDocumentProvider documents;
-        private readonly IGetOrderDataService orderDataProvider;
+        private readonly ISendSubmitOrder sendOrder;
+        private readonly IShoppingCartProvider shoppingCart;
 
 
-        public CreditCard3dsi(ISubmissionIdProvider submissionProvider, IUserDataServiceClient userClient, IPaymentServiceClient paymentClient, IKenticoUserProvider kenticoUsers, IKenticoLogger logger, IKenticoResourceService resources, IKenticoDocumentProvider documents, IGetOrderDataService orderData)
+        public CreditCard3dsi(ISubmissionIdProvider submissionProvider, IUserDataServiceClient userClient, IPaymentServiceClient paymentClient, IKenticoUserProvider kenticoUsers, IKenticoLogger logger, IKenticoResourceService resources, IKenticoDocumentProvider documents, ISendSubmitOrder sendOrder, IShoppingCartProvider shoppingCart)
         {
             if (submissionProvider == null)
             {
@@ -40,7 +42,6 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             {
                 throw new ArgumentNullException(nameof(paymentClient));
             }
-
             if (kenticoUsers == null)
             {
                 throw new ArgumentNullException(nameof(kenticoUsers));
@@ -57,9 +58,13 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             {
                 throw new ArgumentNullException(nameof(documents));
             }
-            if (orderData == null)
+            if (sendOrder == null)
             {
-                throw new ArgumentNullException(nameof(orderData));
+                throw new ArgumentNullException(nameof(sendOrder));
+            }
+            if (shoppingCart == null)
+            {
+                throw new ArgumentNullException(nameof(shoppingCart));
             }
 
             this.submissionProvider = submissionProvider;
@@ -69,22 +74,26 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             this.logger = logger;
             this.resources = resources;
             this.documents = documents;
-            this.orderDataProvider = orderData;
+            this.sendOrder = sendOrder;
+            this.shoppingCart = shoppingCart;
         }
 
-        public async Task<SubmitOrderResult> PayByCard3dsi(OrderDTO orderData)
+        public SubmitOrderResult PayByCard3dsi(OrderDTO orderData)
         {
             var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
 
             var newSubmission = GenerateSubmissionId();
-            newSubmission.OrderJson = "{}";//Newtonsoft.Json.Ser
+            newSubmission.OrderJson = JsonConvert.SerializeObject(orderData, SerializerConfig.CamelCaseSerializer);
 
-            return await Task.FromResult(new SubmitOrderResult
-                {
-                    Success = true,
-                    RedirectURL = documents.GetDocumentUrl(insertCardUrl)
-                }
-            );
+            submissionProvider.SaveSubmission(newSubmission);
+
+            var redirectUrl = insertCardUrl.TrimEnd('/') + $"?submissionId={newSubmission.SubmissionId}";
+
+            return new SubmitOrderResult
+            {
+                Success = true,
+                RedirectURL = documents.GetDocumentUrl(redirectUrl)
+            };
         }
 
         public Submission GenerateSubmissionId()
@@ -160,17 +169,47 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             logger.LogInfo("AuthorizeAmount", "Info", $"AuthorizeAmount OK, response:{Environment.NewLine}{authorizeResponse}");
 
+
+            var orderData = JsonConvert.DeserializeObject<OrderDTO>(submission.OrderJson, SerializerConfig.CamelCaseSerializer);
+
             // TODO pass data needet to finish the order, are there some ?
             //authorizeResponse.TransactionKey
+
+            var sendToOrderServiceResult = await SendOrderToMicroservice(orderData);
+
+            if (!(sendToOrderServiceResult?.Success ?? false))
+            {
+                return false;
+            }
 
             submission.Processed = true;
             submissionProvider.SaveSubmission(submission);
 
-            SubmitOrderRequest submitOrderRequest = null; // TODO deserialize from submission
-            var orderData = await orderDataProvider.GetSubmitOrderData(submitOrderRequest);
-
             return true;
         }
+
+        private async Task<SubmitOrderResult> SendOrderToMicroservice(OrderDTO orderData)
+        {
+            var serviceResult = await sendOrder.SubmitOrderData(orderData);
+
+            if (serviceResult.Success)
+            {
+                shoppingCart.RemoveCurrentItemsFromStock();
+                shoppingCart.ClearCart();
+            }
+
+            var redirectUrlBase = resources.GetSettingsKey("KDA_OrderSubmittedUrl");
+            var redirectUrlBaseLocalized = documents.GetDocumentUrl(redirectUrlBase);
+            var redirectUrl = $"{redirectUrlBaseLocalized}?success={serviceResult.Success}".ToLower();
+            if (serviceResult.Success)
+            {
+                redirectUrl += "&order_id=" + serviceResult.Payload;
+            }
+            serviceResult.RedirectURL = redirectUrl;
+
+            return serviceResult;
+        }
+
 
         /// <summary>
         /// Saves the Token into UserData microservice

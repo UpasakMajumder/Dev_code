@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+﻿using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2._0.BusinessLogic.Contracts.Orders;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
-using Kadena2.MicroserviceClients.Contracts;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Kadena2.BusinessLogic.Services.OrderPayment
@@ -15,12 +13,9 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         private readonly IShoppingCartProvider shoppingCart;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoDocumentProvider documents;
-        private readonly IKenticoUserProvider users;
-        private readonly IOrderSubmitClient orderClient;
-        private readonly IKenticoLogger log;
-        private readonly IMapper mapper;
+        private readonly ISendSubmitOrder sendOrder;
 
-        public PurchaseOrder(IShoppingCartProvider shoppingCart, IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoUserProvider users, IOrderSubmitClient orderClient, IKenticoLogger log, IMapper mapper)
+        public PurchaseOrder(IShoppingCartProvider shoppingCart, IKenticoResourceService resources, IKenticoDocumentProvider documents, ISendSubmitOrder sendOrder)
         {
             if (shoppingCart == null)
             {
@@ -34,43 +29,26 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             {
                 throw new ArgumentNullException(nameof(documents));
             }
-            if (users == null)
+            if (sendOrder == null)
             {
-                throw new ArgumentNullException(nameof(users));
-            }
-            if (orderClient == null)
-            {
-                throw new ArgumentNullException(nameof(orderClient));
-            }
-            if (log == null)
-            {
-                throw new ArgumentNullException(nameof(log));
-            }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
+                throw new ArgumentNullException(nameof(sendOrder));
             }
 
             this.shoppingCart = shoppingCart;
             this.resources = resources;
             this.documents = documents;
-            this.orderClient = orderClient;
-            this.users = users;
-            this.log = log;
-            this.mapper = mapper;
+            this.sendOrder = sendOrder;
         }
 
         public async Task<SubmitOrderResult> SubmitPOOrder(OrderDTO orderData)
         {
-            string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
+            var serviceResult = await sendOrder.SubmitOrderData(orderData);
 
-            if ((orderData?.Items?.Count() ?? 0) <= 0)
+            if (serviceResult.Success)
             {
-                throw new ArgumentOutOfRangeException("Items", "Cannot submit order without items");
+                shoppingCart.RemoveCurrentItemsFromStock();
+                shoppingCart.ClearCart();
             }
-
-            var serviceResultDto = await orderClient.SubmitOrder(orderData);
-            var serviceResult = mapper.Map<SubmitOrderResult>(serviceResultDto);
 
             var redirectUrlBase = resources.GetSettingsKey("KDA_OrderSubmittedUrl");
             var redirectUrlBaseLocalized = documents.GetDocumentUrl(redirectUrlBase);
@@ -80,18 +58,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 redirectUrl += "&order_id=" + serviceResult.Payload;
             }
             serviceResult.RedirectURL = redirectUrl;
-
-            if (serviceResult.Success)
-            {
-                log.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully created");
-                shoppingCart.RemoveCurrentItemsFromStock();
-                shoppingCart.ClearCart();
-            }
-            else
-            {
-                log.LogError("Submit order", $"Order {serviceResult?.Payload} error. {serviceResult?.Error?.Message}");
-            }
-
+            
             return serviceResult;
         }
     }

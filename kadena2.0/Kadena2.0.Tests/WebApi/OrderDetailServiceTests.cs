@@ -16,6 +16,8 @@ using Kadena2.Container.Default;
 using Kadena.BusinessLogic.Services.Orders;
 using DryIoc;
 using static DryIoc.Rules;
+using AutoMapper;
+using Kadena.BusinessLogic.Contracts;
 
 namespace Kadena.Tests.WebApi
 {
@@ -89,9 +91,14 @@ namespace Kadena.Tests.WebApi
         }
 
         /*
-        private OrderDetailService CreateOrderDetailService_UsingDI(Mock<IKenticoLogger> kenticoLogger = null,
+        private IOrderDetailService CreateOrderDetailService_UsingDI(Mock<IKenticoLogger> kenticoLogger = null,
                                         Mock<IOrderViewClient> orderViewClient = null)
         {
+
+            var fallbackContainer = new Container();
+            //fallbackContainer.Register
+
+
             if (kenticoLogger == null)
             {
                 kenticoLogger = new Mock<IKenticoLogger>();
@@ -114,48 +121,31 @@ namespace Kadena.Tests.WebApi
             kenticoSite.Setup(p => p.GetKenticoSite())
                 .Returns(new KenticoSite());
 
-            var factory = new DelegateFactory(r => r.);
-            //var defaultResolver = new UnknownServiceResolver(target => new Mock<object>(target.RequiredServiceType) );
-            var container = new Container(rules => rules.WithUnknownServiceResolvers());
 
-            container.Rules.UnknownServiceResolvers.
+            var defaultResolver = new UnknownServiceResolver(target => new DelegateFactory(r => fallbackContainer.Resolve(target.ServiceType)));
+            //var container = new Container(rules => rules.WithUnknownServiceResolvers(defaultResolver));
+
+            var container = new Container(rules => rules.WithUnknownServiceResolvers(defaultResolver));
+            
 
             container.RegisterInstance<IKenticoLogger>(kenticoLogger.Object);
             container.RegisterInstance<IOrderViewClient>(orderViewClient.Object);
             container.RegisterInstance<IKenticoPermissionsProvider>(kenticoPermissions.Object);
             container.RegisterInstance<IKenticoUserProvider>(kenticoUsers.Object);
             container.RegisterInstance<IKenticoSiteProvider>(kenticoSite.Object);
+            container.RegisterInstance<IMapper>(MapperBuilder.MapperInstance);
 
 
+            var sut = container.Resolve<IOrderDetailService>();
 
-
-            var mapper = MapperBuilder.MapperInstance;
-            var kenticoUsers = new Mock<IKenticoUserProvider>();
-            
-
-            var kenticoOrder = new Mock<IKenticoOrderProvider>();
-            var shoppingCart = new Mock<IShoppingCartProvider>();
-            var productsProvider = new Mock<IKenticoProductsProvider>();
-            var mailingListClient = new Mock<IMailingListClient>();
-            var localization = new Mock<IKenticoLocalizationProvider>();
-            var permissions = new Mock<IKenticoPermissionsProvider>();
-            var businessUnits = new Mock<IKenticoBusinessUnitsProvider>();
-
-            return new OrderDetailService(mapper,
-                orderViewClient?.Object ?? new Mock<IOrderViewClient>().Object,
-                mailingListClient.Object,
-                kenticoOrder.Object,
-                shoppingCart.Object,
-                productsProvider.Object,
-                kenticoUsers.Object,
-                kenticoResource.Object,
-                kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
-                localization.Object,
-                permissions.Object,
-                businessUnits.Object
-            );
+            return sut;
         }
-        */
+
+        [Fact]
+        public void CreateDISerivce()
+        {
+            var sut = CreateOrderDetailService_UsingDI();
+        }*/
 
         [Fact]
         public async Task OrderServiceTest_UserCanSee()

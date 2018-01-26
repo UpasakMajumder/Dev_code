@@ -76,6 +76,7 @@ namespace Kadena2.Container.Default
             container.Register<ICreditCard3dsiDemo, CreditCard3dsiDemo>();
             container.Register<IPurchaseOrder, PurchaseOrder>();
             container.Register<IGetOrderDataService, GetOrderDataService>();
+            container.Register<ISendSubmitOrder, SendSubmitOrder>();
             return container;
         }
 
