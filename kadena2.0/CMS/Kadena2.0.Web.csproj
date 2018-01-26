@@ -1315,6 +1315,7 @@
     <Compile Include="Old_App_Code\Kadena\Imports\POS\POSImportService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\POS\POSDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\POS\POSTemplateService.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\Products\CampaignProductImageDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\MediaLibrary.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductCategoryImportDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductCategoryImporter.cs" />
