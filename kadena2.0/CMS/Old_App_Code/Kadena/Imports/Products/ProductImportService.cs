@@ -53,7 +53,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 catch (Exception ex)
                 {
                     statusMessages.Add($"There was an error when processing item #{currentItemNumber} : {ex.Message}");
-                    EventLogProvider.LogException("Import products", "EXCEPTION", ex);
+                    EventLogProvider.LogException(typeof(ProductImportService).Name, "CREATEOBJ", ex);
                 }
             }
 
@@ -100,7 +100,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 catch (Exception ex)
                 {
                     statusMessages.Add($"There was an error when processing item #{currentItemNumber} : {ex.Message}");
-                    EventLogProvider.LogException("Import product images", "EXCEPTION", ex);
+                    EventLogProvider.LogException(typeof(ProductImportService).Name, "UPDATEOBJ", ex);
                 }
             }
 
@@ -266,15 +266,13 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             var library = MediaLibraryInfoProvider.GetMediaLibraryInfo(mediaLibraryName, SiteContext.CurrentSiteName);
             if (library == null)
             {
-                EventLogProvider.LogEvent(EventType.ERROR, typeof(ProductImportService).Name, "GETOBJ", $"Media library '{mediaLibraryName}' not found.");
-                return;
+                throw new KeyNotFoundException($"Unable to assign image to SKU '{product.SKU.SKUNumber}'. Media library '{mediaLibraryName}' not found.");
             }
 
             var image = MediaFileInfoProvider.GetMediaFileInfo(library.LibraryID, imageName);
             if (image == null)
             {
-                EventLogProvider.LogEvent(EventType.ERROR, typeof(ProductImportService).Name, "GETOBJ", $"File '{imageName}' not found.");
-                return;
+                throw new KeyNotFoundException($"Unable to assign image to SKU '{product.SKU.SKUNumber}'. File '{imageName}' not found.");
             }
 
             product.RemoveImage();
