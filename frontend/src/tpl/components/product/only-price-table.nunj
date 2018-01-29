@@ -10,7 +10,7 @@
     </tr>
     <tr>
       <td>1 + pcs</td>
-      <td>$ 12.50</td>
+      <td id="price-element">$ 12.50</td>
     </tr>
     </tbody>
   </table>
