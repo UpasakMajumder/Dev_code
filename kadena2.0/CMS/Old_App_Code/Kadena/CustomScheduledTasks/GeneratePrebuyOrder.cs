@@ -13,6 +13,7 @@ using CMS.SiteProvider;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena2.Container.Default;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena.BusinessLogic.Contracts;
 
 namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
 {
@@ -50,8 +51,9 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
             try
             {
                 var shoppingCartInfo = DIContainer.Resolve<IShoppingCartProvider>();
-                var usersWithShoppingCartItems = shoppingCartInfo.GetUserIDsWithShoppingCart(openCampaignID,Convert.ToInt32(ProductsType.PreBuy));
+                var addrerss = DIContainer.Resolve<IAddressBookService>();
                 var userInfo = DIContainer.Resolve<IKenticoUserProvider>();
+                var usersWithShoppingCartItems = shoppingCartInfo.GetUserIDsWithShoppingCart(openCampaignID,Convert.ToInt32(ProductsType.PreBuy));
                 var orderTemplateSettingKey=DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_OrderReservationEmailTemplate ");
                 var failedOrderTemplateSettingKey = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_FailedOrdersEmailTemplate ");
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
@@ -77,11 +79,10 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                         }
                     });
                 });
-                var distributors = AddressInfoProvider.GetAddresses().WhereIn("AddressID", unprocessedDistributorIDs.Select(x => x.Item1).ToList())
-                       .Columns("AddressPersonalName,AddressID").ToList().Select(x =>
-                       {
-                           return new { AddressID = x?.AddressID, AddressPersonalName = x?.AddressPersonalName };
-                       }).ToList();
+                var distributors = addrerss.GetAddressesByAddressIds(unprocessedDistributorIDs.Select(x => x.Item1).ToList()).Select(x =>
+                {
+                    return new { AddressID = x?.Id, AddressPersonalName = x?.AddressPersonalName };
+                }).ToList();
                 var list = unprocessedDistributorIDs.Select(x =>
                   {
                       var distributor = distributors.Where(y => y.AddressID == x.Item1).FirstOrDefault();

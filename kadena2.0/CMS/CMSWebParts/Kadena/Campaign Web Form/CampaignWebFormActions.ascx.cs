@@ -509,7 +509,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
                 TaskInfo runTask = TaskInfoProvider.GetTaskInfo(ScheduledTaskNames.PrebuyOrderCreation, CurrentSite.SiteID);
                 if (runTask != null)
                 {
-                    ScriptManager.RegisterStartupScript(Page, GetType(), "growl_confirm", $"<script>toastr.success('{ResHelper.GetString("KDA.OrderSchedular.ExecutionStartMessage")}')</script>", false);
                     runTask.TaskRunInSeparateThread = true;
                     runTask.TaskEnabled = true;
                     runTask.TaskData = $"{campaign.CampaignID}|{CurrentUser.UserID}";

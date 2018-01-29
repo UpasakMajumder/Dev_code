@@ -12,6 +12,8 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
+using Kadena2.Container.Default;
+using Kadena.BusinessLogic.Contracts;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -129,11 +131,10 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-
-                var distributors = AddressInfoProvider.GetAddresses().WhereIn("AddressID", unprocessedDistributorIDs.Select(x => x.Item1).ToList())
-                    .Columns("AddressPersonalName,AddressID").ToList().Select(x =>
+                var addrerss = DIContainer.Resolve<IAddressBookService>();
+              var distributors=  addrerss.GetAddressesByAddressIds(unprocessedDistributorIDs.Select(x => x.Item1).ToList()).Select(x =>
                     {
-                        return new { AddressID = x?.AddressID, AddressPersonalName = x?.AddressPersonalName };
+                        return new { AddressID = x?.Id, AddressPersonalName = x?.AddressPersonalName };
                     }).ToList();
                 rptErrors.DataSource = unprocessedDistributorIDs.Select(x =>
                 {
