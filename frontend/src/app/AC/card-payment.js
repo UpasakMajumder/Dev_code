@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { SUBMIT_CARD, GET_SUBMISSIONID, FETCH, FAILURE, SUCCESS } from 'app.consts';
+import { SUBMIT_CARD, FETCH, FAILURE, SUCCESS } from 'app.consts';
 import { CARD_PAYMENT } from 'app.globals';
 
-const redirectUser = (RedirectURL, SubmissionID) => {
+const redirectUser = (dispatch, RedirectURL, submissionId) => {
   axios({
     method: 'get',
-    url: `${RedirectURL}/${SubmissionID}`
+    url: `${RedirectURL}/${submissionId}`
   }).then((response) => {
     const { data: redirectData } = response;
     if (!redirectData.success) {
@@ -21,7 +21,7 @@ const redirectUser = (RedirectURL, SubmissionID) => {
       if (redirectionURL) {
         location.assign(redirectionURL);
       } else {
-        setTimeout(() => redirectUser(RedirectURL, SubmissionID), 500);
+        setTimeout(() => redirectUser(dispatch, RedirectURL, submissionId), 500);
       }
     }
   }).catch(() => {
@@ -29,14 +29,12 @@ const redirectUser = (RedirectURL, SubmissionID) => {
   });
 };
 
-export default (fields, cardType) => {
+export default (fields, cardType, submissionId) => {
   const { name, cvc, number, expiry } = fields;
 
   return async (dispatch) => {
     try {
-      dispatch({ type: GET_SUBMISSIONID + FETCH });
-
-      const { URL3DSi, ResultURL, RedirectURL, SubmissionIDURL,
+      const { URL3DSi, ResultURL, RedirectURL,
         CustomerIdentifier_MerchantCode,
         CustomerIdentifier_LocationCode,
         CustomerIdentifier_CustomerCode,
@@ -46,48 +44,36 @@ export default (fields, cardType) => {
         APCount, PTCount
       } = CARD_PAYMENT;
 
-      const { data: submissionIDData } = await axios({ method: 'get', url: SubmissionIDURL });
+      const data = {
+        CreditCard_CSCValue: cvc,
+        CreditCard_ExpirationMonth: expiry.substr(0, 2),
+        CreditCard_ExpirationYear: expiry.substr(2),
+        CreditCard_CardType: cardType,
+        CreditCard_NameOnCard: name,
+        CreditCard_CardAccountNumber: number,
+        APCount,
+        PTCount,
+        ResultURL,
+        SubmissionID: submissionId,
+        CustomerIdentifier_MerchantCode,
+        CustomerIdentifier_LocationCode,
+        CustomerIdentifier_CustomerCode,
+        TerminalIdentifier_LocationCode,
+        TerminalIdentifier_TerminalCode,
+        TerminalIdentifier_MerchantCode
+      };
 
-      if (!submissionIDData.success) {
-        dispatch({
-          type: GET_SUBMISSIONID + FAILURE,
-          alert: submissionIDData.errorMessage
-        });
-      } else {
-        dispatch({ type: GET_SUBMISSIONID + SUCCESS });
+      dispatch({ type: SUBMIT_CARD + FETCH });
 
-        const { submissionID: SubmissionID } = submissionIDData.payload;
+      axios({
+        method: 'post',
+        url: URL3DSi,
+        headers: { 'Content-type': 'application/x-www-form-urlencoded' },
+        data
+      });
 
-        const data = {
-          CreditCard_CSCValue: cvc,
-          CreditCard_ExpirationMonth: expiry.substr(0, 2),
-          CreditCard_ExpirationYear: expiry.substr(2),
-          CreditCard_CardType: cardType,
-          CreditCard_NameOnCard: name,
-          CreditCard_CardAccountNumber: number,
-          APCount,
-          PTCount,
-          ResultURL,
-          SubmissionID,
-          CustomerIdentifier_MerchantCode,
-          CustomerIdentifier_LocationCode,
-          CustomerIdentifier_CustomerCode,
-          TerminalIdentifier_LocationCode,
-          TerminalIdentifier_TerminalCode,
-          TerminalIdentifier_MerchantCode
-        };
+      redirectUser(dispatch, RedirectURL, submissionId);
 
-        dispatch({ type: SUBMIT_CARD + FETCH });
-
-        axios({
-          method: 'post',
-          url: URL3DSi,
-          headers: { 'Content-type': 'application/x-www-form-urlencoded' },
-          data
-        });
-
-        redirectUser(RedirectURL, SubmissionID);
-      }
     } catch (e) {
       dispatch({ type: SUBMIT_CARD + FAILURE });
     }
