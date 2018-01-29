@@ -1,0 +1,6 @@
+{% from "macro/select.nunj" import select %}
+
+<div class="product-options product-options--select">
+  {{ select(optHolder="(Please select)", options=['option_1', 'option_2', 'option_3'], name='size', data="data-name=state") }}
+  {{ select(optHolder="(Please select)", options=['option_1', 'option_2', 'option_3'], name='color', data="data-name=state") }}
+</div>

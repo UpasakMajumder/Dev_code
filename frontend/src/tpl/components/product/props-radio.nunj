@@ -1,0 +1,22 @@
+{% from "macro/select.nunj" import select %}
+
+{% set sizes = ['s', 'm', 'l'] %}
+{% set colors = ['blue', 'green', 'red'] %}
+
+<div class="product-options product-options--radio-{% if type === 'radio-v'%}v{% else %}h{% endif %}">
+  {% for size in sizes %}
+  <div class="input__wrapper">
+    <input name="size" value="{{ size }}" {% if loop.index === 1 %}checked{% endif %} id="size-{{ size }}" type="radio" class="input__radio">
+    <label for="size-{{ size }}" class="input__label input__label--radio">{{ size }}</label>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="product-options product-options--radio-{% if type === 'radio-v'%}v{% else %}h{% endif %}">
+  {% for color in colors %}
+  <div class="input__wrapper">
+    <input name="color" value="{{ color }}" {% if loop.index === 2 %}checked{% endif %} id="color-{{ color }}" type="radio" class="input__radio">
+    <label for="color-{{ color }}" class="input__label input__label--radio">{{ color }}</label>
+  </div>
+  {% endfor %}
+</div>
