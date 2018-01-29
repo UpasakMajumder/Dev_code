@@ -121,9 +121,11 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 return false;
             }
 
+            
+
             string userId = submission.UserId.ToString();
 
-            var tokenId = await SaveTokenToUserData(userId, tokenData.Token);
+            var tokenId = await SaveTokenToUserData(userId, tokenData);
 
             if (string.IsNullOrEmpty(tokenId))
             {
@@ -131,7 +133,10 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 return false;
             }
 
-            var authorizeResponse = await AuthorizeAmount(userId, tokenId, tokenData.Token);
+            var orderData = JsonConvert.DeserializeObject<OrderDTO>(submission.OrderJson, SerializerConfig.CamelCaseSerializer);
+
+
+            var authorizeResponse = await AuthorizeAmount(userId, tokenId, tokenData.Token, orderData);
             if (!(authorizeResponse?.Succeeded ?? false))
             {
                 logger.LogError("AuthorizeAmount", $"AuthorizeAmount failed, response:{Environment.NewLine}{authorizeResponse}");
@@ -141,11 +146,8 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             logger.LogInfo("AuthorizeAmount", "Info", $"AuthorizeAmount OK, response:{Environment.NewLine}{authorizeResponse}");
 
-
-            var orderData = JsonConvert.DeserializeObject<OrderDTO>(submission.OrderJson, SerializerConfig.CamelCaseSerializer);
-
             // TODO pass data needet to finish the order, are there some ?
-            //authorizeResponse.TransactionKey
+            //authorizeResponse.TransactionKey ?
 
             var sendToOrderServiceResult = await SendOrderToMicroservice(orderData);
 
@@ -184,16 +186,15 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         /// <summary>
         /// Saves the Token into UserData microservice
         /// </summary>
-        private async Task<string> SaveTokenToUserData(string userId, string token)
+        private async Task<string> SaveTokenToUserData(string userId, SaveTokenData token)
         {
             var url = resources.GetSettingsKey("KDA_UserdataMicroserviceEndpoint");
 
             var saveTokenRequest = new SaveCardTokenRequestDto
             {
-                // TODO lot of properties here
-
+                // TODO some more properties ?
                 UserId = userId,
-                Token = token
+                Token = token.Token
             };
 
             var result = await userClient.SaveCardToken(saveTokenRequest);
@@ -208,27 +209,40 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             return result.Payload.Result;
         }
 
-        private async Task<AuthorizeAmountResponseDto> AuthorizeAmount(string userId, string tokenId, string token)
+        private async Task<AuthorizeAmountResponseDto> AuthorizeAmount(string userId, string tokenId, string token, OrderDTO orderData)
         {
             var url = resources.GetSettingsKey("KDA_PaymentMicroserviceEndpoint");
 
             var authorizeAmountRequest = new AuthorizeAmountRequestDto
             {
-                // TODO lot of properties here
-                PaymentData = new PaymentDataDto()
+                User = new UserDto
+                {
+                    UserInternalId = userId,
+                    UserPaymentSystemCode = orderData.PaymentOption.KenticoPaymentOptionID.ToString()
+                },
+
+                PaymentData = new PaymentDataDto
                 {
                     CardTokenId = tokenId,
                     Token = token,
-                    PaymentProvider = string.Empty
-                    //TransactionKey = 
-                    // TODO
+                    PaymentProvider = string.Empty,
+                    TransactionKey = string.Empty // TODO
                 },
 
-                User = new UserDto()
+                AdditionalAmounts = new AdditionalAmountsDto
                 {
-                    UserInternalId = userId,
-                    UserPaymentSystemCode = string.Empty
-                }
+                    ShippingAmount = orderData?.TotalShipping ?? 0.0m,
+                    SalesTaxAmount = 0.0m, // TODO
+                    ShippingTax = 0.0m // TODO
+                },
+                SapDetails = new SapDetailsDto
+                {
+                    InvoiceNumber = orderData.PaymentOption.PONumber,
+                    // TODO some other properties ?
+                },
+
+                Currency = orderData.OrderCurrency.KenticoCurrencyID,
+                TotalAmount = orderData.TotalPrice
             };
 
             var result = await paymentClient.AuthorizeAmount(authorizeAmountRequest);

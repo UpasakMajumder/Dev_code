@@ -467,6 +467,7 @@
     <Compile Include="BusinessLogic\DateTimeFormatterTest.cs" />
     <Compile Include="Deployment\AutomatedXunitTests.cs" />
     <Compile Include="EventHandlers\ProductEventHandlerTests.cs" />
+    <Compile Include="Infrastructure\AutomockMapperRegistrationTest.cs" />
     <Compile Include="MicroserviceClients\FileModuleTests.cs" />
     <Compile Include="Models\ProductValidatorTests.cs" />
     <Compile Include="Models\DeliveryAddressesTests.cs" />

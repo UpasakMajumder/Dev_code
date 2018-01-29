@@ -1,7 +1,5 @@
 ﻿using Kadena.BusinessLogic.Contracts;
-using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2._0.BusinessLogic.Contracts.Orders;
 using Kadena2.BusinessLogic.Services.OrderPayment;
 using Kadena.Models.CreditCard;
 using Moq;
