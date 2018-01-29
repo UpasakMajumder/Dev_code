@@ -77,6 +77,7 @@ namespace Kadena2.Container.Default
             container.Register<IPurchaseOrder, PurchaseOrder>();
             container.Register<IGetOrderDataService, GetOrderDataService>();
             container.Register<ISendSubmitOrder, SendSubmitOrder>();
+            container.Register<ISubmissionService, SubmissionService>();
             return container;
         }
 
