@@ -14,10 +14,6 @@ using Xunit;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena2.Container.Default;
 using Kadena.BusinessLogic.Services.Orders;
-using DryIoc;
-using static DryIoc.Rules;
-using AutoMapper;
-using Kadena.BusinessLogic.Contracts;
 
 namespace Kadena.Tests.WebApi
 {
@@ -89,63 +85,6 @@ namespace Kadena.Tests.WebApi
                 businessUnits.Object
             );
         }
-
-        /*
-        private IOrderDetailService CreateOrderDetailService_UsingDI(Mock<IKenticoLogger> kenticoLogger = null,
-                                        Mock<IOrderViewClient> orderViewClient = null)
-        {
-
-            var fallbackContainer = new Container();
-            //fallbackContainer.Register
-
-
-            if (kenticoLogger == null)
-            {
-                kenticoLogger = new Mock<IKenticoLogger>();
-            }
-
-            if (orderViewClient == null)
-            {
-                orderViewClient = new Mock<IOrderViewClient>();
-            }
-
-            var kenticoPermissions = new Mock<IKenticoPermissionsProvider>();
-            kenticoPermissions.Setup(p => p.UserCanSeeAllOrders())
-                .Returns(false);
-
-            var kenticoUsers = new Mock<IKenticoUserProvider>();
-            kenticoUsers.Setup(p => p.GetCurrentCustomer())
-               .Returns(new Customer() { Id = 10, UserID = 16 });
-
-            var kenticoSite = new Mock<IKenticoSiteProvider>();
-            kenticoSite.Setup(p => p.GetKenticoSite())
-                .Returns(new KenticoSite());
-
-
-            var defaultResolver = new UnknownServiceResolver(target => new DelegateFactory(r => fallbackContainer.Resolve(target.ServiceType)));
-            //var container = new Container(rules => rules.WithUnknownServiceResolvers(defaultResolver));
-
-            var container = new Container(rules => rules.WithUnknownServiceResolvers(defaultResolver));
-            
-
-            container.RegisterInstance<IKenticoLogger>(kenticoLogger.Object);
-            container.RegisterInstance<IOrderViewClient>(orderViewClient.Object);
-            container.RegisterInstance<IKenticoPermissionsProvider>(kenticoPermissions.Object);
-            container.RegisterInstance<IKenticoUserProvider>(kenticoUsers.Object);
-            container.RegisterInstance<IKenticoSiteProvider>(kenticoSite.Object);
-            container.RegisterInstance<IMapper>(MapperBuilder.MapperInstance);
-
-
-            var sut = container.Resolve<IOrderDetailService>();
-
-            return sut;
-        }
-
-        [Fact]
-        public void CreateDISerivce()
-        {
-            var sut = CreateOrderDetailService_UsingDI();
-        }*/
 
         [Fact]
         public async Task OrderServiceTest_UserCanSee()

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Kadena.Helpers;
 using Newtonsoft.Json;
 using Kadena.BusinessLogic.Contracts;
+using Kadena2.Helpers;
 
 namespace Kadena2.BusinessLogic.Services.OrderPayment
 {
@@ -96,12 +97,13 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             var orderData = await orderDataProvider.GetSubmitOrderData(orderRequest);
             var orderJson = JsonConvert.SerializeObject(orderData, SerializerConfig.CamelCaseSerializer);
             var newSubmission = submissionService.GenerateNewSubmission(orderJson);
-            var redirectUrl = insertCardUrl.TrimEnd('/') + $"?submissionId={newSubmission.SubmissionId}";
+            var redirectUrl = documents.GetDocumentUrl(insertCardUrl);
+            var uri = new Uri(redirectUrl).AddParameter("submissionId", newSubmission.SubmissionId.ToString());
 
             return new SubmitOrderResult
             {
                 Success = true,
-                RedirectURL = documents.GetDocumentUrl(redirectUrl)
+                RedirectURL = uri.ToString()
             };
         }
 
