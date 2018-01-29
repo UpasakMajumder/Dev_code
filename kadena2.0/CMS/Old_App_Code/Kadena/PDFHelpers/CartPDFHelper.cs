@@ -212,13 +212,6 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
             }
             return string.IsNullOrEmpty(returnValue) ? SettingsKeyInfoProvider.GetValue($@"{SiteContext.CurrentSiteName}.KDA_ProductsPlaceHolderImage") : returnValue;
         }
-        private static List<CampaignsProduct> GetCampaignProducts(List<int> nodeSKUIDs)
-        {
-            return CampaignsProductProvider.GetCampaignsProducts()
-                                     .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID)
-                                     .WhereIn("NodeSKUID", nodeSKUIDs)
-                                     .ToList();
-        }
         #endregion Methods
     }
 }
