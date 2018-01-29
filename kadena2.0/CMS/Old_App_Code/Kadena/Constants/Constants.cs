@@ -47,4 +47,18 @@
     {
         public const string Ground = "ground";
     }
+    /// <summary>
+    /// This class represents SKU Measuring Units
+    /// </summary>
+    public class SKUMeasuringUnits
+    {
+        public const string Lb = "Lb";
+    }
+    /// <summary>
+    /// This class represents Scheduled task names
+    /// </summary>
+    public class ScheduledTaskNames
+    {
+        public const string PrebuyOrderCreation = "PrebuyOrderCreation";
+    }
 }

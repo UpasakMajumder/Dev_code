@@ -11,6 +11,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Kadena.Old_App_Code.Kadena.EmailNotifications
@@ -79,6 +80,36 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
             catch (Exception ex)
             {
                 EventLogProvider.LogException("ProductEmailNotifications", "SendEmailNotification", ex, SiteContext.CurrentSite.SiteID, ex.Message);
+            }
+        }
+        /// <summary>
+        /// Sending the emails based on datasource
+        /// </summary>
+        /// <param name="campaignName"></param>
+        /// <param name="reciepientEmail"></param>
+        /// <param name="templateName"></param>
+        public static void SendEmail<T>(string templateName, string recipientEmail, IEnumerable<T> emailDataSource)
+        {
+            try
+            {
+                var email = DIContainer.Resolve<IKenticoMailProvider>().GetMailTemplate(SiteContext.CurrentSiteID, templateName);
+                EmailMessage msg = new EmailMessage();
+                if (email != null)
+                {
+                    MacroResolver resolver = MacroResolver.GetInstance();
+                    resolver.SetNamedSourceData("data", emailDataSource);
+                    msg.From = resolver.ResolveMacros(email.From);
+                    msg.Recipients = recipientEmail;
+                    msg.EmailFormat = EmailFormatEnum.Default;
+                    msg.ReplyTo = resolver.ResolveMacros(email.ReplyTo);
+                    msg.Subject = resolver.ResolveMacros(email.Subject);
+                    msg.Body = resolver.ResolveMacros(email.BodyHtml);
+                    EmailSender.SendEmail(SiteContext.CurrentSite.SiteName, msg, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("ProductEmailNotifications", "SendEmail", ex, SiteContext.CurrentSite.SiteID, ex.Message);
             }
         }
 
