@@ -6,5 +6,6 @@ namespace Kadena.BusinessLogic.Contracts
     {
         void DeleteCampaign(int campaignID);
         OrderCampaginHead GetCampaigns(string orderType);
+        bool CloseCampaignIBTF(int campaignID);
     }
 }
