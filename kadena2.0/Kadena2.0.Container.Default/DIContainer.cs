@@ -67,6 +67,7 @@ namespace Kadena2.Container.Default
             container.Register<ILoginService, LoginService>();
             container.Register<IFileService, FileService>();
             container.Register<IDateTimeFormatter, DateTimeFormatter>();
+            container.Register<IShippingCostServiceClient, ShippingCostServiceClient>();
             return container;
         }
 

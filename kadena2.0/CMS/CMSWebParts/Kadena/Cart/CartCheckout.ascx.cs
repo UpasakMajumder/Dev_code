@@ -2,16 +2,18 @@
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
-using Kadena.Dto.General;
-using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
-using Kadena.Old_App_Code.Kadena.Shoppingcart;
+using static Kadena.Old_App_Code.Kadena.Shoppingcart.ShoppingCartHelper;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web.UI.WebControls;
+using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using Kadena.Old_App_Code.Kadena.Shoppingcart;
+using Kadena2.Container.Default;
+using Kadena.BusinessLogic.Contracts;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -68,19 +70,29 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                var loggedInUserCartIDs = ShoppingCartHelper.GetLoggeedInUserCarts(CurrentUser.UserID, ProductType.GeneralInventory);
+                var loggedInUserCartIDs = GetCartsByUserID(CurrentUser.UserID, ProductType.GeneralInventory);
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
-                loggedInUserCartIDs.ForEach(care =>
+                loggedInUserCartIDs.ForEach(distributorCart =>
                 {
-                    Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(care);
-                    var response = ProcessOrder();
-                    if (response != null && response.Success)
+                    Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(distributorCart);
+                   var shippingResponse= GetOrderShippingTotal(Cart);
+                    if(shippingResponse != null && shippingResponse.Success)
                     {
-                        ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
+                        var shippingCost=ValidationHelper.GetDecimal(shippingResponse?.Payload?.Cost, default(decimal));
+                        OrderDTO Ordersdto = CreateOrdersDTO(Cart, Cart.ShoppingCartUserID, OrderType.generalInventory, shippingCost);
+                        var response = ProcessOrder(Cart, CurrentUser.UserID, OrderType.generalInventory, Ordersdto,shippingCost);
+                        if (response != null && response.Success)
+                        {
+                            ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
+                        }
+                        else
+                        {
+                            unprocessedDistributorIDs.Add(new Tuple<int, string>(Cart.GetIntegerValue("ShoppingCartDistributorID", default(int)), response.ErrorMessages));
+                        }
                     }
                     else
                     {
-                        unprocessedDistributorIDs.Add(new Tuple<int, string>(Cart.GetIntegerValue("ShoppingCartDistributorID", default(int)), response.ErrorMessages));
+                        unprocessedDistributorIDs.Add(new Tuple<int, string>(Cart.GetIntegerValue("ShoppingCartDistributorID", default(int)), shippingResponse.ErrorMessages));
                     }
                 });
                 if (unprocessedDistributorIDs.Count == 0)
@@ -112,28 +124,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         #region Methods
 
         /// <summary>
-        ///Processes order and returns response
-        /// </summary>
-        /// <returns></returns>
-        private BaseResponseDto<string> ProcessOrder()
-        {
-            try
-            {
-                OrderDTO Ordersdto = ShoppingCartHelper.CreateOrdersDTO(Cart, CurrentUser.UserID, OrderType.generalInventory);
-                if (Ordersdto != null && Ordersdto.Campaign != null)
-                {
-                    UpdateDistributorsBusinessUnit(Ordersdto.Campaign.DistributorID);
-                }
-                var response = ShoppingCartHelper.CallOrderService(Ordersdto);
-                return response;
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_CartCheckout", "ProcessOrder", ex.Message);
-                return null;
-            }
-        }
-        /// <summary>
         /// displays the unprocessed order distributors names
         /// </summary>
         /// <param name="addresses"></param>
@@ -141,21 +131,20 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-
-                var distributors = AddressInfoProvider.GetAddresses().WhereIn("AddressID", unprocessedDistributorIDs.Select(x => x.Item1).ToList())
-                    .Columns("AddressPersonalName,AddressID").ToList().Select(x =>
+                var addrerss = DIContainer.Resolve<IAddressBookService>();
+              var distributors=  addrerss.GetAddressesByAddressIds(unprocessedDistributorIDs.Select(x => x.Item1).ToList()).Select(x =>
                     {
-                        return new { AddressID = x?.AddressID, AddressPersonalName = x?.AddressPersonalName };
+                        return new { AddressID = x?.Id, AddressPersonalName = x?.AddressPersonalName };
                     }).ToList();
                 rptErrors.DataSource = unprocessedDistributorIDs.Select(x =>
-               {
-                   var distributor = distributors.Where(y => y.AddressID == x.Item1).FirstOrDefault();
-                   return new
-                   {
-                       AddressPersonalName = distributor.AddressPersonalName,
-                       Reason = x.Item2
-                   };
-               }).ToList();
+                {
+                    var distributor = distributors.Where(y => y.AddressID == x.Item1).FirstOrDefault();
+                    return new
+                    {
+                        AddressPersonalName = distributor.AddressPersonalName,
+                        Reason = x.Item2
+                    };
+                }).ToList();
                 rptErrors.DataBind();
             }
             catch (Exception ex)
@@ -164,22 +153,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
-        /// <summary>
-        /// Updates business unit for distributor
-        /// </summary>
-        /// <param name="distributorID">Distributor ID</param>
-        private void UpdateDistributorsBusinessUnit(int distributorID)
-        {
-            AddressInfo distributor = AddressInfoProvider.GetAddressInfo(distributorID);
-            long businessUnitNumber = ValidationHelper.GetLong(Cart.GetValue("BusinessUnitIDForDistributor"), default(long));
-            if (distributor != null && businessUnitNumber != default(long))
-            {
-                distributor.SetValue("BusinessUnit", businessUnitNumber);
-                AddressInfoProvider.SetAddressInfo(distributor);
-            }
-        }
-
         #endregion Methods
-      
+
     }
 }

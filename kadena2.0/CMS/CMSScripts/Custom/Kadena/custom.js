@@ -443,7 +443,6 @@ function getDate(datePicker) {
             base.find(settings.attachmentsNumberErrorMessage).hide();
             base.find(settings.attachmentsSizeErrorMessage).hide();
 
-
             if (base.find(settings.fullNameInput).val() == '') {
                 base.find(settings.fullNameInput).addClass("input--error");
                 base.find(settings.fullNameErrorLabel).show();
@@ -523,7 +522,6 @@ function getDate(datePicker) {
 // SUBMIT BID
 
 (function ($) {
-
     $.fn.submitBid = function (options) {
         var base = this;
 
@@ -686,13 +684,11 @@ function getDate(datePicker) {
             xhr.send(formData);
         });
     }
-
 }(jQuery));
 
 // REQUEST NEW PRODUCT
 
 (function ($) {
-
     $.fn.requestNewProduct = function (options) {
         var base = this;
 
@@ -793,7 +789,6 @@ function getDate(datePicker) {
             xhr.send(formData);
         });
     }
-
 }(jQuery));
 
 // REQUEST NEW KIT
@@ -1065,10 +1060,8 @@ var customHelpers = {
         }
         return false
     },
-    setCookie: function () {
-
-        document.cookie = "status = new";
-        document.cookie = 'status=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    deleteCookie: function (name) {
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
     }
 }
 $(document).ready(function () {
@@ -1082,8 +1075,8 @@ $(document).ready(function () {
     var page = customHelpers.getQueryStringByName("page");
     var cookieValue = customHelpers.getCookie("status");
     switch (cookieValue) {
-        case 'added': toastr.success(config.localization.globalSuccess.addSuccessMessage); customHelpers.setCookie(); break;
-        case 'updated': toastr.success(config.localization.globalSuccess.updateSuccessMessage); customHelpers.setCookie(); break;
+        case 'added': toastr.success(config.localization.globalSuccess.addSuccessMessage); customHelpers.deleteCookie("status"); break;
+        case 'updated': toastr.success(config.localization.globalSuccess.updateSuccessMessage); customHelpers.deleteCookie("status"); break;
     }
     if (status == 'deleted') {
         toastr.success(config.localization.globalSuccess.deleteSuccessMessage);

@@ -698,5 +698,10 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             return false;
         }
+        public List<int> GetUserIDsWithShoppingCart(int campaignID, int productType)
+        {
+          return  ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartCampaignID", campaignID)
+                                                                   .WhereEquals("ShoppingCartInventoryType", productType).ToList().Select(x => x.ShoppingCartUserID).Distinct().ToList();
+        }
     }
 }
