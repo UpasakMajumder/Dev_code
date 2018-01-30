@@ -88,7 +88,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return new ProductLink
             {
                 Id = documentId,
-                ImageUrl = URLHelper.GetAbsoluteUrl(product.GetValue("ProductThumbnail", string.Empty) == string.Empty ? product.GetValue("SKUImagePath", string.Empty) : "/CMSPages/GetFile.aspx?guid=" + product.GetValue("ProductThumbnail")),
+                ImageUrl = product.GetValue("SKUImagePath", string.Empty),
                 Title = product.DocumentName,
                 Url = product.DocumentUrlPath
             };

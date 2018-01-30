@@ -71,6 +71,9 @@
     <Reference Include="CMS.Helpers">
       <HintPath>..\Lib\CMS.Helpers.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.IO">
+      <HintPath>..\Lib\CMS.IO.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.Localization">
       <HintPath>..\Lib\CMS.Localization.dll</HintPath>
     </Reference>
@@ -170,6 +173,10 @@
     <Compile Include="Providers\SuppliantDomain.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kadena.AmazonFileSystemProvider\Kadena.AmazonFileSystemProvider.csproj">
+      <Project>{91c29a0f-7655-405e-abb0-990877d6fcfa}</Project>
+      <Name>Kadena.AmazonFileSystemProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj">
       <Project>{b1fcbfc9-fc06-4c02-8df4-9d1a66e44910}</Project>
       <Name>Kadena2.0.MicroserviceClients</Name>

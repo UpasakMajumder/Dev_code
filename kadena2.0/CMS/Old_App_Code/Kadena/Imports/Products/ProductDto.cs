@@ -111,7 +111,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         [Header(26, "Needs shipping")]
         [MaxLength(10)]
-        public string NeedsShipping{ get; set; }
+        public string NeedsShipping { get; set; }
 
         [Header(27, "Publish from (MM/dd/yyyy)")]
         [MaxLength(20)]
@@ -137,12 +137,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [MaxLength(20)]
         public string MaxItemsInOrder { get; set; }
 
-        [Header(33, "Image URL")]
+        [Header(33, "Image Media Library")]
         [MaxLength(200)]
-        public string ImageURL { get; set; }
+        public string ImageMediaLibraryName { get; set; }
 
-        [Header(34, "Thumbnail URL")]
+        [Header(34, "Image Name")]
         [MaxLength(200)]
-        public string ThumbnailURL { get; set; }
+        public string ImageName { get; set; }
     }
 }

@@ -45,13 +45,6 @@ namespace Kadena2.MicroserviceClients.Clients
             return await Post<string>(url, null).ConfigureAwait(false);
         }
 
-        public async Task<BaseResponseDto<string>> GetShortliveSecureLink(string key, FileModule module)
-        {
-            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url}/api/File?key={key}&module={module}";
-            return await Get<string>(url);
-        }
-
         protected override HttpRequestMessage CreateRequest(HttpMethod method, string url, object body = null)
         {
             var request = base.CreateRequest(method, url, body);

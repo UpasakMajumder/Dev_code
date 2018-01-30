@@ -9,7 +9,7 @@
 <![CDATA[
 <div class="col-lg-4 col-xl-3">
   <a href='{%Transformation.GetDocumentUrl()|(user)administrator|(hash)300ac8634e7214b7a2fcb5ee0c8a669749f76fa4644764dad9c42d9830d076fe%}' class="category">
-    <div class="category__picture" style="background-image: url('{%ProductThumbnail.ToString() == "" ? SKUImagePath : "/CMSPages/GetFile.aspx?guid=" + ProductThumbnail |(user)administrator|(hash)70afb56f7e5999c6a87b923d710707e5d5ecf09a7cf05f2ee98f9700b2db921d%}')"></div>
+    <div class="category__picture" style="background-image: url('{% SKUImagePath %}')"></div>
     <div class="category__title">
       <h2>{%DocumentName%}</h2>
     </div>
