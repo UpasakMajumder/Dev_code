@@ -48,7 +48,10 @@ export default (fields, cardType, submissionId) => {
         DemoURL
       } = CARD_PAYMENT;
 
-      if (!submissionId) location.assign(DemoURL); // for demo
+      if (!submissionId) {
+        location.assign(DemoURL); // for demo
+        return;
+      }
 
       const data = {
         CreditCard_CSCValue: cvc,
