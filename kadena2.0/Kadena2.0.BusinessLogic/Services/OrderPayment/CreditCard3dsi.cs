@@ -97,8 +97,8 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             var orderData = await orderDataProvider.GetSubmitOrderData(orderRequest);
             var orderJson = JsonConvert.SerializeObject(orderData, SerializerConfig.CamelCaseSerializer);
             var newSubmission = submissionService.GenerateNewSubmission(orderJson);
-            var redirectUrl = documents.GetDocumentUrl(insertCardUrl);
-            var uri = new Uri(redirectUrl).AddParameter("submissionId", newSubmission.SubmissionId.ToString());
+            var redirectUrl = documents.GetDocumentUrl(insertCardUrl, absoluteUrl: true);
+            var uri = new Uri(redirectUrl, UriKind.Absolute).AddParameter("submissionId", newSubmission.SubmissionId.ToString());
 
             return new SubmitOrderResult
             {
@@ -219,6 +219,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 {
                     UserInternalId = userId,
                     UserPaymentSystemCode = orderData.PaymentOption.KenticoPaymentOptionID.ToString()
+
                 },
 
                 PaymentData = new PaymentDataDto

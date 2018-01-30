@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models;
 using Kadena.Models.Checkout;
@@ -27,7 +28,8 @@ namespace Kadena2._0.BusinessLogic.Services.Orders
         private readonly ITemplatedClient templateService;
         private readonly IKenticoLocalizationProvider localization;
         private readonly IKenticoSiteProvider siteProvider;
-        private readonly IKadenaSettings settings;        
+        private readonly IKadenaSettings settings;
+        private readonly IOrderDataFactory orderDataFactory;
 
         public GetOrderDataService(IMapper mapper,
            IKenticoOrderProvider kenticoOrder,
@@ -38,7 +40,8 @@ namespace Kadena2._0.BusinessLogic.Services.Orders
            ITemplatedClient templateService,
            IKenticoLocalizationProvider localization,
            IKenticoSiteProvider site,
-           IKadenaSettings settings           
+           IKadenaSettings settings,
+           IOrderDataFactory orderDataFactory
            )
         {
             if (mapper == null)
@@ -80,7 +83,11 @@ namespace Kadena2._0.BusinessLogic.Services.Orders
             if (settings == null)
             {
                 throw new ArgumentNullException(nameof(settings));
-            }           
+            }
+            if (orderDataFactory == null)
+            {
+                throw new ArgumentNullException(nameof(orderDataFactory));
+            }
 
             this.mapper = mapper;
             this.kenticoOrder = kenticoOrder;
@@ -91,7 +98,8 @@ namespace Kadena2._0.BusinessLogic.Services.Orders
             this.templateService = templateService;
             this.localization = localization;
             this.siteProvider = site;
-            this.settings = settings;            
+            this.settings = settings;
+            this.orderDataFactory = orderDataFactory;
         }
 
         private async Task<Guid> CallRunGeneratePdfTask(CartItem cartItem)
@@ -150,56 +158,12 @@ namespace Kadena2._0.BusinessLogic.Services.Orders
 
             var orderDto = new OrderDTO()
             {
-                BillingAddress = new AddressDTO()
-                {
-                    AddressLine1 = billingAddress.Street.Count > 0 ? billingAddress.Street[0] : null,
-                    AddressLine2 = billingAddress.Street.Count > 1 ? billingAddress.Street[1] : null,
-                    City = billingAddress.City,
-                    State = !string.IsNullOrEmpty(billingAddress.State) ? billingAddress.State : billingAddress.Country, // fill in mandatory for countries that have no states
-                    StateDisplayName = billingState?.StateDisplayName,
-                    KenticoStateID = billingAddress.StateId,
-                    KenticoCountryID = billingAddress.CountryId,
-                    AddressCompanyName = settings.DefaultSiteCompanyName,
-                    isoCountryCode = billingAddress.Country,
-                    AddressPersonalName = settings.DefaultSitePersonalName,
-                    Zip = billingAddress.Zip,
-                    Country = billingAddress.Country,
-                    KenticoAddressID = 0
-                },
-                ShippingAddress = new AddressDTO()
-                {
-                    AddressLine1 = shippingAddress.Address1,
-                    AddressLine2 = shippingAddress.Address2,
-                    City = shippingAddress.City,
-                    State = !string.IsNullOrEmpty(shippingAddress.State?.StateCode) ? shippingAddress.State.StateCode : shippingAddress.Country.Name, // fill in mandatory for countries that have no states
-                    StateDisplayName = shippingAddress.State?.StateDisplayName,
-                    KenticoStateID = shippingAddress.State.Id,
-                    KenticoCountryID = shippingAddress.Country.Id,
-                    AddressCompanyName = customer.Company,
-                    isoCountryCode = shippingAddress.Country.Code,
-                    AddressPersonalName = $"{customer.FirstName} {customer.LastName}",
-                    Zip = shippingAddress.Zip,
-                    Country = shippingAddress.Country.Name,
-                    KenticoAddressID = shippingAddress.Id
-                },
-                Customer = new CustomerDTO()
-                {
-                    CustomerNumber = customer.CustomerNumber,
-                    Email = customer.Email,
-                    FirstName = customer.FirstName,
-                    LastName = customer.LastName,
-                    KenticoCustomerID = customer.Id,
-                    KenticoUserID = customer.UserID,
-                    Phone = customer.Phone
-                },
+                BillingAddress = orderDataFactory.CreateBillingAddress(billingAddress, billingState?.StateDisplayName),
+                ShippingAddress = orderDataFactory.CreateShippingAddress(shippingAddress, customer),
+                Customer = orderDataFactory.CreateCustomer(customer),
                 KenticoOrderCreatedByUserID = customer.UserID,
                 OrderDate = DateTime.Now,
-                PaymentOption = new PaymentOptionDTO()
-                {
-                    KenticoPaymentOptionID = paymentMethod.Id,
-                    PaymentOptionName = paymentMethod.Title,
-                    PONumber = request.PaymentMethod.Invoice
-                },
+                PaymentOption = orderDataFactory.CreatePaymentOption(paymentMethod, request),
                 Site = new SiteDTO()
                 {
                     KenticoSiteID = site.Id,

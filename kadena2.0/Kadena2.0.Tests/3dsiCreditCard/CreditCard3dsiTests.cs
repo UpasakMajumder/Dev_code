@@ -27,7 +27,7 @@ namespace Kadena.Tests._3dsiCreditCard
                 .Returns(serviceUrl);
 
             var documents = autoMocker.GetMock<IKenticoDocumentProvider>()
-                .Setup(d => d.GetDocumentUrl(serviceUrl))
+                .Setup(d => d.GetDocumentUrl(serviceUrl, true))
                 .Returns(serviceUrl);
 
             var submissions = autoMocker.GetMock<ISubmissionService>();

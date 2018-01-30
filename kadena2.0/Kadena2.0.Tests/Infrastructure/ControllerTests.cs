@@ -25,7 +25,8 @@ namespace Kadena.Tests.Infrastructure
                 .RegisterFactories()
                 .RegisterInfrastructure();
 
-            foreach (var controller in controllers)
+            //TODO refactor by using main DIContainer and safe or static registration here
+            foreach (var controller in controllers) 
             {
                 container.Register(controller);
             }
@@ -33,9 +34,11 @@ namespace Kadena.Tests.Infrastructure
             foreach (var controller in controllers)
             {
                 if (controller.Name == "DashboardController" ||
-                    controller.Name == "OrdersController" )
+                       controller.Name == "OrdersController" )
                 {
-                    continue; // TODO : For some reason, it crashes because of some cms type
+                       continue; // TODO : For some reason, it crashes because of 
+                                 // System.InvalidOperationException : Object type 'cms.culture' not found.
+                                 // (maybe reference kentico dlls from test project)
                 }
 
                 try
