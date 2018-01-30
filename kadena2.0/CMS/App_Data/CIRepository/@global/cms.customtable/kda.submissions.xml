@@ -8,7 +8,7 @@
   <ClassDisplayName>Submissions</ClassDisplayName>
   <ClassFormDefinition>
     <form version="2">
-      <field column="ItemID" columnprecision="0" columntype="integer" guid="31cff73d-043a-49f0-8874-fbfb18f1beef" isPK="true" publicfield="false">
+      <field column="ItemID" columntype="integer" guid="31cff73d-043a-49f0-8874-fbfb18f1beef" isPK="true" isunique="true" publicfield="false" system="true">
         <properties>
           <fieldcaption>ItemID</fieldcaption>
         </properties>
@@ -99,6 +99,14 @@
       <field allowempty="true" column="ItemModifiedWhen" columnprecision="0" columntype="datetime" guid="c2c80035-d4dd-46f2-811d-03d4ee41cbd6" publicfield="false" system="true">
         <properties>
           <fieldcaption>Modified when</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="ItemGUID" columnprecision="0" columntype="guid" guid="cd5ac62d-038c-417a-a375-cee6988f5209" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>GUID</fieldcaption>
         </properties>
         <settings>
           <controlname>labelcontrol</controlname>
