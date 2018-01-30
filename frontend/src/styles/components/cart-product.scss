@@ -45,11 +45,15 @@
   }
 
   &__options {
-    @extend %flex--center--between;
+    display: flex;
     margin-left: auto;
 
     & > * {
       white-space: nowrap;
+    }
+
+    &--center {
+      align-items: center;
     }
   }
 
@@ -159,7 +163,6 @@
 
     .cart-product__quantity {
       display: flex;
-      align-items: center;
     }
   }
 

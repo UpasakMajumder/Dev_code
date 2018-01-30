@@ -100,7 +100,7 @@ const Order = ({
 
       </div>
 
-      <div className="cart-product__options">
+      <div className="cart-product__options cart-product__options--center">
         {optionsElement}
         <div>
           <div className="cart-product__price">

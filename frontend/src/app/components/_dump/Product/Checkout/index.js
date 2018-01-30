@@ -211,22 +211,24 @@ class CheckoutProduct extends Component {
         </div>
 
         <div className="cart-product__options">
-          <div className="cart-product__price">
-            <span>{pricePrefix} <span>{price}</span></span>
-          </div>
+          <div>
+            <div className="cart-product__price">
+              <span>{pricePrefix} <span>{price}</span></span>
+            </div>
 
-          <div className="cart-product__action">
-            {this.defineEditButton()}
+            <div className="cart-product__action">
+              {this.defineEditButton()}
 
-            <button onClick={() => { removeProduct(id); }}
-                    type="button"
-                    disabled={disableInteractivity}
-                    className="cart-product__btn">
-              <div>
-                <SVG name="cross--dark"/>
-              </div>
-              {buttonLabels.remove}
-            </button>
+              <button onClick={() => { removeProduct(id); }}
+                      type="button"
+                      disabled={disableInteractivity}
+                      className="cart-product__btn">
+                <div>
+                  <SVG name="cross--dark"/>
+                </div>
+                {buttonLabels.remove}
+              </button>
+            </div>
           </div>
         </div>
 
