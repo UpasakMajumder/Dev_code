@@ -61,19 +61,19 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         {
             try
             {
-                var email = DIContainer.Resolve<IKenticoMailProvider>().GetMailTemplate(SiteContext.CurrentSiteID, templateName);
+                var email = DIContainer.Resolve<IKenticoMailProvider>().GetEmailTemplate(templateName, SiteContext.CurrentSiteID);
                 EmailMessage msg = new EmailMessage();
                 if (email != null)
                 {
                     MacroResolver resolver = MacroResolver.GetInstance();
                     resolver.SetAnonymousSourceData(orderDetails);
                     resolver.SetAnonymousSourceData(customer);
-                    msg.From = resolver.ResolveMacros(email.From);
+                    msg.From = resolver.ResolveMacros(email.TemplateFrom);
                     msg.Recipients = customer.Email;
                     msg.EmailFormat = EmailFormatEnum.Default;
-                    msg.ReplyTo = resolver.ResolveMacros(email.ReplyTo);
-                    msg.Subject = resolver.ResolveMacros(email.Subject);
-                    msg.Body = resolver.ResolveMacros(email.BodyHtml);
+                    msg.ReplyTo = resolver.ResolveMacros(email.TemplateReplyTo);
+                    msg.Subject = resolver.ResolveMacros(email.TemplateSubject);
+                    msg.Body = resolver.ResolveMacros(email.TemplateText);
                     EmailSender.SendEmail(SiteContext.CurrentSite.SiteName, msg, true);
                 }
             }
@@ -92,18 +92,18 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         {
             try
             {
-                var email = DIContainer.Resolve<IKenticoMailProvider>().GetMailTemplate(SiteContext.CurrentSiteID, templateName);
+                var email = DIContainer.Resolve<IKenticoMailProvider>().GetEmailTemplate(templateName, SiteContext.CurrentSiteID);
                 EmailMessage msg = new EmailMessage();
                 if (email != null)
                 {
                     MacroResolver resolver = MacroResolver.GetInstance();
                     resolver.SetNamedSourceData("data", emailDataSource);
-                    msg.From = resolver.ResolveMacros(email.From);
+                    msg.From = resolver.ResolveMacros(email.TemplateFrom);
                     msg.Recipients = recipientEmail;
                     msg.EmailFormat = EmailFormatEnum.Default;
-                    msg.ReplyTo = resolver.ResolveMacros(email.ReplyTo);
-                    msg.Subject = resolver.ResolveMacros(email.Subject);
-                    msg.Body = resolver.ResolveMacros(email.BodyHtml);
+                    msg.ReplyTo = resolver.ResolveMacros(email.TemplateReplyTo);
+                    msg.Subject = resolver.ResolveMacros(email.TemplateSubject);
+                    msg.Body = resolver.ResolveMacros(email.TemplateText);
                     EmailSender.SendEmail(SiteContext.CurrentSite.SiteName, msg, true);
                 }
             }
