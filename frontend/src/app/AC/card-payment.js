@@ -34,15 +34,21 @@ export default (fields, cardType, submissionId) => {
 
   return async (dispatch) => {
     try {
-      const { URL3DSi, ResultURL, RedirectURL,
+      const {
+        URL3DSi,
+        RedirectURL,
         CustomerIdentifier_MerchantCode,
         CustomerIdentifier_LocationCode,
         CustomerIdentifier_CustomerCode,
         TerminalIdentifier_LocationCode,
         TerminalIdentifier_TerminalCode,
         TerminalIdentifier_MerchantCode,
-        APCount, PTCount
+        APCount,
+        PTCount,
+        DemoURL
       } = CARD_PAYMENT;
+
+      if (!submissionId) location.assign(DemoURL); // for demo
 
       const data = {
         CreditCard_CSCValue: cvc,
@@ -51,10 +57,9 @@ export default (fields, cardType, submissionId) => {
         CreditCard_CardType: cardType,
         CreditCard_NameOnCard: name,
         CreditCard_CardAccountNumber: number,
+        SubmissionID: submissionId,
         APCount,
         PTCount,
-        ResultURL,
-        SubmissionID: submissionId,
         CustomerIdentifier_MerchantCode,
         CustomerIdentifier_LocationCode,
         CustomerIdentifier_CustomerCode,

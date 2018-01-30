@@ -104,8 +104,7 @@ class Payment extends Component {
   };
 
   submit = () => {
-    const submissionId = Payment.getSubmissionId(); // for demo
-    if (!submissionId) return;
+    const submissionId = Payment.getSubmissionId();
 
     const { proceedCard } = this.props;
     const { fields, cardType } = this.state;
