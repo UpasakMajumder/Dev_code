@@ -651,7 +651,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                                      ActualPrice = newData?.ActualPrice ?? default(double),
                                      Status = product.SKUEnabled,
                                      IsClosed = IsIBTFClosed(product?.ProgramID ?? 0),
-                                     ItemSpec = (product?.ItemSpecs ?? string.Empty) == ResHelper.GetString("Kadena.CampaignProduct.ItemSpecsOtherText") ? product?.CustomItemSpecs ?? string.Empty : (product?.ItemSpecs ?? string.Empty) == "0" ? string.Empty : GetItemSpecs(product?.ItemSpecs ?? string.Empty),
+                                     ItemSpec = (product?.ItemSpecs ?? string.Empty) == "0" ? product?.CustomItemSpecs ?? string.Empty : (product?.ItemSpecs ?? string.Empty) == "0" ? string.Empty : GetItemSpecs(product?.ItemSpecs ?? string.Empty),
                                      CustomItemSpecs = product.CustomItemSpecs ?? string.Empty
                                  };
                 allDetails = allDetails.ToList();

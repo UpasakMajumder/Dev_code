@@ -118,20 +118,20 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="mb-2 form__block">
+                <div class="input__wrapper">
+                    <span class="input__label" runat="server" id="lblItemSpecs"><%#ResHelper.GetString("Kadena.CampaignProduct.ItemSpecsText")%></span>
+                    <div class="input__inner">
+                        <asp:DropDownList runat="server" ID="ddlItemSpecs" CssClass="input__select" Font-Size="11px" OnSelectedIndexChanged="ddlItemSpecs_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                    </div>
+                </div>
+            </div>
             <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblStatus"></span>
                     <div class="input__inner">
                         <asp:DropDownList ID="ddlStatus" runat="server" CssClass="input__select"></asp:DropDownList>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-2 form__block">
-                <div class="input__wrapper">
-                    <span class="input__label" runat="server" id="lblItemSpecs"><%#ResHelper.GetString("Kadena.CampaignProduct.ItemSpecsText")%></span>
-                    <div class="input__inner">
-                        <asp:DropDownList runat="server" ID="ddlItemSpecs" CssClass="input__select" OnSelectedIndexChanged="ddlItemSpecs_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                     </div>
                 </div>
             </div>

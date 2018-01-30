@@ -29,5 +29,10 @@ namespace Kadena.WebAPI.KenticoProviders
                 Subject = ResHelper.LocalizeString(template.TemplateSubject, localizeToCulture)
             };
         }
+
+        public EmailTemplateInfo GetEmailTemplate(string templateName, int siteId)
+        {
+            return EmailTemplateProvider.GetEmailTemplate(templateName, siteId);
+        }
     }
 }
