@@ -28,7 +28,8 @@ namespace Kadena.WebAPI.KenticoProviders
         public string GetSettingsKey(int siteId, string key)
         {
             return SettingsKeyInfoProvider.GetValue(key, new SiteInfoIdentifier(siteId));
-        }               
+        }
+
         public string ResolveMacroString(string macroString)
         {
             return MacroResolver.Resolve(macroString, new MacroSettings { Culture = LocalizationContext.CurrentCulture.CultureCode });

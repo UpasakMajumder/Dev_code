@@ -48,6 +48,24 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking {
     protected global::System.Web.UI.WebControls.Button btnExport;
     
     /// <summary>
+    /// btnClose control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Button btnClose;
+    
+    /// <summary>
+    /// inBoundGrid control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl inBoundGrid;
+    
+    /// <summary>
     /// gdvInboundProducts control.
     /// </summary>
     /// <remarks>
@@ -64,4 +82,13 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.HtmlControls.HtmlGenericControl divNodatafound;
+    
+    /// <summary>
+    /// divSelectCampaign control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl divSelectCampaign;
 }

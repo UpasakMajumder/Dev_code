@@ -92,7 +92,9 @@
       <th>{$KDA.ProgramsList.CampaignName$}</th>
       <th>{$KDA.ProgramsList.Description$}</th>
       <th>{$KDA.ProgramsList.Status$}</th>
+        {% if (MembershipContext.AuthenticatedUser.IsInRole("TWEGlobalAdmin",false)) { %}
       <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
+      {%}|(user)cvoqa2@gmail.com|(hash)ab45dd9810092ceb3c807708b0f49f5ae954fc2c3a61d7b4f1fd94fd66a26b2d%}
     </tr>
 ]]>
           </property>
@@ -229,12 +231,8 @@ function deleteProgram(programID) {
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
-          <property name="contentafter">
-            <![CDATA[ </ul>]]>
-          </property>
-          <property name="contentbefore">
-            <![CDATA[ <ul class="pagination">]]>
-          </property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
           <property name="controlid">rptProgramsPager</property>
           <property name="currentpage">KDA.Transformations.General-CurrentPage</property>
           <property name="customtimezone"></property>
@@ -353,7 +351,7 @@ function deleteProgram(programID) {
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
+          <property name="cat_open_visibility">False</property>
           <property name="container"></property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
@@ -365,7 +363,7 @@ function deleteProgram(programID) {
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
+          <property name="displaytoroles">TWEGlobalAdmin</property>
           <property name="enableoutputfilter">False</property>
           <property name="encodetext">False</property>
           <property name="hideonsubpages">False</property>

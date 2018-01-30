@@ -23,7 +23,7 @@
                     <div class="custom__blockin">
                         <h4>POS#: <%# Eval("SKUNumber")%></h4>
                         <h3><%#Eval("SKUName") %></h3>
-                        <span><%# $"${Eval("SKUPrice")} pack of {Eval("QtyPerPack")}"%></span>
+                        <span><%# ProductType == (int)ProductsType.GeneralInventory? $"${Eval("SKUPrice")} pack of {Eval("QtyPerPack")}" : $"${Eval("EstimatedPrice")} pack of {Eval("QtyPerPack")}" %></span>
                         <asp:LinkButton ID="lnkAddToCart" runat="server" CommandArgument='<%# Eval("SKUID") %>' CommandName="Add" OnCommand="lnkAddToCart_Command" Text='<%#AddToCartLinkText%>' EnableViewState="true"></asp:LinkButton>
                     </div>
                     <p><%#Eval("SKUDescription") %></p>

@@ -21,6 +21,15 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="IBTFFinalized" columntype="boolean" guid="a8b650a2-2663-4584-b6da-72551dfc51c6" publicfield="false">
+        <properties>
+          <defaultvalue>false</defaultvalue>
+          <fieldcaption>IBTF Finalized</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field column="Name" columnsize="200" columntype="text" guid="e94d8caa-0627-4366-83c4-63610ec2d5b6" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Campaign Name</fieldcaption>

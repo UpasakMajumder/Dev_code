@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using AutoMapper;
+using Kadena.Models;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -7,5 +9,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void DeleteAddress(int addressID);
 
         Dictionary<int, string> GetAddressNames();
+        List<DeliveryAddress> GetAddressesByAddressIds(List<int> addresssIds);
     }
 }

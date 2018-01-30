@@ -36,14 +36,15 @@
       <div class="add__btn">
         <cms:CMSWebPartZone ZoneID="ZoneCreate" runat="server" />
       </div>
-</div>
-</div>
-<cms:CMSWebPartZone ZoneID="ZoneA" runat="server" />
-<div class="data_footer">
-  <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
-    <cms:CMSWebPartZone ZoneID="Zonepagination" runat="server" />
+    </div>
   </div>
-</div>
+  <cms:CMSWebPartZone ZoneID="ZoneA" runat="server" />  
+    <div class="data_footer">
+      <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
+        <cms:CMSWebPartZone ZoneID="Zonepagination" runat="server" />
+      </div>
+    </div>
+  
 </div>
 
 
@@ -126,12 +127,8 @@
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
-          <property name="contentafter">
-            <![CDATA[ </ul>]]>
-          </property>
-          <property name="contentbefore">
-            <![CDATA[ <ul class="pagination">]]>
-          </property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
           <property name="controlid">UniversalPager</property>
           <property name="currentpage">KDA.Transformations.General-CurrentPage</property>
           <property name="customtimezone"></property>
@@ -261,7 +258,7 @@
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
+          <property name="cat_open_visibility">False</property>
           <property name="container"></property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
@@ -273,7 +270,7 @@
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
+          <property name="displaytoroles">TWEGlobalAdmin</property>
           <property name="enableoutputfilter">False</property>
           <property name="hideonsubpages">False</property>
           <property name="instanceguid">60ea1ca9-254a-41de-b67e-bd526376be49</property>

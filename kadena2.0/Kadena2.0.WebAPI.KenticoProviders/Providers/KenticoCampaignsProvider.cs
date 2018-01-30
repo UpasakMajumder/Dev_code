@@ -6,6 +6,7 @@ using CMS.SiteProvider;
 using Kadena.Models.RecentOrders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -49,6 +50,18 @@ namespace Kadena.WebAPI.KenticoProviders
                 placeholder = ResHelper.GetString("Kadena.RecentOrders.Filter.SelectCampaign"),
                 items = campaigns
             };
+        }
+
+        public bool CloseCampaignIBTF(int campaignID)
+        {
+            var selectedCampaign = DocumentHelper.GetDocuments(PageTypeClassName).OnSite(SiteContext.CurrentSiteID).WhereEquals("CampaignID", campaignID).FirstOrDefault();
+            if (selectedCampaign != null)
+            {
+                selectedCampaign.SetValue("IBTFFinalized", true);
+                selectedCampaign.Update();
+                return true;
+            }
+            return false;
         }
     }
 }

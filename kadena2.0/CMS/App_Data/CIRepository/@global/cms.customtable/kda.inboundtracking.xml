@@ -8,7 +8,7 @@
   <ClassDisplayName>In-Bound Tracking</ClassDisplayName>
   <ClassFormDefinition>
     <form version="2">
-      <field column="ItemID" columnprecision="0" columntype="integer" guid="41592d49-44a6-4294-a09c-e1142a1c30af" isPK="true" publicfield="false">
+      <field column="ItemID" columntype="integer" guid="41592d49-44a6-4294-a09c-e1142a1c30af" isPK="true" isunique="true" publicfield="false" system="true">
         <properties>
           <fieldcaption>ItemID</fieldcaption>
         </properties>

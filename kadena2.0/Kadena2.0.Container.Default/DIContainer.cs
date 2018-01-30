@@ -67,6 +67,7 @@ namespace Kadena2.Container.Default
             container.Register<ILoginService, LoginService>();
             container.Register<IFileService, FileService>();
             container.Register<IDateTimeFormatter, DateTimeFormatter>();
+            container.Register<IShippingCostServiceClient, ShippingCostServiceClient>();
             return container;
         }
 
@@ -117,6 +118,7 @@ namespace Kadena2.Container.Default
             container.Register<IMicroProperties, MicroProperties>();
             container.Register<IInventoryUpdateClient, InventoryUpdateClient>();
             container.Register<IBidClient, BidClient>();
+            container.Register<ICreditCardManagerClient, CreditCardManagerClient>();
             return container;
         }
 
