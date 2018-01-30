@@ -54,8 +54,8 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 var addrerss = DIContainer.Resolve<IAddressBookService>();
                 var userInfo = DIContainer.Resolve<IKenticoUserProvider>();
                 var usersWithShoppingCartItems = shoppingCartInfo.GetUserIDsWithShoppingCart(openCampaignID,Convert.ToInt32(ProductsType.PreBuy));
-                var orderTemplateSettingKey=DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_OrderReservationEmailTemplate ");
-                var failedOrderTemplateSettingKey = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_FailedOrdersEmailTemplate ");
+                var orderTemplateSettingKey=DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_OrderReservationEmailTemplate");
+                var failedOrderTemplateSettingKey = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_FailedOrdersEmailTemplate");
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 usersWithShoppingCartItems.ForEach(shoppingCartUser =>
                 {
@@ -88,7 +88,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                       var distributor = distributors.Where(y => y.AddressID == x.Item1).FirstOrDefault();
                       return new
                       {
-                          AddressPersonalName = distributor.AddressPersonalName,
+                          Name = distributor.AddressPersonalName,
                           Reason = x.Item2
                       };
                   }).ToList();

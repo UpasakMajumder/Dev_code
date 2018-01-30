@@ -197,6 +197,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="partialcacheminutes"></property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="producttype">1</property>
+          <property name="shippingid">166</property>
           <property name="showfordocumenttypes"></property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
