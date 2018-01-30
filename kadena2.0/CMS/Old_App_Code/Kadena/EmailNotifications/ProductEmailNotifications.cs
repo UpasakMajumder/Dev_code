@@ -1,6 +1,7 @@
 ﻿using CMS.DocumentEngine;
 using CMS.EmailEngine;
 using CMS.EventLog;
+using CMS.Helpers;
 using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
@@ -61,19 +62,19 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         {
             try
             {
-                var email = DIContainer.Resolve<IKenticoMailProvider>().GetMailTemplate(SiteContext.CurrentSiteID, templateName);
+                var email = DIContainer.Resolve<IKenticoMailProvider>().GetEmailTemplate(templateName, SiteContext.CurrentSiteID);
                 EmailMessage msg = new EmailMessage();
                 if (email != null)
                 {
                     MacroResolver resolver = MacroResolver.GetInstance();
                     resolver.SetAnonymousSourceData(orderDetails);
                     resolver.SetAnonymousSourceData(customer);
-                    msg.From = resolver.ResolveMacros(email.From);
+                    msg.From = resolver.ResolveMacros(email.TemplateFrom);
                     msg.Recipients = customer.Email;
                     msg.EmailFormat = EmailFormatEnum.Default;
-                    msg.ReplyTo = resolver.ResolveMacros(email.ReplyTo);
-                    msg.Subject = resolver.ResolveMacros(email.Subject);
-                    msg.Body = resolver.ResolveMacros(email.BodyHtml);
+                    msg.ReplyTo = resolver.ResolveMacros(email.TemplateReplyTo);
+                    msg.Subject = resolver.ResolveMacros(email.TemplateSubject);
+                    msg.Body = resolver.ResolveMacros(email.TemplateText);
                     EmailSender.SendEmail(SiteContext.CurrentSite.SiteName, msg, true);
                 }
             }
@@ -92,18 +93,18 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         {
             try
             {
-                var email = DIContainer.Resolve<IKenticoMailProvider>().GetMailTemplate(SiteContext.CurrentSiteID, templateName);
+                var email = DIContainer.Resolve<IKenticoMailProvider>().GetEmailTemplate(templateName, SiteContext.CurrentSiteID);
                 EmailMessage msg = new EmailMessage();
                 if (email != null)
                 {
                     MacroResolver resolver = MacroResolver.GetInstance();
                     resolver.SetNamedSourceData("data", emailDataSource);
-                    msg.From = resolver.ResolveMacros(email.From);
+                    msg.From = resolver.ResolveMacros(email.TemplateFrom);
                     msg.Recipients = recipientEmail;
                     msg.EmailFormat = EmailFormatEnum.Default;
-                    msg.ReplyTo = resolver.ResolveMacros(email.ReplyTo);
-                    msg.Subject = resolver.ResolveMacros(email.Subject);
-                    msg.Body = resolver.ResolveMacros(email.BodyHtml);
+                    msg.ReplyTo = resolver.ResolveMacros(email.TemplateReplyTo);
+                    msg.Subject = resolver.ResolveMacros(email.TemplateSubject);
+                    msg.Body = resolver.ResolveMacros(email.TemplateText);
                     EmailSender.SendEmail(SiteContext.CurrentSite.SiteName, msg, true);
                 }
             }
@@ -128,7 +129,8 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                 if (response.Success && response.Payload.TotalCount != 0)
                 {
                     var responseData = response.Payload.Orders.ToList();
-                    var customerOrderData = responseData.GroupBy(x => x.CustomerId).ToList();
+                    EventLogProvider.LogInformation(ValidationHelper.GetString(responseData.Count,"Order Count",ValidationHelper.GetString(responseData,"Order Details")),"ProductEmailNotification.cs");
+                     var customerOrderData = responseData.GroupBy(x => x.CustomerId).ToList();
                     customerOrderData.ForEach(x =>
                     {
                         var customerData = DIContainer.Resolve<IKenticoUserProvider>().GetUserByUserId(x.Key);
