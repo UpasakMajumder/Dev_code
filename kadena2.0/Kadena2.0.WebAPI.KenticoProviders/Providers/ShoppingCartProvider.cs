@@ -3,9 +3,11 @@ using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.Globalization;
 using CMS.Helpers;
+using CMS.IO;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.SiteProvider;
+using Kadena.AmazonFileSystemProvider;
 using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Product;
@@ -251,7 +253,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 {
                     Id = i.CartItemID,
                     CartItemText = i.CartItemText,
-                    DesignFilePath = i.GetValue("ArtworkLocation", string.Empty),
+                    DesignFileKey = i.GetValue("ArtworkLocation", string.Empty),
                     MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                     ChiliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
                     ProductChiliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
@@ -263,7 +265,7 @@ namespace Kadena.WebAPI.KenticoProviders
                     TotalTax = 0.0m,
                     UnitPrice = showPrices ? (decimal)i.UnitPrice : 0.0m,
                     UnitOfMeasure = "EA",
-                    Image = i.GetGuidValue("ProductThumbnail", Guid.Empty) == Guid.Empty ? URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath) : URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", i.GetGuidValue("ProductThumbnail", Guid.Empty))),
+                    Image = URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath),
                     ProductType = i.GetValue("ProductType", string.Empty),
                     Quantity = i.CartItemUnits,
                     TotalPrice = showPrices ? (decimal)i.UnitPrice * i.CartItemUnits : 0.0m,
@@ -542,15 +544,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 SetAmount(cartItem, addedAmount + existingAmountInCart);
             }
 
-            var isPodType = ProductTypes.IsOfType(productType, ProductTypes.POD);
-            if (isPodType)
-            {
-                SetArtwork(cartItem, productDocument.GetStringValue("ProductDigitalPrinting", string.Empty));
-            }
-            else
-            {
-                SetArtwork(cartItem, productDocument.GetStringValue("ProductArtworkLocation", string.Empty));
-            }
+            SetArtwork(cartItem, productDocument.GetStringValue("ProductArtwork", string.Empty));
 
             RefreshPrice(cartItem, productDocument);
             SetCustomName(cartItem, newItem.CustomProductName);
@@ -560,9 +554,23 @@ namespace Kadena.WebAPI.KenticoProviders
             return GetShoppingCartItems().FirstOrDefault(i => i.Id == cartItem.CartItemID);
         }
 
-        private void SetArtwork(ShoppingCartItemInfo cartItem, string artworkUrl)
+        private static void SetArtwork(ShoppingCartItemInfo cartItem, string guid)
         {
-            cartItem.SetValue("ArtworkLocation", artworkUrl);
+            if (!string.IsNullOrWhiteSpace(guid))
+            {
+                var attachmentPath = AttachmentURLProvider.GetFilePhysicalURL(SiteContext.CurrentSiteName, guid);
+                if (!Path.HasExtension(attachmentPath))
+                {
+                    var attachment = DocumentHelper.GetAttachment(new Guid(guid), SiteContext.CurrentSiteName);
+                    attachmentPath = $"{attachmentPath}{attachment.AttachmentExtension}";
+                }
+                var storageProvider = StorageHelper.GetStorageProvider(attachmentPath);
+                if (storageProvider.IsExternalStorage && storageProvider.FileProviderObject.GetType() == typeof(AmazonFileSystemProvider.File))
+                {
+                    attachmentPath = PathHelper.GetObjectKeyFromPath(attachmentPath);
+                }
+                cartItem.SetValue("ArtworkLocation", attachmentPath);
+            }
         }
 
         private void EnsureInventoryAmount(TreeNode productDocument, int addedAmount, int existingAmount)
@@ -652,7 +660,6 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItem.SetValue("ProductPageID", document.NodeID);
             cartItem.SetValue("ProductChiliPdfGeneratorSettingsId", document.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));
             cartItem.SetValue("ProductChiliWorkspaceId", document.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
-            cartItem.SetValue("ProductThumbnail", document.GetGuidValue("ProductThumbnail", Guid.Empty));
             cartItem.SetValue("ProductProductionTime", document.GetStringValue("ProductProductionTime", string.Empty));
             cartItem.SetValue("ProductShipTime", document.GetStringValue("ProductShipTime", string.Empty));
 
@@ -697,6 +704,11 @@ namespace Kadena.WebAPI.KenticoProviders
                 return true;
             }
             return false;
+        }
+        public List<int> GetUserIDsWithShoppingCart(int campaignID, int productType)
+        {
+          return  ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartCampaignID", campaignID)
+                                                                   .WhereEquals("ShoppingCartInventoryType", productType).ToList().Select(x => x.ShoppingCartUserID).Distinct().ToList();
         }
     }
 }

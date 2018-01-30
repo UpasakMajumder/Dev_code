@@ -747,13 +747,6 @@
     <Compile Include="CMSFormControls\Kadena\MediaMultiSelector.ascx.designer.cs">
       <DependentUpon>MediaMultiSelector.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSFormControls\Kadena\S3UploaderControl.ascx.cs">
-      <DependentUpon>S3UploaderControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSFormControls\Kadena\S3UploaderControl.ascx.designer.cs">
-      <DependentUpon>S3UploaderControl.ascx</DependentUpon>
-    </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Payment\Create3dsiContainer.aspx.cs">
       <DependentUpon>Create3dsiContainer.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -782,6 +775,20 @@
     <Compile Include="CMSModules\Kadena\Pages\Products\ProductsImport.aspx.designer.cs">
       <DependentUpon>ProductsImport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\SettingsSynchronization\Code.aspx.cs">
+      <DependentUpon>Code.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\SettingsSynchronization\Code.aspx.designer.cs">
+      <DependentUpon>Code.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\SettingsSynchronization\Synchronize.aspx.cs">
+      <DependentUpon>Synchronize.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\SettingsSynchronization\Synchronize.aspx.designer.cs">
+      <DependentUpon>Synchronize.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Users\Addresses.aspx.cs">
       <DependentUpon>Addresses.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -795,13 +802,6 @@
     </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Users\Import.aspx.designer.cs">
       <DependentUpon>Import.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSPages\Kadena\S3Uploader.aspx.cs">
-      <DependentUpon>S3Uploader.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSPages\Kadena\S3Uploader.aspx.designer.cs">
-      <DependentUpon>S3Uploader.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx.cs">
       <DependentUpon>OrdersList.aspx</DependentUpon>
@@ -1269,6 +1269,7 @@
     <Compile Include="Old_App_Code\EventHandlers\SettingsKeyEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
     <Compile Include="Old_App_Code\Kadena\Constants\Constants.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomScheduledTasks\GeneratePrebuyOrder.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Brand.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Division.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Environment.cs" />
@@ -1301,6 +1302,7 @@
     <Compile Include="Old_App_Code\Kadena\Imports\POS\POSImportService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\POS\POSDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\POS\POSTemplateService.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\Products\CampaignProductImageDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\MediaLibrary.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductCategoryImportDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductCategoryImporter.cs" />
@@ -1309,7 +1311,6 @@
     <Compile Include="Old_App_Code\Kadena\Imports\Products\CampaignProductImagesTemplateService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\CampaignProductImportService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\SKUTreeNodeExtensions.cs" />
-    <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductImagesTemplateService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductImportService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductTemplateService.cs" />
@@ -1352,14 +1353,14 @@
     <Content Include="CMSFormControls\Kadena\BusinessUnitControl.ascx" />
     <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\MediaMultiSelector.ascx" />
-    <Content Include="CMSFormControls\Kadena\S3UploaderControl.ascx" />
     <Content Include="CMSModules\Kadena\Pages\Payment\Create3dsiContainer.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Products\ProductImagesImport.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Products\CampaignProductsImport.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Products\ProductsImport.aspx" />
+    <Content Include="CMSModules\Kadena\Pages\SettingsSynchronization\Code.aspx" />
+    <Content Include="CMSModules\Kadena\Pages\SettingsSynchronization\Synchronize.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Addresses.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Import.aspx" />
-    <Content Include="CMSPages\Kadena\S3Uploader.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Orders\OrdersList.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\BlankPassword_Mailing.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Users\Edit_Hierarchy.aspx" />

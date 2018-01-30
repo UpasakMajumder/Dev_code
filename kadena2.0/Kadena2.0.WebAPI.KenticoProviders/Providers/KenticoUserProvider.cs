@@ -46,7 +46,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             return _mapper.Map<DeliveryAddress[]>(addresses.ToArray());
         }
-       
+
         public Customer GetCurrentCustomer()
         {
             return _mapper.Map<Customer>(ECommerceContext.CurrentCustomer);
@@ -56,7 +56,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return _mapper.Map<Customer>(CustomerInfoProvider.GetCustomerInfo(customerId));
         }
-       
+
         public User GetCurrentUser()
         {
             return _mapper.Map<User>(MembershipContext.AuthenticatedUser);
@@ -86,7 +86,6 @@ namespace Kadena.WebAPI.KenticoProviders
             return true;
         }
 
-
         public void SetDefaultShippingAddress(int addressId)
         {
             var customer = ECommerceContext.CurrentCustomer;
@@ -107,6 +106,11 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var user = UserInfoProvider.GetUserInfo(userId);
             return user?.IsInSite(SiteContext.CurrentSiteName) ?? false;
+        }
+
+        public User GetUserByUserId(int userId)
+        {
+            return _mapper.Map<User>(UserInfoProvider.GetUserInfo(userId));
         }
     }
 }

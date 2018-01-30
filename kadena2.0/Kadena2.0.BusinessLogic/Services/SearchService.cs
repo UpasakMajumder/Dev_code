@@ -146,7 +146,6 @@ namespace Kadena.BusinessLogic.Services
                     Title = dr[4].ToString(),
                     Breadcrumbs = documents.GetBreadcrumbs(documentId),
                     IsFavourite = false,
-                    ImgUrl = products.GetProductTeaserImageUrl(documentId) 
                 };
 
                 var product = products.GetProductByDocumentId(documentId);

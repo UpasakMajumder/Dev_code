@@ -100,7 +100,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 }
             }
 
-            return $"/getmedia/{mediaFile?.FileGUID.ToString()}/{mediaFile?.FileName}";
+            return MediaFileInfoProvider.GetMediaFileAbsoluteUrl(mediaFile.FileGUID, mediaFile.FileName);
         }
 
         public static void RemoveMediaFile(string url)

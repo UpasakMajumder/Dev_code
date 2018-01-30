@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models;
@@ -249,7 +249,9 @@ namespace Kadena.BusinessLogic.Services.Orders
                 MailingListPrefix = resources.GetResourceString("Kadena.Order.MailingListPrefix"),
                 ShippingDatePrefix = resources.GetResourceString("Kadena.Order.ItemShippingDatePrefix"),
                 TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix"),
-                TrackingIdPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix")
+                TrackingIdPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix"),
+                ProductStatusPrefix = resources.GetResourceString("Kadena.Order.ProductStatusPrefix"),
+                ProductStatus = products.GetProductStatus(i.SkuId)
             }).ToList();
 
 

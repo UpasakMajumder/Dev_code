@@ -53,7 +53,7 @@ namespace Kadena.WebAPI.KenticoProviders
         }
 
         public List<ProductLink> GetProducts(string path)
-        {            
+        {
             var pages = GetDocuments(path, "KDA.Product", PathTypeEnum.Children);
 
             return pages.Select(p => new ProductLink
@@ -61,9 +61,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 Id = p.DocumentID,
                 Title = p.DocumentName,
                 Url = p.DocumentUrlPath,
-                ImageUrl = URLHelper.GetAbsoluteUrl(p.GetValue("ProductThumbnail", string.Empty) == string.Empty ?
-                                                    p.GetValue("SKUImagePath", string.Empty) :
-                                                    "/CMSPages/GetFile.aspx?guid=" + p.GetValue("ProductThumbnail")),
+                ImageUrl = p.GetValue("SKUImagePath", string.Empty),
                 IsFavourite = false,
                 Border = new Border
                 {
@@ -87,7 +85,7 @@ namespace Kadena.WebAPI.KenticoProviders
             skuInfo.Update();
         }
 
-        private DocumentQuery GetDocuments(string path, string className, PathTypeEnum pathType )
+        private DocumentQuery GetDocuments(string path, string className, PathTypeEnum pathType)
         {
             return DocumentHelper.GetDocuments(className)
                             .Path(path, pathType)
@@ -102,16 +100,13 @@ namespace Kadena.WebAPI.KenticoProviders
         public string GetSkuImageUrl(int skuid)
         {
             if (skuid <= 0)
+            {
                 return string.Empty;
+            }
 
             var sku = SKUInfoProvider.GetSKUInfo(skuid);
-            var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
             var skuurl = sku?.SKUImagePath ?? string.Empty;
 
-            if ((document?.GetGuidValue("ProductThumbnail", Guid.Empty) ?? Guid.Empty) != Guid.Empty)
-            {
-                return URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", document.GetGuidValue("ProductThumbnail", Guid.Empty)));
-            }
             return URLHelper.GetAbsoluteUrl(skuurl);
         }
 
@@ -172,16 +167,13 @@ namespace Kadena.WebAPI.KenticoProviders
             return product;
         }
 
-        public string GetProductTeaserImageUrl(int documentId)
+        public string GetProductStatus(int skuid)
         {
-            var result = string.Empty;
+            if (!SettingsKeyInfoProvider.GetBoolValue("KDA_OrderDetailsShowProductStatus", SiteContext.CurrentSiteID) || skuid <= 0)
+                return string.Empty;
 
-            var doc = DocumentHelper.GetDocument(documentId, LocalizationContext.CurrentCulture.CultureCode, new TreeProvider(MembershipContext.AuthenticatedUser));
-            if ((doc?.GetGuidValue("ProductThumbnail", Guid.Empty) ?? Guid.Empty) != Guid.Empty)
-            {
-                result = URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", doc.GetGuidValue("ProductThumbnail", Guid.Empty)));
-            }
-            return result;
+            SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
+            return sku != null ? (sku.SKUEnabled ? ResHelper.GetString("KDA.Common.Status.Active") : ResHelper.GetString("KDA.Common.Status.Inactive")) : string.Empty;
         }
     }
 }
