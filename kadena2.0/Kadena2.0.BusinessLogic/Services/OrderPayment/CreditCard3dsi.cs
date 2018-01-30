@@ -142,12 +142,12 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 logger.LogError("AuthorizeAmount", $"AuthorizeAmount failed, response:{Environment.NewLine}{authorizeResponse}");
                 return false;
             }
-
-
+            
             logger.LogInfo("AuthorizeAmount", "Info", $"AuthorizeAmount OK, response:{Environment.NewLine}{authorizeResponse}");
 
-            // TODO pass data needet to finish the order, are there some ?
-            //authorizeResponse.TransactionKey ?
+            orderData.PaymentOption.TransactionKey = authorizeResponse.TransactionKey;
+            orderData.PaymentOption.TokenId = tokenId;
+            orderData.PaymentOption.PaymentGatewayCustomerCode = resources.GetSettingsKey("KDA_CreditCard_Code");
 
             var sendToOrderServiceResult = await SendOrderToMicroservice(orderData);
 
@@ -262,18 +262,17 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         {
             var submission = submissionService.GetSubmission(submissionId);
 
-            int siteId = kenticoSite.GetKenticoSite().Id;
-            int userId = kenticoUsers.GetCurrentUser().UserId;
-            int customerId = kenticoUsers.GetCurrentCustomer().Id;
-
-            var submissonOwnerChecked = submission.CheckOwner(siteId, userId, customerId);
-
             if (submission == null || !submission.AlreadyVerified)
             {
                 return false;
             }
 
-            if (submission.Processed)
+            int siteId = kenticoSite.GetKenticoSite().Id;
+            int userId = kenticoUsers.GetCurrentUser().UserId;
+            int customerId = kenticoUsers.GetCurrentCustomer().Id;
+            var submissonOwnerChecked = submission.CheckOwner(siteId, userId, customerId);
+
+            if (submissonOwnerChecked && submission.Processed)
             {
                 submissionService.DeleteProcessedSubmission(submission);
                 return true;
