@@ -345,24 +345,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     protected global::System.Web.UI.WebControls.RegularExpressionValidator revQty;
     
     /// <summary>
-    /// lblStatus control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblStatus;
-    
-    /// <summary>
-    /// ddlStatus control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.DropDownList ddlStatus;
-    
-    /// <summary>
     /// lblItemSpecs control.
     /// </summary>
     /// <remarks>
@@ -379,6 +361,24 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.DropDownList ddlItemSpecs;
+    
+    /// <summary>
+    /// lblStatus control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblStatus;
+    
+    /// <summary>
+    /// ddlStatus control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.DropDownList ddlStatus;
     
     /// <summary>
     /// divItemSpecs control.
