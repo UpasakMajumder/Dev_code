@@ -28,5 +28,10 @@ namespace Kadena.BusinessLogic.Services
         {
             return kenticoCampaigns.GetCampaigns(orderType);
         }
+
+        public bool CloseCampaignIBTF(int campaignID)
+        {
+            return kenticoCampaigns.CloseCampaignIBTF(campaignID);
+        }
     }
 }

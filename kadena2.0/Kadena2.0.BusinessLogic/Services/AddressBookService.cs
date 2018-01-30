@@ -1,6 +1,8 @@
 ﻿using Kadena.BusinessLogic.Contracts;
+using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
+using System.Collections.Generic;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -20,6 +22,10 @@ namespace Kadena.BusinessLogic.Services
         public void DeleteAddress(int addressID)
         {
             kenticoAddress.DeleteAddress(addressID);
+        }
+        public List<DeliveryAddress> GetAddressesByAddressIds(List<int> addresssIds)
+        {
+           return kenticoAddress.GetAddressesByAddressIds(addresssIds);
         }
     }
 }
