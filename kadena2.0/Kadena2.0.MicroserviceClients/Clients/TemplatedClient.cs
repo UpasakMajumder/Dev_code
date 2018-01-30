@@ -34,18 +34,15 @@ namespace Kadena2.MicroserviceClients.Clients
             return await Get<GeneratePdfTaskStatusResponseDto>(url).ConfigureAwait(false);
         }
 
-        public async Task<BaseResponseDto<bool?>> UpdateTemplate(Guid templateId, string name, int quantity)
+        public async Task<BaseResponseDto<bool?>> UpdateTemplate(Guid templateId, string name, Dictionary<string, object> metaData)
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
             url = $"{url}/api/template";
             var body = new
             {
-                templateId = templateId,
-                name = name,
-                metaData = new
-                {
-                    quantity
-                }
+                templateId,
+                name,
+                metaData
             };
 
             return await Patch<bool?>(url, body).ConfigureAwait(false);

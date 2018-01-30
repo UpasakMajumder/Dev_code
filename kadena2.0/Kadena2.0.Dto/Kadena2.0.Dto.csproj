@@ -163,6 +163,7 @@
     <Compile Include="SubmitOrder\MicroserviceRequests\CampaignDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\NotificationInfoDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceRequests\NewTemplateRequestDto.cs" />
+    <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateMetaData.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentMailingList.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentResponse.cs" />
     <Compile Include="TemplatedProduct\Responses\ProductTemplateDTO.cs" />
