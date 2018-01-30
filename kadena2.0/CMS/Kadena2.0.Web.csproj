@@ -1302,6 +1302,7 @@
     <Compile Include="Old_App_Code\Kadena\Imports\POS\POSImportService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\POS\POSDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\POS\POSTemplateService.cs" />
+    <Compile Include="Old_App_Code\Kadena\Imports\Products\CampaignProductImageDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\MediaLibrary.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductCategoryImportDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductCategoryImporter.cs" />
@@ -1310,7 +1311,6 @@
     <Compile Include="Old_App_Code\Kadena\Imports\Products\CampaignProductImagesTemplateService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\CampaignProductImportService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\SKUTreeNodeExtensions.cs" />
-    <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductImagesTemplateService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductDto.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductImportService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\Products\ProductTemplateService.cs" />
