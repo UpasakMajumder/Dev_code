@@ -2,21 +2,21 @@
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
-    public class ProductImageDto
+    public class CampaignProductImageDto
     {
         [Header(0, "SKU")]
         [Required]
         [MaxLength(30)]
         public string SKU { get; set; }
 
-        [Header(1, "Image Media Library")]
+        [Header(1, "Image URL")]
         [Required]
         [MaxLength(200)]
-        public string ImageMediaLibraryName { get; set; }
+        public string ImageURL { get; set; }
 
-        [Header(2, "Image Name")]
+        [Header(2, "Thumbnail URL")]
         [Required]
         [MaxLength(200)]
-        public string ImageName { get; set; }
+        public string ThumbnailURL { get; set; }
     }
 }

@@ -16,13 +16,14 @@ using CMS.SiteProvider;
 using CMS.DocumentEngine.Types.KDA;
 
 using static Kadena.Helpers.SerializerConfig;
+using CMS.MediaLibrary;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
     public class ProductImportService : ImportServiceBase
     {
         private string _culture;
-        
+
         public override ImportResult Process(byte[] importFileData, ExcelType type, int siteID)
         {
             CacheHelper.ClearCache();
@@ -52,7 +53,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 catch (Exception ex)
                 {
                     statusMessages.Add($"There was an error when processing item #{currentItemNumber} : {ex.Message}");
-                    EventLogProvider.LogException("Import products", "EXCEPTION", ex);
+                    EventLogProvider.LogException(typeof(ProductImportService).Name, "CREATEOBJ", ex);
                 }
             }
 
@@ -99,7 +100,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 catch (Exception ex)
                 {
                     statusMessages.Add($"There was an error when processing item #{currentItemNumber} : {ex.Message}");
-                    EventLogProvider.LogException("Import product images", "EXCEPTION", ex);
+                    EventLogProvider.LogException(typeof(ProductImportService).Name, "UPDATEOBJ", ex);
                 }
             }
 
@@ -212,12 +213,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 validationErrors.Add("ItemsInPackagemust be > 0");
             }
 
-            if (string.IsNullOrEmpty(product.ImageURL) ^ string.IsNullOrEmpty(product.ThumbnailURL))
-            {
-                isValid = false;
-                validationErrors.Add("Both product Image and Thumbnail or none of them must be specified");
-            }
-
             return isValid;
         }
 
@@ -261,33 +256,27 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 throw new Exception($"No product assigned to SKU with SKUNumber {image.SKU}");
             }
 
-            GetAndSaveProductImages(product, image.ImageURL, image.ThumbnailURL);
+            AssignImage(product, image.ImageMediaLibraryName, image.ImageName);
 
             product.Update();
         }
 
-        // ready for potential use in Product upload
-        private static void GetAndSaveProductImages(SKUTreeNode product, string imageUrl, string thumbnailUrl)
+        private static void AssignImage(SKUTreeNode product, string mediaLibraryName, string imageName)
         {
-            var library = new MediaLibrary
+            var library = MediaLibraryInfoProvider.GetMediaLibraryInfo(mediaLibraryName, SiteContext.CurrentSiteName);
+            if (library == null)
             {
-                SiteId = product.NodeSiteID,
-                LibraryName = "ProductImages",
-                LibraryFolder = "Products",
-                LibraryDescription = "Media library for storing product images"
-            };
-            var libraryImageUrl = library.DownloadImageToMedialibrary(imageUrl, $"Image{product.SKU.SKUNumber}", $"Product image for SKU {product.SKU.SKUNumber}");
+                throw new KeyNotFoundException($"Unable to assign image to SKU '{product.SKU.SKUNumber}'. Media library '{mediaLibraryName}' not found.");
+            }
+
+            var image = MediaFileInfoProvider.GetMediaFileInfo(library.LibraryID, imageName);
+            if (image == null)
+            {
+                throw new KeyNotFoundException($"Unable to assign image to SKU '{product.SKU.SKUNumber}'. File '{imageName}' not found.");
+            }
 
             product.RemoveImage();
-            product.SetImage(libraryImageUrl);
-            product.RemoveTumbnail();
-            product.AttachThumbnail(thumbnailUrl);
-        }
-
-        private static void RemoveProductImages(SKUTreeNode product)
-        {
-            product.RemoveImage();
-            product.RemoveTumbnail();
+            product.SetImage(image);
         }
 
         private SKUTreeNode AppendProduct(TreeNode parent, ProductDto product, SKUInfo sku, int siteId)
@@ -343,13 +332,13 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 newProduct.Insert(parent);
             }
 
-            if (!string.IsNullOrEmpty(product.ImageURL) && !string.IsNullOrEmpty(product.ThumbnailURL))
+            if (!string.IsNullOrEmpty(product.ImageMediaLibraryName) && !string.IsNullOrEmpty(product.ImageName))
             {
-                GetAndSaveProductImages(newProduct, product.ImageURL, product.ThumbnailURL);
+                AssignImage(newProduct, product.ImageMediaLibraryName, product.ImageName);
             }
-            else // todo discuss, remove existing images when new not specified ?
+            else
             {
-                RemoveProductImages(newProduct);
+                newProduct.RemoveImage();
             }
 
             newProduct.Update();
@@ -422,7 +411,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
             TreeNode category = parentPage.Children.FirstOrDefault(c => c.NodeName == subnodes[0]);
-            
+
             if (category == null)
             {
                 category = TreeNode.New("KDA.ProductCategory", tree);
@@ -431,7 +420,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 SetPageTemplate(category, "_KDA_ProductCategory");
                 category.Insert(parentPage);
             }
-            
+
             return AppendProductCategory(category, subnodes.Skip(1).ToArray());
         }
 
