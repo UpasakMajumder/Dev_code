@@ -1,13 +1,15 @@
-﻿using System;
-using Kadena.BusinessLogic.Contracts;
+﻿using Kadena.BusinessLogic.Contracts;
+using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
+using Kadena.Helpers;
+using Kadena.Models.Product;
+using Kadena.Models.TemplatedProduct;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
-using System.Threading.Tasks;
-using Kadena.Models.TemplatedProduct;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Kadena.Models.Product;
-using Kadena.Helpers;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace Kadena.BusinessLogic.Services
@@ -59,7 +61,11 @@ namespace Kadena.BusinessLogic.Services
 
         public async Task<bool> UpdateTemplate(Guid templateId, string name, int quantity)
         {
-            var result = await _templateClient.UpdateTemplate(templateId, name, quantity);
+            var meta = new Dictionary<string, object>
+            {
+                { nameof(TemplateMetaData.quantity), quantity }
+            };
+            var result = await _templateClient.UpdateTemplate(templateId, name, meta);
             if (!result.Success)
             {
                 _logger.LogError("Template set name", result.ErrorMessages);
@@ -116,35 +122,43 @@ namespace Kadena.BusinessLogic.Services
                 productEditorUrl = _documents.GetDocumentUrl(productEditorUrl);
             }
 
+            Func<DateTime, DateTime, bool> IsNewTemplate = (created, updated) =>
+            {
+                var diff = updated - created;
+                var isNew = diff.TotalSeconds < 10;
+                return isNew;
+            };
+
             if (requestResult.Success)
             {
                 var defaultQuantity = 1;
                 productTemplates.Data = requestResult.Payload
-                    .Select(d =>
+                    .Select(t =>
                     {
                         int quantity = defaultQuantity;
-                        if (d.MailingList != null)
+                        if (t.MailingList != null)
                         {
-                            quantity = d.MailingList.RowCount;
+                            quantity = t.MailingList.RowCount;
                         }
                         else
                         {
-                            if (d.MetaData.ContainsKey(nameof(quantity)))
+                            if (t.MetaData.quantity != null)
                             {
-                                quantity = int.Parse(d.MetaData[nameof(quantity)].ToString());
+                                quantity = t.MetaData.quantity.Value;
                             }
                         }
 
                         return new ProductTemplate
                         {
-                            EditorUrl = BuildTemplateEditorUrl(productEditorUrl, nodeId, d.TemplateId.ToString(),
-                                product.ProductChiliWorkgroupID.ToString(), quantity, d.MailingList?.ContainerId, d.Name),
-                            TemplateId = d.TemplateId,
-                            CreatedDate = DateTime.Parse(d.Created),
-                            UpdatedDate = DateTime.Parse(d.Updated),
-                            ProductName = d.Name
+                            EditorUrl = BuildTemplateEditorUrl(productEditorUrl, nodeId, t.TemplateId.ToString(),
+                                product.ProductChiliWorkgroupID.ToString(), quantity, t.MailingList?.ContainerId, t.Name),
+                            TemplateId = t.TemplateId,
+                            CreatedDate = DateTime.Parse(t.Created),
+                            UpdatedDate = DateTime.Parse(t.Updated),
+                            ProductName = t.Name
                         };
                     })
+                    .Where(t => !IsNewTemplate(t.CreatedDate, t.UpdatedDate ?? t.CreatedDate))
                     .OrderByDescending(t => t.UpdatedDate)
                     .ToArray();
             }
