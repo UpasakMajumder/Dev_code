@@ -163,8 +163,8 @@ namespace Kadena.Tests.WebApi
 
         private TemplateServiceDocumentResponse CreateSavedTemplate()
         {
-            var createdDatetime = DateTime.Now.ToString();
-            var updatedDatetime = DateTime.Now.AddSeconds(10).ToString();
+            var createdDatetime = DateTime.Now;
+            var updatedDatetime = DateTime.Now.AddSeconds(10);
 
             return new TemplateServiceDocumentResponse
             {
@@ -176,7 +176,7 @@ namespace Kadena.Tests.WebApi
 
         private TemplateServiceDocumentResponse CreateWorkingCopyTemplate()
         {
-            var createdDatetime = DateTime.Now.ToString();
+            var createdDatetime = DateTime.Now;
             var updatedDatetime = createdDatetime;
 
             return new TemplateServiceDocumentResponse

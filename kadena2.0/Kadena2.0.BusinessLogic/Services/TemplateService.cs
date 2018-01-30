@@ -133,6 +133,7 @@ namespace Kadena.BusinessLogic.Services
             {
                 var defaultQuantity = 1;
                 productTemplates.Data = requestResult.Payload
+                    .Where(t => !IsNewTemplate(t.Created, t.Updated ?? t.Created))
                     .Select(t =>
                     {
                         int quantity = defaultQuantity;
@@ -153,12 +154,11 @@ namespace Kadena.BusinessLogic.Services
                             EditorUrl = BuildTemplateEditorUrl(productEditorUrl, nodeId, t.TemplateId.ToString(),
                                 product.ProductChiliWorkgroupID.ToString(), quantity, t.MailingList?.ContainerId, t.Name),
                             TemplateId = t.TemplateId,
-                            CreatedDate = DateTime.Parse(t.Created),
-                            UpdatedDate = DateTime.Parse(t.Updated),
+                            CreatedDate = t.Created,
+                            UpdatedDate = t.Updated,
                             ProductName = t.Name
                         };
                     })
-                    .Where(t => !IsNewTemplate(t.CreatedDate, t.UpdatedDate ?? t.CreatedDate))
                     .OrderByDescending(t => t.UpdatedDate)
                     .ToArray();
             }
