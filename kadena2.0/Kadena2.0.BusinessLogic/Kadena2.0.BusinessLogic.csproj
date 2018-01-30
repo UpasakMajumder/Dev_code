@@ -81,7 +81,9 @@
     <Compile Include="Contracts\ITemplateService.cs" />
     <Compile Include="Contracts\OrderPayment\ICreditCard3dsi.cs" />
     <Compile Include="Contracts\OrderPayment\IPurchaseOrder.cs" />
+    <Compile Include="Factories\Checkout\OrderDataFactory.cs" />
     <Compile Include="Factories\Checkout\CheckoutPageFactory.cs" />
+    <Compile Include="Factories\Checkout\IOrderDataFactory.cs" />
     <Compile Include="Factories\Checkout\ICheckoutPageFactory.cs" />
     <Compile Include="Factories\OrderListServiceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

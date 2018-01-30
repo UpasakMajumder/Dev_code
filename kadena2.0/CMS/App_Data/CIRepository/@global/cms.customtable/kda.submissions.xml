@@ -120,6 +120,9 @@
     <search />
   </ClassSearchSettings>
   <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowColumns>
+    <![CDATA[ItemID;OrderJson;Processed;CustomerId;SiteId;SubmissionId;AlreadyVerified;UserId;ItemCreatedWhen;ItemModifiedWhen]]>
+  </ClassShowColumns>
   <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
   <ClassTableName>KDA_Submissions</ClassTableName>
   <ClassUsePublishFromTo>False</ClassUsePublishFromTo>

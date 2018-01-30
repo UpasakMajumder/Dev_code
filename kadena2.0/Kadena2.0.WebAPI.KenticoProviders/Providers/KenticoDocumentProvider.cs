@@ -26,9 +26,9 @@ namespace Kadena.WebAPI.KenticoProviders
         /// <summary>
         /// Gets document URL with respect to current culture
         /// </summary>
-        public string GetDocumentUrl(string aliasPath)
+        public string GetDocumentUrl(string aliasPath, bool absoluteUrl = false)
         {
-            return GetDocumentUrl(aliasPath, LocalizationContext.CurrentCulture.CultureCode);
+            return GetDocumentUrl(aliasPath, LocalizationContext.CurrentCulture.CultureCode, absoluteUrl);
         }
 
         public string GetDocumentAbsoluteUrl(string aliasPath)
