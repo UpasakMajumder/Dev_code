@@ -265,7 +265,7 @@ namespace Kadena.WebAPI.KenticoProviders
                     TotalTax = 0.0m,
                     UnitPrice = showPrices ? (decimal)i.UnitPrice : 0.0m,
                     UnitOfMeasure = "EA",
-                    Image = i.GetGuidValue("ProductThumbnail", Guid.Empty) == Guid.Empty ? URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath) : URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", i.GetGuidValue("ProductThumbnail", Guid.Empty))),
+                    Image = URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath),
                     ProductType = i.GetValue("ProductType", string.Empty),
                     Quantity = i.CartItemUnits,
                     TotalPrice = showPrices ? (decimal)i.UnitPrice * i.CartItemUnits : 0.0m,
@@ -660,7 +660,6 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItem.SetValue("ProductPageID", document.NodeID);
             cartItem.SetValue("ProductChiliPdfGeneratorSettingsId", document.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));
             cartItem.SetValue("ProductChiliWorkspaceId", document.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
-            cartItem.SetValue("ProductThumbnail", document.GetGuidValue("ProductThumbnail", Guid.Empty));
             cartItem.SetValue("ProductProductionTime", document.GetStringValue("ProductProductionTime", string.Empty));
             cartItem.SetValue("ProductShipTime", document.GetStringValue("ProductShipTime", string.Empty));
 
