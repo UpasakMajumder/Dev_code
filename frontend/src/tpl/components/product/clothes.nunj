@@ -1,0 +1,17 @@
+<div class="product-view">
+  {% include 'components/product/image.nunj' %}
+  <div class="product-view__block">
+    {% include 'components/product/info.nunj' %}
+
+    <div class="js-product-options" data-price-element="#price-element" data-url="http://localhost:3000/api/products/options">
+    {% if type === 'dropdown' %}
+      {% include 'components/product/props-dropdown.nunj' %}
+    {% else %}
+      {% include 'components/product/props-radio.nunj' %}
+    {% endif %}
+    </div>
+
+    {% include 'components/product/only-price-table.nunj' %}
+    {% include 'components/product/footer-add-to-cart.nunj' %}
+  </div>
+</div>

@@ -24,7 +24,8 @@ module.exports.ui = {
         {
           "id": 33,
           "image": "",
-          "template": "Template",
+          "template": "Hello",
+          "templatePrefix": "Template",
           "isMailingList": false,
           "mailingList": "Mailing list",
           "delivery": "",
@@ -37,14 +38,30 @@ module.exports.ui = {
           "stockQuantity": 15,
           "isQuantityEditable": true,
           "productionTime": "Now",
-          "shipTime": "Tomorrow"
+          "shipTime": "Tomorrow",
+          "options": [
+            {
+              "name": "Color",
+              "value": "Red"
+            },
+            {
+              "name": "Color",
+              "value": "Red"
+            },
+            {
+              "name": "Color",
+              "value": "Red"
+            }
+          ]
         },
         {
           "id": 34,
           "image": "http://satyr.io/100-200x400-500?2",
-          "template": "Template",
-          "isMailingList": false,
-          "mailingList": "Mailing list",
+          "template": "How are you?",
+          "templatePrefix": "Template",
+          "isMailingList": true,
+          "mailingList": "Hi",
+          "mailingListPrefix": "Mailing list",
           "delivery": "",
           "pricePrefix": "$",
           "price": "112.2",
@@ -55,7 +72,17 @@ module.exports.ui = {
           "stockQuantity": 15,
           "isQuantityEditable": true,
           "productionTime": "",
-          "shipTime": "Tomorrow"
+          "shipTime": "Tomorrow",
+          "options": [
+            {
+              "name": "Color",
+              "value": "Green"
+            },
+            {
+              "name": "Size",
+              "value": "XL"
+            }
+          ]
         }
       ]
     },
