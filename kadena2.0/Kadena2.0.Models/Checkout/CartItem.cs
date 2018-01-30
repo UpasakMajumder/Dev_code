@@ -106,7 +106,7 @@ namespace Kadena.Models.Checkout
 
         public Guid ProductChiliPdfGeneratorSettingsId { get; set; }
 
-        public string DesignFilePath { get; set; }
+        public string DesignFileKey { get; set; }
 
         /// <summary>
         /// Indicates if it is necessary to obtain design file path

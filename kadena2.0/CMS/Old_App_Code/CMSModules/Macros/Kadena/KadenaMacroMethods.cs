@@ -589,7 +589,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 }
                 else
                 {
-                    var loggedInUSerCartIDs = ShoppingCartHelper.GetLoggeedInUserCarts(userID, ProductType.GeneralInventory);
+                    var loggedInUSerCartIDs = ShoppingCartHelper.GetCartsByUserID(userID, ProductType.GeneralInventory);
                     decimal cartTotal = 0;
                     loggedInUSerCartIDs.ForEach(cartID =>
                     {
