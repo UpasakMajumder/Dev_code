@@ -99,7 +99,7 @@
 <![CDATA[
 config.localization.cardPayment = {
         URL3DSi: '{% Settings.GetValue("KDA_CreditCard_3DSi_AuthorizeEndpoint", string.Empty) |(user)michal.machacek@actum.cz|(hash)d959a363d031ec105773138138cf79b0bc0f25bc9c8a5472bda42c7ef5daa5ac%}',
-        RedirectURL: '/api/3dsi/creditcarddone/',
+        RedirectURL: '/api/3dsi/creditcarddone',
         acceptedCards: ['visa', 'amex', 'mastercard'],
         submitButtonText: '{$Kadena.CreditCard.ProceedPaymentButton$}',
         cardTypeInValidMessage: '{$Kadena.CreditCard.CardTypeError$}',
@@ -127,7 +127,7 @@ config.localization.cardPayment = {
             cardLabel: '{$Kadena.CreditCard.ExpiryCardPlaceholder$}'
           },
         },
-        DemoURL: '{% KadenaNamespace.GetLocalizedDocumentUrl("KDA_CreditCard_PaymentResultPage")|(user)michal.machacek@actum.cz|(hash)a9b7f8512ec0fda20b7023c6a16ca1fab229aa8f88e4eb74abf29b80b37ad5e8%}?success=true&order_id=123456789',
+        DemoURL: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.GetValue("KDA_CreditCard_PaymentResultPage", string.Empty))|(user)michal.machacek@actum.cz|(hash)7f30219181c97f06264eb18078da115464921f30b9b9357effec24bdff54723b%}?success=true&order_id=123456789',
         APCount: '0',
         PTCount: '0',
         CustomerIdentifier_MerchantCode: '{% Settings.GetValue("KDA_CreditCard_MerchantCode", string.Empty) |(user)michal.machacek@actum.cz|(hash)6a1f636bea5f7d80c57edab0a2df332b3923a834a65aa5d10ad227ae82a41a92%}', 
