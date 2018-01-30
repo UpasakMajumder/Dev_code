@@ -5,11 +5,26 @@ import SVG from 'app.dump/SVG';
 /* helpers */
 import timeFormat from 'app.helpers/time';
 
-const Order = (props) => {
-  const { image, template, mailingList, shippingDate, trackingId,
-    price, quantityPrefix, quantity, downloadPdfURL, quantityShippedPrefix, quantityShipped,
-    mailingListPrefix, shippingDatePrefix, trackingIdPrefix, templatePrefix, productStatusPrefix, productStatus } = props;
-
+const Order = ({
+  image,
+  template,
+  mailingList,
+  shippingDate,
+  trackingId,
+  price,
+  quantityPrefix,
+  quantity,
+  downloadPdfURL,
+  quantityShippedPrefix,
+  quantityShipped,
+  mailingListPrefix,
+  shippingDatePrefix,
+  trackingIdPrefix,
+  templatePrefix,
+  productStatusPrefix,
+  productStatus,
+  options
+}) => {
   const downloadPdfLink = downloadPdfURL
     ? <div className="cart-product__file">
       <a className="link" href={downloadPdfURL}>Download PDF</a>
@@ -60,6 +75,10 @@ const Order = (props) => {
 
   const productStatusInfo = productStatus ? <p>{productStatusPrefix} {productStatus}</p> : <p></p>;
 
+  const optionsElement = options.length
+    ? <div className="mr-3">{ options.map((option, i) => <p key={i}>{option.name}: {option.value}</p>) }</div>
+    : null;
+
   return (
     <div className="cart-product">
       <div className="cart-product__img">
@@ -82,12 +101,15 @@ const Order = (props) => {
       </div>
 
       <div className="cart-product__options">
-        <div className="cart-product__price">
-          <span>{price}</span>
+        {optionsElement}
+        <div>
+          <div className="cart-product__price">
+            <span>{price}</span>
+          </div>
+          {productStatusInfo}
+          {quantityElement}
+          {downloadPdfLink}
         </div>
-        {productStatusInfo}
-        {quantityElement}
-        {downloadPdfLink}
       </div>
     </div>
   );
@@ -108,7 +130,8 @@ Order.propTypes = {
   trackingIdPrefix: PropTypes.string.isRequired,
   templatePrefix: PropTypes.string.isRequired,
   productStatusPrefix: PropTypes.string.isRequired,
-  productStatus: PropTypes.string.isRequired
+  productStatus: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default Order;

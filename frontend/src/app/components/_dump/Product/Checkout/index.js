@@ -35,7 +35,8 @@ class CheckoutProduct extends Component {
       remove: PropTypes.string.isRequired
     }).isRequired,
     productionTime: PropTypes.string,
-    shipTime: PropTypes.string
+    shipTime: PropTypes.string,
+    options: PropTypes.arrayOf(PropTypes.object).isRequired
   };
 
   componentWillReceiveProps(nextProps) {
@@ -132,7 +133,8 @@ class CheckoutProduct extends Component {
   render() {
     const {
       delivery,
-      id, image,
+      id,
+      image,
       isMailingList,
       mailingList,
       price,
@@ -144,9 +146,14 @@ class CheckoutProduct extends Component {
       disableInteractivity,
       templatePrefix,
       mailingListPrefix,
-      buttonLabels
+      buttonLabels,
+      options
     } = this.props;
     const { quantity } = this.state;
+
+    const optionsElement = options.length
+      ? options.map((option, i) => <div key={i}>{option.name}: <strong>{option.value}</strong></div>)
+      : null;
 
     const quantityElement = isQuantityEditable
       ? <input onChange={(e) => { this.handleChange(e.target); }}
@@ -157,24 +164,29 @@ class CheckoutProduct extends Component {
       : <span>{quantity}</span>;
 
     const productDifference = isMailingList
-      ? <div className="cart-product__mlist">
-        <p>
-          <SVG name="mailing-list"/>
-          <span>{mailingListPrefix}: <strong>{mailingList}</strong></span>
-        </p>
-      </div>
-      : <div className="cart-product__quantity">
-        <span>{quantityPrefix}</span>
-        {quantityElement}
-      </div>;
+      ? (
+        <div className="cart-product__mlist">
+          <div>
+            <SVG name="mailing-list"/>
+            <span>{mailingListPrefix}: <strong>{mailingList}</strong></span>
+          </div>
+          {optionsElement}
+        </div>
+      ) : (
+        <div className="cart-product__quantity">
+          <div>{quantityPrefix} {quantityElement}</div>
+          {optionsElement}
+        </div>
+      );
 
     const productClassName = isMailingList ? 'cart-product' : 'cart-product--non-deliverable cart-product';
 
     const deliveryElement = delivery
-      ? <div className="cart-product__delivery">
-        <p>{delivery}</p>
-      </div>
-      : null;
+      ? (
+        <div className="cart-product__delivery">
+          <p>{delivery}</p>
+        </div>
+      ) : null;
 
     return (
       <div className={productClassName}>
