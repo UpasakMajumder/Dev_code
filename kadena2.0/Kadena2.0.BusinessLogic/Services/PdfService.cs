@@ -62,10 +62,9 @@ namespace Kadena.BusinessLogic.Services
                 return GetCustomizedFailUrl(order.Payload.SiteId);
             }
 
-            var fileInfo = order.Payload.Items[line].FileInfo;
+            var fileKey = order.Payload.Items[line].FileKey;
 
-            var linkResult = await fileClient.GetShortliveSecureLink(fileInfo.Key, fileInfo.Module);
-
+            var linkResult = await fileClient.GetShortliveSecureLink(fileKey);
 
             if (!linkResult.Success || string.IsNullOrEmpty(linkResult.Payload))
             {
