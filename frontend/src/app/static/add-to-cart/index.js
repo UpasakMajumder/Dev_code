@@ -1,7 +1,5 @@
 /* helpers */
 import { addToCartRequest } from 'app.helpers/api';
-import { getSearchObj } from 'app.helpers/location';
-import { consoleException } from 'app.helpers/io';
 
 class AddToCart {
   constructor(button) {

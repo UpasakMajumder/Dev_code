@@ -1,6 +1,6 @@
 {% from "macro/select.nunj" import select %}
 
 <div class="product-options product-options--select">
-  {{ select(optHolder="(Please select)", className="js-product-option", options=['red', 'blue', 'green'], name='size', data="data-name=state") }}
-  {{ select(optHolder="(Please select)", className="js-product-option", options=['s', 'm', 'l'], name='color', data="data-name=state") }}
+  {{ select(optHolder="(Please select)", className="js-product-option js-add-to-cart-property", options=['red', 'blue', 'green'], name='size', data="data-name=state") }}
+  {{ select(optHolder="(Please select)", className="js-product-option js-add-to-cart-property", options=['s', 'm', 'l'], name='color', data="data-name=state") }}
 </div>
