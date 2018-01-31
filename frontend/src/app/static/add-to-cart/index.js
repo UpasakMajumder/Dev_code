@@ -20,7 +20,13 @@ class AddToCart {
 
     this.properyFields.forEach((field) => {
       const name = field.getAttribute('name');
-      body[name] = field.value;
+
+      if (field.type === 'radio') {
+        if (field.checked) body[name] = field.value;
+      } else {
+        body[name] = field.value;
+      }
+
     });
 
     return body;

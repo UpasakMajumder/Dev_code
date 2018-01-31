@@ -11,7 +11,14 @@ class ProductOptions {
     const options = [...document.querySelectorAll('.js-product-option')];
 
     options.forEach((option) => {
-      if (option.checked) this.selected[option.name] = option.value;
+      if (option.type === 'radio') {
+        if (option.checked) {
+          this.selected[option.name] = option.value;
+        }
+      } else {
+        this.selected[option.name] = option.value;
+      }
+
       option.addEventListener('change', this.handleClick);
     });
   }
