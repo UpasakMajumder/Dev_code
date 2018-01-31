@@ -8,6 +8,7 @@ using Kadena.BusinessLogic.Services.Orders;
 using Kadena.Helpers;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena.WebAPI.KenticoProviders.Providers;
 using Kadena2._0.BusinessLogic.Contracts.Orders;
 using Kadena2._0.BusinessLogic.Services.Orders;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
@@ -106,6 +107,7 @@ namespace Kadena2.Container.Default
             container.Register<IKenticoPermissionsProvider, KenticoPermissionsProvider>();
             container.Register<IKenticoOrderProvider, KenticoOrderProvider>();
             container.Register<ISubmissionIdProvider, SubmissionIdProvider>();
+            container.Register<IKenticoCustomerProvider, KenticoCustomerProvider>();
             return container;
         }
 
