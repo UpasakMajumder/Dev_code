@@ -2,8 +2,8 @@
 {
     public class AdditionalAmountsDto
     {
-        public int ShippingAmount { get; set; }
-        public int SalesTaxAmount { get; set; }
-        public int ShippingTax { get; set; }
+        public decimal ShippingAmount { get; set; }
+        public decimal SalesTaxAmount { get; set; }
+        public decimal ShippingTax { get; set; }
     }
 }

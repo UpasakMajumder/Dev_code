@@ -7,19 +7,27 @@ using Kadena.Dto.CreditCard._3DSi.Responses;
 using System.Threading.Tasks;
 using AutoMapper;
 using Kadena.Models.CreditCard;
+using Kadena.WebAPI.Infrastructure.Filters;
+using Kadena2.BusinessLogic.Contracts.OrderPayment;
 
 namespace Kadena.WebAPI.Controllers
 {
+    
     public class CreditCard3dsiController : ApiControllerBase
     {
-        private readonly ICreditCardService service;
+        private readonly ICreditCard3dsi service;
+        private readonly ISubmissionService submissions;
         private readonly IMapper mapper;
 
-        public CreditCard3dsiController(ICreditCardService service, IMapper mapper)
+        public CreditCard3dsiController(ICreditCard3dsi service, ISubmissionService submissions, IMapper mapper)
         {
             if (service == null)
             {
                 throw new ArgumentNullException(nameof(service));
+            }
+            if (submissions == null)
+            {
+                throw new ArgumentNullException(nameof(submissions));
             }
             if (mapper == null)
             {
@@ -27,19 +35,28 @@ namespace Kadena.WebAPI.Controllers
             }
 
             this.service = service;
+            this.submissions = submissions;
             this.mapper = mapper;
         }
 
+        /// <summary>
+        /// 3DSi will call this to save token
+        /// </summary>
         [HttpPost]
         [Route("api/3dsi/approveSubmission")]
+        [RequestLogFilter("3DSi Approve")]
         public IHttpActionResult ApproveSubmission(ApproveRequestDto request)
         {
-           var success = service.VerifySubmissionId(request.SubmissionID);
+           var success = submissions.VerifySubmissionId(request.SubmissionID);
            return Ok(success ? ApproveResponseDto.SubmissionApproved : ApproveResponseDto.SubmissionDenied);
         }
 
+        /// <summary>
+        /// 3DSi will call this to save token
+        /// </summary>
         [HttpPost]
-        [Route("api/3dsi/saveToken")]
+        [Route("api/3dsi/savetoken")]
+        [RequestLogFilter("3DSi SaveToken")]
         public async Task<IHttpActionResult> SaveToken(SaveTokenRequestDto request)
         {
             var saveTokenData = mapper.Map<SaveTokenData>(request);
@@ -47,10 +64,13 @@ namespace Kadena.WebAPI.Controllers
             return Ok(success ? SaveTokenResponseDto.ResultApproved : SaveTokenResponseDto.ResultFailed);
         }
 
-
+        /// <summary>
+        /// FE calls this to find out if card was stored and authorized
+        /// </summary>
         [HttpGet]
-        [Route("api/shoppingcart/creditcardSaved")]
-        public IHttpActionResult CreditcardSaved(string submissionId)
+        [Route("api/3dsi/creditcarddone/{submissionId}")]
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult CreditcardSaved([FromUri]string submissionId)
         {
             var success = service.CreditcardSaved(submissionId);
             return ResponseJson<bool>(success);
