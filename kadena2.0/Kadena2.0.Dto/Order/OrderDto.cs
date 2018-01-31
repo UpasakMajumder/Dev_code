@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Kadena.Dto.Order
 {
     [DataContract]
-    public class OrderDto
+    public class RecentOrderDto
     {
         [DataMember(Name = "id")]
         public string Id { get; set; }
@@ -16,9 +16,6 @@ namespace Kadena.Dto.Order
 
         [DataMember(Name = "status")]
         public string Status { get; set; }
-
-        //[DataMember(Name = "deliveryDate")]
-        //public DateTime DeliveryDate { get; set; }
 
         [DataMember(Name = "shippingDate")]
         public DateTime? ShippingDate { get; set; }

@@ -4,9 +4,14 @@ using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Factories;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.BusinessLogic.Services;
+using Kadena.BusinessLogic.Services.Orders;
 using Kadena.Helpers;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2._0.BusinessLogic.Contracts.Orders;
+using Kadena2._0.BusinessLogic.Services.Orders;
+using Kadena2.BusinessLogic.Contracts.OrderPayment;
+using Kadena2.BusinessLogic.Services.OrderPayment;
 using Kadena2.Infrastructure.Contracts;
 using Kadena2.Infrastructure.Services;
 using Kadena2.MicroserviceClients.Clients;
@@ -49,13 +54,13 @@ namespace Kadena2.Container.Default
             container.Register<ISettingsService, SettingsService>();
             container.Register<ISiteDataService, SiteDataService>();
             container.Register<ITaxEstimationService, TaxEstimationService>();
-            container.Register<IOrderService, OrderService>();
+            container.Register<ISubmitOrderService, SubmitOrderService>();
+            container.Register<IOrderDetailService, OrderDetailService>();
             container.Register<IKListService, KListService>();
             container.Register<ITemplateService, TemplateService>();
             container.Register<IMailTemplateService, MailTemplateService>();
             container.Register<IFavoritesService, FavoritesService>();
             container.Register<IProductsService, ProductsService>();
-            container.Register<ICreditCardService, CreditCardService>();
             container.Register<IPdfService, PdfService>();
             container.Register<IBusinessUnitsService, BusinessUnitService>();
             container.Register<ICampaignsService, CampaignsService>();
@@ -67,7 +72,13 @@ namespace Kadena2.Container.Default
             container.Register<ILoginService, LoginService>();
             container.Register<IFileService, FileService>();
             container.Register<IDateTimeFormatter, DateTimeFormatter>();
-            container.Register<IShippingCostServiceClient, ShippingCostServiceClient>();
+            container.Register<ICreditCard3dsi, CreditCard3dsi>();
+            container.Register<ICreditCard3dsiDemo, CreditCard3dsiDemo>();
+            container.Register<IPurchaseOrder, PurchaseOrder>();
+            container.Register<IGetOrderDataService, GetOrderDataService>();
+            container.Register<ISendSubmitOrder, SendSubmitOrder>();
+            container.Register<ISubmissionService, SubmissionService>();
+            container.Register<IShippingCostServiceClient, ShippingCostServiceClient>();			
             return container;
         }
 
@@ -80,7 +91,6 @@ namespace Kadena2.Container.Default
             container.Register<IKenticoMailProvider, KenticoMailProvider>();
             container.Register<IKenticoFavoritesProvider, KenticoFavoritesProvider>();
             container.Register<IKenticoProductsProvider, KenticoProductsProvider>();
-            container.Register<ISubmissionIdProvider, SubmissionIdProvider>();
             container.Register<IKenticoDocumentProvider, KenticoDocumentProvider>();
             container.Register<IKenticoBusinessUnitsProvider, KenticoBusinessUnitsProvider>();
             container.Register<IKenticoCampaignsProvider, KenticoCampaignsProvider>();
@@ -95,6 +105,7 @@ namespace Kadena2.Container.Default
             container.Register<IKenticoSiteProvider, KenticoSiteProvider>();
             container.Register<IKenticoPermissionsProvider, KenticoPermissionsProvider>();
             container.Register<IKenticoOrderProvider, KenticoOrderProvider>();
+            container.Register<ISubmissionIdProvider, SubmissionIdProvider>();
             return container;
         }
 
@@ -119,6 +130,8 @@ namespace Kadena2.Container.Default
             container.Register<IInventoryUpdateClient, InventoryUpdateClient>();
             container.Register<IBidClient, BidClient>();
             container.Register<ICreditCardManagerClient, CreditCardManagerClient>();
+            container.Register<IPaymentServiceClient, PaymentServiceClient>();
+            container.Register<IUserDataServiceClient, UserDataServiceClient>();
             return container;
         }
 
@@ -126,6 +139,7 @@ namespace Kadena2.Container.Default
         {
             container.Register<IOrderListServiceFactory, OrderListServiceFactory>();
             container.Register<ICheckoutPageFactory, CheckoutPageFactory>();
+            container.Register<IOrderDataFactory, OrderDataFactory>();
             return container;
         }
 

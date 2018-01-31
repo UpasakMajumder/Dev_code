@@ -10,6 +10,6 @@ namespace Kadena.Dto.Order
         public int TotalCount { get; set; }
 
         [DataMember(Name = "orders")]
-        public IEnumerable<OrderDto> Orders { get; set; }
+        public IEnumerable<RecentOrderDto> Orders { get; set; }
     }
 }

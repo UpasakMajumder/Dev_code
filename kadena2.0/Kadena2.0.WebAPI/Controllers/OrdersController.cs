@@ -17,9 +17,10 @@ namespace Kadena.WebAPI.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IOrderListService _orderService;
-        private readonly IOrderService _orderSubmitService;
+        private readonly ISubmitOrderService _orderSubmitService;
+        private readonly IOrderDetailService _orderDetailService;
 
-        public OrdersController(IOrderListServiceFactory orderListServiceFactory, IOrderService orderSubmitService, IMapper mapper)
+        public OrdersController(IOrderListServiceFactory orderListServiceFactory, ISubmitOrderService orderSubmitService, IOrderDetailService orderDetailService, IMapper mapper)
         {
             if (orderListServiceFactory == null)
             {
@@ -29,14 +30,19 @@ namespace Kadena.WebAPI.Controllers
             {
                 throw new ArgumentNullException(nameof(orderSubmitService));
             }
+            if (orderDetailService == null)
+            {
+                throw new ArgumentNullException(nameof(orderDetailService));
+            }
             if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            _mapper = mapper;
             _orderService = orderListServiceFactory.GetRecentOrders();
             _orderSubmitService = orderSubmitService;
+            _orderDetailService = orderDetailService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -63,7 +69,7 @@ namespace Kadena.WebAPI.Controllers
         [CustomerAuthorizationFilter]
         public async Task<IHttpActionResult> Get([FromUri]string orderId)
         {
-            var detailPage = await _orderSubmitService.GetOrderDetail(orderId);
+            var detailPage = await _orderDetailService.GetOrderDetail(orderId);
             var detailPageDto = _mapper.Map<OrderDetailDTO>(detailPage);
             return ResponseJson(detailPageDto); // TODO refactor using checking null
         }
