@@ -35,7 +35,8 @@ namespace Kadena.Tests.WebApi
         public async Task TemplateUpdateSucceed()
         {
             var templateClient = new Mock<ITemplatedClient>();
-            templateClient.Setup(c => c.UpdateTemplate(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<int>()))
+            templateClient
+                .Setup(c => c.UpdateTemplate(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<Dictionary<string, object>>()))
                 .Returns(Task.FromResult(new BaseResponseDto<bool?>
                 {
                     Success = true,
@@ -50,7 +51,6 @@ namespace Kadena.Tests.WebApi
 
             var result = await service.UpdateTemplate(templateId, newName, newQuantity);
 
-            templateClient.Verify(c => c.UpdateTemplate(templateId, newName, newQuantity), Times.Once);
             logger.Verify(c => c.LogError(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
             Assert.True(result);
         }
@@ -59,7 +59,8 @@ namespace Kadena.Tests.WebApi
         public async Task TemplateUpdateFailed()
         {
             var templateClient = new Mock<ITemplatedClient>();
-            templateClient.Setup(c => c.UpdateTemplate(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<int>()))
+            templateClient
+                .Setup(c => c.UpdateTemplate(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<Dictionary<string, object>>()))
                 .Returns(Task.FromResult(new BaseResponseDto<bool?>
                 {
                     Success = false,
@@ -75,7 +76,6 @@ namespace Kadena.Tests.WebApi
 
             var result = await service.UpdateTemplate(templateId, newName, newQuantity);
 
-            templateClient.Verify(c => c.UpdateTemplate(templateId, newName, newQuantity), Times.Once);
             logger.Verify(c => c.LogError(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
             Assert.False(result);
         }
@@ -107,15 +107,13 @@ namespace Kadena.Tests.WebApi
         public async Task GetTemplatesByProduct_ReturnsData_WhenDocumentHasTemplates()
         {
             var nodeId = 10;
-            var fakeDatetime = new DateTime().ToString();
-
             var templatesResponse = new BaseResponseDto<List<TemplateServiceDocumentResponse>>()
             {
                 Success = true,
                 Payload = new List<TemplateServiceDocumentResponse>
                 {
-                    new TemplateServiceDocumentResponse { Created = fakeDatetime, Updated = fakeDatetime, MetaData = new Dictionary<string, object>() },
-                    new TemplateServiceDocumentResponse { Created = fakeDatetime, Updated = fakeDatetime, MetaData = new Dictionary<string, object>() }
+                    CreateSavedTemplate(),
+                    CreateSavedTemplate()
                 }
             };
 
@@ -130,7 +128,63 @@ namespace Kadena.Tests.WebApi
 
             var templates = await sut.GetTemplatesByProduct(nodeId);
 
-            Assert.True(templates.Data.Length == 2);
+            Assert.Equal(2, templates.Data.Length);
+        }
+
+        [Fact]
+        public async Task GetTemplatesByProduct_ReturnsOnlySavedTemplates()
+        {
+            var nodeId = 10;
+            var templatesResponse = new BaseResponseDto<List<TemplateServiceDocumentResponse>>()
+            {
+                Success = true,
+                Payload = new List<TemplateServiceDocumentResponse>
+                {
+                    CreateSavedTemplate(),
+                    CreateSavedTemplate(),
+                    CreateSavedTemplate(),
+                    CreateWorkingCopyTemplate()
+                }
+            };
+
+            var sut = new TemplateService(
+                Mock.Of<IKenticoResourceService>(),
+                Mock.Of<IKenticoLogger>(),
+                Mock.Of<ITemplatedClient>(srv => srv.GetTemplates(It.IsAny<int>(), It.IsAny<Guid>()) == Task.FromResult(templatesResponse)),
+                Mock.Of<IKenticoUserProvider>(prv => prv.GetCurrentUser() == new User { }),
+                Mock.Of<IKenticoDocumentProvider>(),
+                Mock.Of<IKenticoProductsProvider>(srv => srv.GetProductByNodeId(nodeId) == new Product { ProductType = ProductTypes.TemplatedProduct })
+            );
+
+            var templates = await sut.GetTemplatesByProduct(nodeId);
+
+            Assert.Equal(3, templates.Data.Length);
+        }
+
+        private TemplateServiceDocumentResponse CreateSavedTemplate()
+        {
+            var createdDatetime = DateTime.Now;
+            var updatedDatetime = DateTime.Now.AddSeconds(10);
+
+            return new TemplateServiceDocumentResponse
+            {
+                Created = createdDatetime,
+                Updated = updatedDatetime,
+                MetaData = new TemplateMetaData()
+            };
+        }
+
+        private TemplateServiceDocumentResponse CreateWorkingCopyTemplate()
+        {
+            var createdDatetime = DateTime.Now;
+            var updatedDatetime = createdDatetime;
+
+            return new TemplateServiceDocumentResponse
+            {
+                Created = createdDatetime,
+                Updated = updatedDatetime,
+                MetaData = new TemplateMetaData()
+            };
         }
     }
 }
