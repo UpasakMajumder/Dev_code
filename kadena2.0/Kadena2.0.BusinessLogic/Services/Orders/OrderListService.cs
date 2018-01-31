@@ -13,7 +13,7 @@ using System;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Checkout;
 
-namespace Kadena.BusinessLogic.Services
+namespace Kadena.BusinessLogic.Services.Orders
 {
     public class OrderListService : IOrderListService
     {
@@ -23,10 +23,10 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoResourceService _kenticoResources;
         private readonly IKenticoSiteProvider _site;
         private readonly IKenticoOrderProvider _order;
-        private readonly IShoppingCartProvider _shoppingCart;
         private readonly IKenticoPermissionsProvider _permissions;
         private readonly IKenticoLogger _logger;
         private readonly IKenticoAddressBookProvider _kenticoAddressBook;
+
         private readonly string _orderDetailUrl;
         private int _pageCapacity;
         private string _pageCapacityKey;
@@ -51,7 +51,7 @@ namespace Kadena.BusinessLogic.Services
 
         public OrderListService(IMapper mapper, IOrderViewClient orderClient, IKenticoUserProvider kenticoUsers,
             IKenticoResourceService kenticoResources, IKenticoSiteProvider site, IKenticoOrderProvider order,
-            IShoppingCartProvider shoppingCart, IKenticoDocumentProvider documents, IKenticoPermissionsProvider permissions, IKenticoLogger logger, IKenticoAddressBookProvider kenticoAddressBook)
+            IKenticoDocumentProvider documents, IKenticoPermissionsProvider permissions, IKenticoLogger logger, IKenticoAddressBookProvider kenticoAddressBook)
         {
             if (mapper == null)
             {
@@ -77,10 +77,6 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(order));
             }
-            if (shoppingCart == null)
-            {
-                throw new ArgumentNullException(nameof(shoppingCart));
-            }
             if (permissions == null)
             {
                 throw new ArgumentNullException(nameof(permissions));
@@ -104,7 +100,6 @@ namespace Kadena.BusinessLogic.Services
             _kenticoResources = kenticoResources;
             _site = site;
             _order = order;
-            _shoppingCart = shoppingCart;
             _permissions = permissions;
             _logger = logger;
             _kenticoAddressBook = kenticoAddressBook;

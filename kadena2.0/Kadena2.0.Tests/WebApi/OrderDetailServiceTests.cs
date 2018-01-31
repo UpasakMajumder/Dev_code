@@ -2,9 +2,7 @@
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.Models;
 using Kadena.Models.Site;
-using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.BusinessLogic.Services;
 using Kadena2.MicroserviceClients.Contracts;
 using Moq;
 using System;
@@ -14,12 +12,14 @@ using System.Security;
 using System.Threading.Tasks;
 using Xunit;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
-using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using Kadena2.Container.Default;
+using Kadena.BusinessLogic.Services.Orders;
+using Moq.AutoMock;
+using AutoMapper;
 
 namespace Kadena.Tests.WebApi
 {
-    public class OrderServiceTests
+    public class OrderDetailServiceTests
     {
         private BaseResponseDto<GetOrderByOrderIdResponseDTO> CreateOrderDetailDtoOK(OrderItemDTO[] items = null)
         {
@@ -47,65 +47,30 @@ namespace Kadena.Tests.WebApi
             };
         }
 
-        // TODO Refactor to use different setups
-        private OrderService CreateOrderService(Mock<IKenticoLogger> kenticoLogger = null,
-                                                Mock<IOrderViewClient> orderViewClient = null)
+        private AutoMocker CreateOrderDetailServiceAutomocker()
         {
-            var mapper = MapperBuilder.MapperInstance;
-            var kenticoUsers = new Mock<IKenticoUserProvider>();
-            var kenticoPermissions = new Mock<IKenticoPermissionsProvider>();
-            kenticoPermissions.Setup(p => p.UserCanSeeAllOrders())
+            var autoMocker = new AutoMocker();
+            autoMocker.Use<IMapper>(MapperBuilder.MapperInstance);
+            
+            autoMocker.GetMock<IKenticoPermissionsProvider>().Setup(p => p.UserCanSeeAllOrders())
                 .Returns(false);
-            kenticoUsers.Setup(p => p.GetCurrentCustomer())
+            autoMocker.GetMock<IKenticoUserProvider>().Setup(p => p.GetCurrentCustomer())
                .Returns(new Customer() { Id = 10, UserID = 16 });
-
-            var kenticoResource = new Mock<IKenticoResourceService>();
-            var kenticoSite = new Mock<IKenticoSiteProvider>();
-            kenticoSite.Setup(p => p.GetKenticoSite())
+            autoMocker.GetMock<IKenticoSiteProvider>().Setup(p => p.GetKenticoSite())
                 .Returns(new KenticoSite());
 
-            var kenticoOrder = new Mock<IKenticoOrderProvider>();
-            var shoppingCart = new Mock<IShoppingCartProvider>();
-            var productsProvider = new Mock<IKenticoProductsProvider>();
-            var orderSubmitClient = new Mock<IOrderSubmitClient>();
-            var taxCalculator = new Mock<ITaxEstimationService>();
-            var mailingListClient = new Mock<IMailingListClient>();
-            var templateProductService = new Mock<ITemplatedClient>();
-            var documents = new Mock<IKenticoDocumentProvider>();
-            var localization = new Mock<IKenticoLocalizationProvider>();
-            var permissions = new Mock<IKenticoPermissionsProvider>();
-            var settings = new Mock<IKadenaSettings>();
-            var businessUnits = new Mock<IKenticoBusinessUnitsProvider>();
-
-            return new OrderService(mapper,
-                orderSubmitClient.Object,
-                orderViewClient?.Object ?? new Mock<IOrderViewClient>().Object,
-                mailingListClient.Object,
-                kenticoOrder.Object,
-                shoppingCart.Object,
-                productsProvider.Object,
-                kenticoUsers.Object,
-                kenticoResource.Object,
-                kenticoLogger?.Object ?? new Mock<IKenticoLogger>().Object,
-                taxCalculator.Object,
-                templateProductService.Object,
-                documents.Object,
-                localization.Object,
-                permissions.Object,
-                kenticoSite.Object,
-                settings.Object,
-                businessUnits.Object
-            );
+            return autoMocker;
         }
 
         [Fact]
         public async Task OrderServiceTest_UserCanSee()
         {
             // Arrange
-            var orderViewClient = new Mock<IOrderViewClient>();
+            var autoMocker = CreateOrderDetailServiceAutomocker();
+            var orderViewClient = autoMocker.GetMock<IOrderViewClient>();
             orderViewClient.Setup(o => o.GetOrderByOrderId("0010-0016-17-00006"))
                 .Returns(Task.FromResult(CreateOrderDetailDtoOK()));
-            var sut = CreateOrderService(orderViewClient: orderViewClient);
+            var sut = autoMocker.CreateInstance<OrderDetailService>();
 
             // Act
             var result = await sut.GetOrderDetail("0010-0016-17-00006");
@@ -113,15 +78,16 @@ namespace Kadena.Tests.WebApi
             //Assert
             Assert.NotNull(result);
         }
-
+        
         [Fact]
         public async Task OrderServiceTest_UserCannotSee()
         {
             // Arrange
-            var orderViewClient = new Mock<IOrderViewClient>();
+            var autoMocker = CreateOrderDetailServiceAutomocker();
+            var orderViewClient = autoMocker.GetMock<IOrderViewClient>();
             orderViewClient.Setup(o => o.GetOrderByOrderId("0099-0099-17-00006"))
                 .Returns(Task.FromResult(CreateOrderDetailDtoERROR()));
-            var sut = CreateOrderService(orderViewClient: orderViewClient);
+            var sut = autoMocker.CreateInstance<OrderDetailService>();
 
             // Act
             var result = sut.GetOrderDetail("0099-0099-17-00006");
@@ -134,11 +100,11 @@ namespace Kadena.Tests.WebApi
         public async Task OrderServiceTest_MicroserviceErrorLogged()
         {
             // Arrange
-            var logger = new Mock<IKenticoLogger>();
-            var orderViewClient = new Mock<IOrderViewClient>();
+            var autoMocker = CreateOrderDetailServiceAutomocker();
+            var orderViewClient = autoMocker.GetMock<IOrderViewClient>();
             orderViewClient.Setup(o => o.GetOrderByOrderId("0010-0016-66-00006"))
                 .Returns(Task.FromResult(CreateOrderDetailDtoERROR()));
-            var sut = CreateOrderService(logger, orderViewClient);
+            var sut = autoMocker.CreateInstance<OrderDetailService>();
 
             // Act
             var result = sut.GetOrderDetail("0010-0016-66-00006");
@@ -146,7 +112,7 @@ namespace Kadena.Tests.WebApi
             // Assert
             var exception = await Assert.ThrowsAsync<Exception>(async () => await result);
             Assert.Contains("Failed to obtain order detail", exception.Message);
-            logger.Verify(l => l.LogError("GetOrderDetail", ""), Times.Exactly(1));
+            autoMocker.GetMock<IKenticoLogger>().Verify(l => l.LogError("GetOrderDetail", ""), Times.Exactly(1));
         }
 
         [Theory]
@@ -155,7 +121,7 @@ namespace Kadena.Tests.WebApi
         public async Task OrderServiceTest_BadFormatOrderId(string orderId)
         {
             // Arrange
-            var sut = CreateOrderService();
+            var sut = new AutoMocker().CreateInstance<OrderDetailService>();
 
             // Act
             var result = sut.GetOrderDetail(orderId);
@@ -171,7 +137,7 @@ namespace Kadena.Tests.WebApi
         public async Task OrderServiceTest_EmptyOrderId(string orderId)
         {
             // Arrange
-            var sut = CreateOrderService();
+            var sut = new AutoMocker().CreateInstance<OrderDetailService>();
 
             // Act
             var result = sut.GetOrderDetail(orderId);
@@ -185,15 +151,16 @@ namespace Kadena.Tests.WebApi
         public async Task OrderServiceTest_EmptyShippingAddressWhenMailingOnly()
         {
             // Arrange
+            var autoMocker = CreateOrderDetailServiceAutomocker();
             var orderId = "0010-0016-17-00006";
-            var orderViewClient = new Mock<IOrderViewClient>();
+            var orderViewClient = autoMocker.GetMock<IOrderViewClient>();
             var orderResponse = CreateOrderDetailDtoOK(new[] 
             {
                 new OrderItemDTO { Type = Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString() }
             });
             orderViewClient.Setup(o => o.GetOrderByOrderId(orderId))
                 .Returns(Task.FromResult(orderResponse));
-            var sut = CreateOrderService(orderViewClient: orderViewClient);
+            var sut = autoMocker.CreateInstance<OrderDetailService>();
 
             // Act
             var result = await sut.GetOrderDetail(orderId);
@@ -207,15 +174,16 @@ namespace Kadena.Tests.WebApi
         public async Task NullDatetimeTests()
         {
             // Arrange
+            var autoMocker = CreateOrderDetailServiceAutomocker();
             var orderId = "0010-0016-17-00006";
-            var orderViewClient = new Mock<IOrderViewClient>();
+            var orderViewClient = autoMocker.GetMock<IOrderViewClient>();
             var orderResponse = CreateOrderDetailDtoOK(new[]
             {
                 new OrderItemDTO { Type = Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString() }
             });
             orderViewClient.Setup(o => o.GetOrderByOrderId(orderId))
                 .Returns(Task.FromResult(orderResponse));
-            var sut = CreateOrderService(orderViewClient: orderViewClient);
+            var sut = autoMocker.CreateInstance<OrderDetailService>();
 
             // Act
             var result = await sut.GetOrderDetail(orderId).ConfigureAwait(false);
@@ -224,5 +192,6 @@ namespace Kadena.Tests.WebApi
             Assert.NotEqual(result.CommonInfo.OrderDate.Value, DateTime.MinValue);
             Assert.Null(result.CommonInfo.ShippingDate.Value);
         }
+ 
     }
 }

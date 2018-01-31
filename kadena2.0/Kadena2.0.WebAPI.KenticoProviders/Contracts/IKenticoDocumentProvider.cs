@@ -9,7 +9,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         List<string> GetBreadcrumbs(int documentId);
 
-        string GetDocumentUrl(string aliasPath);
+        string GetDocumentUrl(string aliasPath, bool absoluteUrl = false);
 
         string GetDocumentAbsoluteUrl(string aliasPath);
 
