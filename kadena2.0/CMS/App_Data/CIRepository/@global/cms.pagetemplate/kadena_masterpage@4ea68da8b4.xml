@@ -779,7 +779,7 @@ config.localization.languages = {
           </property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{%Settings.KDA_IsPreBuyCartEnabled|(user)cvoqa2@gmail.com|(hash)2e4a40e729d4eef5258b9d214aedf69b64c60d286638b8dd57f8dfea6d46bc7b%}]]>
+            <![CDATA[{%Settings.KDA_IsPreBuyCartEnabled && IsCampaignOpen()|(user)Abdul.Raheman|(hash)53f1ab3684dfa2ed998a2719d1e83197d361acdbba238e1fc00797d945d9248b%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">ShoppingCartCount</property>
