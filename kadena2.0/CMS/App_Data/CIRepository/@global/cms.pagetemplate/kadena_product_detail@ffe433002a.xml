@@ -339,6 +339,56 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>
         </webpart>
+        <webpart controlid="ProductOptions" guid="09348d9d-247b-4514-a073-0bbbef535299" type="Kadena_ProductOptions" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">ProductOptions</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">09348d9d-247b-4514-a073-0bbbef535299</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="priceelementname">price-element</property>
+          <property name="priceurl"></property>
+          <property name="showfordocumenttypes"></property>
+          <property name="skuid" ismacro="true">
+            <![CDATA[{% NodeSKU.ID |(user)rostyslav.diachenko@actum.cz|(hash)a3655ec25597a1ea8eff79bb69cb20bff3bba2544814702657d8e5839cef3575%}]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible" ismacro="true">
+            <![CDATA[{% NodeSKU.HasVariants |(user)rostyslav.diachenko@actum.cz|(hash)3cf13697f98b7879f7f57692a6d5dbce06f6325bb2a28bfefca1c5d32f9a8275%}]]>
+          </property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">Kadena_ProductOptions</property>
+        </webpart>
       </webpartzone>
       <webpartzone id="zoneTables" v="1">
         <webpart controlid="EstimatesTable" guid="e6d2a7d4-5e99-49ae-98f2-1d5f59462590" type="EstimatesTable" v="1">
