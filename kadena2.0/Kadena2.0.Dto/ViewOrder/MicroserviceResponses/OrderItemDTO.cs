@@ -11,5 +11,6 @@
         public string MailingList { get; set; }
         public string FileKey { get; set; }
         public double TotalPrice { get; set; }
+        public int LineNumber { get; set; }
     }
 }
