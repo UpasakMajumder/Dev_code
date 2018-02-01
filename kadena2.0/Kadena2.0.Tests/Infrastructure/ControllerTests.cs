@@ -13,24 +13,13 @@ namespace Kadena.Tests.Infrastructure
         [Fact]
         public void ControllerResolvingTest()
         {
+            // Arrange
             var assembly = Assembly.LoadFrom("Kadena2.0.WebAPI.dll");
-
             var controllers = assembly.GetExportedTypes().Where(t => t.BaseType == typeof(ApiControllerBase)).ToList();
-
-            var container = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient())
-                .RegisterBLL()
-                .RegisterKentico()
-                .RegisterKadenaSettings()
-                .RegisterMicroservices()
-                .RegisterFactories()
-                .RegisterInfrastructure();
-
-            //TODO refactor by using main DIContainer and safe or static registration here
-            foreach (var controller in controllers) 
-            {
-                container.Register(controller);
-            }
-
+            var container = DIContainer.Instance.With(rules => rules.WithoutThrowOnRegisteringDisposableTransient());
+            controllers.ForEach(c => container.Register(c, ifAlreadyRegistered: IfAlreadyRegistered.Keep));
+                      
+            // Act
             foreach (var controller in controllers)
             {
                 if (controller.Name == "DashboardController" ||
@@ -44,12 +33,19 @@ namespace Kadena.Tests.Infrastructure
                 try
                 {
                     var instance = container.Resolve(controller);
+
                 }
                 catch (Exception ex)
                 {
                     throw new Exception($"Failed to resolve {controller.Name}", ex);
                 }
             }
+
+            // Assert
+            // this test should not affect original container:
+            Assert.Throws<ContainerException>(() => DIContainer.Instance.Resolve(controllers[0]));
         }
+
+        
     }
 }
