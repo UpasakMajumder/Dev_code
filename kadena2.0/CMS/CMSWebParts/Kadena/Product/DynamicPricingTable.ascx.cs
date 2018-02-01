@@ -14,7 +14,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
 {
     public partial class DynamicPricingTable : CMSAbstractWebPart
     {
-        private const string _TableRowTemplate = "<tr><td>{0}</td><td>{1}</td></tr>";
+        private const string _TableRowTemplate = "<tr><td>{0}</td><td{2}>{1}</td></tr>";
 
         public override void OnContentLoaded()
         {
@@ -43,7 +43,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 if (rawData == null || rawData.Count == 0)
                 {
                     var basePrice = DocumentContext.CurrentDocument.GetDoubleValue("SKUPrice", 0);
-                    ltlTableContent.Text = string.Format(_TableRowTemplate, ResHelper.GetString("Kadena.Product.BasePriceTitle", LocalizationContext.CurrentCulture.CultureCode), basePrice.ToString("C"));
+                    ltlTableContent.Text = string.Format(_TableRowTemplate, ResHelper.GetString("Kadena.Product.BasePriceTitle", LocalizationContext.CurrentCulture.CultureCode), basePrice.ToString("C"), $" id='price-element'");
                 }
                 else
                 {
@@ -53,7 +53,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         var result = new StringBuilder();
                         foreach (var item in data)
                         {
-                            result.Append(string.Format(_TableRowTemplate, string.Format(ResHelper.GetString("Kadena.Product.PiecesFormatString", LocalizationContext.CurrentCulture.CultureCode), item.Min, item.Max), item.Price.ToString("C")));
+                            result.Append(string.Format(_TableRowTemplate, string.Format(ResHelper.GetString("Kadena.Product.PiecesFormatString", LocalizationContext.CurrentCulture.CultureCode), item.Min, item.Max), item.Price.ToString("C"), string.Empty));
                         }
                         ltlTableContent.Text = result.ToString();
                     }
