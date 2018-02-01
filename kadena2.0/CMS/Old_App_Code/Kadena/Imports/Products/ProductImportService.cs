@@ -256,12 +256,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 throw new Exception($"No product assigned to SKU with SKUNumber {image.SKU}");
             }
 
-            AssignImage(product, image.ImageMediaLibraryName, image.ImageName);
+            AssignImage(product, image.ImageMediaLibraryName, image.ImagePath);
 
             product.Update();
         }
 
-        private static void AssignImage(SKUTreeNode product, string mediaLibraryName, string imageName)
+        private static void AssignImage(SKUTreeNode product, string mediaLibraryName, string imagePath)
         {
             var library = MediaLibraryInfoProvider.GetMediaLibraryInfo(mediaLibraryName, SiteContext.CurrentSiteName);
             if (library == null)
@@ -269,10 +269,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 throw new KeyNotFoundException($"Unable to assign image to SKU '{product.SKU.SKUNumber}'. Media library '{mediaLibraryName}' not found.");
             }
 
-            var image = MediaFileInfoProvider.GetMediaFileInfo(library.LibraryID, imageName);
+            var image = MediaFileInfoProvider.GetMediaFileInfo(library.LibraryID, imagePath);
             if (image == null)
             {
-                throw new KeyNotFoundException($"Unable to assign image to SKU '{product.SKU.SKUNumber}'. File '{imageName}' not found.");
+                throw new KeyNotFoundException($"Unable to assign image to SKU '{product.SKU.SKUNumber}'. File '{imagePath}' not found.");
             }
 
             product.RemoveImage();
@@ -332,9 +332,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 newProduct.Insert(parent);
             }
 
-            if (!string.IsNullOrEmpty(product.ImageMediaLibraryName) && !string.IsNullOrEmpty(product.ImageName))
+            if (!string.IsNullOrEmpty(product.ImageMediaLibraryName) && !string.IsNullOrEmpty(product.ImagePath))
             {
-                AssignImage(newProduct, product.ImageMediaLibraryName, product.ImageName);
+                AssignImage(newProduct, product.ImageMediaLibraryName, product.ImagePath);
             }
             else
             {
