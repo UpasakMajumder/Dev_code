@@ -420,6 +420,7 @@ iteratedDocument = iteratedDocument.Parent;
           </property>
           <property name="partialcacheminutes"></property>
           <property name="preservepartialcacheonpostback">True</property>
+          <property name="priceelementname">price-element</property>
           <property name="showfordocumenttypes"></property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>

@@ -16,6 +16,14 @@ namespace Kadena.CMSWebParts.Kadena.Product
     {
         private const string _TableRowTemplate = "<tr><td>{0}</td><td{2}>{1}</td></tr>";
 
+        public string PriceElementName
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("PriceElementName"), string.Empty);
+            }
+        }
+
         public override void OnContentLoaded()
         {
 
@@ -43,7 +51,10 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 if (rawData == null || rawData.Count == 0)
                 {
                     var basePrice = DocumentContext.CurrentDocument.GetDoubleValue("SKUPrice", 0);
-                    ltlTableContent.Text = string.Format(_TableRowTemplate, ResHelper.GetString("Kadena.Product.BasePriceTitle", LocalizationContext.CurrentCulture.CultureCode), basePrice.ToString("C"), $" id='price-element'");
+                    ltlTableContent.Text = string.Format(_TableRowTemplate,
+                        ResHelper.GetString("Kadena.Product.BasePriceTitle", LocalizationContext.CurrentCulture.CultureCode),
+                        basePrice.ToString("C"),
+                        string.IsNullOrWhiteSpace(PriceElementName) ? string.Empty : $" id='{PriceElementName}'");
                 }
                 else
                 {
