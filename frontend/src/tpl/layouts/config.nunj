@@ -347,6 +347,8 @@
         URL3DSi: '',
         RedirectURL: 'hi',
         DemoURL: '/order-submitted.html',
+        ResultURL: '',
+        ResponseType: '',
         acceptedCards: ['visa', 'amex', 'mastercard'],
         submitButtonText: 'Proceed with payment',
         cardTypeInValidMessage: 'card type error',
