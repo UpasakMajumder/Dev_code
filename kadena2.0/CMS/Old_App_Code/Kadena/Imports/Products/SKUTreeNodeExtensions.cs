@@ -15,7 +15,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         public static void SetImage(this SKUTreeNode product, MediaFileInfo image)
         {
-            product.SetImage(MediaFileInfoProvider.GetMediaFileUrl(image.FileGUID, image.FilePath));
+            product.SetImage(MediaFileInfoProvider.GetMediaFileUrl(image.FileGUID, image.FileName));
         }
 
         public static void RemoveImage(this SKUTreeNode product)
