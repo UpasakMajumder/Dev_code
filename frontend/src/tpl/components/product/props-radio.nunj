@@ -3,7 +3,7 @@
 {% set sizes = ['s', 'm', 'l'] %}
 {% set colors = ['blue', 'green', 'red'] %}
 
-<div class="product-options mb-3 product-options--radio-{% if type === 'radio-v'%}v{% else %}h{% endif %}">
+<div class="product-options__radio product-options__radio--row">
   {% for size in sizes %}
   <div class="input__wrapper">
     <input name="size" value="{{ size }}" {% if loop.index === 1 %}checked{% endif %} id="size-{{ size }}" type="radio" class="input__radio js-product-option js-add-to-cart-property">
@@ -12,7 +12,7 @@
   {% endfor %}
 </div>
 
-<div class="product-options mb-3 product-options--radio-{% if type === 'radio-v'%}v{% else %}h{% endif %}">
+<div class="product-options__radio product-options__radio--column">
   {% for color in colors %}
   <div class="input__wrapper">
     <input name="color" value="{{ color }}" {% if loop.index === 2 %}checked{% endif %} id="color-{{ color }}" type="radio" class="input__radio js-product-option js-add-to-cart-property">

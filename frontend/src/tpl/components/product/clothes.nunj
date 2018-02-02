@@ -3,7 +3,7 @@
   <div class="product-view__block">
     {% include 'components/product/info.nunj' %}
 
-    <div class="js-product-options" data-price-element="#price-element" data-url="http://localhost:3000/api/products/options">
+    <div class="js-product-options product-options product-options--row" data-price-element="#price-element" data-url="http://localhost:3000/api/products/options">
     {% if type === 'dropdown' %}
       {% include 'components/product/props-dropdown.nunj' %}
     {% else %}
