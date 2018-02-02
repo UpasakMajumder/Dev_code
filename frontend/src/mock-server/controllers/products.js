@@ -7,8 +7,9 @@ module.exports.setFavourite = (req, res) => res.json({ success: true });
 module.exports.addToCart = (req, res) => res.json(products.addToCart);
 module.exports.options = (req, res) => {
   const payload = {
-    price: `$${Math.random()}`
-  }
+    priceValue: Math.random(),
+    pricePrefix: '$'
+  };
 
   res.json({
     success: true,
