@@ -19,12 +19,6 @@ namespace Kadena.Tests.Infrastructure
             // Act & Assert
             foreach (var service in services)
             {
-                if (service.Name == "IKenticoSettingsProvider")
-                {
-                    continue; // TODO check why it is not registered/resolved, 
-                              // maybe because of using only in webforms ?
-                }
-
                 try
                 {
                     DIContainer.Instance.Resolve(service, false);

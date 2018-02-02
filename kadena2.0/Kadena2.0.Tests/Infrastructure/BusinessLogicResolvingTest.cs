@@ -19,11 +19,9 @@ namespace Kadena.Tests.Infrastructure
             // Act & Assert
             foreach (var service in services)
             {
-                if (service.Name == "IOrderListService" ||
-                    service.Name == "ISettingsSynchronizationService")
+                if (service.Name == "IOrderListService" )//  using factory and calling Kentico in constructor
                 {
-                    continue; // TODO check why it is not registered/resolved, 
-                              // maybe because of using only in webforms ?
+                    continue; 
                 }
 
                 try
