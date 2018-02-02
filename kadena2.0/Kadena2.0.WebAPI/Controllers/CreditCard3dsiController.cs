@@ -9,6 +9,7 @@ using AutoMapper;
 using Kadena.Models.CreditCard;
 using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
+using System.ComponentModel.DataAnnotations;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -45,7 +46,7 @@ namespace Kadena.WebAPI.Controllers
         [HttpPost]
         [Route("api/3dsi/approveSubmission")]
         [RequestLogFilter("3DSi Approve")]
-        public IHttpActionResult ApproveSubmission(ApproveRequestDto request)
+        public IHttpActionResult ApproveSubmission([FromBody]ApproveRequestDto request)
         {
            var success = submissions.VerifySubmissionId(request.SubmissionID);
            return Ok(success ? ApproveResponseDto.SubmissionApproved : ApproveResponseDto.SubmissionDenied);
@@ -70,10 +71,11 @@ namespace Kadena.WebAPI.Controllers
         [HttpGet]
         [Route("api/3dsi/creditcarddone/{submissionId}")]
         [CustomerAuthorizationFilter]
-        public IHttpActionResult CreditcardSaved([FromUri]string submissionId)
+        public IHttpActionResult CreditcardSaved([FromUri][Required]string submissionId)
         {
-            var success = service.CreditcardSaved(submissionId);
-            return ResponseJson<bool>(success);
+            var redirectUrl = service.CreditcardSaved(submissionId);
+            var resultDto = mapper.Map<CreditCardPaymentDoneDto>(redirectUrl);
+            return ResponseJson(resultDto);
         }
     }
 }
