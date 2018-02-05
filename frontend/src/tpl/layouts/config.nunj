@@ -373,7 +373,7 @@
             label: 'Expiration date',
             inValidMessage: 'expiry error',
             placeholder: 'mm/yy',
-            cardLabel: 'valid '
+            cardLabel: 'valid'
           },
         },
         APCount: '0',
@@ -383,7 +383,12 @@
         CustomerIdentifier_CustomerCode: 'testActum1',
         TerminalIdentifier_LocationCode: 'Kadena2.0',
         TerminalIdentifier_TerminalCode: 'Kadena2.0',
-        TerminalIdentifier_MerchantCode: 'Kadena2.0'
+        TerminalIdentifier_MerchantCode: 'Kadena2.0',
+        saveToProfile: {
+          exists: true,
+          label: 'Save to profile',
+          url: ''
+        }
       },
       products: {
         addToFavorites: "Set product as favorite",

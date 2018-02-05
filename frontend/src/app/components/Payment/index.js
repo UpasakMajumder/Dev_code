@@ -12,6 +12,7 @@ import { CARD_PAYMENT } from 'app.globals';
 import PaymentForm from 'app.dump/Form/PaymentForm';
 import Cards from 'app.dump/CreditCards';
 import Button from 'app.dump/Button';
+import Checkbox from 'app.dump/Form/CheckboxInput';
 /* styles */
 import 'react-credit-cards/lib/styles-compiled.css';
 
@@ -169,6 +170,17 @@ class Payment extends Component {
   render() {
     const { fields, focused, invalids } = this.state;
     const { isProceeded } = this.props;
+    const { saveToProfile } = CARD_PAYMENT;
+
+    const saveToProfileComponent = saveToProfile.exists
+      ? (
+        <Checkbox
+          id="saveToProfile"
+          label={saveToProfile.label}
+          type="checkbox"
+          value={true}
+        />
+      ) : null;
 
     return (
       <div className="card-payment">
@@ -195,6 +207,8 @@ class Payment extends Component {
           </div>
         </div>
         <div className="card-payment__submit">
+          {saveToProfileComponent}
+
           <Button
             text={CARD_PAYMENT.submitButtonText}
             type="action"
