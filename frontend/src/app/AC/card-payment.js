@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { SUBMIT_CARD, FETCH, FAILURE, SUCCESS } from 'app.consts';
 import { CARD_PAYMENT } from 'app.globals';
+import { createSearchStr } from 'app.helpers/location';
 
 const redirectUser = (dispatch, RedirectURL, submissionId) => {
   axios({
@@ -58,7 +59,7 @@ export default (fields, cardType, submissionId) => {
       const data = {
         CreditCard_CSCValue: cvc,
         CreditCard_ExpirationMonth: expiry.substr(0, 2),
-        CreditCard_ExpirationYear: expiry.substr(2),
+        CreditCard_ExpirationYear: expiry.substr(3), // bcz of slash `/`
         CreditCard_CardType: cardType,
         CreditCard_NameOnCard: name,
         CreditCard_CardAccountNumber: number,
@@ -75,13 +76,15 @@ export default (fields, cardType, submissionId) => {
         ResponseType
       };
 
+      const dataStr = createSearchStr(data).substr(1);
+
       dispatch({ type: SUBMIT_CARD + FETCH });
 
       axios({
         method: 'post',
         url: URL3DSi,
         headers: { 'Content-type': 'application/x-www-form-urlencoded' },
-        data
+        data: dataStr
       });
 
       redirectUser(dispatch, RedirectURL, submissionId);
