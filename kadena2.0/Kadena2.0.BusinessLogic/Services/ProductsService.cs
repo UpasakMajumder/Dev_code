@@ -40,10 +40,7 @@ namespace Kadena.BusinessLogic.Services
                 return products.GetSkuPrice(skuId);
             }
 
-            var productVariants = products.GetVariants(skuId);
-            var optionsVariants = products.GetVariants(new HashSet<int>(skuOptions.Select(v => v.Value).Distinct()));
-            var selectedVariant = productVariants.SingleOrDefault(pv => optionsVariants.Contains(pv.SkuId));
-
+            var selectedVariant = products.GetVariant(skuId, new HashSet<int>(skuOptions.Values.Distinct()));
             return products.GetSkuPrice(selectedVariant.SkuId);
         }
 

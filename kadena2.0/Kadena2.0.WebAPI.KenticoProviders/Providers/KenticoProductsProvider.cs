@@ -215,18 +215,16 @@ namespace Kadena.WebAPI.KenticoProviders
             };
         }
 
-        public IEnumerable<Sku> GetVariants(int skuid)
+        public IEnumerable<Sku> GetVariants(int skuid, HashSet<int> optionIds = null)
         {
-            var variants = SKUInfoProvider
-                .GetSKUs()
-                .WhereEquals(nameof(SKUInfo.SKUParentSKUID), skuid)
-                .Columns(nameof(SKUInfo.SKUID), nameof(SKUInfo.SKUWeight), nameof(SKUInfo.SKUNeedsShipping))
-                .AsEnumerable();
+            var variants = VariantHelper.GetVariants(skuid);
             return mapper.Map<IEnumerable<Sku>>(variants);
         }
 
         public IEnumerable<int> GetVariants(HashSet<int> optionIds)
         {
+            var set = new ProductAttributeSet(optionIds);
+            var variant = VariantHelper.GetProductVariant(1045, set);
             return VariantOptionInfoProvider
                 .GetVariantOptions()
                 .WhereIn(nameof(VariantOptionInfo.OptionSKUID), optionIds.ToArray())
@@ -234,6 +232,13 @@ namespace Kadena.WebAPI.KenticoProviders
                 .Where(v => v.Count() == optionIds.Count())
                 .Select(v => v.Key)
                 .Distinct();
+        }
+
+        public Sku GetVariant(int skuId, HashSet<int> optionIds)
+        {
+            var attributeSet = new ProductAttributeSet(optionIds);
+            var variant = VariantHelper.GetProductVariant(skuId, attributeSet);
+            return mapper.Map<Sku>(variant);
         }
     }
 }
