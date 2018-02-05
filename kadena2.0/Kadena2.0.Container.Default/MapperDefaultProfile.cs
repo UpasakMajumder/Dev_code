@@ -43,6 +43,9 @@ namespace Kadena2.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<Price, PriceDto>()
+                .ForMember(dest => dest.PricePrefix, opt => opt.MapFrom(src => src.Prefix))
+                .ForMember(dest => dest.PriceValue, opt => opt.MapFrom(src => src.Value));
             CreateMap<CartItem, SKUDTO>()
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SKUName))
                     .ForMember(dest => dest.KenticoSKUID, opt => opt.MapFrom(src => src.SKUID));

@@ -376,7 +376,9 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="partialcacheminutes"></property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="priceelementname">price-element</property>
-          <property name="priceurl"></property>
+          <property name="priceurl" ismacro="true">
+            <![CDATA[/api/products/getprice/{%NodeSKU.ID|(user)rostyslav.diachenko@actum.cz|(hash)42f88f9b6db2780805374060a91a7000b5197b41c6b4b7c78aaf31ddd42475f0%}]]>
+          </property>
           <property name="showfordocumenttypes"></property>
           <property name="skuid" ismacro="true">
             <![CDATA[{% NodeSKU.ID |(user)rostyslav.diachenko@actum.cz|(hash)a3655ec25597a1ea8eff79bb69cb20bff3bba2544814702657d8e5839cef3575%}]]>

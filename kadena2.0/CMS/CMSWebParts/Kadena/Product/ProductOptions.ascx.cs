@@ -11,7 +11,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
 {
     public partial class ProductOptions : CMSAbstractWebPart
     {
-        private Dictionary<OptionCategorySelectionTypeEnum, Func<OptionCategoryInfo, IEnumerable<SKUInfo>, string>> _selectorBuilders
+        private readonly Dictionary<OptionCategorySelectionTypeEnum, Func<OptionCategoryInfo, IEnumerable<SKUInfo>, string>> _selectorBuilders
             = new Dictionary<OptionCategorySelectionTypeEnum, Func<OptionCategoryInfo, IEnumerable<SKUInfo>, string>>
             {
                 { OptionCategorySelectionTypeEnum.Dropdownlist, BuildDropdown },

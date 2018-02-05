@@ -18,6 +18,10 @@ namespace Kadena2.WebAPI.KenticoProviders
     {
         public KenticoModelMappingsProfile()
         {
+            CreateMap<SKUInfo, Sku>()
+                .ForMember(dest => dest.NeedsShipping, opt => opt.MapFrom(src => src.SKUNeedsShipping))
+                .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.SKUWeight));
+
             CreateMap<StateInfo, State>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.StateID));
             CreateMap<CountryInfo, Country>()
@@ -92,7 +96,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Url, opt => opt.MapFrom(src => src.DocumentUrlPath))
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => URLHelper.GetAbsoluteUrl(src.GetValue("ProductCategoryImage", string.Empty))))
                 .ForMember(dest => dest.ProductBordersEnabled, opt => opt.MapFrom(src => src.GetBooleanValue("ProductCategoryBordersEnabled", false)))
-                .AfterMap((src, dest) => dest.Border = new Border { Exists = src.GetBooleanValue("ProductCategoryBordersEnabled", false)});
+                .AfterMap((src, dest) => dest.Border = new Border { Exists = src.GetBooleanValue("ProductCategoryBordersEnabled", false) });
         }
     }
 }

@@ -102,7 +102,9 @@ namespace Kadena.WebAPI.KenticoProviders
         public string GetSkuImageUrl(int skuid)
         {
             if (skuid <= 0)
+            {
                 return string.Empty;
+            }
 
             var sku = GetSku(skuid);
             var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
@@ -196,6 +198,42 @@ namespace Kadena.WebAPI.KenticoProviders
 
             SKUInfo sku = GetSku(skuid);
             return sku != null ? (sku.SKUEnabled ? ResHelper.GetString("KDA.Common.Status.Active") : ResHelper.GetString("KDA.Common.Status.Inactive")) : string.Empty;
+        }
+
+        public Price GetSkuPrice(int skuId)
+        {
+            var sku = GetSku(skuId);
+            if (sku == null)
+            {
+                return null;
+            }
+
+            return new Price
+            {
+                Value = Convert.ToDecimal(sku.SKUPrice),
+                Prefix = ResHelper.GetString("Kadena.Checkout.ItemPricePrefix", LocalizationContext.CurrentCulture.CultureCode)
+            };
+        }
+
+        public IEnumerable<Sku> GetVariants(int skuid)
+        {
+            var variants = SKUInfoProvider
+                .GetSKUs()
+                .WhereEquals(nameof(SKUInfo.SKUParentSKUID), skuid)
+                .Columns(nameof(SKUInfo.SKUID), nameof(SKUInfo.SKUWeight), nameof(SKUInfo.SKUNeedsShipping))
+                .AsEnumerable();
+            return mapper.Map<IEnumerable<Sku>>(variants);
+        }
+
+        public IEnumerable<int> GetVariants(HashSet<int> optionIds)
+        {
+            return VariantOptionInfoProvider
+                .GetVariantOptions()
+                .WhereIn(nameof(VariantOptionInfo.OptionSKUID), optionIds.ToArray())
+                .GroupBy(v => v.VariantSKUID)
+                .Where(v => v.Count() == optionIds.Count())
+                .Select(v => v.Key)
+                .Distinct();
         }
     }
 }

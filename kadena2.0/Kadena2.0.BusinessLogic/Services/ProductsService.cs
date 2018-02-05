@@ -2,6 +2,7 @@
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Kadena.BusinessLogic.Services
@@ -32,6 +33,20 @@ namespace Kadena.BusinessLogic.Services
             this.resources = resources;
         }
 
+        public Price GetPrice(int skuId, Dictionary<string, int> skuOptions = null)
+        {
+            if ((skuOptions?.Count ?? 0) == 0)
+            {
+                return products.GetSkuPrice(skuId);
+            }
+
+            var productVariants = products.GetVariants(skuId);
+            var optionsVariants = products.GetVariants(new HashSet<int>(skuOptions.Select(v => v.Value).Distinct()));
+            var selectedVariant = productVariants.SingleOrDefault(pv => optionsVariants.Contains(pv.SkuId));
+
+            return products.GetSkuPrice(selectedVariant.SkuId);
+        }
+
         public ProductsPage GetProducts(string path)
         {
             var categories = this.products.GetCategories(path);
@@ -53,7 +68,5 @@ namespace Kadena.BusinessLogic.Services
 
             return productsPage;
         }
-
-        
     }
 }

@@ -5,6 +5,8 @@ using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.Product.Responses;
+using System.Collections.Generic;
+using Kadena.Dto.Product;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -32,13 +34,22 @@ namespace Kadena.WebAPI.Controllers
 
 
         [HttpGet]
-        [Route("api/products")]        
+        [Route("api/products")]
         [QuerystringParameterRequired("url")]
         public IHttpActionResult GetProducts([FromUri]string url)
         {
             var result = products.GetProducts(url);
             var resultDto = mapper.Map<GetProductsDto>(result);
             return ResponseJson(resultDto);
+        }
+
+        [HttpPost]
+        [Route("api/products/getprice/{skuId:int}")]
+        public IHttpActionResult GetPrice([FromUri]int skuId, [FromBody]Dictionary<string, int> options)
+        {
+            var price = products.GetPrice(skuId, options);
+            var result = mapper.Map<PriceDto>(price);
+            return ResponseJson(result);
         }
     }
 }
