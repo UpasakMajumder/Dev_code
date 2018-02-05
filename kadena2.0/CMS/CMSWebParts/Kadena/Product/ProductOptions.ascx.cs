@@ -65,9 +65,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             {
                 using (var html = new HtmlTextWriter(stringWriter))
                 {
-                    html.AddAttribute(HtmlTextWriterAttribute.Class, "product-options product-options--select");
-                    html.RenderBeginTag(HtmlTextWriterTag.Div);
-                    html.AddAttribute(HtmlTextWriterAttribute.Class, "input__wrapper");
+                    html.AddAttribute(HtmlTextWriterAttribute.Class, "input__wrapper product-options__input");
                     html.RenderBeginTag(HtmlTextWriterTag.Div);
                     html.AddAttribute(HtmlTextWriterAttribute.Class, "input__select");
                     html.RenderBeginTag(HtmlTextWriterTag.Div);
@@ -100,18 +98,19 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     html.RenderEndTag();
                     html.RenderEndTag();
                     html.RenderEndTag();
-                    html.RenderEndTag();
                     return stringWriter.ToString();
                 }
             }
         }
-        private static string BuildRadioVertical(OptionCategoryInfo category, IEnumerable<SKUInfo> skus)
+
+        private static string BuildRadio(OptionCategoryInfo category, IEnumerable<SKUInfo> skus, bool isHorizontal = false)
         {
             using (var stringWriter = new StringWriter())
             {
                 using (var html = new HtmlTextWriter(stringWriter))
                 {
-                    html.AddAttribute(HtmlTextWriterAttribute.Class, "product-options mb-3 product-options--radio-v");
+
+                    html.AddAttribute(HtmlTextWriterAttribute.Class, isHorizontal ? "product-options__radio product-options__radio--column" : "product-options__radio product-options__radio--row");
                     html.RenderBeginTag(HtmlTextWriterTag.Div);
                     foreach (var sku in skus)
                     {
@@ -147,42 +146,12 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         private static string BuildRadioHorizontal(OptionCategoryInfo category, IEnumerable<SKUInfo> skus)
         {
-            using (var stringWriter = new StringWriter())
-            {
-                using (var html = new HtmlTextWriter(stringWriter))
-                {
-                    html.AddAttribute(HtmlTextWriterAttribute.Class, "product-options mb-3 product-options--radio-h");
-                    html.RenderBeginTag(HtmlTextWriterTag.Div);
-                    foreach (var sku in skus)
-                    {
-                        html.AddAttribute(HtmlTextWriterAttribute.Class, "input__wrapper");
-                        html.RenderBeginTag(HtmlTextWriterTag.Div);
+            return BuildRadio(category, skus, true);
+        }
 
-                        html.AddAttribute(HtmlTextWriterAttribute.Class, "input__radio js-product-option js-add-to-cart-property");
-                        html.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
-                        html.AddAttribute(HtmlTextWriterAttribute.Name, category.CategoryName);
-                        html.AddAttribute(HtmlTextWriterAttribute.Value, sku.SKUID.ToString());
-                        html.AddAttribute(HtmlTextWriterAttribute.Id, sku.SKUID.ToString());
-
-                        if (sku.SKUID.ToString() == category.CategoryDefaultOptions)
-                        {
-                            html.AddAttribute(HtmlTextWriterAttribute.Checked, null);
-                        }
-                        html.RenderBeginTag(HtmlTextWriterTag.Input);
-                        html.RenderEndTag();
-
-                        html.AddAttribute(HtmlTextWriterAttribute.Class, "input__label input__label--radio");
-                        html.AddAttribute(HtmlTextWriterAttribute.For, sku.SKUID.ToString());
-                        html.RenderBeginTag(HtmlTextWriterTag.Label);
-                        html.Write(sku.SKUName);
-                        html.RenderEndTag();
-                        html.RenderEndTag();
-                    }
-
-                    html.RenderEndTag();
-                    return stringWriter.ToString();
-                }
-            }
+        private static string BuildRadioVertical(OptionCategoryInfo category, IEnumerable<SKUInfo> skus)
+        {
+            return BuildRadio(category, skus);
         }
     }
 }
