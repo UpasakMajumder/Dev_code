@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Text;
 using System.Web.Http.Controllers;
 using Kadena2.Container.Default;
-using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 
 namespace Kadena.WebAPI.Infrastructure.Filters
 {
@@ -14,13 +13,11 @@ namespace Kadena.WebAPI.Infrastructure.Filters
     // Authorization filter runs first so it will log even requests without fields marked as mandatory
     public class RequestLogFilter : AuthorizationFilterAttribute 
     {
-        private readonly IKenticoLogger logger;
+        public IKenticoLogger Logger = DIContainer.Resolve<IKenticoLogger>();
         private string source = "WebAPI";
 
         public RequestLogFilter(string source = "")
         {
-            logger = DIContainer.Resolve<IKenticoLogger>();
-
             if (!string.IsNullOrEmpty(source))
             {
                 this.source = source;
@@ -45,7 +42,7 @@ namespace Kadena.WebAPI.Infrastructure.Filters
                 log.AppendLine(body);
             };
 
-            logger.LogInfo(source, "HTTP request", log.ToString());
+            Logger.LogInfo(source, "HTTP request", log.ToString());
         }
     }
  }
