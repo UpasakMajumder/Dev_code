@@ -1,6 +1,4 @@
-﻿using Kadena.Dto.CreditCard;
-using Kadena.Dto.CreditCard.MicroserviceRequests;
-using Kadena.Dto.CreditCard.MicroserviceResponses;
+﻿using Kadena.Dto.CreditCard.MicroserviceRequests;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models.CreditCard;
 using Kadena.Models.SubmitOrder;
@@ -14,6 +12,7 @@ using Kadena.Helpers;
 using Newtonsoft.Json;
 using Kadena.BusinessLogic.Contracts;
 using Kadena2.Helpers;
+using Kadena.BusinessLogic.Factories;
 
 namespace Kadena2.BusinessLogic.Services.OrderPayment
 {
@@ -21,7 +20,6 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
     {
         private readonly ISubmissionService submissionService;
         private readonly IUserDataServiceClient userClient;
-        private readonly IPaymentServiceClient paymentClient;
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoLogger logger;
         private readonly IKenticoResourceService resources;
@@ -30,8 +28,9 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         private readonly ISendSubmitOrder sendOrder;
         private readonly IShoppingCartProvider shoppingCart;
         private readonly IGetOrderDataService orderDataProvider;
+        private readonly IOrderResultPageUrlFactory resultUrlFactory;
 
-        public CreditCard3dsi(ISubmissionService submissionService, IUserDataServiceClient userClient, IPaymentServiceClient paymentClient, IKenticoUserProvider kenticoUsers, IKenticoLogger logger, IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoSiteProvider kenticoSite, ISendSubmitOrder sendOrder, IShoppingCartProvider shoppingCart, IGetOrderDataService orderDataProvider)
+        public CreditCard3dsi(ISubmissionService submissionService, IUserDataServiceClient userClient, IKenticoUserProvider kenticoUsers, IKenticoLogger logger, IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoSiteProvider kenticoSite, ISendSubmitOrder sendOrder, IShoppingCartProvider shoppingCart, IGetOrderDataService orderDataProvider, IOrderResultPageUrlFactory resultUrlFactory)
         {
             if (submissionService == null)
             {
@@ -40,10 +39,6 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             if (userClient == null)
             {
                 throw new ArgumentNullException(nameof(userClient));
-            }
-            if (paymentClient == null)
-            {
-                throw new ArgumentNullException(nameof(paymentClient));
             }
             if (kenticoUsers == null)
             {
@@ -77,10 +72,13 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             {
                 throw new ArgumentNullException(nameof(orderDataProvider));
             }
+            if (resultUrlFactory == null)
+            {
+                throw new ArgumentNullException(nameof(resultUrlFactory));
+            }
 
             this.submissionService = submissionService;
             this.userClient = userClient;
-            this.paymentClient = paymentClient;
             this.kenticoUsers = kenticoUsers;
             this.logger = logger;
             this.resources = resources;
@@ -89,6 +87,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             this.sendOrder = sendOrder;
             this.shoppingCart = shoppingCart;
             this.orderDataProvider = orderDataProvider;
+            this.resultUrlFactory = resultUrlFactory;
         }
 
         public async Task<SubmitOrderResult> PayByCard3dsi(SubmitOrderRequest orderRequest)
@@ -107,10 +106,14 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             };
         }
 
+        /// <summary>
+        /// Service for handling SaveToken request from 3DSi
+        /// </summary>
         public async Task<bool> SaveToken(SaveTokenData tokenData)
         {
             if (tokenData == null || !tokenData.Approved)
             {
+                logger.LogError("3DSi SaveToken", "Empty or not approved token data received from 3DSi");
                 return false;
             }
             
@@ -118,6 +121,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             if (submission == null || !submission.AlreadyVerified)
             {
+                logger.LogError("3DSi SaveToken", $"Unknown or already used submissionId : {tokenData.SubmissionID}");
                 return false;
             }
 
@@ -134,35 +138,25 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             orderData.PaymentOption.PaymentGatewayCustomerCode = resources.GetSettingsKey("KDA_CreditCard_Code");
 
             var sendOrderResult = await sendOrder.SubmitOrderData(orderData);
+            var redirectUrlBase = resources.GetSettingsKey("KDA_CreditCard_PaymentResultPage");
+            var orderSuccess = sendOrderResult?.Success ?? false;
 
-            if (!(sendOrderResult?.Success ?? false))
+            if (orderSuccess)
+            {
+                logger.LogInfo("PayOrderByCard", "info", $"Order #{sendOrderResult.Payload} was saved into microservice");
+                shoppingCart.RemoveCurrentItemsFromStock();
+                shoppingCart.ClearCart();
+            }
+            else
             {
                 logger.LogError("PayOrderByCard", "Failed to save order to microservice.  " + sendOrderResult?.Error?.Message);
-                submissionService.SetAsProcessed(submission, GetOrderResultPageUrl(sendOrderResult));
-                return false;
             }
+            
+            var redirectUrl = resultUrlFactory.GetOrderResultPageUrl(redirectUrlBase, orderSuccess, sendOrderResult?.Payload);
+            submissionService.SetAsProcessed(submission, redirectUrl);
 
-            logger.LogInfo("PayOrderByCard", "info", $"Order #{sendOrderResult.Payload} was saved into microservice");
-
-            shoppingCart.RemoveCurrentItemsFromStock();
-            shoppingCart.ClearCart();
-            submissionService.SetAsProcessed(submission, GetOrderResultPageUrl(sendOrderResult));
-
-            return true;
+            return orderSuccess;
         }
-
-        private string GetOrderResultPageUrl(SubmitOrderResult submitOrderResult)
-        {
-            var redirectUrlBase = resources.GetSettingsKey("KDA_CreditCard_PaymentResultPage");
-            var redirectUrlBaseLocalized = documents.GetDocumentUrl(redirectUrlBase);
-            var redirectUrl = $"{redirectUrlBaseLocalized}?success={submitOrderResult?.Success ?? false}".ToLower();
-            if (submitOrderResult?.Success ?? false)
-            {
-                redirectUrl += "&order_id=" + submitOrderResult.Payload;
-            }
-            return redirectUrl;
-        }
-
 
         /// <summary>
         /// Saves the Token into UserData microservice
