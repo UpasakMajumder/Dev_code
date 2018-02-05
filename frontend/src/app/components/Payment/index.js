@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 /* AC */
-import submitCard from 'app.ac/card-payment';
+import { submitCard, saveToProfile } from 'app.ac/card-payment';
 /* helpers */
 import { cardPaymentSymbols } from 'app.helpers/validationRules';
 import { cardExpiration } from 'app.helpers/regexp';
@@ -29,7 +29,8 @@ class Payment extends Component {
       },
       cardType: 'unknown',
       focused: '',
-      invalids: []
+      invalids: [],
+      saveToProfile: false
     };
   }
 
@@ -107,7 +108,7 @@ class Payment extends Component {
   submit = () => {
     const submissionId = Payment.getSubmissionId();
 
-    const { proceedCard } = this.props;
+    const { proceedCard, saveToProfile } = this.props;
     const { fields, cardType } = this.state;
 
     const invalids = this.getInvalids();
@@ -115,7 +116,7 @@ class Payment extends Component {
     if (invalids.length) {
       this.setState({ invalids });
     } else {
-      location.assign(CARD_PAYMENT.RedirectURL);
+      if (this.state.saveToProfile) saveToProfile(fields, CARD_PAYMENT.saveToProfile.url);
       proceedCard(fields, cardType, submissionId);
     }
   }
@@ -167,6 +168,12 @@ class Payment extends Component {
     });
   };
 
+  handleSaveToProfile = () => {
+    this.setState({
+      saveToProfile: !this.state.saveToProfile
+    });
+  };
+
   render() {
     const { fields, focused, invalids } = this.state;
     const { isProceeded } = this.props;
@@ -178,7 +185,8 @@ class Payment extends Component {
           id="saveToProfile"
           label={saveToProfile.label}
           type="checkbox"
-          value={true}
+          checked={this.state.saveToProfile}
+          onChange={this.handleSaveToProfile}
         />
       ) : null;
 
@@ -226,5 +234,6 @@ export default connect((state) => {
   const { errorField, errorMessage, isProceeded } = cardPayment;
   return { errorField, errorMessage, isProceeded };
 }, {
-  proceedCard: submitCard
+  proceedCard: submitCard,
+  saveToProfile
 })(Payment);
