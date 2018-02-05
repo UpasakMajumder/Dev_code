@@ -75,13 +75,16 @@ export default (fields, cardType, submissionId) => {
         ResponseType
       };
 
+      const dataStr = createSearchStr(data).substr(1);
+      console.log(dataStr);
+
       dispatch({ type: SUBMIT_CARD + FETCH });
 
       axios({
         method: 'post',
         url: URL3DSi,
         headers: { 'Content-type': 'application/x-www-form-urlencoded' },
-        data
+        data: dataStr
       });
 
       redirectUser(dispatch, RedirectURL, submissionId);
