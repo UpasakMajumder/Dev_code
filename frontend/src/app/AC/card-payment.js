@@ -77,7 +77,6 @@ export default (fields, cardType, submissionId) => {
       };
 
       const dataStr = createSearchStr(data).substr(1);
-      console.log(dataStr);
 
       dispatch({ type: SUBMIT_CARD + FETCH });
 
