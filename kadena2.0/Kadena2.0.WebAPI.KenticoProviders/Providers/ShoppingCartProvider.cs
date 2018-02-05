@@ -511,16 +511,19 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var cartItem = ECommerceContext.CurrentShoppingCart.CartItems
                 .FirstOrDefault(i => i.SKUID == productDocument.NodeSKUID && i.GetValue("ChilliEditorTemplateID", Guid.Empty) == newItem.TemplateId);
-            var isNew = false;
+
+            var existingAmountInCart = 0;
             if (cartItem == null)
             {
-                isNew = true;
                 cartItem = isTemplatedType
-                    ? CreateCartItem(productDocument, newItem.TemplateId)
-                    : CreateCartItem(productDocument);
+                    ? CreateCartItem(productDocument, newItem.Options.Values.Distinct(), newItem.TemplateId)
+                    : CreateCartItem(productDocument, newItem.Options.Values.Distinct());
+            }
+            else
+            {
+                existingAmountInCart = cartItem.CartItemUnits;
             }
 
-            var existingAmountInCart = isNew ? 0 : cartItem.CartItemUnits;
             if (productType.Contains(ProductTypes.InventoryProduct))
             {
                 EnsureInventoryAmount(productDocument, addedAmount, existingAmountInCart);
@@ -621,12 +624,12 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        private ShoppingCartItemInfo CreateCartItem(TreeNode document)
+        private ShoppingCartItemInfo CreateCartItem(TreeNode document, IEnumerable<int> options)
         {
-            return CreateCartItem(document, Guid.Empty);
+            return CreateCartItem(document, options, Guid.Empty);
         }
 
-        private ShoppingCartItemInfo CreateCartItem(TreeNode document, Guid templateId)
+        private ShoppingCartItemInfo CreateCartItem(TreeNode document, IEnumerable<int> options, Guid templateId)
         {
             if (document == null)
             {
@@ -638,7 +641,7 @@ namespace Kadena.WebAPI.KenticoProviders
             var cart = ECommerceContext.CurrentShoppingCart;
             ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
 
-            var parameters = new ShoppingCartItemParameters(sku.SKUID, 1);
+            var parameters = new ShoppingCartItemParameters(sku.SKUID, 1, options);
 
             if (Guid.Empty != templateId)
             {
@@ -708,8 +711,8 @@ namespace Kadena.WebAPI.KenticoProviders
         }
         public List<int> GetUserIDsWithShoppingCart(int campaignID, int productType)
         {
-          return  ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartCampaignID", campaignID)
-                                                                   .WhereEquals("ShoppingCartInventoryType", productType).ToList().Select(x => x.ShoppingCartUserID).Distinct().ToList();
+            return ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartCampaignID", campaignID)
+                                                                     .WhereEquals("ShoppingCartInventoryType", productType).ToList().Select(x => x.ShoppingCartUserID).Distinct().ToList();
         }
     }
 }
