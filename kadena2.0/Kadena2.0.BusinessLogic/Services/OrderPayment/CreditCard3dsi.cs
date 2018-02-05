@@ -121,11 +121,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 return false;
             }
 
-            
-
-            string userId = submission.UserId.ToString();
-
-            var tokenId = await SaveTokenToUserData(userId, tokenData);
+            var tokenId = await SaveTokenToUserData(submission.UserId.ToString(), tokenData);
 
             if (string.IsNullOrEmpty(tokenId))
             {
@@ -134,52 +130,37 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             }
 
             var orderData = JsonConvert.DeserializeObject<OrderDTO>(submission.OrderJson, SerializerConfig.CamelCaseSerializer);
-
-
-            var authorizeResponse = await AuthorizeAmount(userId, tokenId, tokenData.Token, orderData);
-            if (!(authorizeResponse?.Succeeded ?? false))
-            {
-                logger.LogError("AuthorizeAmount", $"AuthorizeAmount failed, response:{Environment.NewLine}{authorizeResponse}");
-                return false;
-            }
-            
-            logger.LogInfo("AuthorizeAmount", "Info", $"AuthorizeAmount OK, response:{Environment.NewLine}{authorizeResponse}");
-
-            orderData.PaymentOption.TransactionKey = authorizeResponse.TransactionKey;
             orderData.PaymentOption.TokenId = tokenId;
             orderData.PaymentOption.PaymentGatewayCustomerCode = resources.GetSettingsKey("KDA_CreditCard_Code");
 
-            var sendToOrderServiceResult = await SendOrderToMicroservice(orderData);
+            var sendOrderResult = await sendOrder.SubmitOrderData(orderData);
 
-            if (!(sendToOrderServiceResult?.Success ?? false))
+            if (!(sendOrderResult?.Success ?? false))
             {
+                logger.LogError("PayOrderByCard", "Failed to save order to microservice.  " + sendOrderResult?.Error?.Message);
+                submissionService.SetAsProcessed(submission, GetOrderResultPageUrl(sendOrderResult));
                 return false;
             }
 
-            submissionService.SetAsProcessed(submission);
+            logger.LogInfo("PayOrderByCard", "info", $"Order #{sendOrderResult.Payload} was saved into microservice");
+
+            shoppingCart.RemoveCurrentItemsFromStock();
+            shoppingCart.ClearCart();
+            submissionService.SetAsProcessed(submission, GetOrderResultPageUrl(sendOrderResult));
+
             return true;
         }
 
-        private async Task<SubmitOrderResult> SendOrderToMicroservice(OrderDTO orderData)
+        private string GetOrderResultPageUrl(SubmitOrderResult submitOrderResult)
         {
-            var serviceResult = await sendOrder.SubmitOrderData(orderData);
-
-            if (serviceResult.Success)
-            {
-                shoppingCart.RemoveCurrentItemsFromStock();
-                shoppingCart.ClearCart();
-            }
-
-            var redirectUrlBase = resources.GetSettingsKey("KDA_OrderSubmittedUrl");
+            var redirectUrlBase = resources.GetSettingsKey("KDA_CreditCard_PaymentResultPage");
             var redirectUrlBaseLocalized = documents.GetDocumentUrl(redirectUrlBase);
-            var redirectUrl = $"{redirectUrlBaseLocalized}?success={serviceResult.Success}".ToLower();
-            if (serviceResult.Success)
+            var redirectUrl = $"{redirectUrlBaseLocalized}?success={submitOrderResult?.Success ?? false}".ToLower();
+            if (submitOrderResult?.Success ?? false)
             {
-                redirectUrl += "&order_id=" + serviceResult.Payload;
+                redirectUrl += "&order_id=" + submitOrderResult.Payload;
             }
-            serviceResult.RedirectURL = redirectUrl;
-
-            return serviceResult;
+            return redirectUrl;
         }
 
 
@@ -209,76 +190,26 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             return result.Payload.Result;
         }
 
-        private async Task<AuthorizeAmountResponseDto> AuthorizeAmount(string userId, string tokenId, string token, OrderDTO orderData)
-        {
-            var url = resources.GetSettingsKey("KDA_PaymentMicroserviceEndpoint");
-
-            var authorizeAmountRequest = new AuthorizeAmountRequestDto
-            {
-                User = new UserDto
-                {
-                    UserInternalId = userId,
-                    UserPaymentSystemCode = orderData.PaymentOption.KenticoPaymentOptionID.ToString()
-
-                },
-
-                PaymentData = new PaymentDataDto
-                {
-                    CardTokenId = tokenId,
-                    Token = token,
-                    PaymentProvider = string.Empty,
-                    TransactionKey = string.Empty // TODO
-                },
-
-                AdditionalAmounts = new AdditionalAmountsDto
-                {
-                    ShippingAmount = orderData?.TotalShipping ?? 0.0m,
-                    SalesTaxAmount = 0.0m, // TODO
-                    ShippingTax = 0.0m // TODO
-                },
-                SapDetails = new SapDetailsDto
-                {
-                    InvoiceNumber = orderData.PaymentOption.PONumber,
-                    // TODO some other properties ?
-                },
-
-                Currency = orderData.OrderCurrency.KenticoCurrencyID,
-                TotalAmount = orderData.TotalPrice
-            };
-
-            var result = await paymentClient.AuthorizeAmount(authorizeAmountRequest);
-
-            if (!(result?.Success ?? false) || result.Payload == null)
-            {
-                var error = "Failed to call Payment microservice to AuthorizeAmount. " + result?.ErrorMessages;
-                logger.LogError("AuthorizeAmount", error);
-                return null;
-            }
-
-            return result.Payload;
-        }
-
-        public bool CreditcardSaved(string submissionId)
+        public string CreditcardSaved(string submissionId)
         {
             var submission = submissionService.GetSubmission(submissionId);
 
-            if (submission == null || !submission.AlreadyVerified)
+            if (submission?.AlreadyVerified ?? false)
             {
-                return false;
+                int siteId = kenticoSite.GetKenticoSite().Id;
+                int userId = kenticoUsers.GetCurrentUser().UserId;
+                int customerId = kenticoUsers.GetCurrentCustomer().Id;
+                var submissonOwnerChecked = submission.CheckOwner(siteId, userId, customerId);
+
+                if (submissonOwnerChecked && submission.Processed)
+                {
+                    var redirectUrl = submission.RedirectUrl;
+                    submissionService.DeleteProcessedSubmission(submission);
+                    return redirectUrl;
+                }
             }
 
-            int siteId = kenticoSite.GetKenticoSite().Id;
-            int userId = kenticoUsers.GetCurrentUser().UserId;
-            int customerId = kenticoUsers.GetCurrentCustomer().Id;
-            var submissonOwnerChecked = submission.CheckOwner(siteId, userId, customerId);
-
-            if (submissonOwnerChecked && submission.Processed)
-            {
-                submissionService.DeleteProcessedSubmission(submission);
-                return true;
-            }
-
-            return false;
+            return string.Empty;
         }
     }
 }

@@ -78,9 +78,10 @@ namespace Kadena.BusinessLogic.Services
             return submissionProvider.GetSubmission(submissionGuid);
         }
 
-        public void SetAsProcessed(Submission submission)
+        public void SetAsProcessed(Submission submission, string redirectUrl)
         {
             submission.Processed = true;
+            submission.RedirectUrl = redirectUrl;
             submissionProvider.SaveSubmission(submission);
         }
 

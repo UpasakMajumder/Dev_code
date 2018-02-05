@@ -5,6 +5,7 @@ using Kadena.BusinessLogic.Factories;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.BusinessLogic.Services;
 using Kadena.BusinessLogic.Services.Orders;
+using Kadena.BusinessLogic.Services.SettingsSynchronization;
 using Kadena.Helpers;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -79,7 +80,8 @@ namespace Kadena2.Container.Default
             container.Register<IGetOrderDataService, GetOrderDataService>();
             container.Register<ISendSubmitOrder, SendSubmitOrder>();
             container.Register<ISubmissionService, SubmissionService>();
-            container.Register<IShippingCostServiceClient, ShippingCostServiceClient>();			
+            container.Register<IShippingCostServiceClient, ShippingCostServiceClient>();
+            container.Register<ISettingsSynchronizationService, SettingsSynchronizationService>();
             return container;
         }
 
@@ -108,6 +110,7 @@ namespace Kadena2.Container.Default
             container.Register<IKenticoOrderProvider, KenticoOrderProvider>();
             container.Register<ISubmissionIdProvider, SubmissionIdProvider>();
             container.Register<IKenticoCustomerProvider, KenticoCustomerProvider>();
+            container.Register<IKenticoSettingsProvider, KenticoSettingsProvider>();
             return container;
         }
 
@@ -134,6 +137,10 @@ namespace Kadena2.Container.Default
             container.Register<ICreditCardManagerClient, CreditCardManagerClient>();
             container.Register<IPaymentServiceClient, PaymentServiceClient>();
             container.Register<IUserDataServiceClient, UserDataServiceClient>();
+            container.Register<ICloudEventConfiguratorClient, CloudEventConfiguratorClient>();
+            container.Register<IParsingClient, ParsingClient>();
+            container.Register<IStatisticsClient, StatisticsClient>();
+            container.Register<IExportClient, ExportClient>();
             return container;
         }
 

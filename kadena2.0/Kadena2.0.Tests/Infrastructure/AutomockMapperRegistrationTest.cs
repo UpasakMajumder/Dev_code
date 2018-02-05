@@ -8,6 +8,7 @@ using Xunit;
 
 namespace Kadena.Tests.Infrastructure
 {
+    [Trait("Infrastructure", "DIContainer")]
     public class AutomockMapperRegistrationTest
     {
         private class ServiceWithMapper

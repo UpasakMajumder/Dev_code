@@ -1,10 +1,8 @@
 ﻿using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
-using Kadena.Old_App_Code.Kadena;
 using Kadena2.Container.Default;
-using Kadena2.MicroserviceClients.Clients;
-using Kadena2.MicroserviceClients.Contracts.Base;
+using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +23,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             Tuple.Create("city", "City", false ),
             Tuple.Create("state", "State", false ),
             Tuple.Create("zip code", "Zip", false )
-        };
-        private IMicroProperties _microProperties = DIContainer.Resolve<IMicroProperties>();
+        };        
         private string _fileId;
         private Guid _containerId;
 
@@ -63,7 +60,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
             if (!string.IsNullOrWhiteSpace(_fileId) && _containerId != Guid.Empty)
             {
-                var parsingClient = new ParsingClient(_microProperties);
+                var parsingClient = DIContainer.Resolve<IParsingClient>();
                 var parseResult = parsingClient.GetHeaders(_fileId.ToString()).Result;
                 if (parseResult.Success)
                 {
@@ -129,13 +126,13 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 {
                     try
                     {
-                        var mailingClient = new MailingListClient(_microProperties);
+                        var mailingClient = DIContainer.Resolve<IMailingListClient>();
                         var uploadResult = mailingClient.UploadMapping(_fileId, _containerId, mapping).Result;
                         if (!uploadResult.Success)
                         {
                             throw new InvalidOperationException(uploadResult.ErrorMessages);
                         }
-                        var validationClient = new AddressValidationClient(_microProperties);
+                        var validationClient = DIContainer.Resolve<IAddressValidationClient>();
                         var validationResult = validationClient.Validate(_containerId).Result;
                         if (!validationResult.Success)
                         {

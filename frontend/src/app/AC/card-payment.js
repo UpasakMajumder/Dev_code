@@ -21,7 +21,7 @@ const redirectUser = (dispatch, RedirectURL, submissionId) => {
       if (redirectionURL) {
         location.assign(redirectionURL);
       } else {
-        setTimeout(() => redirectUser(dispatch, RedirectURL, submissionId), 500);
+        setTimeout(() => redirectUser(dispatch, RedirectURL, submissionId), 1000);
       }
     }
   }).catch(() => {
