@@ -45,7 +45,9 @@ export default (fields, cardType, submissionId) => {
         TerminalIdentifier_MerchantCode,
         APCount,
         PTCount,
-        DemoURL
+        DemoURL,
+        ResultURL,
+        ResponseType
       } = CARD_PAYMENT;
 
       if (!submissionId) {
@@ -68,7 +70,9 @@ export default (fields, cardType, submissionId) => {
         CustomerIdentifier_CustomerCode,
         TerminalIdentifier_LocationCode,
         TerminalIdentifier_TerminalCode,
-        TerminalIdentifier_MerchantCode
+        TerminalIdentifier_MerchantCode,
+        ResultURL,
+        ResponseType
       };
 
       dispatch({ type: SUBMIT_CARD + FETCH });
