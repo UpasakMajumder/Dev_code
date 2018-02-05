@@ -7,7 +7,7 @@
 {% set headerTitle = title %}
 
 {% block content %}
-  {% set type = 'radio-h' %}
+  {% set type = 'radio' %}
   {% include 'components/product/clothes.nunj' %}
   {% include "components/product/description.nunj" %}
 {% endblock %}

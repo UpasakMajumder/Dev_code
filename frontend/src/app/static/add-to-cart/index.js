@@ -16,17 +16,20 @@ class AddToCart {
     const customProductName = this.nameElement && this.nameElement.value;
     const quantity = this.quantityElement ? this.quantityElement.value : 0;
 
-    const body = { customProductName, quantity };
+    const body = { customProductName, quantity, options: {} };
 
     this.properyFields.forEach((field) => {
-      const name = field.getAttribute('name');
+      const { name, value } = field;
 
-      if (field.type === 'radio') {
-        if (field.checked) body[name] = field.value;
+      if (field.classList.contains('js-product-option')) {
+        if (field.type === 'radio') {
+          if (field.checked) body.options[name] = value;
+        } else {
+          body.options[name] = value;
+        }
       } else {
-        body[name] = field.value;
+        body[name] = value;
       }
-
     });
 
     return body;

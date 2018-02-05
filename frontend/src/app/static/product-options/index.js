@@ -47,8 +47,8 @@ class ProductOptions {
   };
 
   setNewPrice = (data) => {
-    const { price } = data;
-    this.priceElement.innerHTML = price;
+    const { pricePrefix, priceValue } = data;
+    this.priceElement.innerHTML = `${pricePrefix} ${priceValue}`;
   };
 
   getPriceElement = () => {
