@@ -157,13 +157,22 @@ namespace Kadena.BusinessLogic.Services
 
                         return new ProductTemplate
                         {
+<<<<<<< HEAD
+                            EditorUrl = BuildTemplateEditorUrl(productEditorUrl, nodeId, d.TemplateId.ToString(),
+                                product.ProductChiliWorkgroupID.ToString(), quantity, d.MailingList?.ContainerId, d.Name),
+                            TemplateId = d.TemplateId,
+                            CreatedDate = DateTime.Parse(d.Created),
+                            UpdatedDate = DateTime.Parse(d.Updated),
+                            ProductName = d.Name,
+                            Image = d.PreviewUrls?.FirstOrDefault()
+=======
                             EditorUrl = BuildTemplateEditorUrl(productEditorUrl, nodeId, t.TemplateId.ToString(),
                                 product.ProductChiliWorkgroupID.ToString(), quantity, t.MailingList?.ContainerId, t.Name),
                             TemplateId = t.TemplateId,
                             CreatedDate = t.Created,
                             UpdatedDate = t.Updated,
-                            ProductName = t.Name,
-                            Image = t.PreviewUrls?.FirstOrDefault()
+                            ProductName = t.Name
+>>>>>>> 0ef9fe9acbe4ae8214cb68936bc1fd03d72896c5
                         };
                     })
                     .OrderByDescending(t => t.UpdatedDate)
