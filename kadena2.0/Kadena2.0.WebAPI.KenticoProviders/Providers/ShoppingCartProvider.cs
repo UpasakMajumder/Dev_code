@@ -404,7 +404,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return 0.0m;
         }
 
-        private decimal GetDynamicPrice(TreeNode document, int quantity)
+        private static decimal GetDynamicPrice(SKUTreeNode document, int quantity)
         {
             var ranges = GetDynamicPricingRanges(document);
 
@@ -426,13 +426,13 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        private IEnumerable<DynamicPricingRange> GetDynamicPricingRanges(int documentId)
+        private static IEnumerable<DynamicPricingRange> GetDynamicPricingRanges(int documentId)
         {
-            var document = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            var document = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser)) as SKUTreeNode;
             return GetDynamicPricingRanges(document);
         }
 
-        private IEnumerable<DynamicPricingRange> GetDynamicPricingRanges(TreeNode document)
+        private static IEnumerable<DynamicPricingRange> GetDynamicPricingRanges(SKUTreeNode document)
         {
             var rawJson = document?.GetStringValue("ProductDynamicPricing", string.Empty);
             var ranges = JsonConvert.DeserializeObject<List<DynamicPricingRange>>(rawJson ?? string.Empty);
@@ -504,8 +504,7 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
-
-            var productDocument = DocumentHelper.GetDocument(newItem.DocumentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            var productDocument = DocumentHelper.GetDocument(newItem.DocumentId, new TreeProvider(MembershipContext.AuthenticatedUser)) as SKUTreeNode;
             var productType = productDocument.GetValue("ProductType", string.Empty);
             var isTemplatedType = ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct);
 
@@ -526,7 +525,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             if (productType.Contains(ProductTypes.InventoryProduct))
             {
-                EnsureInventoryAmount(productDocument, addedAmount, existingAmountInCart);
+                EnsureInventoryAmount(productDocument.GetIntegerValue("SKUAvailableItems", 0), addedAmount, existingAmountInCart);
             }
 
             var isMailingType = ProductTypes.IsOfType(productType, ProductTypes.MailingProduct);
@@ -576,9 +575,8 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        private void EnsureInventoryAmount(TreeNode productDocument, int addedAmount, int existingAmount)
+        private void EnsureInventoryAmount(int availableAmount, int addedAmount, int existingAmount)
         {
-            var availableAmount = productDocument.GetIntegerValue("SKUAvailableItems", 0);
             if (addedAmount > availableAmount)
             {
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.LowerNumberOfAvailableProducts"));
@@ -610,7 +608,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        private void RefreshPrice(ShoppingCartItemInfo cartItem, TreeNode document)
+        private void RefreshPrice(ShoppingCartItemInfo cartItem, SKUTreeNode document)
         {
             var dynamicUnitPrice = GetDynamicPrice(document, cartItem.CartItemUnits);
             if (dynamicUnitPrice == decimal.MinusOne)
@@ -624,12 +622,12 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        private ShoppingCartItemInfo CreateCartItem(TreeNode document, IEnumerable<int> options)
+        private static ShoppingCartItemInfo CreateCartItem(SKUTreeNode document, IEnumerable<int> options)
         {
             return CreateCartItem(document, options, Guid.Empty);
         }
 
-        private ShoppingCartItemInfo CreateCartItem(TreeNode document, IEnumerable<int> options, Guid templateId)
+        private static ShoppingCartItemInfo CreateCartItem(SKUTreeNode document, IEnumerable<int> options, Guid templateId)
         {
             if (document == null)
             {
@@ -670,7 +668,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return cartItem;
         }
 
-        private SKUInfo GetOrCreateTemplateOptionSKU()
+        private static SKUInfo GetOrCreateTemplateOptionSKU()
         {
             const string optionName = "TemplatedProductOption";
             var optionSku = SKUInfoProvider.GetSKUs()
