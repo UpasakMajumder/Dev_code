@@ -111,7 +111,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         /// </summary>
         public async Task<bool> SaveToken(SaveTokenData tokenData)
         {
-            if (tokenData == null || !tokenData.Approved)
+            if (tokenData == null || tokenData.Approved == 0)
             {
                 logger.LogError("3DSi SaveToken", "Empty or not approved token data received from 3DSi");
                 return false;
@@ -124,6 +124,8 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 logger.LogError("3DSi SaveToken", $"Unknown or already used submissionId : {tokenData.SubmissionID}");
                 return false;
             }
+
+            logger.LogInfo("3DSi SaveToken", "Info", $"Received SaveTokenData request, status: " + tokenData?.SubmissionStatusMessage);
 
             var tokenId = await SaveTokenToUserData(submission.UserId.ToString(), tokenData);
 
@@ -184,6 +186,9 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             return result.Payload.Result;
         }
 
+        /// <summary>
+        /// Handles FE periodical request if payment processeed
+        /// </summary>
         public string CreditcardSaved(string submissionId)
         {
             var submission = submissionService.GetSubmission(submissionId);

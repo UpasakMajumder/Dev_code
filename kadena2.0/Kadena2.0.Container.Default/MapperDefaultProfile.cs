@@ -2,6 +2,7 @@
 using Kadena.Dto.Brands;
 using Kadena.Dto.BusinessUnits;
 using Kadena.Dto.Checkout;
+using Kadena.Dto.CreditCard._3DSi.Requests;
 using Kadena.Dto.CreditCard._3DSi.Responses;
 using Kadena.Dto.CustomerData;
 using Kadena.Dto.General;
@@ -242,6 +243,7 @@ namespace Kadena2.Container.Default
                 .ForMember(dest => dest.SubmissionID, opt => opt.MapFrom(src => src.SubmissionId));
             CreateMap<string, CreditCardPaymentDoneDto>()
                 .ForMember(dest => dest.RedirectionURL, opt => opt.MapFrom(src => src));
+            CreateMap<SaveTokenDataRequestDto, SaveTokenData>();
         }
     }
 }
