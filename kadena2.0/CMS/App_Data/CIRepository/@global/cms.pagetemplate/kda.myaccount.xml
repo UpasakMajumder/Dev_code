@@ -350,23 +350,12 @@ config.localization.userSettings = {
         </webpart>
       </webpartzone>
       <webpartzone id="zoneFYBudgetHistory" v="1">
-        <webpart controlid="ctrptBudgetHistory" guid="0d12ca4b-25c9-4d4c-8706-de7c51553b57" type="CustomTableRepeater" v="1">
-          <property name="alternatingtransformationname"></property>
-          <property name="backnextlocation">split</property>
-          <property name="cachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="cacheitemname"></property>
-          <property name="cacheminutes">0</property>
+        <webpart controlid="FyBudget" guid="8e5e4f51-53c5-4d7e-a422-e07a0923eeba" type="FyBudget" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
           <property name="cat_open_visibility"></property>
-          <property name="checkpermissions">False</property>
           <property name="container"></property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
@@ -374,34 +363,35 @@ config.localization.userSettings = {
           <property name="containertitle"></property>
           <property name="contentafter">
 <![CDATA[
-</tbody>
-</table>
+<div class="dialog" id="autoSave_Dialog">
+  <div class="dialog__shadow"></div>
+  <div class="dialog__block">
+    <div class="dialog__content">
+      <p class="response_Success">
+        {$KDA.FYBudget.Success$}
+      </p>
+      <p class="response_failure">
+        {$KDA.FYBudget.Failure$}
+      </p>
+    </div>
+    <div class="dialog__footer">
+      <div class="btn-group btn-group--right">
+        <button type="button" class="btn-action btn-action--secondary js-CloseMesaage">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 ]]>
           </property>
-          <property name="contentbefore">
-<![CDATA[
-<table class="show-table">
-  <tbody>
-    <tr>
-      <th>{% GetResourceString("Kadena.FYBudget.FiscalYear") |(user)cvoqa2@gmail.com|(hash)73f771b9c7083d1638747946bcef3004001a10e805f9408bb443c1caeed391c7%}</th>
-      <th>{% GetResourceString("Kadena.FYBudget.Budget") |(user)cvoqa2@gmail.com|(hash)89a9bc7006ac2544c95d2f8a4a12115f35e5c2cac3a59d1332c1f2ecc8863a3c%}</th>
-    </tr>
-]]>
-          </property>
-          <property name="controlid">ctrptBudgetHistory</property>
-          <property name="customtable">KDA.UserFYBudgetAllocation</property>
+          <property name="contentbefore"></property>
+          <property name="controlid">FyBudget</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
           <property name="enableoutputfilter">False</property>
-          <property name="enablepaging">False</property>
-          <property name="filtername"></property>
-          <property name="hidecontrolforzerorows">False</property>
           <property name="hideonsubpages">False</property>
-          <property name="instanceguid">0d12ca4b-25c9-4d4c-8706-de7c51553b57</property>
-          <property name="itemseparator"></property>
-          <property name="orderby"></property>
+          <property name="instanceguid">8e5e4f51-53c5-4d7e-a422-e07a0923eeba</property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>
@@ -409,12 +399,6 @@ config.localization.userSettings = {
           <property name="outputfixlowercase">True</property>
           <property name="outputfixselfclose">True</property>
           <property name="outputresolveurls">True</property>
-          <property name="pagenumbersseparator">-</property>
-          <property name="pagerhtmlafter"></property>
-          <property name="pagerhtmlbefore"></property>
-          <property name="pagerposition">bottom</property>
-          <property name="pagesize">10</property>
-          <property name="pagingmode">querystring</property>
           <property name="partialcachedependencies">
 <![CDATA[
 ##DEFAULT##
@@ -423,25 +407,70 @@ config.localization.userSettings = {
           </property>
           <property name="partialcacheminutes"></property>
           <property name="preservepartialcacheonpostback">False</property>
-          <property name="querystringkey"></property>
-          <property name="resultsposition">top</property>
-          <property name="selecteddatabasecolumnname">ItemID</property>
-          <property name="selecteditemtransformationname"></property>
-          <property name="selectedquerystringkeyname">ItemID</property>
-          <property name="selectedvalidationtype">int</property>
-          <property name="selecttopn"></property>
-          <property name="showfirstlast">True</property>
           <property name="showfordocumenttypes"></property>
           <property name="timezonetype">inherit</property>
-          <property name="transformationname">KDA.Transformations.FYBudgetHistory</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
-          <property name="webparttitle">FY Budget History</property>
-          <property name="webparttype">CustomTableRepeater</property>
-          <property name="wherecondition" ismacro="true">
-            <![CDATA[UserID={%CurrentUser.UserID|(user)cvoqa2@gmail.com|(hash)151ea260d45cbb40b6b460c3d41821d9e9dbc03b916f839032f8f77203b978ef%} AND SiteID={%CurrentSite.SiteID|(user)cvoqa2@gmail.com|(hash)7cfc90a7531eb28cb1698bcc36ccdc6093504c59ab4a8814d9ecdfe6eb948648%}]]>
+          <property name="webparttitle"></property>
+          <property name="webparttype">FyBudget</property>
+        </webpart>
+        <webpart controlid="FYBudget_Javascript" guid="1bcebdfc-40e8-4231-8461-530d77fcc031" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">FYBudget_Javascript</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+<script type="text/javascript" >
+    $(".js-UserBudget").focusout(function () {
+        var itemID = parseInt($(this).siblings().first().val());
+        var userBudget = parseInt($(this).val());
+        if (itemID != undefined && userBudget != undefined) {
+            UpdateItem(itemID, userBudget);
+        }
+        $(".js-CloseMesaage").on("click", function () {
+            $(this).closest(".dialog").removeClass("active");
+        })
+      function UpdateItem(itemID,userBudget){
+          var request = { ItemID: itemID, UserBudget: userBudget }
+            $.ajax({
+              type: "POST",
+              data :JSON.stringify(request),
+              url: "api/userbudget/updateUserBudget",
+              contentType: "application/json",
+              success: function (data) {
+                $('#autoSave_Dialog').addClass('active');
+                if (data == 200) {
+                  $('.response_Success').show();
+                  $('.response_failure').hide();
+                } 
+                else{
+                  $('.response_Success').hide();
+                  $('.response_failure').show();
+                }
+              },
+              error:function (xhr, ajaxOptions, thrownError) {
+                $('.response_Success').hide();
+                $('.response_failure').show();
+              }
+            });
+      }
+    }); 
+</script>
+]]>
           </property>
-          <property name="zerorowstext" ismacro="true">{$Kadena.FYBudget.NoBudgetHistory$}</property>
+          <property name="inlinescriptpagelocation">Startup</property>
+          <property name="instanceguid">1bcebdfc-40e8-4231-8461-530d77fcc031</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
         </webpart>
       </webpartzone>
     </page>
