@@ -79,7 +79,8 @@ namespace Kadena2.Container.Default
             container.Register<IGetOrderDataService, GetOrderDataService>();
             container.Register<ISendSubmitOrder, SendSubmitOrder>();
             container.Register<ISubmissionService, SubmissionService>();
-            container.Register<IShippingCostServiceClient, ShippingCostServiceClient>();			
+            container.Register<IShippingCostServiceClient, ShippingCostServiceClient>();
+            container.Register<IUserBudgetService, UserBudgetService>();			
             return container;
         }
 
