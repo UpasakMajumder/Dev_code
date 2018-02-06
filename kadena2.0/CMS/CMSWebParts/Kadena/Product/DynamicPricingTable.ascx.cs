@@ -14,7 +14,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
 {
     public partial class DynamicPricingTable : CMSAbstractWebPart
     {
-        private const string _TableRowTemplate = "<tr><td>{0}</td><td{2}>{1}</td></tr>";
+        private const string _TableRowTemplate = "<tr><td>{0}</td><td{2}>{3} {1}</td></tr>";
 
         public string PriceElementName
         {
@@ -53,8 +53,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     var basePrice = DocumentContext.CurrentDocument.GetDoubleValue("SKUPrice", 0);
                     ltlTableContent.Text = string.Format(_TableRowTemplate,
                         ResHelper.GetString("Kadena.Product.BasePriceTitle", LocalizationContext.CurrentCulture.CultureCode),
-                        basePrice.ToString("C"),
-                        string.IsNullOrWhiteSpace(PriceElementName) ? string.Empty : $" id='{PriceElementName}'");
+                        basePrice.ToString("N2"),
+                        string.IsNullOrWhiteSpace(PriceElementName) ? string.Empty : $" id='{PriceElementName}'",
+                        ResHelper.GetString("Kadena.Checkout.ItemPricePrefix", LocalizationContext.CurrentCulture.CultureCode));
                 }
                 else
                 {
@@ -64,7 +65,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         var result = new StringBuilder();
                         foreach (var item in data)
                         {
-                            result.Append(string.Format(_TableRowTemplate, string.Format(ResHelper.GetString("Kadena.Product.PiecesFormatString", LocalizationContext.CurrentCulture.CultureCode), item.Min, item.Max), item.Price.ToString("C"), string.Empty));
+                            result.Append(string.Format(_TableRowTemplate, 
+                                string.Format(ResHelper.GetString("Kadena.Product.PiecesFormatString", LocalizationContext.CurrentCulture.CultureCode), item.Min, item.Max), 
+                                item.Price.ToString("N2"), 
+                                string.Empty,
+                                ResHelper.GetString("Kadena.Checkout.ItemPricePrefix", LocalizationContext.CurrentCulture.CultureCode)));
                         }
                         ltlTableContent.Text = result.ToString();
                     }
