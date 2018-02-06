@@ -100,7 +100,7 @@
 config.localization.cardPayment = {
         URL3DSi: '{% Settings.GetValue("KDA_CreditCard_3DSi_AuthorizeEndpoint", string.Empty) |(user)michal.machacek@actum.cz|(hash)d959a363d031ec105773138138cf79b0bc0f25bc9c8a5472bda42c7ef5daa5ac%}',
         RedirectURL: '/api/3dsi/creditcarddone',
-        ResultURL: 'https://{%SiteContext.CurrentSite.SiteDomainName|(user)michal.machacek@actum.cz|(hash)c2632468ecec4830a2687c253a2f179d3e7f17abc99b9377ed456373de21846c%}/api/3dsi/savetoken',
+        ResultURL: '{% Settings.GetValue("KDA_CreditCard_SaveTokenUrl", string.Empty) |(user)michal.machacek@actum.cz|(hash)75e072dc81103f93678f0b819dc33ad0a9c177fc53842758d073cc722a5616d1%}',
         ResponseType: 'Return',
         acceptedCards: ['visa', 'amex', 'mastercard'],
         submitButtonText: '{$Kadena.CreditCard.ProceedPaymentButton$}',
