@@ -10,6 +10,8 @@ using Kadena.Models.CreditCard;
 using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Http;
+using System.Net;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -40,30 +42,26 @@ namespace Kadena.WebAPI.Controllers
             this.mapper = mapper;
         }
 
-        /// <summary>
-        /// 3DSi will call this to save token
-        /// </summary>
         [HttpPost]
         [Route("api/3dsi/approveSubmission")]
         [RequestLogFilter("3DSi Approve")]
-        public IHttpActionResult ApproveSubmission([FromBody]ApproveRequestDto request)
+        public HttpResponseMessage ApproveSubmission([FromBody]ApproveSubmissionRequestDto request)
         {
            var success = submissions.VerifySubmissionId(request.SubmissionID);
-           return Ok(success ? ApproveResponseDto.SubmissionApproved : ApproveResponseDto.SubmissionDenied);
+            var resultDto = success ? ApproveSubmissionResponseDto.SubmissionApproved : ApproveSubmissionResponseDto.SubmissionDenied;
+            return Request.CreateResponse(HttpStatusCode.OK, resultDto, Configuration.Formatters.XmlFormatter, "text/xml");
         }
 
 
-        /// <summary>
-        /// 3DSi will call this to save token
-        /// </summary>
         [HttpPost]
         [Route("api/3dsi/savetoken")]
         [RequestLogFilter("3DSi SaveToken")]
-        public async Task<IHttpActionResult> SaveToken([FromBody]SaveTokenDataRequestDto request)
+        public async Task<HttpResponseMessage> SaveToken([FromBody]SaveTokenDataRequestDto request)
         {
             var saveTokenData = mapper.Map<SaveTokenData>(request);
             var success = await service.SaveToken(saveTokenData);
-            return Ok(success ? SaveTokenResponseDto.ResultApproved : SaveTokenResponseDto.ResultFailed);
+            var resultDto = success ? SaveTokenResponseDto.ResultApproved : SaveTokenResponseDto.ResultFailed;
+            return Request.CreateResponse(HttpStatusCode.OK, resultDto, Configuration.Formatters.XmlFormatter, "text/xml");
         }
 
         /// <summary>

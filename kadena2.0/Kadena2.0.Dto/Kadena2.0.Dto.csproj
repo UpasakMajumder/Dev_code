@@ -54,7 +54,6 @@
     <Compile Include="BusinessUnits\BusinessUnitDto.cs" />
     <Compile Include="CreditCard\3DSi\Requests\SaveTokenDataRequestDto.cs" />
     <Compile Include="CreditCard\3DSi\Responses\CreditCardPaymentDoneDto.cs" />
-    <Compile Include="CreditCard\3DSi\Responses\GetSubmissionIdResponseDto.cs" />
     <Compile Include="Product\BorderDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDailogLabelDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialogDto.cs" />
@@ -90,9 +89,8 @@
     <Compile Include="Checkout\PaymentMethodDTO.cs" />
     <Compile Include="Checkout\Requests\ChangeItemQuantityRequestDto.cs" />
     <Compile Include="Checkout\Requests\ChangeSelectionRequestDto.cs" />
-    <Compile Include="CreditCard\3DSi\Requests\ApproveRequestDto.cs" />
-    <Compile Include="CreditCard\3DSi\Requests\SaveTokenRequestDto.cs" />
-    <Compile Include="CreditCard\3DSi\Responses\ApproveResponseDto.cs" />
+    <Compile Include="CreditCard\3DSi\Requests\ApproveSubmissionRequestDto.cs" />
+    <Compile Include="CreditCard\3DSi\Responses\ApproveSubmissionResponseDto.cs" />
     <Compile Include="CreditCard\3DSi\Responses\SaveTokenResponseDto.cs" />
     <Compile Include="CreditCard\AdditionalAmountsDto.cs" />
     <Compile Include="CreditCard\MicroserviceRequests\AuthorizeAmountRequestDto.cs" />
