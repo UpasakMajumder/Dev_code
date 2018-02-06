@@ -508,42 +508,22 @@ namespace Kadena.WebAPI.KenticoProviders
             var productType = productDocument.GetValue("ProductType", string.Empty);
             var isTemplatedType = ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct);
 
-            var cartItem = ECommerceContext.CurrentShoppingCart.CartItems
-                .FirstOrDefault(i => i.SKUID == productDocument.NodeSKUID && i.GetValue("ChilliEditorTemplateID", Guid.Empty) == newItem.TemplateId);
-
-            var existingAmountInCart = 0;
-            if (cartItem == null)
-            {
-                cartItem = isTemplatedType
-                    ? CreateCartItem(productDocument, newItem.Options.Values.Distinct(), newItem.TemplateId)
-                    : CreateCartItem(productDocument, newItem.Options.Values.Distinct());
-            }
-            else
-            {
-                existingAmountInCart = cartItem.CartItemUnits;
-            }
+            var cartItem = EnsureCartItem(productDocument, newItem.Options.Values.Distinct(), newItem.TemplateId, addedAmount);
 
             if (productType.Contains(ProductTypes.InventoryProduct))
             {
-                EnsureInventoryAmount(productDocument.GetIntegerValue("SKUAvailableItems", 0), addedAmount, existingAmountInCart);
+                EnsureInventoryAmount(productDocument.GetIntegerValue("SKUAvailableItems", 0), addedAmount, cartItem.CartItemUnits);
             }
 
             var isMailingType = ProductTypes.IsOfType(productType, ProductTypes.MailingProduct);
-            if (isTemplatedType || isMailingType)
+            if (isMailingType)
             {
-                if (isMailingType)
+                if (mailingList?.AddressCount != addedAmount)
                 {
-                    if (mailingList?.AddressCount != addedAmount)
-                    {
-                        throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
-                    }
-                    SetMailingList(cartItem, mailingList);
+                    throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
                 }
+                SetMailingList(cartItem, mailingList);
                 SetAmount(cartItem, addedAmount);
-            }
-            else
-            {
-                SetAmount(cartItem, addedAmount + existingAmountInCart);
             }
 
             SetArtwork(cartItem, productDocument.GetStringValue("ProductArtwork", string.Empty));
@@ -552,7 +532,10 @@ namespace Kadena.WebAPI.KenticoProviders
             SetCustomName(cartItem, newItem.CustomProductName);
 
             ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
-
+            foreach (ShoppingCartItemInfo option in cartItem.ProductOptions)
+            {
+                ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(option);
+            }
             return GetShoppingCartItems().FirstOrDefault(i => i.Id == cartItem.CartItemID);
         }
 
@@ -575,18 +558,18 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        private void EnsureInventoryAmount(int availableAmount, int addedAmount, int existingAmount)
+        private void EnsureInventoryAmount(int availableQuantity, int addedQuantity, int resultedQuantity)
         {
-            if (addedAmount > availableAmount)
+            if (addedQuantity > availableQuantity)
             {
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.LowerNumberOfAvailableProducts"));
             }
             else
             {
-                if (addedAmount + existingAmount > availableAmount)
+                if (resultedQuantity > availableQuantity)
                 {
                     throw new ArgumentException(string.Format(resources.GetResourceString("Kadena.Product.ItemsInCartExceeded"),
-                        existingAmount, availableAmount - existingAmount));
+                        resultedQuantity - addedQuantity, availableQuantity - resultedQuantity + addedQuantity));
                 }
             }
         }
@@ -622,29 +605,22 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        private static ShoppingCartItemInfo CreateCartItem(SKUTreeNode document, IEnumerable<int> options)
-        {
-            return CreateCartItem(document, options, Guid.Empty);
-        }
-
-        private static ShoppingCartItemInfo CreateCartItem(SKUTreeNode document, IEnumerable<int> options, Guid templateId)
+        private static ShoppingCartItemInfo EnsureCartItem(SKUTreeNode document, IEnumerable<int> options, Guid templateId, int quantity)
         {
             if (document == null)
             {
                 return null;
             }
 
-            var sku = SKUInfoProvider.GetSKUInfo(document.NodeSKUID);
-
             var cart = ECommerceContext.CurrentShoppingCart;
             ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
-
-            var parameters = new ShoppingCartItemParameters(sku.SKUID, 1, options);
+            
+            var parameters = new ShoppingCartItemParameters(document.NodeSKUID, quantity, options);
 
             if (Guid.Empty != templateId)
             {
-                var optionSku = GetOrCreateTemplateOptionSKU();
-                var option = new ShoppingCartItemParameters(optionSku.SKUID, 1)
+                var optionSku = EnsureTemplateOptionSKU();
+                var option = new ShoppingCartItemParameters(optionSku.SKUID, quantity)
                 {
                     Text = templateId.ToString()
                 };
@@ -653,8 +629,8 @@ namespace Kadena.WebAPI.KenticoProviders
             }
 
             var cartItem = cart.SetShoppingCartItem(parameters);
-
-            cartItem.CartItemText = sku.SKUName;
+            
+            cartItem.CartItemText = document.DocumentSKUName;
             cartItem.SetValue("ChilliEditorTemplateID", templateId);
             cartItem.SetValue("ChiliTemplateID", document.GetGuidValue("ProductChiliTemplateID", Guid.Empty));
             cartItem.SetValue("ProductType", document.GetStringValue("ProductType", string.Empty));
@@ -668,7 +644,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return cartItem;
         }
 
-        private static SKUInfo GetOrCreateTemplateOptionSKU()
+        private static SKUInfo EnsureTemplateOptionSKU()
         {
             const string optionName = "TemplatedProductOption";
             var optionSku = SKUInfoProvider.GetSKUs()
