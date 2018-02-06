@@ -12,9 +12,10 @@ namespace Kadena.BusinessLogic.Services
         private readonly IUserDataServiceClient userClient;
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoSiteProvider kenticoSite;
-        
+        private readonly IKenticoLogger kenticoLog;
 
-        public SubmissionService(ISubmissionIdProvider submissionProvider, IUserDataServiceClient userClient, IKenticoUserProvider kenticoUsers, IKenticoSiteProvider kenticoSite)
+
+        public SubmissionService(ISubmissionIdProvider submissionProvider, IUserDataServiceClient userClient, IKenticoUserProvider kenticoUsers, IKenticoSiteProvider kenticoSite, IKenticoLogger kenticoLog)
         {
             if (submissionProvider == null)
             {
@@ -32,11 +33,17 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(kenticoSite));
             }
+            if (kenticoLog == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoLog));
+            }
+
 
             this.submissionProvider = submissionProvider;
             this.userClient = userClient;
             this.kenticoUsers = kenticoUsers;
             this.kenticoSite = kenticoSite;
+            this.kenticoLog = kenticoLog;
         }      
 
         public Submission GenerateNewSubmission(string orderJson = "")
@@ -64,6 +71,7 @@ namespace Kadena.BusinessLogic.Services
             };
 
             submissionProvider.SaveSubmission(submission);
+            kenticoLog.LogInfo("Submission Created", "Info", $"Submission {submission.SubmissionId} was generated");
             return submission;
         }
 
@@ -83,6 +91,7 @@ namespace Kadena.BusinessLogic.Services
             submission.Processed = true;
             submission.RedirectUrl = redirectUrl;
             submissionProvider.SaveSubmission(submission);
+            kenticoLog.LogInfo("Submission Processed", "Info", $"Submission {submission.SubmissionId} was marked as processed");
         }
 
         public bool VerifySubmissionId(string submissionId)
@@ -93,6 +102,7 @@ namespace Kadena.BusinessLogic.Services
             {
                 submission.AlreadyVerified = true;
                 submissionProvider.SaveSubmission(submission);
+                kenticoLog.LogInfo("Submission Verified", "Info", $"Submission {submission.SubmissionId} was marked as verified");
                 return true;
             }
 
@@ -107,6 +117,7 @@ namespace Kadena.BusinessLogic.Services
             }
            
             submissionProvider.DeleteSubmission(submission.SubmissionId);
+            kenticoLog.LogInfo("Submission Deleted", "Info", $"Submission {submission.SubmissionId} was deleted");
         }
     }
 }
