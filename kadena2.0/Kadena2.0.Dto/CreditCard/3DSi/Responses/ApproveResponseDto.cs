@@ -11,6 +11,9 @@ namespace Kadena.Dto.CreditCard._3DSi.Responses
         public static readonly string SubmissionApprovedMessage = "Submission approved.";
         public static readonly string SubmissionDeniedMessage = "Submission denied.";
 
+        public static readonly string ResultApprovedMessage = "Result approved.";
+        public static readonly string ResultDeniedMessage = "Result denied.";
+
         [DataMember(Name ="Succeeded")]
         public int Succeeded { get; set; }
         [DataMember(Name = "ResponseStatus")]
@@ -33,6 +36,21 @@ namespace Kadena.Dto.CreditCard._3DSi.Responses
             ResponseStatus = "000",
             ResponseMessage = SubmissionDeniedMessage
         };
-        
+
+        public static ApproveResponseDto ResultApproved => new ApproveResponseDto
+        {
+            Succeeded = 1,
+            ResponseStatus = "001",
+            ResponseMessage = ResultApprovedMessage
+        };
+
+
+        public static ApproveResponseDto ResultDenied => new ApproveResponseDto
+        {
+            Succeeded = 0,
+            ResponseStatus = "000",
+            ResponseMessage = ResultDeniedMessage
+        };
+
     }
 }

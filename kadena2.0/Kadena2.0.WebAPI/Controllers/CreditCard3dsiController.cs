@@ -52,13 +52,14 @@ namespace Kadena.WebAPI.Controllers
            return Ok(success ? ApproveResponseDto.SubmissionApproved : ApproveResponseDto.SubmissionDenied);
         }
 
+
         /// <summary>
         /// 3DSi will call this to save token
         /// </summary>
         [HttpPost]
         [Route("api/3dsi/savetoken")]
         [RequestLogFilter("3DSi SaveToken")]
-        public async Task<IHttpActionResult> SaveToken(SaveTokenRequestDto request)
+        public async Task<IHttpActionResult> SaveToken([FromBody]SaveTokenDataRequestDto request)
         {
             var saveTokenData = mapper.Map<SaveTokenData>(request);
             var success = await service.SaveToken(saveTokenData);

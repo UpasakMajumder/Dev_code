@@ -84,7 +84,7 @@ namespace CMS.DocumentEngine.Types.KDA
 		/// Campaign Name.
 		/// </summary>
 		[DatabaseField]
-		public string Name
+		public new string Name
 		{
 			get
 			{
