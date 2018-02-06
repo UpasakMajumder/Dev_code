@@ -2,7 +2,7 @@
 {% from "macro/attachment.nunj" import linkAttachment %}
 
 <div class="js-collapse product-view__img" data-target=".js-product-preview">
-  <img src="http://satyr.io/500x300">
+  <img style="border: 2px solid black;" src="http://satyr.io/500x300">
 
   <div class="product-view__actions">
     <ul class="product-view__attachments">

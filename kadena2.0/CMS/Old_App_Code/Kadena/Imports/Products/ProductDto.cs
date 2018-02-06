@@ -137,12 +137,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [MaxLength(20)]
         public string MaxItemsInOrder { get; set; }
 
-        [Header(33, "Image Media Library")]
+        [Header(33, "Media Library Name")]
         [MaxLength(200)]
         public string ImageMediaLibraryName { get; set; }
 
-        [Header(34, "Image Name")]
+        [Header(34, "Image Path")]
         [MaxLength(200)]
-        public string ImageName { get; set; }
+        public string ImagePath { get; set; }
     }
 }

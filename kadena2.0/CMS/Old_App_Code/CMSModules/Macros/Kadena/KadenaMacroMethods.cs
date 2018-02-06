@@ -707,7 +707,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 var campaign = CampaignProvider.GetCampaigns()
                     .Columns("Name")
                     .WhereEquals("OpenCampaign", true)
-                    .WhereEquals("CloseCampaign", false)
+                    .WhereEqualsOrNull("CloseCampaign", false)
                     .WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID)
                     .FirstOrDefault();
                 return IsOpen = campaign != null ? true : false;

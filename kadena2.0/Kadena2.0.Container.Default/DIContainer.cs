@@ -79,8 +79,7 @@ namespace Kadena2.Container.Default
             container.Register<IGetOrderDataService, GetOrderDataService>();
             container.Register<ISendSubmitOrder, SendSubmitOrder>();
             container.Register<ISubmissionService, SubmissionService>();
-            container.Register<IShippingCostServiceClient, ShippingCostServiceClient>();
-            container.Register<IUserBudgetService, UserBudgetService>();		
+            container.Register<IShippingCostServiceClient, ShippingCostServiceClient>();			
             return container;
         }
 
@@ -108,6 +107,7 @@ namespace Kadena2.Container.Default
             container.Register<IKenticoPermissionsProvider, KenticoPermissionsProvider>();
             container.Register<IKenticoOrderProvider, KenticoOrderProvider>();
             container.Register<ISubmissionIdProvider, SubmissionIdProvider>();
+            container.Register<IKenticoCustomerProvider, KenticoCustomerProvider>();
             container.Register<IkenticoUserBudgetProvider, KenticoUserBudgetProvider>();
             return container;
         }
