@@ -60,10 +60,12 @@ class ManageProducts extends Component {
   componentWillReceiveProps(nextProps) {
     // set initial sort values from tableHeaders
     nextProps.tableHeaders.find((column) => {
-      if (column.sorting === 'asc' || column.sorting === 'desc') {
+      const { defaultSort } = column;
+
+      if (defaultSort === 'asc' || defaultSort === 'desc') {
         this.setState({
           sortBy: column.name,
-          sortOrderAsc: column.sorting === 'asc'
+          sortOrderAsc: defaultSort === 'asc'
         });
         return true;
       }
@@ -80,9 +82,66 @@ class ManageProducts extends Component {
     this.props.loadManageProducts();
   }
 
+  getHeaders = () => {
+    const { sortBy, sortOrderAsc } = this.state;
+
+    return this.props.tableHeaders.map((column) => {
+      const { sortable } = column;
+      const sorting = sortable
+        ? (
+          <span>
+            <SVG style={{ transform: 'rotate(180deg)', opacity: sortOrderAsc && sortBy === column.name ? 1 : 0.2 }}
+                name="arrowTop"
+                className="icon-modal"
+            />
+            <SVG style={{ opacity: !sortOrderAsc && sortBy === column.name ? 1 : 0.2 }}
+                name="arrowTop"
+                className="icon-modal"
+            />
+          </span>
+        ) : null;
+
+      return (
+        <th
+          key={column.name}
+          onClick={sortable ? () => this.sortByColumn(column.name) : null}
+          style={{ cursor: sortable ? 'pointer' : 'initial' }}
+        >
+          {sorting}
+          {column.title}
+        </th>
+      );
+    });
+  };
+
+  getTemplates = () => {
+    return this.state.sortedTemplates.map((template) => {
+      return (
+        <tr key={template.templateId} className="product-list__row js-redirection" data-url="#">
+          <td className="product-list__item">
+            <div className="product-list__preview" style={{ backgroundImage: `url(${template.image})` }} />
+          </td>
+          <td className="product-list__item">
+            <a className="link weight--normal" href={template.editorUrl}>{template.productName}</a>
+          </td>
+          <td className="product-list__item">
+            {template.createdDate && timeFormat(template.createdDate)}
+          </td>
+          <td className="product-list__item">
+            {template.updatedDate && timeFormat(template.updatedDate)}
+          </td>
+          <td className="product-list__item">
+            <div className="product-list__btn-group">
+              <a href={template.editorUrl} className="btn-action product-list__btn--primary">{this.props.openInDesignBtn}</a>
+            </div>
+          </td>
+        </tr>
+      );
+    });
+  };
+
   render() {
-    const { isLoading, tableHeaders, title, openInDesignBtn } = this.props;
-    const { sortBy, sortOrderAsc, sortedTemplates } = this.state;
+    const { isLoading, title } = this.props;
 
     return (
       <div className="product-template__block">
@@ -97,54 +156,11 @@ class ManageProducts extends Component {
             <tbody>
 
             <tr>
-              {tableHeaders.map(column => (
-                <th key={column.name} onClick={() => this.sortByColumn(column.name)} style={{ cursor: 'pointer' }}>
-                  {
-                    <span>
-                      <SVG style={{ transform: 'rotate(180deg)', opacity: sortOrderAsc && sortBy === column.name ? 1 : 0.2 }}
-                           name="arrowTop"
-                           className="icon-modal"
-                      />
-                      <SVG style={{ opacity: !sortOrderAsc && sortBy === column.name ? 1 : 0.2 }}
-                           name="arrowTop"
-                           className="icon-modal"
-                      />
-                    </span>
-                  }
-                  {column.title}
-                </th>
-              ))}
+              {this.getHeaders()}
               <th></th>
             </tr>
 
-            {sortedTemplates.map(template => (
-              <tr key={template.templateId} className="product-list__row js-redirection" data-url="#">
-                <td>
-                  <a className="link weight--normal" href={template.editorUrl}>{template.productName}</a>
-                </td>
-                <td>
-                  {template.createdDate && timeFormat(template.createdDate)}
-                </td>
-                <td>
-                  {template.updatedDate && timeFormat(template.updatedDate)}
-                </td>
-                <td>
-                  <div className="product-list__btn-group">
-                    {/* TODO delete button */}
-                    {/* <div className="confirmation js-confirmation" data-confirmation-active-element=".product-list__row" data-confirmation-active-class="product-list__row--hover" data-confirmation-button-text="Cancel" data-confirmation-position="top">
-                      <button type="button" className="btn-main btn-main--secondary js-confirmation-clicker js-redirection-ignore">
-                        Delete
-                      </button>
-                      <div className="js-confirmation-popper confirmation__popper">
-                        <p>Sure you want to delete it?</p>
-                        <button type="button" className="btn-main">Delete</button>
-                      </div>
-                    </div> */}
-                    <a href={template.editorUrl} className="btn-action product-list__btn--primary">{openInDesignBtn}</a>
-                  </div>
-                </td>
-              </tr>
-            ))}
+            {this.getTemplates()}
             </tbody>
           </table>}
         </div>
