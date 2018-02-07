@@ -6,9 +6,10 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
 {
     public class KenticoUserBudgetProvider : IkenticoUserBudgetProvider
     {
+        private readonly string CustomTableClassName = "KDA.UserFYBudgetAllocation";
         public bool UpdateUserBudgetAllocation(int itemID, double userBudget)
         {
-            var userBudgetDetails = CustomTableItemProvider.GetItems("KDA.UserFYBudgetAllocation").WhereEquals("ItemID", itemID).FirstOrDefault();
+            var userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("ItemID", itemID).FirstOrDefault();
             if (userBudgetDetails != null)
             {
                 userBudgetDetails.SetValue("Budget", userBudget);
