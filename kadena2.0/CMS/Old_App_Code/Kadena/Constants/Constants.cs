@@ -39,6 +39,7 @@
         public const string Added = "added";
         public const string Updated = "updated";
         public const string Deleted = "deleted";
+        public const string OrderScheduleTaskStart = "ordertask";
     }
     /// <summary>
     /// This class represents shipping options
