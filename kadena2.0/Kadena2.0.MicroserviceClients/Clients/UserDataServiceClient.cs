@@ -24,10 +24,10 @@ namespace Kadena2.MicroserviceClients.Clients
             this._properties = properties;
         }
 
-        public async Task<BaseResponseDto<SaveCardTokenResponseDto>> SaveCardToken(SaveCardTokenRequestDto request)
+        public async Task<BaseResponseDto<string>> SaveCardToken(SaveCardTokenRequestDto request)
         {
             var url = $"{_properties.GetServiceUrl(_serviceUrlSettingKey)}/api/CardToken";
-            return await Post<SaveCardTokenResponseDto>(url, request).ConfigureAwait(false);
+            return await Post<string>(url, request).ConfigureAwait(false);
         }
     }
 }

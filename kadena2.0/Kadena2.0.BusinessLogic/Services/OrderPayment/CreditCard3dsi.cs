@@ -176,14 +176,14 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             var result = await userClient.SaveCardToken(saveTokenRequest);
 
-            if (result == null || !result.Success || result.Payload == null)
+            if (result == null || !result.Success || string.IsNullOrWhiteSpace(result.Payload))
             {
                 var error = "Failed to call UserData microservice to SaveToken. " + result?.ErrorMessages;
                 logger.LogError("SaveToken", error);
                 return null;
             }
 
-            return result.Payload.Result;
+            return result.Payload;
         }
 
         /// <summary>

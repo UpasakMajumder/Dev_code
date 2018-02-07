@@ -99,7 +99,6 @@
     <Compile Include="CreditCard\MicroserviceRequests\SaveCardTokenRequestDto.cs" />
     <Compile Include="CreditCard\UserDto.cs" />
     <Compile Include="CreditCard\MicroserviceResponses\AuthorizeAmountResponseDto.cs" />
-    <Compile Include="CreditCard\MicroserviceResponses\SaveCardTokenResponseDto.cs" />
     <Compile Include="CustomerData\DistributorDTO.cs" />
     <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\AddressDto.cs" />
     <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\EstimateDeliveryPriceRequestDto.cs" />
