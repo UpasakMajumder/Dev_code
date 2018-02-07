@@ -1077,11 +1077,10 @@ $(document).ready(function () {
     switch (cookieValue) {
         case 'added': toastr.success(config.localization.globalSuccess.addSuccessMessage); customHelpers.deleteCookie("status"); break;
         case 'updated': toastr.success(config.localization.globalSuccess.updateSuccessMessage); customHelpers.deleteCookie("status"); break;
-    }
-    if (status == 'deleted') {
-        toastr.success(config.localization.globalSuccess.deleteSuccessMessage);
-    }
-    else if (status == 'error') {
+        case 'deleted': toastr.success(config.localization.globalSuccess.deleteSuccessMessage); customHelpers.deleteCookie("status"); break;
+        case 'ordertask': toastr.success(config.localization.globalSuccess.orderScheduleTaskStartMessage); customHelpers.deleteCookie("status"); break;
+        }
+    if (status == 'error') {
         toastr.error(config.localization.globalSuccess.errorMessage);
     }
 });
