@@ -92,12 +92,21 @@ export const submitCard = (fields, cardType, submissionId) => {
   };
 };
 
-export const saveToProfile = (fields, url) => {
+export const saveToProfile = (fields, url, save) => {
   return (dispatch) => {
-    const data = {
-      Name: fields.name,
-      CardNumber: fields.number.substr(-4) // send last 4 digits
-    };
+    let data;
+
+    if (save) {
+      data = {
+        save,
+        Name: fields.name,
+        CardNumber: fields.number.substr(-4) // send last 4 digits
+      };
+    } else {
+      data = {
+        save
+      };
+    }
 
     axios({
       method: 'post',

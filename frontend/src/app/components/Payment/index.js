@@ -116,7 +116,7 @@ class Payment extends Component {
     if (invalids.length) {
       this.setState({ invalids });
     } else {
-      if (this.state.saveToProfile) saveToProfile(fields, CARD_PAYMENT.saveToProfile.url);
+      saveToProfile(fields, CARD_PAYMENT.saveToProfile.url, this.state.saveToProfile);
       proceedCard(fields, cardType, submissionId);
     }
   }
