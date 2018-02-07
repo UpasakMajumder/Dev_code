@@ -43,6 +43,8 @@ namespace Kadena2.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<ItemOption, ItemOptionDto>();
+
             CreateMap<Price, PriceDto>()
                 .ForMember(dest => dest.PricePrefix, opt => opt.MapFrom(src => src.Prefix))
                 .ForMember(dest => dest.PriceValue, opt => opt.MapFrom(src => src.Value));

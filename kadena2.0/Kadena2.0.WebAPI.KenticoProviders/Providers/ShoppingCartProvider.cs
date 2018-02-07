@@ -293,6 +293,16 @@ namespace Kadena.WebAPI.KenticoProviders
 &quantity={cartItem.Quantity}
 &customName={URLHelper.URLEncode(cartItem.CartItemText)}";
                 }
+                if (i.VariantParent != null)
+                {
+                    var variant = new ProductVariant(i.SKUID);
+                    var attributes = variant.ProductAttributes.AsEnumerable();
+                    cartItem.Options = attributes.Select(a => new ItemOption { Name = a.SKUOptionCategory.CategoryDisplayName, Value = a.SKUName });
+                }
+                else
+                {
+                    cartItem.Options = Enumerable.Empty<ItemOption>();
+                }
                 return cartItem;
             }
             ).ToArray();
