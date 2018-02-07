@@ -403,14 +403,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 ShoppingCartInfoProvider.EvaluateShoppingCart(Cart);
                 ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
                 var url = Request.RawUrl;
-                if(!string.IsNullOrEmpty(Request.QueryString["status"]))
-                {
-                    URLHelper.Redirect(url);
-                }
-                else
-                {
-                    URLHelper.Redirect($"{Request.RawUrl}?status={QueryStringStatus.Deleted}");
-                }
+                Response.Cookies["status"].Value = QueryStringStatus.Deleted;
+                Response.Cookies["status"].HttpOnly = false;
+                URLHelper.Redirect(url);
             }
             catch (Exception ex)
             {
