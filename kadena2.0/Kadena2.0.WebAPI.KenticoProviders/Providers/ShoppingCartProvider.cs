@@ -605,7 +605,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        private static ShoppingCartItemInfo EnsureCartItem(SKUTreeNode document, IEnumerable<int> options, Guid templateId, int quantity)
+        private static ShoppingCartItemInfo EnsureCartItem(SKUTreeNode document, IEnumerable<int> attributes, Guid templateId, int quantity)
         {
             if (document == null)
             {
@@ -614,8 +614,8 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var cart = ECommerceContext.CurrentShoppingCart;
             ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
-            
-            var parameters = new ShoppingCartItemParameters(document.NodeSKUID, quantity, options);
+            var variant = VariantHelper.GetProductVariant(document.NodeSKUID, new ProductAttributeSet(attributes));
+            var parameters = new ShoppingCartItemParameters(variant?.SKUID ?? document.NodeSKUID, quantity);
 
             if (Guid.Empty != templateId)
             {
@@ -630,7 +630,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var cartItem = cart.SetShoppingCartItem(parameters);
             
-            cartItem.CartItemText = document.DocumentSKUName;
+            cartItem.CartItemText = cartItem.SKU.SKUName;
             cartItem.SetValue("ChilliEditorTemplateID", templateId);
             cartItem.SetValue("ChiliTemplateID", document.GetGuidValue("ProductChiliTemplateID", Guid.Empty));
             cartItem.SetValue("ProductType", document.GetStringValue("ProductType", string.Empty));
