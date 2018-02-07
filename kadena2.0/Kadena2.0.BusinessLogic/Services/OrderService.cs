@@ -295,7 +295,8 @@ namespace Kadena.BusinessLogic.Services
                 TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix"),
                 TrackingIdPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix"),
                 ProductStatusPrefix = resources.GetResourceString("Kadena.Order.ProductStatusPrefix"),
-                ProductStatus = products.GetProductStatus(i.SkuId)
+                ProductStatus = products.GetProductStatus(i.SkuId),
+                Options = i.Attributes?.Select(a => new ItemOption { Name = a.Key, Value = a.Value }) ?? Enumerable.Empty<ItemOption>()
             }).ToList();
 
 

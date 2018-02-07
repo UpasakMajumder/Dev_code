@@ -1,4 +1,6 @@
-﻿namespace Kadena.Dto.ViewOrder.MicroserviceResponses
+﻿using System.Collections.Generic;
+
+namespace Kadena.Dto.ViewOrder.MicroserviceResponses
 {
     public class OrderItemDTO
     {
@@ -11,5 +13,6 @@
         public string MailingList { get; set; }
         public string FileKey { get; set; }
         public double TotalPrice { get; set; }
+        public Dictionary<string, string> Attributes { get; set; }
     }
 }
