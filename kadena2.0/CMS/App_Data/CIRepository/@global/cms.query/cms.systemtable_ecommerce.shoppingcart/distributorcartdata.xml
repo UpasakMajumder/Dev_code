@@ -23,6 +23,7 @@ INNER JOIN COM_SKU sku ON cartSKU.SKUID=sku.SKUID
 LEFT JOIN CMS_Country country ON customer.AddressCountryID=country.CountryID 
 LEFT JOIN  CMS_State states ON customer.AddressStateID=states.StateID 
 WHERE cart.ShoppingCartID=@ShoppingCartUserID AND ShoppingCartInventoryType=@ShoppingCartInventoryType
+AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN @ShoppingCartCampaignID ELSE 0  END
 ]]>
   </QueryText>
   <QueryTypeID>0</QueryTypeID>

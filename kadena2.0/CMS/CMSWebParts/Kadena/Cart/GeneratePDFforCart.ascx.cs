@@ -1,9 +1,13 @@
-﻿using CMS.Ecommerce.Web.UI;
+﻿using CMS.DataEngine;
+using CMS.DocumentEngine.Types.KDA;
+using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
 using Kadena.Old_App_Code.Kadena.PDFHelpers;
+using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using System;
 using System.Data;
+using System.Linq;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -39,6 +43,20 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 SetValue("TotalCartPDFButtonText", value);
             }
         }
+        /// <summary>
+        /// gets or sets open campaign
+        /// </summary>
+        public Campaign OpenCampaign
+        {
+            get
+            {
+                return ShoppingCartHelper.GetOpenCampaign();
+            }
+            set
+            {
+                SetValue("OpenCampaign", value);
+            }
+        }
         #endregion "Properties"
 
         #region "Page Events"
@@ -52,7 +70,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                DataTable distributorCartData = CartPDFHelper.GetLoggedInUserCartData(InventoryType, CurrentUser.UserID);
+                DataTable distributorCartData = CartPDFHelper.GetLoggedInUserCartData(InventoryType, CurrentUser.UserID,OpenCampaign?.CampaignID);
                 var pdfBytes = CartPDFHelper.CreateProductPDF(distributorCartData, InventoryType);
                 CartPDFHelper.WriteresponseToPDF(pdfBytes);
             }

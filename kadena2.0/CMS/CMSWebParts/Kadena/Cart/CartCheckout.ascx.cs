@@ -11,9 +11,9 @@ using System.Data;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
-using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using Kadena2.Container.Default;
 using Kadena.BusinessLogic.Contracts;
+using CMS.DocumentEngine.Types.KDA;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -50,6 +50,20 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 SetValue("PopupCloseButtonText", value);
             }
         }
+        /// <summary>
+        /// gets or sets open campaign
+        /// </summary>
+        public Campaign OpenCampaign
+        {
+            get
+            {
+                return GetOpenCampaign();
+            }
+            set
+            {
+                SetValue("OpenCampaign", value);
+            }
+        }
         #endregion
         #region Events
         /// <summary>
@@ -70,7 +84,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                var loggedInUserCartIDs = GetCartsByUserID(CurrentUser.UserID, ProductType.GeneralInventory);
+                var loggedInUserCartIDs = GetCartsByUserID(CurrentUser.UserID, ProductType.GeneralInventory, OpenCampaign?.CampaignID);
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 loggedInUserCartIDs.ForEach(distributorCart =>
                 {
@@ -152,7 +166,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_CartCheckout", "ShowError", ex.Message);
             }
         }
-
         #endregion Methods
 
     }

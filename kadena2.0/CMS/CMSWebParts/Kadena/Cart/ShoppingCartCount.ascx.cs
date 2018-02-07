@@ -1,10 +1,12 @@
 ﻿using CMS.DataEngine;
+using CMS.DocumentEngine.Types.KDA;
 using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
 using Kadena.Old_App_Code.Kadena.Constants;
+using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using System;
-using System.Data;
+using System.Linq;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -57,6 +59,20 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
 
+        /// <summary>
+        /// Get current open campaign
+        /// </summary>
+        public Campaign OpenCampaign
+        {
+            get
+            {
+                return ShoppingCartHelper.GetOpenCampaign();
+            }
+            set
+            {
+                SetValue("OpenCampaign", value);
+            }
+        }
         #endregion properties
 
         /// <summary>
@@ -75,6 +91,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", userID);
                 queryParams.Add("@ShoppingCartInventoryType", ShoppingCartInventoryType);
+                queryParams.Add("@ShoppingCartCampaignID", OpenCampaign?.CampaignID);
                 var countData = ConnectionHelper.ExecuteScalar(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
                 var count = ValidationHelper.GetInteger(countData, default(int));
                 lblCount.Text = count == 0 ? "" : $"{count}";

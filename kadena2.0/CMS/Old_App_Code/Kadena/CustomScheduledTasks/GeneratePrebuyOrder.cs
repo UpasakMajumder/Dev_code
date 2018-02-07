@@ -14,6 +14,8 @@ using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena2.Container.Default;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.BusinessLogic.Contracts;
+using CMS.CustomTables.Types.KDA;
+using CMS.CustomTables;
 
 namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
 {
@@ -60,7 +62,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 usersWithShoppingCartItems.ForEach(shoppingCartUser =>
                 {
                     var salesPerson = userInfo.GetUserByUserId(shoppingCartUser);
-                    var loggedInUserCartIDs = ShoppingCartHelper.GetCartsByUserID(shoppingCartUser, ProductType.PreBuy);
+                    var loggedInUserCartIDs = ShoppingCartHelper.GetCartsByUserID(shoppingCartUser, ProductType.PreBuy, openCampaignID);
                     loggedInUserCartIDs.ForEach(cart =>
                     {
                         var shippingCost = default(decimal);
@@ -93,8 +95,12 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                       };
                   }).ToList();
                 var user = userInfo.GetUserByUserId(campaignClosingUserID);
-                if (user?.Email != null)
+                if (user?.Email != null && list.Count > 0)
+                {
+                    UpdatetFailedOrders(openCampaignID, true);
                     ProductEmailNotifications.SendEmail(failedOrderTemplateSettingKey, user?.Email, list);
+                }
+                   
                 return ResHelper.GetString("KDA.OrderSchedular.TaskSuccessfulMessage");
             }
             catch (Exception ex)
@@ -103,5 +109,31 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 return ex.Message;
             }
         }
+        private void UpdatetFailedOrders(int campaignID,bool IsFailed)
+        {
+            try
+            {
+                var foData = CustomTableItemProvider.GetItems<FailedOrdersItem>().WhereEquals("CapmaignID", campaignID).FirstOrDefault();
+                if (!DataHelper.DataSourceIsEmpty(foData))
+                {
+                    foData.IsCampaignOrdersInProgress = false;
+                    if(IsFailed)
+                    {
+                        foData.IsCampaignOrdersFailed = true;
+                    }
+                    else
+                    {
+                        foData.IsCampaignOrdersFailed = false;
+                    }
+                    foData.Update();
+                }  
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "InsertFailedOrders", ex, SiteContext.CurrentSiteID, ex.Message);
+            }
+
+        }
+
     }
 }

@@ -11,14 +11,14 @@
   <WebPartDefaultValues>
     <form />
   </WebPartDefaultValues>
-  <WebPartDisplayName>Cart Checkout</WebPartDisplayName>
-  <WebPartFileName>Kadena/Cart/CartCheckout.ascx</WebPartFileName>
-  <WebPartGUID>6a8d8631-8688-4fe5-9ac6-d2b5765c012a</WebPartGUID>
+  <WebPartDescription />
+  <WebPartDisplayName>Failed Orders</WebPartDisplayName>
+  <WebPartFileName>Kadena/Cart/FailedOrdersCart.ascx</WebPartFileName>
+  <WebPartGUID>01492d8b-38dd-4f61-a61e-4eecc260d875</WebPartGUID>
   <WebPartLoadGeneration>0</WebPartLoadGeneration>
-  <WebPartName>CartCheckout</WebPartName>
+  <WebPartName>FailedOrders</WebPartName>
   <WebPartProperties>
     <form />
   </WebPartProperties>
-  <WebPartSkipInsertProperties>False</WebPartSkipInsertProperties>
   <WebPartType>0</WebPartType>
 </cms.webpart>

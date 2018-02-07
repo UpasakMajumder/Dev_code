@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cms.webpart>
   <WebPartCategoryID>
-    <CodeName>TWECart</CodeName>
+    <CodeName>Cart</CodeName>
     <GUID>ce497b7b-989e-4dab-a904-32f133041784</GUID>
     <ObjectType>cms.webpartcategory</ObjectType>
   </WebPartCategoryID>

@@ -1,6 +1,7 @@
 ﻿using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
 using CMS.DataEngine;
+using CMS.DocumentEngine.Types.KDA;
 using CMS.Ecommerce;
 using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
@@ -100,6 +101,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 SetValue("POSNumber", value);
             }
         }
+
 
         /// <summary>
         /// Gets or sets the ProductName.
@@ -217,6 +219,24 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             set
             {
                 SetValue("SubTotal", value);
+            }
+        }
+        /// <summary>
+        /// gets or sets open campaign
+        /// </summary>
+        public Campaign OpenCampaign
+        {
+            get
+            {
+                return CampaignProvider.GetCampaigns().Columns("CampaignID,Name,StartDate,EndDate")
+                                    .WhereEquals("OpenCampaign", true)
+                                    .Where(new WhereCondition().WhereEquals("CloseCampaign", false).Or()
+                                    .WhereEquals("CloseCampaign", null))
+                                    .WhereEquals("NodeSiteID", CurrentSite.SiteID).FirstOrDefault();
+            }
+            set
+            {
+                SetValue("OpenCampaign", value);
             }
         }
 
@@ -373,7 +393,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                DataTable distributorCartData = CartPDFHelper.GetDistributorCartData(CartID, InventoryType);
+                DataTable distributorCartData = CartPDFHelper.GetDistributorCartData(CartID, InventoryType,OpenCampaign?.CampaignID);
                 var pdfBytes = CartPDFHelper.CreateProductPDF(distributorCartData, InventoryType);
                 CartPDFHelper.WriteresponseToPDF(pdfBytes);
             }
@@ -519,6 +539,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 QueryDataParameters parameters = new QueryDataParameters();
                 parameters.Add("@CartItemDistributorID", ShoppingCartDistributorID);
                 parameters.Add("@ShoppingCartInventoryType", InventoryType);
+                parameters.Add("@ShoppingCartCampaignID", OpenCampaign?.CampaignID);
                 rptCartItems.QueryParameters = parameters;
                 rptCartItems.QueryName = SQLQueries.shoppingCartCartItems;
             }
@@ -564,9 +585,11 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     ddlBusinessUnits.DataValueField = "BusinessUnitNumber";
                     ddlBusinessUnits.DataTextField = "BusinessUnitName";
                     ddlBusinessUnits.DataBind();
-
-                    Cart.SetValue("BusinessUnitIDForDistributor", BusinessUnits.FirstOrDefault().BusinessUnitNumber);
-                    Cart.Update();
+                    if (string.IsNullOrEmpty(Cart.GetStringValue("BusinessUnitIDForDistributor", null)))
+                    {
+                        Cart.SetValue("BusinessUnitIDForDistributor", BusinessUnits.FirstOrDefault().BusinessUnitNumber);
+                        Cart.Update();
+                    }
                 }
             }
             catch (Exception ex)

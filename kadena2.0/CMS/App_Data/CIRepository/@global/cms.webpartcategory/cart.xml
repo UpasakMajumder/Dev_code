@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cms.webpartcategory>
-  <CategoryDisplayName>TWE Cart</CategoryDisplayName>
+  <CategoryDisplayName>Cart</CategoryDisplayName>
   <CategoryGUID>ce497b7b-989e-4dab-a904-32f133041784</CategoryGUID>
-  <CategoryName>TWECart</CategoryName>
+  <CategoryName>Cart</CategoryName>
   <CategoryParentID>
     <CodeName>Kadena</CodeName>
     <GUID>ea902dcb-d5a7-41ee-9175-f9708776cf63</GUID>
