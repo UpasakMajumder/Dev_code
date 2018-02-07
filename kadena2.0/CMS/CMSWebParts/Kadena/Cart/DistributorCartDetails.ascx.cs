@@ -239,6 +239,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 if (InventoryType == (Int32)ProductType.GeneralInventory)
                 {
                     BindShippingOptions();
+                    BindShippingDropdown(InventoryType, default(double));
                 }
                 ValidCart = true;
                 BindRepeaterData();
@@ -289,7 +290,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 var inventoryType = Cart.GetValue("ShoppingCartInventoryType", default(int));
                 if (inventoryType == (Int32)ProductType.GeneralInventory)
                 {
-                    if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
+                    if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionName.ToLower() != ShippingOption.Ground)
                     {
                         estimation = GetShippingResponse();
                     }
@@ -564,9 +565,12 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     ddlBusinessUnits.DataValueField = "BusinessUnitNumber";
                     ddlBusinessUnits.DataTextField = "BusinessUnitName";
                     ddlBusinessUnits.DataBind();
+                    if (string.IsNullOrEmpty(Cart.GetStringValue("BusinessUnitIDForDistributor", null)))
+                    {
+                        Cart.SetValue("BusinessUnitIDForDistributor", BusinessUnits.FirstOrDefault().BusinessUnitNumber);
+                        Cart.Update();
+                    }
 
-                    Cart.SetValue("BusinessUnitIDForDistributor", BusinessUnits.FirstOrDefault().BusinessUnitNumber);
-                    Cart.Update();
                 }
             }
             catch (Exception ex)
