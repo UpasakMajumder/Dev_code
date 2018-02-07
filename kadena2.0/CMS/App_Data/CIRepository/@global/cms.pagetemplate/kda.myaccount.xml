@@ -414,64 +414,6 @@ config.localization.userSettings = {
           <property name="webparttitle"></property>
           <property name="webparttype">FyBudget</property>
         </webpart>
-        <webpart controlid="FYBudget_Javascript" guid="1bcebdfc-40e8-4231-8461-530d77fcc031" type="javascript" v="1">
-          <property name="cat_open_behavior"></property>
-          <property name="cat_open_performance"></property>
-          <property name="controlid">FYBudget_Javascript</property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="generatescripttags">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="inlinescript">
-<![CDATA[
-<script type="text/javascript" >
-    $(".js-UserBudget").focusout(function () {
-        var itemID = parseInt($(this).siblings().first().val());
-        var userBudget = parseInt($(this).val());
-        if (itemID != undefined && userBudget != undefined) {
-            UpdateItem(itemID, userBudget);
-        }
-        $(".js-CloseMesaage").on("click", function () {
-            $(this).closest(".dialog").removeClass("active");
-        })
-      function UpdateItem(itemID,userBudget){
-          var request = { ItemID: itemID, UserBudget: userBudget }
-            $.ajax({
-              type: "POST",
-              data :JSON.stringify(request),
-              url: "api/userbudget/updateUserBudget",
-              contentType: "application/json",
-              success: function (data) {
-                $('#autoSave_Dialog').addClass('active');
-                if (data == 200) {
-                  $('.response_Success').show();
-                  $('.response_failure').hide();
-                } 
-                else{
-                  $('.response_Success').hide();
-                  $('.response_failure').show();
-                }
-              },
-              error:function (xhr, ajaxOptions, thrownError) {
-                $('.response_Success').hide();
-                $('.response_failure').show();
-              }
-            });
-      }
-    }); 
-</script>
-]]>
-          </property>
-          <property name="inlinescriptpagelocation">Startup</property>
-          <property name="instanceguid">1bcebdfc-40e8-4231-8461-530d77fcc031</property>
-          <property name="linkedfile"></property>
-          <property name="linkedfilepagelocation">Header</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">javascript</property>
-        </webpart>
       </webpartzone>
     </page>
   </PageTemplateWebParts>
