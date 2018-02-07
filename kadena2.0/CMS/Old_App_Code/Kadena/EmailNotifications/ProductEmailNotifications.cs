@@ -25,7 +25,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         /// <param name="campaignName"></param>
         /// <param name="reciepientEmail"></param>
         /// <param name="templateName"></param>
-        public static void CampaignEmail(string campaignName, string recipientEmail, string templateName)
+        public static void CampaignEmail(string campaignName, string recipientEmail, string templateName,string programName="")
         {
             try
             {
