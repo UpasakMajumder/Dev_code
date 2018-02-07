@@ -25,7 +25,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         /// <param name="campaignName"></param>
         /// <param name="reciepientEmail"></param>
         /// <param name="templateName"></param>
-        public static void CampaignEmail(string campaignName, string recipientEmail, string templateName,string programName="")
+        public static void CampaignEmail(string campaignName, string recipientEmail, string templateName)
         {
             try
             {
@@ -129,11 +129,11 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                 if (response.Success && response.Payload.TotalCount != 0)
                 {
                     var responseData = response.Payload.Orders.ToList();
-                    EventLogProvider.LogInformation(ValidationHelper.GetString(responseData.Count,"Order Count",ValidationHelper.GetString(responseData,"Order Details")),"ProductEmailNotification.cs");
                      var customerOrderData = responseData.GroupBy(x => x.CustomerId).ToList();
                     customerOrderData.ForEach(x =>
                     {
-                        var customerData = DIContainer.Resolve<IKenticoUserProvider>().GetUserByUserId(x.Key);
+                        var userID = DIContainer.Resolve<IKenticoCustomerProvider>().GetUserIDByCustomerID(x.Key);
+                        var customerData = DIContainer.Resolve<IKenticoUserProvider>().GetUserByUserId(userID);
                         if (customerData != null)
                         {
                             x.ToList().ForEach(o =>
