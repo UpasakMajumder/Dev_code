@@ -404,28 +404,6 @@ namespace Kadena.WebAPI.KenticoProviders
             return 0.0m;
         }
 
-        private static decimal GetDynamicPrice(SKUTreeNode document, int quantity)
-        {
-            var ranges = GetDynamicPricingRanges(document);
-
-            if (ranges != null && ranges.Count() > 0)
-            {
-                var matchingRange = ranges.FirstOrDefault(i => quantity >= i.MinVal && quantity <= i.MaxVal);
-                if (matchingRange != null)
-                {
-                    return matchingRange.Price;
-                }
-                else
-                {
-                    return decimal.MinusOne;
-                }
-            }
-            else
-            {
-                return (decimal)document.GetDoubleValue("SKUPrice", 0);
-            }
-        }
-
         private static IEnumerable<DynamicPricingRange> GetDynamicPricingRanges(int documentId)
         {
             var document = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser)) as SKUTreeNode;
@@ -528,7 +506,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             SetArtwork(cartItem, productDocument.GetStringValue("ProductArtwork", string.Empty));
 
-            RefreshPrice(cartItem, productDocument);
+            SetDynamicPrice(cartItem, productDocument);
             SetCustomName(cartItem, newItem.CustomProductName);
 
             ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
@@ -591,17 +569,21 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        private void RefreshPrice(ShoppingCartItemInfo cartItem, SKUTreeNode document)
+        private void SetDynamicPrice(ShoppingCartItemInfo cartItem, SKUTreeNode document)
         {
-            var dynamicUnitPrice = GetDynamicPrice(document, cartItem.CartItemUnits);
-            if (dynamicUnitPrice == decimal.MinusOne)
-            {
-                throw new ArgumentException(resources.GetResourceString("Kadena.Product.QuantityOutOfRange"));
-            }
+            var ranges = GetDynamicPricingRanges(document);
 
-            if (dynamicUnitPrice > decimal.Zero)
+            if (ranges != null && ranges.Count() > 0)
             {
-                cartItem.CartItemPrice = decimal.ToDouble(dynamicUnitPrice);
+                var matchingRange = ranges.FirstOrDefault(i => cartItem.CartItemUnits >= i.MinVal && cartItem.CartItemUnits <= i.MaxVal);
+                if (matchingRange != null)
+                {
+                    cartItem.CartItemPrice = decimal.ToDouble(matchingRange.Price);
+                }
+                else
+                {
+                    throw new ArgumentException(resources.GetResourceString("Kadena.Product.QuantityOutOfRange"));
+                }
             }
         }
 
@@ -612,8 +594,6 @@ namespace Kadena.WebAPI.KenticoProviders
                 return null;
             }
 
-            var cart = ECommerceContext.CurrentShoppingCart;
-            ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
             var variant = VariantHelper.GetProductVariant(document.NodeSKUID, new ProductAttributeSet(attributes));
             var parameters = new ShoppingCartItemParameters(variant?.SKUID ?? document.NodeSKUID, quantity);
 
@@ -628,8 +608,10 @@ namespace Kadena.WebAPI.KenticoProviders
                 parameters.ProductOptions.Add(option);
             }
 
+            var cart = ECommerceContext.CurrentShoppingCart;
+            ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
             var cartItem = cart.SetShoppingCartItem(parameters);
-            
+
             cartItem.CartItemText = cartItem.SKU.SKUName;
             cartItem.SetValue("ChilliEditorTemplateID", templateId);
             cartItem.SetValue("ChiliTemplateID", document.GetGuidValue("ProductChiliTemplateID", Guid.Empty));
@@ -683,6 +665,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             return false;
         }
+
         public List<int> GetUserIDsWithShoppingCart(int campaignID, int productType)
         {
             return ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartCampaignID", campaignID)
