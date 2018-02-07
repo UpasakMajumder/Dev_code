@@ -48,7 +48,8 @@ export default (fields, cardType, submissionId) => {
         PTCount,
         DemoURL,
         ResultURL,
-        ResponseType
+        ResponseType,
+        CreditCard_CSCIndicator
       } = CARD_PAYMENT;
 
       if (!submissionId) {
@@ -73,7 +74,8 @@ export default (fields, cardType, submissionId) => {
         TerminalIdentifier_TerminalCode,
         TerminalIdentifier_MerchantCode,
         ResultURL,
-        ResponseType
+        ResponseType,
+        CreditCard_CSCIndicator
       };
 
       const dataStr = createSearchStr(data).substr(1);
