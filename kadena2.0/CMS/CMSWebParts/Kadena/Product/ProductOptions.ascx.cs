@@ -49,16 +49,18 @@ namespace Kadena.CMSWebParts.Kadena.Product
             var skuCategories = SKUOptionCategoryInfoProvider
                 .GetSKUOptionCategories()
                 .Columns(nameof(SKUOptionCategoryInfo.CategoryID))
-                .WhereEquals(nameof(SKUOptionCategoryInfo.SKUID), SKUID);
-            var categories = OptionCategoryInfoProvider
-                .GetOptionCategories()
-                .WhereIn(nameof(OptionCategoryInfo.CategoryID), skuCategories)
-                .And()
-                .WhereEquals(nameof(OptionCategoryInfo.CategoryType), OptionCategoryTypeEnum.Attribute.ToStringRepresentation());
-            foreach (var cat in categories)
+                .WhereEquals(nameof(SKUOptionCategoryInfo.SKUID), SKUID)
+                .OrderByDefault();
+            foreach (var cat in skuCategories)
             {
+                var category = OptionCategoryInfoProvider.GetOptionCategoryInfo(cat.CategoryID);
+                if (category.CategoryType != OptionCategoryTypeEnum.Attribute 
+                    || !category.CategoryEnabled)
+                {
+                    continue;
+                }
                 var optionSku = SKUInfoProvider.GetSKUOptionsForProduct(SKUID, cat.CategoryID, true);
-                var markup = _selectorBuilders[cat.CategorySelectionType](cat, optionSku);
+                var markup = _selectorBuilders[category.CategorySelectionType](category, optionSku);
                 phSelectors.Controls.Add(new LiteralControl(markup));
             }
         }
