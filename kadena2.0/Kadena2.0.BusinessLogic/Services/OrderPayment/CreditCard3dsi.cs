@@ -135,6 +135,8 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 return false;
             }
 
+            logger.LogInfo("3DSi SaveToken", "info", "Token saved to User data microservice");
+
             var orderData = JsonConvert.DeserializeObject<OrderDTO>(submission.OrderJson, SerializerConfig.CamelCaseSerializer);
             orderData.PaymentOption.TokenId = tokenId;
             orderData.PaymentOption.PaymentGatewayCustomerCode = resources.GetSettingsKey("KDA_CreditCard_Code");
@@ -165,8 +167,6 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         /// </summary>
         private async Task<string> SaveTokenToUserData(string userId, SaveTokenData token)
         {
-            var url = resources.GetSettingsKey("KDA_UserdataMicroserviceEndpoint");
-
             var saveTokenRequest = new SaveCardTokenRequestDto
             {
                 // TODO some more properties ?

@@ -132,6 +132,7 @@ config.localization.cardPayment = {
         DemoURL: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.GetValue("KDA_CreditCard_PaymentResultPage", string.Empty))|(user)michal.machacek@actum.cz|(hash)7f30219181c97f06264eb18078da115464921f30b9b9357effec24bdff54723b%}?success=true&order_id=123456789',
         APCount: '0',
         PTCount: '0',
+        CreditCard_CSCIndicator: 'Provided',
         CustomerIdentifier_MerchantCode: '{% Settings.GetValue("KDA_CreditCard_MerchantCode", string.Empty) |(user)michal.machacek@actum.cz|(hash)6a1f636bea5f7d80c57edab0a2df332b3923a834a65aa5d10ad227ae82a41a92%}', 
         CustomerIdentifier_LocationCode: '{% Settings.GetValue("KDA_CreditCard_LocationCode", string.Empty) |(user)michal.machacek@actum.cz|(hash)dd51852260319571fab93fb4824048bf653cd9779825414d9fbaea5046c72e28%}',
         CustomerIdentifier_CustomerCode: '{% Settings.GetValue("KDA_CreditCard_Code", string.Empty) |(user)michal.machacek@actum.cz|(hash)77ffd9b7d66b28a302e17ec9904b4bce8f07fe61eed7082a4ce54176bbcf02d9%}',
