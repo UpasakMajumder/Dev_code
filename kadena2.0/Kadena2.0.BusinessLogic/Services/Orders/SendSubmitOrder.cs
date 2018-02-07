@@ -44,8 +44,6 @@ namespace Kadena2._0.BusinessLogic.Services.Orders
 
         public async Task<SubmitOrderResult> SubmitOrderData(OrderDTO orderData)
         {
-            string serviceEndpoint = resources.GetSettingsKey("KDA_OrderServiceEndpoint");
-
             if ((orderData?.Items?.Count() ?? 0) <= 0)
             {
                 throw new ArgumentOutOfRangeException("Items", "Cannot submit order without items");
