@@ -92,20 +92,14 @@ export const submitCard = (fields, cardType, submissionId) => {
   };
 };
 
-export const saveToProfile = (fields, url, save) => {
+export const saveToProfile = (fields, url, save, submissionId) => {
   return (dispatch) => {
-    let data;
+    const data = { save };
 
     if (save) {
-      data = {
-        save,
-        Name: fields.name,
-        CardNumber: fields.number.substr(-4) // send last 4 digits
-      };
-    } else {
-      data = {
-        save
-      };
+      data.Name = fields.name;
+      data.CardNumber = fields.number.substr(-4); // send last 4 digits
+      data.SubmissionID = submissionId;
     }
 
     axios({
