@@ -1,0 +1,111 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+/* components */
+import SVG from 'app.dump/SVG';
+import Method from './Method';
+
+class MethodsGroup extends Component {
+  static propTypes = {
+    validationMessage: PropTypes.string.isRequired,
+    changeShoppingData: PropTypes.func.isRequired,
+    className: PropTypes.string.isRequired,
+    checked: PropTypes.bool.isRequired,
+    title: PropTypes.string.isRequired,
+    icon: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    inputPlaceholder: PropTypes.string,
+    disabled: PropTypes.bool,
+    hasInput: PropTypes.bool,
+    checkedObj: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      invoice: PropTypes.string,
+      card: PropTypes.number
+    }).isRequired,
+    items: PropTypes.arrayOf(PropTypes.object.isRequired)
+  };
+
+  changePaymentMethod = (name, id) => {
+    this.props.changeShoppingData(name, id);
+  };
+
+  changePaymentCard = (id, card) => {
+    this.props.changeShoppingData('paymentMethod', id, undefined, card);
+  };
+
+  render() {
+    const {
+      title,
+      icon,
+      disabled,
+      id,
+      inputPlaceholder,
+      checkedObj,
+      changeShoppingData,
+      hasInput,
+      items
+    } = this.props;
+    let { className } = this.props;
+
+    const additionalInput = checkedObj.id === id && hasInput
+      ? (
+        <div className="input__wrapper">
+          <input
+                onChange={(e) => { changeShoppingData('paymentMethod', id, e.target.value); }}
+                type="text"
+                className="input__text"
+                name="paymentMethodInvoice"
+                placeholder={inputPlaceholder}
+                value={checkedObj.invoice}
+          />
+        </div>
+      ) : null;
+
+    if (disabled) className += ' input__wrapper--disabled';
+    if (checkedObj.id === id && items.length) className += ' isActive';
+
+    const methods = items.map((item) => {
+      return (
+        <Method
+          key={item.id}
+          {...item}
+          checked={checkedObj.card === item.id}
+          changePaymentCard={(card) => { this.changePaymentCard(id, card); }}
+        />
+      );
+    });
+
+    return (
+      <div>
+        <div className={className}>
+          <input disabled={disabled}
+                onChange={(e) => { this.changePaymentMethod(e.target.name, id); }}
+                checked={id === checkedObj.id}
+                id={`pmg-${id}`}
+                name="paymentMethod"
+                type="radio"
+                className="input__radio" />
+          <label htmlFor={`pmg-${id}`} className="input__label input__label--radio select-accordion__main-label">
+            <SVG name={icon} className='icon-shipping' />
+            <span>{title}</span>
+          </label>
+          {additionalInput}
+        </div>
+
+        <ReactCSSTransitionGroup
+          transitionName="select-accordion__content--animation"
+          component="div"
+          transitionEnterTimeout={700}
+          transitionLeaveTimeout={700}>
+          {
+            id === checkedObj.id && items.length
+            ? <div className="select-accordion__content">{methods}</div>
+            : null
+          }
+        </ReactCSSTransitionGroup>
+      </div>
+    );
+  }
+}
+
+export default MethodsGroup;

@@ -82,7 +82,7 @@ export default (state = defaultState, action) => {
       checkedData: {
         ...state.checkedData,
         [payload.field]: payload.field === 'paymentMethod'
-          ? { id: payload.id, invoice: payload.invoice }
+          ? { id: payload.id, invoice: payload.invoice, card: payload.card }
           : payload.id
       }
     };

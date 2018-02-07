@@ -188,12 +188,12 @@ export const changeProductQuantity = (id, quantity) => {
   };
 };
 
-export const changeShoppingData = (field, id, invoice) => {
+export const changeShoppingData = (field, id, invoice, card) => {
   return (dispatch) => {
     dispatch({
       type: CHANGE_CHECKOUT_DATA,
       payload: {
-        field, id, invoice
+        field, id, invoice, card
       }
     });
 
@@ -258,7 +258,7 @@ export const sendData = (data) => {
     dispatch({ type: APP_LOADING + START });
 
     const prod = () => {
-      axios.post(CHECKOUT_URL.submitURL, { ...data })
+      axios.post(CHECKOUT_URL.submitURL, data)
         .then((response) => {
           dispatch({ type: APP_LOADING + FINISH });
 

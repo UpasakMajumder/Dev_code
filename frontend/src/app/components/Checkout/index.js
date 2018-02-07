@@ -113,17 +113,23 @@ class Checkout extends Component {
     getUI();
   }
 
+  checkPaymentMethod = (checkedData, invalidFields) => {
+    const checkedPM = checkedData.paymentMethod;
+
+    if (!checkedPM.id) invalidFields.push('paymentMethod');
+
+    const itemFromProps = this.props.checkout.ui.paymentMethods.items.find(item => item.id === checkedPM.id);
+
+    if (itemFromProps.hasInput && !checkedPM.invoice) invalidFields.push('invoice');
+
+    if (itemFromProps.items.length && !checkedPM.card) invalidFields.push('paymentMethod');
+  }
+
   placeOrder = (checkedData) => {
     const { sendData, checkout } = this.props;
     const invalidFields = Object.keys(checkedData).filter(key => checkedData[key] === 0);
 
-    if (!checkedData.paymentMethod.id) invalidFields.push('paymentMethod');
-
-    if (checkedData.paymentMethod.id === 3) {
-      if (!checkedData.paymentMethod.invoice) {
-        invalidFields.push('invoice');
-      }
-    }
+    this.checkPaymentMethod(checkedData, invalidFields);
 
     const newEmailConfirmation = Checkout.orginizeEmailConfirmation(checkedData.emailConfirmation);
 
@@ -174,7 +180,14 @@ class Checkout extends Component {
     }
 
     paymentMethods.items.forEach((method) => {
-      if (method.checked) paymentMethod = { id: method.id };
+      if (method.checked) {
+        paymentMethod = { id: method.id };
+
+        if (method.items.length) {
+          const checkedSubMethod = method.items.find(item => item.checked);
+          paymentMethod.card = checkedSubMethod.id;
+        }
+      }
     });
 
     initCheckedShoppingData({

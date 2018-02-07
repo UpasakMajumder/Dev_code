@@ -210,9 +210,31 @@ module.exports.ui = {
           "title": "Credit card",
           "icon": "credit-card",
           "disabled": false,
-          "checked": false,
+          "checked": true,
           "hasInput": false,
-          "inputPlaceholder": null
+          "inputPlaceholder": null,
+          "items": [
+            {
+              "id": 0,
+              "label": "John Gold 2355",
+              "checked": false
+            },
+            {
+              "id": 1,
+              "label": "John Travolta 1263",
+              "checked": false
+            },
+            {
+              "id": 2,
+              "label": "John Gold 2112",
+              "checked": false
+            },
+            {
+              "id": 3,
+              "label": "New card",
+              "checked": true
+            }
+          ]
         },
         {
           "id": 2,
@@ -221,16 +243,18 @@ module.exports.ui = {
           "disabled": true,
           "checked": false,
           "hasInput": false,
-          "inputPlaceholder": null
+          "inputPlaceholder": null,
+          "items": []
         },
         {
           "id": 3,
           "title": "Purchase order",
           "icon": "order-payment",
           "disabled": false,
-          "checked": true,
+          "checked": false,
           "hasInput": true,
-          "inputPlaceholder": "Insert your PO number"
+          "inputPlaceholder": "Insert your PO number",
+          "items": []
         }
       ]
     },
