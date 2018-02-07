@@ -1,20 +1,15 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using CMS.PortalEngine.Web.UI;
-using CMS.Helpers;
-using CMS.DocumentEngine;
-using CMS.Membership;
-using CMS.EventLog;
 using CMS.DataEngine;
-using CMS.PortalEngine;
+using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.KDA;
+using CMS.EventLog;
+using CMS.Helpers;
+using CMS.Membership;
+using CMS.PortalEngine;
+using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.Constants;
+using System;
+using System.Web.UI.WebControls;
 
 public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
 {
@@ -22,7 +17,8 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
 
     private string folderpath = "/";
     private int campaignId = 0;
-    #endregion
+
+    #endregion "Variables"
 
     #region "Methods"
 
@@ -34,7 +30,6 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
         base.OnContentLoaded();
         SetupControl();
     }
-
 
     /// <summary>
     /// Initializes the control properties.
@@ -50,7 +45,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             rfvUserNameRequired.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.NameRequired");
             rvDescription.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.DesMaxLength");
             rfvStartDate.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.StartDateRequired");
-            compareWithStartdate.ErrorMessage= ResHelper.GetString("Kadena.CampaignForm.EndDateRangeMessage");
+            compareWithStartdate.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.EndDateRangeMessage");
             compareDate.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.StartDaterangeMessage");
             rfvEndDate.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.EndDateRequired");
             rvName.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.NameMaxLength");
@@ -74,6 +69,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             }
         }
     }
+
     /// <summary>
     /// Insert Campaign to database
     /// </summary>
@@ -122,6 +118,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             EventLogProvider.LogException("CampaignCreateForm", "EXCEPTION", ex);
         }
     }
+
     /// <summary>
     /// Back to Campain Listing page
     /// </summary>
@@ -131,6 +128,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
     {
         URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
     }
+
     /// <summary>
     /// Saving the updated values in database
     /// </summary>
@@ -171,8 +169,9 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             EventLogProvider.LogException("CampaignCreateFormEdit", "EXCEPTION", ex);
         }
     }
+
     /// <summary>
-    /// Set the Data 
+    /// Set the Data
     /// </summary>
     /// <param name="_campaignId"></param>
     private void SetFeild(int _campaignId)
@@ -181,15 +180,35 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
         {
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
             CMS.DocumentEngine.TreeNode editPage = tree.SelectNodes("KDA.Campaign").OnCurrentSite().Where("CampaignID", QueryOperator.Equals, _campaignId);
+            string gAdminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
             if (editPage != null)
             {
                 Name.Text = editPage.GetValue("Name").ToString();
                 Description.Text = editPage.GetValue("Description").ToString();
                 var startDate = editPage.GetValue<DateTime>("StartDate", default(DateTime));
-                txtStartDate.Text = (startDate != default(DateTime))? startDate.ToShortDateString():string.Empty;
+                txtStartDate.Text = (startDate != default(DateTime)) ? startDate.ToShortDateString() : string.Empty;
                 var endDate = editPage.GetValue<DateTime>("EndDate", default(DateTime));
                 txtEndDate.Text = (endDate != default(DateTime)) ? endDate.ToShortDateString() : string.Empty;
                 ddlStatus.SelectedValue = ValidationHelper.GetBoolean(editPage.GetValue("Status"), false) == true ? "1" : "0";
+                var opencamp = editPage.GetValue("OpenCampaign", false);
+                var closecamp = editPage.GetValue("CloseCampaign", false);
+                if (opencamp)
+                {
+                    Name.ReadOnly = true;
+                    Description.ReadOnly = true;
+                    txtStartDate.Enabled = false;
+                    if (!CurrentUser.IsInRole(gAdminRoleName, CurrentSiteName))
+                    {
+                        txtEndDate.Enabled = false;
+                    }
+                    else
+                    {
+                        txtEndDate.Enabled = !closecamp;
+                    }
+                    ddlStatus.Enabled = false;
+                    rfvStartDate.Enabled = false;
+                    compareDate.Enabled = false;
+                }
             }
         }
         catch (Exception ex)
@@ -197,7 +216,6 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             EventLogProvider.LogException("CampaignCreateFormEdit", "EXCEPTION", ex);
         }
     }
-
 
     /// <summary>
     /// Reloads the control data.
@@ -208,6 +226,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
 
         SetupControl();
     }
+
     /// <summary>
     /// Get the Campaign Products Tempalte ID
     /// </summary>
@@ -230,8 +249,5 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
         }
     }
 
-    #endregion
+    #endregion "Methods"
 }
-
-
-
