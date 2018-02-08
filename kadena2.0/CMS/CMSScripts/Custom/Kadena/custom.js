@@ -1075,13 +1075,21 @@ $(document).ready(function () {
     var page = customHelpers.getQueryStringByName("page");
     var cookieValue = customHelpers.getCookie("status");
     switch (cookieValue) {
-        case 'added': toastr.success(config.localization.globalSuccess.addSuccessMessage); customHelpers.deleteCookie("status"); break;
-        case 'updated': toastr.success(config.localization.globalSuccess.updateSuccessMessage); customHelpers.deleteCookie("status"); break;
-        case 'deleted': toastr.success(config.localization.globalSuccess.deleteSuccessMessage); customHelpers.deleteCookie("status"); break;
-        case 'ordertask': toastr.success(config.localization.orders.orderScheduleTaskStartMessage); customHelpers.deleteCookie("status"); break;
-        case 'ordersuccess': toastr.success(config.localization.orders.orderSuccessMessage); customHelpers.deleteCookie("status"); break;
-        }
+        case 'added': toastr.success(config.localization.globalSuccess.addSuccessMessage);
+            break;
+        case 'updated': toastr.success(config.localization.globalSuccess.updateSuccessMessage);
+            break;
+        case 'deleted': toastr.success(config.localization.globalSuccess.deleteSuccessMessage);
+            break;
+        case 'ordertask': toastr.success(config.localization.globalSuccess.orderScheduleTaskStartMessage);
+            break;
+        case 'mappederror': toastr.error(config.localization.globalSuccess.pOSMappedWithProductError);
+            break;
+        case 'error': toastr.error(config.localization.globalSuccess.errorMessage);
+            break;
+    }
     if (status == 'error') {
         toastr.error(config.localization.globalSuccess.errorMessage);
     }
+    customHelpers.deleteCookie("status");
 });
