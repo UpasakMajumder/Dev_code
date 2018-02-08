@@ -46,19 +46,28 @@ export default (state = defaultState, action) => {
   case CHANGE_PRODUCT_QUANTITY + SUCCESS:
     return {
       ...state,
-      ui: payload.ui
+      ui: {
+        ...state.ui,
+        ...payload.ui
+      }
     };
 
   case REMOVE_PRODUCT + SUCCESS:
     return {
       ...state,
-      ui: payload.ui
+      ui: {
+        ...state.ui,
+        ...payload.ui
+      }
     };
 
   case RECALCULATE_CHECKOUT_PRICE + SUCCESS:
     return {
       ...state,
-      ui: payload.ui,
+      ui: {
+        ...state.ui,
+        ...payload.ui
+      },
       isSending: false
     };
 
