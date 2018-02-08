@@ -194,9 +194,7 @@
     <Compile Include="SubmitOrder\MicroserviceRequests\OrderItemDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\OrderItemTypeDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\OrderStatusDTO.cs" />
-    <Compile Include="SubmitOrder\MicroserviceRequests\OrderTrackingDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\PaymentOptionDTO.cs" />
-    <Compile Include="SubmitOrder\MicroserviceRequests\PaymentResultDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\ShippingOptionDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\SiteDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\SKUDTO.cs" />

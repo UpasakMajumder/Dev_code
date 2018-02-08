@@ -161,7 +161,6 @@ namespace Kadena2._0.BusinessLogic.Services.Orders
                 BillingAddress = orderDataFactory.CreateBillingAddress(billingAddress, billingState?.StateDisplayName),
                 ShippingAddress = orderDataFactory.CreateShippingAddress(shippingAddress, customer),
                 Customer = orderDataFactory.CreateCustomer(customer),
-                //KenticoOrderCreatedByUserID = customer.UserID,
                 OrderDate = DateTime.Now,
                 PaymentOption = orderDataFactory.CreatePaymentOption(paymentMethod, request),
                 Site = new SiteDTO()
@@ -180,10 +179,6 @@ namespace Kadena2._0.BusinessLogic.Services.Orders
                     KenticoOrderStatusID = kenticoOrder.GetOrderStatusId("Pending"),
                     OrderStatusName = "PENDING"
                 },
-                /*OrderTracking = new OrderTrackingDTO()
-                {
-                    OrderTrackingNumber = ""
-                },*/
                 TotalPrice = totals.TotalItemsPrice,
                 TotalShipping = totals.TotalShipping,
                 TotalTax = totals.TotalTax,
