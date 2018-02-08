@@ -38,9 +38,11 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         void SetCartItemQuantity(int id, int quantity);
 
-        void RemoveCurrentItemsFromStock();
+        int GetShoppingCartId(int userId, int siteId);
 
-        void ClearCart();
+        void RemoveCurrentItemsFromStock(int shoppingCartId = 0);
+
+        void ClearCart(int shoppingCartId = 0);
 
         double GetCurrentCartTotalItemsPrice();
 

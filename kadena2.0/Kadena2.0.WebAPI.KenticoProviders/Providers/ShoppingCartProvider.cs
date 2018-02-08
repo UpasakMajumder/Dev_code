@@ -410,13 +410,30 @@ namespace Kadena.WebAPI.KenticoProviders
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
         }
 
-       
-
-        public void RemoveCurrentItemsFromStock(/*int userId, string siteName*/)
+        public int GetShoppingCartId(int userId, int siteId)
         {
-            //var shoppingCart = ShoppingCartInfoProvider.GetShoppingCartInfo() // TODO, or store cartId in submissions
+            var siteName = SiteInfoProvider.GetSiteInfo(siteId)?.SiteName ?? string.Empty;
 
-            var items = ECommerceContext.CurrentShoppingCart.CartItems;
+            if (string.IsNullOrEmpty(siteName))
+            {
+                return 0;
+            }
+
+            return ShoppingCartInfoProvider.GetShoppingCartInfo(userId, siteName)?.ShoppingCartID ?? 0;
+        }
+
+        private ShoppingCartInfo GetShoppingCart(int shoppingCartId = 0)
+        {
+            return shoppingCartId > 0
+                ? ShoppingCartInfoProvider.GetShoppingCartInfo(shoppingCartId)
+                : ECommerceContext.CurrentShoppingCart;
+        }
+
+        public void RemoveCurrentItemsFromStock(int shoppingCartId = 0)
+        {
+            var shoppingCart = GetShoppingCart(shoppingCartId);
+
+            var items = shoppingCart.CartItems;
 
             foreach (var i in items)
             {
@@ -431,9 +448,10 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public void ClearCart()
+        public void ClearCart(int shoppingCartId = 0)
         {
-            ShoppingCartInfoProvider.DeleteShoppingCartInfo(ECommerceContext.CurrentShoppingCart);
+            var shoppingCart = GetShoppingCart(shoppingCartId);
+            ShoppingCartInfoProvider.DeleteShoppingCartInfo(shoppingCart);
         }
 
         public void SaveShippingAddress(DeliveryAddress address)
