@@ -136,6 +136,7 @@
           <property name="inlinescript">
 <![CDATA[
 <script type="text/javascript" >
+  var isError=false;
   $(".js-CloseMesaage").on("click",function(){
     $(this).closest(".dialog").removeClass("active");
   })
@@ -163,7 +164,8 @@
                 }
                 else
                 {
-                  toastr.error(data.errorMessage);
+                  toastr.error(data.errorMessage); 
+                  isError=true;
                 }
               },
               error:function (xhr, ajaxOptions, thrownError) {
@@ -173,6 +175,12 @@
             });
       }
     }); 
+  $(".js-Checkout").on("click",function(e){
+    if(isError===true){
+      toastr.error("{$KDA.Cart.Update.InsufficientStockMessage#$}"); 
+      e.preventDefault();
+      }
+  });
 </script>
 ]]>
           </property>

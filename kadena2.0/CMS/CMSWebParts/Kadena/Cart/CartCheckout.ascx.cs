@@ -93,7 +93,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     var response = ProcessOrder(Cart, CurrentUser.UserID, OrderType.generalInventory, Ordersdto, shippingCost);
                     if (response != null && response.Success)
                     {
-                        ShoppingCartHelper.UpdateAvailableSKUQuantity(Cart);
+                        UpdateAvailableSKUQuantity(Cart);
                         ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
                     }
                     else
@@ -109,8 +109,13 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 }
                 else
                 {
-                    Response.Cookies["status"].Value = QueryStringStatus.OrderSuccess;
-                    Response.Cookies["status"].HttpOnly = false;
+                    if(loggedInUserCartIDs.Count> unprocessedDistributorIDs.Count)
+                    {
+                        Response.Cookies["status"].Value = QueryStringStatus.OrderSuccess;
+                        Response.Cookies["status"].HttpOnly = false;
+                    }
+                    Response.Cookies["error"].Value = QueryStringStatus.OrderFail;
+                    Response.Cookies["error"].HttpOnly = false;
                     ShowOrderErrorList(unprocessedDistributorIDs);
                     divErrorDailogue.Attributes.Add("class", "dialog active");
                 }
