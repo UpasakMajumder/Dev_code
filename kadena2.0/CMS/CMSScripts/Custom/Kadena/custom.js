@@ -1081,11 +1081,13 @@ $(document).ready(function () {
             break;
         case 'deleted': toastr.success(config.localization.globalSuccess.deleteSuccessMessage);
             break;
-        case 'ordertask': toastr.success(config.localization.globalSuccess.orderScheduleTaskStartMessage);
+        case 'ordertask': toastr.success(config.localization.orders.orderScheduleTaskStartMessage);
             break;
         case 'mappederror': toastr.error(config.localization.globalSuccess.pOSMappedWithProductError);
             break;
         case 'error': toastr.error(config.localization.globalSuccess.errorMessage);
+            break;
+        case 'ordersuccess': toastr.success(config.localization.orders.orderSuccessMessage);
             break;
     }
     if (status == 'error') {
