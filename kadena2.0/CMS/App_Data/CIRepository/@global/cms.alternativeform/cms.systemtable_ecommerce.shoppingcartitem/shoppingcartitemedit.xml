@@ -106,7 +106,7 @@
           <Wrap>True</Wrap>
         </settings>
       </field>
-      <field allowempty="true" column="CartItemValidToLabel" columnsize="200" columntype="text" dummy="altform" guid="eea500b5-bcb9-41a2-8e22-9a68717f3998" publicfield="false" system="true" visible="true" order="14">
+      <field allowempty="true" column="CartItemValidToLabel" columnsize="200" columntype="text" dummy="altform" guid="eea500b5-bcb9-41a2-8e22-9a68717f3998" publicfield="false" system="true" visible="true" order="13">
         <properties>
           <fieldcaption>{$orderitemedit.validto$}</fieldcaption>
           <visiblemacro ismacro="true">
@@ -117,8 +117,8 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
-      <field column="CartItemValidTo" fieldtype="" reftype="" order="15" />
-      <field allowempty="true" column="CartItemTextBox" columnsize="200" columntype="text" dummy="altform" guid="e30f48ac-2531-4ee2-8d39-704fe3f5ec34" publicfield="false" reftype="Required" system="true" visible="true" order="16">
+      <field column="CartItemValidTo" fieldtype="" reftype="" order="14" />
+      <field allowempty="true" column="CartItemTextBox" columnsize="200" columntype="text" dummy="altform" guid="e30f48ac-2531-4ee2-8d39-704fe3f5ec34" publicfield="false" reftype="Required" system="true" visible="true" order="15">
         <properties>
           <fieldcaption>{$com.optioncategorytype.textattribute$}</fieldcaption>
           <visiblemacro ismacro="true">
@@ -134,7 +134,7 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field column="CartItemAutoAddedUnits" fieldtype="" reftype="" order="17" />
+      <field column="CartItemAutoAddedUnits" fieldtype="" reftype="" order="16" />
     </form>
   </FormDefinition>
   <FormDisplayName>Shopping Cart Item Edit</FormDisplayName>

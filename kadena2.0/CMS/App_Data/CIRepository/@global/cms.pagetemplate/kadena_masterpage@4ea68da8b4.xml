@@ -192,7 +192,8 @@
     addSuccessMessage: '{% GetResourceString("Kadena.GlobalSuccess.AddSuccessMessage") |(user)cvoqa2@gmail.com|(hash)d586e1841f580cf46d6ea516169c515756a1c781a9af08a1c71cc24d2eb54871%}',
     updateSuccessMessage:'{% GetResourceString("Kadena.GlobalSuccess.UpdateSuccessMessage") |(user)cvoqa2@gmail.com|(hash)ef56d821bc2a31eba96f03ab1a2106db1b9d4f3d75cc93f2dac824b5029cc0af%}',
     deleteSuccessMessage: '{% GetResourceString("Kadena.GlobalSuccess.DeleteSuccessMessage") |(user)cvoqa2@gmail.com|(hash)499501cb9ff2489885508d87ce0abfc8fff51cedd99a9e2a8748223697d1ab69%}',
-    errorMessage: '{% GetResourceString("Kadena.GlobalError.ErrorMessage") |(user)cvoqa2@gmail.com|(hash)f09f3902d02277c84d599e72dd4711a8c7adcc81a785e6481dd27493e9906263%}'
+    errorMessage: '{% GetResourceString("Kadena.GlobalError.ErrorMessage") |(user)cvoqa2@gmail.com|(hash)f09f3902d02277c84d599e72dd4711a8c7adcc81a785e6481dd27493e9906263%}',
+   orderScheduleTaskStartMessage: '{% GetResourceString("KDA.OrderSchedular.ExecutionStartMessage") |(user)cvoqa2@gmail.com|(hash)2241462dc6a0e392554d92d91eeafb8cfaabcb6086c8cfaf2a5a66d58eac7c99%}'
   };
 </script>
 
@@ -779,7 +780,7 @@ config.localization.languages = {
           </property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{%Settings.KDA_IsPreBuyCartEnabled|(user)cvoqa2@gmail.com|(hash)2e4a40e729d4eef5258b9d214aedf69b64c60d286638b8dd57f8dfea6d46bc7b%}]]>
+            <![CDATA[{%Settings.KDA_IsPreBuyCartEnabled && IsCampaignOpen()|(user)Abdul.Raheman|(hash)53f1ab3684dfa2ed998a2719d1e83197d361acdbba238e1fc00797d945d9248b%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">ShoppingCartCount</property>

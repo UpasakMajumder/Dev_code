@@ -506,6 +506,8 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             {
                 campaign.CloseCampaign = true;
                 campaign.Update();
+                Response.Cookies["status"].Value = QueryStringStatus.OrderScheduleTaskStart;
+                Response.Cookies["status"].HttpOnly = false;
                 TaskInfo runTask = TaskInfoProvider.GetTaskInfo(ScheduledTaskNames.PrebuyOrderCreation, CurrentSite.SiteID);
                 if (runTask != null)
                 {

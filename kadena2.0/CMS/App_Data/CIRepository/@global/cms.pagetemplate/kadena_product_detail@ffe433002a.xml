@@ -232,7 +232,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<img src='{% String.IsNullOrWhiteSpace(ProductThumbnail) ? SKUImagePath : "/CMSPages/GetFile.aspx?guid=" + ProductThumbnail |(user)tomas.rucki@actum.cz|(hash)e4295dd73ab40150845b4fa4c9999fa02cc5d86474a1cf4ebf5c7492ac2599a6%}'>]]>
+            <![CDATA[<img src='{% SKUImagePath %}'>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -770,7 +770,7 @@ config.localization.manageProducts = {
           <property name="checkpermissions">True</property>
           <property name="classnames">KDA.Product</property>
           <property name="columns">
-            <![CDATA[DocumentName, NodeAliasPath, DocumentUrlPath, SKUImagePath, ProductThumbnail]]>
+            <![CDATA[DocumentName, NodeAliasPath, DocumentUrlPath, SKUImagePath]]>
           </property>
           <property name="container"></property>
           <property name="containercssclass"></property>

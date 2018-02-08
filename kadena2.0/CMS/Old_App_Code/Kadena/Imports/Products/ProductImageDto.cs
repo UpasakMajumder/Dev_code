@@ -9,14 +9,14 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [MaxLength(30)]
         public string SKU { get; set; }
 
-        [Header(1, "Image URL")]
+        [Header(1, "Media Library Name")]
         [Required]
         [MaxLength(200)]
-        public string ImageURL { get; set; }
+        public string ImageMediaLibraryName { get; set; }
 
-        [Header(2, "Thumbnail URL")]
+        [Header(2, "Image Path")]
         [Required]
         [MaxLength(200)]
-        public string ThumbnailURL { get; set; }
+        public string ImagePath { get; set; }
     }
 }

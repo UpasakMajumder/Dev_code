@@ -9,5 +9,6 @@ namespace Kadena.Dto.TemplatedProduct.Responses
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public string EditorUrl { get; set; }
+        public string Image { get; set; }
     }
 }

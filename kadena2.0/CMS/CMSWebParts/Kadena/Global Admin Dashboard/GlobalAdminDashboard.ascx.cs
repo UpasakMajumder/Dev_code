@@ -158,11 +158,11 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
     /// <param name="ordersList"></param>
     /// <param name="orderStatus"></param>
     /// <returns></returns>
-    private StatisticBlock GetOrdersBlock(IEnumerable<OrderDto> ordersList, string orderStatus)
+    private StatisticBlock GetOrdersBlock(IEnumerable<RecentOrderDto> ordersList, string orderStatus)
     {
-        List<OrderDto> Weekly = FilterOrders(ordersList, orderStatus, 7);
-        List<OrderDto> Monthly = FilterOrders(ordersList, orderStatus, 30);
-        List<OrderDto> Yearly = FilterOrders(ordersList, orderStatus, 365);
+        List<RecentOrderDto> Weekly = FilterOrders(ordersList, orderStatus, 7);
+        List<RecentOrderDto> Monthly = FilterOrders(ordersList, orderStatus, 30);
+        List<RecentOrderDto> Yearly = FilterOrders(ordersList, orderStatus, 365);
         return new StatisticBlock()
         {
             Week = new StatisticsReading()
@@ -189,7 +189,7 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
     /// <param name="orderStatus"></param>
     /// <param name="lastNDays"></param>
     /// <returns></returns>
-    private List<OrderDto> FilterOrders(IEnumerable<OrderDto> ordersList, string orderStatus, int lastNDays)
+    private List<RecentOrderDto> FilterOrders(IEnumerable<RecentOrderDto> ordersList, string orderStatus, int lastNDays)
     {
         return ordersList.Where(x => x.Status.Equals(orderStatus) && (DateTime.Now - x.CreateDate).Days <= lastNDays).ToList();
     }

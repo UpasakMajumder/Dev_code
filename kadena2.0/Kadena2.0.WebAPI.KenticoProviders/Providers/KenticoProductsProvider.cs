@@ -61,9 +61,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 Id = p.DocumentID,
                 Title = p.DocumentName,
                 Url = p.DocumentUrlPath,
-                ImageUrl = URLHelper.GetAbsoluteUrl(p.GetValue("ProductThumbnail", string.Empty) == string.Empty ?
-                                                    p.GetValue("SKUImagePath", string.Empty) :
-                                                    "/CMSPages/GetFile.aspx?guid=" + p.GetValue("ProductThumbnail")),
+                ImageUrl = URLHelper.ResolveUrl(p.GetValue("SKUImagePath", string.Empty), false),
                 IsFavourite = false,
                 Border = new Border
                 {
@@ -110,10 +108,6 @@ namespace Kadena.WebAPI.KenticoProviders
             var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
             var skuurl = sku?.SKUImagePath ?? string.Empty;
 
-            if ((document?.GetGuidValue("ProductThumbnail", Guid.Empty) ?? Guid.Empty) != Guid.Empty)
-            {
-                return URLHelper.GetAbsoluteUrl(string.Format("/CMSPages/GetFile.aspx?guid={0}", document.GetGuidValue("ProductThumbnail", Guid.Empty)));
-            }
             return URLHelper.GetAbsoluteUrl(skuurl);
         }
 
