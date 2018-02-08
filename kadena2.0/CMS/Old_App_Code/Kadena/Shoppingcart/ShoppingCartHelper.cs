@@ -43,7 +43,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     TargetAddress = GetTargetAddress(),
                     Weight = GetWeight(),
                     Provider = CarrierInfoProvider.GetCarrierInfo(Cart.ShippingOption.ShippingOptionCarrierID).CarrierName,
-                    ProviderService = Cart.ShippingOption.ShippingOptionCarrierServiceName
+                    ProviderService = Cart.ShippingOption.ShippingOptionName
                 };
             }
             catch (Exception ex)

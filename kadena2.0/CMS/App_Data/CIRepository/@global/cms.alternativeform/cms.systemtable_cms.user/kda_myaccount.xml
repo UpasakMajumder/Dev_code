@@ -177,7 +177,7 @@
           <controlcssclass>input__text js-Zipcode</controlcssclass>
         </properties>
       </field>
-      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" reftype="Required" allowempty="">
+      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" allowempty="">
         <settings>
           <controlname>DropDownListControl</controlname>
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
@@ -235,7 +235,7 @@ select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
           <Trim>False</Trim>
         </settings>
       </field>
-      <field column="FYBudget" guid="225dd61d-35e2-4454-a518-cbd994e70a6c" order="88">
+      <field column="FYBudget" guid="225dd61d-35e2-4454-a518-cbd994e70a6c" reftype="Required" visible="" order="88">
         <properties>
           <controlcssclass>input__text</controlcssclass>
         </properties>
@@ -335,8 +335,6 @@ select ItemID,DivisionName from KDA_Division
 <div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Mobile$}</span>$$input:UserMobile$$$$validation:UserMobile$$</div>
 
 <div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.Fax$}</span>$$input:UserFax$$$$validation:UserFax$$</div>
-
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.FYBudget$} </span>$$input:FYBudget$$$$validation:FYBudget$$</div>
 
 <div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.SalesManagerID$}</span>$$input:SalesManagerID$$</div>
 
