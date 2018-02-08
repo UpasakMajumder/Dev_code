@@ -8,6 +8,10 @@ using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.Old_App_Code.Kadena.Constants;
+using Kadena.Old_App_Code.Kadena.EmailNotifications;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Container.Default;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -413,6 +417,21 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         }
     }
 
+    /// <summary>
+    /// Items specs resource string
+    /// </summary>
+    public string ItemSpecHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.ItemSpecHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("ItemSpecHeaderText", value);
+        }
+    }
+
     #endregion Properties
 
     #region "Methods"
@@ -433,22 +452,24 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         gdvInboundProducts.Columns[0].HeaderText = SKUNumberHeaderText;
         gdvInboundProducts.Columns[1].HeaderText = SKUNameheaderText;
-        gdvInboundProducts.Columns[2].HeaderText = QtyOrderedHeaderText;
-        gdvInboundProducts.Columns[3].HeaderText = DemandHeaderText;
-        gdvInboundProducts.Columns[4].HeaderText = QtyReceivedHeaderText;
-        gdvInboundProducts.Columns[5].HeaderText = QtyProdusedHeaderText;
-        gdvInboundProducts.Columns[6].HeaderText = OverageHeaderText;
-        gdvInboundProducts.Columns[7].HeaderText = VendorHeaderText;
-        gdvInboundProducts.Columns[8].HeaderText = ExpArraivalToCenveoHeaderText;
-        gdvInboundProducts.Columns[9].HeaderText = DeliveryToDistByHeaderText;
-        gdvInboundProducts.Columns[10].HeaderText = ShippedToDistHeaderText;
-        gdvInboundProducts.Columns[11].HeaderText = CenveoCommentsHeaderText;
-        gdvInboundProducts.Columns[12].HeaderText = TWECommentsHeaderText;
-        gdvInboundProducts.Columns[13].HeaderText = ActualPriceHeaderText;
-        gdvInboundProducts.Columns[14].HeaderText = StatusHeaderText;
-        gdvInboundProducts.Columns[15].HeaderText = ActionsText;
+        gdvInboundProducts.Columns[2].HeaderText = ItemSpecHeaderText;
+        gdvInboundProducts.Columns[3].HeaderText = QtyOrderedHeaderText;
+        gdvInboundProducts.Columns[4].HeaderText = DemandHeaderText;
+        gdvInboundProducts.Columns[5].HeaderText = QtyReceivedHeaderText;
+        gdvInboundProducts.Columns[6].HeaderText = QtyProdusedHeaderText;
+        gdvInboundProducts.Columns[7].HeaderText = OverageHeaderText;
+        gdvInboundProducts.Columns[8].HeaderText = VendorHeaderText;
+        gdvInboundProducts.Columns[9].HeaderText = ExpArraivalToCenveoHeaderText;
+        gdvInboundProducts.Columns[10].HeaderText = DeliveryToDistByHeaderText;
+        gdvInboundProducts.Columns[11].HeaderText = ShippedToDistHeaderText;
+        gdvInboundProducts.Columns[12].HeaderText = CenveoCommentsHeaderText;
+        gdvInboundProducts.Columns[13].HeaderText = TWECommentsHeaderText;
+        gdvInboundProducts.Columns[14].HeaderText = ActualPriceHeaderText;
+        gdvInboundProducts.Columns[15].HeaderText = StatusHeaderText;
+        gdvInboundProducts.Columns[16].HeaderText = ActionsText;
         btnExport.Text = ExportButtonText;
         btnRefresh.Text = RefreshButtonText;
+        btnClose.Text = ResHelper.GetString("Kadena.Inbound.CloseButtonText");
     }
 
     /// <summary>
@@ -465,10 +486,11 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                 {
                     if (!IsPostBack)
                     {
+                        divSelectCampaign.Visible = true;
                         BindCampaigns();
                         string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
                         ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
-                        GetProducts();
+                        BindLabels();
                     }
                 }
                 else
@@ -604,8 +626,8 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
             {
                 var productAndSKUDetails = productsDetails
-                                  .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUID }).ToList();
-                var inboundDetails = CustomTableItemProvider.GetItems<InboundTrackingItem>().ToList();
+                                  .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.CustomItemSpecs, x.ItemSpecs, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUID }).ToList();
+                var inboundDetails = CustomTableItemProvider.GetItems<InboundTrackingItem>().WhereIn("SKUID", skuDetails.Select(x => x.SKUID).ToList()).ToList();
                 var allDetails = from product in productAndSKUDetails
                                  join inbound in inboundDetails
                                  on product.SKUID equals inbound.SKUID into alldata
@@ -627,19 +649,28 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                                      CenveoComments = newData?.CenveoComments ?? string.Empty,
                                      TweComments = newData?.TweComments ?? string.Empty,
                                      ActualPrice = newData?.ActualPrice ?? default(double),
-                                     Status = product.SKUEnabled
+                                     Status = product.SKUEnabled,
+                                     IsClosed = IsIBTFClosed(product?.ProgramID ?? 0),
+                                     ItemSpec = (product?.ItemSpecs ?? string.Empty) == "0" ? product?.CustomItemSpecs ?? string.Empty : (product?.ItemSpecs ?? string.Empty) == "0" ? string.Empty : GetItemSpecs(product?.ItemSpecs ?? string.Empty),
+                                     CustomItemSpecs = product.CustomItemSpecs ?? string.Empty
                                  };
                 allDetails = allDetails.ToList();
+                var closeButtonStatus = allDetails.Select(x => x.IsClosed).FirstOrDefault();
                 if (!DataHelper.DataSourceIsEmpty(allDetails))
                 {
-                    BindLabels();
                     divNodatafound.Visible = false;
                     gdvInboundProducts.DataSource = allDetails;
                     gdvInboundProducts.DataBind();
                     gdvInboundProducts.Visible = true;
+                    btnClose.Enabled = !closeButtonStatus;
+                    btnRefresh.Enabled = true;
+                    btnExport.Enabled = true;
                 }
                 else
                 {
+                    btnClose.Enabled = false;
+                    btnRefresh.Enabled = false;
+                    btnExport.Enabled = false;
                     divNodatafound.Visible = true;
                     gdvInboundProducts.Visible = false;
                     BindLabels();
@@ -648,6 +679,9 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             }
             else
             {
+                btnClose.Enabled = false;
+                btnRefresh.Enabled = false;
+                btnExport.Enabled = false;
                 divNodatafound.Visible = true;
                 BindLabels();
                 gdvInboundProducts.DataBind();
@@ -717,7 +751,9 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         try
         {
-            var camapaigns = CampaignProvider.GetCampaigns().Columns("CampaignID,Name").ToList();
+            var camapaigns = CampaignProvider.GetCampaigns().Columns("CampaignID,Name")
+                                .Where(new WhereCondition().WhereEquals("CloseCampaign", true))
+                                .WhereEquals("NodeSiteID", CurrentSite.SiteID).OrderBy(x => x.Name).ToList();
             if (!DataHelper.DataSourceIsEmpty(camapaigns))
             {
                 ddlCampaign.DataSource = camapaigns;
@@ -810,7 +846,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             inboundData.DemandGoal = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDemandGoal")).Text, default(int));
             inboundData.QtyReceived = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyReceived")).Text, default(int));
             inboundData.QtyProduced = ValidationHelper.GetInteger(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtQtyProduced")).Text, default(int));
-            inboundData.Overage = inboundData.QtyReceived- inboundData.QtyOrdered;
+            inboundData.Overage = inboundData.QtyReceived - inboundData.QtyOrdered;
             inboundData.Vendor = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtVendor")).Text, string.Empty);
             inboundData.ExpArrivalToCenveo = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtExpArrivalToCenveo")).Text, string.Empty);
             inboundData.DeliveryToDistBy = ValidationHelper.GetString(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtDeliveryToDistBy")).Text, string.Empty);
@@ -878,8 +914,31 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     /// <param name="e"></param>
     protected void ddlCampaign_SelectedIndexChanged(object sender, EventArgs e)
     {
-        BindPrograms(ValidationHelper.GetInteger(ddlCampaign.SelectedValue, default(int)));
-        GetProducts();
+        try
+        {
+            if (ddlCampaign.SelectedIndex != 0)
+            {
+                inBoundGrid.Visible = true;
+                ddlProgram.Enabled = true;
+                divSelectCampaign.Visible = false;
+                BindPrograms(ValidationHelper.GetInteger(ddlCampaign.SelectedValue, default(int)));
+                GetProducts();
+            }
+            else
+            {
+                ddlProgram.Enabled = false;
+                divNodatafound.Visible = false;
+                divSelectCampaign.Visible = true;
+                inBoundGrid.Visible = false;
+                btnClose.Enabled = false;
+                btnRefresh.Enabled = false;
+                btnExport.Enabled = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("Campaign selection change event", "ddlCampaign_SelectedIndexChanged()", ex, CurrentSite.SiteID, ex.Message);
+        }
     }
 
     /// <summary>
@@ -978,6 +1037,82 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             EventLogProvider.LogException("Binding Status", "gdvInboundProducts_RowDataBound()", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
+    /// <summary>
+    /// Pop up Yes click
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void popUpYes_ServerClick(object sender, EventArgs e)
+    {
+        try
+        {
+            int campaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, default(int));
+            var client = DIContainer.Resolve<IKenticoCampaignsProvider>();
+            bool result = client.CloseCampaignIBTF(campaignID);
+            var emailNotificationTemplate = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey(SiteContext.CurrentSiteID, "KDA_IBTFFinalizeEmailTemplate");
+            if (result)
+            {
+                ProductEmailNotifications.GetCampaignOrders(campaignID, emailNotificationTemplate);
+                btnClose.Enabled = false;
+                GetProducts();
+                Response.Cookies["status"].Value = QueryStringStatus.Updated;
+                Response.Cookies["status"].HttpOnly = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CloseButtonYesClick", "popUpYes_ServerClick()", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// checking if Inbound form is finalized
+    /// </summary>
+    /// <param name="programID"></param>
+    /// <returns></returns>
+    public bool IsIBTFClosed(int? programID)
+    {
+        try
+        {
+            var program = ProgramProvider.GetPrograms().WhereEquals("ProgramID", programID).Column("CampaignID").FirstOrDefault();
+            var campaign = CampaignProvider.GetCampaigns().WhereEquals("CampaignID", program?.CampaignID ?? 0).FirstOrDefault();
+            if (campaign != null)
+            {
+                return campaign?.IBTFFinalized ?? false;
+            }
+            return false;
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("IsIBTFClosed", "checking if IBTF of particular campaign is closed", ex, CurrentSite.SiteID, ex.Message);
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Gets the item specs from data base
+    /// </summary>
+    /// <returns>returns value based on itemid</returns>
+    public string GetItemSpecs(string itemID)
+    {
+        try
+        {
+            var itemSpecs = CustomTableItemProvider.GetItems(ProductItemSpecsItem.CLASS_NAME).WhereEquals("ItemID", ValidationHelper.GetInteger(itemID, 0))
+                .Columns("ItemSpec").FirstOrDefault();
+            if (itemSpecs != null)
+            {
+                return itemSpecs.GetValue("ItemSpec", string.Empty);
+            }
+            return string.Empty;
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts", "GetItemSpecs()", ex, CurrentSite.SiteID, ex.Message);
+            return string.Empty;
+        }
+    }
 }
 
 #endregion "Methods"
+

@@ -64,10 +64,27 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
 		/// <summary>
+		/// 
+		/// </summary>
+		[DatabaseField]
+		public bool IBTFFinalized
+		{
+			get
+			{
+				return ValidationHelper.GetBoolean(GetValue("IBTFFinalized"), false);
+			}
+			set
+			{
+				SetValue("IBTFFinalized", value);
+			}
+		}
+
+
+		/// <summary>
 		/// Campaign Name.
 		/// </summary>
 		[DatabaseField]
-		public string Name
+		public new string Name
 		{
 			get
 			{
@@ -166,7 +183,7 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
 		/// <summary>
-		/// 
+		/// Open.
 		/// </summary>
 		[DatabaseField]
 		public bool OpenCampaign
@@ -200,7 +217,7 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
 		/// <summary>
-		/// 
+		/// Close.
 		/// </summary>
 		[DatabaseField]
 		public bool CloseCampaign
@@ -263,6 +280,22 @@ namespace CMS.DocumentEngine.Types.KDA
 				set
 				{
 					mInstance.CampaignID = value;
+				}
+			}
+
+
+			/// <summary>
+			/// 
+			/// </summary>
+			public bool IBTFFinalized
+			{
+				get
+				{
+					return mInstance.IBTFFinalized;
+				}
+				set
+				{
+					mInstance.IBTFFinalized = value;
 				}
 			}
 
@@ -364,7 +397,7 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
 			/// <summary>
-			/// 
+			/// Open.
 			/// </summary>
 			public bool OpenCampaign
 			{
@@ -396,7 +429,7 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
 			/// <summary>
-			/// 
+			/// Close.
 			/// </summary>
 			public bool CloseCampaign
 			{

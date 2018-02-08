@@ -1,19 +1,20 @@
 using CMS.EventLog;
 using CMS.PortalEngine.Web.UI;
 using System;
-using Kadena.WebAPI.KenticoProviders;
 using Kadena.Models.Dashboard;
 using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.Membership;
 using System.Linq;
 using Kadena2.MicroserviceClients.Clients;
-using Kadena.Helpers;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
 using System.Collections.Generic;
 using Kadena.Old_App_Code.Kadena.Constants;
-using Kadena2.WebAPI.KenticoProviders;
+using Kadena.Old_App_Code.Kadena;
+using Kadena2.Container.Default;
+using Kadena2.MicroserviceClients.Contracts.Base;
+using Kadena2.MicroserviceClients.Contracts;
 
 public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashboard : CMSAbstractWebPart
 {
@@ -142,7 +143,7 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
     public DashboardStatistics GetDashboardStatistics()
     {
         DashboardStatistics statistics = new DashboardStatistics();
-        var statisticClient = new OrderViewClient(ProviderFactory.MicroProperties);
+        var statisticClient = DIContainer.Resolve<IOrderViewClient>();
         BaseResponseDto<OrderListDto> response = statisticClient.GetOrders(CurrentSiteName, 1, 1000).Result;
         if (response.Success)
         {
@@ -157,11 +158,11 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
     /// <param name="ordersList"></param>
     /// <param name="orderStatus"></param>
     /// <returns></returns>
-    private StatisticBlock GetOrdersBlock(IEnumerable<OrderDto> ordersList, string orderStatus)
+    private StatisticBlock GetOrdersBlock(IEnumerable<RecentOrderDto> ordersList, string orderStatus)
     {
-        List<OrderDto> Weekly = FilterOrders(ordersList, orderStatus, 7);
-        List<OrderDto> Monthly = FilterOrders(ordersList, orderStatus, 30);
-        List<OrderDto> Yearly = FilterOrders(ordersList, orderStatus, 365);
+        List<RecentOrderDto> Weekly = FilterOrders(ordersList, orderStatus, 7);
+        List<RecentOrderDto> Monthly = FilterOrders(ordersList, orderStatus, 30);
+        List<RecentOrderDto> Yearly = FilterOrders(ordersList, orderStatus, 365);
         return new StatisticBlock()
         {
             Week = new StatisticsReading()
@@ -188,7 +189,7 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
     /// <param name="orderStatus"></param>
     /// <param name="lastNDays"></param>
     /// <returns></returns>
-    private List<OrderDto> FilterOrders(IEnumerable<OrderDto> ordersList, string orderStatus, int lastNDays)
+    private List<RecentOrderDto> FilterOrders(IEnumerable<RecentOrderDto> ordersList, string orderStatus, int lastNDays)
     {
         return ordersList.Where(x => x.Status.Equals(orderStatus) && (DateTime.Now - x.CreateDate).Days <= lastNDays).ToList();
     }

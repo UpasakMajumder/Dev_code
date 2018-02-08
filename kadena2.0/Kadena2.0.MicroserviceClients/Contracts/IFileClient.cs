@@ -17,6 +17,6 @@ namespace Kadena2.MicroserviceClients.Contracts
 
         string GetFileUrl(string fileName, FileModule moduleName);
 
-        Task<BaseResponseDto<string>> GetShortliveSecureLink(string key, FileModule module);
+        Task<BaseResponseDto<string>> GetShortliveSecureLink(string key);
     }
 }

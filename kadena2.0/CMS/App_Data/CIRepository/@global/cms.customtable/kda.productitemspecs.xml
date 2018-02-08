@@ -24,9 +24,9 @@
           <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
           <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
           <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
-          <controlname>TextBoxControl</controlname>
+          <controlname>TextAreaControl</controlname>
           <FilterMode>False</FilterMode>
-          <Trim>False</Trim>
+          <Wrap>True</Wrap>
         </settings>
       </field>
       <field allowempty="true" column="ItemCreatedBy" columnprecision="0" columntype="integer" guid="be59ee12-2cf1-4546-bed5-b6d38afcfbaa" publicfield="false" system="true">

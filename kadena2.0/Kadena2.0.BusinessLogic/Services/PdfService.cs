@@ -2,6 +2,7 @@
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Kadena.BusinessLogic.Services
@@ -54,18 +55,15 @@ namespace Kadena.BusinessLogic.Services
                 return documents.GetDocumentAbsoluteUrl(resources.GetSettingsKey("KDA_HiresPdfLinkFail"));
             }
 
-            var orderLines = order.Payload.Items?.Count ?? 0;
+            var fileKey = order.Payload.Items?.FirstOrDefault(i => i.LineNumber == line)?.FileKey;
 
-            if (orderLines == 0 || orderLines < (line - 1))
+            if (string.IsNullOrEmpty(fileKey))
             {
-                logger.LogError("GetHiresPdfLink", $"Order doesn't contain line #{line}");
+                logger.LogError("GetHiresPdfLink", $"Order doesn't contain line #{line} with valid FileKey");
                 return GetCustomizedFailUrl(order.Payload.SiteId);
             }
 
-            var fileInfo = order.Payload.Items[line].FileInfo;
-
-            var linkResult = await fileClient.GetShortliveSecureLink(fileInfo.Key, fileInfo.Module);
-
+            var  linkResult = await fileClient.GetShortliveSecureLink(fileKey);
 
             if (!linkResult.Success || string.IsNullOrEmpty(linkResult.Payload))
             {

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<tr>
+	<td style="text-align: right; vertical-align: top;"> {% data[DataItemIndex] |(user)cvoqa2@gmail.com|(hash)06c68cbe21d5c63396f44aa528fbfa6a7be60bb2ab93f158a4140ddd0c62b14e%} </td>
+</tr>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>b833a800-3156-4cec-9da6-1cd7d3f0b332</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>xFailedOrdersContent</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

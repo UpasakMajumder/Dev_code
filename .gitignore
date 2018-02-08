@@ -272,4 +272,5 @@ kadena2.0/CMS/App_Data/CMSModules/SmartSearch/**
 kadena2.0/CMS/App_Data/CMSTemp
 kadena2.0/CMS/App_Data/Persistent
 kadena2.0/CMS/CMSSiteUtils
-
+kadena2.0/CMS/App_Data/AmazonCache
+kadena2.0/CMS/App_Data/AmazonTemp

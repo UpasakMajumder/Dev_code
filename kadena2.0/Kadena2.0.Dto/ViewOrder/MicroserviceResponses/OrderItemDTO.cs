@@ -9,7 +9,8 @@
         public string TrackingId { get; set; }
         public string Name { get; set; }
         public string MailingList { get; set; }
-        public FileInfoDto FileInfo { get; set; }
+        public string FileKey { get; set; }
         public double TotalPrice { get; set; }
+        public int LineNumber { get; set; }
     }
 }

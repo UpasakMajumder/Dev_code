@@ -112,8 +112,8 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\MapperBuilder.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\ProgramsController.cs" />
     <Compile Include="Controllers\AddressBookController.cs" />
     <Compile Include="Controllers\BusinessUnitsController.cs" />
@@ -143,6 +143,7 @@
     <Compile Include="Infrastructure\Filters\Authentication\IdentityBasicAuthenticationAttribute.cs" />
     <Compile Include="Infrastructure\Filters\RecalculateShoppingCartAttribute.cs" />
     <Compile Include="Infrastructure\Filters\QuerystringParameterRequiredFilter.cs" />
+    <Compile Include="Infrastructure\Filters\RequestLogFilter.cs" />
     <Compile Include="Infrastructure\Filters\RequireHttpsFilter.cs" />
     <Compile Include="Infrastructure\Communication\ErrorResponse.cs" />
     <Compile Include="Infrastructure\Filters\CustomerAuthorizationFilter.cs" />
@@ -163,7 +164,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Factories\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kadena2.0.BusinessLogic\Kadena2.0.BusinessLogic.csproj">

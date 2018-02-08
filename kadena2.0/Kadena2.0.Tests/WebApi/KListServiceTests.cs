@@ -5,13 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Kadena.Dto.MailingList.MicroserviceResponses;
-using Kadena.WebAPI;
 using Kadena.BusinessLogic.Services;
-using AutoMapper;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Dto.General;
 using Kadena.Models.Site;
+using Kadena2.Container.Default;
 
 namespace Kadena.Tests.WebApi
 {
@@ -44,9 +43,7 @@ namespace Kadena.Tests.WebApi
 
         private KListService Create(Mock<IMailingListClient> mailingClient = null, Mock<IAddressValidationClient> validationClient = null)
         {
-            MapperBuilder.InitializeAll();
-            var mapper = Mapper.Instance;
-
+            var mapper = MapperBuilder.MapperInstance;
 
             var site = new Mock<IKenticoSiteProvider>();
             site.Setup(p => p.GetKenticoSite())

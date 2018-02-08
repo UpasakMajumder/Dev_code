@@ -5,6 +5,7 @@ import submitCard from 'app.ac/card-payment';
 /* helpers */
 import { cardPaymentSymbols } from 'app.helpers/validationRules';
 import { cardExpiration } from 'app.helpers/regexp';
+import { getSearchObj } from 'app.helpers/location';
 /* globals */
 import { CARD_PAYMENT } from 'app.globals';
 /* components */
@@ -30,6 +31,11 @@ class Payment extends Component {
       invalids: []
     };
   }
+
+  static getSubmissionId = () => {
+    const { submissionId } = getSearchObj();
+    return submissionId;
+  };
 
   static getNewValueWithSlash = (value) => {
     if (value.includes('/') || value.length < cardPaymentSymbols.expiry.min) return value;
@@ -98,6 +104,8 @@ class Payment extends Component {
   };
 
   submit = () => {
+    const submissionId = Payment.getSubmissionId();
+
     const { proceedCard } = this.props;
     const { fields, cardType } = this.state;
 
@@ -106,8 +114,7 @@ class Payment extends Component {
     if (invalids.length) {
       this.setState({ invalids });
     } else {
-      location.assign(CARD_PAYMENT.RedirectURL);
-      // proceedCard(fields, cardType);
+      proceedCard(fields, cardType, submissionId);
     }
   }
 

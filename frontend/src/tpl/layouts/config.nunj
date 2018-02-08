@@ -346,6 +346,9 @@
       cardPayment: {
         URL3DSi: '',
         RedirectURL: 'hi',
+        DemoURL: '/order-submitted.html',
+        ResultURL: '',
+        ResponseType: '',
         acceptedCards: ['visa', 'amex', 'mastercard'],
         submitButtonText: 'Proceed with payment',
         cardTypeInValidMessage: 'card type error',
@@ -373,8 +376,6 @@
             cardLabel: 'valid '
           },
         },
-        ResultURL: '',
-        SubmissionIDURL: '#',
         APCount: '0',
         PTCount: '0',
         CustomerIdentifier_MerchantCode: 'Kadena2.0',
@@ -382,7 +383,8 @@
         CustomerIdentifier_CustomerCode: 'testActum1',
         TerminalIdentifier_LocationCode: 'Kadena2.0',
         TerminalIdentifier_TerminalCode: 'Kadena2.0',
-        TerminalIdentifier_MerchantCode: 'Kadena2.0'
+        TerminalIdentifier_MerchantCode: 'Kadena2.0',
+        CreditCard_CSCIndicator: ''
       },
       products: {
         addToFavorites: "Set product as favorite",

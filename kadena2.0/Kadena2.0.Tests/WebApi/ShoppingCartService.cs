@@ -8,7 +8,6 @@ using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.Models.Product;
-using System.Linq;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.Tests.WebApi

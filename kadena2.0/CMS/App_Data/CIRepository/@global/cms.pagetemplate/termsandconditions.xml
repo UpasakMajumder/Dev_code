@@ -49,12 +49,8 @@
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
-          <property name="contentafter">
-            <![CDATA[</h1>]]>
-          </property>
-          <property name="contentbefore">
-            <![CDATA[<h1>]]>
-          </property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
           <property name="controlid">editabletext</property>
           <property name="customtimezone"></property>
           <property name="defaulttext">Terms and conditions</property>

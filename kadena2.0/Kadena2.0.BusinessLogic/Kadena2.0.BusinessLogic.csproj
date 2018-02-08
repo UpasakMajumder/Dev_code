@@ -7,7 +7,7 @@
     <ProjectGuid>{D3AB43E6-7A41-4212-BF22-507CC2B2E3AC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kadena2._0.BusinessLogic</RootNamespace>
+    <RootNamespace>Kadena.BusinessLogic</RootNamespace>
     <AssemblyName>Kadena2.0.BusinessLogic</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\ISubmissionService.cs" />
+    <Compile Include="Contracts\IFileService.cs" />
     <Compile Include="Contracts\IProgramsService.cs" />
     <Compile Include="Contracts\IAddressBookService.cs" />
     <Compile Include="Contracts\IBrandsService.cs" />
@@ -56,50 +58,71 @@
     <Compile Include="Contracts\IPOSService.cs" />
     <Compile Include="Contracts\ICampaignsService.cs" />
     <Compile Include="Contracts\IBusinessUnitsService.cs" />
-    <Compile Include="Contracts\ICreditCardService.cs" />
     <Compile Include="Contracts\ICustomerDataService.cs" />
     <Compile Include="Contracts\IDateTimeFormatter.cs" />
     <Compile Include="Contracts\IFavoritesService.cs" />
     <Compile Include="Contracts\IKListService.cs" />
     <Compile Include="Contracts\IMailTemplateService.cs" />
-    <Compile Include="Contracts\IOrderListService.cs" />
-    <Compile Include="Contracts\IOrderListServiceFactory.cs" />
-    <Compile Include="Contracts\IOrderService.cs" />
+    <Compile Include="Contracts\OrderPayment\ICreditCard3dsiDemo.cs" />
+    <Compile Include="Contracts\Orders\IGetOrderDataService.cs" />
+    <Compile Include="Contracts\Orders\IOrderListService.cs" />
+    <Compile Include="Contracts\Orders\IOrderListServiceFactory.cs" />
+    <Compile Include="Contracts\Orders\IOrderDetailService.cs" />
+    <Compile Include="Contracts\Orders\ISendSubmitOrder.cs" />
+    <Compile Include="Contracts\Orders\ISubmitOrderService.cs" />
     <Compile Include="Contracts\IPdfService.cs" />
     <Compile Include="Contracts\IProductsService.cs" />
     <Compile Include="Contracts\ISearchService.cs" />
     <Compile Include="Contracts\ILoginService.cs" />
     <Compile Include="Contracts\ISettingsService.cs" />
+    <Compile Include="Contracts\ISettingsSynchronizationService.cs" />
     <Compile Include="Contracts\IShoppingCartService.cs" />
     <Compile Include="Contracts\ISiteDataService.cs" />
     <Compile Include="Contracts\ITaxEstimationService.cs" />
     <Compile Include="Contracts\ITemplateService.cs" />
+    <Compile Include="Contracts\OrderPayment\ICreditCard3dsi.cs" />
+    <Compile Include="Contracts\OrderPayment\IPurchaseOrder.cs" />
+    <Compile Include="Factories\Checkout\OrderDataFactory.cs" />
     <Compile Include="Factories\Checkout\CheckoutPageFactory.cs" />
+    <Compile Include="Factories\Checkout\IOrderDataFactory.cs" />
     <Compile Include="Factories\Checkout\ICheckoutPageFactory.cs" />
     <Compile Include="Factories\OrderListServiceFactory.cs" />
+    <Compile Include="Factories\IOrderResultPageUrlFactory.cs" />
+    <Compile Include="Factories\OrderResultPageUrlFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Orders\GetOrderDataService.cs" />
+    <Compile Include="Services\Orders\SendSubmitOrder.cs" />
+    <Compile Include="Services\SubmissionService.cs" />
+    <Compile Include="Services\OrderPayment\CreditCard3dsiDemo.cs" />
+    <Compile Include="Services\Orders\OrderDetailService.cs" />
+    <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\ProgramsService.cs" />
     <Compile Include="Services\AddressBookService.cs" />
     <Compile Include="Services\BrandsService.cs" />
     <Compile Include="Services\ProductCategoryService.cs" />
     <Compile Include="Services\POSService.cs" />
     <Compile Include="Services\CampaignsService.cs" />
-    <Compile Include="Services\CreditCardService.cs" />
     <Compile Include="Services\CustomerDataService.cs" />
     <Compile Include="Services\DateTimeFormatter.cs" />
     <Compile Include="Services\BusinessUnitService.cs" />
     <Compile Include="Services\FavoritesService.cs" />
     <Compile Include="Services\KListService.cs" />
     <Compile Include="Services\MailTemplateService.cs" />
-    <Compile Include="Services\OrderListService.cs" />
-    <Compile Include="Services\OrderService.cs" />
+    <Compile Include="Services\Orders\OrderListService.cs" />
+    <Compile Include="Services\Orders\SubmitOrderService.cs" />
     <Compile Include="Services\PdfService.cs" />
     <Compile Include="Services\ProductsService.cs" />
     <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\LoginService.cs" />
     <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="Services\SettingsSynchronization\MetadataEncoder.cs" />
+    <Compile Include="Services\SettingsSynchronization\MetadataReader.cs" />
+    <Compile Include="Services\SettingsSynchronization\SettingsKeyTemplater.cs" />
+    <Compile Include="Services\SettingsSynchronization\SettingsSynchronizationService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\SiteDataService.cs" />
+    <Compile Include="Services\OrderPayment\CreditCard3dsi.cs" />
+    <Compile Include="Services\OrderPayment\PurchaseOrder.cs" />
     <Compile Include="Services\TaxEstimationService.cs" />
     <Compile Include="Services\TemplateService.cs" />
   </ItemGroup>

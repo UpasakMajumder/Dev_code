@@ -9,12 +9,11 @@ using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
 using Kadena.Dto.General;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
-using Kadena.Helpers;
+using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.PDFHelpers;
-using Kadena.WebAPI.KenticoProviders;
-using Kadena2.MicroserviceClients.Clients;
-using Kadena2.WebAPI.KenticoProviders;
+using Kadena2.Container.Default;
+using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -59,14 +58,14 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// <param name="cart"></param>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public static OrderDTO CreateOrdersDTO(ShoppingCartInfo cart, int userID, string type)
+        public static OrderDTO CreateOrdersDTO(ShoppingCartInfo cart, int userID, string orderType,decimal shippingCost)
         {
             try
             {
                 Cart = cart;
                 return new OrderDTO
                 {
-                    Type = type,
+                    Type = orderType,
                     Campaign = GetCampaign(),
                     BillingAddress = GetBillingAddress(),
                     ShippingAddress = GetBillingAddress(),
@@ -75,11 +74,11 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     Site = GetSite(),
                     NotificationsData = GetNotification(),
                     Items = GetCartItems(),
-                    KenticoOrderCreatedByUserID = userID,
-                    LastModified = DateTime.Now,
+                    //KenticoOrderCreatedByUserID = userID,
+                    //LastModified = DateTime.Now,
                     OrderDate = DateTime.Now,
-                    TotalPrice = GetOrderTotal(ProductType.GeneralInventory),
-                    TotalShipping = GetOrderShippingTotal(ProductType.GeneralInventory)
+                    TotalPrice = GetOrderTotal(orderType),
+                    TotalShipping = shippingCost
                 };
             }
             catch (Exception ex)
@@ -90,14 +89,14 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         }
 
         /// <summary>
-        /// Returns logged in user Cart IDs based on product type
+        /// Returns user Cart IDs based on product type
         /// </summary>
         /// <returns></returns>
-        public static List<int> GetLoggeedInUserCarts(int userID, ProductType type)
+        public static List<int> GetCartsByUserID(int userID, ProductType type)
         {
             try
             {
-                return CartPDFHelper.GetLoggedInUserCartData(Convert.ToInt32(ProductType.GeneralInventory), userID).AsEnumerable().Select(x => x.Field<int>("ShoppingCartID")).Distinct().ToList();
+                return CartPDFHelper.GetLoggedInUserCartData(Convert.ToInt32(type), userID).AsEnumerable().Select(x => x.Field<int>("ShoppingCartID")).Distinct().ToList();
             }
             catch (Exception ex)
             {
@@ -115,7 +114,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var microserviceClient = new ShippingCostServiceClient(ProviderFactory.MicroProperties);
+                 var microserviceClient = DIContainer.Resolve<IShippingCostServiceClient>();
                 var response = microserviceClient.EstimateShippingCost(requestBody).Result;
 
                 if (!response.Success || response.Payload == null)
@@ -140,7 +139,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var microserviceClient = new OrderSubmitClient(ProviderFactory.MicroProperties);
+                var microserviceClient = DIContainer.Resolve<IOrderSubmitClient>();
                 var response = microserviceClient.SubmitOrder(requestBody).Result;
 
                 if (!response.Success || response.Payload == null)
@@ -155,7 +154,43 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 return null;
             }
         }
+        /// <summary>
+        ///Processes order and returns response
+        /// </summary>
+        /// <returns></returns>
+        public static BaseResponseDto<string> ProcessOrder(ShoppingCartInfo cart,int userID,string orderType, OrderDTO ordersDTO, decimal shippingCost=default(decimal))
+        {
+            try
+            {
+                if (ordersDTO != null && ordersDTO.Campaign != null)
+                {
+                    UpdateDistributorsBusinessUnit(ordersDTO.Campaign.DistributorID);
+                }
+                var response = CallOrderService(ordersDTO);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_CartCheckout", "ProcessOrder", ex.Message);
+                return null;
+            }
+        }
+        
 
+        /// <summary>
+        /// Updates business unit for distributor
+        /// </summary>
+        /// <param name="distributorID">Distributor ID</param>
+        public static void UpdateDistributorsBusinessUnit(int distributorID)
+        {
+            AddressInfo distributor = AddressInfoProvider.GetAddressInfo(distributorID);
+            long businessUnitNumber = ValidationHelper.GetLong(Cart.GetValue("BusinessUnitIDForDistributor"), default(long));
+            if (distributor != null && businessUnitNumber != default(long))
+            {
+                distributor.SetValue("BusinessUnit", businessUnitNumber);
+                AddressInfoProvider.SetAddressInfo(distributor);
+            }
+        }
         /// <summary>
         /// getting total weight
         /// </summary>
@@ -164,9 +199,8 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                //We are keeping constant values at present,this will be done in sprint-4 once sku weight is added
-                // var weight = Cart.CartItems.Sum(x => (x.CartItemUnits * x.UnitWeight));
-                return new WeightDto { Unit = "Lb", Value = 0.5 };
+                var weight = Cart.CartItems.Sum(x => (x.CartItemUnits * x.UnitWeight));
+                return new WeightDto { Unit = SKUMeasuringUnits.Lb, Value = weight };
             }
             catch (Exception ex)
             {
@@ -248,8 +282,8 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             {
                 return new CampaignDTO
                 {
-                    ID = Cart.GetIntegerValue("ShoppingCartCampaignID", 0),
-                    ProgramID = Cart.GetIntegerValue("ShoppingCartProgramID", 0),
+                    ID = Cart.GetValue("ShoppingCartCampaignID",default(int)),
+                    ProgramID = Cart.GetValue("ShoppingCartProgramID", default(int)),
                     DistributorID = Cart.GetIntegerValue("ShoppingCartDistributorID", 0)
                 };
             }
@@ -402,8 +436,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                             SKUNumber = item.SKU.SKUNumber
                         },
                         UnitCount = item.CartItemUnits,
-                        //We are keeping constant values at present,this will be done in sprint 4 once sku weight is added
-                        UnitOfMeasure = "Lb",
+                        UnitOfMeasure = SKUMeasuringUnits.Lb,
                         UnitPrice = ValidationHelper.GetDecimal(item.UnitPrice, default(decimal))
                     });
                 });
@@ -421,11 +454,11 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// </summary>
         /// <param name="inventoryType"></param>
         /// <returns></returns>
-        private static decimal GetOrderTotal(ProductType inventoryType)
+        private static decimal GetOrderTotal(string type)
         {
             try
             {
-                if (inventoryType == ProductType.PreBuy)
+                if (type == OrderType.prebuy)
                 {
                     return ValidationHelper.GetDecimal(Cart.TotalItemsPrice, default(decimal));
                 }
@@ -446,25 +479,17 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// </summary>
         /// <param name="inventoryType"></param>
         /// <returns></returns>
-        private static decimal GetOrderShippingTotal(ProductType inventoryType)
+        public static BaseResponseDto<EstimateDeliveryPricePayloadDto> GetOrderShippingTotal(ShoppingCartInfo cart)
         {
             try
             {
-                if (inventoryType == ProductType.GeneralInventory)
-                {
-                    EstimateDeliveryPriceRequestDto estimationdto = GetEstimationDTO(Cart);
-                    var estimation = CallEstimationService(estimationdto);
-                    return ValidationHelper.GetDecimal(estimation?.Payload?.Cost, default(decimal));
-                }
-                else
-                {
-                    return default(decimal);
-                }
+                    EstimateDeliveryPriceRequestDto estimationdto = GetEstimationDTO(cart);
+                    return  CallEstimationService(estimationdto);
             }
             catch (Exception ex)
             {
                 EventLogProvider.LogInformation("ShoppingCartHelper", "GetOrderTotal", ex.Message);
-                return default(decimal);
+                return null;
             }
         }
     }

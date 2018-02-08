@@ -8,7 +8,7 @@
   <ClassDisplayName>Submissions</ClassDisplayName>
   <ClassFormDefinition>
     <form version="2">
-      <field column="ItemID" columnprecision="0" columntype="integer" guid="31cff73d-043a-49f0-8874-fbfb18f1beef" isPK="true" publicfield="false">
+      <field column="ItemID" columntype="integer" guid="31cff73d-043a-49f0-8874-fbfb18f1beef" isPK="true" isunique="true" publicfield="false" system="true">
         <properties>
           <fieldcaption>ItemID</fieldcaption>
         </properties>
@@ -16,21 +16,75 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="OrderJson" columntype="longtext" guid="a0b9331f-2d3a-4995-bf66-e261b09278ed" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>OrderJson</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextAreaControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Wrap>True</Wrap>
+        </settings>
+      </field>
+      <field allowempty="true" column="Processed" columntype="boolean" guid="259046bc-7023-42ed-be6f-d465a89f41bf" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Processed</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="CustomerId" columntype="integer" guid="36fc9d85-163c-492f-b173-496035424932" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>CustomerId</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="SiteId" columntype="integer" guid="1029f30b-6522-474c-b1cb-a823e3c7deb4" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>SiteId</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
       <field column="SubmissionId" columntype="guid" guid="e8c19ece-8de1-464a-a825-557d022fad32" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>SubmissionId</fieldcaption>
+        </properties>
         <settings>
           <controlname>LabelControl</controlname>
           <ResolveMacros>True</ResolveMacros>
         </settings>
       </field>
-      <field allowempty="true" column="AlreadyUsed" columntype="boolean" guid="5c0499a1-106a-4c62-83b6-07d666585899" publicfield="false" visible="true">
+      <field allowempty="true" column="AlreadyVerified" columntype="boolean" guid="5c0499a1-106a-4c62-83b6-07d666585899" publicfield="false" visible="true">
         <properties>
           <defaultvalue>true</defaultvalue>
+          <fieldcaption>AlreadyVerified</fieldcaption>
         </properties>
         <settings>
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
       <field allowempty="true" column="UserId" columntype="integer" guid="2a5919d0-47a4-4af3-9c2e-f56bdd3348e2" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>UserId</fieldcaption>
+        </properties>
         <settings>
           <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
           <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
@@ -56,6 +110,27 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
+      <field column="ItemGUID" columnprecision="0" columntype="guid" guid="cd5ac62d-038c-417a-a375-cee6988f5209" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>GUID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="RedirectUrl" columnsize="200" columntype="text" guid="5a8da978-be45-4d38-bf25-50873077848b" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>RedirectUrl</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
     </form>
   </ClassFormDefinition>
   <ClassGUID>6c6ed68c-c339-4ba5-b280-ace26621eb32</ClassGUID>
@@ -72,6 +147,9 @@
     <search />
   </ClassSearchSettings>
   <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowColumns>
+    <![CDATA[ItemID;Processed;CustomerId;SiteId;SubmissionId;AlreadyVerified;UserId;ItemCreatedWhen;ItemModifiedWhen;RedirectUrl]]>
+  </ClassShowColumns>
   <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
   <ClassTableName>KDA_Submissions</ClassTableName>
   <ClassUsePublishFromTo>False</ClassUsePublishFromTo>

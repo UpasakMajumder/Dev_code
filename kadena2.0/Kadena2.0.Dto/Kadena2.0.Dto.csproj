@@ -52,6 +52,9 @@
   <ItemGroup>
     <Compile Include="Brands\BrandDto.cs" />
     <Compile Include="BusinessUnits\BusinessUnitDto.cs" />
+    <Compile Include="CreditCard\3DSi\Requests\SaveTokenDataRequestDto.cs" />
+    <Compile Include="CreditCard\3DSi\Responses\CreditCardPaymentDoneDto.cs" />
+    <Compile Include="Product\BorderDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDailogLabelDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialogDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialogTableCellDto.cs" />
@@ -86,9 +89,8 @@
     <Compile Include="Checkout\PaymentMethodDTO.cs" />
     <Compile Include="Checkout\Requests\ChangeItemQuantityRequestDto.cs" />
     <Compile Include="Checkout\Requests\ChangeSelectionRequestDto.cs" />
-    <Compile Include="CreditCard\3DSi\Requests\ApproveRequestDto.cs" />
-    <Compile Include="CreditCard\3DSi\Requests\SaveTokenRequestDto.cs" />
-    <Compile Include="CreditCard\3DSi\Responses\ApproveResponseDto.cs" />
+    <Compile Include="CreditCard\3DSi\Requests\ApproveSubmissionRequestDto.cs" />
+    <Compile Include="CreditCard\3DSi\Responses\ApproveSubmissionResponseDto.cs" />
     <Compile Include="CreditCard\3DSi\Responses\SaveTokenResponseDto.cs" />
     <Compile Include="CreditCard\AdditionalAmountsDto.cs" />
     <Compile Include="CreditCard\MicroserviceRequests\AuthorizeAmountRequestDto.cs" />
@@ -97,7 +99,6 @@
     <Compile Include="CreditCard\MicroserviceRequests\SaveCardTokenRequestDto.cs" />
     <Compile Include="CreditCard\UserDto.cs" />
     <Compile Include="CreditCard\MicroserviceResponses\AuthorizeAmountResponseDto.cs" />
-    <Compile Include="CreditCard\MicroserviceResponses\SaveCardTokenResponseDto.cs" />
     <Compile Include="CustomerData\DistributorDTO.cs" />
     <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\AddressDto.cs" />
     <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\EstimateDeliveryPriceRequestDto.cs" />
@@ -162,12 +163,12 @@
     <Compile Include="SubmitOrder\MicroserviceRequests\CampaignDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\NotificationInfoDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceRequests\NewTemplateRequestDto.cs" />
+    <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateMetaData.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentMailingList.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentResponse.cs" />
     <Compile Include="TemplatedProduct\Responses\ProductTemplateDTO.cs" />
     <Compile Include="TemplatedProduct\Responses\ProductTemplatesHeaderDTO.cs" />
     <Compile Include="TemplatedProduct\Responses\ProductTemplatesDTO.cs" />
-    <Compile Include="ViewOrder\MicroserviceResponses\FileInfoDto.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\GetOrderByOrderIdResponseDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceRequests\GetOrderByOrderIdRequestDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderErrorDto.cs" />

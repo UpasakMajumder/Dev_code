@@ -42,14 +42,12 @@
           <controlname>DynamicPricingSelector</controlname>
         </settings>
       </field>
-      <field allowempty="true" column="ProductThumbnail" columntype="file" guid="1cc4a31e-39fa-469f-91f0-7367f6f3de94" publicfield="false" visible="true">
+      <field allowempty="true" column="ProductThumbnailBorderDisabled" columntype="boolean" guid="ad1051c3-59b4-4e56-87e7-3976d05e9571" publicfield="false" visible="true">
         <properties>
-          <fieldcaption>Thumbnail</fieldcaption>
+          <fieldcaption>Thumbnail border Disabled</fieldcaption>
         </properties>
         <settings>
-          <Allowed_Extensions>jpg;jpeg;png;</Allowed_Extensions>
-          <controlname>DirectUploadControl</controlname>
-          <Extensions>custom</Extensions>
+          <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
       <field allowempty="true" column="ProductMachineType" columnsize="200" columntype="text" guid="277090ed-8f70-4d76-8114-7356caec63bb" publicfield="false" visible="true">
@@ -188,15 +186,33 @@
           </rule>
         </rules>
       </field>
-      <field allowempty="true" column="ProductArtworkLocation" columnsize="200" columntype="text" dependsonanotherfield="true" guid="8371aa2b-ed56-4ae5-bc63-c891706af664" publicfield="false" visible="true">
+      <field allowempty="true" column="ProductArtwork" columntype="file" dependsonanotherfield="true" guid="be27356c-4058-467e-9f4a-a94fb0c67f0b" publicfield="false" visible="true">
         <properties>
-          <fieldcaption>Artwork Location</fieldcaption>
+          <fieldcaption>Artwork Location/Digital Printing</fieldcaption>
           <visiblemacro ismacro="true">
-            <![CDATA[{%ProductType.Contains("KDA.StaticProduct")|(user)rostyslav.diachenko@actum.cz|(hash)173df1555cb4140e0627c4d3abeadd0966b11f0bdc7d1f03e5a35b9b103a4f8e%}]]>
+            <![CDATA[{%ProductType.Contains("KDA.StaticProduct") || ProductType.Contains("KDA.POD")|(user)rostyslav.diachenko@actum.cz|(hash)3d645955acff13793a6946c9b89a0235da04d688a3ddd8604f41c8331bab792d%}]]>
           </visiblemacro>
         </properties>
         <settings>
-          <controlname>S3Uploader</controlname>
+          <Allowed_Extensions>pdf;bmp;gif;jpg;jpeg;png</Allowed_Extensions>
+          <controlname>DirectUploadControl</controlname>
+          <Extensions>custom</Extensions>
+        </settings>
+      </field>
+      <field allowempty="true" column="ProductArtworkLocation" columnsize="200" columntype="text" dependsonanotherfield="true" guid="8371aa2b-ed56-4ae5-bc63-c891706af664" publicfield="false">
+        <properties>
+          <fieldcaption>Artwork Location</fieldcaption>
+          <visiblemacro ismacro="true">
+            <![CDATA[{%ProductType.Contains("KDA.StaticProduct") || ProductType.Contains("KDA.POD")|(user)rostyslav.diachenko@actum.cz|(hash)3d645955acff13793a6946c9b89a0235da04d688a3ddd8604f41c8331bab792d%}]]>
+          </visiblemacro>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
         </settings>
       </field>
       <field column="ProductChiliTemplateID" columnsize="100" columntype="text" guid="34f919e5-2fce-49c6-bff9-e9f1a1f5049b" hasdependingfields="true" publicfield="false" visible="true">
@@ -257,18 +273,6 @@
         </properties>
         <settings>
           <controlname>CheckBoxControl</controlname>
-        </settings>
-      </field>
-      <field allowempty="true" column="ProductDigitalPrinting" columnsize="500" columntype="text" guid="a892715c-a2ef-4d9c-8d19-564fb0e50526" hasdependingfields="true" publicfield="false" visible="true">
-        <properties>
-          <fieldcaption>Digital Printing</fieldcaption>
-          <fielddescription>Digital Printing for POD product</fielddescription>
-          <visiblemacro ismacro="true">
-            <![CDATA[{%ProductType.Contains("KDA.POD")|(user)rostyslav.diachenko@actum.cz|(hash)46270976e922b50b4e70b990fb5b0c402518551e1ed5fd9c1f7cda1ee5938988%}]]>
-          </visiblemacro>
-        </properties>
-        <settings>
-          <controlname>S3Uploader</controlname>
         </settings>
       </field>
       <field allowempty="true" column="ProductRelatedSKUs" columnsize="500" columntype="text" guid="769aa7a5-56c2-49f4-bce4-28f671cef36c" hasdependingfields="true" publicfield="false" visible="true">
