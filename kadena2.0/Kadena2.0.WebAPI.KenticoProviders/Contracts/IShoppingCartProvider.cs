@@ -1,5 +1,4 @@
-﻿using CMS.Ecommerce;
-using Kadena.Models;
+﻿using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.CustomerData;
 using System;
@@ -29,8 +28,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         void SelectShipping(int shippingOptionsId);
 
-        int GetCurrentCartAddresId();
-
         int GetCurrentCartShippingOptionId();
 
         DeliveryOption GetShippingOption(int id);
@@ -43,9 +40,11 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         void SetCartItemQuantity(int id, int quantity);
 
-        void RemoveCurrentItemsFromStock();
+        int GetShoppingCartId(int userId, int siteId);
 
-        void ClearCart();
+        void RemoveCurrentItemsFromStock(int shoppingCartId = 0);
+
+        void ClearCart(int shoppingCartId = 0);
 
         double GetCurrentCartTotalItemsPrice();
 

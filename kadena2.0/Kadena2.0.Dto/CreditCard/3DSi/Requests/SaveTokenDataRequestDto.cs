@@ -1,6 +1,6 @@
-﻿namespace Kadena.Models.CreditCard
+﻿namespace Kadena.Dto.CreditCard._3DSi.Requests
 {
-    public class SaveTokenData
+    public class SaveTokenDataRequestDto
     {
         public string SilentPostType { get; set; }
         public string SubmissionID { get; set; }
