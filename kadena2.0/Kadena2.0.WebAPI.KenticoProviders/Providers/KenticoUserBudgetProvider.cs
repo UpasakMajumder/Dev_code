@@ -26,21 +26,13 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
         public List<CustomTableItem> GetUserBudgetAllocationRecords(int userID, int siteID)
         {
             var userBudgetData = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("UserID", userID).WhereEquals("SiteID", siteID).ToList();
-            if (!DataHelper.DataSourceIsEmpty(userBudgetData))
-            {
-                return userBudgetData;
-            }
-            return default(List<CustomTableItem>);
+            return userBudgetData;
         }
 
         public List<CustomTableItem> GetFiscalYearRecords()
         {
             var fiscalYearData = CustomTableItemProvider.GetItems(FiscalYearClassName).ToList();
-            if (!DataHelper.DataSourceIsEmpty(fiscalYearData))
-            {
-                return fiscalYearData;
-            }
-            return default(List<CustomTableItem>);
+            return fiscalYearData;
         }
 
     }

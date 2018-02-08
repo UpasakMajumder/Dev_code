@@ -107,7 +107,7 @@ public partial class CMSWebParts_Kadena_FYBudget_FyBudget : CMSAbstractWebPart
         {
             var userBudgetData = DIContainer.Resolve<IkenticoUserBudgetProvider>().GetUserBudgetAllocationRecords(CurrentUser.UserID, CurrentSite.SiteID);
             var fiscalYearData = DIContainer.Resolve<IkenticoUserBudgetProvider>().GetFiscalYearRecords();
-            if (!DataHelper.DataSourceIsEmpty(userBudgetData) && !DataHelper.DataSourceIsEmpty(fiscalYearData))
+            if (userBudgetData != null && fiscalYearData != null)
             {
                 var userBudgetDetails = from userBudget in userBudgetData
                                         join fisYear in fiscalYearData
