@@ -40,6 +40,7 @@
         public const string Updated = "updated";
         public const string Deleted = "deleted";
         public const string OrderScheduleTaskStart = "ordertask";
+        public const string OrderSuccess = "ordersuccess";
     }
     /// <summary>
     /// This class represents shipping options

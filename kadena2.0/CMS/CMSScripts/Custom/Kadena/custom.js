@@ -1078,7 +1078,8 @@ $(document).ready(function () {
         case 'added': toastr.success(config.localization.globalSuccess.addSuccessMessage); customHelpers.deleteCookie("status"); break;
         case 'updated': toastr.success(config.localization.globalSuccess.updateSuccessMessage); customHelpers.deleteCookie("status"); break;
         case 'deleted': toastr.success(config.localization.globalSuccess.deleteSuccessMessage); customHelpers.deleteCookie("status"); break;
-        case 'ordertask': toastr.success(config.localization.globalSuccess.orderScheduleTaskStartMessage); customHelpers.deleteCookie("status"); break;
+        case 'ordertask': toastr.success(config.localization.orders.orderScheduleTaskStartMessage); customHelpers.deleteCookie("status"); break;
+        case 'ordersuccess': toastr.success(config.localization.orders.orderSuccessMessage); customHelpers.deleteCookie("status"); break;
         }
     if (status == 'error') {
         toastr.error(config.localization.globalSuccess.errorMessage);
