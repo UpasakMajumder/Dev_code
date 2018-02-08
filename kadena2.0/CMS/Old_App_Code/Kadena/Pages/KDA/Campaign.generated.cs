@@ -64,7 +64,24 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
 		/// <summary>
-		/// 
+		/// Fiscal Year.
+		/// </summary>
+		[DatabaseField]
+		public string FiscalYear
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("FiscalYear"), "");
+			}
+			set
+			{
+				SetValue("FiscalYear", value);
+			}
+		}
+
+
+		/// <summary>
+		/// IBTF Finalized.
 		/// </summary>
 		[DatabaseField]
 		public bool IBTFFinalized
@@ -285,7 +302,23 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
 			/// <summary>
-			/// 
+			/// Fiscal Year.
+			/// </summary>
+			public string FiscalYear
+			{
+				get
+				{
+					return mInstance.FiscalYear;
+				}
+				set
+				{
+					mInstance.FiscalYear = value;
+				}
+			}
+
+
+			/// <summary>
+			/// IBTF Finalized.
 			/// </summary>
 			public bool IBTFFinalized
 			{

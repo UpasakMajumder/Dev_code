@@ -147,6 +147,33 @@ public partial class CMSWebParts_Campaign_CreateCampaign {
     protected global::System.Web.UI.WebControls.CompareValidator compareWithStartdate;
     
     /// <summary>
+    /// LocalizedFiscalYear control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.LocalizedLabel LocalizedFiscalYear;
+    
+    /// <summary>
+    /// ddlFiscalYear control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.DropDownList ddlFiscalYear;
+    
+    /// <summary>
+    /// rqFiscalYear control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.RequiredFieldValidator rqFiscalYear;
+    
+    /// <summary>
     /// lblCampaignStatus control.
     /// </summary>
     /// <remarks>

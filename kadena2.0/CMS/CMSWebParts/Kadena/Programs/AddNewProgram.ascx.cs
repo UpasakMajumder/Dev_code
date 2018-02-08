@@ -382,6 +382,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                             program.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, 0);
                             program.CampaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
                             program.Status = ValidationHelper.GetBoolean(ddlStatus.SelectedValue, true);
+                            program.DeliveryDateToDistributors = ValidationHelper.GetDate(txtProgramDeliveryDate.Text, default(DateTime)).Date;
                             program.Update();
                         }
                         if (ViewState["CampaignID"] != null)

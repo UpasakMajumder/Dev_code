@@ -257,15 +257,15 @@ BrandName LIKE '%{?searchtext?}%'
           success: function (data) {
             if(data.success)
             {
-              window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=deleted");
+              toastr.success(config.localization.globalSuccess.deleteSuccessMessage);
             }
             else
             {
-             window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
+              toastr.error(config.localization.globalSuccess.pOSMappedWithProductError);
             }
           },
           error: function (xhr, ajaxOptions, thrownError) {
-            window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
+            toastr.error(config.localization.globalSuccess.errorMessage);
           }
         });
       }
