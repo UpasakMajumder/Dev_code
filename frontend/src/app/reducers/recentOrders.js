@@ -1,16 +1,45 @@
-import { RECENT_ORDERS_CHANGE_PAGE, SUCCESS, RECENT_ORDERS, INIT_UI } from 'app.consts';
+import {
+  RECENT_ORDERS_CHANGE_PAGE,
+  FETCH,
+  SUCCESS,
+  RECENT_ORDERS,
+  INIT_UI,
+  RECENT_ORDERS_GET_ROWS
+} from 'app.consts';
 
 const defaultState = {
-  headings: [],
-  pageInfo: {},
-  rows: {},
-  noOrdersMessage: ''
+  pagination: {
+    currentPage: 0
+  },
+  rows: []
 };
 
 export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
+  case RECENT_ORDERS_GET_ROWS + FETCH:
+    return {
+      ...state,
+      rows: [],
+      called: false
+    };
+
+  case RECENT_ORDERS_GET_ROWS + SUCCESS:
+    return {
+      ...state,
+      pagination: {
+        ...state.pagination,
+        ...payload.pagination
+      },
+      rows: [
+        ...state.rows,
+        ...payload.rows
+      ],
+      called: true
+    };
+
+
   case RECENT_ORDERS + INIT_UI + SUCCESS:
     return {
       ...state,

@@ -4,7 +4,7 @@ import { PAGINATION } from 'app.globals';
 import ReactPaginate from './PaginationBoxView';
 
 const Pagination = (props) => {
-  const { pagesNumber, initialPage, onPageChange, itemsOnPage, itemsNumber, currPage } = props;
+  const { pagesNumber, initialPage, onPageChange, itemsOnPage, itemsNumber, currPage, disableInitialCallback } = props;
 
   const pagesFrom = (currPage * itemsOnPage) + 1;
 
@@ -27,17 +27,20 @@ const Pagination = (props) => {
           {generateText()}
         </div>
         <div className="col-6 text--right">
-          <ReactPaginate pageCount={pagesNumber}
-                         pageRangeDisplayed={3}
-                         marginPagesDisplayed={1}
-                         onPageChange={onPageChange}
-                         initialPage={initialPage}
-                         previousClassName="pagination__item"
-                         nextClassName="pagination__item"
-                         containerClassName="pagination mb-0 text--right list--unstyled"
-                         pageClassName="pagination__item"
-                         pageLinkClassName="pagination__page"
-                         activeClassName="pagination__page--active" />
+          <ReactPaginate
+            pageCount={pagesNumber}
+            pageRangeDisplayed={3}
+            disableInitialCallback={disableInitialCallback}
+            marginPagesDisplayed={1}
+            onPageChange={onPageChange}
+            initialPage={initialPage}
+            previousClassName="pagination__item"
+            nextClassName="pagination__item"
+            containerClassName="pagination mb-0 text--right list--unstyled"
+            pageClassName="pagination__item"
+            pageLinkClassName="pagination__page"
+            activeClassName="pagination__page--active"
+          />
         </div>
       </div>
     )

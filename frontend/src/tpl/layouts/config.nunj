@@ -173,8 +173,58 @@
         backLabel: "Previous"
       },
       recentOrders: {
-        getHeaders: PATH + 'order/recent/ui',
-        getPageItems: PATH + 'order/recent/page'
+        headings: [
+          {
+            label: "Site"
+          },
+          {
+            label: "Order number"
+          },
+          {
+            label: "Order date",
+            sort: true,
+            isDate: true
+          },
+          {
+            label: "User name"
+          },
+          {
+            label: "Product name"
+          },
+          {
+            label: "SKU"
+          },
+          {
+            label: "Quantity"
+          },
+          {
+            label: "Price"
+          },
+          {
+            label: "Status"
+          },
+          {
+            label: "Shipping date",
+            isDate: true
+          },
+          {
+            label: "Tracking number"
+          }
+        ],
+        pageInfo: {
+          filter: {
+            orderDate: {
+              title: 'Time between:',
+              labelNow: 'Now'
+            }
+          },
+          export: {
+            label: 'Export',
+            url: 'https://some/api'
+          },
+          noOrdersMessage: 'You have no orders',
+          getRowsUrl: PATH + 'order/recent/rows'
+        }
       },
       filteredRecentOrders: {
         orderTypes: {

@@ -45,7 +45,8 @@ apiRouter.put('/products/unfavourite/:id', Products.setFavourite);
 apiRouter.post('/products/add-to-cart', Products.addToCart);
 
 apiRouter.get('/order/recent/ui', Orders.recent.ui);
-apiRouter.get('/order/recent/page/:page', Orders.recent.page);
+apiRouter.get('/order/recent/rows', Orders.recent.rows);
+apiRouter.get('/order/recent/rows/:page', Orders.recent.rows);
 apiRouter.get('/order/detail', Orders.detail);
 
 apiRouter.post('/mailing-list/use-correct/:containerId', MailingList.useCorrect);
