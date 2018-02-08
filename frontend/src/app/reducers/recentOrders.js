@@ -4,25 +4,42 @@ import {
   SUCCESS,
   RECENT_ORDERS,
   INIT_UI,
-  RECENT_ORDERS_GET_ROWS
+  RECENT_ORDERS_GET_ROWS,
+  RECENT_ORDERS_SORT
 } from 'app.consts';
 
 const defaultState = {
   pagination: {
     currentPage: 0
   },
-  rows: []
+  rows: [],
+  sort: {
+    sortOrderAsc: false,
+    sortBy: '',
+    sortIndex: 0
+  }
 };
 
 export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
+  case RECENT_ORDERS_SORT:
+    return {
+      ...state,
+      rows: payload.rows,
+      sort: {
+        ...state.sort,
+        sortOrderAsc: payload.sortOrderAsc,
+        sortBy: payload.sortBy
+      }
+    };
+
   case RECENT_ORDERS_GET_ROWS + FETCH:
     return {
       ...state,
-      rows: [],
-      called: false
+      rows: defaultState.rows,
+      sort: defaultState.sort
     };
 
   case RECENT_ORDERS_GET_ROWS + SUCCESS:
@@ -35,8 +52,7 @@ export default (state = defaultState, action) => {
       rows: [
         ...state.rows,
         ...payload.rows
-      ],
-      called: true
+      ]
     };
 
 

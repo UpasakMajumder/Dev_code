@@ -175,39 +175,50 @@
       recentOrders: {
         headings: [
           {
+            id: '1',
             label: "Site"
           },
           {
+            id: '2',
             label: "Order number"
           },
           {
+            id: '3',
             label: "Order date",
             sort: true,
             isDate: true
           },
           {
+            id: '4',
             label: "User name"
           },
           {
+            id: '5',
             label: "Product name"
           },
           {
+            id: '6',
             label: "SKU"
           },
           {
+            id: '7',
             label: "Quantity"
           },
           {
+            id: '8',
             label: "Price"
           },
           {
+            id: '9',
             label: "Status"
           },
           {
+            id: '10',
             label: "Shipping date",
             isDate: true
           },
           {
+            id: '11',
             label: "Tracking number"
           }
         ],

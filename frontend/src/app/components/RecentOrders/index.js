@@ -5,16 +5,20 @@ import { connect } from 'react-redux';
 import Alert from 'app.dump/Alert';
 import Pagination from 'app.dump/Pagination';
 import Spinner from 'app.dump/Spinner';
+import SortIcon from 'app.dump/SortIcon';
 /* ac */
-import { changePage, getRows } from 'app.ac/recentOrders';
+import { getRows, sortOrders } from 'app.ac/recentOrders';
 /* globals */
 import { RECENT_ORDERS } from 'app.globals';
+/* helpers */
+import { sortObjs } from 'app.helpers/array';
 /* local components */
 import Order from './Order';
 
 class RecentOrders extends Component {
   static propTypes = {
     headings: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       sort: PropTypes.bool,
       isDate: PropTypes.bool
@@ -41,33 +45,13 @@ class RecentOrders extends Component {
         pagesCount: PropTypes.number,
         rowsCount: PropTypes.number,
         rowsOnPage: PropTypes.number
+      }).isRequired,
+      sort: PropTypes.shape({
+        sortOrderAsc: PropTypes.bool.isRequired,
+        sortBy: PropTypes.string.isRequired
       }).isRequired
     }).isRequired
   }
-
-  // static propTypes = {
-  //   changePage: PropTypes.func.isRequired,
-  //   headings: PropTypes.arrayOf(PropTypes.string).isRequired,
-  //   noOrdersMessage: PropTypes.string.isRequired,
-  //   pageInfo: PropTypes.object.isRequired,
-  //   rows: PropTypes.object.isRequired
-  // };
-
-  // changePage = ({ selected }) => {
-  //   this.setState(({ currPage }) => {
-  //     return {
-  //       currPage: selected,
-  //       prevPage: currPage
-  //     };
-  //   });
-  // };
-
-  // componentWillUpdate(nextProps, nextState) {
-  //   if (nextState.currPage === this.state.currPage) return;
-  //   if (!Object.keys(nextProps.rows).length) return;
-  //   if (nextProps.rows[nextState.currPage]) return;
-  //   this.props.changePage(nextState.currPage + 1, true);
-  // }
 
   componentDidMount() {
     this.props.getRows(this.props.pageInfo.getRowsUrl);
@@ -79,13 +63,42 @@ class RecentOrders extends Component {
   };
 
   getHeadings = () => {
-    const headings = this.props.headings.map((heading, index) => <th key={index}>{heading.label}</th>);
+    const headings = this.props.headings.map((heading, index) => {
+      const onClick = heading.sort ? () => this.sortColumn(index, heading.id) : null;
+
+      const sortIcon = heading.sort
+        ? (
+          <SortIcon
+            block={false}
+            sortOrderAsc={this.props.store.sort.sortOrderAsc}
+            isActive={heading.id === this.props.store.sort.sortBy}
+          />
+        ) : null;
+
+      return (
+        <th
+          key={heading.id}
+          onClick={onClick}
+          style={{ cursor: heading.sort ? 'pointer' : 'initial' }}
+        >
+          {sortIcon}
+          {heading.label}
+        </th>
+      );
+    });
     return <tr>{headings}</tr>;
   };
 
   getRows = () => {
-    const rows = this.props.store.rows.map((row, index) => <Order headings={this.props.headings} key={index} {...row}/>);
-    return rows;
+    const rowElements = this.props.store.rows.map((row, index) => <Order headings={this.props.headings} key={index} {...row}/>);
+    return rowElements;
+  };
+
+  sortColumn = (sortIndex, sortBy) => {
+    const sortedRows = sortObjs(this.props.store.rows, sortIndex, this.props.store.sort.sortOrderAsc, 'items');
+    const newSortOrderAsc = !this.props.store.sort.sortOrderAsc;
+
+    this.props.sortOrders(sortedRows, newSortOrderAsc, sortBy, sortIndex);
   };
 
   getContent = () => {
@@ -123,43 +136,6 @@ class RecentOrders extends Component {
       <div>{this.getContent()}</div>
     );
   }
-
-  //   const { headings, pageInfo, rows, noOrdersMessage } = this.props;
-  //   const { pagesCount, rowsCount, rowsOnPage } = pageInfo;
-  //   const { currPage, prevPage } = this.state;
-
-  //   const headersList = headings.map((heading, index) => <th key={index}>{heading}</th>);
-  //   const tableHeader = <tr>{headersList}</tr>;
-
-  //   let content = <Spinner />;
-
-  //   if (Object.keys(rows).length) {
-  //     if (!rows[0].length) {
-  //       content = <Alert type="info" text={noOrdersMessage} />;
-  //     } else {
-  //       let tableRows = null;
-
-  //       if (rows[currPage]) {
-  //         tableRows = rows[currPage].map(row => <Order key={row.orderNumber} {...row}/>);
-  //       } else {
-  //         tableRows = rows[prevPage].map(row => <Order key={row.orderNumber} {...row}/>);
-  //       }
-
-  //       content = (
-  //         <div>
-  //           <table className="show-table">
-  //             <tbody>
-  //             {tableHeader}
-  //             {tableRows}
-  //             </tbody>
-  //           </table>
-  //         </div>
-  //       );
-  //     }
-  //   }
-
-  //   return content;
-  // }
 }
 
 RecentOrders.defaultProps = { ...RECENT_ORDERS };
@@ -168,5 +144,6 @@ export default connect((state) => {
   const { recentOrders } = state;
   return { store: { ...recentOrders } };
 }, {
-  getRows
+  getRows,
+  sortOrders
 })(RecentOrders);
