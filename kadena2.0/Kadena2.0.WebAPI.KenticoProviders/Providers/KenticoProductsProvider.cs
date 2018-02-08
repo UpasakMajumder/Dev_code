@@ -209,26 +209,7 @@ namespace Kadena.WebAPI.KenticoProviders
             };
         }
 
-        public IEnumerable<Sku> GetVariants(int skuid, HashSet<int> optionIds = null)
-        {
-            var variants = VariantHelper.GetVariants(skuid);
-            return mapper.Map<IEnumerable<Sku>>(variants);
-        }
-
-        public IEnumerable<int> GetVariants(HashSet<int> optionIds)
-        {
-            var set = new ProductAttributeSet(optionIds);
-            var variant = VariantHelper.GetProductVariant(1045, set);
-            return VariantOptionInfoProvider
-                .GetVariantOptions()
-                .WhereIn(nameof(VariantOptionInfo.OptionSKUID), optionIds.ToArray())
-                .GroupBy(v => v.VariantSKUID)
-                .Where(v => v.Count() == optionIds.Count())
-                .Select(v => v.Key)
-                .Distinct();
-        }
-
-        public Sku GetVariant(int skuId, HashSet<int> optionIds)
+        public Sku GetVariant(int skuId, IEnumerable<int> optionIds)
         {
             var attributeSet = new ProductAttributeSet(optionIds);
             var variant = VariantHelper.GetProductVariant(skuId, attributeSet);

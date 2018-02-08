@@ -41,6 +41,10 @@ namespace Kadena.BusinessLogic.Services
             }
 
             var selectedVariant = products.GetVariant(skuId, new HashSet<int>(skuOptions.Values.Distinct()));
+            if (selectedVariant == null)
+            {
+                throw new ArgumentException("Product Variant for specified SKU and Options not found.");
+            }
             return products.GetSkuPrice(selectedVariant.SkuId);
         }
 
