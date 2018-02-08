@@ -11,6 +11,8 @@ using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
 using System.Linq;
 using CMS.EventLog;
+using Kadena2.Container.Default;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 public partial class CMSWebParts_Kadena_FYBudget_FyBudget : CMSAbstractWebPart
 {
@@ -103,21 +105,21 @@ public partial class CMSWebParts_Kadena_FYBudget_FyBudget : CMSAbstractWebPart
     {
         try
         {
-            var userBudgetData = CustomTableItemProvider.GetItems<UserFYBudgetAllocationItem>().WhereEquals("UserID",CurrentUser.UserID).WhereEquals("SiteID",CurrentSite.SiteID).ToList();
-            var fiscalYearData = CustomTableItemProvider.GetItems<FiscalYearManagementItem>().ToList();
+            var userBudgetData = DIContainer.Resolve<IkenticoUserBudgetProvider>().GetUserBudgetAllocationRecords(CurrentUser.UserID, CurrentSite.SiteID);
+            var fiscalYearData = DIContainer.Resolve<IkenticoUserBudgetProvider>().GetFiscalYearRecords();
             var userBudgetDetails = from userBudget in userBudgetData
                                     join fisYear in fiscalYearData
-                                    on userBudget.Year equals fisYear.Year 
-                                    where userBudget.UserID == CurrentUser.UserID && userBudget.SiteID == CurrentSite.SiteID
+                                    on userBudget.GetValue("Year",string.Empty) equals fisYear.GetValue("Year",string.Empty)
+                                    where userBudget.GetValue("UserID",0) == CurrentUser.UserID && userBudget.GetValue("SiteID",0) == CurrentSite.SiteID
                                     select new
                                     {
-                                        Year = fisYear.Year,//newData?.Year ?? string.Empty,
+                                        Year = fisYear.GetValue("Year", string.Empty),
                                         ItemID = userBudget.ItemID,
-                                        UserRemainingBudget = userBudget.UserRemainingBudget,
-                                        UserID = userBudget.UserID,
-                                        SiteID = userBudget.SiteID,
-                                        Budget = userBudget.Budget,
-                                        IsYearEnded = fisYear.FiscalYearEndDate < DateTime.Now
+                                        UserRemainingBudget = userBudget.GetValue("UserRemainingBudget", default(double)),
+                                        UserID = userBudget.GetValue("UserRemainingBudget", default(double)),
+                                        SiteID = userBudget.GetValue("SiteID", default(int)),
+                                        Budget = userBudget.GetValue("Budget", default(double)),
+                                        IsYearEnded = fisYear.GetValue("FiscalYearEndDate", default(DateTime)) < DateTime.Now
                                     };
             userBudgetDetails = userBudgetDetails.ToList();
             if (!DataHelper.DataSourceIsEmpty(userBudgetDetails))

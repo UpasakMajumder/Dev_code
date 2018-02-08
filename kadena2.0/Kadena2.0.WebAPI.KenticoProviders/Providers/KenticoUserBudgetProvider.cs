@@ -1,5 +1,6 @@
 ﻿using CMS.CustomTables;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Kadena.WebAPI.KenticoProviders.Providers
@@ -7,6 +8,8 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
     public class KenticoUserBudgetProvider : IkenticoUserBudgetProvider
     {
         private readonly string CustomTableClassName = "KDA.UserFYBudgetAllocation";
+
+        private readonly string FiscalYearClassName = "KDA.FiscalYearManagement";
         public bool UpdateUserBudgetAllocation(int itemID, double userBudget)
         {
             var userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("ItemID", itemID).FirstOrDefault();
@@ -18,5 +21,26 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             }
             return false;
         }
+
+        public List<CustomTableItem> GetUserBudgetAllocationRecords(int userID, int siteID)
+        {
+            var userBudgetData = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("UserID", userID).WhereEquals("SiteID", siteID).ToList();
+            if (userBudgetData != null)
+            {
+                return userBudgetData;
+            }
+            return default(List<CustomTableItem>);
+        }
+
+        public List<CustomTableItem> GetFiscalYearRecords()
+        {
+            var fiscalYearData = CustomTableItemProvider.GetItems(FiscalYearClassName).ToList();
+            if (fiscalYearData != null)
+            {
+                return fiscalYearData;
+            }
+            return default(List<CustomTableItem>);
+        }
+
     }
 }

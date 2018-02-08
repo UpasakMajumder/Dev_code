@@ -30,8 +30,8 @@ namespace Kadena.WebAPI.Controllers
 
         }
         [HttpPost]
-        [Route("api/userbudget/updateUserBudget")]
-        public IHttpActionResult updateUserBudget([FromBody]UserBudgetDto request)
+        [Route("api/userbudget")]
+        public IHttpActionResult UpdateUserBudget([FromBody]UserBudgetDto request)
         {
             var submitRequest = mapper.Map<UserBudgetDto>(request);
             var serviceResponse = userBudgetService.UpdateUserBudgetAllocation(submitRequest.ItemID, submitRequest.UserBudget);
