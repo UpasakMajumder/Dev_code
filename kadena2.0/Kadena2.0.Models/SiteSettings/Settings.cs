@@ -1535,6 +1535,23 @@ namespace Kadena.Models.SiteSettings
         [DefaultValueAttribute("https://r0uhzqogra.execute-api.us-east-1.amazonaws.com/Stage")]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9Vc2VyRGF0YVNlcnZpY2VVcmwiLCJLZXlOYW1lIjoiS0RBX1VzZXJEYXRhU2VydmljZVVybCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJDcmVkaXQgQ2FyZCBQYXltZW50In19")]
         public const string KDA_UserDataServiceUrl = "KDA_UserDataServiceUrl";
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Amazon S3", "AmazonS3", "Kadena")]
+        [GroupAttribute("General")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkVudmlyb25tZW50IiwiS2V5TmFtZSI6IktEQV9FbnZpcm9ubWVudElkIiwiS2V5VHlwZSI6ImludCIsIktleURlZmF1bHRWYWx1ZSI6bnVsbCwiS2V5RGVzY3JpcHRpb24iOiIiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOiJDdXN0b21UYWJsZUl0ZW1TZWxlY3RvciIsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOiI8c2V0dGluZ3M+PEN1c3RvbVRhYmxlPktEQS5FbnZpcm9ubWVudDwvQ3VzdG9tVGFibGU+PERpc3BsYXlOYW1lRm9ybWF0PnslRGlzcGxheU5hbWUlfTwvRGlzcGxheU5hbWVGb3JtYXQ+PFJldHVybkNvbHVtbk5hbWU+SXRlbUlEPC9SZXR1cm5Db2x1bW5OYW1lPjwvc2V0dGluZ3M+IiwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJBbWF6b24gUzMiLCJOYW1lIjoiQW1hem9uUzMiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJLYWRlbmEifSwiRGlzcGxheU5hbWUiOiJHZW5lcmFsIn19")]
+        public const string KDA_EnvironmentId = "KDA_EnvironmentId";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Amazon S3", "AmazonS3", "Kadena")]
+        [GroupAttribute("General")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkFtYXpvbiBTMyBidWNrZXQgbmFtZSIsIktleU5hbWUiOiJLREFfQW1hem9uUzNCdWNrZXROYW1lIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6bnVsbCwiS2V5RGVzY3JpcHRpb24iOiIiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiQW1hem9uIFMzIiwiTmFtZSI6IkFtYXpvblMzIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiS2FkZW5hIn0sIkRpc3BsYXlOYW1lIjoiR2VuZXJhbCJ9fQ==")]
+        public const string KDA_AmazonS3BucketName = "KDA_AmazonS3BucketName";
     }
 }
