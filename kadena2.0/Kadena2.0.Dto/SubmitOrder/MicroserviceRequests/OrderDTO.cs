@@ -28,7 +28,7 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
 
         public CustomerDTO Customer { get; set; }
 
-        public int? KenticoOrderCreatedByUserID { get; set; }
+        //public int? KenticoOrderCreatedByUserID { get; set; }
 
         public string OrderNote { get; set; }
 
@@ -36,11 +36,11 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
 
         public PaymentOptionDTO PaymentOption { get; set; }
 
-        public OrderTrackingDTO OrderTracking { get; set; }
+        // public OrderTrackingDTO OrderTracking { get; set; }
 
-        public PaymentResultDTO PaymentResult { get; set; }
+        //public PaymentResultDTO PaymentResult { get; set; }
 
-        public DateTime LastModified { get; set; }
+        //public DateTime LastModified { get; set; }
 
         public IEnumerable<NotificationInfoDto> NotificationsData { get; set; }
 
