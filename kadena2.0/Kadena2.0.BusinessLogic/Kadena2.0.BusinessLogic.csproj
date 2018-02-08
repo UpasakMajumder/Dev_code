@@ -63,6 +63,7 @@
     <Compile Include="Contracts\IFavoritesService.cs" />
     <Compile Include="Contracts\IKListService.cs" />
     <Compile Include="Contracts\IMailTemplateService.cs" />
+    <Compile Include="Contracts\IUserBudgetService.cs" />
     <Compile Include="Contracts\OrderPayment\ICreditCard3dsiDemo.cs" />
     <Compile Include="Contracts\Orders\IGetOrderDataService.cs" />
     <Compile Include="Contracts\Orders\IOrderListService.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Services\OrderPayment\PurchaseOrder.cs" />
     <Compile Include="Services\TaxEstimationService.cs" />
     <Compile Include="Services\TemplateService.cs" />
+    <Compile Include="Services\UserBudgetService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
