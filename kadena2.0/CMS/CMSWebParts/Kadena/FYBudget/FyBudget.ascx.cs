@@ -87,24 +87,6 @@ public partial class CMSWebParts_Kadena_FYBudget_FyBudget : CMSAbstractWebPart
     }
 
     /// <summary>
-    /// Finding if year is ended.
-    /// </summary>
-    /// <returns></returns>
-    public bool IsYearExpired()
-    {
-        try
-        {
-            var userBudgetData = CustomTableItemProvider.GetItems<UserFYBudgetAllocationItem>().WhereEquals("UserID", CurrentUser.UserID).WhereEquals("SiteID", CurrentSite.SiteID).ToList();
-            return false;
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("checking if year is ended", "IsYearExpired()", ex, CurrentSite.SiteID, ex.Message);
-            return false;
-        }
-    }
-
-    /// <summary>
     /// Reloads the control data.
     /// </summary>
     public override void ReloadData()
@@ -113,6 +95,10 @@ public partial class CMSWebParts_Kadena_FYBudget_FyBudget : CMSAbstractWebPart
 
         SetupControl();
     }
+
+    /// <summary>
+    /// Binding Fiscal year Budget data
+    /// </summary>
     public void BindFiscalYearData()
     {
         try
@@ -134,9 +120,6 @@ public partial class CMSWebParts_Kadena_FYBudget_FyBudget : CMSAbstractWebPart
                                         IsYearEnded = fisYear.FiscalYearEndDate < DateTime.Now
                                     };
             userBudgetDetails = userBudgetDetails.ToList();
-            //var userBudgetDataBasedOnFY = userBudgetData.Join(fiscalYearData, x => x.Year, y => y.Year, (x, y) => new
-            //{ x.Budget, x.UserID,x.ItemID, x.UserRemainingBudget, x.SiteID, y.Year })
-            //.Where(x => x.UserID == CurrentUser.UserID && x.SiteID == CurrentSite.SiteID).ToList();
             if (!DataHelper.DataSourceIsEmpty(userBudgetDetails))
             {
                 fiscalDatagrid.DataSource = userBudgetDetails;
