@@ -13,7 +13,6 @@ using Kadena.Models.Checkout;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,24 +24,49 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly IKenticoResourceService resources;
         private readonly IKenticoLogger logger;
         private readonly IKenticoDocumentProvider documents;
-        private readonly IMapper _mapper;
+        private readonly IMapper mapper;
         private readonly IShippingEstimationSettings estimationSettings;
+        private readonly IDynamicPriceRangeProvider dynamicPrices;
 
-        public ShoppingCartProvider(IKenticoResourceService resources, IKenticoLogger logger, IKenticoDocumentProvider documents, IMapper mapper, IShippingEstimationSettings estimationSettings)
+        public ShoppingCartProvider(IKenticoResourceService resources, IKenticoLogger logger, IKenticoDocumentProvider documents, IMapper mapper, IShippingEstimationSettings estimationSettings, IDynamicPriceRangeProvider dynamicPrices)
         {
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+            if (documents == null)
+            {
+                throw new ArgumentNullException(nameof(documents));
+            }
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+            if (estimationSettings == null)
+            {
+                throw new ArgumentNullException(nameof(estimationSettings));
+            }
+            if (dynamicPrices == null)
+            {
+                throw new ArgumentNullException(nameof(dynamicPrices));
+            }
+
             this.resources = resources;
             this.logger = logger;
             this.documents = documents;
-            this._mapper = mapper;
+            this.mapper = mapper;
             this.estimationSettings = estimationSettings;
-
-            // TODO null checks
+            this.dynamicPrices = dynamicPrices;
         }
 
         public DeliveryAddress GetCurrentCartShippingAddress()
         {
             var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
-            return _mapper.Map<DeliveryAddress>(address);
+            return mapper.Map<DeliveryAddress>(address);
         }
 
         public BillingAddress GetDefaultBillingAddress()
@@ -75,7 +99,7 @@ namespace Kadena.WebAPI.KenticoProviders
             var shippingOptions = GetShippingOptions();
             var carriers = CarrierInfoProvider.GetCarriers(SiteContext.CurrentSiteID).ToArray();
 
-            var deliveryMethods = _mapper.Map<DeliveryCarrier[]>(carriers);
+            var deliveryMethods = mapper.Map<DeliveryCarrier[]>(carriers);
 
             foreach (DeliveryCarrier dm in deliveryMethods)
             {
@@ -113,7 +137,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public DeliveryOption[] GetShippingOptions()
         {
             var services = ShippingOptionInfoProvider.GetShippingOptions(SiteContext.CurrentSiteID).Where(s => s.ShippingOptionEnabled).ToArray();
-            var result = _mapper.Map<DeliveryOption[]>(services);
+            var result = mapper.Map<DeliveryOption[]>(services);
             foreach (var item in result)
             {
                 item.Title = resources.ResolveMacroString(item.Title);
@@ -126,7 +150,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public DeliveryOption GetShippingOption(int id)
         {
             var service = ShippingOptionInfoProvider.GetShippingOptionInfo(id);
-            var result = _mapper.Map<DeliveryOption>(service);
+            var result = mapper.Map<DeliveryOption>(service);
             var carrier = CarrierInfoProvider.GetCarrierInfo(service.ShippingOptionCarrierID);
             result.CarrierCode = carrier.CarrierName;
             return result;
@@ -156,7 +180,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public PaymentMethod[] GetPaymentMethods()
         {
             var paymentOptionInfoCollection = PaymentOptionInfoProvider.GetPaymentOptions(SiteContext.CurrentSiteID).Where(p => p.PaymentOptionEnabled).ToArray();
-            var methods = _mapper.Map<PaymentMethod[]>(paymentOptionInfoCollection);
+            var methods = mapper.Map<PaymentMethod[]>(paymentOptionInfoCollection);
 
             foreach (var method in methods)
             {
@@ -168,7 +192,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public PaymentMethod GetPaymentMethod(int id)
         {
             var paymentInfo = PaymentOptionInfoProvider.GetPaymentOptionInfo(id);
-            var method = _mapper.Map<PaymentMethod>(paymentInfo);
+            var method = mapper.Map<PaymentMethod>(paymentInfo);
             method.Title = resources.ResolveMacroString(method.DisplayName);
             return method;
         }
@@ -207,7 +231,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 {
                     var cart = ECommerceContext.CurrentShoppingCart;
 
-                    var info = _mapper.Map<AddressInfo>(address);
+                    var info = mapper.Map<AddressInfo>(address);
                     cart.ShoppingCartShippingAddress = info;
                     cart.SubmitChanges(true);
                 }
@@ -223,11 +247,6 @@ namespace Kadena.WebAPI.KenticoProviders
                 cart.ShoppingCartShippingOptionID = shippingOptionId;
                 cart.SubmitChanges(true);
             }
-        }
-        public int GetCurrentCartAddresId()
-        {
-            var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
-            return address?.AddressID ?? 0;
         }
 
         public int GetCurrentCartShippingOptionId()
@@ -366,11 +385,11 @@ namespace Kadena.WebAPI.KenticoProviders
             }
 
             var documentId = item.GetIntegerValue("ProductPageID", 0);
-            var ranges = GetDynamicPricingRanges(documentId);
+            var ranges = dynamicPrices.GetDynamicPricingRanges(documentId);
 
             if ((ranges?.Count() ?? 0) > 0)
             {
-                var price = GetDynamicPrice(quantity, ranges);
+                var price = dynamicPrices.GetDynamicPrice(quantity, ranges);
 
                 if (price != 0.0m)
                 {
@@ -391,58 +410,30 @@ namespace Kadena.WebAPI.KenticoProviders
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
         }
 
-        private decimal GetDynamicPrice(int quantity, IEnumerable<DynamicPricingRange> ranges)
+        public int GetShoppingCartId(int userId, int siteId)
         {
-            if (ranges != null)
+            var siteName = SiteInfoProvider.GetSiteInfo(siteId)?.SiteName ?? string.Empty;
+
+            if (string.IsNullOrEmpty(siteName))
             {
-                var matchingRange = ranges.FirstOrDefault(i => quantity >= i.MinVal && quantity <= i.MaxVal);
-                if (matchingRange != null)
-                {
-                    return matchingRange.Price;
-                }
+                return 0;
             }
-            return 0.0m;
+
+            return ShoppingCartInfoProvider.GetShoppingCartInfo(userId, siteName)?.ShoppingCartID ?? 0;
         }
 
-        private decimal GetDynamicPrice(TreeNode document, int quantity)
+        private ShoppingCartInfo GetShoppingCart(int shoppingCartId = 0)
         {
-            var ranges = GetDynamicPricingRanges(document);
-
-            if (ranges != null && ranges.Count() > 0)
-            {
-                var matchingRange = ranges.FirstOrDefault(i => quantity >= i.MinVal && quantity <= i.MaxVal);
-                if (matchingRange != null)
-                {
-                    return matchingRange.Price;
-                }
-                else
-                {
-                    return decimal.MinusOne;
-                }
-            }
-            else
-            {
-                return (decimal)document.GetDoubleValue("SKUPrice", 0);
-            }
+            return shoppingCartId > 0
+                ? ShoppingCartInfoProvider.GetShoppingCartInfo(shoppingCartId)
+                : ECommerceContext.CurrentShoppingCart;
         }
 
-        private IEnumerable<DynamicPricingRange> GetDynamicPricingRanges(int documentId)
+        public void RemoveCurrentItemsFromStock(int shoppingCartId = 0)
         {
-            var document = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
-            return GetDynamicPricingRanges(document);
-        }
+            var shoppingCart = GetShoppingCart(shoppingCartId);
 
-        private IEnumerable<DynamicPricingRange> GetDynamicPricingRanges(TreeNode document)
-        {
-            var rawJson = document?.GetStringValue("ProductDynamicPricing", string.Empty);
-            var ranges = JsonConvert.DeserializeObject<List<DynamicPricingRange>>(rawJson ?? string.Empty);
-
-            return ranges;
-        }
-
-        public void RemoveCurrentItemsFromStock()
-        {
-            var items = ECommerceContext.CurrentShoppingCart.CartItems;
+            var items = shoppingCart.CartItems;
 
             foreach (var i in items)
             {
@@ -457,9 +448,10 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public void ClearCart()
+        public void ClearCart(int shoppingCartId = 0)
         {
-            ShoppingCartInfoProvider.DeleteShoppingCartInfo(ECommerceContext.CurrentShoppingCart);
+            var shoppingCart = GetShoppingCart(shoppingCartId);
+            ShoppingCartInfoProvider.DeleteShoppingCartInfo(shoppingCart);
         }
 
         public void SaveShippingAddress(DeliveryAddress address)
@@ -609,7 +601,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private void RefreshPrice(ShoppingCartItemInfo cartItem, TreeNode document)
         {
-            var dynamicUnitPrice = GetDynamicPrice(document, cartItem.CartItemUnits);
+            var dynamicUnitPrice = dynamicPrices.GetDynamicPrice(document.DocumentID, cartItem.CartItemUnits);
             if (dynamicUnitPrice == decimal.MinusOne)
             {
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.QuantityOutOfRange"));

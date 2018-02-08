@@ -131,45 +131,66 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             if (string.IsNullOrEmpty(tokenId))
             {
-                logger.LogError("3DSi SaveToken", "Saving token to microservice failed");
+                MarkSubmissionProcessed(submission, false, string.Empty);
                 return false;
             }
-
-            logger.LogInfo("3DSi SaveToken", "info", "Token saved to User data microservice");
 
             var orderData = JsonConvert.DeserializeObject<OrderDTO>(submission.OrderJson, SerializerConfig.CamelCaseSerializer);
             orderData.PaymentOption.TokenId = tokenId;
             orderData.PaymentOption.PaymentGatewayCustomerCode = resources.GetSettingsKey("KDA_CreditCard_Code");
 
             var sendOrderResult = await sendOrder.SubmitOrderData(orderData);
-            var redirectUrlBase = resources.GetSettingsKey("KDA_CreditCard_PaymentResultPage");
-            var orderSuccess = sendOrderResult?.Success ?? false;
 
-            if (orderSuccess)
+            if (!(sendOrderResult?.Success ?? false))
             {
-                logger.LogInfo("PayOrderByCard", "info", $"Order #{sendOrderResult.Payload} was saved into microservice");
-                shoppingCart.RemoveCurrentItemsFromStock();
-                shoppingCart.ClearCart();
-            }
-            else
-            {
+                MarkSubmissionProcessed(submission, false, sendOrderResult?.Payload);
                 logger.LogError("PayOrderByCard", "Failed to save order to microservice.  " + sendOrderResult?.Error?.Message);
+                return false;
             }
-            
-            var redirectUrl = resultUrlFactory.GetOrderResultPageUrl(redirectUrlBase, orderSuccess, sendOrderResult?.Payload);
-            submissionService.SetAsProcessed(submission, redirectUrl);
+
+            logger.LogInfo("PayOrderByCard", "info", $"Order #{sendOrderResult.Payload} was saved into microservice");
+
+            var orderSuccess = ClearKenticoShoppingCart(submission.UserId, submission.SiteId);
+
+            MarkSubmissionProcessed(submission, orderSuccess, sendOrderResult?.Payload);
 
             return orderSuccess;
+        }
+
+        private void MarkSubmissionProcessed(Submission submission, bool orderSuccess, string orderId)
+        {
+            var redirectUrlBase = resources.GetSettingsKey("KDA_CreditCard_PaymentResultPage");
+            var redirectUrl = resultUrlFactory.GetOrderResultPageUrl(redirectUrlBase, orderSuccess, orderId);
+            submissionService.SetAsProcessed(submission, redirectUrl);
+        }
+
+        private bool ClearKenticoShoppingCart(int userId, int siteId)
+        {
+            var shoppingCartId = shoppingCart.GetShoppingCartId(userId, siteId);
+
+            if (shoppingCartId == 0)
+            {
+                logger.LogInfo("PayOrderByCard", "Error", $"Failed to clean shopping cart in Kentico");
+                return false;
+            }
+            
+            shoppingCart.RemoveCurrentItemsFromStock(shoppingCartId);
+            shoppingCart.ClearCart(shoppingCartId);
+
+            return true;
         }
 
         /// <summary>
         /// Saves the Token into UserData microservice
         /// </summary>
-        private async Task<string> SaveTokenToUserData(string userId, SaveTokenData token)
+        public async Task<string> SaveTokenToUserData(string userId, SaveTokenData token)
         {
             var saveTokenRequest = new SaveCardTokenRequestDto
             {
-                // TODO some more properties ?
+                // TODO some more properties needed for storing card:
+                // flag if threat card as stored
+                // last 4 digits
+                // username 
                 UserId = userId,
                 Token = token.Token
             };
@@ -183,6 +204,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 return null;
             }
 
+            logger.LogInfo("3DSi SaveToken", "info", "Token saved to User data microservice");
             return result.Payload;
         }
 

@@ -9,5 +9,6 @@ namespace Kadena2.BusinessLogic.Contracts.OrderPayment
         Task<SubmitOrderResult> PayByCard3dsi(SubmitOrderRequest orderRequest);
         Task<bool> SaveToken(SaveTokenData tokenData);
         string CreditcardSaved(string submissionId);
+        Task<string> SaveTokenToUserData(string userId, SaveTokenData token);
     }
 }

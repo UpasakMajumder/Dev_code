@@ -74,8 +74,8 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     Site = GetSite(),
                     NotificationsData = GetNotification(),
                     Items = GetCartItems(),
-                    KenticoOrderCreatedByUserID = userID,
-                    LastModified = DateTime.Now,
+                    //KenticoOrderCreatedByUserID = userID,
+                    //LastModified = DateTime.Now,
                     OrderDate = DateTime.Now,
                     TotalPrice = GetOrderTotal(orderType),
                     TotalShipping = shippingCost
