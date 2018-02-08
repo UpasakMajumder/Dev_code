@@ -93,6 +93,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     var response = ProcessOrder(Cart, CurrentUser.UserID, OrderType.generalInventory, Ordersdto, shippingCost);
                     if (response != null && response.Success)
                     {
+                        ShoppingCartHelper.UpdateAvailableSKUQuantity(Cart);
                         ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
                     }
                     else

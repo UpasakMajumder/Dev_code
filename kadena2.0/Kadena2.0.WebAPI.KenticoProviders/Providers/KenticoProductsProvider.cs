@@ -175,5 +175,14 @@ namespace Kadena.WebAPI.KenticoProviders
             SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
             return sku != null ? (sku.SKUEnabled ? ResHelper.GetString("KDA.Common.Status.Active") : ResHelper.GetString("KDA.Common.Status.Inactive")) : string.Empty;
         }
+        public void SetSkuAvailableQty(int skuid, int qty)
+        {
+            SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
+            if (sku != null)
+            {
+                sku.SKUAvailableItems = sku.SKUAvailableItems-qty;
+                sku.Update();
+            }
+        }
     }
 }

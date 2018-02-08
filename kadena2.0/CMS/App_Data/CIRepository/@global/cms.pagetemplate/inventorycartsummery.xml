@@ -57,28 +57,7 @@
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
-          <property name="contentafter">
-<![CDATA[
-<div class="dialog" id="autoSave_Dialog">
-  <div class="dialog__shadow"></div>
-  <div class="dialog__block">
-    <div class="dialog__content">
-      <p class="response_Success">
-        {$KDA.Cart.Update.Success$}
-      </p>
-      <p class="response_failure">
-        {$KDA.Cart.Update.Failure$}
-      </p>
-    </div>
-    <div class="dialog__footer">
-      <div class="btn-group btn-group--right">
-        <button type="button" class="btn-action btn-action--secondary js-CloseMesaage">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-]]>
-          </property>
+          <property name="contentafter"></property>
           <property name="contentbefore" ismacro="true">
 <![CDATA[
 <div class="itemcount">
@@ -169,7 +148,7 @@
         }
       });
       function UpdateItem(id,qty,box){
-        var request= {CartItemId: id,ItemQuantity:qty}
+        var request= {CartItemId: id,ItemQuantity:qty,UserID:{%CurrentUser.UserID|(user)cvoqa2@gmail.com|(hash)151ea260d45cbb40b6b460c3d41821d9e9dbc03b916f839032f8f77203b978ef%},InventoryType:1}
             $.ajax({
               type: "POST",
               data :JSON.stringify(request),
@@ -177,14 +156,14 @@
               contentType: "application/json",
               success: function (data) {
                 $('#autoSave_Dialog').addClass('active');
-                if (data==200) {
-                  $('.response_Success').show();
-                  $('.response_failure').hide();
-                  $(box).parentsUntil('.show-table-bottom').find('.js-Shipping').trigger('change');
-                } 
-                else{
-                  $('.response_Success').hide();
-                  $('.response_failure').show();
+                if(data.success)
+                {
+                  toastr.success(data.payload);
+                  setTimeout(function(){ $(box).parentsUntil('.show-table-bottom').find('.js-Shipping').trigger('change')}, 1000);
+                }
+                else
+                {
+                  toastr.error(data.errorMessage);
                 }
               },
               error:function (xhr, ajaxOptions, thrownError) {
