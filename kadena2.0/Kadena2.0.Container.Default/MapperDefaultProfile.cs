@@ -244,7 +244,7 @@ namespace Kadena2.Container.Default
             CreateMap<OrderDialogTable, OrderDialogTableDto>();
             CreateMap<OrderTableCell, OrderTableCellDto>();
             CreateMap<OrderDialogTableCell, OrderDialogTableCellDto>();
-            CreateMap<Distributor, DistributorDTO>();
+            CreateMap<DistributorDTO,Distributor>();
             CreateMap<Submission, GetSubmissionIdResponseDto>()
                 .ForMember(dest => dest.SubmissionID, opt => opt.MapFrom(src => src.SubmissionId));
         }

@@ -10,6 +10,7 @@ using CMS.SiteProvider;
 using Kadena.AmazonFileSystemProvider;
 using Kadena.Models;
 using Kadena.Models.Checkout;
+using Kadena.Models.CustomerData;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
@@ -662,17 +663,34 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItem.CartItemUnits = amount;
         }
 
-        public bool UpdateCartQuantity(int cartItemID, int quantity)
+        public Tuple<string, bool> UpdateCartQuantity(Distributor distributorData)
         {
-
-            var shoppingCartItem = ShoppingCartItemInfoProvider.GetShoppingCartItemInfo(cartItemID);
+            var shoppingCartItem = ShoppingCartItemInfoProvider.GetShoppingCartItemInfo(distributorData.CartItemId);
+            if (distributorData.InventoryType == 1)
+            {
+                var shoppingCartIDs = ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartUserID", distributorData.UserID).WhereEquals("ShoppingCartInventoryType", 1).ToList().Select(x => x.ShoppingCartID).ToList();
+                var shoppingcartItems = ShoppingCartItemInfoProvider.GetShoppingCartItems().WhereIn("ShoppingCartID", shoppingCartIDs).ToList();
+                int totalItems = 0;
+                shoppingcartItems.ForEach(cartItem =>
+                {
+                    if (cartItem != null && cartItem.CartItemID != distributorData.CartItemId)
+                    {
+                        totalItems += cartItem.CartItemUnits;
+                    }
+                });
+                var sku = SKUInfoProvider.GetSKUInfo(shoppingCartItem.SKUID);
+                if (sku.SKUAvailableItems < totalItems + distributorData.ItemQuantity)
+                {
+                    return new Tuple<string, bool>(ResHelper.GetString("KDA.Cart.Update.InsufficientStockMessage"),false);
+                }
+            }
             if (shoppingCartItem != null)
             {
-                shoppingCartItem.CartItemUnits = quantity;
+                shoppingCartItem.CartItemUnits = distributorData.ItemQuantity;
                 shoppingCartItem.Update();
-                return true;
+                return new Tuple<string, bool>(ResHelper.GetString("KDA.Cart.Update.Success"), true);
             }
-            return false;
+            return new Tuple<string, bool>(ResHelper.GetString("KDA.Cart.Update.Failure"), false);
         }
 
         public List<int> GetUserIDsWithShoppingCart(int campaignID, int productType)

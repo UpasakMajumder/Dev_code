@@ -215,5 +215,14 @@ namespace Kadena.WebAPI.KenticoProviders
             var variant = VariantHelper.GetProductVariant(skuId, attributeSet);
             return mapper.Map<Sku>(variant);
         }
+        public void SetSkuAvailableQty(int skuid, int qty)
+        {
+            SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
+            if (sku != null)
+            {
+                sku.SKUAvailableItems = sku.SKUAvailableItems-qty;
+                sku.Update();
+            }
+        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using CMS.Ecommerce;
 using Kadena.Models;
 using Kadena.Models.Checkout;
+using Kadena.Models.CustomerData;
+using System;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
@@ -52,10 +54,10 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void SaveShippingAddress(DeliveryAddress address);
 
         string GetShippingProviderIcon(string title);
-                
+
         CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
 
-        bool UpdateCartQuantity(int cartItemID,int quantity);
+        Tuple<string, bool> UpdateCartQuantity(Distributor data);
         List<int> GetUserIDsWithShoppingCart(int campaignID, int productType);
     }
 }
