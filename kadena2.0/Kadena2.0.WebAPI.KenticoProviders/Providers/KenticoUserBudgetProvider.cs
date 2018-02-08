@@ -1,4 +1,5 @@
 ﻿using CMS.CustomTables;
+using CMS.Helpers;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
         public List<CustomTableItem> GetUserBudgetAllocationRecords(int userID, int siteID)
         {
             var userBudgetData = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("UserID", userID).WhereEquals("SiteID", siteID).ToList();
-            if (userBudgetData != null)
+            if (!DataHelper.DataSourceIsEmpty(userBudgetData))
             {
                 return userBudgetData;
             }
@@ -35,7 +36,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
         public List<CustomTableItem> GetFiscalYearRecords()
         {
             var fiscalYearData = CustomTableItemProvider.GetItems(FiscalYearClassName).ToList();
-            if (fiscalYearData != null)
+            if (!DataHelper.DataSourceIsEmpty(fiscalYearData))
             {
                 return fiscalYearData;
             }

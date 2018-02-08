@@ -84,7 +84,7 @@ public partial class CMSWebParts_Kadena_FYBudget_FyBudget : CMSAbstractWebPart
     {
         if (!this.StopProcessing)
         {
-           BindFiscalYearData();
+            BindFiscalYearData();
         }
     }
 
@@ -107,25 +107,28 @@ public partial class CMSWebParts_Kadena_FYBudget_FyBudget : CMSAbstractWebPart
         {
             var userBudgetData = DIContainer.Resolve<IkenticoUserBudgetProvider>().GetUserBudgetAllocationRecords(CurrentUser.UserID, CurrentSite.SiteID);
             var fiscalYearData = DIContainer.Resolve<IkenticoUserBudgetProvider>().GetFiscalYearRecords();
-            var userBudgetDetails = from userBudget in userBudgetData
-                                    join fisYear in fiscalYearData
-                                    on userBudget.GetValue("Year",string.Empty) equals fisYear.GetValue("Year",string.Empty)
-                                    where userBudget.GetValue("UserID",0) == CurrentUser.UserID && userBudget.GetValue("SiteID",0) == CurrentSite.SiteID
-                                    select new
-                                    {
-                                        Year = fisYear.GetValue("Year", string.Empty),
-                                        ItemID = userBudget.ItemID,
-                                        UserRemainingBudget = userBudget.GetValue("UserRemainingBudget", default(double)),
-                                        UserID = userBudget.GetValue("UserRemainingBudget", default(double)),
-                                        SiteID = userBudget.GetValue("SiteID", default(int)),
-                                        Budget = userBudget.GetValue("Budget", default(double)),
-                                        IsYearEnded = fisYear.GetValue("FiscalYearEndDate", default(DateTime)) < DateTime.Now
-                                    };
-            userBudgetDetails = userBudgetDetails.ToList();
-            if (!DataHelper.DataSourceIsEmpty(userBudgetDetails))
+            if (!DataHelper.DataSourceIsEmpty(userBudgetData) && !DataHelper.DataSourceIsEmpty(fiscalYearData))
             {
-                fiscalDatagrid.DataSource = userBudgetDetails;
-                fiscalDatagrid.DataBind();
+                var userBudgetDetails = from userBudget in userBudgetData
+                                        join fisYear in fiscalYearData
+                                        on userBudget.GetValue("Year", string.Empty) equals fisYear.GetValue("Year", string.Empty)
+                                        where userBudget.GetValue("UserID", 0) == CurrentUser.UserID && userBudget.GetValue("SiteID", 0) == CurrentSite.SiteID
+                                        select new
+                                        {
+                                            Year = fisYear.GetValue("Year", string.Empty),
+                                            ItemID = userBudget.ItemID,
+                                            UserRemainingBudget = userBudget.GetValue("UserRemainingBudget", default(double)),
+                                            UserID = userBudget.GetValue("UserRemainingBudget", default(double)),
+                                            SiteID = userBudget.GetValue("SiteID", default(int)),
+                                            Budget = userBudget.GetValue("Budget", default(double)),
+                                            IsYearEnded = fisYear.GetValue("FiscalYearEndDate", default(DateTime)) < DateTime.Now
+                                        };
+                userBudgetDetails = userBudgetDetails.ToList();
+                if (!DataHelper.DataSourceIsEmpty(userBudgetDetails))
+                {
+                    fiscalDatagrid.DataSource = userBudgetDetails;
+                    fiscalDatagrid.DataBind();
+                }
             }
         }
         catch (Exception ex)
