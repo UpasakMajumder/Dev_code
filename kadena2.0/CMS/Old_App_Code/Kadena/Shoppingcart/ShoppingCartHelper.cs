@@ -1,4 +1,5 @@
 ﻿using CMS.DataEngine;
+using CMS.DocumentEngine.Types.KDA;
 using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Globalization;
@@ -12,6 +13,7 @@ using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.PDFHelpers;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
@@ -490,6 +492,45 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             {
                 EventLogProvider.LogInformation("ShoppingCartHelper", "GetOrderTotal", ex.Message);
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Updates remaining budget for every order placed.
+        /// </summary>
+        /// <param name="orderDetails"></param>
+        /// <returns></returns>
+        public static void UpdateRemainingBudget(OrderDTO orderDetails, int userID)
+        {
+            try
+            {
+                var campaign = CampaignProvider.GetCampaigns().WhereEquals("CampaignID", orderDetails.Campaign.ID).FirstOrDefault();
+                var preBuyFicalYear = campaign?.FiscalYear ?? string.Empty;
+                var inventoryFiscalYear = orderDetails.OrderDate.Year;
+                var totalToBeDeducted = orderDetails.TotalPrice + orderDetails.TotalShipping;
+                var userBudgetDetails = DIContainer.Resolve<IkenticoUserBudgetProvider>().GetUserBudgetAllocationRecords(userID, SiteContext.CurrentSiteID);
+                if (orderDetails.Type == Constants.OrderType.generalInventory)
+                {
+                    if (userBudgetDetails != null)
+                    {
+                        var budgetDataRelatedToYear = userBudgetDetails.Where(x => x.GetValue("Year", string.Empty) == ValidationHelper.GetString(inventoryFiscalYear, string.Empty)).FirstOrDefault();
+                        budgetDataRelatedToYear.SetValue("UserRemainingBudget", budgetDataRelatedToYear.GetValue("Budget", default(decimal)) - totalToBeDeducted);
+                        budgetDataRelatedToYear.Update();
+                    }
+                }
+                else if (orderDetails.Type == Constants.OrderType.prebuy)
+                {
+                    if (userBudgetDetails != null)
+                    {
+                        var budgetDataRelatedToYear = userBudgetDetails.Where(x => x.GetValue("Year", string.Empty) == ValidationHelper.GetString(preBuyFicalYear, string.Empty)).FirstOrDefault();
+                        budgetDataRelatedToYear.SetValue("UserRemainingBudget", budgetDataRelatedToYear.GetValue("Budget", default(decimal)) - totalToBeDeducted);
+                        budgetDataRelatedToYear.Update();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("ShoppingCartHelper", "UpdateRemainingBudget", ex.Message);
             }
         }
     }

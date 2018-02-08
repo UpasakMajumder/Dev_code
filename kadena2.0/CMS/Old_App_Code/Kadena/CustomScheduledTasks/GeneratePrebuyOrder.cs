@@ -72,6 +72,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                             ordersDTO.OrderID = response.Payload;
                             ProductEmailNotifications.SendEmailNotification(ordersDTO, orderTemplateSettingKey, salesPerson);
                             ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
+                            ShoppingCartHelper.UpdateRemainingBudget(ordersDTO, salesPerson.UserId);
                         }
                         else
                         {

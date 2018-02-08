@@ -94,6 +94,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     if (response != null && response.Success)
                     {
                         ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
+                        ShoppingCartHelper.UpdateRemainingBudget(Ordersdto, CurrentUser.UserID);
                     }
                     else
                     {
