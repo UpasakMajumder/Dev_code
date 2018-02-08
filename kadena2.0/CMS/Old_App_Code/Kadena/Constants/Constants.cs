@@ -41,6 +41,7 @@
         public const string Deleted = "deleted";
         public const string OrderScheduleTaskStart = "ordertask";
         public const string OrderSuccess = "ordersuccess";
+        public const string OrderFail = "orderfail";
     }
     /// <summary>
     /// This class represents shipping options
