@@ -261,11 +261,11 @@ BrandName LIKE '%{?searchtext?}%'
             }
             else
             {
-              toastr.success(config.localization.globalSuccess.pOSMappedWithProductError);
+              toastr.error(config.localization.globalSuccess.pOSMappedWithProductError);
             }
           },
           error: function (xhr, ajaxOptions, thrownError) {
-            toastr.success(config.localization.globalSuccess.errorMessage);
+            toastr.error(config.localization.globalSuccess.errorMessage);
           }
         });
       }

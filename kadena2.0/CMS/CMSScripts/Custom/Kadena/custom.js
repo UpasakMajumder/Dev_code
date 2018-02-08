@@ -1083,9 +1083,9 @@ $(document).ready(function () {
             break;
         case 'ordertask': toastr.success(config.localization.globalSuccess.orderScheduleTaskStartMessage);
             break;
-        case 'mappederror': toastr.success(config.localization.globalSuccess.pOSMappedWithProductError);
+        case 'mappederror': toastr.error(config.localization.globalSuccess.pOSMappedWithProductError);
             break;
-        case 'error': toastr.success(config.localization.globalSuccess.errorMessage);
+        case 'error': toastr.error(config.localization.globalSuccess.errorMessage);
             break;
     }
     if (status == 'error') {
