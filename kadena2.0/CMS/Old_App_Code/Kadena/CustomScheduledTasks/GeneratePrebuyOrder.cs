@@ -58,6 +58,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 var usersWithShoppingCartItems = shoppingCartInfo.GetUserIDsWithShoppingCart(openCampaignID,Convert.ToInt32(ProductsType.PreBuy));
                 var orderTemplateSettingKey=DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_OrderReservationEmailTemplate");
                 var failedOrderTemplateSettingKey = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_FailedOrdersEmailTemplate");
+                var failedOrdersUrl = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_FailedOrdersPageUrl");
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 usersWithShoppingCartItems.ForEach(shoppingCartUser =>
                 {
@@ -85,7 +86,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 {
                     return new { AddressID = x?.Id, AddressPersonalName = x?.AddressPersonalName };
                 }).ToList();
-                var list = unprocessedDistributorIDs.Select(x =>
+                var listofFailedOrders = unprocessedDistributorIDs.Select(x =>
                   {
                       var distributor = distributors.Where(y => y.AddressID == x.Item1).FirstOrDefault();
                       return new
@@ -95,10 +96,12 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                       };
                   }).ToList();
                 var user = userInfo.GetUserByUserId(campaignClosingUserID);
-                if (user?.Email != null && list.Count > 0)
+                if (user?.Email != null && listofFailedOrders.Count > 0)
                 {
+                    object[,] orderdata = { {"url", URLHelper.AddHTTPToUrl($"{SiteContext.CurrentSite.DomainName}{failedOrdersUrl}?campid={openCampaignID}") } ,
+                                                             { "failedordercount",listofFailedOrders.Count}           };
                     UpdatetFailedOrders(openCampaignID, true);
-                    ProductEmailNotifications.SendEmail(failedOrderTemplateSettingKey, user?.Email, list);
+                    ProductEmailNotifications.SendEmail(failedOrderTemplateSettingKey, user?.Email, listofFailedOrders, orderdata);
                 }
                    
                 return ResHelper.GetString("KDA.OrderSchedular.TaskSuccessfulMessage");
