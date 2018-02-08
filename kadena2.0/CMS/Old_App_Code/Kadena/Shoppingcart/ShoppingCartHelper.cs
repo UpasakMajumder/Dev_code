@@ -361,6 +361,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
+                var settingKeyValue=DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_SoldToGeneralInventory");
                 var distributorID = Cart.GetIntegerValue("ShoppingCartDistributorID", default(int));
                 var distributorAddress = AddressInfoProvider.GetAddresses().WhereEquals("AddressID", distributorID).FirstOrDefault();
                 var customer = CustomerInfoProvider.GetCustomerInfo(distributorAddress.AddressCustomerID);
@@ -370,7 +371,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     LastName = customer.CustomerLastName,
                     KenticoCustomerID = customer.CustomerID,
                     Email = customer.CustomerEmail,
-                    CustomerNumber = customer.CustomerFirstName,
+                    CustomerNumber = settingKeyValue,
                     KenticoUserID = customer.CustomerUserID,
                     Phone = customer.CustomerPhone
                 };
@@ -388,10 +389,12 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// <returns></returns>
         private static SiteDTO GetSite()
         {
+            var settingKeyValue = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_ErpCustomerId");
             return new SiteDTO
             {
                 KenticoSiteID = SiteContext.CurrentSiteID,
-                KenticoSiteName = SiteContext.CurrentSiteName
+                KenticoSiteName = SiteContext.CurrentSiteName,
+                ErpCustomerId= settingKeyValue
             };
         }
 
