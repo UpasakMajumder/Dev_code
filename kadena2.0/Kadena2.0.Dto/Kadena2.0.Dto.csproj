@@ -54,6 +54,7 @@
     <Compile Include="BusinessUnits\BusinessUnitDto.cs" />
     <Compile Include="CreditCard\3DSi\Requests\SaveTokenDataRequestDto.cs" />
     <Compile Include="CreditCard\3DSi\Responses\CreditCardPaymentDoneDto.cs" />
+    <Compile Include="CustomerData\UserBudgetDto.cs" />
     <Compile Include="Product\BorderDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDailogLabelDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialogDto.cs" />

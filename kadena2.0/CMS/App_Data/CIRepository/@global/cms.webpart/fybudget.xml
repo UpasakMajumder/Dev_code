@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpart>
+  <WebPartCategoryID>
+    <CodeName>FyBudget</CodeName>
+    <GUID>1dda7bbf-7c79-45f2-9d4e-ad413e3c0143</GUID>
+    <ObjectType>cms.webpartcategory</ObjectType>
+  </WebPartCategoryID>
+  <WebPartDefaultConfiguration>
+    <page />
+  </WebPartDefaultConfiguration>
+  <WebPartDefaultValues>
+    <form />
+  </WebPartDefaultValues>
+  <WebPartDisplayName>_Fy Budget</WebPartDisplayName>
+  <WebPartFileName>Kadena/FYBudget/FyBudget.ascx</WebPartFileName>
+  <WebPartGUID>9057318b-d6f6-4b73-a5b1-ef6841ede949</WebPartGUID>
+  <WebPartLoadGeneration>0</WebPartLoadGeneration>
+  <WebPartName>FyBudget</WebPartName>
+  <WebPartProperties>
+    <form />
+  </WebPartProperties>
+  <WebPartSkipInsertProperties>False</WebPartSkipInsertProperties>
+  <WebPartType>0</WebPartType>
+</cms.webpart>

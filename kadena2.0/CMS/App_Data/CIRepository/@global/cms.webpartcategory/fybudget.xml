@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpartcategory>
+  <CategoryDisplayName>FY Budget</CategoryDisplayName>
+  <CategoryGUID>1dda7bbf-7c79-45f2-9d4e-ad413e3c0143</CategoryGUID>
+  <CategoryName>FyBudget</CategoryName>
+  <CategoryParentID>
+    <CodeName>Kadena</CodeName>
+    <GUID>ea902dcb-d5a7-41ee-9175-f9708776cf63</GUID>
+    <ObjectType>cms.webpartcategory</ObjectType>
+  </CategoryParentID>
+</cms.webpartcategory>
