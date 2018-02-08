@@ -257,7 +257,8 @@ BrandName LIKE '%{?searchtext?}%'
           success: function (data) {
             if(data.success)
             {
-              toastr.success(config.localization.globalSuccess.deleteSuccessMessage);
+              document.cookie = "status=deleted; path=/";
+              window.location.reload();
             }
             else
             {
