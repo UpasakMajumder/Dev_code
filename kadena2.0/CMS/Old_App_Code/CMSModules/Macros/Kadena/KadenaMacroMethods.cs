@@ -710,7 +710,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                     .WhereEqualsOrNull("CloseCampaign", false)
                     .WhereEquals("NodeSiteID", SiteContext.CurrentSite.SiteID)
                     .FirstOrDefault();
-                return IsOpen = campaign != null ? true : false;
+                return campaign != null ? campaign.StartDate <= DateTime.Now.Date && campaign.EndDate >= DateTime.Now.Date ? true : false : false;
             }
             catch (Exception ex)
             {
