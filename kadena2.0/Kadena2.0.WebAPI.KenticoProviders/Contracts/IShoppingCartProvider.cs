@@ -1,5 +1,4 @@
-﻿using CMS.Ecommerce;
-using Kadena.Models;
+﻿using Kadena.Models;
 using Kadena.Models.Checkout;
 using System.Collections.Generic;
 
@@ -26,8 +25,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void SetShoppingCartAddress(DeliveryAddress address);
 
         void SelectShipping(int shippingOptionsId);
-
-        int GetCurrentCartAddresId();
 
         int GetCurrentCartShippingOptionId();
 
