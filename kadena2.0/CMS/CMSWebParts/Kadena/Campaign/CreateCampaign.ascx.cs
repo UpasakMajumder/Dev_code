@@ -15,6 +15,9 @@ using CMS.PortalEngine;
 using CMS.DocumentEngine.Types.KDA;
 using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.Constants;
+using CMS.CustomTables;
+using CMS.CustomTables.Types.KDA;
+using System.Linq;
 
 public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
 {
@@ -43,6 +46,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
     {
         if (!this.StopProcessing)
         {
+            BindFiscalYears();
             Name.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtNameWatermark"));
             Description.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtDesWatermark"));
             txtStartDate.Attributes.Add("PlaceHolder", ResHelper.GetString("Kadena.CampaignForm.txtStartDateWatermark"));
@@ -54,6 +58,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             compareDate.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.StartDaterangeMessage");
             rfvEndDate.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.EndDateRequired");
             rvName.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.NameMaxLength");
+            rqFiscalYear.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.FiscalYearErrorMessage");
             ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
             ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
             folderpath = SettingsKeyInfoProvider.GetValue("KDA_CampaignFolderPath", CurrentSiteName);
@@ -98,6 +103,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                         Description = campaignDes,
                         StartDate = ValidationHelper.GetDate(txtStartDate.Text, DateTime.Now.Date),
                         EndDate = ValidationHelper.GetDate(txtEndDate.Text, DateTime.Now.Date),
+                        FiscalYear = ddlFiscalYear.SelectedValue,
                         Status = ValidationHelper.GetString(ddlStatus.SelectedValue, "1") == "1" ? true : false,
                         DocumentCulture = CurrentDocument.DocumentCulture,
                         DocumentPageTemplateID = DocumentPageTemplate()
@@ -154,6 +160,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                     editPage.SetValue("Description", campaignDes);
                     editPage.SetValue("StartDate", ValidationHelper.GetDate(txtStartDate.Text, DateTime.Now.Date));
                     editPage.SetValue("EndDate", ValidationHelper.GetDate(txtEndDate.Text, DateTime.Now.Date));
+                    editPage.SetValue("FiscalYear", ddlFiscalYear.SelectedValue);
                     editPage.SetValue("Status", ValidationHelper.GetString(ddlStatus.SelectedValue, "1") == "1" ? true : false);
                     editPage.Update();
                     Response.Cookies["status"].Value = QueryStringStatus.Updated;
@@ -189,6 +196,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                 txtStartDate.Text = (startDate != default(DateTime))? startDate.ToShortDateString():string.Empty;
                 var endDate = editPage.GetValue<DateTime>("EndDate", default(DateTime));
                 txtEndDate.Text = (endDate != default(DateTime)) ? endDate.ToShortDateString() : string.Empty;
+                ddlFiscalYear.SelectedValue = editPage.GetValue("FiscalYear", string.Empty);
                 ddlStatus.SelectedValue = ValidationHelper.GetBoolean(editPage.GetValue("Status"), false) == true ? "1" : "0";
             }
         }
@@ -229,7 +237,30 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             return default(int); ;
         }
     }
+    /// <summary>
+    /// Binding fiscal years to dropdown
+    /// </summary>
+    public void BindFiscalYears()
+    {
+        try
+        {
+            var fiscalYears = CustomTableItemProvider.GetItems<FiscalYearManagementItem>().Where(x=>x.FiscalYearEndDate > DateTime.Now.Date).ToList();
+            if (!DataHelper.DataSourceIsEmpty(fiscalYears))
+            {
+                ddlFiscalYear.DataSource = fiscalYears;
+                ddlFiscalYear.DataTextField = "Year";
+                ddlFiscalYear.DataValueField = "Year";
+                ddlFiscalYear.DataBind();
+            }
+            ddlFiscalYear.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.Campaign.SelectFiscalYear"), "0"));
 
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogInformation("Binding Fiscal years", "DocumentPageTemplate", ex.Message);
+        }
+
+    }
     #endregion
 }
 
