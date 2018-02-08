@@ -238,7 +238,7 @@ namespace Kadena2.Container.Default
             CreateMap<OrderDialogTable, OrderDialogTableDto>();
             CreateMap<OrderTableCell, OrderTableCellDto>();
             CreateMap<OrderDialogTableCell, OrderDialogTableCellDto>();
-            CreateMap<Distributor, DistributorDTO>();
+            CreateMap<DistributorDTO,Distributor>();
             CreateMap<string, CreditCardPaymentDoneDto>()
                 .ForMember(dest => dest.RedirectionURL, opt => opt.MapFrom(src => src));
             CreateMap<SaveTokenDataRequestDto, SaveTokenData>();
