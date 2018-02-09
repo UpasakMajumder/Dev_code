@@ -78,7 +78,8 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     Items = GetCartItems(),
                     OrderDate = DateTime.Now,
                     TotalPrice = GetOrderTotal(orderType),
-                    TotalShipping = shippingCost
+                    TotalShipping = shippingCost,
+                    OrderCurrency = GetCurrencyDTO(Cart.Currency)
                 };
             }
             catch (Exception ex)
@@ -342,7 +343,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     KenticoShippingOptionID = Cart.ShoppingCartShippingOptionID,
                     ShippingService = Cart.ShippingOption.ShippingOptionCarrierServiceName,
                     ShippingCompany = Cart.ShippingOption.ShippingOptionName,
-                    CarrierCode = Cart.ShippingOption.ShippingOptionCarrierServiceName
+                    CarrierCode = Cart.ShippingOption.GetStringValue("ShippingOptionSAPName", string.Empty)
                 };
             }
             catch (Exception ex)
@@ -452,6 +453,27 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             return items;
         }
 
+        /// <summary>
+        /// Returns order total
+        /// </summary>
+        /// <param name="inventoryType"></param>
+        /// <returns></returns>
+        private static CurrencyDTO GetCurrencyDTO(CurrencyInfo currency)
+        {
+            try
+            {
+                return new CurrencyDTO
+                {
+                    KenticoCurrencyID = currency.CurrencyID,
+                    CurrencyCode = currency.CurrencyCode
+                };
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("ShoppingCartHelper", "GetOrderTotal", ex.Message);
+                return null;
+            }
+        }
         /// <summary>
         /// Returns order total
         /// </summary>
