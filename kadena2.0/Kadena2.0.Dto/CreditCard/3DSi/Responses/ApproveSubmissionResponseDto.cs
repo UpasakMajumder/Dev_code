@@ -6,7 +6,7 @@ namespace Kadena.Dto.CreditCard._3DSi.Responses
     /// Response from Kadena to 3DSi
     /// </summary>
     [DataContract(Name = "ApprovalResponse", Namespace = "")]
-    public class ApproveResponseDto
+    public class ApproveSubmissionResponseDto
     {
         public static readonly string SubmissionApprovedMessage = "Submission approved.";
         public static readonly string SubmissionDeniedMessage = "Submission denied.";
@@ -18,8 +18,7 @@ namespace Kadena.Dto.CreditCard._3DSi.Responses
         [DataMember(Name = "ResponseMessage")]
         public string ResponseMessage { get; set; }
 
-    
-        public static ApproveResponseDto SubmissionApproved => new ApproveResponseDto
+        public static ApproveSubmissionResponseDto SubmissionApproved => new ApproveSubmissionResponseDto
         {
             Succeeded = 1,
             ResponseStatus = "001",
@@ -27,12 +26,11 @@ namespace Kadena.Dto.CreditCard._3DSi.Responses
         };
             
 
-        public static ApproveResponseDto SubmissionDenied => new ApproveResponseDto
+        public static ApproveSubmissionResponseDto SubmissionDenied => new ApproveSubmissionResponseDto
         {
             Succeeded = 0,
             ResponseStatus = "000",
             ResponseMessage = SubmissionDeniedMessage
         };
-        
     }
 }
