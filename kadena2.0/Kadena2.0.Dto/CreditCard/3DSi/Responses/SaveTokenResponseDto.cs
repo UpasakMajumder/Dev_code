@@ -3,9 +3,9 @@
 namespace Kadena.Dto.CreditCard._3DSi.Responses
 {
     /// <summary>
-    /// Response from Kadena to 3DSi
+    /// Response from Kadena BE to 3DSi
     /// </summary>
-    [DataContract(Name = "ResultResponse>", Namespace = "")]
+    [DataContract(Name = "ResultResponse", Namespace = "")]
     public class SaveTokenResponseDto
     {
         public static readonly string ResultApprovedMessage = "Result approved.";
@@ -19,7 +19,7 @@ namespace Kadena.Dto.CreditCard._3DSi.Responses
         public string ResponseMessage { get; set; }
 
 
-        public static ApproveResponseDto ResultApproved => new ApproveResponseDto
+        public static SaveTokenResponseDto ResultApproved => new SaveTokenResponseDto
         {
             Succeeded = 1,
             ResponseStatus = "001",
@@ -27,7 +27,7 @@ namespace Kadena.Dto.CreditCard._3DSi.Responses
         };
 
 
-        public static ApproveResponseDto ResultFailed => new ApproveResponseDto
+        public static SaveTokenResponseDto ResultFailed => new SaveTokenResponseDto
         {
             Succeeded = 0,
             ResponseStatus = "000",

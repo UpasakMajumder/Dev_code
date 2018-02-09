@@ -56,14 +56,5 @@ namespace Kadena.WebAPI.Controllers
             var userBusinessUnitsDto = mapper.Map<BusinessUnitDto[]>(userBusinessUnits);
             return ResponseJson(userBusinessUnitsDto);
         }
-
-        [HttpPost]
-        [Route("api/distributor/update")]
-        public IHttpActionResult UpdateData([FromBody]DistributorDTO request)
-        {
-            var submitRequest = mapper.Map<DistributorDTO>(request);
-            var serviceResponse = businessUnits.UpdateItemQuantity(submitRequest.CartItemId, submitRequest.ItemQuantity);
-            return Ok(serviceResponse ? HttpStatusCode.OK : HttpStatusCode.InternalServerError);
-        }
     }
 }
