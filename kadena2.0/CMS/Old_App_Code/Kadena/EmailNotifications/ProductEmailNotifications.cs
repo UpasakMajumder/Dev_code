@@ -1,7 +1,6 @@
 ﻿using CMS.DocumentEngine;
 using CMS.EmailEngine;
 using CMS.EventLog;
-using CMS.Helpers;
 using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;

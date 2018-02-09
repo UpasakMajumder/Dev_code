@@ -271,84 +271,169 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
 
                 if (CurrentUser.IsInRole(gAdminRoleName, CurrentSiteName))
                 {
-                    if (!initiated)
-                    {
-                        lnkEdit.Visible = true;
-                        lnkEdit.Enabled = true;
-                        lnkInitiate.Visible = true;
-                        lnkInitiate.Enabled = true;
-                        lnkOpenCampaign.Visible = true;
-                        lnkOpenCampaign.Enabled = false;
-                        lnkOpenCampaign.CssClass = "disable";
-                    }
-                    else if (initiated && !IsAnyprogramNotified)
-                    {
-                        lnkEdit.Visible = true;
-                        lnkEdit.Enabled = true;
-                        lnkUpdateProducts.Visible = true;
-                        lnkUpdateProducts.Enabled = true;
-                        lnkOpenCampaign.Visible = true;
-                        lnkOpenCampaign.Enabled = false;
-                        lnkOpenCampaign.CssClass = "disable";
-                    }
-                    else if (initiated && IsAnyprogramNotified && !openCampaign && !closeCampaign)
-                    {
-                        lnkEdit.Visible = true;
-                        lnkEdit.Enabled = false;
-                        lnkEdit.CssClass = "disable";
-                        lnkUpdateProducts.Visible = true;
-                        lnkUpdateProducts.Enabled = true;
-                        lnkOpenCampaign.Visible = true;
-                        lnkOpenCampaign.Enabled = true;
-                    }
-                    else if (openCampaign && !closeCampaign)
-                    {
-                        lnkEdit.Visible = true;
-                        lnkViewProducts.Visible = true;
-                        lnkViewProducts.Enabled = true;
-                        lnkCloseCampaign.Visible = true;
-                        lnkCloseCampaign.Enabled = true;
-                        lnkCloseCampaign.CssClass = "disable";
-                    }
-                    else if (closeCampaign)
-                    {
-                        lnkEdit.Visible = true;
-                        lnkOpenCampaign.Visible = false;
-                        lnkViewProducts.Visible = true;
-                        lnkViewProducts.Enabled = true;
-                        lnkCloseCampaign.Visible = true;
-                        lnkCloseCampaign.CssClass = "disable";
-                        lnkCloseCampaign.Enabled = false;
-                    }
+                    BindActionsForGlobalAdmin(initiated, openCampaign, closeCampaign, IsAnyprogramNotified, isGlobalAdminNotified);
                 }
                 else if (CurrentUser.IsInRole(adminRoleName, CurrentSiteName))
                 {
-                    if (initiated && !isGlobalAdminNotified && !openCampaign && !closeCampaign)
-                    {
-                        lnkUpdateProducts.Visible = true;
-                        lnkUpdateProducts.Enabled = true;
-                    }
-                    else if (initiated && isGlobalAdminNotified && !openCampaign && !closeCampaign)
-                    {
-                        lnkViewProducts.Visible = true;
-                        lnkViewProducts.Enabled = true;
-                    }
-                    else if (openCampaign || closeCampaign)
-                    {
-                        lnkEdit.Visible = false;
-                        lnkInitiate.Visible = false;
-                        lnkUpdateProducts.Visible = false;
-                        lnkOpenCampaign.Visible = false;
-                        lnkViewProducts.Visible = true;
-                        lnkViewProducts.Enabled = true;
-                        lnkCloseCampaign.Visible = false;
-                    }
+                    BindActionsForAdmin(initiated, openCampaign, closeCampaign, IsAnyprogramNotified, isGlobalAdminNotified);
                 }
             }
         }
         catch (Exception ex)
         {
             EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "BindActions", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Binds the action icons for global admin
+    /// </summary>
+    /// <param name="initiated"></param>
+    /// <param name="openCampaign"></param>
+    /// <param name="closeCampaign"></param>
+    /// <param name="IsAnyprogramNotified"></param>
+    /// <param name="isGlobalAdminNotified"></param>
+    public void BindActionsForGlobalAdmin(bool initiated, bool openCampaign, bool closeCampaign, bool IsAnyprogramNotified, bool isGlobalAdminNotified)
+    {
+        try
+        {
+            if (!initiated)
+            {
+                lnkEdit.Visible = true;
+                lnkEdit.Enabled = true;
+                lnkInitiate.Visible = true;
+                lnkInitiate.Enabled = true;
+                lnkOpenCampaign.Visible = true;
+                lnkOpenCampaign.Enabled = false;
+                lnkOpenCampaign.CssClass = "disable";
+            }
+            else if (initiated && !IsAnyprogramNotified)
+            {
+                ActionsAfterInitiatingProgram();
+            }
+            else if (initiated && IsAnyprogramNotified && !openCampaign && !closeCampaign)
+            {
+                ActionsAfterNotifyingProgram();
+            }
+            else if (openCampaign && !closeCampaign)
+            {
+                lnkEdit.Visible = true;
+                lnkViewProducts.Visible = true;
+                lnkViewProducts.Enabled = true;
+                lnkCloseCampaign.Visible = true;
+                lnkCloseCampaign.Enabled = true;
+                lnkCloseCampaign.CssClass = "disable";
+            }
+            else if (closeCampaign)
+            {
+                ActionsAfterClosingCampign();
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "BindActionsForGlobalAdmin", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Binds icons for global admin after initiatting a campaign
+    /// </summary>
+    public void ActionsAfterInitiatingProgram()
+    {
+        try
+        {
+            lnkEdit.Visible = true;
+            lnkEdit.Enabled = true;
+            lnkUpdateProducts.Visible = true;
+            lnkUpdateProducts.Enabled = true;
+            lnkOpenCampaign.Visible = true;
+            lnkOpenCampaign.Enabled = false;
+            lnkOpenCampaign.CssClass = "disable";
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "ActionsAfterInitiatingProgram()", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Binds action icons for global admin after notiying program
+    /// </summary>
+    public void ActionsAfterNotifyingProgram()
+    {
+        try
+        {
+            lnkEdit.Visible = true;
+            lnkEdit.Enabled = false;
+            lnkEdit.CssClass = "disable";
+            lnkUpdateProducts.Visible = true;
+            lnkUpdateProducts.Enabled = true;
+            lnkOpenCampaign.Visible = true;
+            lnkOpenCampaign.Enabled = true;
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "ActionsAfterNotifyingProgram()", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Binds action icons for global admin after closing program
+    /// </summary>
+    public void ActionsAfterClosingCampign()
+    {
+        try
+        {
+            lnkEdit.Visible = true;
+            lnkOpenCampaign.Visible = false;
+            lnkViewProducts.Visible = true;
+            lnkViewProducts.Enabled = true;
+            lnkCloseCampaign.Visible = true;
+            lnkCloseCampaign.CssClass = "disable";
+            lnkCloseCampaign.Enabled = false;
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "ActionsAfterClosingCampign()", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Binds action icons for admin
+    /// </summary>
+    /// <param name="initiated"></param>
+    /// <param name="openCampaign"></param>
+    /// <param name="closeCampaign"></param>
+    /// <param name="IsAnyprogramNotified"></param>
+    /// <param name="isGlobalAdminNotified"></param>
+    public void BindActionsForAdmin(bool initiated, bool openCampaign, bool closeCampaign, bool IsAnyprogramNotified, bool isGlobalAdminNotified)
+    {
+        try
+        {
+            if (initiated && !isGlobalAdminNotified && !openCampaign && !closeCampaign)
+            {
+                lnkUpdateProducts.Visible = true;
+                lnkUpdateProducts.Enabled = true;
+            }
+            else if (initiated && isGlobalAdminNotified && !openCampaign && !closeCampaign)
+            {
+                lnkViewProducts.Visible = true;
+                lnkViewProducts.Enabled = true;
+            }
+            else if (openCampaign || closeCampaign)
+            {
+                lnkEdit.Visible = false;
+                lnkInitiate.Visible = false;
+                lnkUpdateProducts.Visible = false;
+                lnkOpenCampaign.Visible = false;
+                lnkViewProducts.Visible = true;
+                lnkViewProducts.Enabled = true;
+                lnkCloseCampaign.Visible = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "BindActionsForAdmin", ex, CurrentSite.SiteID, ex.Message);
         }
     }
 
