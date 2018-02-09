@@ -522,27 +522,16 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             try
             {
                 var campaign = CampaignProvider.GetCampaigns().WhereEquals("CampaignID", orderDetails.Campaign.ID).FirstOrDefault();
-                var preBuyFicalYear = campaign?.FiscalYear ?? string.Empty;
-                var inventoryFiscalYear = orderDetails.OrderDate.Year;
                 var totalToBeDeducted = orderDetails.TotalPrice + orderDetails.TotalShipping;
+                var fiscalYear = orderDetails.Type == OrderType.generalInventory ?
+                                 ValidationHelper.GetString(orderDetails.OrderDate.Year, string.Empty) :
+                                 orderDetails.Type == OrderType.prebuy ? (campaign?.FiscalYear ?? string.Empty) : string.Empty;
                 var userBudgetDetails = DIContainer.Resolve<IkenticoUserBudgetProvider>().GetUserBudgetAllocationRecords(userID, SiteContext.CurrentSiteID);
-                if (orderDetails.Type == Constants.OrderType.generalInventory)
+                if (userBudgetDetails != null)
                 {
-                    if (userBudgetDetails != null)
-                    {
-                        var budgetDataRelatedToYear = userBudgetDetails.Where(x => x.GetValue("Year", string.Empty) == ValidationHelper.GetString(inventoryFiscalYear, string.Empty)).FirstOrDefault();
-                        budgetDataRelatedToYear.SetValue("UserRemainingBudget", budgetDataRelatedToYear.GetValue("Budget", default(decimal)) - totalToBeDeducted);
-                        budgetDataRelatedToYear.Update();
-                    }
-                }
-                else if (orderDetails.Type == Constants.OrderType.prebuy)
-                {
-                    if (userBudgetDetails != null)
-                    {
-                        var budgetDataRelatedToYear = userBudgetDetails.Where(x => x.GetValue("Year", string.Empty) == ValidationHelper.GetString(preBuyFicalYear, string.Empty)).FirstOrDefault();
-                        budgetDataRelatedToYear.SetValue("UserRemainingBudget", budgetDataRelatedToYear.GetValue("Budget", default(decimal)) - totalToBeDeducted);
-                        budgetDataRelatedToYear.Update();
-                    }
+                    var budgetDataRelatedToYear = userBudgetDetails.Where(x => x.GetValue("Year", string.Empty) == ValidationHelper.GetString(fiscalYear, string.Empty)).FirstOrDefault();
+                    budgetDataRelatedToYear.SetValue("UserRemainingBudget", budgetDataRelatedToYear.GetValue("Budget", default(decimal)) - totalToBeDeducted);
+                    budgetDataRelatedToYear.Update();
                 }
             }
             catch (Exception ex)
