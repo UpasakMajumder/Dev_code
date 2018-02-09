@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web.UI.WebControls;
+using Kadena2.Container.Default;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWebPart
 {
@@ -782,10 +784,10 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     private List<AddressInfo> GetMyAddressBookList()
     {
         List<AddressInfo> myAddressList = new List<AddressInfo>();
-        CustomerInfo currentCustomer = CustomerInfoProvider.GetCustomerInfoByUserID(CurrentUser.UserID);
-        if (!DataHelper.DataSourceIsEmpty(currentCustomer))
+        int currentCustomerId = DIContainer.Resolve<IKenticoCustomerProvider>().GetCustomerIDByUserID(CurrentUser.UserID);
+        if (currentCustomerId != default(int))
         {
-            myAddressList = AddressInfoProvider.GetAddresses(currentCustomer.CustomerID).Columns("AddressID", "AddressPersonalName").WhereEquals("Status", true).ToList();
+            myAddressList = AddressInfoProvider.GetAddresses(currentCustomerId).Columns("AddressID", "AddressPersonalName").WhereEquals("Status", true).ToList();
         }
         return myAddressList;
     }
