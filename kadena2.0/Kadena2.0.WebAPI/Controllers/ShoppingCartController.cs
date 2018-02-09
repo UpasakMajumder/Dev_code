@@ -80,9 +80,8 @@ namespace Kadena.WebAPI.Controllers
         [CustomerAuthorizationFilter]
         public IHttpActionResult SelectShipping([FromBody]ChangeSelectionRequestDto request)
         {
-            var result = service.SelectShipipng(request.Id);
-            var resultDto = mapper.Map<CheckoutPageDTO>(result);
-            return ResponseJson(resultDto);
+            service.SelectShipipng(request.Id);
+            return ResponseJson<object>(null);
         }
 
         [HttpPost]

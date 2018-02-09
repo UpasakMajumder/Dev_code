@@ -151,8 +151,7 @@ namespace Kadena.BusinessLogic.Services
         {
             if (!isShippingApplicable)
             {
-                var defaultDeliveryMethods = new DeliveryCarriers();
-                return defaultDeliveryMethods;
+                return new DeliveryCarriers();
             }
 
             var carriers = shoppingCart.GetShippingCarriers();
@@ -160,12 +159,18 @@ namespace Kadena.BusinessLogic.Services
             {
                 Title = resources.GetResourceString("Kadena.Checkout.Delivery.Title"),
                 Description = resources.GetResourceString("Kadena.Checkout.DeliveryMethodDescription"),
-                items = carriers.ToList()
+                Items = carriers.ToList()
             };
 
             deliveryMethods.RemoveCarriersWithoutOptions();
 
-            CheckCurrentOrDefaultShipping(deliveryMethods);
+            int currentShipping = shoppingCart.GetCurrentCartShippingOptionId();
+            int checkedShipping = deliveryMethods.CheckCurrentOrDefaultShipping(currentShipping);
+
+            if (currentShipping != checkedShipping)
+            {
+                shoppingCart.SelectShipping(checkedShipping);
+            }
 
             deliveryMethods.UpdateSummaryText(
                 resources.GetResourceString("Kadena.Checkout.ShippingPriceFrom"),
@@ -249,27 +254,6 @@ namespace Kadena.BusinessLogic.Services
             return userNotification;
         }
 
-        private void CheckCurrentOrDefaultShipping(DeliveryCarriers deliveryMethods)
-        {
-            int currentShipping = shoppingCart.GetCurrentCartShippingOptionId();
-
-            if (deliveryMethods.IsPresent(currentShipping) && !deliveryMethods.IsDisabled(currentShipping))
-            {
-                deliveryMethods.CheckMethod(currentShipping);
-            }
-            else
-            {
-                SetDefaultShipping(deliveryMethods);
-            }
-        }
-
-        private void SetDefaultShipping(DeliveryCarriers deliveryMethods)
-        {
-            int defaultMethodId = deliveryMethods.GetDefaultMethodId();
-            shoppingCart.SelectShipping(defaultMethodId);
-            deliveryMethods.CheckMethod(defaultMethodId);
-        }
-
         private void UnsetShipping()
         {
             shoppingCart.SelectShipping(0);
@@ -291,10 +275,9 @@ namespace Kadena.BusinessLogic.Services
             }
         }
        
-        public CheckoutPage SelectShipipng(int id)
+        public void SelectShipipng(int id)
         {
             shoppingCart.SelectShipping(id);
-            return GetCheckoutPage();
         }
 
         public CheckoutPage SelectAddress(int id)
