@@ -75,35 +75,50 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 loggedInUserCartIDs.ForEach(distributorCart =>
                 {
                     Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(distributorCart);
-                   var shippingResponse= GetOrderShippingTotal(Cart);
-                    if(shippingResponse != null && shippingResponse.Success)
+                    decimal shippingCost = default(decimal);
+                    if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionName.ToLower() != ShippingOption.Ground)
                     {
-                        var shippingCost=ValidationHelper.GetDecimal(shippingResponse?.Payload?.Cost, default(decimal));
-                        OrderDTO Ordersdto = CreateOrdersDTO(Cart, Cart.ShoppingCartUserID, OrderType.generalInventory, shippingCost);
-                        var response = ProcessOrder(Cart, CurrentUser.UserID, OrderType.generalInventory, Ordersdto,shippingCost);
-                        if (response != null && response.Success)
+                        var shippingResponse = GetOrderShippingTotal(Cart);
+                        if (shippingResponse != null && shippingResponse.Success)
                         {
-                            ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
+                            shippingCost = ValidationHelper.GetDecimal(shippingResponse?.Payload?.Cost, default(decimal));
                         }
                         else
                         {
-                            unprocessedDistributorIDs.Add(new Tuple<int, string>(Cart.GetIntegerValue("ShoppingCartDistributorID", default(int)), response.ErrorMessages));
+                            unprocessedDistributorIDs.Add(new Tuple<int, string>(Cart.GetIntegerValue("ShoppingCartDistributorID", default(int)), shippingResponse.ErrorMessages));
+                            return;
                         }
+                    }
+                    OrderDTO Ordersdto = CreateOrdersDTO(Cart, Cart.ShoppingCartUserID, OrderType.generalInventory, shippingCost);
+                    var response = ProcessOrder(Cart, CurrentUser.UserID, OrderType.generalInventory, Ordersdto, shippingCost);
+                    if (response != null && response.Success)
+                    {
+                        UpdateAvailableSKUQuantity(Cart);
+                        ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
                     }
                     else
                     {
-                        unprocessedDistributorIDs.Add(new Tuple<int, string>(Cart.GetIntegerValue("ShoppingCartDistributorID", default(int)), shippingResponse.ErrorMessages));
+                        unprocessedDistributorIDs.Add(new Tuple<int, string>(Cart.GetIntegerValue("ShoppingCartDistributorID", default(int)), response.ErrorMessages));
                     }
                 });
                 if (unprocessedDistributorIDs.Count == 0)
                 {
-                    lblCartUpdateSuccess.Text = ResHelper.GetString("KDA.Checkout.OrderSuccess");
+                    Response.Cookies["status"].Value = QueryStringStatus.OrderSuccess;
+                    Response.Cookies["status"].HttpOnly = false;
+                    URLHelper.Redirect(Request.RawUrl);
                 }
                 else
                 {
+                    if(loggedInUserCartIDs.Count> unprocessedDistributorIDs.Count)
+                    {
+                        Response.Cookies["status"].Value = QueryStringStatus.OrderSuccess;
+                        Response.Cookies["status"].HttpOnly = false;
+                    }
+                    Response.Cookies["error"].Value = QueryStringStatus.OrderFail;
+                    Response.Cookies["error"].HttpOnly = false;
                     ShowOrderErrorList(unprocessedDistributorIDs);
+                    divErrorDailogue.Attributes.Add("class", "dialog active");
                 }
-                divErrorDailogue.Attributes.Add("class", "dialog active");
             }
             catch (Exception ex)
             {

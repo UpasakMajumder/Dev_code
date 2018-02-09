@@ -906,6 +906,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCartInfo(shoppinCartID);
                 cart.User = CurrentUser;
                 cart.ShoppingCartShippingAddress = customerAddress;
+                if (cart.ShoppingCartCurrencyID <=0)
+                {
+                    cart.ShoppingCartCurrencyID = CurrencyInfoProvider.GetMainCurrency(CurrentSite.SiteID).CurrencyID;
+                    cart.Update();
+                }
                 var campaingnID = ValidationHelper.GetInteger(cart.GetValue("ShoppingCartCampaignID"), default(int));
                 var programID = ValidationHelper.GetInteger(cart.GetValue("ShoppingCartProgramID"), default(int));
                 item = cart.CartItems.Where(g => g.SKUID == product.SKUID).FirstOrDefault();
@@ -981,6 +986,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 ShoppingCartInfo cart = new ShoppingCartInfo();
                 cart.ShoppingCartSiteID = CurrentSite.SiteID;
                 cart.ShoppingCartCustomerID = customerAddressID;
+                cart.ShoppingCartCurrencyID = CurrencyInfoProvider.GetMainCurrency(CurrentSite.SiteID).CurrencyID;
                 cart.SetValue("ShoppingCartCampaignID", ProductCampaignID);
                 cart.SetValue("ShoppingCartProgramID", ProductProgramID);
                 cart.SetValue("ShoppingCartDistributorID", customerAddressID);

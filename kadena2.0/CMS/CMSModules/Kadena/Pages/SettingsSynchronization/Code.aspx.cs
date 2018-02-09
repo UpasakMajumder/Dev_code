@@ -1,6 +1,6 @@
 ﻿using CMS.UIControls;
-using Kadena.BusinessLogic.Services.SettingsSynchronization;
-using Kadena2.WebAPI.KenticoProviders.Providers;
+using Kadena.BusinessLogic.Contracts;
+using Kadena2.Container.Default;
 using System;
 
 namespace Kadena.CMSModules.Kadena.Pages.SettingsSynchronization
@@ -14,7 +14,7 @@ namespace Kadena.CMSModules.Kadena.Pages.SettingsSynchronization
             HideErrorMessage();
 
             var keyName = settingsKeyName.Value;
-            var service = new SettingsSynchronizationService(new KenticoSettingsProvider());
+            var service = DIContainer.Resolve<ISettingsSynchronizationService>();
             try
             {
                 var generatedCode = service.GetSettingsKeySourceCode(keyName);

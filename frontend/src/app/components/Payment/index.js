@@ -114,7 +114,6 @@ class Payment extends Component {
     if (invalids.length) {
       this.setState({ invalids });
     } else {
-      location.assign(CARD_PAYMENT.RedirectURL);
       proceedCard(fields, cardType, submissionId);
     }
   }

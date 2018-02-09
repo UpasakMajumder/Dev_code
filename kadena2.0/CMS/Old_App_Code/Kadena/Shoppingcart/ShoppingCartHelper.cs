@@ -12,6 +12,7 @@ using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.PDFHelpers;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
@@ -58,7 +59,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// <param name="cart"></param>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public static OrderDTO CreateOrdersDTO(ShoppingCartInfo cart, int userID, string orderType,decimal shippingCost)
+        public static OrderDTO CreateOrdersDTO(ShoppingCartInfo cart, int userID, string orderType, decimal shippingCost)
         {
             try
             {
@@ -74,11 +75,10 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     Site = GetSite(),
                     NotificationsData = GetNotification(),
                     Items = GetCartItems(),
-                    KenticoOrderCreatedByUserID = userID,
-                    LastModified = DateTime.Now,
                     OrderDate = DateTime.Now,
                     TotalPrice = GetOrderTotal(orderType),
-                    TotalShipping = shippingCost
+                    TotalShipping = shippingCost,
+                    OrderCurrency = GetCurrencyDTO(Cart.Currency)
                 };
             }
             catch (Exception ex)
@@ -114,7 +114,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                 var microserviceClient = DIContainer.Resolve<IShippingCostServiceClient>();
+                var microserviceClient = DIContainer.Resolve<IShippingCostServiceClient>();
                 var response = microserviceClient.EstimateShippingCost(requestBody).Result;
 
                 if (!response.Success || response.Payload == null)
@@ -158,7 +158,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         ///Processes order and returns response
         /// </summary>
         /// <returns></returns>
-        public static BaseResponseDto<string> ProcessOrder(ShoppingCartInfo cart,int userID,string orderType, OrderDTO ordersDTO, decimal shippingCost=default(decimal))
+        public static BaseResponseDto<string> ProcessOrder(ShoppingCartInfo cart, int userID, string orderType, OrderDTO ordersDTO, decimal shippingCost = default(decimal))
         {
             try
             {
@@ -175,7 +175,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 return null;
             }
         }
-        
+
 
         /// <summary>
         /// Updates business unit for distributor
@@ -282,7 +282,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             {
                 return new CampaignDTO
                 {
-                    ID = Cart.GetValue("ShoppingCartCampaignID",default(int)),
+                    ID = Cart.GetValue("ShoppingCartCampaignID", default(int)),
                     ProgramID = Cart.GetValue("ShoppingCartProgramID", default(int)),
                     DistributorID = Cart.GetIntegerValue("ShoppingCartDistributorID", 0)
                 };
@@ -360,6 +360,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
+                var settingKeyValue=DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_SoldToGeneralInventory");
                 var distributorID = Cart.GetIntegerValue("ShoppingCartDistributorID", default(int));
                 var distributorAddress = AddressInfoProvider.GetAddresses().WhereEquals("AddressID", distributorID).FirstOrDefault();
                 var customer = CustomerInfoProvider.GetCustomerInfo(distributorAddress.AddressCustomerID);
@@ -369,7 +370,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     LastName = customer.CustomerLastName,
                     KenticoCustomerID = customer.CustomerID,
                     Email = customer.CustomerEmail,
-                    CustomerNumber = customer.CustomerFirstName,
+                    CustomerNumber = settingKeyValue,
                     KenticoUserID = customer.CustomerUserID,
                     Phone = customer.CustomerPhone
                 };
@@ -387,10 +388,12 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// <returns></returns>
         private static SiteDTO GetSite()
         {
+            var settingKeyValue = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_ErpCustomerId");
             return new SiteDTO
             {
                 KenticoSiteID = SiteContext.CurrentSiteID,
-                KenticoSiteName = SiteContext.CurrentSiteName
+                KenticoSiteName = SiteContext.CurrentSiteName,
+                ErpCustomerId= settingKeyValue
             };
         }
 
@@ -454,6 +457,27 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// </summary>
         /// <param name="inventoryType"></param>
         /// <returns></returns>
+        private static CurrencyDTO GetCurrencyDTO(CurrencyInfo currency)
+        {
+            try
+            {
+                return new CurrencyDTO
+                {
+                    KenticoCurrencyID = currency.CurrencyID,
+                    CurrencyCode = currency.CurrencyCode
+                };
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("ShoppingCartHelper", "GetOrderTotal", ex.Message);
+                return null;
+            }
+        }
+        /// <summary>
+        /// Returns order total
+        /// </summary>
+        /// <param name="inventoryType"></param>
+        /// <returns></returns>
         private static decimal GetOrderTotal(string type)
         {
             try
@@ -483,13 +507,28 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                    EstimateDeliveryPriceRequestDto estimationdto = GetEstimationDTO(cart);
-                    return  CallEstimationService(estimationdto);
+                EstimateDeliveryPriceRequestDto estimationdto = GetEstimationDTO(cart);
+                return CallEstimationService(estimationdto);
             }
             catch (Exception ex)
             {
                 EventLogProvider.LogInformation("ShoppingCartHelper", "GetOrderTotal", ex.Message);
                 return null;
+            }
+        }
+        public static void UpdateAvailableSKUQuantity(ShoppingCartInfo cart)
+        {
+            try
+            {
+                var product = DIContainer.Resolve<IKenticoProductsProvider>();
+                cart.CartItems.ForEach(cartItem =>
+                {
+                    product.SetSkuAvailableQty(cartItem.SKUID, cartItem.CartItemUnits);
+                });
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("ShoppingCartHelper", "UpdateAvailableSKUQuantity", ex.Message);
             }
         }
     }

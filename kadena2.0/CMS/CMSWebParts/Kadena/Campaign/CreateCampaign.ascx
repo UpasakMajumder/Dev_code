@@ -40,6 +40,15 @@
         </div>
         <div class="mb-2">
             <div class="input__wrapper">
+                <cms:LocalizedLabel ID="LocalizedFiscalYear" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.CampaignForm.FiscalYear" />
+                <div class="input__inner">
+                   <asp:DropDownList ID="ddlFiscalYear" runat="server" CssClass="input__select"></asp:DropDownList>
+                   <asp:RequiredFieldValidator ID="rqFiscalYear" runat="server" CssClass="EditingFormErrorLabel" ControlToValidate="ddlFiscalYear" InitialValue="0"></asp:RequiredFieldValidator>
+                </div>
+            </div>
+        </div>
+        <div class="mb-2">
+            <div class="input__wrapper">
                 <cms:LocalizedLabel runat="server" ID="lblCampaignStatus" CssClass="input__label" ResourceString="Kadena.CampaignForm.lblStatus"></cms:LocalizedLabel>
                 <div class="input__inner">
                     <asp:DropDownList ID="ddlStatus" runat="server" CssClass="input__select"></asp:DropDownList>

@@ -353,6 +353,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             objCustomer.CustomerLastName = CurrentUser.LastName;
             objCustomer.CustomerSiteID = CurrentSite.SiteID;
             CustomerInfoProvider.SetCustomerInfo(objCustomer);
+            CacheHelper.ClearCache();
             return objCustomer != null ? objCustomer.CustomerID : default(int);
         }
         catch (Exception ex)
