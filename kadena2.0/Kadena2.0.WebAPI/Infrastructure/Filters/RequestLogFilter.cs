@@ -1,7 +1,6 @@
 ﻿using System;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Web.Http.Filters;
-using System.Threading.Tasks;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http.Controllers;
@@ -26,15 +25,15 @@ namespace Kadena.WebAPI.Infrastructure.Filters
 
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            Log3dsiRequest(actionContext.Request).Wait();
+            Log3dsiRequest(actionContext.Request);
             base.OnAuthorization(actionContext);
         }
 
-        private async Task Log3dsiRequest(HttpRequestMessage request)
+        private void Log3dsiRequest(HttpRequestMessage request)
         {
             var log = new StringBuilder();
             log.AppendLine(request?.ToString());
-            var body = await request?.Content?.ReadAsStringAsync();
+            var body = request?.Content?.ReadAsStringAsync().Result;
 
             if (!string.IsNullOrEmpty(body))
             {

@@ -93,7 +93,7 @@ namespace Kadena.BusinessLogic.Services
             }
             else
             {
-                kenticoLog.LogError("DeliveryPriceEstimationClient", $"Call for tax estimation to service URL '{serviceEndpoint}' resulted with error {response.Error?.Message ?? string.Empty}");
+                kenticoLog.LogError("TaxCalculatorClient", $"Call for tax estimation to service URL '{serviceEndpoint}' resulted with error {response.Error?.Message ?? string.Empty}");
                 return 0.0m;
             }
         }

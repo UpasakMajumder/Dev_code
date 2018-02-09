@@ -64,6 +64,9 @@
         </settings>
       </field>
       <field column="SubmissionId" columntype="guid" guid="e8c19ece-8de1-464a-a825-557d022fad32" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>SubmissionId</fieldcaption>
+        </properties>
         <settings>
           <controlname>LabelControl</controlname>
           <ResolveMacros>True</ResolveMacros>
@@ -79,6 +82,9 @@
         </settings>
       </field>
       <field allowempty="true" column="UserId" columntype="integer" guid="2a5919d0-47a4-4af3-9c2e-f56bdd3348e2" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>UserId</fieldcaption>
+        </properties>
         <settings>
           <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
           <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
@@ -112,6 +118,19 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="RedirectUrl" columnsize="200" columntype="text" guid="5a8da978-be45-4d38-bf25-50873077848b" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>RedirectUrl</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
     </form>
   </ClassFormDefinition>
   <ClassGUID>6c6ed68c-c339-4ba5-b280-ace26621eb32</ClassGUID>
@@ -129,7 +148,7 @@
   </ClassSearchSettings>
   <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
   <ClassShowColumns>
-    <![CDATA[ItemID;OrderJson;Processed;CustomerId;SiteId;SubmissionId;AlreadyVerified;UserId;ItemCreatedWhen;ItemModifiedWhen]]>
+    <![CDATA[ItemID;Processed;CustomerId;SiteId;SubmissionId;AlreadyVerified;UserId;ItemCreatedWhen;ItemModifiedWhen;RedirectUrl]]>
   </ClassShowColumns>
   <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
   <ClassTableName>KDA_Submissions</ClassTableName>

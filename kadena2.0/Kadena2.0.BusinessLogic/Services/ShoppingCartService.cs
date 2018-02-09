@@ -220,7 +220,7 @@ namespace Kadena.BusinessLogic.Services
                 return;
             }
 
-            var currentAddressId = shoppingCart.GetCurrentCartAddresId();
+            var currentAddressId = shoppingCart.GetCurrentCartShippingAddress()?.Id ?? 0;
             if (currentAddressId != 0 && page.DeliveryAddresses.items.Any(a => a.Id == currentAddressId))
             {
                 page.DeliveryAddresses.CheckAddress(currentAddressId);

@@ -8,6 +8,7 @@ using Xunit;
 
 namespace Kadena.Tests.Infrastructure
 {
+    [Trait("Infrastructure", "DIContainer")]
     public class ControllerTests
     {
         [Fact]
@@ -44,6 +45,7 @@ namespace Kadena.Tests.Infrastructure
             // Assert
             // this test should not affect original container:
             Assert.Throws<ContainerException>(() => DIContainer.Instance.Resolve(controllers[0]));
+            Assert.Throws<ContainerException>(() => DIContainer.Instance.Resolve<INotRegisteredSubservice>());
         }
 
         
