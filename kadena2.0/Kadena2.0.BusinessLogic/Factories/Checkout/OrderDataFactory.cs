@@ -99,8 +99,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
         {
             return new PaymentOptionDTO()
             {
-                KenticoPaymentOptionID = paymentMethod.Id,
-                PaymentOptionName = paymentMethod.Title,
+                PaymentOptionName = paymentMethod.ShortClassName,
                 PONumber = request?.PaymentMethod?.Invoice
             };
         }

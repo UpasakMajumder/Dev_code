@@ -31,15 +31,16 @@ namespace Kadena.WebAPI.KenticoProviders
                 return;
             }
 
-            var submissionItem = CustomTableItemProvider.GetItems(SubmissionsTable)
+            var originalSubmissionItem = CustomTableItemProvider.GetItems(SubmissionsTable)
                 .WhereEquals("SubmissionId", submission.SubmissionId)
                 .FirstOrDefault();
+
+            var submissionItem = originalSubmissionItem;
 
             if (submissionItem == null)
             {
                 submissionItem = CustomTableItem.New(SubmissionsTable);
-                submissionItem.SetValue("SubmissionId", submission.SubmissionId);
-                
+                submissionItem.SetValue("SubmissionId", submission.SubmissionId);                
             }
 
             submissionItem.SetValue("SiteId", submission.SiteId);
@@ -47,14 +48,24 @@ namespace Kadena.WebAPI.KenticoProviders
             submissionItem.SetValue("CustomerId", submission.CustomerId);
             submissionItem.SetValue("AlreadyVerified", submission.AlreadyVerified);
             submissionItem.SetValue("Processed", submission.Processed);
-            submissionItem.Insert();
+            submissionItem.SetValue("RedirectUrl", submission.RedirectUrl);
+            submissionItem.SetValue("OrderJson", submission.OrderJson);
+
+            if (originalSubmissionItem == null)
+            {
+                submissionItem.Insert();
+            }
+            else
+            {
+                submissionItem.Update();
+            }
         }
 
         public Submission GetSubmission(Guid submissionId)
         {
             var submission = CustomTableItemProvider.GetItems(SubmissionsTable)
                 .WhereEquals("SubmissionId", submissionId)
-                .FirstOrDefault();
+                .SingleOrDefault();
 
             return mapper.Map<Submission>(submission);
         }

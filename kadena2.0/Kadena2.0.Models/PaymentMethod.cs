@@ -12,5 +12,14 @@
         public string InputPlaceholder { get; set; }
         public string ClassName { get; set; }
         public bool IsUnpayable { get; set; }
+        public string ShortClassName
+        {
+            get
+            {
+                return (ClassName.Contains(".") && !ClassName.EndsWith("."))
+                    ? ClassName.Substring(ClassName.LastIndexOf(".")+1)
+                    : ClassName;
+            }
+        }
     }
 }

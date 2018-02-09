@@ -10,15 +10,20 @@ using Kadena.Dto.Checkout.Requests;
 using Kadena.Models.Checkout;
 using Kadena.Dto.Product;
 using Kadena.Models;
+using Kadena.Dto.CustomerData;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using System.Net;
+using Kadena.Models.CustomerData;
 
 namespace Kadena.WebAPI.Controllers
 {
     public class ShoppingCartController : ApiControllerBase
     {
-        private readonly IShoppingCartService service;        
+        private readonly IShoppingCartService service;
         private readonly IMapper mapper;
+        private readonly IShoppingCartProvider provider;
 
-        public ShoppingCartController(IShoppingCartService service, IMapper mapper)
+        public ShoppingCartController(IShoppingCartService service, IMapper mapper, IShoppingCartProvider provider)
         {
             if (service == null)
             {
@@ -29,9 +34,14 @@ namespace Kadena.WebAPI.Controllers
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
+            if (provider == null)
+            {
+                throw new ArgumentNullException(nameof(provider));
+            }
 
             this.service = service;
             this.mapper = mapper;
+            this.provider = provider;
         }
 
         [HttpGet]
@@ -43,7 +53,7 @@ namespace Kadena.WebAPI.Controllers
             var checkoutPageDto = mapper.Map<CheckoutPageDTO>(checkoutPage);
             return ResponseJson(checkoutPageDto);
         }
-        
+
         [HttpGet]
         [Route("api/deliverytotals")]
         [CustomerAuthorizationFilter]
@@ -125,6 +135,21 @@ namespace Kadena.WebAPI.Controllers
             var result = await service.AddToCart(addItem);
             var resultDto = mapper.Map<AddToCartResultDto>(result);
             return ResponseJson(resultDto);
+        }
+        [HttpPost]
+        [Route("api/distributor/update")]
+        public IHttpActionResult UpdateData([FromBody]DistributorDTO request)
+        {
+            var submitRequest = mapper.Map<Distributor>(request);
+            var serviceResponse = provider.UpdateCartQuantity(submitRequest);
+            if (serviceResponse.Item2)
+            {
+                return ResponseJson<string>(serviceResponse.Item1);
+            }
+            else
+            {
+                return ResponseJsonCheckingNull<string>(null, serviceResponse.Item1);
+            }
         }
     }
 }

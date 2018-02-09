@@ -41,15 +41,31 @@ namespace CMS.CustomTables.Types.KDA
 		/// </summary>
 		private readonly UserFYBudgetAllocationItemFields mFields;
 
-		#endregion
+        #endregion
 
 
-		#region "Properties"
+        #region "Properties"
 
-		/// <summary>
-		/// Year.
-		/// </summary>
-		[DatabaseField]
+        /// <summary>
+        /// User Remaining Budget.
+        /// </summary>
+        [DatabaseField]
+        public double UserRemainingBudget
+        {
+            get
+            {
+                return ValidationHelper.GetDouble(GetValue("UserRemainingBudget"), 0);
+            }
+            set
+            {
+                SetValue("UserRemainingBudget", value);
+            }
+        }
+
+        /// <summary>
+        /// Year.
+        /// </summary>
+        [DatabaseField]
 		public string Year
 		{
 			get
@@ -148,11 +164,25 @@ namespace CMS.CustomTables.Types.KDA
 				mInstance = instance;
 			}
 
-
-			/// <summary>
-			/// Year.
+            /// <summary>
+			/// User Remaining Budget.
 			/// </summary>
-			public string Year
+			public double UserRemainingBudget
+            {
+                get
+                {
+                    return mInstance.UserRemainingBudget;
+                }
+                set
+                {
+                    mInstance.UserRemainingBudget = value;
+                }
+            }
+
+            /// <summary>
+            /// Year.
+            /// </summary>
+            public string Year
 			{
 				get
 				{
