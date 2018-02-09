@@ -23,10 +23,11 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             return false;
         }
 
-        public List<CustomTableItem> GetUserBudgetAllocationRecords(int userID, int siteID)
+        public void UpdateUserBudgetAllocationRecords(int userId, string year, decimal? totalToBeDeducted)
         {
-            var userBudgetData = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("UserID", userID).WhereEquals("SiteID", siteID).ToList();
-            return userBudgetData;
+            var userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("UserID", userId).WhereEquals("Year", year).FirstOrDefault();
+            userBudgetDetails.SetValue("UserRemainingBudget", userBudgetDetails.GetValue("Budget", default(decimal)) - totalToBeDeducted);
+            userBudgetDetails.Update();
         }
 
         public List<CustomTableItem> GetFiscalYearRecords()
@@ -34,6 +35,5 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             var fiscalYearData = CustomTableItemProvider.GetItems(FiscalYearClassName).ToList();
             return fiscalYearData;
         }
-
     }
 }

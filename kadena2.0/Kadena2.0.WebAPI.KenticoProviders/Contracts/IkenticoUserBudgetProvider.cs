@@ -8,7 +8,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
     {
         bool UpdateUserBudgetAllocation(int itemID, double userBudget);
 
-        List<CustomTableItem> GetUserBudgetAllocationRecords(int userID, int siteID);
+        void UpdateUserBudgetAllocationRecords(int userId, string year, decimal? totalToBeDeducted);
 
         List<CustomTableItem> GetFiscalYearRecords();
 

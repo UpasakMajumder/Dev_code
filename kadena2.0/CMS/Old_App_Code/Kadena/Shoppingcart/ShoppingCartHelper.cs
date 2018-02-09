@@ -526,13 +526,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 var fiscalYear = orderDetails.Type == OrderType.generalInventory ?
                                  ValidationHelper.GetString(orderDetails.OrderDate.Year, string.Empty) :
                                  orderDetails.Type == OrderType.prebuy ? (campaign?.FiscalYear ?? string.Empty) : string.Empty;
-                var userBudgetDetails = DIContainer.Resolve<IkenticoUserBudgetProvider>().GetUserBudgetAllocationRecords(userID, SiteContext.CurrentSiteID);
-                if (userBudgetDetails != null)
-                {
-                    var budgetDataRelatedToYear = userBudgetDetails.Where(x => x.GetValue("Year", string.Empty) == fiscalYear).FirstOrDefault();
-                    budgetDataRelatedToYear.SetValue("UserRemainingBudget", budgetDataRelatedToYear.GetValue("Budget", default(decimal)) - totalToBeDeducted);
-                    budgetDataRelatedToYear.Update();
-                }
+                DIContainer.Resolve<IkenticoUserBudgetProvider>().UpdateUserBudgetAllocationRecords(userID,fiscalYear,totalToBeDeducted);
             }
             catch (Exception ex)
             {
