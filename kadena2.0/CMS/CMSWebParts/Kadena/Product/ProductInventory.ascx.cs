@@ -768,6 +768,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         try
         {
+            lblErrorMsg.Visible = false;
             ProductSKUID = ValidationHelper.GetInteger(hdnClickSKU.Value, default(int));
             SKUInfo product = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", ProductSKUID).WhereNull("SKUOptionCategoryID").FirstObject;
             var itemsPlaced = default(int);
