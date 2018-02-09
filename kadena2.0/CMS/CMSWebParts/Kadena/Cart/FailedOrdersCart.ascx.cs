@@ -9,9 +9,12 @@ using CMS.Helpers;
 using CMS.Membership;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
 using Kadena.Dto.General;
+using Kadena.Models.BusinessUnit;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Container.Default;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +26,11 @@ namespace Kadena.CMSWebParts.Kadena.Cart
     public partial class FailedOrdersCart : CMSCheckoutWebPart
     {
         private const string _serviceUrlSettingKey = "KDA_ShippingCostServiceUrl";
-
+        private IShoppingCartProvider _shoppingCart;
+        private IKenticoBusinessUnitsProvider _businessUnit;
         #region "Private Properties"
 
-        private List<BusinessUnitItem> BusinessUnits { get; set; }
+        private List<BusinessUnit> BusinessUnits { get; set; }
         private List<ShippingOptionInfo> ShippingOptions { get; set; }
 
         #endregion "Private Properties"
@@ -230,6 +234,8 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
+                _shoppingCart = DIContainer.Resolve<IShoppingCartProvider>();
+                _businessUnit = DIContainer.Resolve<IKenticoBusinessUnitsProvider>();
                 if (AuthenticationHelper.IsAuthenticated() && !IsPostBack)
                 {
                     int campaignID = QueryHelper.GetInteger("campid", 0);
@@ -254,7 +260,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
+                Cart = _shoppingCart.GetShoppingCartByID(CartID);
                 GetItems();
                 BindBusinessUnit();
                 ValidCart = true;
@@ -321,10 +327,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 if (BusinessUnits == null)
                 {
-                    BusinessUnits = CustomTableItemProvider.GetItems<BusinessUnitItem>()
-                                    .Source(sourceItem => sourceItem.Join<UserBusinessUnitsItem>("ItemID", "BusinessUnitID"))
-                                    .WhereEquals("UserID", CurrentUser.UserID).WhereEquals("SiteID", CurrentSite.SiteID)
-                                    .WhereTrue("Status").Columns("BusinessUnitNumber,BusinessUnitName").ToList();
+                    BusinessUnits = _businessUnit.GetUserBusinessUnits(CurrentUser.UserID);
                 }
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.Globalization;
@@ -719,6 +720,20 @@ namespace Kadena.WebAPI.KenticoProviders
         {
           return  ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartCampaignID", campaignID)
                                                                    .WhereEquals("ShoppingCartInventoryType", productType).ToList().Select(x => x.ShoppingCartUserID).Distinct().ToList();
+        }
+       public ShoppingCartInfo GetShoppingCartByID(int cartID)
+        {
+           return ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
+        }
+       public List<int> GetShoppingCartIDs(WhereCondition where)
+        {
+          return  ShoppingCartInfoProvider.GetShoppingCarts().Where(where)
+                                                                .Select(x => x.ShoppingCartID).ToList();
+        }
+        public List<ShoppingCartItemInfo> GetShoppingCartItems(List<int> shoppingCartIDs)
+        {
+           return ShoppingCartItemInfoProvider.GetShoppingCartItems().WhereIn("ShoppingCartID", shoppingCartIDs)
+                                                                                   .ToList();
         }
     }
 }

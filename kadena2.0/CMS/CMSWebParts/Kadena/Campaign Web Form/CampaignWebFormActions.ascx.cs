@@ -11,6 +11,8 @@ using CMS.Scheduler;
 using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Container.Default;
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -508,7 +510,8 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             {
                 campaign.CloseCampaign = true;
                 campaign.Update();
-                InsertCampaignOrdersInProgress(campaign.CampaignID);
+               var oderStatus= DIContainer.Resolve<IFailedOrderStatusProvider>();
+                oderStatus.InsertCampaignOrdersInProgress(campaign.CampaignID);
                 TaskInfo runTask = TaskInfoProvider.GetTaskInfo(ScheduledTaskNames.PrebuyOrderCreation, CurrentSite.SiteID);
                 if (runTask != null)
                 {
@@ -531,24 +534,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
         catch (Exception ex)
         {
             EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "lnkCloseCampaign_Click", ex, CurrentSite.SiteID, ex.Message);
-        }
-    }
-    /// <summary>
-    /// Inserts orders processing Campaign id
-    /// </summary>
-    /// <param name="campaignID"></param>
-    private void InsertCampaignOrdersInProgress(int campaignID)
-    {
-        try
-        {
-            FailedOrdersItem objOrderItem = new FailedOrdersItem();
-            objOrderItem.CampaignID = campaignID;
-            objOrderItem.IsCampaignOrdersInProgress =true;
-            objOrderItem.Insert();
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "InsertCampaignOrdersInProgress", ex, CurrentSite.SiteID, ex.Message);
         }
     }
     #endregion "Methods"

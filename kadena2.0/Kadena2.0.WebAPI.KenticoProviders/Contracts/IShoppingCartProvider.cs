@@ -1,4 +1,6 @@
-﻿using Kadena.Models;
+﻿using CMS.DataEngine;
+using CMS.Ecommerce;
+using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.CustomerData;
 using System;
@@ -58,5 +60,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         Tuple<string, bool> UpdateCartQuantity(Distributor data);
         List<int> GetUserIDsWithShoppingCart(int campaignID, int productType);
+        ShoppingCartInfo GetShoppingCartByID(int cartID);
+        List<int> GetShoppingCartIDs(WhereCondition where);
+        List<ShoppingCartItemInfo> GetShoppingCartItems(List<int> cartIDs);
     }
 }

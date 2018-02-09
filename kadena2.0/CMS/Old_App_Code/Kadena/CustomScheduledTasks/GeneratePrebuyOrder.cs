@@ -56,10 +56,11 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 var shoppingCartInfo = DIContainer.Resolve<IShoppingCartProvider>();
                 var addrerss = DIContainer.Resolve<IAddressBookService>();
                 var userInfo = DIContainer.Resolve<IKenticoUserProvider>();
+                var settingInfo = DIContainer.Resolve<IKenticoResourceService>();
                 var usersWithShoppingCartItems = shoppingCartInfo.GetUserIDsWithShoppingCart(openCampaignID,Convert.ToInt32(ProductsType.PreBuy));
-                var orderTemplateSettingKey=DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_OrderReservationEmailTemplate");
-                var failedOrderTemplateSettingKey = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_FailedOrdersEmailTemplate");
-                var failedOrdersUrl = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_FailedOrdersPageUrl");
+                var orderTemplateSettingKey= settingInfo.GetSettingsKey("KDA_OrderReservationEmailTemplate");
+                var failedOrderTemplateSettingKey = settingInfo.GetSettingsKey("KDA_FailedOrdersEmailTemplate");
+                var failedOrdersUrl = settingInfo.GetSettingsKey("KDA_FailedOrdersPageUrl");
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 usersWithShoppingCartItems.ForEach(shoppingCartUser =>
                 {
@@ -117,27 +118,14 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
         {
             try
             {
-                var foData = CustomTableItemProvider.GetItems<FailedOrdersItem>().WhereEquals("CapmaignID", campaignID).FirstOrDefault();
-                if (!DataHelper.DataSourceIsEmpty(foData))
-                {
-                    foData.IsCampaignOrdersInProgress = false;
-                    if (IsFailed)
-                    {
-                        foData.IsCampaignOrdersFailed = true;
-                    }
-                    else
-                    {
-                        foData.IsCampaignOrdersFailed = false;
-                    }
-                    foData.Update();
-                }
+                var failedOrderStatus = DIContainer.Resolve<IFailedOrderStatusProvider>();
+                failedOrderStatus.UpdatetFailedOrders(campaignID, true);
             }
             catch (Exception ex)
             {
-                EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "InsertFailedOrders", ex, SiteContext.CurrentSiteID, ex.Message);
+                EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "UpdatetFailedOrders", ex, SiteContext.CurrentSiteID, ex.Message);
             }
 
         }
-
     }
 }

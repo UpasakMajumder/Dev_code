@@ -63,5 +63,14 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             return false;
         }
+        public int GetOpenCampaignID()
+        {
+            var openCampaign = DocumentHelper.GetDocuments(PageTypeClassName).OnSite(SiteContext.CurrentSiteID).Columns("CampaignID,Name,StartDate,EndDate")
+                                    .WhereEquals("OpenCampaign", true)
+                                    .Where(new WhereCondition().WhereEquals("CloseCampaign", false).Or()
+                                    .WhereEquals("CloseCampaign", null))
+                                    .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).FirstOrDefault();
+            return openCampaign.GetIntegerValue("CampaignID", default(int));
+        }
     }
 }

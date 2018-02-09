@@ -13,6 +13,8 @@ using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.PDFHelpers;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Container.Default;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -224,22 +226,8 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         /// <summary>
         /// gets or sets open campaign
         /// </summary>
-        public Campaign OpenCampaign
-        {
-            get
-            {
-                return CampaignProvider.GetCampaigns().Columns("CampaignID,Name,StartDate,EndDate")
-                                    .WhereEquals("OpenCampaign", true)
-                                    .Where(new WhereCondition().WhereEquals("CloseCampaign", false).Or()
-                                    .WhereEquals("CloseCampaign", null))
-                                    .WhereEquals("NodeSiteID", CurrentSite.SiteID).FirstOrDefault();
-            }
-            set
-            {
-                SetValue("OpenCampaign", value);
-            }
-        }
-
+        public int  OpenCampaignID { get; set; }
+       
         #endregion "Public properties"
 
         #region "Page events"
@@ -254,11 +242,16 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             try
             {
                 Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
+                var capmaigns = DIContainer.Resolve<IKenticoCampaignsProvider>();
                 GetItems();
                 BindBusinessUnit();
                 if (InventoryType == (Int32)ProductType.GeneralInventory)
                 {
                     BindShippingOptions();
+                }
+                else
+                {
+                    OpenCampaignID = capmaigns.GetOpenCampaignID();
                 }
                 ValidCart = true;
                 BindRepeaterData();
@@ -393,7 +386,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                DataTable distributorCartData = CartPDFHelper.GetDistributorCartData(CartID, InventoryType,OpenCampaign?.CampaignID);
+                DataTable distributorCartData = CartPDFHelper.GetDistributorCartData(CartID, InventoryType, OpenCampaignID);
                 var pdfBytes = CartPDFHelper.CreateProductPDF(distributorCartData, InventoryType);
                 CartPDFHelper.WriteresponseToPDF(pdfBytes);
             }
@@ -539,7 +532,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 QueryDataParameters parameters = new QueryDataParameters();
                 parameters.Add("@CartItemDistributorID", ShoppingCartDistributorID);
                 parameters.Add("@ShoppingCartInventoryType", InventoryType);
-                parameters.Add("@ShoppingCartCampaignID", OpenCampaign?.CampaignID);
+                parameters.Add("@ShoppingCartCampaignID", OpenCampaignID);
                 rptCartItems.QueryParameters = parameters;
                 rptCartItems.QueryName = SQLQueries.shoppingCartCartItems;
             }

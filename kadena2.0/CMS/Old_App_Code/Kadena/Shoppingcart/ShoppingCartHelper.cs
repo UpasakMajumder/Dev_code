@@ -5,12 +5,15 @@ using CMS.EventLog;
 using CMS.Globalization;
 using CMS.Helpers;
 using CMS.Localization;
+using CMS.Membership;
+using CMS.Scheduler;
 using CMS.SiteProvider;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
 using Kadena.Dto.General;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Old_App_Code.Kadena.Constants;
+using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.PDFHelpers;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -361,7 +364,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var settingKeyValue=DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_SoldToGeneralInventory");
+                var settingKeyValue = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_SoldToGeneralInventory");
                 var distributorID = Cart.GetIntegerValue("ShoppingCartDistributorID", default(int));
                 var distributorAddress = AddressInfoProvider.GetAddresses().WhereEquals("AddressID", distributorID).FirstOrDefault();
                 var customer = CustomerInfoProvider.GetCustomerInfo(distributorAddress.AddressCustomerID);
@@ -394,7 +397,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             {
                 KenticoSiteID = SiteContext.CurrentSiteID,
                 KenticoSiteName = SiteContext.CurrentSiteName,
-                ErpCustomerId= settingKeyValue
+                ErpCustomerId = settingKeyValue
             };
         }
 
@@ -515,6 +518,46 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             {
                 EventLogProvider.LogInformation("ShoppingCartHelper", "GetOrderTotal", ex.Message);
                 return null;
+            }
+        }
+        /// <summary>
+        /// Closing the campaign
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public static void ProcessOrders(int campaignID)
+        {
+            try
+            {
+                Campaign campaign = CampaignProvider.GetCampaigns()
+                    .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID)
+                    .WhereEquals("CampaignID", campaignID)
+                    .FirstObject;
+                if (campaign != null)
+                {
+                    var _failedOrders = DIContainer.Resolve<IFailedOrderStatusProvider>();
+                    _failedOrders.UpdateCampaignOrderStatus(campaign.CampaignID);
+                    TaskInfo runTask = TaskInfoProvider.GetTaskInfo(ScheduledTaskNames.PrebuyOrderCreation, SiteContext.CurrentSiteID);
+                    if (runTask != null)
+                    {
+                        runTask.TaskRunInSeparateThread = true;
+                        runTask.TaskEnabled = true;
+                        runTask.TaskData = $"{campaign.CampaignID}|{SiteContext.CurrentSiteID}";
+                        SchedulingExecutor.ExecuteTask(runTask);
+                    }
+                    var users = UserInfoProvider.GetUsers();
+                    if (users != null)
+                    {
+                        foreach (var user in users)
+                        {
+                            ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Email, "CampaignCloseEmail");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("Kadena_CMSWebParts_Kadena_Cart_FailedOrdersCheckout", "ProcessOrders", ex, SiteContext.CurrentSiteID, ex.Message);
             }
         }
         /// <summary>

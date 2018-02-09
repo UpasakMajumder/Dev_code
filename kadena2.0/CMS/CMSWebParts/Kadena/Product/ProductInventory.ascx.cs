@@ -8,6 +8,8 @@ using CMS.EventLog;
 using CMS.Helpers;
 using CMS.MediaLibrary;
 using CMS.PortalEngine.Web.UI;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Container.Default;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -678,17 +680,15 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             List<AddressInfo> myAddressList = GetMyAddressBookList();
             if (myAddressList.Count > 0)
             {
+                var shoppingCarts = DIContainer.Resolve<IShoppingCartProvider>();
                 var whereCondition = new WhereCondition().WhereIn("ShoppingCartDistributorID", myAddressList.Select(g => g.AddressID).ToList())
                                                                 .WhereEquals("ShoppingCartInventoryType", ProductType);
                 if (ProductType == (int)ProductsType.PreBuy && OpenCampaign!=null)
                 {
                     whereCondition = whereCondition.WhereEquals("ShoppingCartCampaignID", OpenCampaign.CampaignID);
                 }
-                    List<int> shoppingCartIDs = ShoppingCartInfoProvider.GetShoppingCarts().Where(whereCondition)
-                                                                .Select(x => x.ShoppingCartID).ToList();
-                List<ShoppingCartItemInfo> cartItems = ShoppingCartItemInfoProvider.GetShoppingCartItems()
-                                                                                   .WhereIn("ShoppingCartID", shoppingCartIDs)
-                                                                                   .ToList();
+                    List<int> shoppingCartIDs = shoppingCarts.GetShoppingCartIDs(whereCondition);
+                List<ShoppingCartItemInfo> cartItems = shoppingCarts.GetShoppingCartItems(shoppingCartIDs);
                 gvCustomersCart.DataSource = myAddressList
                     .Distinct()
                     .Select(g =>

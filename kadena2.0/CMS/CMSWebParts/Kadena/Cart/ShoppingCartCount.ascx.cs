@@ -5,6 +5,8 @@ using CMS.EventLog;
 using CMS.Helpers;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Container.Default;
 using System;
 using System.Linq;
 
@@ -58,21 +60,11 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 SetValue("CartDisplayName", value);
             }
         }
-
+       
         /// <summary>
         /// Get current open campaign
         /// </summary>
-        public Campaign OpenCampaign
-        {
-            get
-            {
-                return ShoppingCartHelper.GetOpenCampaign();
-            }
-            set
-            {
-                SetValue("OpenCampaign", value);
-            }
-        }
+        public int  OpenCampaignID { get; set; }
         #endregion properties
 
         /// <summary>
@@ -84,6 +76,8 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
+                var campaign = DIContainer.Resolve<IKenticoCampaignsProvider>();
+                OpenCampaignID= campaign.GetOpenCampaignID();
                 int userID = CurrentUser.UserID;
                 linkCheckoutPage.HRef = URL;
                 lblCartName.Text = CartDisplayName;
@@ -91,7 +85,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", userID);
                 queryParams.Add("@ShoppingCartInventoryType", ShoppingCartInventoryType);
-                queryParams.Add("@ShoppingCartCampaignID", OpenCampaign?.CampaignID);
+                queryParams.Add("@ShoppingCartCampaignID", OpenCampaignID);
                 var countData = ConnectionHelper.ExecuteScalar(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
                 var count = ValidationHelper.GetInteger(countData, default(int));
                 lblCount.Text = count == 0 ? "" : $"{count}";
