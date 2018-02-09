@@ -1,4 +1,5 @@
-﻿using Kadena.Models.RecentOrders;
+﻿using CMS.DocumentEngine;
+using Kadena.Models.RecentOrders;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -7,5 +8,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void DeleteCampaign(int campaignID);
         OrderCampaginHead GetCampaigns(string orderType);
         bool CloseCampaignIBTF(int campaignID);
+        TreeNode GetCampaign(int campaignID);
     }
 }

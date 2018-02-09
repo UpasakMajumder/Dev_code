@@ -63,5 +63,10 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             return false;
         }
+
+        public TreeNode GetCampaign(int campaignID)
+        {
+            return DocumentHelper.GetDocuments(PageTypeClassName).OnSite(SiteContext.CurrentSiteID).WhereEquals("CampaignID", campaignID).FirstOrDefault();
+        }
     }
 }
