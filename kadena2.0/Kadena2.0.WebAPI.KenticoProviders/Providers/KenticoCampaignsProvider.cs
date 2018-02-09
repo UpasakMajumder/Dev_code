@@ -3,6 +3,7 @@ using CMS.DocumentEngine;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.SiteProvider;
+using Kadena.Models.CampaignData;
 using Kadena.Models.RecentOrders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
@@ -64,9 +65,23 @@ namespace Kadena.WebAPI.KenticoProviders
             return false;
         }
 
-        public TreeNode GetCampaign(int campaignID)
+        public CampaignData GetCampaign(int campaignID)
         {
-            return DocumentHelper.GetDocuments(PageTypeClassName).OnSite(SiteContext.CurrentSiteID).WhereEquals("CampaignID", campaignID).FirstOrDefault();
+            var campaign = DocumentHelper.GetDocuments(PageTypeClassName).OnSite(SiteContext.CurrentSiteID).WhereEquals("CampaignID", campaignID).FirstOrDefault();
+            CampaignData campaignModel = new CampaignData();
+            if (campaign != null)
+            {
+                campaignModel.CampaignID = campaign.GetValue("CampaignID", default(int));
+                campaignModel.Name = campaign.GetValue("Name", string.Empty);
+                campaignModel.OpenCampaign = campaign.GetValue("OpenCampaign", false);
+                campaignModel.CloseCampaign = campaign.GetValue("CLoseCampaign", false);
+                campaignModel.StartDate = ValidationHelper.GetDate(campaign.GetValue("StartDate"), default(System.DateTime));
+                campaignModel.EndDate = ValidationHelper.GetDate(campaign.GetValue("EndDate"), default(System.DateTime));
+                campaignModel.IBTFFinalized = campaign.GetValue("IBTFFinalized", false);
+                campaignModel.Status = campaign.GetValue("Status", false);
+                return campaignModel;
+            }
+            return campaignModel;
         }
     }
 }
