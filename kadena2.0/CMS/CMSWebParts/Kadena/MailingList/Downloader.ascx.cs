@@ -4,6 +4,7 @@ using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena;
 using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients.Clients;
+using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 using System.IO;
@@ -26,14 +27,13 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
         {
             if (_containerId != Guid.Empty)
             {
-                var microProperties = DIContainer.Resolve<IMicroProperties>();
-                var mailingListClient = new MailingListClient(microProperties);
+                var mailingListClient = DIContainer.Resolve<IMailingListClient>();
 
                 var mailingListResponse = mailingListClient.GetMailingList(_containerId).Result;
                 if (mailingListResponse.Success)
                 {
                     var mailingList = mailingListResponse.Payload;
-                    var exportClient = new ExportClient(microProperties);
+                    var exportClient = DIContainer.Resolve<IExportClient>();
                     var exportResponse = exportClient.ExportMailingList(_containerId, SiteContext.CurrentSiteName).Result;
                     if (exportResponse.Success)
                     {

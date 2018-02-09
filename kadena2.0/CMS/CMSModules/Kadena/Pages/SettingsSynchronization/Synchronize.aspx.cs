@@ -1,8 +1,8 @@
 ﻿using CMS.EventLog;
 using CMS.UIControls;
-using Kadena.BusinessLogic.Services.SettingsSynchronization;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.Models.SiteSettings.Synchronization;
-using Kadena2.WebAPI.KenticoProviders.Providers;
+using Kadena2.Container.Default;
 using System;
 
 namespace Kadena.CMSModules.Kadena.Pages.SettingsSynchronization
@@ -15,7 +15,7 @@ namespace Kadena.CMSModules.Kadena.Pages.SettingsSynchronization
         {
             try
             {
-                var service = new SettingsSynchronizationService(new KenticoSettingsProvider());
+                var service = DIContainer.Resolve<ISettingsSynchronizationService>();
                 var result = service.Synchronize();
 
                 ShowSuccessMessage($"All done! Added {result.AddedCount} new key(s)");

@@ -14,5 +14,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         Product GetProductByNodeId(int nodeId);
         void SetSkuAvailableQty(string skunumber, int availableItems);
         string GetProductStatus(int skuid);
+        void SetSkuAvailableQty(int skuid, int qty);
     }
 }

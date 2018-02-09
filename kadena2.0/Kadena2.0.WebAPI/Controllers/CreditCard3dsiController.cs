@@ -9,6 +9,9 @@ using AutoMapper;
 using Kadena.Models.CreditCard;
 using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
+using System.ComponentModel.DataAnnotations;
+using System.Net.Http;
+using System.Net;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -39,29 +42,26 @@ namespace Kadena.WebAPI.Controllers
             this.mapper = mapper;
         }
 
-        /// <summary>
-        /// 3DSi will call this to save token
-        /// </summary>
         [HttpPost]
         [Route("api/3dsi/approveSubmission")]
         [RequestLogFilter("3DSi Approve")]
-        public IHttpActionResult ApproveSubmission(ApproveRequestDto request)
+        public HttpResponseMessage ApproveSubmission([FromBody]ApproveSubmissionRequestDto request)
         {
            var success = submissions.VerifySubmissionId(request.SubmissionID);
-           return Ok(success ? ApproveResponseDto.SubmissionApproved : ApproveResponseDto.SubmissionDenied);
+            var resultDto = success ? ApproveSubmissionResponseDto.SubmissionApproved : ApproveSubmissionResponseDto.SubmissionDenied;
+            return Request.CreateResponse(HttpStatusCode.OK, resultDto, Configuration.Formatters.XmlFormatter, "text/xml");
         }
 
-        /// <summary>
-        /// 3DSi will call this to save token
-        /// </summary>
+
         [HttpPost]
         [Route("api/3dsi/savetoken")]
         [RequestLogFilter("3DSi SaveToken")]
-        public async Task<IHttpActionResult> SaveToken(SaveTokenRequestDto request)
+        public async Task<HttpResponseMessage> SaveToken([FromBody]SaveTokenDataRequestDto request)
         {
             var saveTokenData = mapper.Map<SaveTokenData>(request);
             var success = await service.SaveToken(saveTokenData);
-            return Ok(success ? SaveTokenResponseDto.ResultApproved : SaveTokenResponseDto.ResultFailed);
+            var resultDto = success ? SaveTokenResponseDto.ResultApproved : SaveTokenResponseDto.ResultFailed;
+            return Request.CreateResponse(HttpStatusCode.OK, resultDto, Configuration.Formatters.XmlFormatter, "text/xml");
         }
 
         /// <summary>
@@ -70,10 +70,11 @@ namespace Kadena.WebAPI.Controllers
         [HttpGet]
         [Route("api/3dsi/creditcarddone/{submissionId}")]
         [CustomerAuthorizationFilter]
-        public IHttpActionResult CreditcardSaved([FromUri]string submissionId)
+        public IHttpActionResult CreditcardSaved([FromUri][Required]string submissionId)
         {
-            var success = service.CreditcardSaved(submissionId);
-            return ResponseJson<bool>(success);
+            var redirectUrl = service.CreditcardSaved(submissionId);
+            var resultDto = mapper.Map<CreditCardPaymentDoneDto>(redirectUrl);
+            return ResponseJson(resultDto);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.Models.SiteSettings;
 using Kadena.Models.SiteSettings.Synchronization;
-using Kadena2.WebAPI.KenticoProviders.Providers;
 using System;
 using System.Collections.Generic;
 
