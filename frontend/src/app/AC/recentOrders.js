@@ -18,13 +18,14 @@ import { callAC } from 'app.helpers/ac';
 /* globals */
 import { RECENT_ORDERS as RECENT_ORDERS_GLOBAL, NOTIFICATION } from 'app.globals';
 
-export const getRows = (url, args = {}) => {
+export default (url, args = {}) => {
   return async (dispatch) => {
     dispatch({ type: RECENT_ORDERS_GET_ROWS + FETCH });
 
     let formattedUrl = url;
 
     if (args.page) formattedUrl = `${url}/${args.page}`;
+    if (args.sort) formattedUrl = `${url}?sort=${args.sort}`;
 
     try {
       const { data: { payload, success, errorMessage } } = await axios.get(formattedUrl);
@@ -45,7 +46,9 @@ export const getRows = (url, args = {}) => {
           type: RECENT_ORDERS_GET_ROWS + SUCCESS,
           payload: {
             rows: payload.rows,
-            pagination
+            pagination,
+            sortOrderAsc: args.sortOrderAsc,
+            sortBy: args.sortBy
           }
         });
       }
@@ -54,17 +57,6 @@ export const getRows = (url, args = {}) => {
         type: RECENT_ORDERS_GET_ROWS + FAILURE,
         alert: false
       });
-    }
-  };
-};
-
-export const sortOrders = (rows, sortOrderAsc, sortBy) => {
-  return {
-    type: RECENT_ORDERS_SORT,
-    payload: {
-      rows,
-      sortOrderAsc,
-      sortBy
     }
   };
 };

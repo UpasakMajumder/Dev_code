@@ -7,7 +7,7 @@ import Pagination from 'app.dump/Pagination';
 import Spinner from 'app.dump/Spinner';
 import SortIcon from 'app.dump/SortIcon';
 /* ac */
-import { getRows, sortOrders } from 'app.ac/recentOrders';
+import getRows from 'app.ac/recentOrders';
 /* globals */
 import { RECENT_ORDERS } from 'app.globals';
 /* helpers */
@@ -48,7 +48,7 @@ class RecentOrders extends Component {
       }).isRequired,
       sort: PropTypes.shape({
         sortOrderAsc: PropTypes.bool.isRequired,
-        sortBy: PropTypes.string.isRequired
+        sortBy: PropTypes.string
       }).isRequired
     }).isRequired
   }
@@ -64,7 +64,7 @@ class RecentOrders extends Component {
 
   getHeadings = () => {
     const headings = this.props.headings.map((heading, index) => {
-      const onClick = heading.sort ? () => this.sortColumn(index, heading.id) : null;
+      const onClick = heading.sort ? () => this.sortColumn(heading.id) : null;
 
       const sortIcon = heading.sort
         ? (
@@ -94,11 +94,12 @@ class RecentOrders extends Component {
     return rowElements;
   };
 
-  sortColumn = (sortIndex, sortBy) => {
-    const sortedRows = sortObjs(this.props.store.rows, sortIndex, this.props.store.sort.sortOrderAsc, 'items');
+  sortColumn = (sortBy) => {
     const newSortOrderAsc = !this.props.store.sort.sortOrderAsc;
+    const sortOrder = newSortOrderAsc ? 'ASC' : 'DESC';
+    const sort = `${sortBy}-${sortOrder}`;
 
-    this.props.sortOrders(sortedRows, newSortOrderAsc, sortBy, sortIndex);
+    this.props.getRows(this.props.pageInfo.getRowsUrl, { sort, sortOrderAsc: newSortOrderAsc, sortBy });
   };
 
   getContent = () => {
@@ -144,6 +145,5 @@ export default connect((state) => {
   const { recentOrders } = state;
   return { store: { ...recentOrders } };
 }, {
-  getRows,
-  sortOrders
+  getRows
 })(RecentOrders);

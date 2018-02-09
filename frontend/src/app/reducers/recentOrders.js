@@ -15,8 +15,7 @@ const defaultState = {
   rows: [],
   sort: {
     sortOrderAsc: false,
-    sortBy: '',
-    sortIndex: 0
+    sortBy: null
   }
 };
 
@@ -24,22 +23,10 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-  case RECENT_ORDERS_SORT:
-    return {
-      ...state,
-      rows: payload.rows,
-      sort: {
-        ...state.sort,
-        sortOrderAsc: payload.sortOrderAsc,
-        sortBy: payload.sortBy
-      }
-    };
-
   case RECENT_ORDERS_GET_ROWS + FETCH:
     return {
       ...state,
-      rows: defaultState.rows,
-      sort: defaultState.sort
+      rows: defaultState.rows
     };
 
   case RECENT_ORDERS_GET_ROWS + SUCCESS:
@@ -52,7 +39,12 @@ export default (state = defaultState, action) => {
       rows: [
         ...state.rows,
         ...payload.rows
-      ]
+      ],
+      sort: {
+        ...state.sort,
+        sortOrderAsc: typeof payload.sortOrderAsc === 'undefined' ? state.sort.sortOrderAsc : payload.sortOrderAsc,
+        sortBy: typeof payload.sortBy === 'undefined' ? state.sort.sortBy : payload.sortBy
+      }
     };
 
 

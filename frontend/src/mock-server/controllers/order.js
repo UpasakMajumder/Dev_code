@@ -8,10 +8,22 @@ module.exports.recent = {
   ui: (req, res) => res.json(order.recent.ui),
   rows: (req, res) => {
     const { page } = req.params;
-    if (page % 2 === 0 || page === undefined) {
-      res.json(order.recent.rows1);
+    const { sort } = req.query;
+
+    if (page) {
+      if (page % 2 === 0 || page === undefined) {
+        res.json(order.recent.rows1);
+      } else {
+        res.json(order.recent.rows2);
+      }
+    } else if (sort) {
+      if (sort.includes('ASC')) {
+        res.json(order.recent.rows2);
+      } else {
+        res.json(order.recent.rows1);
+      }
     } else {
-      res.json(order.recent.rows2);
+      res.json(order.recent.rows1);
     }
   },
   filtered: {
