@@ -346,7 +346,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     KenticoShippingOptionID = Cart.ShoppingCartShippingOptionID,
                     ShippingService = Cart.ShippingOption.ShippingOptionCarrierServiceName,
                     ShippingCompany = Cart.ShippingOption.ShippingOptionName,
-                    CarrierCode = Cart.ShippingOption.ShippingOptionCarrierServiceName
+                    CarrierCode = Cart.ShippingOption.GetStringValue("ShippingOptionSAPName", string.Empty)
                 };
             }
             catch (Exception ex)
