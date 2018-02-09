@@ -529,7 +529,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 var userBudgetDetails = DIContainer.Resolve<IkenticoUserBudgetProvider>().GetUserBudgetAllocationRecords(userID, SiteContext.CurrentSiteID);
                 if (userBudgetDetails != null)
                 {
-                    var budgetDataRelatedToYear = userBudgetDetails.Where(x => x.GetValue("Year", string.Empty) == ValidationHelper.GetString(fiscalYear, string.Empty)).FirstOrDefault();
+                    var budgetDataRelatedToYear = userBudgetDetails.Where(x => x.GetValue("Year", string.Empty) == fiscalYear).FirstOrDefault();
                     budgetDataRelatedToYear.SetValue("UserRemainingBudget", budgetDataRelatedToYear.GetValue("Budget", default(decimal)) - totalToBeDeducted);
                     budgetDataRelatedToYear.Update();
                 }
