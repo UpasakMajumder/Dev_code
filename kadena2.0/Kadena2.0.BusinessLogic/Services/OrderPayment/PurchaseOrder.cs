@@ -1,4 +1,5 @@
-﻿using Kadena.Models.SubmitOrder;
+﻿using Kadena.BusinessLogic.Factories;
+using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2._0.BusinessLogic.Contracts.Orders;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
@@ -10,24 +11,16 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
     public class PurchaseOrder : IPurchaseOrder
     {
         private readonly IShoppingCartProvider shoppingCart;
-        private readonly IKenticoResourceService resources;
-        private readonly IKenticoDocumentProvider documents;
         private readonly ISendSubmitOrder sendOrder;
         private readonly IGetOrderDataService orderDataProvider;
+        private readonly IOrderResultPageUrlFactory resultUrlFactory;
+        private readonly IKenticoResourceService resources;
 
-        public PurchaseOrder(IShoppingCartProvider shoppingCart, IKenticoResourceService resources, IKenticoDocumentProvider documents, ISendSubmitOrder sendOrder, IGetOrderDataService orderDataProvider)
+        public PurchaseOrder(IShoppingCartProvider shoppingCart, ISendSubmitOrder sendOrder, IGetOrderDataService orderDataProvider, IOrderResultPageUrlFactory resultUrlFactory, IKenticoResourceService resources)
         {
             if (shoppingCart == null)
             {
                 throw new ArgumentNullException(nameof(shoppingCart));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (documents == null)
-            {
-                throw new ArgumentNullException(nameof(documents));
             }
             if (sendOrder == null)
             {
@@ -37,12 +30,20 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             {
                 throw new ArgumentNullException(nameof(orderDataProvider));
             }
+            if (resultUrlFactory == null)
+            {
+                throw new ArgumentNullException(nameof(resultUrlFactory));
+            }
+            if (resources == null)
+            {
+                throw new ArgumentNullException(nameof(resources));
+            }
 
             this.shoppingCart = shoppingCart;
-            this.resources = resources;
-            this.documents = documents;
             this.sendOrder = sendOrder;
             this.orderDataProvider = orderDataProvider;
+            this.resultUrlFactory = resultUrlFactory;
+            this.resources = resources;
         }
 
         public async Task<SubmitOrderResult> SubmitPOOrder(SubmitOrderRequest request)
@@ -56,13 +57,9 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 shoppingCart.ClearCart();
             }
 
-            var redirectUrlBase = resources.GetSettingsKey("KDA_OrderSubmittedUrl");
-            var redirectUrlBaseLocalized = documents.GetDocumentUrl(redirectUrlBase);
-            var redirectUrl = $"{redirectUrlBaseLocalized}?success={serviceResult.Success}".ToLower();
-            if (serviceResult.Success)
-            {
-                redirectUrl += "&order_id=" + serviceResult.Payload;
-            }
+            var resultPagePath = resources.GetSettingsKey("KDA_OrderSubmittedUrl");
+            var redirectUrl = resultUrlFactory.GetOrderResultPageUrl(resultPagePath, serviceResult.Success, serviceResult.Payload);
+
             serviceResult.RedirectURL = redirectUrl;
             
             return serviceResult;

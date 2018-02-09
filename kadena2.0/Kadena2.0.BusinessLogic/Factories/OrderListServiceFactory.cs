@@ -17,7 +17,6 @@ namespace Kadena.BusinessLogic.Factories
         private readonly IKenticoSiteProvider _site;
         private readonly IKenticoOrderProvider _order;
         private readonly IKenticoPermissionsProvider _permissions;
-        private readonly IShoppingCartProvider _shoppingCart;
         private readonly IKenticoDocumentProvider _documents;
         private readonly IKenticoLogger _logger;
         private readonly IKenticoAddressBookProvider _kenticoAddressBook;
