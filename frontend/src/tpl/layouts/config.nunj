@@ -226,7 +226,9 @@
           filter: {
             orderDate: {
               title: 'Time between:',
-              labelNow: 'Now'
+              labelNow: 'Now',
+              labelApply: 'Apply',
+              show: true
             }
           },
           export: {

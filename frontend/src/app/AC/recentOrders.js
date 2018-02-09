@@ -11,21 +11,35 @@ import {
   APP_LOADING,
   RECENT_ORDERS,
   RECENT_ORDERS_GET_ROWS,
-  RECENT_ORDERS_SORT
+  RECENT_ORDERS_CHANGE_DATE
 } from 'app.consts';
 /* helpers */
-import { callAC } from 'app.helpers/ac';
+import { createSearchStr } from 'app.helpers/location';
 /* globals */
 import { RECENT_ORDERS as RECENT_ORDERS_GLOBAL, NOTIFICATION } from 'app.globals';
 
-export default (url, args = {}) => {
+const getUrl = (defaultUrl, args) => {
+  let url = `${defaultUrl}/${args.page}`;
+  if (typeof args.page !== 'undefined') return url;
+
+  const search = {};
+
+  if (args.sort) search.sort = args.sort;
+  if (args.dateFrom) search.dateFrom = args.dateFrom;
+  if (args.dateTo) search.dateTo = args.dateTo;
+
+  const searchUrl = Object.keys(search).length ? createSearchStr(search) : '';
+
+  url = `${defaultUrl}${searchUrl}`;
+
+  return url;
+};
+
+export const getRows = (url, args = {}) => {
   return async (dispatch) => {
     dispatch({ type: RECENT_ORDERS_GET_ROWS + FETCH });
 
-    let formattedUrl = url;
-
-    if (args.page) formattedUrl = `${url}/${args.page}`;
-    if (args.sort) formattedUrl = `${url}?sort=${args.sort}`;
+    const formattedUrl = getUrl(url, args);
 
     try {
       const { data: { payload, success, errorMessage } } = await axios.get(formattedUrl);
@@ -57,6 +71,16 @@ export default (url, args = {}) => {
         type: RECENT_ORDERS_GET_ROWS + FAILURE,
         alert: false
       });
+    }
+  };
+};
+
+export const changeDate = (value, field) => {
+  return {
+    type: RECENT_ORDERS_CHANGE_DATE,
+    payload: {
+      value,
+      field
     }
   };
 };

@@ -5,7 +5,7 @@ import {
   RECENT_ORDERS,
   INIT_UI,
   RECENT_ORDERS_GET_ROWS,
-  RECENT_ORDERS_SORT
+  RECENT_ORDERS_CHANGE_DATE
 } from 'app.consts';
 
 const defaultState = {
@@ -15,7 +15,13 @@ const defaultState = {
   rows: [],
   sort: {
     sortOrderAsc: false,
-    sortBy: null
+    sortBy: undefined
+  },
+  filter: {
+    orderDate: {
+      dateFrom: null,
+      dateTo: null
+    }
   }
 };
 
@@ -23,6 +29,18 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
+  case RECENT_ORDERS_CHANGE_DATE:
+    return {
+      ...state,
+      filter: {
+        ...state.filter,
+        orderDate: {
+          ...state.filter.orderDate,
+          [payload.field]: payload.value
+        }
+      }
+    };
+
   case RECENT_ORDERS_GET_ROWS + FETCH:
     return {
       ...state,
