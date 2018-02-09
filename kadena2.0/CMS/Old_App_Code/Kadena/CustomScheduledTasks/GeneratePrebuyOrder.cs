@@ -15,6 +15,8 @@ using Kadena2.Container.Default;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Old_App_Code.Kadena.InBoundForm;
+using CMS.CustomTables;
+using CMS.CustomTables.Types.KDA;
 
 namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
 {
@@ -57,11 +59,12 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 var usersWithShoppingCartItems = shoppingCartInfo.GetUserIDsWithShoppingCart(openCampaignID,Convert.ToInt32(ProductsType.PreBuy));
                 var orderTemplateSettingKey=DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_OrderReservationEmailTemplate");
                 var failedOrderTemplateSettingKey = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_FailedOrdersEmailTemplate");
+                var failedOrdersUrl = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_FailedOrdersPageUrl");
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 usersWithShoppingCartItems.ForEach(shoppingCartUser =>
                 {
                     var salesPerson = userInfo.GetUserByUserId(shoppingCartUser);
-                    var loggedInUserCartIDs = ShoppingCartHelper.GetCartsByUserID(shoppingCartUser, ProductType.PreBuy);
+                    var loggedInUserCartIDs = ShoppingCartHelper.GetCartsByUserID(shoppingCartUser, ProductType.PreBuy, openCampaignID);
                     loggedInUserCartIDs.ForEach(cart =>
                     {
                         var shippingCost = default(decimal);
@@ -85,7 +88,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 {
                     return new { AddressID = x?.Id, AddressPersonalName = x?.AddressPersonalName };
                 }).ToList();
-                var list = unprocessedDistributorIDs.Select(x =>
+                var listofFailedOrders = unprocessedDistributorIDs.Select(x =>
                   {
                       var distributor = distributors.Where(y => y.AddressID == x.Item1).FirstOrDefault();
                       return new
@@ -95,8 +98,13 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                       };
                   }).ToList();
                 var user = userInfo.GetUserByUserId(campaignClosingUserID);
-                if (user?.Email != null)
-                    ProductEmailNotifications.SendEmail(failedOrderTemplateSettingKey, user?.Email, list);
+                if (user?.Email != null && listofFailedOrders.Count > 0)
+                {
+                    object[,] orderdata = { {"url", URLHelper.AddHTTPToUrl($"{SiteContext.CurrentSite.DomainName}{failedOrdersUrl}?campid={openCampaignID}") } ,
+                                                             { "failedordercount",listofFailedOrders.Count}           };
+                    UpdatetFailedOrders(openCampaignID, true);
+                    ProductEmailNotifications.SendEmail(failedOrderTemplateSettingKey, user?.Email, listofFailedOrders, orderdata);
+                }
                 return ResHelper.GetString("KDA.OrderSchedular.TaskSuccessfulMessage");
             }
             catch (Exception ex)
@@ -105,5 +113,31 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 return ex.Message;
             }
         }
+        private void UpdatetFailedOrders(int campaignID, bool IsFailed)
+        {
+            try
+            {
+                var foData = CustomTableItemProvider.GetItems<FailedOrdersItem>().WhereEquals("CapmaignID", campaignID).FirstOrDefault();
+                if (!DataHelper.DataSourceIsEmpty(foData))
+                {
+                    foData.IsCampaignOrdersInProgress = false;
+                    if (IsFailed)
+                    {
+                        foData.IsCampaignOrdersFailed = true;
+                    }
+                    else
+                    {
+                        foData.IsCampaignOrdersFailed = false;
+                    }
+                    foData.Update();
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "InsertFailedOrders", ex, SiteContext.CurrentSiteID, ex.Message);
+            }
+
+        }
+
     }
 }

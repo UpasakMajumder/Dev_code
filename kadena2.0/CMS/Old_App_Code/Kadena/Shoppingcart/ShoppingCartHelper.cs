@@ -1,4 +1,5 @@
 ﻿using CMS.DataEngine;
+using CMS.DocumentEngine.Types.KDA;
 using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Globalization;
@@ -92,11 +93,11 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// Returns user Cart IDs based on product type
         /// </summary>
         /// <returns></returns>
-        public static List<int> GetCartsByUserID(int userID, ProductType type)
+        public static List<int> GetCartsByUserID(int userID, ProductType type, int? campaignID)
         {
             try
             {
-                return CartPDFHelper.GetLoggedInUserCartData(Convert.ToInt32(type), userID).AsEnumerable().Select(x => x.Field<int>("ShoppingCartID")).Distinct().ToList();
+                return CartPDFHelper.GetLoggedInUserCartData(Convert.ToInt32(type), userID, campaignID).AsEnumerable().Select(x => x.Field<int>("ShoppingCartID")).Distinct().ToList();
             }
             catch (Exception ex)
             {
@@ -516,6 +517,11 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 return null;
             }
         }
+        /// <summary>
+        /// update available sku quantity
+        /// </summary>
+        /// <param name="inventoryType"></param>
+        /// <returns></returns>
         public static void UpdateAvailableSKUQuantity(ShoppingCartInfo cart)
         {
             try
@@ -531,5 +537,27 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 EventLogProvider.LogInformation("ShoppingCartHelper", "UpdateAvailableSKUQuantity", ex.Message);
             }
         }
+        /// <summary>
+        /// returns open campaign
+        /// </summary>
+        /// <param name="inventoryType"></param>
+        /// <returns></returns>
+        public static Campaign GetOpenCampaign()
+        {
+            try
+            {
+                return CampaignProvider.GetCampaigns().Columns("CampaignID,Name,StartDate,EndDate")
+                                    .WhereEquals("OpenCampaign", true)
+                                    .Where(new WhereCondition().WhereEquals("CloseCampaign", false).Or()
+                                    .WhereEquals("CloseCampaign", null))
+                                    .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("ShoppingCartHelper", "GetOrderTotal", ex.Message);
+                return null;
+            }
+        }
+
     }
 }
