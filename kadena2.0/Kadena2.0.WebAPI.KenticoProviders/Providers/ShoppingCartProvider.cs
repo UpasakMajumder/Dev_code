@@ -730,7 +730,7 @@ namespace Kadena.WebAPI.KenticoProviders
           return  ShoppingCartInfoProvider.GetShoppingCarts().Where(where)
                                                                 .Select(x => x.ShoppingCartID).ToList();
         }
-        public List<ShoppingCartItemInfo> GetShoppingCartItems(List<int> shoppingCartIDs)
+        public List<ShoppingCartItemInfo> GetShoppingCartItemsByCartIDs(List<int> shoppingCartIDs)
         {
            return ShoppingCartItemInfoProvider.GetShoppingCartItems().WhereIn("ShoppingCartID", shoppingCartIDs)
                                                                                    .ToList();

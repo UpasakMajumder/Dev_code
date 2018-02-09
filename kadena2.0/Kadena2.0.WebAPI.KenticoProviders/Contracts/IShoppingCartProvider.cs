@@ -62,6 +62,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         List<int> GetUserIDsWithShoppingCart(int campaignID, int productType);
         ShoppingCartInfo GetShoppingCartByID(int cartID);
         List<int> GetShoppingCartIDs(WhereCondition where);
-        List<ShoppingCartItemInfo> GetShoppingCartItems(List<int> cartIDs);
+        List<ShoppingCartItemInfo> GetShoppingCartItemsByCartIDs(List<int> cartIDs);
     }
 }

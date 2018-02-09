@@ -688,7 +688,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     whereCondition = whereCondition.WhereEquals("ShoppingCartCampaignID", OpenCampaign.CampaignID);
                 }
                     List<int> shoppingCartIDs = shoppingCarts.GetShoppingCartIDs(whereCondition);
-                List<ShoppingCartItemInfo> cartItems = shoppingCarts.GetShoppingCartItems(shoppingCartIDs);
+                List<ShoppingCartItemInfo> cartItems = shoppingCarts.GetShoppingCartItemsByCartIDs(shoppingCartIDs);
                 gvCustomersCart.DataSource = myAddressList
                     .Distinct()
                     .Select(g =>
