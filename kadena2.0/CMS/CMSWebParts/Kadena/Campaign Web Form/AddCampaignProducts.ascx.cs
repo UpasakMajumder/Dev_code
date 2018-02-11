@@ -765,7 +765,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         SKUInfo newProduct = new SKUInfo()
                         {
                             SKUName = ValidationHelper.GetString(txtProductName.Text, string.Empty),
-                            SKUNumber = ValidationHelper.GetString(ddlPos.SelectedValue, string.Empty),
+                            SKUNumber = ValidationHelper.GetString("00000", string.Empty),
                             SKUShortDescription = ValidationHelper.GetString(txtProductName.Text, string.Empty),
                             SKUDescription = ValidationHelper.GetString(txtLongDescription.Text, string.Empty),
                             SKUEnabled = ValidationHelper.GetString(ddlStatus.SelectedValue, "1") == "1" ? true : false,
@@ -778,6 +778,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         {
                             newProduct.SKUValidUntil = ValidationHelper.GetDateTime(txtExpireDate.Text, DateTime.MinValue);
                         }
+                        newProduct.SetValue("SKUProductCustomerReferenceNumber", ValidationHelper.GetString(ddlPos.SelectedValue, string.Empty));
                         SKUInfoProvider.SetSKUInfo(newProduct);
                         products.NodeSKUID = newProduct.SKUID;
                         products.Insert(createNode, true);
@@ -838,7 +839,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             updateProduct.SKUImagePath = UploadImage.UploadImageToMeadiaLibrary(productImage, libraryFolderName);
                         }
                         updateProduct.SKUName = ValidationHelper.GetString(txtProductName.Text, string.Empty);
-                        updateProduct.SKUNumber = ValidationHelper.GetString(ddlPos.SelectedValue, string.Empty);
                         updateProduct.SKUShortDescription = ValidationHelper.GetString(txtProductName.Text, string.Empty);
                         updateProduct.SKUDescription = ValidationHelper.GetString(txtLongDescription.Text, string.Empty);
                         updateProduct.SKUValidUntil = ValidationHelper.GetDate(txtExpireDate.Text, DateTime.MinValue);

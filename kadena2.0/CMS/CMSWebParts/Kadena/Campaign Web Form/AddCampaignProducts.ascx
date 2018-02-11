@@ -166,7 +166,6 @@
         </div>
     </div>
 </div>
-<%--State dropdown GroupInfoPopup--%>
 <div class="dialog" id="StateGroupInfoPopup">
     <div class="dialog__shadow"></div>
     <div class="dialog__block">
