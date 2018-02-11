@@ -733,7 +733,7 @@ namespace Kadena.WebAPI.KenticoProviders
         private int  GetAllocatedProductQuantityForUser(int productID, int userID)
         {
             CustomTableItem userProductAllocation = CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
-            return userProductAllocation.GetValue<int>("Quantity", default(int));
+            return userProductAllocation!=null? userProductAllocation.GetValue<int>("Quantity", default(int)) : default(int);
         }
     }
 }
