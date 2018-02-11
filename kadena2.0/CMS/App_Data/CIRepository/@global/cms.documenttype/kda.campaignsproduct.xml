@@ -149,12 +149,10 @@
           <fieldcaption>Item Specs</fieldcaption>
         </properties>
         <settings>
-          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
-          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
-          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
-          <controlname>TextBoxControl</controlname>
-          <FilterMode>False</FilterMode>
-          <Trim>False</Trim>
+          <controlname>CustomTableItemSelector</controlname>
+          <CustomTable>KDA.ProductItemSpecs</CustomTable>
+          <DisplayNameFormat>{%ItemSpec%}</DisplayNameFormat>
+          <ReturnColumnName>ItemID</ReturnColumnName>
         </settings>
       </field>
       <field allowempty="true" column="Cancelled" columntype="boolean" guid="83d8267d-cf59-47a9-945f-2faa84e0924e" publicfield="false" visible="true">
