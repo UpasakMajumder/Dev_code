@@ -532,9 +532,22 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             return skus.FirstObject;
         }
 
+        private static SKUInfo GetUniqueSKUByPOSNumber(string pOSNumber, int siteID)
+        {
+            var skus = SKUInfoProvider.GetSKUs(siteID)
+                .WhereEquals("SKUProductCustomerReferenceNumber", pOSNumber);
+
+            if (skus.Count() > 1)
+            {
+                throw new Exception($"Multiple SKUs with POSNumber {pOSNumber} exist on site");
+            }
+
+            return skus.FirstObject;
+        }
+
         private static SKUInfo EnsureSKU(CampaignProductDto product, int siteID)
         {
-            var sku = GetUniqueSKU(product.CenveoID, siteID) ?? new SKUInfo();
+            var sku = GetUniqueSKUByPOSNumber(product.POSNumber, siteID) ?? new SKUInfo();
 
             sku.SKUName = product.ProductName;
             sku.SKUPrice = Convert.ToDouble(product.ActualPrice);
