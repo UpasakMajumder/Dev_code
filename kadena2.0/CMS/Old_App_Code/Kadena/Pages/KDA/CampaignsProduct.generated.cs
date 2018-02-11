@@ -685,7 +685,23 @@ namespace CMS.DocumentEngine.Types.KDA
                     }
                 }
             }
-
+            /// <summary>
+            /// Allows you to specify the POS number. You can use this as a Product customer reference number
+            /// </summary>
+            public string SKUProductCustomerReferenceNumber
+            {
+                get
+                {
+                    return (SKU != null) ? SKU.GetValue("SKUProductCustomerReferenceNumber", string.Empty) :"";
+                }
+                set
+                {
+                    if (SKU != null)
+                    {
+                        SKU.SetValue("SKUProductCustomerReferenceNumber", value);
+                    }
+                }
+            }
 
             /// <summary>
             /// Package weight.
