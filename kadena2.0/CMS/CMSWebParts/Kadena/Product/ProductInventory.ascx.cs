@@ -783,7 +783,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     if (ProductType == (int)ProductsType.GeneralInventory)
                     {
                         itemsPlaced += quantityPlacing;
-                        if (itemsPlaced < product.SKUAvailableItems)
+                        if (itemsPlaced <= product.SKUAvailableItems)
                         {
                             CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
                         }
