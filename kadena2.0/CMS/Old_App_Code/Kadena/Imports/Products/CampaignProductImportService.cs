@@ -142,7 +142,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             SiteInfo site = SiteInfoProvider.GetSiteInfo(siteID);
             if (string.IsNullOrEmpty(campaignProductDto.Campaign))
             {
-                string inventoryProductsAliasPath = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductPath", siteID);
+                string inventoryProductsAliasPath = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductFolderPath", siteID);
                 parentDocument = DocumentHelper.GetDocument(
                     new NodeSelectionParameters
                     {
@@ -172,9 +172,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 throw new Exception($"SKU with SKUNumber {image.SKU} doesn't exist");
             }
 
-            var documents = DocumentHelper.GetDocuments("KDA.CampaignsProduct")
+            var documents = DocumentHelper.GetDocuments(CampaignsProduct.CLASS_NAME)
                             .Path("/", PathTypeEnum.Children)
-                            .WhereEquals("ClassName", "KDA.CampaignsProduct")
+                            .WhereEquals("ClassName", CampaignsProduct.CLASS_NAME)
                             .WhereEquals("NodeSKUID", sku.SKUID)
                             .Culture(defaultSiteCulture)
                             .CheckPermissions()
@@ -270,7 +270,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                                 AttachmentSiteID = product.NodeSiteID,
                                 AttachmentDocumentID = product.DocumentID,
                                 AttachmentExtension = extension,
-                                AttachmentName = $"Thumbnail{product.SKU.SKUNumber}.{extension}",
+                                AttachmentName = $"Thumbnail{product.SKU.GetStringValue("SKUProductCustomerReferenceNumber", product.SKU.SKUNumber)}.{extension}",
                                 AttachmentLastModified = DateTime.Now,
                                 AttachmentMimeType = mimetype,
                                 AttachmentSize = (int)stream.Length
@@ -312,7 +312,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
             SKUTreeNode existingProduct = (SKUTreeNode)parent.Children.FirstOrDefault(c => c.NodeSKUID == sku.SKUID);
-            SKUTreeNode newProduct = existingProduct ?? (SKUTreeNode)TreeNode.New("KDA.CampaignsProduct", tree);
+            SKUTreeNode newProduct = existingProduct ?? (SKUTreeNode)TreeNode.New(CampaignsProduct.CLASS_NAME, tree);
             Program program = GetProgram(product.Campaign, product.ProgramName);
             ProductCategory productCategory = GetProductCategory(product.ProductCategory);
 
@@ -323,6 +323,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             newProduct.DocumentCulture = _culture;
             newProduct.SetValue("ProductName", product.ProductName);
             newProduct.SetValue("BrandID", GetBrandID(product.Brand));
+            SetProductItemSpecs(ref newProduct, product);
             if (program != null)
             {
                 newProduct.SetValue("ProgramID", program.ProgramID);
@@ -343,10 +344,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             {
                 newProduct.SetValue("QtyPerPack", product.BundleQuantity);
             }
-            if (!string.IsNullOrWhiteSpace(product.CenveoID))
-            {
-                newProduct.SetValue("CVOProductID", product.CenveoID);
-            }
 
             if (existingProduct == null)
             {
@@ -365,6 +362,22 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             newProduct.Update();
 
             return newProduct;
+        }
+
+        private void SetProductItemSpecs(ref SKUTreeNode newProduct, CampaignProductDto product)
+        {
+            if (!string.IsNullOrWhiteSpace(product.ItemSpecs))
+            {
+                ProductItemSpecsItem itemSpecs = CustomTableItemProvider.GetItems<ProductItemSpecsItem>().WhereEquals("ItemSpec", product.ItemSpecs);
+                if (itemSpecs != null)
+                {
+                    newProduct.SetValue("ItemSpecs", itemSpecs.ItemID);
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(product.CustomItemSpecs))
+            {
+                newProduct.SetValue("CustomItemSpecs", product.CustomItemSpecs);
+            }
         }
 
         private int GetStatesGroupID(string statesGroupName)
@@ -504,6 +517,10 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         private static SKUInfo GetUniqueSKU(string sku, int siteID)
         {
+            if (string.IsNullOrWhiteSpace(sku))
+            {
+                return null;
+            }
             var skus = SKUInfoProvider.GetSKUs(siteID)
                 .WhereEquals("SKUNumber", sku);
 
@@ -517,12 +534,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         private static SKUInfo EnsureSKU(CampaignProductDto product, int siteID)
         {
-            var sku = GetUniqueSKU(product.SKU, siteID) ?? new SKUInfo();
+            var sku = GetUniqueSKU(product.CenveoID, siteID) ?? new SKUInfo();
 
             sku.SKUName = product.ProductName;
             sku.SKUPrice = Convert.ToDouble(product.ActualPrice);
             sku.SKUSiteID = siteID;
-            sku.SKUNumber = product.SKU;
+            sku.SKUNumber = string.IsNullOrWhiteSpace(product.CenveoID) ? "00000" : product.CenveoID;
             sku.SKUDescription = product.LongDescription;
             if (product.Status.ToLower().Equals("active"))
             {
@@ -549,6 +566,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             {
                 sku.SKUWeight = ValidationHelper.GetDouble(product.ProductWeight, 0);
             }
+            sku.SetValue("SKUProductCustomerReferenceNumber", product.POSNumber);
 
             SKUInfoProvider.SetSKUInfo(sku);
             return sku;
