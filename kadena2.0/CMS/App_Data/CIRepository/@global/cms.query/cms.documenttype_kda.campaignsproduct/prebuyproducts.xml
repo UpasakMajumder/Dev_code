@@ -14,7 +14,7 @@
   <QueryRequiresTransaction>False</QueryRequiresTransaction>
   <QueryText>
 <![CDATA[
-SELECT ProgramName,ProductCategoryTitle,t.NodeSKUID,p.ProductName,SKUProductCustomerReferenceNumber,SKUValidUntil,p.ProgramID,p.CategoryID,p.CampaignsProductID FROM View_CMS_Tree_Joined t 
+SELECT ProgramName,ProductCategoryTitle,t.NodeSKUID,p.ProductName,s.SKUProductCustomerReferenceNumber,SKUValidUntil,p.ProgramID,p.CategoryID,p.CampaignsProductID FROM View_CMS_Tree_Joined t 
 INNER JOIN KDA_CampaignsProduct p ON t.DocumentForeignKeyValue=p.CampaignsProductID 
 INNER JOIN COM_SKU s ON s.SKUID=t.NodeSKUID
 INNER JOIN KDA_ProductCategory c ON c.ProductCategoryID=p.CategoryID
