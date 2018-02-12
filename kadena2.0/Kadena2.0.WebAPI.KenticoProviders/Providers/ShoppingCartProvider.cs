@@ -18,7 +18,6 @@ using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CMS.DataEngine;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -399,26 +398,14 @@ namespace Kadena.WebAPI.KenticoProviders
                     ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemID));
             }
 
+
+            ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
+
             var documentId = item.GetIntegerValue("ProductPageID", 0);
-            var ranges = dynamicPrices.GetDynamicPricingRanges(documentId);
-
-            if ((ranges?.Count() ?? 0) > 0)
+            var price = dynamicPrices.GetDynamicPrice(quantity, documentId);
+            if (price > decimal.MinusOne)
             {
-                var price = dynamicPrices.GetDynamicPrice(quantity, ranges);
-
-                if (price != 0.0m)
-                {
-                    item.CartItemPrice = (double)price;
-                    ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
-                }
-                else
-                {
-                    throw new Exception(ResHelper.GetString("Kadena.Product.QuantityOutOfRange", LocalizationContext.CurrentCulture.CultureCode));
-                }
-            }
-            else
-            {
-                ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
+                item.CartItemPrice = (double)price;
             }
 
             cart.InvalidateCalculations();
@@ -535,7 +522,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             SetArtwork(cartItem, productDocument.GetStringValue("ProductArtwork", string.Empty));
 
-            SetDynamicPrice(cartItem, productDocument);
+            SetDynamicPrice(cartItem, productDocument.GetStringValue("ProductDynamicPricing", string.Empty));
             SetCustomName(cartItem, newItem.CustomProductName);
 
             ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
@@ -598,20 +585,12 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        private void SetDynamicPrice(ShoppingCartItemInfo cartItem, SKUTreeNode document)
+        private void SetDynamicPrice(ShoppingCartItemInfo cartItem, string pricesJson)
         {
-            var ranges = dynamicPrices.GetDynamicPricingRanges(document.DocumentID);
-            if (ranges != null && ranges.Count() > 0)
+            var price = dynamicPrices.GetDynamicPrice(cartItem.CartItemUnits, pricesJson);
+            if (price > decimal.MinusOne)
             {
-                var matchingRange = ranges.FirstOrDefault(i => cartItem.CartItemUnits >= i.MinVal && cartItem.CartItemUnits <= i.MaxVal);
-                if (matchingRange != null)
-                {
-                    cartItem.CartItemPrice = decimal.ToDouble(matchingRange.Price);
-                }
-                else
-                {
-                    throw new ArgumentException(resources.GetResourceString("Kadena.Product.QuantityOutOfRange"));
-                }
+                cartItem.CartItemPrice = decimal.ToDouble(price);
             }
         }
 
@@ -696,13 +675,13 @@ namespace Kadena.WebAPI.KenticoProviders
                     }
                 });
                 var sku = SKUInfoProvider.GetSKUInfo(shoppingCartItem.SKUID);
-                var currentProduct=DocumentHelper.GetDocuments(campaignClassName).WhereEquals("NodeSKUID", sku.SKUID).Columns("CampaignsProductID").FirstOrDefault();
+                var currentProduct = DocumentHelper.GetDocuments(campaignClassName).WhereEquals("NodeSKUID", sku.SKUID).Columns("CampaignsProductID").FirstOrDefault();
                 var allocatedQuantity = GetAllocatedProductQuantityForUser(currentProduct.GetValue<int>("CampaignsProductID", default(int)), distributorData.UserID);
                 if (sku.SKUAvailableItems < totalItems + distributorData.ItemQuantity)
                 {
                     return new Tuple<string, bool>(ResHelper.GetString("KDA.Cart.Update.InsufficientStockMessage"), false);
                 }
-                else if (allocatedQuantity< totalItems + distributorData.ItemQuantity)
+                else if (allocatedQuantity < totalItems + distributorData.ItemQuantity)
                 {
                     return new Tuple<string, bool>(ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError"), false);
                 }
@@ -763,7 +742,7 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 foreach (int shoppingCartID in shoppingCartIDs)
                 {
-                    if(!IsCartContainsInvalidProduct(shoppingCartID))
+                    if (!IsCartContainsInvalidProduct(shoppingCartID))
                     {
                         isValid = false;
                         break;
@@ -772,10 +751,10 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             return isValid;
         }
-        private int  GetAllocatedProductQuantityForUser(int productID, int userID)
+        private int GetAllocatedProductQuantityForUser(int productID, int userID)
         {
             CustomTableItem userProductAllocation = CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
-            return userProductAllocation!=null? userProductAllocation.GetValue<int>("Quantity", default(int)) : default(int);
+            return userProductAllocation != null ? userProductAllocation.GetValue<int>("Quantity", default(int)) : default(int);
         }
     }
 }
