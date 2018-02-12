@@ -14,7 +14,7 @@
   <QueryRequiresTransaction>False</QueryRequiresTransaction>
   <QueryText>
 <![CDATA[
-select p.CampaignsProductID,s.SKUName,s.SKUNumber as POSNumber,p.QtyPerPack,
+select p.CampaignsProductID,s.SKUName,s.SKUProductCustomerReferenceNumber as POSNumber,p.QtyPerPack,
 s.SKUValidUntil,b.BrandName as BrandName,s.SKUDescription
 from KDA_CampaignsProduct p  join View_CMS_Tree_joined t on p.CampaignsProductID=t.DocumentForeignKeyValue
 join COM_SKU s  on s.SKUID=t.NodeSKUID

@@ -8,6 +8,8 @@ using CMS.EventLog;
 using CMS.Helpers;
 using CMS.MediaLibrary;
 using CMS.PortalEngine.Web.UI;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Container.Default;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -365,7 +367,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                                .WhereIn("SKUID", skuIds)
                                .And()
                                .WhereEquals("SKUEnabled", true)
-                               .Columns("SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUImagePath,SKUAvailableItems,SKUID,SKUDescription")
+                               .Columns("SKUProductCustomerReferenceNumber,SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUImagePath,SKUAvailableItems,SKUID,SKUDescription")
                                .ToList();
             }
         }
@@ -401,7 +403,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
                 {
                     var productAndSKUDetails = productsDetails
-                          .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.QtyPerPack,x.EstimatedPrice, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription })
+                          .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.QtyPerPack,x.EstimatedPrice, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription })
                            .OrderBy(p => p.SKUName)
                           .ToList();
                     rptProductLists.DataSource = productAndSKUDetails;
@@ -768,8 +770,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         try
         {
+            var productProvider = DIContainer.Resolve<IKenticoProductsProvider>();
             ProductSKUID = ValidationHelper.GetInteger(hdnClickSKU.Value, default(int));
             SKUInfo product = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", ProductSKUID).WhereNull("SKUOptionCategoryID").FirstObject;
+            var campProduct = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", product?.SKUID).Columns("CampaignsProductID").FirstOrDefault();
+           var allocatedQuantity=campProduct!=null? productProvider.GetAllocatedProductQuantityForUser(campProduct.CampaignsProductID, CurrentUser.UserID):default(int);
             var itemsPlaced = default(int);
             foreach (GridViewRow row in gvCustomersCart.Rows)
             {
@@ -782,14 +787,19 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     if (ProductType == (int)ProductsType.GeneralInventory)
                     {
                         itemsPlaced += quantityPlacing;
-                        if (itemsPlaced < product.SKUAvailableItems)
-                        {
-                            CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
-                        }
-                        else
+                        if(itemsPlaced > product.SKUAvailableItems)
                         {
                             lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.StockError");
                             lblErrorMsg.Visible = true;
+                        }
+                        else if (itemsPlaced> allocatedQuantity)
+                        {
+                            lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError");
+                            lblErrorMsg.Visible = true;
+                        }
+                        else
+                        {
+                            CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
                         }
                     }
                     else
@@ -864,6 +874,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCartInfo(shoppinCartID);
                 cart.User = CurrentUser;
                 cart.ShoppingCartShippingAddress = customerAddress;
+                if (cart.ShoppingCartCurrencyID <=0)
+                {
+                    cart.ShoppingCartCurrencyID = CurrencyInfoProvider.GetMainCurrency(CurrentSite.SiteID).CurrencyID;
+                    cart.Update();
+                }
                 var campaingnID = ValidationHelper.GetInteger(cart.GetValue("ShoppingCartCampaignID"), default(int));
                 var programID = ValidationHelper.GetInteger(cart.GetValue("ShoppingCartProgramID"), default(int));
                 item = cart.CartItems.Where(g => g.SKUID == product.SKUID).FirstOrDefault();
@@ -937,6 +952,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 ShoppingCartInfo cart = new ShoppingCartInfo();
                 cart.ShoppingCartSiteID = CurrentSite.SiteID;
                 cart.ShoppingCartCustomerID = customerAddressID;
+                cart.ShoppingCartCurrencyID = CurrencyInfoProvider.GetMainCurrency(CurrentSite.SiteID).CurrencyID;
                 cart.SetValue("ShoppingCartCampaignID", ProductCampaignID);
                 cart.SetValue("ShoppingCartProgramID", ProductProgramID);
                 cart.SetValue("ShoppingCartDistributorID", customerAddressID);
