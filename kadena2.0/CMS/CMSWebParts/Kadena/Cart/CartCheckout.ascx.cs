@@ -14,6 +14,7 @@ using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using Kadena2.Container.Default;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -70,6 +71,12 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
+                if (!DIContainer.Resolve<IShoppingCartProvider>().ValidateAllCarts(userID: CurrentUser.UserID))
+                {
+                    Response.Cookies["status"].Value = QueryStringStatus.InvalidCartItems;
+                    Response.Cookies["status"].HttpOnly = false;
+                    return;
+                }
                 var loggedInUserCartIDs = GetCartsByUserID(CurrentUser.UserID, ProductType.GeneralInventory);
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 loggedInUserCartIDs.ForEach(distributorCart =>

@@ -9,6 +9,8 @@ using CMS.Scheduler;
 using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Container.Default;
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -498,6 +500,12 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
         {
             LinkButton btn = (LinkButton)sender;
             int campaignID = ValidationHelper.GetInteger(btn.CommandArgument, 0);
+            if (!DIContainer.Resolve<IShoppingCartProvider>().ValidateAllCarts(campaignID: campaignID))
+            {
+                Response.Cookies["status"].Value = QueryStringStatus.InvalidCartItems;
+                Response.Cookies["status"].HttpOnly = false;
+                return;
+            }
             Campaign campaign = CampaignProvider.GetCampaigns()
                 .WhereEquals("NodeSiteID", CurrentSite.SiteID)
                 .WhereEquals("CampaignID", campaignID)
