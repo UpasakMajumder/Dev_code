@@ -38,7 +38,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 userBudgetDetails.Update();
                 return userBudgetDetails.GetValue("UserRemainingBudget", string.Empty);
             }
-            
+
             return string.Empty;
         }
 
@@ -64,8 +64,22 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
 
         public List<FiscalYear> GetFiscalYearRecords()
         {
+            List<FiscalYear> fiscalYearsList = new List<FiscalYear>();
             var fiscalYearData = CustomTableItemProvider.GetItems(FiscalYearClassName).ToList();
-            return mapper.Map<List<FiscalYear>>(fiscalYearData);
+            if (fiscalYearData.Count > 0)
+            {
+                foreach (CustomTableItem item in fiscalYearData)
+                {
+                    fiscalYearsList.Add(new FiscalYear()
+                    {
+                        ItemID = item.ItemID,
+                        Year = item.GetStringValue("Year", string.Empty),
+                        StartDate = item.GetDateTimeValue("FiscalYearStartDate", DateTime.Now),
+                        EndDate = item.GetDateTimeValue("FiscalYearEndDate", DateTime.Now)
+                    });
+                }
+            }
+            return fiscalYearsList;
         }
 
         public UserBudgetItem CreateUserBudgetWithYear(string year, int siteID, int userId)
@@ -80,9 +94,16 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 newCustomTableItem.SetValue("UserRemainingBudget", default(decimal));
                 newCustomTableItem.SetValue("SiteID", siteID);
                 newCustomTableItem.Insert();
-                return mapper.Map<UserBudgetItem>(newCustomTableItem);
+                return new UserBudgetItem()
+                {
+                    ItemID = newCustomTableItem.ItemID,
+                    Budget = newCustomTableItem.GetValue("Budget", default(decimal)),
+                    UserID = userId,
+                    UserRemainingBudget = newCustomTableItem.GetValue("UserRemainingBudget", default(decimal)),
+                    Year = year
+                };
             }
-            return mapper.Map<UserBudgetItem>(newCustomTableItem);
+            return null;
         }
     }
 }
