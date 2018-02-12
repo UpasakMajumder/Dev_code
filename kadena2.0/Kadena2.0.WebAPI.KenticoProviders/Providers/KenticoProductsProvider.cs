@@ -11,13 +11,14 @@ using System;
 using CMS.SiteProvider;
 using AutoMapper;
 using CMS.DataEngine;
+using CMS.CustomTables;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoProductsProvider : IKenticoProductsProvider
     {
         private readonly IMapper mapper;
-
+        private readonly string CustomTableName = "KDA.UserAllocatedProducts";
         public KenticoProductsProvider(IMapper mapper)
         {
             if (mapper == null)
@@ -174,6 +175,20 @@ namespace Kadena.WebAPI.KenticoProviders
 
             SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
             return sku != null ? (sku.SKUEnabled ? ResHelper.GetString("KDA.Common.Status.Active") : ResHelper.GetString("KDA.Common.Status.Inactive")) : string.Empty;
+        }
+        public void SetSkuAvailableQty(int skuid, int qty)
+        {
+            SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
+            if (sku != null)
+            {
+                sku.SKUAvailableItems = sku.SKUAvailableItems-qty;
+                sku.Update();
+            }
+        }
+        public int GetAllocatedProductQuantityForUser(int productID, int userID)
+        {
+            CustomTableItem userProductAllocation= CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
+            return userProductAllocation != null ? userProductAllocation.GetValue<int>("Quantity", default(int)) : default(int);
         }
     }
 }

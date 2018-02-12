@@ -10,6 +10,7 @@
         public const string loggedInUserCartData = "Ecommerce.Shoppingcart.LoggedInUserCartData";
         public const string getShoppingCartCount = "Ecommerce.Shoppingcart.GetShoppingCartCount";
         public const string getShoppingCartTotal = "Ecommerce.Shoppingcart.GetShoppingCartTotal";
+        public const string getPrebuyProductCount = "KDA.Transformations.PrebuyProductCount";
     }
     /// <summary>
     /// This Class represents Transformations used .
@@ -39,6 +40,10 @@
         public const string Added = "added";
         public const string Updated = "updated";
         public const string Deleted = "deleted";
+        public const string OrderScheduleTaskStart = "ordertask";
+        public const string OrderSuccess = "ordersuccess";
+        public const string OrderFail = "orderfail";
+        public const string InvalidCartItems = "invalidcartitems";
     }
     /// <summary>
     /// This class represents shipping options

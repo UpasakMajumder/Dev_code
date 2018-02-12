@@ -384,6 +384,7 @@
         TerminalIdentifier_LocationCode: 'Kadena2.0',
         TerminalIdentifier_TerminalCode: 'Kadena2.0',
         TerminalIdentifier_MerchantCode: 'Kadena2.0',
+        CreditCard_CSCIndicator: '',
         saveToProfile: {
           exists: true,
           label: 'Save to profile',

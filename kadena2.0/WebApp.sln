@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSApp", "CMS\CMSApp.csproj", "{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}"
 EndProject
@@ -314,8 +314,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Web", "CMS\Kadena
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Tests", "Kadena2.0.Tests\Kadena2.0.Tests.csproj", "{B9C7A9A6-74EC-44C3-977E-56028745E841}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomatedTests", "AutomatedTests\AutomatedTests.csproj", "{E91FCD98-CBCC-4B6D-9181-6C325D8D96AF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Carriers", "Carriers", "{69A8D6E8-F543-443C-B98D-DEE86478B247}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carriers", "Carriers\Carriers\Carriers.csproj", "{15EF35C6-B6E1-40E7-A423-9B1E3F856D4C}"
@@ -362,9 +360,6 @@ Global
 		{B9C7A9A6-74EC-44C3-977E-56028745E841}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9C7A9A6-74EC-44C3-977E-56028745E841}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9C7A9A6-74EC-44C3-977E-56028745E841}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E91FCD98-CBCC-4B6D-9181-6C325D8D96AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E91FCD98-CBCC-4B6D-9181-6C325D8D96AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E91FCD98-CBCC-4B6D-9181-6C325D8D96AF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{15EF35C6-B6E1-40E7-A423-9B1E3F856D4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{15EF35C6-B6E1-40E7-A423-9B1E3F856D4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15EF35C6-B6E1-40E7-A423-9B1E3F856D4C}.Release|Any CPU.ActiveCfg = Release|Any CPU

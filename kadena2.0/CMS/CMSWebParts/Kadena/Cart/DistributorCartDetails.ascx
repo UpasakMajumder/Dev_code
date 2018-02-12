@@ -20,7 +20,7 @@
                     </tr>
         </HeaderTemplate>
         <ItemTemplate>
-            <td><%# Eval("SKUNumber") %></td>
+            <td><%# Eval("SKUProductCustomerReferenceNumber") %></td>
             <td><%# Eval("SKUName") %> </td>
             <td>
                 <asp:TextBox runat="server" TextMode="Number" ID="txtUnits" min="1" CssClass="input__text js-ItemQuantity" Text='<%# Eval("SKUUnits") %>' />

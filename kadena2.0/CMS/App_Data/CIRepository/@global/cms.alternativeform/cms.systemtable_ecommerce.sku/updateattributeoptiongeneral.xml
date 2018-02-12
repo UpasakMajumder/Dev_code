@@ -244,6 +244,7 @@
           <controlname>unknown</controlname>
         </settings>
       </field>
+      <field column="SKUCustomerReferenceNumber" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Option (Attribute)</FormDisplayName>

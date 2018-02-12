@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { SUBMIT_CARD, FETCH, FAILURE, SUCCESS } from 'app.consts';
 import { CARD_PAYMENT } from 'app.globals';
+import { createSearchStr } from 'app.helpers/location';
 
 const redirectUser = (dispatch, RedirectURL, submissionId) => {
   axios({
@@ -21,7 +22,7 @@ const redirectUser = (dispatch, RedirectURL, submissionId) => {
       if (redirectionURL) {
         location.assign(redirectionURL);
       } else {
-        setTimeout(() => redirectUser(dispatch, RedirectURL, submissionId), 500);
+        setTimeout(() => redirectUser(dispatch, RedirectURL, submissionId), 1000);
       }
     }
   }).catch(() => {
@@ -47,7 +48,8 @@ export const submitCard = (fields, cardType, submissionId) => {
         PTCount,
         DemoURL,
         ResultURL,
-        ResponseType
+        ResponseType,
+        CreditCard_CSCIndicator
       } = CARD_PAYMENT;
 
       if (!submissionId) {
@@ -58,7 +60,7 @@ export const submitCard = (fields, cardType, submissionId) => {
       const data = {
         CreditCard_CSCValue: cvc,
         CreditCard_ExpirationMonth: expiry.substr(0, 2),
-        CreditCard_ExpirationYear: expiry.substr(2),
+        CreditCard_ExpirationYear: expiry.substr(3), // bcz of slash `/`
         CreditCard_CardType: cardType,
         CreditCard_NameOnCard: name,
         CreditCard_CardAccountNumber: number,
@@ -72,8 +74,11 @@ export const submitCard = (fields, cardType, submissionId) => {
         TerminalIdentifier_TerminalCode,
         TerminalIdentifier_MerchantCode,
         ResultURL,
-        ResponseType
+        ResponseType,
+        CreditCard_CSCIndicator
       };
+
+      const dataStr = createSearchStr(data).substr(1);
 
       dispatch({ type: SUBMIT_CARD + FETCH });
 
@@ -81,7 +86,7 @@ export const submitCard = (fields, cardType, submissionId) => {
         method: 'post',
         url: URL3DSi,
         headers: { 'Content-type': 'application/x-www-form-urlencoded' },
-        data
+        data: dataStr
       });
 
       redirectUser(dispatch, RedirectURL, submissionId);

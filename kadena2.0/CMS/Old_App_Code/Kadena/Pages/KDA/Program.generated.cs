@@ -148,27 +148,44 @@ namespace CMS.DocumentEngine.Types.KDA
 		}
 
 
-        /// <summary>
+		/// <summary>
 		/// Status.
 		/// </summary>
 		[DatabaseField]
-        public bool Status
-        {
-            get
-            {
-                return ValidationHelper.GetBoolean(GetValue("Status"), true);
-            }
-            set
-            {
-                SetValue("Status", value);
-            }
-        }
+		public bool Status
+		{
+			get
+			{
+				return ValidationHelper.GetBoolean(GetValue("Status"), true);
+			}
+			set
+			{
+				SetValue("Status", value);
+			}
+		}
 
 
-        /// <summary>
-        /// Gets an object that provides extended API for working with Program fields.
-        /// </summary>
-        [RegisterProperty]
+		/// <summary>
+		/// 
+		/// </summary>
+		[DatabaseField]
+		public bool GlobalAdminNotified
+		{
+			get
+			{
+				return ValidationHelper.GetBoolean(GetValue("GlobalAdminNotified"), false);
+			}
+			set
+			{
+				SetValue("GlobalAdminNotified", value);
+			}
+		}
+
+
+		/// <summary>
+		/// Gets an object that provides extended API for working with Program fields.
+		/// </summary>
+		[RegisterProperty]
 		public ProgramFields Fields
 		{
 			get
@@ -296,21 +313,37 @@ namespace CMS.DocumentEngine.Types.KDA
 			}
 
 
-            /// <summary>
+			/// <summary>
 			/// Status.
 			/// </summary>
 			public bool Status
-            {
-                get
-                {
-                    return mInstance.Status;
-                }
-                set
-                {
-                    mInstance.Status = value;
-                }
-            }
-        }
+			{
+				get
+				{
+					return mInstance.Status;
+				}
+				set
+				{
+					mInstance.Status = value;
+				}
+			}
+
+
+			/// <summary>
+			/// 
+			/// </summary>
+			public bool GlobalAdminNotified
+			{
+				get
+				{
+					return mInstance.GlobalAdminNotified;
+				}
+				set
+				{
+					mInstance.GlobalAdminNotified = value;
+				}
+			}
+		}
 
 		#endregion
 
