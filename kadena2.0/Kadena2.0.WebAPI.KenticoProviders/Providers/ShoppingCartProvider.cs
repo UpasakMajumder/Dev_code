@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CMS.CustomTables;
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.Globalization;
@@ -17,6 +18,7 @@ using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CMS.DataEngine;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -28,6 +30,8 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly IMapper mapper;
         private readonly IShippingEstimationSettings estimationSettings;
         private readonly IDynamicPriceRangeProvider dynamicPrices;
+        private readonly string campaignClassName = "KDA.CampaignsProduct";
+        private readonly string CustomTableName = "KDA.UserAllocatedProducts";
 
         public ShoppingCartProvider(IKenticoResourceService resources, IKenticoLogger logger, IKenticoDocumentProvider documents, IMapper mapper, IShippingEstimationSettings estimationSettings, IDynamicPriceRangeProvider dynamicPrices)
         {
@@ -692,7 +696,7 @@ namespace Kadena.WebAPI.KenticoProviders
             if (distributorData.InventoryType == 1)
             {
                 var shoppingCartIDs = ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartUserID", distributorData.UserID).WhereEquals("ShoppingCartInventoryType", 1).ToList().Select(x => x.ShoppingCartID).ToList();
-                var shoppingcartItems = ShoppingCartItemInfoProvider.GetShoppingCartItems().WhereIn("ShoppingCartID", shoppingCartIDs).ToList();
+                var shoppingcartItems = ShoppingCartItemInfoProvider.GetShoppingCartItems().WhereIn("ShoppingCartID", shoppingCartIDs).WhereEquals("SKUID", shoppingCartItem.SKUID).ToList();
                 int totalItems = 0;
                 shoppingcartItems.ForEach(cartItem =>
                 {
@@ -702,9 +706,15 @@ namespace Kadena.WebAPI.KenticoProviders
                     }
                 });
                 var sku = SKUInfoProvider.GetSKUInfo(shoppingCartItem.SKUID);
+                var currentProduct=DocumentHelper.GetDocuments(campaignClassName).WhereEquals("NodeSKUID", sku.SKUID).Columns("CampaignsProductID").FirstOrDefault();
+                var allocatedQuantity = GetAllocatedProductQuantityForUser(currentProduct.GetValue<int>("CampaignsProductID", default(int)), distributorData.UserID);
                 if (sku.SKUAvailableItems < totalItems + distributorData.ItemQuantity)
                 {
                     return new Tuple<string, bool>(ResHelper.GetString("KDA.Cart.Update.InsufficientStockMessage"),false);
+                }
+                else if (allocatedQuantity< totalItems + distributorData.ItemQuantity)
+                {
+                    return new Tuple<string, bool>(ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError"), false);
                 }
             }
             if (shoppingCartItem != null)
@@ -719,6 +729,11 @@ namespace Kadena.WebAPI.KenticoProviders
         {
           return  ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartCampaignID", campaignID)
                                                                    .WhereEquals("ShoppingCartInventoryType", productType).ToList().Select(x => x.ShoppingCartUserID).Distinct().ToList();
+        }
+        private int  GetAllocatedProductQuantityForUser(int productID, int userID)
+        {
+            CustomTableItem userProductAllocation = CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
+            return userProductAllocation!=null? userProductAllocation.GetValue<int>("Quantity", default(int)) : default(int);
         }
     }
 }

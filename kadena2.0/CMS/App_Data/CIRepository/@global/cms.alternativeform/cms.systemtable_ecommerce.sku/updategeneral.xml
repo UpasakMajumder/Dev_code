@@ -175,6 +175,7 @@
         </properties>
       </field>
       <field column="SKUParentSKUID" guid="cfda202f-ccbf-47b8-9b24-d6feae3a470c" />
+      <field column="SKUCustomerReferenceNumber" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Product - General properties</FormDisplayName>

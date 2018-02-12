@@ -53,6 +53,7 @@
       <field column="SKUMaxItemsInOrder" visible="" />
       <field column="SKUConversionName" fieldcaption="Conversion name" visible="" />
       <field column="SKUConversionValue" fieldcaption="Conversion value" visible="" />
+      <field column="SKUCustomerReferenceNumber" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Product - E-product properties</FormDisplayName>
