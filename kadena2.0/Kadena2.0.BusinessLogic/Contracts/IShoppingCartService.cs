@@ -8,6 +8,7 @@ namespace Kadena.BusinessLogic.Contracts
     public interface IShoppingCartService
     {
         CheckoutPage GetCheckoutPage();
+        CartItems GetCartItems();
         Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals();
         Task<CheckoutPageDeliveryTotals> SetDeliveryAddress(DeliveryAddress deliveryAddress);
         void SelectShipipng(int id);

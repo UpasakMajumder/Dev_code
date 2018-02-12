@@ -85,15 +85,12 @@ namespace Kadena.BusinessLogic.Services
         {
             var addresses = kenticoUsers.GetCustomerAddresses(AddressType.Shipping);
             var paymentMethods = shoppingCart.GetPaymentMethods();
-            var cartItems = shoppingCart.GetShoppingCartItems();
-            var cartItemsTotals = shoppingCart.GetShoppingCartTotals();
-            var countOfItemsString = cartItems.Length == 1 ? resources.GetResourceString("Kadena.Checkout.ItemSingular") : resources.GetResourceString("Kadena.Checkout.ItemPlural");
             var emailConfirmationEnabled = resources.GetSettingsKey("KDA_UseNotificationEmailsOnCheckout") == bool.TrueString;
 
             var checkoutPage = new CheckoutPage()
             {
-                EmptyCart = checkoutfactory.CreateCartEmptyInfo(cartItems),
-                Products = checkoutfactory.CreateProducts(cartItems, cartItemsTotals, countOfItemsString),
+                EmptyCart = checkoutfactory.CreateCartEmptyInfo(),
+                Products = GetCartItems(),
                 DeliveryAddresses = GetDeliveryAddresses(),
                 PaymentMethods = checkoutfactory.CreatePaymentMethods(paymentMethods),
                 Submit = checkoutfactory.CreateSubmitButton(),
@@ -105,7 +102,6 @@ namespace Kadena.BusinessLogic.Services
             checkoutPage.PaymentMethods.CheckDefault();
             checkoutPage.PaymentMethods.CheckPayability();
             checkoutPage.SetDisplayType();
-            SetPricesVisibility(checkoutPage);
             return checkoutPage;
         }
         
@@ -134,8 +130,11 @@ namespace Kadena.BusinessLogic.Services
             {
                 await UpdateTotals(result, deliveryAddress);
             }
-
-            SetPricesVisibility(result);
+            else
+            {
+                result.DeliveryMethods?.HidePrices();
+            }
+            
             return result;
         }
 
@@ -256,22 +255,6 @@ namespace Kadena.BusinessLogic.Services
         {
             shoppingCart.SelectShipping(0);
         }
-
-        private void SetPricesVisibility(CheckoutPage page)
-        {
-            if (!permissions.UserCanSeePrices())
-            {
-                page.Products.HidePrices();
-            }
-        }
-
-        private void SetPricesVisibility(CheckoutPageDeliveryTotals page)
-        {
-            if (!permissions.UserCanSeePrices())
-            {
-                page.DeliveryMethods.HidePrices();
-            }
-        }
        
         public void SelectShipipng(int id)
         {
@@ -315,12 +298,20 @@ namespace Kadena.BusinessLogic.Services
             return GetCartItems();
         }
 
-        private CartItems GetCartItems()
+        public CartItems GetCartItems()
         {
             var cartItems = shoppingCart.GetShoppingCartItems();
             var cartItemsTotals = shoppingCart.GetShoppingCartTotals();
             var countOfItemsString = cartItems.Length == 1 ? resources.GetResourceString("Kadena.Checkout.ItemSingular") : resources.GetResourceString("Kadena.Checkout.ItemPlural");
-            return checkoutfactory.CreateProducts(cartItems, cartItemsTotals, countOfItemsString);
+
+            var products = checkoutfactory.CreateProducts(cartItems, cartItemsTotals, countOfItemsString);
+
+            if (!permissions.UserCanSeePrices())
+            {
+                products.HidePrices();
+            }
+
+            return products;
         }
 
         public CartItemsPreview ItemsPreview()
@@ -364,7 +355,7 @@ namespace Kadena.BusinessLogic.Services
             return result;
         }
 
-        bool GetOtherAddressSettingsValue()
+        private bool GetOtherAddressSettingsValue()
         {
             var settingsKey = resources.GetSettingsKey("KDA_AllowCustomShippingAddress");
             bool otherAddressAvailable = false;
