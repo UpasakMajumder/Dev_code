@@ -226,14 +226,14 @@ class RecentOrders extends Component {
     };
 
     const url = RecentOrders.generateUrl(this.props.pageInfo.export.url, args);
-    const link = <a href={url}>{this.props.pageInfo.export.label}</a>;
+    const link = <a className="btn-action" href={url}>{this.props.pageInfo.export.label}</a>;
     return link;
   };
 
   render() {
     return (
       <div>
-        <div>
+        <div className="flex--end--between mb-3">
           {this.getDateFilter()}
           {this.getExportLink()}
         </div>

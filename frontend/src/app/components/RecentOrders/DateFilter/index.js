@@ -6,6 +6,8 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 /* helpers */
 import { dateFormat } from 'app.helpers/time';
+/* component */
+import Button from 'app.dump/Button';
 
 const DateFilter = ({
   ui: {
@@ -18,13 +20,16 @@ const DateFilter = ({
   changeDate,
   applyDate
 }) => {
-  const setNow = field => changeDate(moment(), field);
+  const setNow = (e, field) => {
+    e.preventDefault();
+    changeDate(moment(), field);
+  };
 
   return (
     <div>
-      <p>{title}</p>
-      <div>
-        <div>
+      <h2 className="mb-3">{title}</h2>
+      <div className="mb-3">
+        <div className="flex--center--between mb-3">
           <DatePicker
             selected={dateFrom}
             selectsStart
@@ -33,10 +38,10 @@ const DateFilter = ({
             onChange={(date) => { changeDate(date, 'dateFrom'); }}
             dateFormat={dateFormat}
           />
-          <button type="button" onClick={() => setNow('dateFrom')}>{labelNow}</button>
+          <a href="#" className="ml-2 link" onClick={e => setNow(e, 'dateFrom')}>{labelNow}</a>
         </div>
 
-        <div>
+        <div className="flex--center--between">
           <DatePicker
             selected={dateTo}
             selectsEnd
@@ -45,11 +50,15 @@ const DateFilter = ({
             onChange={(date) => { changeDate(date, 'dateTo'); }}
             dateFormat={dateFormat}
           />
-          <button type="button" onClick={() => setNow('dateTo')}>{labelNow}</button>
+          <a href="#" className="link" onClick={e => setNow(e, 'dateTo')}>{labelNow}</a>
         </div>
       </div>
       <div>
-        <button type="button" onClick={applyDate}>{labelApply}</button>
+        <Button
+          text={labelApply}
+          type="action"
+          onClick={applyDate}
+        />
       </div>
     </div>
   );
