@@ -8,7 +8,6 @@ using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
 {
-    [CustomerAuthorizationFilter]
     public class BrandsController : ApiControllerBase
     {
         private readonly IBrandsService brandsService;
