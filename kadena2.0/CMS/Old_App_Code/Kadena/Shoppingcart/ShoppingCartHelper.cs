@@ -16,6 +16,7 @@ using Kadena.Old_App_Code.Kadena.PDFHelpers;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -74,12 +75,26 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     ShippingOption = ShippingOption(),
                     Customer = GetCustomer(),
                     Site = GetSite(),
+                    OrderStatus = new OrderStatusDTO()
+                    {
+                        KenticoOrderStatusID = DIContainer.Resolve<IKenticoOrderProvider>().GetOrderStatusId("Pending"),
+                        OrderStatusName = "PENDING"
+                    },
+                    PaymentOption = new PaymentOptionDTO()
+                    {
+                        PaymentOptionName = "NoPaymentRequired",
+                        PaymentGatewayCustomerCode = string.Empty,
+                        PONumber = string.Empty,
+                        TokenId = string.Empty,
+                        TransactionKey = string.Empty
+                    },
                     NotificationsData = GetNotification(),
                     Items = GetCartItems(),
                     OrderDate = DateTime.Now,
                     TotalPrice = GetOrderTotal(orderType),
                     TotalShipping = shippingCost,
-                    OrderCurrency = GetCurrencyDTO(Cart.Currency)
+                    OrderCurrency = GetCurrencyDTO(Cart.Currency),
+                    TotalTax = 0
                 };
             }
             catch (Exception ex)
@@ -313,7 +328,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     AddressLine1 = distributorAddress.AddressLine1,
                     AddressLine2 = distributorAddress.AddressLine2,
                     City = distributorAddress.AddressCity,
-                    State = state.StateName,
+                    State = state.StateCode,
                     Zip = distributorAddress.GetStringValue("AddressZip", string.Empty),
                     KenticoCountryID = distributorAddress.AddressCountryID,
                     Country = country.CountryName,
@@ -361,7 +376,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var settingKeyValue=DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_SoldToGeneralInventory");
+                var settingKeyValue = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_SoldToGeneralInventory");
                 var distributorID = Cart.GetIntegerValue("ShoppingCartDistributorID", default(int));
                 var distributorAddress = AddressInfoProvider.GetAddresses().WhereEquals("AddressID", distributorID).FirstOrDefault();
                 var customer = CustomerInfoProvider.GetCustomerInfo(distributorAddress.AddressCustomerID);
@@ -394,7 +409,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             {
                 KenticoSiteID = SiteContext.CurrentSiteID,
                 KenticoSiteName = SiteContext.CurrentSiteName,
-                ErpCustomerId= settingKeyValue
+                ErpCustomerId = settingKeyValue
             };
         }
 
@@ -440,7 +455,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                             SKUNumber = item.SKU.SKUNumber
                         },
                         UnitCount = item.CartItemUnits,
-                        UnitOfMeasure = SKUMeasuringUnits.Lb,
+                        UnitOfMeasure = SKUMeasuringUnits.EA,
                         UnitPrice = ValidationHelper.GetDecimal(item.UnitPrice, default(decimal))
                     });
                 });
