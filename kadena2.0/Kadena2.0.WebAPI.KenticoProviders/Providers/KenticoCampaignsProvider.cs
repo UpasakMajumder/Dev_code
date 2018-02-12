@@ -3,6 +3,7 @@ using CMS.DocumentEngine;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.SiteProvider;
+using Kadena.Models.CampaignData;
 using Kadena.Models.RecentOrders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
@@ -62,6 +63,12 @@ namespace Kadena.WebAPI.KenticoProviders
                 return true;
             }
             return false;
+        }
+
+        public string GetCampaignFiscalYear(int campaignID)
+        {
+            var campaign = DocumentHelper.GetDocuments(PageTypeClassName).OnSite(SiteContext.CurrentSiteID).WhereEquals("CampaignID", campaignID).FirstOrDefault();
+            return campaign.GetValue("FiscalYear", string.Empty); 
         }
     }
 }
