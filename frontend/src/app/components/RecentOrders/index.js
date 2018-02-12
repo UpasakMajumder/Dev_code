@@ -13,6 +13,7 @@ import { getRows, changeDate } from 'app.ac/recentOrders';
 import { RECENT_ORDERS } from 'app.globals';
 /* helpers */
 import { sortObjs } from 'app.helpers/array';
+import { createSearchStr } from 'app.helpers/location';
 /* local components */
 import Order from './Order';
 import DateFilter from './DateFilter';
@@ -67,13 +68,36 @@ class RecentOrders extends Component {
     return sortId;
   }
 
+  static generateUrl(defaultUrl, args = {}) {
+    let url = `${defaultUrl}/${args.page}`;
+    if (typeof args.page !== 'undefined') return url;
+
+    const search = {};
+
+    if (args.sort) search.sort = args.sort;
+    if (args.dateFrom) search.dateFrom = args.dateFrom;
+    if (args.dateTo) search.dateTo = args.dateTo;
+    if (args.export) search.format = 'xlsx';
+
+    const searchUrl = Object.keys(search).length ? createSearchStr(search) : '';
+
+    url = `${defaultUrl}${searchUrl}`;
+
+    return url;
+  }
+
+  static getFormattedDate(date) {
+    return date !== null ? moment(date).format('YYYYMMDD') : '';
+  }
+
   componentDidMount() {
-    this.props.getRows(this.props.pageInfo.getRowsUrl);
+    this.props.getRows(RecentOrders.generateUrl(this.props.pageInfo.getRowsUrl));
   }
 
   handleChangePage = (page) => {
     if (page === this.props.store.pagination.currentPage) return;
-    this.props.getRows(this.props.pageInfo.getRowsUrl, { page });
+    const url = RecentOrders.generateUrl(this.props.pageInfo.getRowsUrl, { page });
+    this.props.getRows(url, { page });
   };
 
   getHeadings = () => {
@@ -114,13 +138,17 @@ class RecentOrders extends Component {
 
     const { dateFrom, dateTo } = this.props.store.filter.orderDate;
 
-    this.props.getRows(this.props.pageInfo.getRowsUrl, {
+    const args = {
       sort,
       sortOrderAsc: newSortOrderAsc,
       sortBy,
-      dateFrom: dateFrom !== null ? moment(dateFrom).format('YYYYMMDD') : '',
-      dateTo: dateTo !== null ? moment(dateTo).format('YYYYMMDD') : ''
-    });
+      dateFrom: RecentOrders.getFormattedDate(dateFrom),
+      dateTo: RecentOrders.getFormattedDate(dateTo)
+    };
+
+    const url = RecentOrders.generateUrl(this.props.pageInfo.getRowsUrl, args);
+
+    this.props.getRows(url, args);
   };
 
   getContent = () => {
@@ -163,11 +191,15 @@ class RecentOrders extends Component {
 
     const sort = RecentOrders.getSortId(this.props.store.sort.sortOrderAsc, this.props.store.sort.sortBy);
 
-    this.props.getRows(this.props.pageInfo.getRowsUrl, {
+    const args = {
       sort,
-      dateFrom: dateFrom !== null ? moment(dateFrom).format('YYYYMMDD') : '',
-      dateTo: dateTo !== null ? moment(dateTo).format('YYYYMMDD') : ''
-    });
+      dateFrom: RecentOrders.getFormattedDate(dateFrom),
+      dateTo: RecentOrders.getFormattedDate(dateTo)
+    };
+
+    const url = RecentOrders.generateUrl(this.props.pageInfo.getRowsUrl, args);
+
+    this.props.getRows(url, args);
   };
 
   getDateFilter = () => {
@@ -185,10 +217,27 @@ class RecentOrders extends Component {
     );
   };
 
+  getExportLink = () => {
+    const args = {
+      export: true,
+      sort: RecentOrders.getSortId(this.props.store.sort.sortOrderAsc, this.props.store.sort.sortBy),
+      dateFrom: RecentOrders.getFormattedDate(this.props.store.filter.orderDate.dateFrom),
+      dateTo: RecentOrders.getFormattedDate(this.props.store.filter.orderDate.dateTo)
+    };
+
+    const url = RecentOrders.generateUrl(this.props.pageInfo.export.url, args);
+    const link = <a href={url}>{this.props.pageInfo.export.label}</a>;
+    return link;
+  };
+
   render() {
     return (
       <div>
-        {this.getDateFilter()}
+        <div>
+          {this.getDateFilter()}
+          {this.getExportLink()}
+        </div>
+
         {this.getContent()}
       </div>
     );
