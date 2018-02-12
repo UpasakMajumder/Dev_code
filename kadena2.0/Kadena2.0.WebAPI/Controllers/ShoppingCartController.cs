@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena.Dto.Checkout.Requests;
 using Kadena.Models.Checkout;
-using Kadena.Dto.Product;
 using Kadena.Models;
 using Kadena.Dto.CustomerData;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using System.Net;
 using Kadena.Models.CustomerData;
+using Kadena.Dto.Checkout.Responses;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -100,7 +99,7 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult RemoveItem([FromBody]RemoveItemRequestDto request)
         {
             var result = service.RemoveItem(request.Id);
-            var resultDto = mapper.Map<CheckoutPageDTO>(result);
+            var resultDto = mapper.Map<ChangeItemQuantityResponseDto>(result);
             return ResponseJson(resultDto);
         }
 
@@ -110,7 +109,7 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult ChangeItemQuantity([FromBody]ChangeItemQuantityRequestDto request)
         {
             var result = service.ChangeItemQuantity(request.Id, request.Quantity);
-            var resultDto = mapper.Map<CheckoutPageDTO>(result);
+            var resultDto = mapper.Map<ChangeItemQuantityResponseDto>(result);
             return ResponseJson(resultDto);
         }
 

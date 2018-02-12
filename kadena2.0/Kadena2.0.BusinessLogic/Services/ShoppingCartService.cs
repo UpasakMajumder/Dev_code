@@ -288,13 +288,13 @@ namespace Kadena.BusinessLogic.Services
             return checkoutPage;
         }
 
-        public CheckoutPage ChangeItemQuantity(int id, int quantity)
+        public CartItems ChangeItemQuantity(int id, int quantity)
         {
             shoppingCart.SetCartItemQuantity(id, quantity);
-            return GetCheckoutPage();
+            return GetCartItems();
         }
 
-        public CheckoutPage RemoveItem(int id)
+        public CartItems RemoveItem(int id)
         {
             shoppingCart.RemoveCartItem(id);
             var itemsCount = shoppingCart.GetShoppingCartItemsCount();
@@ -303,7 +303,15 @@ namespace Kadena.BusinessLogic.Services
                 shoppingCart.ClearCart();
             }
 
-            return GetCheckoutPage();
+            return GetCartItems();
+        }
+
+        private CartItems GetCartItems()
+        {
+            var cartItems = shoppingCart.GetShoppingCartItems();
+            var cartItemsTotals = shoppingCart.GetShoppingCartTotals();
+            var countOfItemsString = cartItems.Length == 1 ? resources.GetResourceString("Kadena.Checkout.ItemSingular") : resources.GetResourceString("Kadena.Checkout.ItemPlural");
+            return checkoutfactory.CreateProducts(cartItems, cartItemsTotals, countOfItemsString);
         }
 
         public CartItemsPreview ItemsPreview()
