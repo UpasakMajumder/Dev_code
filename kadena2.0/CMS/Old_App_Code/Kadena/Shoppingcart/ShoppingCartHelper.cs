@@ -543,11 +543,11 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var campaign = DIContainer.Resolve<IKenticoCampaignsProvider>().GetCampaign(orderDetails.Campaign.ID);
+                var campaignFiscalYear = DIContainer.Resolve<IKenticoCampaignsProvider>().GetCampaignFiscalYear(orderDetails.Campaign.ID);
                 var totalToBeDeducted = orderDetails.TotalPrice + orderDetails.TotalShipping;
                 var fiscalYear = orderDetails.Type == OrderType.generalInventory ?
                                  ValidationHelper.GetString(orderDetails.OrderDate.Year, string.Empty) :
-                                 orderDetails.Type == OrderType.prebuy ? (campaign?.FiscalYear ?? string.Empty) : string.Empty;
+                                 orderDetails.Type == OrderType.prebuy ? campaignFiscalYear : string.Empty;
                 DIContainer.Resolve<IkenticoUserBudgetProvider>().UpdateUserBudgetAllocationRecords(userID,fiscalYear,totalToBeDeducted);
             }
             catch (Exception ex)

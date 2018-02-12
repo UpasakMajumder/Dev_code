@@ -8,6 +8,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void DeleteCampaign(int campaignID);
         OrderCampaginHead GetCampaigns(string orderType);
         bool CloseCampaignIBTF(int campaignID);
-        CampaignData GetCampaign(int campaignID);
+        string GetCampaignFiscalYear(int campaignID);
     }
 }

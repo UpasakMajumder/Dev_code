@@ -65,23 +65,10 @@ namespace Kadena.WebAPI.KenticoProviders
             return false;
         }
 
-        public CampaignData GetCampaign(int campaignID)
+        public string GetCampaignFiscalYear(int campaignID)
         {
             var campaign = DocumentHelper.GetDocuments(PageTypeClassName).OnSite(SiteContext.CurrentSiteID).WhereEquals("CampaignID", campaignID).FirstOrDefault();
-            CampaignData campaignModel = new CampaignData();
-            if (campaign != null)
-            {
-                campaignModel.CampaignID = campaign.GetValue("CampaignID", default(int));
-                campaignModel.Name = campaign.GetValue("Name", string.Empty);
-                campaignModel.OpenCampaign = campaign.GetValue("OpenCampaign", false);
-                campaignModel.CloseCampaign = campaign.GetValue("CLoseCampaign", false);
-                campaignModel.StartDate = ValidationHelper.GetDate(campaign.GetValue("StartDate"), default(System.DateTime));
-                campaignModel.EndDate = ValidationHelper.GetDate(campaign.GetValue("EndDate"), default(System.DateTime));
-                campaignModel.IBTFFinalized = campaign.GetValue("IBTFFinalized", false);
-                campaignModel.Status = campaign.GetValue("Status", false);
-                return campaignModel;
-            }
-            return campaignModel;
+            return campaign.GetValue("FiscalYear", string.Empty); 
         }
     }
 }
