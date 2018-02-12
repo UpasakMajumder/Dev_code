@@ -10,6 +10,7 @@
         public const string loggedInUserCartData = "Ecommerce.Shoppingcart.LoggedInUserCartData";
         public const string getShoppingCartCount = "Ecommerce.Shoppingcart.GetShoppingCartCount";
         public const string getShoppingCartTotal = "Ecommerce.Shoppingcart.GetShoppingCartTotal";
+        public const string getPrebuyProductCount = "KDA.Transformations.PrebuyProductCount";
     }
     /// <summary>
     /// This Class represents Transformations used .
