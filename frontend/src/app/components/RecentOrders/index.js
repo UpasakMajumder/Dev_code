@@ -120,7 +120,7 @@ class RecentOrders extends Component {
           style={{ cursor: heading.sort ? 'pointer' : 'initial' }}
         >
           {sortIcon}
-          {heading.label}
+          <span className="ml-2">{heading.label}</span>
         </th>
       );
     });
@@ -159,12 +159,14 @@ class RecentOrders extends Component {
 
       content = (
         <div>
-          <table className="show-table">
-            <tbody>
-              {this.getHeadings()}
-              {this.getRows()}
-            </tbody>
-          </table>
+          <div className="overflow--y-scroll">
+            <table className="show-table show-table--pointer">
+              <tbody>
+                {this.getHeadings()}
+                {this.getRows()}
+              </tbody>
+            </table>
+          </div>
 
           <Pagination
             pagesNumber={pagination.pagesCount}
