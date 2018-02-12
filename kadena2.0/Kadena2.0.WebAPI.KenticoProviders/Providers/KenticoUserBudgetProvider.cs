@@ -2,6 +2,7 @@
 using CMS.CustomTables;
 using CMS.DataEngine;
 using CMS.Helpers;
+using Kadena.Models.FyBudget;
 using Kadena.Models.UserBudget;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
@@ -41,10 +42,10 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             return string.Empty;
         }
 
-        public List<CustomTableItem> GetUserBudgetAllocationRecords(int userId, int siteId)
+        public List<UserBudgetItem> GetUserBudgetAllocationRecords(int userId, int siteId)
         {
             var userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("UserID", userId).WhereEquals("SiteID", siteId).ToList();
-            return userBudgetDetails;
+            return mapper.Map<List<UserBudgetItem>>(userBudgetDetails);
         }
 
         public bool CheckIfYearExists(string year, int userId)
@@ -61,10 +62,10 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             userBudgetDetails.Update();
         }
 
-        public List<CustomTableItem> GetFiscalYearRecords()
+        public List<FiscalYear> GetFiscalYearRecords()
         {
             var fiscalYearData = CustomTableItemProvider.GetItems(FiscalYearClassName).ToList();
-            return fiscalYearData;
+            return mapper.Map<List<FiscalYear>>(fiscalYearData);
         }
 
         public UserBudgetItem CreateUserBudgetWithYear(string year, int siteID, int userId)

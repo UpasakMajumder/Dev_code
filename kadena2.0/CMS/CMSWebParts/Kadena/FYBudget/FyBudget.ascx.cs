@@ -112,32 +112,32 @@ public partial class CMSWebParts_Kadena_FYBudget_FyBudget : CMSAbstractWebPart
             List<FyBudget> userBudgetDetails = new List<FyBudget>();
             foreach (var fisYear in fiscalYearData)
             {
-                var userData = userBudgetData.Where(x => x.GetValue("Year", string.Empty) == fisYear.GetValue("Year", string.Empty)).FirstOrDefault();
-                if (DIContainer.Resolve<IkenticoUserBudgetProvider>().CheckIfYearExists(fisYear.GetValue("Year", string.Empty), CurrentUser.UserID))
+                var userData = userBudgetData.Where(x => x.Year == fisYear.Year).FirstOrDefault();
+                if (DIContainer.Resolve<IkenticoUserBudgetProvider>().CheckIfYearExists(fisYear.Year, CurrentUser.UserID))
                 {
                     userBudgetDetails.Add(new FyBudget()
                     {
                         ItemID = userData.ItemID,
-                        Budget = userData.GetValue("Budget", default(decimal)),
-                        IsYearEnded = fisYear.GetValue("FiscalYearEndDate", default(DateTime)) < DateTime.Now,
-                        UserID = userData.GetValue("UserID", default(int)),
-                        UserRemainingBudget = userData.GetValue("UserRemainingBudget", default(decimal)),
-                        Year = fisYear.GetValue("Year", string.Empty)
+                        Budget = userData.Budget,
+                        IsYearEnded = fisYear.EndDate < DateTime.Now,
+                        UserID = userData.UserID,
+                        UserRemainingBudget = userData.UserRemainingBudget,
+                        Year = fisYear.Year
                     });
                 }
                 else
                 {
-                    var newUserRecord = DIContainer.Resolve<IkenticoUserBudgetProvider>().CreateUserBudgetWithYear(fisYear.GetValue("Year", string.Empty), CurrentSite.SiteID, CurrentUser.UserID);
+                    var newUserRecord = DIContainer.Resolve<IkenticoUserBudgetProvider>().CreateUserBudgetWithYear(fisYear.Year, CurrentSite.SiteID, CurrentUser.UserID);
                     if (newUserRecord != null)
                     {
                         userBudgetDetails.Add(new FyBudget()
                         {
                             ItemID = newUserRecord.ItemID,
                             Budget = newUserRecord.Budget,
-                            IsYearEnded = fisYear.GetValue("FiscalYearEndDate", default(DateTime)) < DateTime.Now,
+                            IsYearEnded = fisYear.EndDate < DateTime.Now,
                             UserID = newUserRecord.UserID,
                             UserRemainingBudget = newUserRecord.UserRemainingBudget,
-                            Year = fisYear.GetValue("Year", string.Empty)
+                            Year = fisYear.Year
                         });
                     }
                 }

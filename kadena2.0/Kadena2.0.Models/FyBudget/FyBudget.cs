@@ -15,4 +15,12 @@ namespace Kadena.Models.FyBudget
         public bool IsYearEnded { get; set; }
         public string Year { get; set; }
     }
+
+    public class FiscalYear
+    {
+        public int ItemID { get; set; }
+        public string Year { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+    }
 }

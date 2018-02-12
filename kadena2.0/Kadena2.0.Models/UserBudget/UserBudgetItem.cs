@@ -12,5 +12,6 @@ namespace Kadena.Models.UserBudget
         public decimal Budget { get; set; }
         public int UserID { get; set; }
         public decimal UserRemainingBudget { get; set; }
+        public string Year { get; set; }
     }
 }
