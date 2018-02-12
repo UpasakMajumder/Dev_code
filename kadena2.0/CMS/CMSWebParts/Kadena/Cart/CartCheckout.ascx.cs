@@ -11,15 +11,17 @@ using System.Data;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
-using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using Kadena2.Container.Default;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.Old_App_Code.Kadena.EmailNotifications;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
     public partial class CartCheckout : CMSAbstractWebPart
     {
         private const string _serviceUrlSettingKey = "KDA_OrderServiceEndpoint";
+        private IKenticoResourceService settingKeys;
         #region properties
         private ShoppingCartInfo Cart { get; set; }
         /// <summary>
@@ -70,8 +72,18 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
+                if (!DIContainer.Resolve<IShoppingCartProvider>().ValidateAllCarts(userID: CurrentUser.UserID))
+                {
+                    Response.Cookies["status"].Value = QueryStringStatus.InvalidCartItems;
+                    Response.Cookies["status"].HttpOnly = false;
+                    return;
+                }
                 var loggedInUserCartIDs = GetCartsByUserID(CurrentUser.UserID, ProductType.GeneralInventory);
+                settingKeys = DIContainer.Resolve<IKenticoResourceService>();
+                var orderTemplateSettingKey = settingKeys.GetSettingsKey("KDA_OrderReservationEmailTemplateGI");
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
+                var userInfo = DIContainer.Resolve<IKenticoUserProvider>();
+                var salesPerson = userInfo.GetUserByUserId(CurrentUser.UserID);
                 loggedInUserCartIDs.ForEach(distributorCart =>
                 {
                     Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(distributorCart);
@@ -89,11 +101,12 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                             return;
                         }
                     }
-                    OrderDTO Ordersdto = CreateOrdersDTO(Cart, Cart.ShoppingCartUserID, OrderType.generalInventory, shippingCost);
-                    var response = ProcessOrder(Cart, CurrentUser.UserID, OrderType.generalInventory, Ordersdto, shippingCost);
+                    OrderDTO ordersDTO = CreateOrdersDTO(Cart, Cart.ShoppingCartUserID, OrderType.generalInventory, shippingCost);
+                    var response = ProcessOrder(Cart, CurrentUser.UserID, OrderType.generalInventory, ordersDTO, shippingCost);
                     if (response != null && response.Success)
                     {
                         UpdateAvailableSKUQuantity(Cart);
+                        ProductEmailNotifications.SendEmailNotification(ordersDTO, orderTemplateSettingKey, salesPerson);
                         ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
                         ShoppingCartHelper.UpdateRemainingBudget(Ordersdto, CurrentUser.UserID);
                     }
@@ -110,7 +123,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 }
                 else
                 {
-                    if(loggedInUserCartIDs.Count> unprocessedDistributorIDs.Count)
+                    if (loggedInUserCartIDs.Count > unprocessedDistributorIDs.Count)
                     {
                         Response.Cookies["status"].Value = QueryStringStatus.OrderSuccess;
                         Response.Cookies["status"].HttpOnly = false;
@@ -148,19 +161,24 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             try
             {
                 var addrerss = DIContainer.Resolve<IAddressBookService>();
-              var distributors=  addrerss.GetAddressesByAddressIds(unprocessedDistributorIDs.Select(x => x.Item1).ToList()).Select(x =>
-                    {
-                        return new { AddressID = x?.Id, AddressPersonalName = x?.AddressPersonalName };
-                    }).ToList();
-                rptErrors.DataSource = unprocessedDistributorIDs.Select(x =>
+                var distributors = addrerss.GetAddressesByAddressIds(unprocessedDistributorIDs.Select(x => x.Item1).ToList()).Select(x =>
+                      {
+                          return new { AddressID = x?.Id, AddressPersonalName = x?.AddressPersonalName };
+                      }).ToList();
+                var unprocessedOrders = unprocessedDistributorIDs.Select(x =>
+                   {
+                       var distributor = distributors.Where(y => y.AddressID == x.Item1).FirstOrDefault();
+                       return new
+                       {
+                           AddressPersonalName = distributor.AddressPersonalName,
+                           Reason = x.Item2
+                       };
+                   }).ToList();
+                if (CurrentUser?.Email != null)
                 {
-                    var distributor = distributors.Where(y => y.AddressID == x.Item1).FirstOrDefault();
-                    return new
-                    {
-                        AddressPersonalName = distributor.AddressPersonalName,
-                        Reason = x.Item2
-                    };
-                }).ToList();
+                    ProductEmailNotifications.SendEmail(settingKeys.GetSettingsKey("KDA_FailedOrdersEmailTemplateGI"), CurrentUser?.Email, unprocessedOrders);
+                }
+                rptErrors.DataSource = unprocessedOrders;
                 rptErrors.DataBind();
             }
             catch (Exception ex)

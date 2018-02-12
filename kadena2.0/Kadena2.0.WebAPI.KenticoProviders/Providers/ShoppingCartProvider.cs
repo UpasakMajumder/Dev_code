@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CMS.CustomTables;
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.Globalization;
@@ -17,6 +18,7 @@ using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CMS.DataEngine;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -28,6 +30,8 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly IMapper mapper;
         private readonly IShippingEstimationSettings estimationSettings;
         private readonly IDynamicPriceRangeProvider dynamicPrices;
+        private readonly string campaignClassName = "KDA.CampaignsProduct";
+        private readonly string CustomTableName = "KDA.UserAllocatedProducts";
 
         public ShoppingCartProvider(IKenticoResourceService resources, IKenticoLogger logger, IKenticoDocumentProvider documents, IMapper mapper, IShippingEstimationSettings estimationSettings, IDynamicPriceRangeProvider dynamicPrices)
         {
@@ -702,9 +706,15 @@ namespace Kadena.WebAPI.KenticoProviders
                     }
                 });
                 var sku = SKUInfoProvider.GetSKUInfo(shoppingCartItem.SKUID);
+                var currentProduct=DocumentHelper.GetDocuments(campaignClassName).WhereEquals("NodeSKUID", sku.SKUID).Columns("CampaignsProductID").FirstOrDefault();
+                var allocatedQuantity = GetAllocatedProductQuantityForUser(currentProduct.GetValue<int>("CampaignsProductID", default(int)), distributorData.UserID);
                 if (sku.SKUAvailableItems < totalItems + distributorData.ItemQuantity)
                 {
-                    return new Tuple<string, bool>(ResHelper.GetString("KDA.Cart.Update.InsufficientStockMessage"),false);
+                    return new Tuple<string, bool>(ResHelper.GetString("KDA.Cart.Update.InsufficientStockMessage"), false);
+                }
+                else if (allocatedQuantity< totalItems + distributorData.ItemQuantity)
+                {
+                    return new Tuple<string, bool>(ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError"), false);
                 }
             }
             if (shoppingCartItem != null)
@@ -715,10 +725,67 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             return new Tuple<string, bool>(ResHelper.GetString("KDA.Cart.Update.Failure"), false);
         }
+
         public List<int> GetUserIDsWithShoppingCart(int campaignID, int productType)
         {
-          return  ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartCampaignID", campaignID)
-                                                                   .WhereEquals("ShoppingCartInventoryType", productType).ToList().Select(x => x.ShoppingCartUserID).Distinct().ToList();
+            return ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartCampaignID", campaignID)
+                                                                     .WhereEquals("ShoppingCartInventoryType", productType).ToList().Select(x => x.ShoppingCartUserID).Distinct().ToList();
+        }
+
+        public bool IsCartContainsInvalidProduct(int shoppingCartId = 0)
+        {
+            bool isValidCart = true;
+            ShoppingCartInfo shoppingCart = GetShoppingCart(shoppingCartId);
+            if (shoppingCart != null)
+            {
+                var inValidCartItems = shoppingCart.CartItems.Where(x => string.IsNullOrWhiteSpace(x.SKU.SKUNumber) || x.SKU.SKUNumber.Equals("00000"));
+                if (inValidCartItems != null && inValidCartItems.Count() > 0)
+                {
+                    isValidCart = false;
+                }
+            }
+            return isValidCart;
+        }
+
+        public List<int> GetCampaingShoppingCartIDs(int campaignID)
+        {
+            return ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID).WhereEquals("ShoppingCartCampaignID", campaignID)?.ToList().Select(x => x.ShoppingCartID).ToList();
+        }
+
+        public List<int> GetUserShoppingCartIDs(int userID)
+        {
+            return ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID).WhereEquals("ShoppingCartUserID", userID)?.ToList().Select(x => x.ShoppingCartID).ToList();
+        }
+
+        public bool ValidateAllCarts(int userID = 0, int campaignID = 0)
+        {
+            bool isValid = true;
+            List<int> shoppingCartIDs = new List<int>();
+            if (campaignID > 0)
+            {
+                shoppingCartIDs = GetCampaingShoppingCartIDs(campaignID);
+            }
+            else if (userID > 0)
+            {
+                shoppingCartIDs = GetUserShoppingCartIDs(userID);
+            }
+            if (shoppingCartIDs != null && shoppingCartIDs.Count > 0)
+            {
+                foreach (int shoppingCartID in shoppingCartIDs)
+                {
+                    if(!IsCartContainsInvalidProduct(shoppingCartID))
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+            return isValid;
+        }
+        private int  GetAllocatedProductQuantityForUser(int productID, int userID)
+        {
+            CustomTableItem userProductAllocation = CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
+            return userProductAllocation!=null? userProductAllocation.GetValue<int>("Quantity", default(int)) : default(int);
         }
     }
 }
