@@ -4,6 +4,7 @@ using Kadena.Dto.CustomerData;
 using Kadena.WebAPI.Infrastructure;
 using System;
 using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
@@ -33,9 +34,8 @@ namespace Kadena.WebAPI.Controllers
         [Route("api/userbudget")]
         public IHttpActionResult UpdateUserBudget([FromBody]UserBudgetDto request)
         {
-            var submitRequest = mapper.Map<UserBudgetDto>(request);
-            var serviceResponse = userBudgetService.UpdateUserBudgetAllocation(submitRequest.ItemID, submitRequest.UserBudget);
-            return Ok(serviceResponse ? HttpStatusCode.OK : HttpStatusCode.InternalServerError);
+            var serviceResponse = userBudgetService.UpdateUserBudgetAllocation(request.ItemID, request.UserBudget);
+            return ResponseJson(serviceResponse);
         }
     }
 }

@@ -13,6 +13,8 @@ using CMS.Helpers;
 using CMS.DataEngine;
 using CMS.CustomTables;
 using Kadena.Models.CreditCard;
+using Kadena.Models.UserBudget;
+using Kadena.Models.FyBudget;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -104,6 +106,18 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Processed, opt => opt.MapFrom(src => src.GetBooleanValue("Processed", false)))
                 .ForMember(dest => dest.OrderJson, opt => opt.MapFrom(src => src.GetStringValue("OrderJson", string.Empty)))
                 .ForMember(dest => dest.RedirectUrl, opt => opt.MapFrom(src => src.GetStringValue("RedirectUrl", string.Empty)));
+            CreateMap<UserBudgetItem, CustomTableItem>()
+                .ForMember(dest => dest.ItemID, opt => opt.MapFrom(src => src.ItemID))
+                .ForMember(dest => dest.GetValue("UserID", default(int)), opt => opt.MapFrom(src => src.UserID))
+                .ForMember(dest => dest.GetValue("Budget", default(decimal)), opt => opt.MapFrom(src => src.Budget))
+                .ForMember(dest => dest.GetValue("UserID", default(int)), opt => opt.MapFrom(src => src.UserRemainingBudget))
+                .ForMember(dest => dest.GetValue("Year", string.Empty), opt => opt.MapFrom(src => src.Year));
+            CreateMap<FiscalYear, CustomTableItem>()
+                .ForMember(dest => dest.ItemID, opt => opt.MapFrom(src => src.ItemID))
+                .ForMember(dest => dest.GetValue("Year", string.Empty), opt => opt.MapFrom(src => src.Year))
+                .ForMember(dest => dest.GetValue("FiscalYearStartDate", default(DateTime)), opt => opt.MapFrom(src => src.StartDate))
+                .ForMember(dest => dest.GetValue("FiscalYearEndDate", default(DateTime)), opt => opt.MapFrom(src => src.EndDate));
+
         }
     }
 }

@@ -372,7 +372,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 SKUInfo newSkuProduct = new SKUInfo()
                 {
                     SKUName = ValidationHelper.GetString(txtShortDes.Text, string.Empty),
-                    SKUNumber = ValidationHelper.GetString(ddlPosNo.SelectedValue, string.Empty),
+                    SKUNumber = ValidationHelper.GetString("00000", string.Empty),
                     SKUDescription = ValidationHelper.GetString(txtLongDes.Text, string.Empty),
                     SKUPrice = ValidationHelper.GetDouble(txtActualPrice.Text, default(double)),
                     SKUEnabled = ValidationHelper.GetBoolean(ddlStatus.SelectedValue, false),
@@ -386,6 +386,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 {
                     newSkuProduct.SKUValidUntil = ValidationHelper.GetDateTime(txtExpDate.Text, DateTime.Now);
                 }
+                newSkuProduct.SetValue("SKUProductCustomerReferenceNumber", ValidationHelper.GetString(ddlPosNo.SelectedValue, string.Empty));
                 products.DocumentName = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
                 products.DocumentCulture = CurrentDocument.DocumentCulture;
                 SKUInfoProvider.SetSKUInfo(newSkuProduct);
@@ -438,7 +439,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         updateProduct.SKUImagePath = UploadImage.UploadImageToMeadiaLibrary(productImage, libraryFolderName);
                     }
                     updateProduct.SKUName = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
-                    updateProduct.SKUNumber = ValidationHelper.GetString(ddlPosNo.SelectedValue, string.Empty);
                     updateProduct.SKUShortDescription = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
                     updateProduct.SKUDescription = ValidationHelper.GetString(txtLongDes.Text, string.Empty);
                     updateProduct.SKUPrice = ValidationHelper.GetDouble(txtActualPrice.Text, default(double));

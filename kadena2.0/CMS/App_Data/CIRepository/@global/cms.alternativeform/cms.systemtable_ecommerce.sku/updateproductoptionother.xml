@@ -162,6 +162,7 @@ ByProduct;{$general.yes$}
         </properties>
       </field>
       <field column="SKUMaxItemsInOrder" visibility="" />
+      <field column="SKUCustomerReferenceNumber" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Option (Products) - Other properties</FormDisplayName>

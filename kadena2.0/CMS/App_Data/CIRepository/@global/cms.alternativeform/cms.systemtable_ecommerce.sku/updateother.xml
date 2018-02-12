@@ -183,6 +183,7 @@
       <field column="SKUConversionName" guid="0132fdb3-0cfc-4966-99ce-a7d8cfd4bf9a" />
       <field column="SKUConversionValue" guid="870a3279-5120-4bc6-817c-318360a7fbb3" />
       <field column="SKUParentSKUID" guid="cfda202f-ccbf-47b8-9b24-d6feae3a470c" />
+      <field column="SKUCustomerReferenceNumber" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Product - Other properties</FormDisplayName>
