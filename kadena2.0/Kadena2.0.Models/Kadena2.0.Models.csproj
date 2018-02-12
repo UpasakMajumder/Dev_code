@@ -177,6 +177,7 @@
     <Compile Include="TemplatedProduct\ProductTemplatesHeader.cs" />
     <Compile Include="TemplatedProduct\SortingType.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="UserBudget\UserBudgetItem.cs" />
     <Compile Include="ValidationFieldResult.cs" />
   </ItemGroup>
   <ItemGroup>

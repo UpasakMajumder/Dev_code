@@ -133,10 +133,10 @@ public partial class CMSWebParts_Kadena_FYBudget_FyBudget : CMSAbstractWebPart
                         userBudgetDetails.Add(new FyBudget()
                         {
                             ItemID = newUserRecord.ItemID,
-                            Budget = newUserRecord.GetValue("Budget", default(decimal)),
+                            Budget = newUserRecord.Budget,
                             IsYearEnded = fisYear.GetValue("FiscalYearEndDate", default(DateTime)) < DateTime.Now,
-                            UserID = newUserRecord.GetValue("UserID", default(int)),
-                            UserRemainingBudget = newUserRecord.GetValue("UserRemainingBudget", default(decimal)),
+                            UserID = newUserRecord.UserID,
+                            UserRemainingBudget = newUserRecord.UserRemainingBudget,
                             Year = fisYear.GetValue("Year", string.Empty)
                         });
                     }

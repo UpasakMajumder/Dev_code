@@ -1,5 +1,6 @@
 ﻿using CMS.CustomTables;
 using Kadena.Models;
+using Kadena.Models.UserBudget;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
@@ -15,7 +16,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         List<CustomTableItem> GetFiscalYearRecords();
 
-        CustomTableItem CreateUserBudgetWithYear(string year, int siteID, int userId);
+        UserBudgetItem CreateUserBudgetWithYear(string year, int siteID, int userId);
 
     }
 }

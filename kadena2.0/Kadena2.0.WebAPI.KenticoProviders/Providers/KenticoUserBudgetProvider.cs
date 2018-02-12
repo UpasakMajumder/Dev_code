@@ -1,7 +1,10 @@
-﻿using CMS.CustomTables;
+﻿using AutoMapper;
+using CMS.CustomTables;
 using CMS.DataEngine;
 using CMS.Helpers;
+using Kadena.Models.UserBudget;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,9 +12,20 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
 {
     public class KenticoUserBudgetProvider : IkenticoUserBudgetProvider
     {
+        private readonly IMapper mapper;
+
         private readonly string CustomTableClassName = "KDA.UserFYBudgetAllocation";
 
         private readonly string FiscalYearClassName = "KDA.FiscalYearManagement";
+
+        public KenticoUserBudgetProvider(IMapper mapper)
+        {
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(mapper));
+            }
+            this.mapper = mapper;
+        }
         public string UpdateUserBudgetAllocation(int itemID, double userBudget)
         {
             var userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("ItemID", itemID).FirstOrDefault();
@@ -53,7 +67,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             return fiscalYearData;
         }
 
-        public CustomTableItem CreateUserBudgetWithYear(string year, int siteID, int userId)
+        public UserBudgetItem CreateUserBudgetWithYear(string year, int siteID, int userId)
         {
             DataClassInfo customTable = DataClassInfoProvider.GetDataClassInfo(CustomTableClassName);
             CustomTableItem newCustomTableItem = CustomTableItem.New(CustomTableClassName);
@@ -65,9 +79,9 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 newCustomTableItem.SetValue("UserRemainingBudget", default(decimal));
                 newCustomTableItem.SetValue("SiteID", siteID);
                 newCustomTableItem.Insert();
-                return newCustomTableItem;
+                return mapper.Map<UserBudgetItem>(newCustomTableItem);
             }
-            return newCustomTableItem;
+            return mapper.Map<UserBudgetItem>(newCustomTableItem);
         }
     }
 }
