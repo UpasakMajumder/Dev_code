@@ -245,6 +245,8 @@ namespace Kadena2.Container.Default
             CreateMap<SaveTokenDataRequestDto, SaveTokenData>();
             CreateMap<CartItems, ChangeItemQuantityResponseDto>()
                 .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src));
+            CreateMap<DeliveryAddresses, ChangeDeliveryAddressResponseDto>()
+                .ForMember(dest => dest.DeliveryAddresses, opt => opt.MapFrom(src => src));
         }
     }
 }

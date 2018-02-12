@@ -89,7 +89,7 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult SelectAddress([FromBody]ChangeSelectionRequestDto request)
         {
             var result = service.SelectAddress(request.Id);
-            var resultDto = mapper.Map<CheckoutPageDTO>(result);
+            var resultDto = mapper.Map<ChangeDeliveryAddressResponseDto>(result);
             return ResponseJson(resultDto);
         }
 

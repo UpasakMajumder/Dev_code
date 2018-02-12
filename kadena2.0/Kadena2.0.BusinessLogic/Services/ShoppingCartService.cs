@@ -88,15 +88,13 @@ namespace Kadena.BusinessLogic.Services
             var cartItems = shoppingCart.GetShoppingCartItems();
             var cartItemsTotals = shoppingCart.GetShoppingCartTotals();
             var countOfItemsString = cartItems.Length == 1 ? resources.GetResourceString("Kadena.Checkout.ItemSingular") : resources.GetResourceString("Kadena.Checkout.ItemPlural");
-            var userNotificationString = GetUserNotificationString();
-            var otherAddressEnabled = GetOtherAddressSettingsValue();
             var emailConfirmationEnabled = resources.GetSettingsKey("KDA_UseNotificationEmailsOnCheckout") == bool.TrueString;
 
             var checkoutPage = new CheckoutPage()
             {
                 EmptyCart = checkoutfactory.CreateCartEmptyInfo(cartItems),
                 Products = checkoutfactory.CreateProducts(cartItems, cartItemsTotals, countOfItemsString),
-                DeliveryAddresses = checkoutfactory.CreateDeliveryAddresses(addresses.ToList(), userNotificationString, otherAddressEnabled),
+                DeliveryAddresses = GetDeliveryAddresses(),
                 PaymentMethods = checkoutfactory.CreatePaymentMethods(paymentMethods),
                 Submit = checkoutfactory.CreateSubmitButton(),
                 ValidationMessage = resources.GetResourceString("Kadena.Checkout.ValidationError"),
@@ -280,12 +278,23 @@ namespace Kadena.BusinessLogic.Services
             shoppingCart.SelectShipping(id);
         }
 
-        public CheckoutPage SelectAddress(int id)
+        public DeliveryAddresses SelectAddress(int id)
         {
             shoppingCart.SetShoppingCartAddress(id);
-            var checkoutPage = GetCheckoutPage();
-            checkoutPage.DeliveryAddresses.CheckAddress(id);
-            return checkoutPage;
+            return GetDeliveryAddresses(id);
+        }
+
+        private DeliveryAddresses GetDeliveryAddresses(int checkedAddressId = 0)
+        {
+            var customerAddresses = kenticoUsers.GetCustomerAddresses(AddressType.Shipping);
+            var userNotificationString = GetUserNotificationString();
+            var otherAddressEnabled = GetOtherAddressSettingsValue();
+
+            var addresses = checkoutfactory.CreateDeliveryAddresses(customerAddresses.ToList(), userNotificationString, otherAddressEnabled);
+
+            addresses.CheckAddress(checkedAddressId);
+
+            return addresses;
         }
 
         public CartItems ChangeItemQuantity(int id, int quantity)
