@@ -29,7 +29,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoLocalizationProvider localization;
         private readonly IKenticoPermissionsProvider permissions;
         private readonly IKenticoBusinessUnitsProvider businessUnits;
-        
+
 
         public OrderDetailService(IMapper mapper,
             IOrderViewClient orderViewClient,
@@ -253,7 +253,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 TrackingIdPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix"),
                 ProductStatusPrefix = resources.GetResourceString("Kadena.Order.ProductStatusPrefix"),
                 ProductStatus = products.GetProductStatus(i.SkuId),
-                Options = i.Attributes?.Select(a => new ItemOption { Name = a.Key, Value = a.Value }) ?? Enumerable.Empty<ItemOption>()
+                Options = i.Attributes?.Select(a => new ItemOption { Name = products.GetOptionCategory(a.Key)?.DisplayName ?? a.Key, Value = a.Value }) ?? Enumerable.Empty<ItemOption>()
             }).ToList();
 
 

@@ -320,7 +320,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 {
                     var variant = new ProductVariant(i.SKUID);
                     var attributes = variant.ProductAttributes.AsEnumerable();
-                    cartItem.Options = attributes.Select(a => new ItemOption { Name = a.SKUOptionCategory.CategoryDisplayName, Value = a.SKUName });
+                    cartItem.Options = attributes.Select(a => new ItemOption { Name = a.SKUOptionCategory.CategoryName, Value = a.SKUName });
                 }
                 else
                 {

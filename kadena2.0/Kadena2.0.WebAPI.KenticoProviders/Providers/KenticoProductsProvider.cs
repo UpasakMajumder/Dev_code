@@ -218,5 +218,12 @@ namespace Kadena.WebAPI.KenticoProviders
             CustomTableItem userProductAllocation= CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
             return userProductAllocation != null ? userProductAllocation.GetValue<int>("Quantity", default(int)) : default(int);
         }
+
+        public OptionCategory GetOptionCategory(string codeName)
+        {
+            var category = BaseAbstractInfoProvider
+                .GetInfoByName(OptionCategoryInfo.OBJECT_TYPE, codeName);
+            return mapper.Map<OptionCategory>(category);
+        }
     }
 }
