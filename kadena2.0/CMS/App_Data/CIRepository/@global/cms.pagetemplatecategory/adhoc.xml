@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.pagetemplatecategory>
+  <CategoryDisplayName>Ad-hoc</CategoryDisplayName>
+  <CategoryGUID>417eafbb-0c0c-43b9-988a-8bc5cb193f77</CategoryGUID>
+  <CategoryName>AdHoc</CategoryName>
+  <CategoryParentID>
+    <CodeName>/</CodeName>
+    <GUID>532264bf-95e9-4035-b4ce-fe403c81781a</GUID>
+    <ObjectType>cms.pagetemplatecategory</ObjectType>
+  </CategoryParentID>
+</cms.pagetemplatecategory>
