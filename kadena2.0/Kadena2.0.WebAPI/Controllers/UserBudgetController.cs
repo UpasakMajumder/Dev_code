@@ -34,7 +34,7 @@ namespace Kadena.WebAPI.Controllers
         [Route("api/userbudget")]
         public IHttpActionResult UpdateUserBudget([FromBody]UserBudgetDto request)
         {
-            var serviceResponse = (string)userBudgetService.UpdateUserBudgetAllocation(request.ItemID, request.UserBudget);
+            var serviceResponse = userBudgetService.UpdateUserBudgetAllocation(request.ItemID, request.UserBudget);
             return ResponseJson(serviceResponse);
         }
     }
