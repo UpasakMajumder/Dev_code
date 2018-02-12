@@ -72,6 +72,12 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
+                if (!DIContainer.Resolve<IShoppingCartProvider>().ValidateAllCarts(userID: CurrentUser.UserID))
+                {
+                    Response.Cookies["status"].Value = QueryStringStatus.InvalidCartItems;
+                    Response.Cookies["status"].HttpOnly = false;
+                    return;
+                }
                 var loggedInUserCartIDs = GetCartsByUserID(CurrentUser.UserID, ProductType.GeneralInventory);
                 settingKeys = DIContainer.Resolve<IKenticoResourceService>();
                 var orderTemplateSettingKey = settingKeys.GetSettingsKey("KDA_OrderReservationEmailTemplateGI");
