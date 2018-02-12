@@ -1,4 +1,5 @@
 ﻿using CMS.DataEngine;
+using CMS.DocumentEngine.Types.KDA;
 using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Globalization;
@@ -529,6 +530,29 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             catch (Exception ex)
             {
                 EventLogProvider.LogInformation("ShoppingCartHelper", "UpdateAvailableSKUQuantity", ex.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// Updates remaining budget for every order placed.
+        /// </summary>
+        /// <param name="orderDetails"></param>
+        /// <returns></returns>
+        public static void UpdateRemainingBudget(OrderDTO orderDetails, int userID)
+        {
+            try
+            {
+                var campaignFiscalYear = DIContainer.Resolve<IKenticoCampaignsProvider>().GetCampaignFiscalYear(orderDetails.Campaign.ID);
+                var totalToBeDeducted = orderDetails.TotalPrice + orderDetails.TotalShipping;
+                var fiscalYear = orderDetails.Type == OrderType.generalInventory ?
+                                 ValidationHelper.GetString(orderDetails.OrderDate.Year, string.Empty) :
+                                 orderDetails.Type == OrderType.prebuy ? campaignFiscalYear : string.Empty;
+                DIContainer.Resolve<IkenticoUserBudgetProvider>().UpdateUserBudgetAllocationRecords(userID,fiscalYear,totalToBeDeducted);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("ShoppingCartHelper", "UpdateRemainingBudget", ex.Message);
             }
         }
     }
