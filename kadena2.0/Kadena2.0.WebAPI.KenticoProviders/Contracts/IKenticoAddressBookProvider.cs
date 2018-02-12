@@ -10,5 +10,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         Dictionary<int, string> GetAddressNames();
         List<DeliveryAddress> GetAddressesByAddressIds(List<int> addresssIds);
+
+        List<AddressData> GetAddressesList(int customerID);
     }
 }

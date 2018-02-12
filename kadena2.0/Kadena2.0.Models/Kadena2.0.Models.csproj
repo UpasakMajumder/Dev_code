@@ -44,6 +44,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressData\AddressData.cs" />
     <Compile Include="AddressType.cs" />
     <Compile Include="BillingAddress.cs" />
     <Compile Include="Brand\Brand.cs" />

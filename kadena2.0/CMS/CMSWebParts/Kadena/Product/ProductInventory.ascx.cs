@@ -8,6 +8,7 @@ using CMS.EventLog;
 using CMS.Helpers;
 using CMS.MediaLibrary;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.Container.Default;
 using System;
@@ -37,7 +38,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <summary>
     /// get the open campaign
     /// </summary>
-    public Campaign OpenCampaign
+    public CMS.DocumentEngine.Types.KDA.Campaign OpenCampaign
     {
         get
         {
@@ -699,7 +700,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         try
         {
-            List<AddressInfo> myAddressList = GetMyAddressBookList();
+            List<AddressData> myAddressList = GetMyAddressBookList();
             if (myAddressList.Count > 0)
             {
                 List<int> shoppingCartIDs = ShoppingCartInfoProvider.GetShoppingCarts()
@@ -764,13 +765,13 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// Gets the distributors created by current user
     /// </summary>
     /// <returns></returns>
-    private List<AddressInfo> GetMyAddressBookList()
+    private List<AddressData> GetMyAddressBookList()
     {
-        List<AddressInfo> myAddressList = new List<AddressInfo>();
+        List<AddressData> myAddressList = new List<AddressData>();
         int currentCustomerId = DIContainer.Resolve<IKenticoCustomerProvider>().GetCustomerIDByUserID(CurrentUser.UserID);
         if (currentCustomerId != default(int))
         {
-            myAddressList = AddressInfoProvider.GetAddresses(currentCustomerId).Columns("AddressID", "AddressPersonalName").WhereEquals("Status", true).ToList();
+            myAddressList = DIContainer.Resolve<IKenticoAddressBookProvider>().GetAddressesList(currentCustomerId);
         }
         return myAddressList;
     }

@@ -104,6 +104,9 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Processed, opt => opt.MapFrom(src => src.GetBooleanValue("Processed", false)))
                 .ForMember(dest => dest.OrderJson, opt => opt.MapFrom(src => src.GetStringValue("OrderJson", string.Empty)))
                 .ForMember(dest => dest.RedirectUrl, opt => opt.MapFrom(src => src.GetStringValue("RedirectUrl", string.Empty)));
+            CreateMap<AddressData, AddressInfo>()
+                .ForMember(dest => dest.AddressID, opt => opt.MapFrom(src => src.AddressID))
+                .ForMember(dest => dest.AddressPersonalName, opt => opt.MapFrom(src => src.AddressPersonalName));
         }
     }
 }
