@@ -96,7 +96,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Url, opt => opt.MapFrom(src => src.DocumentUrlPath))
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => URLHelper.GetAbsoluteUrl(src.GetValue("ProductCategoryImage", string.Empty))))
                 .ForMember(dest => dest.ProductBordersEnabled, opt => opt.MapFrom(src => src.GetBooleanValue("ProductCategoryBordersEnabled", false)))
-                .AfterMap((src, dest) => dest.Border = new Border { Exists = src.GetBooleanValue("ProductCategoryBordersEnabled", false)});
+                .AfterMap((src, dest) => dest.Border = new Border { Exists = src.GetBooleanValue("ProductCategoryBordersEnabled", false) });
             CreateMap<CustomTableItem, Submission>()
                 .ForMember(dest => dest.SubmissionId, opt => opt.MapFrom(src => src.GetGuidValue("SubmissionId", Guid.Empty)))
                 .ForMember(dest => dest.AlreadyVerified, opt => opt.MapFrom(src => src.GetBooleanValue("AlreadyVerified", false)))
@@ -106,20 +106,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Processed, opt => opt.MapFrom(src => src.GetBooleanValue("Processed", false)))
                 .ForMember(dest => dest.OrderJson, opt => opt.MapFrom(src => src.GetStringValue("OrderJson", string.Empty)))
                 .ForMember(dest => dest.RedirectUrl, opt => opt.MapFrom(src => src.GetStringValue("RedirectUrl", string.Empty)));
-            CreateMap<UserBudgetItem, CustomTableItem>()
-                .ForMember(dest => dest.ItemID, opt => opt.MapFrom(src => src.ItemID))
-                .ForMember(dest => dest.GetValue("UserID", default(int)), opt => opt.MapFrom(src => src.UserID))
-                .ForMember(dest => dest.GetValue("Budget", default(decimal)), opt => opt.MapFrom(src => src.Budget))
-                .ForMember(dest => dest.GetValue("UserID", default(int)), opt => opt.MapFrom(src => src.UserRemainingBudget))
-                .ForMember(dest => dest.GetValue("Year", string.Empty), opt => opt.MapFrom(src => src.Year));
-            CreateMap<FiscalYear, CustomTableItem>()
-                .ForMember(dest => dest.ItemID, opt => opt.MapFrom(src => src.ItemID))
-                .ForMember(dest => dest.GetValue("Year", string.Empty), opt => opt.MapFrom(src => src.Year))
-                .ForMember(dest => dest.GetValue("FiscalYearStartDate", default(DateTime)), opt => opt.MapFrom(src => src.StartDate))
-                .ForMember(dest => dest.GetValue("FiscalYearEndDate", default(DateTime)), opt => opt.MapFrom(src => src.EndDate));
-            CreateMap<AddressData, AddressInfo>()
-                .ForMember(dest => dest.AddressID, opt => opt.MapFrom(src => src.AddressID))
-                .ForMember(dest => dest.AddressPersonalName, opt => opt.MapFrom(src => src.AddressPersonalName));
+            CreateMap<AddressInfo, AddressData>();
         }
     }
 }

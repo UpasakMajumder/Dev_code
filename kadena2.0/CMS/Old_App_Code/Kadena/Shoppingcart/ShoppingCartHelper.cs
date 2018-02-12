@@ -328,7 +328,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     AddressLine1 = distributorAddress.AddressLine1,
                     AddressLine2 = distributorAddress.AddressLine2,
                     City = distributorAddress.AddressCity,
-                    State = state.StateName,
+                    State = state.StateCode,
                     Zip = distributorAddress.GetStringValue("AddressZip", string.Empty),
                     KenticoCountryID = distributorAddress.AddressCountryID,
                     Country = country.CountryName,
@@ -455,7 +455,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                             SKUNumber = item.SKU.SKUNumber
                         },
                         UnitCount = item.CartItemUnits,
-                        UnitOfMeasure = SKUMeasuringUnits.Lb,
+                        UnitOfMeasure = SKUMeasuringUnits.EA,
                         UnitPrice = ValidationHelper.GetDecimal(item.UnitPrice, default(decimal))
                     });
                 });
