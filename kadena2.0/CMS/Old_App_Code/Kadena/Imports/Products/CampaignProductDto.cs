@@ -13,11 +13,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         [Header(2, "POS Number *")]
         [Required]
-        [MaxLength(30)]
-        public string SKU { get; set; }
+        [MaxLength(50)]
+        public string POSNumber { get; set; }
 
-        [Header(3, "Cenveo ID")]
-        [MaxLength(30)]
+        [Header(3, "Cenveo ID (SKU Number)")]
+        [MaxLength(50)]
         public string CenveoID { get; set; }
 
         [Header(4, "Product Name *")]
@@ -71,15 +71,18 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [MaxLength(20)]
         public string Status { get; set; }
 
-        [Header(16, "Item Specs ID")]
-        public string ItemSpecsID { get; set; }
+        [Header(16, "Item Specs")]
+        public string ItemSpecs { get; set; }
 
-        [Header(17, "Image URL")]
-        [MaxLength(200)]
+        [Header(17, "Custom Item Specs")]
+        public string CustomItemSpecs { get; set; }
+
+        [Header(18, "Image URL")]
+        [MaxLength(400)]
         public string ImageURL { get; set; }
 
-        [Header(18, "Thumbnail URL")]
-        [MaxLength(200)]
+        [Header(19, "Thumbnail URL")]
+        [MaxLength(400)]
         public string ThumbnailURL { get; set; }
     }
 }
