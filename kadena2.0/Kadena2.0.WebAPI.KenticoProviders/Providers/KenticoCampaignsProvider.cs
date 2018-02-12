@@ -27,6 +27,15 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
+        public TreeNode GetCampaign(int campaignID)
+        {
+            TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
+            TreeNode campaign = tree.SelectNodes(PageTypeClassName)
+                                    .Where("CampaignID", QueryOperator.Equals, campaignID)
+                                    .OnCurrentSite();
+            return campaign;
+        }
+
         public OrderCampaginHead GetCampaigns(string orderType)
         {
             List<OrderCampaginItem> campaigns = new List<OrderCampaginItem>();
