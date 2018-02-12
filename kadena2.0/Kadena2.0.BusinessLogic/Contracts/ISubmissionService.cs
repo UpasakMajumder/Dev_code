@@ -8,7 +8,7 @@ namespace Kadena.BusinessLogic.Contracts
         Submission GenerateNewSubmission(string orderJson = "");
         bool VerifySubmissionId(string submissionId);
         Submission GetSubmission(string submissionId);
-        void SetAsProcessed(Submission submission);
+        void SetAsProcessed(Submission submission, string redirectUrl);
         void DeleteProcessedSubmission(Submission submission);
     }
 }

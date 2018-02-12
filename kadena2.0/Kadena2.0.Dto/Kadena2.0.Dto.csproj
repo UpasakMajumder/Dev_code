@@ -53,7 +53,8 @@
     <Compile Include="Brands\BrandDto.cs" />
     <Compile Include="BusinessUnits\BusinessUnitDto.cs" />
     <Compile Include="Checkout\ItemOptionDto.cs" />
-    <Compile Include="CreditCard\3DSi\Responses\GetSubmissionIdResponseDto.cs" />
+    <Compile Include="CreditCard\3DSi\Requests\SaveTokenDataRequestDto.cs" />
+    <Compile Include="CreditCard\3DSi\Responses\CreditCardPaymentDoneDto.cs" />
     <Compile Include="CustomerData\UserBudgetDto.cs" />
     <Compile Include="Product\BorderDto.cs" />
     <Compile Include="Product\PriceDto.cs" />
@@ -91,9 +92,8 @@
     <Compile Include="Checkout\PaymentMethodDTO.cs" />
     <Compile Include="Checkout\Requests\ChangeItemQuantityRequestDto.cs" />
     <Compile Include="Checkout\Requests\ChangeSelectionRequestDto.cs" />
-    <Compile Include="CreditCard\3DSi\Requests\ApproveRequestDto.cs" />
-    <Compile Include="CreditCard\3DSi\Requests\SaveTokenRequestDto.cs" />
-    <Compile Include="CreditCard\3DSi\Responses\ApproveResponseDto.cs" />
+    <Compile Include="CreditCard\3DSi\Requests\ApproveSubmissionRequestDto.cs" />
+    <Compile Include="CreditCard\3DSi\Responses\ApproveSubmissionResponseDto.cs" />
     <Compile Include="CreditCard\3DSi\Responses\SaveTokenResponseDto.cs" />
     <Compile Include="CreditCard\AdditionalAmountsDto.cs" />
     <Compile Include="CreditCard\MicroserviceRequests\AuthorizeAmountRequestDto.cs" />
@@ -102,7 +102,6 @@
     <Compile Include="CreditCard\MicroserviceRequests\SaveCardTokenRequestDto.cs" />
     <Compile Include="CreditCard\UserDto.cs" />
     <Compile Include="CreditCard\MicroserviceResponses\AuthorizeAmountResponseDto.cs" />
-    <Compile Include="CreditCard\MicroserviceResponses\SaveCardTokenResponseDto.cs" />
     <Compile Include="CustomerData\DistributorDTO.cs" />
     <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\AddressDto.cs" />
     <Compile Include="EstimateDeliveryPrice\MicroserviceRequests\EstimateDeliveryPriceRequestDto.cs" />
@@ -198,9 +197,7 @@
     <Compile Include="SubmitOrder\MicroserviceRequests\OrderItemDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\OrderItemTypeDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\OrderStatusDTO.cs" />
-    <Compile Include="SubmitOrder\MicroserviceRequests\OrderTrackingDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\PaymentOptionDTO.cs" />
-    <Compile Include="SubmitOrder\MicroserviceRequests\PaymentResultDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\ShippingOptionDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\SiteDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\SKUDTO.cs" />

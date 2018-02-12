@@ -309,16 +309,7 @@ namespace Kadena.Models.SiteSettings
         [DefaultValueAttribute(null)]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkNyZWF0ZSBQcm9ncmFtIFBhZ2UgVVJMIiwiS2V5TmFtZSI6IktEQV9DcmVhdGVQcm9ncmFtVVJMIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6bnVsbCwiS2V5RGVzY3JpcHRpb24iOiIiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOiJzZWxlY3RzaW5nbGVwYXRoIiwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6IjxzZXR0aW5ncz48QWxsb3dTZXRQZXJtaXNzaW9ucz5GYWxzZTwvQWxsb3dTZXRQZXJtaXNzaW9ucz48U2VsZWN0YWJsZVBhZ2VUeXBlcz4wPC9TZWxlY3RhYmxlUGFnZVR5cGVzPjwvc2V0dGluZ3M+IiwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiUHJvZ3JhbSBNYW5hZ2VtZW50In19")]
         public const string KDA_CreateProgramURL = "KDA_CreateProgramURL";
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
-        [GroupAttribute("Credit Card Payment")]
-        [DefaultValueAttribute(@"yCode1234572")]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkNyZWRpdCBDYXJkIENvZGUiLCJLZXlOYW1lIjoiS0RBX0NyZWRpdENhcmRfQ29kZSIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOiJ5Q29kZTEyMzQ1NzIiLCJLZXlEZXNjcmlwdGlvbiI6IiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiQ3JlZGl0IENhcmQgUGF5bWVudCJ9fQ==")]
-        public const string KDA_CreditCard_Code = "KDA_CreditCard_Code";
-
+       
         /// <summary>
         /// KDA Credit Card InsertCardDetailsURL
         /// </summary>
@@ -327,24 +318,6 @@ namespace Kadena.Models.SiteSettings
         [DefaultValueAttribute(@"/Recent-orders/Insert-card-details")]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQSBDcmVkaXQgQ2FyZCBJbnNlcnRDYXJkRGV0YWlsc1VSTCIsIktleU5hbWUiOiJLREFfQ3JlZGl0Q2FyZF9JbnNlcnRDYXJkRGV0YWlsc1VSTCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOiIvUmVjZW50LW9yZGVycy9JbnNlcnQtY2FyZC1kZXRhaWxzIiwiS2V5RGVzY3JpcHRpb24iOiJLREEgQ3JlZGl0IENhcmQgSW5zZXJ0Q2FyZERldGFpbHNVUkwiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiS2FkZW5hIiwiTmFtZSI6IkthZGVuYSIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkNNUy5TZXR0aW5ncyJ9LCJEaXNwbGF5TmFtZSI6IkNyZWRpdCBDYXJkIFBheW1lbnQifX0=")]
         public const string KDA_CreditCard_InsertCardDetailsURL = "KDA_CreditCard_InsertCardDetailsURL";
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
-        [GroupAttribute("Credit Card Payment")]
-        [DefaultValueAttribute(@"Kadena2.0")]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkNyZWRpdCBDYXJkIExvY2F0aW9uIENvZGUiLCJLZXlOYW1lIjoiS0RBX0NyZWRpdENhcmRfTG9jYXRpb25Db2RlIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6IkthZGVuYTIuMCIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJDcmVkaXQgQ2FyZCBQYXltZW50In19")]
-        public const string KDA_CreditCard_LocationCode = "KDA_CreditCard_LocationCode";
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
-        [GroupAttribute("Credit Card Payment")]
-        [DefaultValueAttribute(@"Kadena2.0")]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkNyZWRpdCBDYXJkIE1lcmNoYW50IENvZGUiLCJLZXlOYW1lIjoiS0RBX0NyZWRpdENhcmRfTWVyY2hhbnRDb2RlIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6IkthZGVuYTIuMCIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJDcmVkaXQgQ2FyZCBQYXltZW50In19")]
-        public const string KDA_CreditCard_MerchantCode = "KDA_CreditCard_MerchantCode";
 
         /// <summary>
         /// 
@@ -1472,6 +1445,96 @@ namespace Kadena.Models.SiteSettings
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6Ildvcmtncm91cCBOYW1lIiwiS2V5TmFtZSI6IktEQV9Xb3JrZ3JvdXBOYW1lIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6IlBvbGFyaXMiLCJLZXlEZXNjcmlwdGlvbiI6IiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiSy1Tb3VyY2UifX0=")]
         public const string KDA_WorkgroupName = "KDA_WorkgroupName";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Credit Card Payment")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9DcmVkaXRDYXJkX1Rlcm1pbmFsSWRlbnRpZmllcl9NZXJjaGFudENvZGUiLCJLZXlOYW1lIjoiS0RBX0NyZWRpdENhcmRfVGVybWluYWxJZGVudGlmaWVyX01lcmNoYW50Q29kZSIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJDcmVkaXRDYXJkIDNkc2kifX0=")]
+        public const string KDA_CreditCard_TerminalIdentifier_MerchantCode = "KDA_CreditCard_TerminalIdentifier_MerchantCode";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Credit Card Payment")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9DcmVkaXRDYXJkX1Rlcm1pbmFsSWRlbnRpZmllcl9UZXJtaW5hbENvZGUiLCJLZXlOYW1lIjoiS0RBX0NyZWRpdENhcmRfVGVybWluYWxJZGVudGlmaWVyX1Rlcm1pbmFsQ29kZSIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJDcmVkaXRDYXJkIDNkc2kifX0=")]
+        public const string KDA_CreditCard_TerminalIdentifier_TerminalCode = "KDA_CreditCard_TerminalIdentifier_TerminalCode";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Credit Card Payment")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9DcmVkaXRDYXJkX1Rlcm1pbmFsSWRlbnRpZmllcl9Mb2NhdGlvbkNvZGUiLCJLZXlOYW1lIjoiS0RBX0NyZWRpdENhcmRfVGVybWluYWxJZGVudGlmaWVyX0xvY2F0aW9uQ29kZSIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJDcmVkaXRDYXJkIDNkc2kifX0=")]
+        public const string KDA_CreditCard_TerminalIdentifier_LocationCode = "KDA_CreditCard_TerminalIdentifier_LocationCode";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Credit Card Payment")]
+        [DefaultValueAttribute(@"Kadena2.0")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkNyZWRpdCBDYXJkIE1lcmNoYW50IENvZGUiLCJLZXlOYW1lIjoiS0RBX0NyZWRpdENhcmRfTWVyY2hhbnRDb2RlIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6IkthZGVuYTIuMCIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJDcmVkaXQgQ2FyZCBQYXltZW50In19")]
+        public const string KDA_CreditCard_MerchantCode = "KDA_CreditCard_MerchantCode";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Credit Card Payment")]
+        [DefaultValueAttribute(@"Kadena2.0")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkNyZWRpdCBDYXJkIExvY2F0aW9uIENvZGUiLCJLZXlOYW1lIjoiS0RBX0NyZWRpdENhcmRfTG9jYXRpb25Db2RlIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6IkthZGVuYTIuMCIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJDcmVkaXQgQ2FyZCBQYXltZW50In19")]
+        public const string KDA_CreditCard_LocationCode = "KDA_CreditCard_LocationCode";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Credit Card Payment")]
+        [DefaultValueAttribute(@"yCode1234572")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkNyZWRpdCBDYXJkIENvZGUiLCJLZXlOYW1lIjoiS0RBX0NyZWRpdENhcmRfQ29kZSIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOiJ5Q29kZTEyMzQ1NzIiLCJLZXlEZXNjcmlwdGlvbiI6IiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiQ3JlZGl0IENhcmQgUGF5bWVudCJ9fQ==")]
+        public const string KDA_CreditCard_Code = "KDA_CreditCard_Code";
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Credit Card Payment")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9DcmVkaXRDYXJkX1BheW1lbnRSZXN1bHRQYWdlIiwiS2V5TmFtZSI6IktEQV9DcmVkaXRDYXJkX1BheW1lbnRSZXN1bHRQYWdlIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6bnVsbCwiS2V5RGVzY3JpcHRpb24iOiIiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiS2FkZW5hIiwiTmFtZSI6IkthZGVuYSIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkNNUy5TZXR0aW5ncyJ9LCJEaXNwbGF5TmFtZSI6IkNyZWRpdENhcmQgM2RzaSJ9fQ==")]
+        public const string KDA_CreditCard_PaymentResultPage = "KDA_CreditCard_PaymentResultPage";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Credit Card Payment")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9DcmVkaXRDYXJkXzNEU2lfQXV0aG9yaXplRW5kcG9pbnQiLCJLZXlOYW1lIjoiS0RBX0NyZWRpdENhcmRfM0RTaV9BdXRob3JpemVFbmRwb2ludCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJDcmVkaXRDYXJkIDNkc2kifX0=")]
+        public const string KDA_CreditCard_3DSi_AuthorizeEndpoint = "KDA_CreditCard_3DSi_AuthorizeEndpoint";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Credit Card Payment")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9DcmVkaXRDYXJkX1NhdmVUb2tlblVybCIsIktleU5hbWUiOiJLREFfQ3JlZGl0Q2FyZF9TYXZlVG9rZW5VcmwiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjpudWxsLCJLZXlEZXNjcmlwdGlvbiI6IiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiQ3JlZGl0Q2FyZCAzZHNpIn19")]
+        public const string KDA_CreditCard_SaveTokenUrl = "KDA_CreditCard_SaveTokenUrl";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Credit Card Payment")]
+        [DefaultValueAttribute("https://r0uhzqogra.execute-api.us-east-1.amazonaws.com/Stage")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9Vc2VyRGF0YVNlcnZpY2VVcmwiLCJLZXlOYW1lIjoiS0RBX1VzZXJEYXRhU2VydmljZVVybCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJDcmVkaXQgQ2FyZCBQYXltZW50In19")]
+        public const string KDA_UserDataServiceUrl = "KDA_UserDataServiceUrl";
         /// <summary>
         /// 
         /// </summary>
