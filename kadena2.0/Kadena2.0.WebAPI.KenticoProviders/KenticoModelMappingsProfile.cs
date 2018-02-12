@@ -117,7 +117,9 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.GetValue("Year", string.Empty), opt => opt.MapFrom(src => src.Year))
                 .ForMember(dest => dest.GetValue("FiscalYearStartDate", default(DateTime)), opt => opt.MapFrom(src => src.StartDate))
                 .ForMember(dest => dest.GetValue("FiscalYearEndDate", default(DateTime)), opt => opt.MapFrom(src => src.EndDate));
-
+            CreateMap<AddressData, AddressInfo>()
+                .ForMember(dest => dest.AddressID, opt => opt.MapFrom(src => src.AddressID))
+                .ForMember(dest => dest.AddressPersonalName, opt => opt.MapFrom(src => src.AddressPersonalName));
         }
     }
 }

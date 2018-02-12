@@ -1,5 +1,5 @@
 ﻿using Kadena.Models.RecentOrders;
-using Kadena.Models.CampaignData;
+using CMS.DocumentEngine;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -9,5 +9,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         OrderCampaginHead GetCampaigns(string orderType);
         bool CloseCampaignIBTF(int campaignID);
         string GetCampaignFiscalYear(int campaignID);
+        TreeNode GetCampaign(int campaignID);
     }
 }

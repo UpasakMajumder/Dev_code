@@ -10,5 +10,10 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
         {
             return CustomerInfoProvider.GetCustomers().WhereEquals("CustomerID", customerID).FirstOrDefault()?.CustomerUserID ?? 0;
         }
+
+        public int GetCustomerIDByUserID(int userID)
+        {
+            return CustomerInfoProvider.GetCustomers().WhereEquals("UserID", userID).FirstOrDefault()?.CustomerID ?? 0;
+        }
     }
 }

@@ -15,6 +15,7 @@ using Kadena2.Container.Default;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena.Old_App_Code.Kadena.Shoppingcart;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -108,7 +109,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         UpdateAvailableSKUQuantity(Cart);
                         ProductEmailNotifications.SendEmailNotification(ordersDTO, orderTemplateSettingKey, salesPerson);
                         ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
-                        ShoppingCartHelper.UpdateRemainingBudget(Ordersdto, CurrentUser.UserID);
+                        ShoppingCartHelper.UpdateRemainingBudget(ordersDTO, CurrentUser.UserID);
                     }
                     else
                     {

@@ -39,5 +39,11 @@ namespace Kadena.WebAPI.KenticoProviders
             var addresses = AddressInfoProvider.GetAddresses().WhereIn("AddressID", addressIds).ToList();
             return mapper.Map<List<DeliveryAddress>>(addresses);
         }
+
+        public List<AddressData> GetAddressesList(int customerID)
+        {
+            var addressesList =  AddressInfoProvider.GetAddresses(customerID).Columns("AddressID", "AddressPersonalName").WhereEquals("Status", true).ToList();
+            return mapper.Map<List<AddressData>>(addressesList);
+        }
     }
 }
