@@ -21,7 +21,7 @@ namespace Kadena.BusinessLogic.Services
             this.kenticoUserBudget = kenticoUserBudget;
         }
 
-        public bool UpdateUserBudgetAllocation(int itemID, double userBudget)
+        public string UpdateUserBudgetAllocation(int itemID, double userBudget)
         {
             return kenticoUserBudget.UpdateUserBudgetAllocation(itemID, userBudget);
         }
