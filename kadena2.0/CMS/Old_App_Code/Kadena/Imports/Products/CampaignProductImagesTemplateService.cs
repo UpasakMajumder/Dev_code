@@ -19,6 +19,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             BindBrandList(sheet);
             BindProductCategoryList(sheet);
             BindStatusList(sheet);
+            BindItemSpecsList(sheet);
             return sheet;
         }
 
@@ -80,6 +81,15 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         {
             string[] statusList = new string[] { "Active", "In-Active" };
             AddOneFromManyValidation(15, "ProductStatus", statusList, sheet);
+        }
+
+        private void BindItemSpecsList(ISheet sheet)
+        {
+            string[] itemSpecsList = CustomTableItemProvider.GetItems<ProductItemSpecsItem>().ToList().Select(x => x.ItemSpec).ToArray();
+            if (itemSpecsList != null && itemSpecsList.Count() > 0)
+            {
+                AddOneFromManyValidation(16, "ItemSpecsList", itemSpecsList, sheet);
+            }
         }
     }
 }
