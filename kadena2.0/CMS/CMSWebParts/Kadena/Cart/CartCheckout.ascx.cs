@@ -108,6 +108,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         UpdateAvailableSKUQuantity(Cart);
                         ProductEmailNotifications.SendEmailNotification(ordersDTO, orderTemplateSettingKey, salesPerson);
                         ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
+                        ShoppingCartHelper.UpdateRemainingBudget(Ordersdto, CurrentUser.UserID);
                     }
                     else
                     {

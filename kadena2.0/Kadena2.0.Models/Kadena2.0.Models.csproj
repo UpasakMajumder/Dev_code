@@ -49,6 +49,8 @@
     <Compile Include="Brand\Brand.cs" />
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
     <Compile Include="Campaign.cs" />
+    <Compile Include="CampaignData\CampaignData.cs" />
+    <Compile Include="FyBudget\FyBudget.cs" />
     <Compile Include="Product\Border.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDailogLabel.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialog.cs" />
@@ -175,6 +177,7 @@
     <Compile Include="TemplatedProduct\ProductTemplatesHeader.cs" />
     <Compile Include="TemplatedProduct\SortingType.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="UserBudget\UserBudgetItem.cs" />
     <Compile Include="ValidationFieldResult.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +189,7 @@
       <Name>Kadena2.0.Helpers</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
