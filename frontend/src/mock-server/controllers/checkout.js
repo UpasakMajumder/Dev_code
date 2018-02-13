@@ -1,4 +1,4 @@
-const {
+let {
   emptyCart,
   products,
   deliveryAddresses,
@@ -38,7 +38,7 @@ module.exports.totalPrice = (req, res) => {
 module.exports.changeQuantity = (req, res) => {
   const response = Object.assign({}, wrapper);
   const { body: { id, quantity } } = req;
-  const items = products.items.map((product) => {
+  products.items = products.items.map((product) => {
     return {
       ...product,
       quantity: product.id == id ? quantity : product.quantity
@@ -46,7 +46,7 @@ module.exports.changeQuantity = (req, res) => {
   });
 
   response.payload = {
-    products: { ...products, items }
+    products
   };
   res.json(response);
 };
@@ -54,10 +54,10 @@ module.exports.changeQuantity = (req, res) => {
 module.exports.removeProducs = (req, res) => {
   const response = Object.assign({}, wrapper);
   const { body: { id } } = req;
-  const items = products.items.filter(product => product.id != id);
+  products.items = products.items.filter(product => product.id != id);
 
   response.payload = {
-    products: { ...products, items }
+    products
   };
   res.json(response);
 };
@@ -84,9 +84,20 @@ module.exports.changeDeliveryMethod = (req, res) => {
   const { body: { id } } = req;
 
   const items = deliveryMethods.items.map((deliveryMethod) => {
+    let opened = false;
+    const items = deliveryMethod.items.map((item) => {
+      const checked = item.id == id;
+      opened = checked;
+      return {
+        ...item,
+        checked
+      }
+    });
+
     return {
-      ...deliveryMethods,
-      checked: deliveryMethod.id == id
+      ...deliveryMethod,
+      opened,
+      items
     };
   });
 
@@ -107,7 +118,6 @@ module.exports.submit = (req, res) => {
 
 module.exports.addNewAddress = (req, res) => {
   const response = Object.assign({}, wrapper);
-  const { body } = req;
-  response.payload = body;
+  response.payload = { id: Math.random() };
   res.json(response);
 };

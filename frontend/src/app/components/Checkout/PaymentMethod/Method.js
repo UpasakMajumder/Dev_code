@@ -6,7 +6,7 @@ import SVG from 'app.dump/SVG';
 class Method extends Component {
   static propTypes = {
     validationMessage: PropTypes.string.isRequired,
-    changeShoppingData: PropTypes.func.isRequired,
+    changePaymentMethod: PropTypes.func.isRequired,
     className: PropTypes.string.isRequired,
     checked: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
@@ -24,7 +24,7 @@ class Method extends Component {
   };
 
   changePaymentMethod = (name, id) => {
-    this.props.changeShoppingData(name, id);
+    this.props.changePaymentMethod(name, id);
     this.props.toggleInput(id);
   };
 
@@ -36,7 +36,7 @@ class Method extends Component {
       id,
       inputPlaceholder,
       checkedObj,
-      changeShoppingData,
+      changePaymentMethod,
       shownInput,
       hasInput
     } = this.props;
@@ -46,7 +46,7 @@ class Method extends Component {
       ? (
         <div className="input__wrapper">
           <input
-                onChange={(e) => { changeShoppingData(e.target.name, id, e.target.value); }}
+                onChange={(e) => { changePaymentMethod(e.target.name, id, e.target.value); }}
                 type="text"
                 className="input__text"
                 name="paymentMethod"
