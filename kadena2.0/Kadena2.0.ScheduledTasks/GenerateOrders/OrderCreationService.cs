@@ -17,10 +17,11 @@ namespace Kadena.ScheduledTasks.GenerateOrders
         private IKenticoUserProvider KenticoUserProvider;
         private IKenticoResourceService kenticoresourceService;
         private IShoppingCartService shoppingCartService;
+        private IFailedOrderStatusProvider failedOrderStatusProvider;
         public OrderCreationService(IShoppingCartProvider shoppingCartProvider, 
             IAddressBookService kenticoAddressBookService, IKenticoUserProvider KenticoUserProvider, 
             IKenticoResourceService kenticoresourceService,
-            IShoppingCartService shoppingCartService)
+            IShoppingCartService shoppingCartService, IFailedOrderStatusProvider failedOrderStatusProvider)
         {
             if (shoppingCartProvider == null)
             {
@@ -42,11 +43,16 @@ namespace Kadena.ScheduledTasks.GenerateOrders
             {
                 throw new ArgumentNullException(nameof(shoppingCartService));
             }
+            if (failedOrderStatusProvider == null)
+            {
+                throw new ArgumentNullException(nameof(failedOrderStatusProvider));
+            }
             this.shoppingCartProvider = shoppingCartProvider;
             this.kenticoAddressBookService = kenticoAddressBookService;
             this.KenticoUserProvider = KenticoUserProvider;
             this.kenticoresourceService = kenticoresourceService;
             this.shoppingCartService = shoppingCartService;
+            this.failedOrderStatusProvider = failedOrderStatusProvider;
         }
         public string GenerateOrder(int openCampaignID, int campaignClosingUserID)
         {
@@ -94,8 +100,7 @@ namespace Kadena.ScheduledTasks.GenerateOrders
 
         private void UpdatetFailedOrders(int campaignID, bool isFailed)
         {
-            var failedOrderStatus = DIContainer.Resolve<IFailedOrderStatusProvider>();
-            failedOrderStatus.UpdatetFailedOrders(campaignID, isFailed);
+            failedOrderStatusProvider.UpdatetFailedOrders(campaignID, isFailed);
         }
     }
 }
