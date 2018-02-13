@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Kadena.WebAPI.KenticoProviders.Providers
 {
-   public class FailedOrderStatusProvider: IFailedOrderStatusProvider
+    public class FailedOrderStatusProvider : IFailedOrderStatusProvider
     {
         private readonly string customTableClassName = "KDA.FailedOrders";
         public void InsertCampaignOrdersInProgress(int campaignID)
@@ -18,12 +18,12 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             if (customTable != null)
             {
                 CustomTableItem newCustomTableItem = CustomTableItem.New(customTableClassName);
-                newCustomTableItem.SetValue("CampaignID", campaignID);  
-                newCustomTableItem.SetValue("IsCampaignOrdersInProgress",true);
+                newCustomTableItem.SetValue("CampaignID", campaignID);
+                newCustomTableItem.SetValue("IsCampaignOrdersInProgress", true);
                 newCustomTableItem.Insert();
             }
         }
-       public void UpdateCampaignOrderStatus(int campaignID)
+        public void UpdateCampaignOrderStatus(int campaignID)
         {
             DataClassInfo customTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
             if (customTable != null)
@@ -32,18 +32,18 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                                                                     .WhereEquals("CapmaignID", campaignID).FirstOrDefault();
                 if (customTableData != null)
                 {
-                    customTableData.SetValue("IsCampaignOrdersInProgress",true );
-                    customTableData.SetValue("IsCampaignOrdersFailed",false );
+                    customTableData.SetValue("IsCampaignOrdersInProgress", true);
+                    customTableData.SetValue("IsCampaignOrdersFailed", false);
                 }
             }
         }
-       public bool GetCampaignOrderStatus(int campaignID)
+        public bool GetCampaignOrderStatus(int campaignID)
         {
             DataClassInfo customTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
             if (customTable != null)
             {
-               return CustomTableItemProvider.GetItems(customTableClassName)
-                                                                    .WhereEquals("CapmaignID", campaignID).Any();
+                return CustomTableItemProvider.GetItems(customTableClassName)
+                                                                     .WhereEquals("CapmaignID", campaignID).Any();
             }
             return false;
         }
@@ -57,15 +57,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 if (customTableData != null)
                 {
                     customTableData.SetValue("IsCampaignOrdersInProgress", false);
-                    if (isFailed)
-                    {
-                        customTableData.SetValue("IsCampaignOrdersFailed", true);
-                    }
-                    else
-                    {
-                        customTableData.SetValue("IsCampaignOrdersFailed", false);
-                    }
-                    
+                    customTableData.SetValue("IsCampaignOrdersFailed", true);
                 }
             }
         }
