@@ -414,6 +414,60 @@ config.localization.userSettings = {
           <property name="webparttitle"></property>
           <property name="webparttype">FyBudget</property>
         </webpart>
+        <webpart controlid="FYBudgetJavascript" guid="da018c53-d806-4d49-990c-e0eb73577e66" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">FYBudgetJavascript</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+$(".js-UserBudget").focusout(function () {
+        var itemID = parseInt($(this).siblings().first().val());
+        var remainingBudget =$(this);
+        var userBudget = parseInt($(this).val());
+        if (itemID != undefined && userBudget != undefined) {
+            UpdateItem(itemID, userBudget,remainingBudget);
+        }
+        $(".js-CloseMesaage").on("click", function () {
+            $(this).closest(".dialog").removeClass("active");
+        })
+      function UpdateItem(itemID,userBudget,remainingBudget){
+          var request = { ItemID: itemID, UserBudget: userBudget }
+            $.ajax({
+              type: "POST",
+              data :JSON.stringify(request),
+              url: "api/userbudget",
+              contentType: "application/json",
+              success: function (data) {
+                if (data.payload != "") {
+                  remainingBudget.parent().siblings("td").find(".js_remainingBudget").text(data.payload);                 
+                   toastr.success(config.localization.globalSuccess.updateSuccessMessage)
+                } 
+                else{
+                  toastr.error(config.localization.globalSuccess.errorMessage);
+                }
+              },
+              error:function (xhr, ajaxOptions, thrownError) {
+                toastr.error(config.localization.globalSuccess.errorMessage);
+              }
+            });
+      }
+    });
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Startup</property>
+          <property name="instanceguid">da018c53-d806-4d49-990c-e0eb73577e66</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
       </webpartzone>
     </page>
   </PageTemplateWebParts>

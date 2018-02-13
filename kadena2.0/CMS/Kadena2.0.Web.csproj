@@ -1246,6 +1246,13 @@
     <Compile Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx.designer.cs">
       <DependentUpon>EstimatesTable.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\SwapSKUNumberToCRN.ascx.cs">
+      <DependentUpon>SwapSKUNumberToCRN.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\SwapSKUNumberToCRN.ascx.designer.cs">
+      <DependentUpon>SwapSKUNumberToCRN.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx.cs">
       <DependentUpon>AddNewProgram.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1490,6 +1497,7 @@
     <Content Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\ProductInventory.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx" />
+    <Content Include="CMSWebParts\Kadena\Product\SwapSKUNumberToCRN.ascx" />
     <Content Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx" />
     <Content Include="CMSWebParts\Kadena\Programs\ProgramFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\ShoppingCart\CustomerCartOperations.ascx" />

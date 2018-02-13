@@ -151,7 +151,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                     var states = stateGroups.Where(x => x.ItemID == product.State).FirstOrDefault();
                     var skuValidity = ValidationHelper.GetDateTime(row["SKUValidUntil"], default(DateTime));
                     pdfContent = pdfContent.Replace("{PRODUCTNAME}", ValidationHelper.GetString(row["SKUName"], "&nbsp"))
-                                           .Replace("{SKUNUMBER}", ValidationHelper.GetString(row["SKUNumber"], "&nbsp"))
+                                           .Replace("{SKUNUMBER}", ValidationHelper.GetString(row["SKUProductCustomerReferenceNumber"], "&nbsp"))
                                            .Replace("{SKUUNITS}", ValidationHelper.GetString(row["SKUUnits"], "&nbsp"))
                                            .Replace("{BUNDLECOST}", inventoryType == Convert.ToInt32(ProductType.GeneralInventory) ?$"${ValidationHelper.GetDouble(row["SKUPrice"], default(double)).ToString()}":$"${ ValidationHelper.GetDouble(product.EstimatedPrice, default(double)).ToString()}")
                                            .Replace("{BUNDLEQUANTITY}", ValidationHelper.GetString(product.QtyPerPack, "&nbsp"))

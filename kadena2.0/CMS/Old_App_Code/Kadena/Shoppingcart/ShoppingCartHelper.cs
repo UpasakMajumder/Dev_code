@@ -5,20 +5,18 @@ using CMS.EventLog;
 using CMS.Globalization;
 using CMS.Helpers;
 using CMS.Localization;
-using CMS.Membership;
-using CMS.Scheduler;
 using CMS.SiteProvider;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
 using Kadena.Dto.General;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Old_App_Code.Kadena.Constants;
-using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.PDFHelpers;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -77,12 +75,26 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     ShippingOption = ShippingOption(),
                     Customer = GetCustomer(),
                     Site = GetSite(),
+                    OrderStatus = new OrderStatusDTO()
+                    {
+                        KenticoOrderStatusID = DIContainer.Resolve<IKenticoOrderProvider>().GetOrderStatusId("Pending"),
+                        OrderStatusName = "PENDING"
+                    },
+                    PaymentOption = new PaymentOptionDTO()
+                    {
+                        PaymentOptionName = "NoPaymentRequired",
+                        PaymentGatewayCustomerCode = string.Empty,
+                        PONumber = string.Empty,
+                        TokenId = string.Empty,
+                        TransactionKey = string.Empty
+                    },
                     NotificationsData = GetNotification(),
                     Items = GetCartItems(),
                     OrderDate = DateTime.Now,
                     TotalPrice = GetOrderTotal(orderType),
                     TotalShipping = shippingCost,
-                    OrderCurrency = GetCurrencyDTO(Cart.Currency)
+                    OrderCurrency = GetCurrencyDTO(Cart.Currency),
+                    TotalTax = 0
                 };
             }
             catch (Exception ex)
@@ -96,11 +108,11 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// Returns user Cart IDs based on product type
         /// </summary>
         /// <returns></returns>
-        public static List<int> GetCartsByUserID(int userID, ProductType type, int? campaignID)
+        public static List<int> GetCartsByUserID(int userID, ProductType type)
         {
             try
             {
-                return CartPDFHelper.GetLoggedInUserCartData(Convert.ToInt32(type), userID, campaignID).AsEnumerable().Select(x => x.Field<int>("ShoppingCartID")).Distinct().ToList();
+                return CartPDFHelper.GetLoggedInUserCartData(Convert.ToInt32(type), userID).AsEnumerable().Select(x => x.Field<int>("ShoppingCartID")).Distinct().ToList();
             }
             catch (Exception ex)
             {
@@ -316,7 +328,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     AddressLine1 = distributorAddress.AddressLine1,
                     AddressLine2 = distributorAddress.AddressLine2,
                     City = distributorAddress.AddressCity,
-                    State = state.StateName,
+                    State = state.StateCode,
                     Zip = distributorAddress.GetStringValue("AddressZip", string.Empty),
                     KenticoCountryID = distributorAddress.AddressCountryID,
                     Country = country.CountryName,
@@ -443,7 +455,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                             SKUNumber = item.SKU.SKUNumber
                         },
                         UnitCount = item.CartItemUnits,
-                        UnitOfMeasure = SKUMeasuringUnits.Lb,
+                        UnitOfMeasure = SKUMeasuringUnits.EA,
                         UnitPrice = ValidationHelper.GetDecimal(item.UnitPrice, default(decimal))
                     });
                 });
@@ -520,51 +532,6 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 return null;
             }
         }
-        /// <summary>
-        /// Closing the campaign
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public static void ProcessOrders(int campaignID)
-        {
-            try
-            {
-                Campaign campaign = CampaignProvider.GetCampaigns()
-                    .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID)
-                    .WhereEquals("CampaignID", campaignID)
-                    .FirstObject;
-                if (campaign != null)
-                {
-                    var _failedOrders = DIContainer.Resolve<IFailedOrderStatusProvider>();
-                    _failedOrders.UpdateCampaignOrderStatus(campaign.CampaignID);
-                    TaskInfo runTask = TaskInfoProvider.GetTaskInfo(ScheduledTaskNames.PrebuyOrderCreation, SiteContext.CurrentSiteID);
-                    if (runTask != null)
-                    {
-                        runTask.TaskRunInSeparateThread = true;
-                        runTask.TaskEnabled = true;
-                        runTask.TaskData = $"{campaign.CampaignID}|{SiteContext.CurrentSiteID}";
-                        SchedulingExecutor.ExecuteTask(runTask);
-                    }
-                    var users = UserInfoProvider.GetUsers();
-                    if (users != null)
-                    {
-                        foreach (var user in users)
-                        {
-                            ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Email, "CampaignCloseEmail");
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogException("Kadena_CMSWebParts_Kadena_Cart_FailedOrdersCheckout", "ProcessOrders", ex, SiteContext.CurrentSiteID, ex.Message);
-            }
-        }
-        /// <summary>
-        /// update available sku quantity
-        /// </summary>
-        /// <param name="inventoryType"></param>
-        /// <returns></returns>
         public static void UpdateAvailableSKUQuantity(ShoppingCartInfo cart)
         {
             try
@@ -580,27 +547,28 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 EventLogProvider.LogInformation("ShoppingCartHelper", "UpdateAvailableSKUQuantity", ex.Message);
             }
         }
+
+
         /// <summary>
-        /// returns open campaign
+        /// Updates remaining budget for every order placed.
         /// </summary>
-        /// <param name="inventoryType"></param>
+        /// <param name="orderDetails"></param>
         /// <returns></returns>
-        public static Campaign GetOpenCampaign()
+        public static void UpdateRemainingBudget(OrderDTO orderDetails, int userID)
         {
             try
             {
-                return CampaignProvider.GetCampaigns().Columns("CampaignID,Name,StartDate,EndDate")
-                                    .WhereEquals("OpenCampaign", true)
-                                    .Where(new WhereCondition().WhereEquals("CloseCampaign", false).Or()
-                                    .WhereEquals("CloseCampaign", null))
-                                    .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).FirstOrDefault();
+                var campaignFiscalYear = DIContainer.Resolve<IKenticoCampaignsProvider>().GetCampaignFiscalYear(orderDetails.Campaign.ID);
+                var totalToBeDeducted = orderDetails.TotalPrice + orderDetails.TotalShipping;
+                var fiscalYear = orderDetails.Type == OrderType.generalInventory ?
+                                 ValidationHelper.GetString(orderDetails.OrderDate.Year, string.Empty) :
+                                 orderDetails.Type == OrderType.prebuy ? campaignFiscalYear : string.Empty;
+                DIContainer.Resolve<IkenticoUserBudgetProvider>().UpdateUserBudgetAllocationRecords(userID,fiscalYear,totalToBeDeducted);
             }
             catch (Exception ex)
             {
-                EventLogProvider.LogInformation("ShoppingCartHelper", "GetOrderTotal", ex.Message);
-                return null;
+                EventLogProvider.LogInformation("ShoppingCartHelper", "UpdateRemainingBudget", ex.Message);
             }
         }
-
     }
 }

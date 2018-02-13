@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.pagetemplate>
+  <PageTemplateCategoryID>
+    <CodeName>AdHoc</CodeName>
+    <GUID>417eafbb-0c0c-43b9-988a-8bc5cb193f77</GUID>
+    <ObjectType>cms.pagetemplatecategory</ObjectType>
+  </PageTemplateCategoryID>
+  <PageTemplateCloneAsAdHoc>False</PageTemplateCloneAsAdHoc>
+  <PageTemplateCodeName>3a852f8e-d334-47a1-9dca-a4304fa29ecb</PageTemplateCodeName>
+  <PageTemplateDisplayName>Ad-hoc: SwapSKU</PageTemplateDisplayName>
+  <PageTemplateFile />
+  <PageTemplateGUID>3a852f8e-d334-47a1-9dca-a4304fa29ecb</PageTemplateGUID>
+  <PageTemplateInheritPageLevels>\</PageTemplateInheritPageLevels>
+  <PageTemplateIsReusable>False</PageTemplateIsReusable>
+  <PageTemplateLayout>
+    <![CDATA[<cms:CMSWebPartZone ZoneID="zoneA" runat="server" />]]>
+  </PageTemplateLayout>
+  <PageTemplateLayoutType>ascx</PageTemplateLayoutType>
+  <PageTemplateNodeGUID>a11198fa-1e0e-47b2-a677-3db84f465fa6</PageTemplateNodeGUID>
+  <PageTemplateSiteID>
+    <CodeName>TWE</CodeName>
+    <GUID>d2e245e6-6c1a-4e95-acc3-22cb8ef97ca8</GUID>
+    <ObjectType>cms.site</ObjectType>
+  </PageTemplateSiteID>
+  <PageTemplateType>portal</PageTemplateType>
+  <PageTemplateWebParts>
+    <page>
+      <webpartzone id="zoneA" v="1">
+        <webpart controlid="SwapSKUNumberToCRN" guid="fbf71fbe-59ad-4825-84be-ef1df8b19214" type="SwapSKUNumberToCRN" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">SwapSKUNumberToCRN</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">fbf71fbe-59ad-4825-84be-ef1df8b19214</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">SwapSKUNumberToCRN</property>
+        </webpart>
+      </webpartzone>
+    </page>
+  </PageTemplateWebParts>
+</cms.pagetemplate>

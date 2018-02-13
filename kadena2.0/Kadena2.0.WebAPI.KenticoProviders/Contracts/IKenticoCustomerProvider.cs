@@ -9,5 +9,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
    public interface IKenticoCustomerProvider
     {
         int GetUserIDByCustomerID(int customerID);
+        int GetCustomerIDByUserID(int userID);
     }
 }

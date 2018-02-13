@@ -515,7 +515,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                                 string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
                                 folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
                                 txtLongDescription.Text = skuDetails.SKUDescription;
-                                ddlPos.SelectedValue = ValidationHelper.GetString(skuDetails.SKUNumber, string.Empty);
+                                ddlPos.SelectedValue = ValidationHelper.GetString(skuDetails.GetValue("SKUCustomerReferenceNumber", string.Empty),string.Empty);
                                 ddlPos.Enabled = false;
                                 txtProductName.Text = skuDetails.SKUName;
                                 txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
@@ -588,6 +588,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             .WhereEquals("NodeSiteID", CurrentSite.SiteID)
                             .WhereEquals("CampaignID", campaignID)
                             .WhereEquals("Status",true)
+                            .WhereEqualsOrNull("GlobalAdminNotified", false)
                             .Columns("ProgramName,ProgramID")
                             .Select(x => new Program { ProgramID = x.ProgramID, ProgramName = x.ProgramName })
                             .ToList();
@@ -765,7 +766,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         SKUInfo newProduct = new SKUInfo()
                         {
                             SKUName = ValidationHelper.GetString(txtProductName.Text, string.Empty),
-                            SKUNumber = ValidationHelper.GetString(ddlPos.SelectedValue, string.Empty),
+                            SKUNumber = ValidationHelper.GetString("00000", string.Empty),
                             SKUShortDescription = ValidationHelper.GetString(txtProductName.Text, string.Empty),
                             SKUDescription = ValidationHelper.GetString(txtLongDescription.Text, string.Empty),
                             SKUEnabled = ValidationHelper.GetString(ddlStatus.SelectedValue, "1") == "1" ? true : false,
@@ -778,6 +779,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         {
                             newProduct.SKUValidUntil = ValidationHelper.GetDateTime(txtExpireDate.Text, DateTime.MinValue);
                         }
+                        newProduct.SetValue("SKUProductCustomerReferenceNumber", ValidationHelper.GetString(ddlPos.SelectedValue, string.Empty));
                         SKUInfoProvider.SetSKUInfo(newProduct);
                         products.NodeSKUID = newProduct.SKUID;
                         products.Insert(createNode, true);
@@ -838,7 +840,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             updateProduct.SKUImagePath = UploadImage.UploadImageToMeadiaLibrary(productImage, libraryFolderName);
                         }
                         updateProduct.SKUName = ValidationHelper.GetString(txtProductName.Text, string.Empty);
-                        updateProduct.SKUNumber = ValidationHelper.GetString(ddlPos.SelectedValue, string.Empty);
                         updateProduct.SKUShortDescription = ValidationHelper.GetString(txtProductName.Text, string.Empty);
                         updateProduct.SKUDescription = ValidationHelper.GetString(txtLongDescription.Text, string.Empty);
                         updateProduct.SKUValidUntil = ValidationHelper.GetDate(txtExpireDate.Text, DateTime.MinValue);

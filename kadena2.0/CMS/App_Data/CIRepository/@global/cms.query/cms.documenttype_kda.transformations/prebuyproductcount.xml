@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.query>
+  <ClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <QueryConnectionString>CMSConnectionString</QueryConnectionString>
+  <QueryGUID>0b99ef72-16d1-4116-81b1-aa9a686113e5</QueryGUID>
+  <QueryIsCustom>True</QueryIsCustom>
+  <QueryIsLocked>True</QueryIsLocked>
+  <QueryLoadGeneration>0</QueryLoadGeneration>
+  <QueryName>PrebuyProductCount</QueryName>
+  <QueryRequiresTransaction>False</QueryRequiresTransaction>
+  <QueryText>
+    <![CDATA[SELECT COUNT(*) FROM View_CMS_Tree_Joined t inner join KDA_CampaignsProduct p on t.DocumentForeignKeyValue = p.CampaignsProductID inner join COM_SKU s on s.SKUID = t.NodeSKUID inner join KDA_ProductCategory pc on pc.ProductCategoryID = p.CategoryID inner join KDA_Program pr on pr.ProgramID = p.ProgramID where p.ProgramID IS NOT NULL and t.ClassName = 'KDA.CampaignsProduct' and t.NodeSKUID IS NOT NULL and NodeParentID in (select NodeID FROM View_CMS_Tree_Joined WHERE ClassName = 'KDA.Program'  and NodeParentID = @CampaignNodeId and NodeSiteID = @SiteId)]]>
+  </QueryText>
+  <QueryTypeID>0</QueryTypeID>
+</cms.query>

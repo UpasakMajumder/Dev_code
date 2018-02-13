@@ -227,6 +227,7 @@
           <fieldcaption>Conversion value</fieldcaption>
         </properties>
       </field>
+      <field column="SKUCustomerReferenceNumber" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Option (Text)</FormDisplayName>
