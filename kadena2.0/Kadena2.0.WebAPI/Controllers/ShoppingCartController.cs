@@ -77,10 +77,11 @@ namespace Kadena.WebAPI.Controllers
         [HttpPost]
         [Route("api/shoppingcart/selectshipping")]
         [CustomerAuthorizationFilter]
-        public IHttpActionResult SelectShipping([FromBody]ChangeSelectionRequestDto request)
+        public async Task<IHttpActionResult> SelectShipping([FromBody]ChangeSelectionRequestDto request)
         {
-            service.SelectShipipng(request.Id);
-            return ResponseJson<object>(null);
+            var deliveryTotals = await service.SelectShipipng(request.Id);
+            var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
+            return ResponseJson(deliveryTotals);
         }
 
         [HttpPost]
