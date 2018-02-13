@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
 {
+    [CustomerAuthorizationFilter]
     public class OrderController : ApiControllerBase
     {
         private readonly IOrderDetailService orderDetailService;
@@ -28,12 +29,27 @@ namespace Kadena.WebAPI.Controllers
         [HttpGet]
         [Route("api/orderdetail/{orderId}")]
         [Route("api/order/{orderId}")]
-        [CustomerAuthorizationFilter]
         public async Task<IHttpActionResult> Get([FromUri]string orderId)
         {
             var detailPage = await orderDetailService.GetOrderDetail(orderId);
             var detailPageDto = mapper.Map<OrderDetailDTO>(detailPage);
             return ResponseJson(detailPageDto);
+        }
+
+        [HttpGet]
+        [Route("api/order")]
+        public IHttpActionResult Get(string dateFrom, string dateTo, string sort, int page = 1)
+        {
+            // TODO
+            return ResponseJson("TODO");
+        }
+
+        [HttpGet]
+        [Route("api/order/export")]
+        public IHttpActionResult Export(string dateFrom, string dateTo)
+        {
+            // TODO
+            return ResponseJson("TODO");
         }
     }
 }
