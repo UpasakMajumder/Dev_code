@@ -44,6 +44,18 @@
     <Reference Include="CMS.DataEngine">
       <HintPath>..\Lib\CMS.DataEngine.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.Ecommerce, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\React\kadena-k10-core\kadena2.0\Lib\CMS.Ecommerce.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.EventLog, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\React\kadena-k10-core\kadena2.0\Lib\CMS.EventLog.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.Helpers, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\React\kadena-k10-core\kadena2.0\Lib\CMS.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.Scheduler">
       <HintPath>..\Lib\CMS.Scheduler.dll</HintPath>
     </Reference>
@@ -71,8 +83,11 @@
     <Compile Include="DeleteExpiredMailingLists\DeleteExpiredMailingListsService.cs" />
     <Compile Include="DeleteExpiredMailingLists\KenticoTask.cs" />
     <Compile Include="DeleteExpiredMailingLists\StaticMicroProperties.cs" />
+    <Compile Include="GenerateOrders\KenticoTask.cs" />
+    <Compile Include="GenerateOrders\OrderCreationService.cs" />
     <Compile Include="Infrastructure\IConfigurationProvider.cs" />
     <Compile Include="Infrastructure\IDeleteExpiredMailingListsService.cs" />
+    <Compile Include="Infrastructure\IOrderCreationService.cs" />
     <Compile Include="Infrastructure\IUpdateInventoryDataService.cs" />
     <Compile Include="Infrastructure\Kentico\KenticoConfigurationProvider.cs" />
     <Compile Include="Infrastructure\UpdateInventoryConfiguration.cs" />
@@ -83,6 +98,10 @@
     <Compile Include="UpdateInventoryData\UpdateInventoryDataService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kadena2.0.BusinessLogic\Kadena2.0.BusinessLogic.csproj">
+      <Project>{d3ab43e6-7a41-4212-bf22-507cc2b2e3ac}</Project>
+      <Name>Kadena2.0.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.Container.Default\Kadena2.0.Container.Default.csproj">
       <Project>{bf079df3-1e13-44c5-8b87-c040257eac07}</Project>
       <Name>Kadena2.0.Container.Default</Name>
