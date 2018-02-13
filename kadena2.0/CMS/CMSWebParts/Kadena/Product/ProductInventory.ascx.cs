@@ -793,11 +793,9 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         try
         {
-            var productProvider = DIContainer.Resolve<IKenticoProductsProvider>();
+            lblErrorMsg.Visible = false;
             ProductSKUID = ValidationHelper.GetInteger(hdnClickSKU.Value, default(int));
             SKUInfo product = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", ProductSKUID).WhereNull("SKUOptionCategoryID").FirstObject;
-            var campProduct = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", product?.SKUID).Columns("CampaignsProductID").FirstOrDefault();
-            var allocatedQuantity = campProduct != null ? productProvider.GetAllocatedProductQuantityForUser(campProduct.CampaignsProductID, CurrentUser.UserID) : default(int);
             var itemsPlaced = default(int);
             foreach (GridViewRow row in gvCustomersCart.Rows)
             {
@@ -810,19 +808,14 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     if (ProductType == (int)ProductsType.GeneralInventory)
                     {
                         itemsPlaced += quantityPlacing;
-                        if (itemsPlaced > product.SKUAvailableItems)
+                        if (itemsPlaced <= product.SKUAvailableItems)
                         {
-                            lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.StockError");
-                            lblErrorMsg.Visible = true;
-                        }
-                        else if (itemsPlaced > allocatedQuantity)
-                        {
-                            lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError");
-                            lblErrorMsg.Visible = true;
+                            CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
                         }
                         else
                         {
-                            CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
+                            lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.StockError");
+                            lblErrorMsg.Visible = true;
                         }
                     }
                     else
@@ -845,7 +838,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         {
             EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "btmAddItemsToCart_Click()", ex);
         }
-
     }
     /// <summary>
     /// Cart operations based on the values 
