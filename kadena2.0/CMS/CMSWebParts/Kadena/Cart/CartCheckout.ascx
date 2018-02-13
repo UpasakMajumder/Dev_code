@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="CartCheckout.ascx.cs" Inherits="Kadena.CMSWebParts.Kadena.Cart.CartCheckout" %>
 
 <div class="add__btn">
-    <asp:LinkButton runat="server" ID="lnkCheckout" OnClick="lnkCheckout_Click" class="btn-action"><%=CheckoutButtonText %></asp:LinkButton>
+    <asp:LinkButton runat="server" ID="lnkCheckout" OnClick="lnkCheckout_Click" class="btn-action js-Checkout"><%=CheckoutButtonText %></asp:LinkButton>
 </div>
 <div class="dialog" id="divErrorDailogue" runat="server">
     <div class="dialog__shadow"></div>

@@ -17,12 +17,12 @@
 WITH PreBuy_CTE(POSNumber)
 As
 (
-select s.SKUNumber as POSNumber
+select s.SKUProductCustomerReferenceNumber as SKUProductCustomerReferenceNumber 
 from KDA_CampaignsProduct p left join View_CMS_Tree_joined t on p.CampaignsProductID=t.DocumentForeignKeyValue
 left join COM_SKU s  on s.SKUID=t.NodeSKUID
 )
 
-select KDA_POSNumber.POSNumber from KDA_POSNumber left join PreBuy_CTE CTE on CTE.POSNumber=CAST(KDA_POSNumber.POSNumber as nvarchar(100)) 
+select KDA_POSNumber.POSNumber as POSNumber from KDA_POSNumber left join PreBuy_CTE CTE on CTE.SKUProductCustomerReferenceNumber=CAST(KDA_POSNumber.POSNumber as nvarchar(100)) 
 where  ##WHERE## 
 order by POSNumber
 ]]>

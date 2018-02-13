@@ -1089,9 +1089,16 @@ $(document).ready(function () {
             break;
         case 'ordersuccess': toastr.success(config.localization.orders.orderSuccessMessage);
             break;
+        case 'invalidcartitems': toastr.error(config.localization.orders.cartContainsInvalidProducts);
+            break;
+    }
+    var errorCookie = customHelpers.getCookie("error");
+    if (errorCookie == "orderfail") {
+        toastr.error(config.localization.orders.orderErrorMessage);
     }
     if (status == 'error') {
         toastr.error(config.localization.globalSuccess.errorMessage);
     }
     customHelpers.deleteCookie("status");
+    customHelpers.deleteCookie("error");
 });

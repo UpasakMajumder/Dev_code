@@ -8,6 +8,9 @@ using CMS.EventLog;
 using CMS.Helpers;
 using CMS.MediaLibrary;
 using CMS.PortalEngine.Web.UI;
+using Kadena.Models;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Container.Default;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -35,7 +38,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <summary>
     /// get the open campaign
     /// </summary>
-    public Campaign OpenCampaign
+    public CMS.DocumentEngine.Types.KDA.Campaign OpenCampaign
     {
         get
         {
@@ -166,6 +169,28 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         get
         {
             return ValidationHelper.GetString(ResHelper.GetString("KDA.ShoppingCart.DiscardChanges"), string.Empty);
+        }
+    }
+
+    /// <summary>
+    /// Checks whether the start an dend dates of campaign are in range
+    /// </summary>
+    public bool EnableAddToCart
+    {
+        get
+        {
+            if (OpenCampaign != null)
+            {
+                return OpenCampaign.StartDate <= DateTime.Now.Date && OpenCampaign.EndDate >= DateTime.Now.Date ? true : false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        set
+        {
+            SetValue("EnableAddToCart", value);
         }
     }
     #endregion "Properties"
@@ -365,7 +390,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                                .WhereIn("SKUID", skuIds)
                                .And()
                                .WhereEquals("SKUEnabled", true)
-                               .Columns("SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUImagePath,SKUAvailableItems,SKUID,SKUDescription")
+                               .Columns("SKUProductCustomerReferenceNumber,SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUImagePath,SKUAvailableItems,SKUID,SKUDescription")
                                .ToList();
             }
         }
@@ -401,7 +426,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
                 {
                     var productAndSKUDetails = productsDetails
-                          .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.QtyPerPack,x.EstimatedPrice, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription })
+                          .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.QtyPerPack, x.EstimatedPrice, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription })
                            .OrderBy(p => p.SKUName)
                           .ToList();
                     rptProductLists.DataSource = productAndSKUDetails;
@@ -675,7 +700,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         try
         {
-            List<AddressInfo> myAddressList = GetMyAddressBookList();
+            List<AddressData> myAddressList = GetMyAddressBookList();
             if (myAddressList.Count > 0)
             {
                 List<int> shoppingCartIDs = ShoppingCartInfoProvider.GetShoppingCarts()
@@ -740,13 +765,13 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// Gets the distributors created by current user
     /// </summary>
     /// <returns></returns>
-    private List<AddressInfo> GetMyAddressBookList()
+    private List<AddressData> GetMyAddressBookList()
     {
-            List<AddressInfo> myAddressList = new List<AddressInfo>();
-        CustomerInfo currentCustomer = CustomerInfoProvider.GetCustomerInfoByUserID(CurrentUser.UserID);
-        if (!DataHelper.DataSourceIsEmpty(currentCustomer))
+        List<AddressData> myAddressList = new List<AddressData>();
+        int currentCustomerId = DIContainer.Resolve<IKenticoCustomerProvider>().GetCustomerIDByUserID(CurrentUser.UserID);
+        if (currentCustomerId != default(int))
         {
-            myAddressList = AddressInfoProvider.GetAddresses(currentCustomer.CustomerID).Columns("AddressID", "AddressPersonalName").WhereEquals("Status",true).ToList();
+            myAddressList = DIContainer.Resolve<IKenticoAddressBookProvider>().GetAddressesList(currentCustomerId);
         }
         return myAddressList;
     }
@@ -768,8 +793,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         try
         {
+            var productProvider = DIContainer.Resolve<IKenticoProductsProvider>();
             ProductSKUID = ValidationHelper.GetInteger(hdnClickSKU.Value, default(int));
             SKUInfo product = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", ProductSKUID).WhereNull("SKUOptionCategoryID").FirstObject;
+            var campProduct = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", product?.SKUID).Columns("CampaignsProductID").FirstOrDefault();
+            var allocatedQuantity = campProduct != null ? productProvider.GetAllocatedProductQuantityForUser(campProduct.CampaignsProductID, CurrentUser.UserID) : default(int);
             var itemsPlaced = default(int);
             foreach (GridViewRow row in gvCustomersCart.Rows)
             {
@@ -782,14 +810,19 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     if (ProductType == (int)ProductsType.GeneralInventory)
                     {
                         itemsPlaced += quantityPlacing;
-                        if (itemsPlaced < product.SKUAvailableItems)
-                        {
-                            CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
-                        }
-                        else
+                        if (itemsPlaced > product.SKUAvailableItems)
                         {
                             lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.StockError");
                             lblErrorMsg.Visible = true;
+                        }
+                        else if (itemsPlaced > allocatedQuantity)
+                        {
+                            lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError");
+                            lblErrorMsg.Visible = true;
+                        }
+                        else
+                        {
+                            CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
                         }
                     }
                     else
@@ -864,6 +897,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCartInfo(shoppinCartID);
                 cart.User = CurrentUser;
                 cart.ShoppingCartShippingAddress = customerAddress;
+                if (cart.ShoppingCartCurrencyID <= 0)
+                {
+                    cart.ShoppingCartCurrencyID = CurrencyInfoProvider.GetMainCurrency(CurrentSite.SiteID).CurrencyID;
+                    cart.Update();
+                }
                 var campaingnID = ValidationHelper.GetInteger(cart.GetValue("ShoppingCartCampaignID"), default(int));
                 var programID = ValidationHelper.GetInteger(cart.GetValue("ShoppingCartProgramID"), default(int));
                 item = cart.CartItems.Where(g => g.SKUID == product.SKUID).FirstOrDefault();
@@ -937,6 +975,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 ShoppingCartInfo cart = new ShoppingCartInfo();
                 cart.ShoppingCartSiteID = CurrentSite.SiteID;
                 cart.ShoppingCartCustomerID = customerAddressID;
+                cart.ShoppingCartCurrencyID = CurrencyInfoProvider.GetMainCurrency(CurrentSite.SiteID).CurrencyID;
                 cart.SetValue("ShoppingCartCampaignID", ProductCampaignID);
                 cart.SetValue("ShoppingCartProgramID", ProductProgramID);
                 cart.SetValue("ShoppingCartDistributorID", customerAddressID);

@@ -18,13 +18,13 @@
                     <div class="img__block">
                         <input type="checkbox" id='zoomCheck_<%#Eval("SKUID") %>'>
                         <label for='zoomCheck_<%#Eval("SKUID") %>'>
-                            <img src='<%#Eval<string>("SKUImagePath")==string.Empty?CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage"):Eval<string>("SKUImagePath")%>?MaxSideSize=150' />
+                            <img src='<%#Eval<string>("SKUImagePath")==string.Empty?CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage"):Eval<string>("SKUImagePath")%>' />
                     </div>
                     <div class="custom__blockin">
-                        <h4>POS#: <%# Eval("SKUNumber")%></h4>
+                        <h4>POS#: <%# Eval("SKUProductCustomerReferenceNumber")%></h4>
                         <h3><%#Eval("SKUName") %></h3>
                         <span><%# ProductType == (int)ProductsType.GeneralInventory? $"${Eval("SKUPrice")} pack of {Eval("QtyPerPack")}" : $"${Eval("EstimatedPrice")} pack of {Eval("QtyPerPack")}" %></span>
-                        <asp:LinkButton ID="lnkAddToCart" runat="server" CommandArgument='<%# Eval("SKUID") %>' CommandName="Add" OnCommand="lnkAddToCart_Command" Text='<%#AddToCartLinkText%>' EnableViewState="true"></asp:LinkButton>
+                        <asp:LinkButton ID="lnkAddToCart" runat="server" CommandArgument='<%# Eval("SKUID") %>' CommandName="Add" OnCommand="lnkAddToCart_Command" Text='<%#AddToCartLinkText%>' EnableViewState="true" Enabled='<%# ProductType == (int)ProductsType.PreBuy ? EnableAddToCart : true %>'></asp:LinkButton>
                     </div>
                     <p><%#Eval("SKUDescription") %></p>
                 </div>

@@ -9,7 +9,7 @@
 <![CDATA[
 <%@ Register src="~/CMSWebParts/Kadena/Campaign Web Form/ProductEditButton.ascx" TagName="ProductEditButton" TagPrefix="uc1" %>
 <tr>
-  <td><%#Eval("SKUNumber")%></td>
+  <td><%#Eval("SKUProductCustomerReferenceNumber")%></td>
   <td><%#Eval("ProductName")%></td>
   <td><%# Eval("ProgramName")%></td>
   <td><%# Eval("ProductCategoryTitle")%></td>
