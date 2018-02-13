@@ -490,7 +490,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "InventoryProducts";
                             txtLongDes.Text = skuDetails.SKUDescription;
                             txtEstPrice.Text = ValidationHelper.GetString(product.EstimatedPrice, string.Empty);
-                            ddlPosNo.Items.Add(new ListItem(ValidationHelper.GetString(skuDetails.SKUNumber, string.Empty), ValidationHelper.GetString(skuDetails.SKUNumber, string.Empty)));
+                            ddlPosNo.Items.Add(new ListItem(ValidationHelper.GetString(skuDetails.GetValue("SKUProductCustomerReferenceNumber", string.Empty), string.Empty), ValidationHelper.GetString(skuDetails.GetValue("SKUProductCustomerReferenceNumber", string.Empty), string.Empty)));
                             ddlPosNo.Enabled = false;
                             txtShortDes.Text = skuDetails.SKUName;
                             txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
