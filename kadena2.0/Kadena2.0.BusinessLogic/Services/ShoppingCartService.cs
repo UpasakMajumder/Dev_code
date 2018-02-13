@@ -256,9 +256,10 @@ namespace Kadena.BusinessLogic.Services
             shoppingCart.SelectShipping(0);
         }
        
-        public void SelectShipipng(int id)
+        public async Task<CheckoutPageDeliveryTotals> SelectShipipng(int id)
         {
             shoppingCart.SelectShipping(id);
+            return await GetDeliveryAndTotals();
         }
 
         public DeliveryAddresses SelectAddress(int id)
