@@ -12,8 +12,8 @@ using Kadena.Dto.Product;
 using Kadena.Models;
 using Kadena.Dto.CustomerData;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using System.Net;
 using Kadena.Models.CustomerData;
+using Kadena2.Container.Default;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -141,6 +141,10 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult UpdateData([FromBody]DistributorDTO request)
         {
             var submitRequest = mapper.Map<Distributor>(request);
+            if (submitRequest.ItemQuantity < 1)
+            {
+                return ResponseJsonCheckingNull<string>(null, DIContainer.Resolve<IKenticoResourceService>().GetResourceString("KDA.Cart.Update.MinimumQuantityError"));
+            }
             var serviceResponse = provider.UpdateCartQuantity(submitRequest);
             if (serviceResponse.Item2)
             {
