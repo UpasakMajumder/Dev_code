@@ -44,8 +44,23 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
 
         public List<UserBudgetItem> GetUserBudgetAllocationRecords(int userId, int siteId)
         {
+            List<UserBudgetItem> userBudgetItems = new List<UserBudgetItem>();
             var userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("UserID", userId).WhereEquals("SiteID", siteId).ToList();
-            return mapper.Map<List<UserBudgetItem>>(userBudgetDetails);
+            if (userBudgetDetails.Count > 0)
+            {
+                foreach (CustomTableItem item in userBudgetDetails)
+                {
+                    userBudgetItems.Add(new UserBudgetItem()
+                    {
+                        ItemID = item.ItemID,
+                        Budget = item.GetValue("Budget",default(decimal)),
+                        Year = item.GetValue("Year", default(string)),
+                        UserRemainingBudget = item.GetValue("UserRemainingBudget", default(decimal)),
+                        UserID = item.GetValue("UserID", default(int))
+                    });
+                }
+            }
+            return userBudgetItems;
         }
 
         public bool CheckIfYearExists(string year, int userId)
