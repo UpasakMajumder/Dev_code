@@ -44,6 +44,7 @@
         public const string OrderSuccess = "ordersuccess";
         public const string OrderFail = "orderfail";
         public const string InvalidCartItems = "invalidcartitems";
+        public const string InvalidProduct = "invalidproduct";
     }
     /// <summary>
     /// This class represents shipping options
