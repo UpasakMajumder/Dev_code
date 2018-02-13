@@ -244,6 +244,7 @@ namespace Kadena2.Container.Default
                 .ForMember(dest => dest.RedirectionURL, opt => opt.MapFrom(src => src));
             CreateMap<SaveTokenDataRequestDto, SaveTokenData>();
             CreateMap<SaveCreditCardRequestDto, SaveCardData>();
+            CreateMap<StoredCard, StoredCardDto>();
         }
     }
 }

@@ -238,8 +238,8 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             var saveRequest = new SaveCardTokenRequestDto
             {
                 CardNumber = cardData.CardNumber,
-                Name = "TODO TYPE ???" + cardData.Name,
-                Token = cardData.Token,
+                Name = cardData.Name, // TODO some user friendly name ?
+                //Token = cardData.Token,
                 TokenExpirationDate = "TODO, will FE pass it ?",
                 UserId = kenticoUsers.GetCurrentUser().UserId.ToString(),
             };

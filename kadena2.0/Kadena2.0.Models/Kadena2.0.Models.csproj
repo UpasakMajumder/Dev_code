@@ -52,6 +52,7 @@
     <Compile Include="Campaign.cs" />
     <Compile Include="CampaignData\CampaignData.cs" />
     <Compile Include="CreditCard\SaveCardData.cs" />
+    <Compile Include="CreditCard\StoredCard.cs" />
     <Compile Include="FyBudget\FyBudget.cs" />
     <Compile Include="Product\Border.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDailogLabel.cs" />

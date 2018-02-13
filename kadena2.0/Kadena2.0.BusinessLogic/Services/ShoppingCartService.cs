@@ -8,6 +8,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Product;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena.Models.CreditCard;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -103,12 +104,34 @@ namespace Kadena.BusinessLogic.Services
                 EmailConfirmation = checkoutfactory.CreateNotificationEmail(emailConfirmationEnabled)
             };
 
+            
+
             CheckCurrentOrDefaultAddress(checkoutPage);
-            checkoutPage.PaymentMethods.CheckDefault();
-            checkoutPage.PaymentMethods.CheckPayability();
+
+            ArragnePaymentMethods(checkoutPage.PaymentMethods);
+            
             checkoutPage.SetDisplayType();
             SetPricesVisibility(checkoutPage);
             return checkoutPage;
+        }
+
+        private void ArragnePaymentMethods(PaymentMethods methods)
+        {
+            var creditCardMethod = methods.Items.FirstOrDefault(pm => pm.ClassName == "KDA.PaymentMethods.CreditCard");
+
+            if ( creditCardMethod != null && resources.GetSettingsKey("KDA_CreditCard_EnableSaveCard").ToLower() == "true")
+            {
+                // TODO call User Data microservice to get real
+
+                creditCardMethod.Items = new[] {
+                        new StoredCard{ Checked = true, Id = 1, Label = "Visa MM **1111" },
+                        new StoredCard{ Checked = false, Id = 2, Label = "Visa MM **2222" },
+                        new StoredCard{ Checked = false, Id = 3, Label = "Amex MM **3333" }
+                };
+            }
+
+            methods.CheckDefault();
+            methods.CheckPayability();
         }
         
         public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals()
