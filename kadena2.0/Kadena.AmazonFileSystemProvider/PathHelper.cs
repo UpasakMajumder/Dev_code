@@ -204,7 +204,7 @@ namespace Kadena.AmazonFileSystemProvider
             return $"{path.TrimStart('/')}";
         }
 
-        public static string EnsureValidKey(string key)
+        public static string EnsureFullKey(string key)
         {
             if (key.StartsWith(_specialFolder))
             {
