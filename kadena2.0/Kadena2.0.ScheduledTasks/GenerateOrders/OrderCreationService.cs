@@ -12,29 +12,60 @@ namespace Kadena.ScheduledTasks.GenerateOrders
 {
     class OrderCreationService : IOrderCreationService
     {
+        private IShoppingCartProvider shoppingCartProvider;
+        private IAddressBookService kenticoAddressBookService;
+        private IKenticoUserProvider KenticoUserProvider;
+        private IKenticoResourceService kenticoresourceService;
+        private IShoppingCartService shoppingCartService;
+        public OrderCreationService(IShoppingCartProvider shoppingCartProvider, 
+            IAddressBookService kenticoAddressBookService, IKenticoUserProvider KenticoUserProvider, 
+            IKenticoResourceService kenticoresourceService,
+            IShoppingCartService shoppingCartService)
+        {
+            if (shoppingCartProvider == null)
+            {
+                throw new ArgumentNullException(nameof(shoppingCartProvider));
+            }
+            if (kenticoAddressBookService == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoAddressBookService));
+            }
+            if (KenticoUserProvider == null)
+            {
+                throw new ArgumentNullException(nameof(KenticoUserProvider));
+            }
+            if (kenticoresourceService == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoresourceService));
+            }
+            if (shoppingCartService == null)
+            {
+                throw new ArgumentNullException(nameof(shoppingCartService));
+            }
+            this.shoppingCartProvider = shoppingCartProvider;
+            this.kenticoAddressBookService = kenticoAddressBookService;
+            this.KenticoUserProvider = KenticoUserProvider;
+            this.kenticoresourceService = kenticoresourceService;
+            this.shoppingCartService = shoppingCartService;
+        }
         public string GenerateOrder(int openCampaignID, int campaignClosingUserID)
         {
-            var shoppingCartInfo = DIContainer.Resolve<IShoppingCartProvider>();
-            var addrerss = DIContainer.Resolve<IAddressBookService>();
-            var userInfo = DIContainer.Resolve<IKenticoUserProvider>();
-            var settingInfo = DIContainer.Resolve<IKenticoResourceService>();
-            var shoppingCarts = DIContainer.Resolve<IShoppingCartService>();
-            var usersWithShoppingCartItems = shoppingCartInfo.GetUserIDsWithShoppingCart(openCampaignID, 1);
-            var orderTemplateSettingKey = settingInfo.GetSettingsKey("KDA_OrderReservationEmailTemplate");
-            var failedOrderTemplateSettingKey = settingInfo.GetSettingsKey("KDA_FailedOrdersEmailTemplate");
-            var failedOrdersUrl = settingInfo.GetSettingsKey("KDA_FailedOrdersPageUrl");
+            var usersWithShoppingCartItems = shoppingCartProvider.GetUserIDsWithShoppingCart(openCampaignID, 1);
+            var orderTemplateSettingKey = kenticoresourceService.GetSettingsKey("KDA_OrderReservationEmailTemplate");
+            var failedOrderTemplateSettingKey = kenticoresourceService.GetSettingsKey("KDA_FailedOrdersEmailTemplate");
+            var failedOrdersUrl = kenticoresourceService.GetSettingsKey("KDA_FailedOrdersPageUrl");
             var unprocessedDistributorIDs = new List<Tuple<int, string>>();
             usersWithShoppingCartItems.ForEach(shoppingCartUser =>
             {
-                var salesPerson = userInfo.GetUserByUserId(shoppingCartUser);
-                var salesPersonrCartIDs = shoppingCarts.GetLoggedInUserCartData(shoppingCartUser, 2, openCampaignID);
+                var salesPerson = KenticoUserProvider.GetUserByUserId(shoppingCartUser);
+                var salesPersonrCartIDs = shoppingCartService.GetLoggedInUserCartData(shoppingCartUser, 2, openCampaignID);
                 salesPersonrCartIDs.ForEach(cart =>
                 {
                     var shippingCost = default(decimal);
-                    var Cart = shoppingCartInfo.GetShoppingCartByID(cart);
+                    var Cart = shoppingCartProvider.GetShoppingCartByID(cart);
                 });
             });
-            var distributors = addrerss.GetAddressesByAddressIds(unprocessedDistributorIDs.Select(x => x.Item1).ToList()).Select(x =>
+            var distributors = kenticoAddressBookService.GetAddressesByAddressIds(unprocessedDistributorIDs.Select(x => x.Item1).ToList()).Select(x =>
             {
                 return new { AddressID = x?.Id, AddressPersonalName = x?.AddressPersonalName };
             }).ToList();
@@ -47,7 +78,7 @@ namespace Kadena.ScheduledTasks.GenerateOrders
                     Reason = x.Item2
                 };
             }).ToList();
-            var user = userInfo.GetUserByUserId(campaignClosingUserID);
+            var user = KenticoUserProvider.GetUserByUserId(campaignClosingUserID);
             if (user?.Email != null && listofFailedOrders.Count > 0)
             {
                 object[,] orderdata = { {"url", URLHelper.AddHTTPToUrl($"{SiteContext.CurrentSite.DomainName}{failedOrdersUrl}?campid={openCampaignID}") } ,
