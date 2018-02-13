@@ -47,7 +47,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             }
             return false;
         }
-        public void UpdatetFailedOrders(int campaignID, bool IsFailed)
+        public void UpdatetFailedOrders(int campaignID, bool isFailed)
         {
             DataClassInfo customTable = DataClassInfoProvider.GetDataClassInfo(customTableClassName);
             if (customTable != null)
@@ -57,7 +57,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 if (customTableData != null)
                 {
                     customTableData.SetValue("IsCampaignOrdersInProgress", false);
-                    if (IsFailed)
+                    if (isFailed)
                     {
                         customTableData.SetValue("IsCampaignOrdersFailed", true);
                     }

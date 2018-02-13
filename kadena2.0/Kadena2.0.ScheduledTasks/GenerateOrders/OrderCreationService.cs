@@ -85,13 +85,17 @@ namespace Kadena.ScheduledTasks.GenerateOrders
                                                              { "failedordercount",listofFailedOrders.Count}           };
                 UpdatetFailedOrders(openCampaignID, true);
             }
+            if (listofFailedOrders.Count == 0)
+            {
+                UpdatetFailedOrders(openCampaignID, false);
+            }
             return ResHelper.GetString("KDA.OrderSchedular.TaskSuccessfulMessage");
         }
 
-        private void UpdatetFailedOrders(int campaignID, bool IsFailed)
+        private void UpdatetFailedOrders(int campaignID, bool isFailed)
         {
             var failedOrderStatus = DIContainer.Resolve<IFailedOrderStatusProvider>();
-            failedOrderStatus.UpdatetFailedOrders(campaignID, true);
+            failedOrderStatus.UpdatetFailedOrders(campaignID, isFailed);
         }
     }
 }
