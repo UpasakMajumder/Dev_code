@@ -56,7 +56,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                                                                     .WhereEquals("CapmaignID", campaignID).FirstOrDefault();
                 if (customTableData != null)
                 {
-                    customTableData.SetValue("IsCampaignOrdersInProgress", false);
+                    customTableData.SetValue("IsCampaignOrdersInProgress", isFailed);
                     customTableData.SetValue("IsCampaignOrdersFailed", true);
                 }
             }
