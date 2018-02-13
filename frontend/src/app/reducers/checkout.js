@@ -1,5 +1,19 @@
-import { FETCH, SUCCESS, FAILURE, INIT_UI, CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA, CHECKOUT_STATIC,
-  RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT, CHANGE_PRODUCT_QUANTITY, CHECKOUT_PRICING, ADD_NEW_ADDRESS } from 'app.consts';
+import {
+  FETCH,
+  SUCCESS,
+  FAILURE,
+  INIT_UI,
+  CHANGE_CHECKOUT_DATA,
+  INIT_CHECKED_CHECKOUT_DATA,
+  CHECKOUT_STATIC,
+  RECALCULATE_CHECKOUT_PRICE,
+  SUBMIT_CHECKOUT,
+  REMOVE_PRODUCT,
+  CHANGE_PRODUCT_QUANTITY,
+  CHECKOUT_PRICING,
+  ADD_NEW_ADDRESS,
+  CHANGE_PAYMENT_METHOD
+} from 'app.consts';
 
 const defaultState = {
   ui: {},
@@ -93,6 +107,18 @@ export default (state = defaultState, action) => {
         [payload.field]: payload.field === 'paymentMethod'
           ? { id: payload.id, invoice: payload.invoice }
           : payload.id
+      }
+    };
+
+  case CHANGE_PAYMENT_METHOD:
+    return {
+      ...state,
+      ui: {
+        ...state.ui,
+        paymentMethods: {
+          ...state.ui.paymentMethods,
+          items: state.ui.paymentMethods.items.map(item => ({ ...item, checked: item.id === payload.id }))
+        }
       }
     };
 

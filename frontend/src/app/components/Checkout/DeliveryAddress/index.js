@@ -53,7 +53,7 @@ class DeliveryAddress extends Component {
 
   render() {
     const { addressesNumber } = this.state;
-    const { ui, checkedId, changeShoppingData, disableInteractivity, newAddressObject, saveAddress } = this.props;
+    const { ui, checkedId, changeDeliveryAddress, disableInteractivity, newAddressObject, saveAddress } = this.props;
     const { title, description, newAddress, items, emptyMessage, availableToAdd, dialogUI, userNotification, bounds } = ui;
 
     const renderAddresses = (item, i) => {
@@ -76,7 +76,7 @@ class DeliveryAddress extends Component {
         <div key={`da-${item.id}`} className="input__wrapper">
           <Address
             disableInteractivity={disableInteractivity}
-            changeShoppingData={changeShoppingData}
+            changeDeliveryAddress={changeDeliveryAddress}
             checkedId={checkedId}
             {...address}
           />
@@ -104,12 +104,9 @@ class DeliveryAddress extends Component {
       : null;
 
     const newAddressBtn = availableToAdd
-      ?
-      (
+      ? (
         <Button text={newAddress.label} onClick={this.toggleDialog} type="action" btnClass="btn-action--secondary"/>
-      )
-      :
-      (
+      ) : (
         <a
           href={newAddress.url}
           data-dialog="#cart-add-adress"
@@ -153,7 +150,7 @@ class DeliveryAddress extends Component {
 }
 
 DeliveryAddress.propTypes = {
-  changeShoppingData: PropTypes.func.isRequired,
+  changeDeliveryAddress: PropTypes.func.isRequired,
   addNewAddress: PropTypes.func.isRequired,
   checkedId: PropTypes.number,
   disableInteractivity: PropTypes.bool.isRequired,
