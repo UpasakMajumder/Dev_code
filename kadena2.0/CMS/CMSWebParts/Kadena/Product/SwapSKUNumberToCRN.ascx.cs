@@ -87,7 +87,7 @@ public partial class CMSWebParts_Kadena_Product_SwapSKUNumberToCRN : CMSAbstract
                .WhereEquals("SKUSiteID", SiteContext.CurrentSiteID);
             foreach (SKUInfo modifyProduct in products)
             {
-                if (modifyProduct.SKUNumber != "00000")
+                if (String.IsNullOrEmpty(modifyProduct.GetValue("SKUProductCustomerReferenceNumber",string.Empty)))
                 {
                     modifyProduct.SetValue("SKUProductCustomerReferenceNumber", modifyProduct.SKUNumber);
                     SKUInfoProvider.SetSKUInfo(modifyProduct);

@@ -515,7 +515,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                                 string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
                                 folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
                                 txtLongDescription.Text = skuDetails.SKUDescription;
-                                ddlPos.SelectedValue = ValidationHelper.GetString(skuDetails.GetValue("SKUCustomerReferenceNumber", string.Empty),string.Empty);
+                                ddlPos.SelectedValue = ValidationHelper.GetString(skuDetails.GetValue("SKUProductCustomerReferenceNumber", string.Empty),string.Empty);
                                 ddlPos.Enabled = false;
                                 txtProductName.Text = skuDetails.SKUName;
                                 txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
