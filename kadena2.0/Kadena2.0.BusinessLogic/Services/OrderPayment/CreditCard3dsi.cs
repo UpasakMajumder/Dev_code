@@ -232,5 +232,19 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             return string.Empty;
         }
+
+        public async Task SaveCreditCard(SaveCardData cardData)
+        {
+            var saveRequest = new SaveCardTokenRequestDto
+            {
+                CardNumber = cardData.CardNumber,
+                Name = "TODO TYPE ???" + cardData.Name,
+                Token = cardData.Token,
+                TokenExpirationDate = "TODO, will FE pass it ?",
+                UserId = kenticoUsers.GetCurrentUser().UserId.ToString(),
+            };
+
+            var tokenId = await userClient.SaveCardToken(saveRequest);
+        }
     }
 }
