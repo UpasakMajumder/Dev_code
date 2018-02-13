@@ -14,7 +14,7 @@ namespace Kadena.WebAPI.KenticoProviders
             CustomTableItem posItem = CustomTableItemProvider.GetItem(posID, CustomTableName);
             if (posItem != null)
             {
-                var isProductsExist = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", posItem.GetStringValue("POSNumber", string.Empty)).Any();
+                var isProductsExist = SKUInfoProvider.GetSKUs().WhereEquals("SKUProductCustomerReferenceNumber", posItem.GetStringValue("POSNumber", string.Empty)).Any();
                 if (!isProductsExist)
                 {
                     posItem.Delete();
