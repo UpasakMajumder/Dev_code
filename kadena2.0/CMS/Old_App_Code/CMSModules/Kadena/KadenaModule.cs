@@ -46,7 +46,6 @@ namespace Kadena.Old_App_Code.CMSModules.Kadena
                             CustomRootUrl = Path.EnsureSlashes(Path.Combine(environment.AmazonS3Folder ?? string.Empty, "media"))
                         };
                         StorageHelper.MapStoragePath("~/", customAmazonProvider);
-                        EventLogProvider.LogInformation(GetType().Name, "STORAGECONFIG", $"Data storage was mapped to {customAmazonProvider.ExternalStorageName}");
                     }
                 }
                 catch (Exception exc)
