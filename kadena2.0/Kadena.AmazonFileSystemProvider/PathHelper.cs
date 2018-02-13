@@ -174,7 +174,12 @@ namespace Kadena.AmazonFileSystemProvider
         /// <summary>Returns object key from given path.</summary>
         /// <param name="path">Path.</param>
         /// <param name="lower">Specifies whether path should be lowered inside method.</param>
-        public static string GetObjectKeyFromPath(string path, bool lower)
+        internal static string GetObjectKeyFromPath(string path, bool lower)
+        {
+            return $"{_specialFolder}{GetObjectKeyFromPathNonEnvironment(path, lower)}";
+        }
+
+        internal static string GetObjectKeyFromPathNonEnvironment(string path, bool lower = true)
         {
             if (path == null)
             {
@@ -196,7 +201,16 @@ namespace Kadena.AmazonFileSystemProvider
                 path += "/";
             }
             path = Path.EnsureSlashes(path, false);
-            return $"{_specialFolder}{path.TrimStart('/')}";
+            return $"{path.TrimStart('/')}";
+        }
+
+        public static string EnsureValidKey(string key)
+        {
+            if (key.StartsWith(_specialFolder))
+            {
+                return key;
+            }
+            return $"{_specialFolder}{key}";
         }
 
         /// <summary>Returns relative path from absolute one.</summary>
