@@ -88,7 +88,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         /// <param name="campaignName"></param>
         /// <param name="reciepientEmail"></param>
         /// <param name="templateName"></param>
-        public static void SendEmail<T>(string templateName, string recipientEmail, IEnumerable<T> emailDataSource,object[,] macroData)
+        public static void SendEmail<T>(string templateName, string recipientEmail, IEnumerable<T> emailDataSource,object[,] macroData=null)
         {
             try
             {
