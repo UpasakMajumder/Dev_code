@@ -58,6 +58,7 @@
     public class SKUMeasuringUnits
     {
         public const string Lb = "Lb";
+        public const string EA = "EA";
     }
     /// <summary>
     /// This class represents Scheduled task names

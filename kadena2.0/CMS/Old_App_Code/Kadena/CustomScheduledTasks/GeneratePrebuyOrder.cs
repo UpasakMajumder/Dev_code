@@ -74,6 +74,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                             ProductEmailNotifications.SendEmailNotification(ordersDTO, orderTemplateSettingKey, salesPerson);
                             InBoundFormHelper.InsertIBFForm(ordersDTO);
                             ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
+                            ShoppingCartHelper.UpdateRemainingBudget(ordersDTO, salesPerson.UserId);
                         }
                         else
                         {
