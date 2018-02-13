@@ -217,6 +217,9 @@
     <Compile Include="ViewOrder\Responses\TitleValuePairDto.cs" />
     <Compile Include="ViewOrder\Responses\TrackingDTO.cs" />
     <Compile Include="_Attributes\StringListValidationAttribute.cs" />
+    <Compile Include="_Common\PaginationDto.cs" />
+    <Compile Include="_Common\TableViewDto.cs" />
+    <Compile Include="_Common\TableRowDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tax\MicroserviceResponses\" />
