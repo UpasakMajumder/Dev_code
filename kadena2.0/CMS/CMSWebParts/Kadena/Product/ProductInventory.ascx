@@ -42,6 +42,7 @@
         <div class="dialog__content">
             <asp:Label Text="" ID="lblError" Visible="false" runat="server" />
             <cms:LocalizedLabel runat="server" ID="lblErrorMsg" Visible="false"></cms:LocalizedLabel><br />
+            <cms:LocalizedLabel runat="server" ID="lblqtyError" ClientIDMode="Static" ></cms:LocalizedLabel><br />
             <asp:Label Text="" runat="server" ID="lblAvailbleItems" />
             <asp:GridView runat="server" ID="gvCustomersCart" AutoGenerateColumns="false" CssClass="table">
                 <Columns>
@@ -50,7 +51,7 @@
                     <asp:TemplateField>
                         <HeaderTemplate><%# ResHelper.GetString("KDA.ShoppingCart.Quantity") %></HeaderTemplate>
                         <ItemTemplate>
-                            <asp:TextBox runat="server" CssClass="input__text" ID="txtQuanityOrdering" Text='<%# ValidationHelper.GetString(Eval("SKUUnits"),"0") %>' TextMode="Number" min="0" ClientIDMode="Static" />
+                            <asp:TextBox runat="server" CssClass="input__text js-txtQty" ID="txtQuanityOrdering" Text='<%# ValidationHelper.GetString(Eval("SKUUnits"),"0") %>' TextMode="Number" min="0" ClientIDMode="Static" />
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField DataField="ShoppingCartID" Visible="true" HeaderText="" HeaderStyle-CssClass="u-hidden" ItemStyle-CssClass="u-hidden" />

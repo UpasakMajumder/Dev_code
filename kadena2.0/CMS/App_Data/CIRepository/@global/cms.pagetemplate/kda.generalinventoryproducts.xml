@@ -222,7 +222,17 @@ iteratedDocument = iteratedDocument.Parent;
     $('#btnClose').click(function(){
       $('#dialog_Add_To_Cart').removeClass('active');
     });
+    $("#llbtnAddToCart").on("click", function (e) {
+    $.each($(".js-txtQty"), function () {
+      if (! /^\d*$/.test(this.value)) {
+        $("#lblqtyError").text("{$KDA.Cart.Update.InvalidQuantityError$}");
+        $("#lblqtyError").attr("visible", true);
+        e.preventDefault();
+      }
+    });
   });
+  });
+  
 </script> 
 
 ]]>
