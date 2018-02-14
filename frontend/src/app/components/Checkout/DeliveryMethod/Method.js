@@ -50,7 +50,7 @@ const Method = ({
   return (
     <div className={className}>
       <input disabled={disabled}
-             onChange={(e) => { changeDeliveryMethod(e.target.name, id); }}
+             onChange={() => { changeDeliveryMethod(id); }}
              checked={id === checkedId}
              type="radio"
              name="deliveryMethod"

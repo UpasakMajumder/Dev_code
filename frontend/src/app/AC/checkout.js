@@ -1,13 +1,32 @@
 import axios from 'axios';
 import { toastr } from 'react-redux-toastr';
 /* constants */
-import { FETCH, SUCCESS, FAILURE, INIT_UI, START, FINISH, APP_LOADING, CHECKOUT_PRICING,
-  CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA, RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT,
-  CHANGE_PRODUCT_QUANTITY, CHECKOUT_STATIC, CART_PREVIEW_CHANGE_ITEMS, ADD_NEW_ADDRESS, CHANGE_PAYMENT_METHOD } from 'app.consts';
+import {
+  FETCH,
+  SUCCESS,
+  FAILURE,
+  INIT_UI,
+  START,
+  FINISH,
+  APP_LOADING,
+  CHECKOUT,
+  CHECKOUT_INIT_CHECKED_DATA,
+  CHECKOUT_CHANGE_PAYMENT,
+  CHECKOUT_CHANGE_QUANTITY,
+  CHECKOUT_REMOVE_PRODUCT,
+  CHECKOUT_CHANGE_ADDRESS,
+  CHECKOUT_GET_TOTALS,
+  CHECKOUT_PROCEED,
+  CHECKOUT_CHANGE_DELIVERY,
+  ADD_NEW_ADDRESS
+} from 'app.consts';
+
 /* globals */
 import { CHECKOUT as CHECKOUT_URL, NOTIFICATION } from 'app.globals';
 
 const getTotalPrice = (dispatch) => {
+  dispatch({ type: CHECKOUT_GET_TOTALS + FETCH });
+
   const state = window.store.getState();
   let promise;
 
@@ -24,7 +43,7 @@ const getTotalPrice = (dispatch) => {
 
       if (!success) {
         dispatch({
-          type: CHECKOUT_PRICING + INIT_UI + FAILURE,
+          type: CHECKOUT_GET_TOTALS + FAILURE,
           alert: errorMessage
         });
 
@@ -32,20 +51,18 @@ const getTotalPrice = (dispatch) => {
       }
 
       dispatch({
-        type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
-        payload: {
-          ui: payload
-        }
+        type: CHECKOUT_GET_TOTALS + SUCCESS,
+        payload
       });
     })
     .catch((error) => {
-      dispatch({ type: CHECKOUT_PRICING + INIT_UI + FAILURE });
+      dispatch({ type: CHECKOUT_GET_TOTALS + FAILURE });
     });
 };
 
 export const getUI = () => {
   return (dispatch) => {
-    dispatch({ type: CHECKOUT_STATIC + INIT_UI + FETCH });
+    dispatch({ type: CHECKOUT + INIT_UI + FETCH });
 
     axios.get(CHECKOUT_URL.initRenderUIURL)
       .then((response) => {
@@ -53,7 +70,7 @@ export const getUI = () => {
 
         if (!success) {
           dispatch({
-            type: CHECKOUT_STATIC + INIT_UI + FAILURE,
+            type: CHECKOUT + INIT_UI + FAILURE,
             alert: errorMessage
           });
           return;
@@ -62,30 +79,28 @@ export const getUI = () => {
         getTotalPrice(dispatch);
 
         dispatch({
-          type: CHECKOUT_STATIC + INIT_UI + SUCCESS,
-          payload: {
-            ui: payload
-          }
+          type: CHECKOUT + INIT_UI + SUCCESS,
+          payload
         });
       })
       .catch((error) => {
-        dispatch({ type: CHECKOUT_STATIC + INIT_UI + FAILURE });
+        dispatch({ type: CHECKOUT + INIT_UI + FAILURE });
       });
   };
 };
 
 export const initCheckedShoppingData = (data) => {
-  return (dispatch) => {
-    dispatch({
-      type: INIT_CHECKED_CHECKOUT_DATA,
-      payload: { ...data }
-    });
+  return {
+    type: CHECKOUT_INIT_CHECKED_DATA,
+    payload: data
   };
 };
 
 
 export const removeProduct = (id) => {
   return (dispatch) => {
+    dispatch({ type: CHECKOUT_REMOVE_PRODUCT + FETCH });
+
     const url = CHECKOUT_URL.removeProductURL;
     axios.post(url, { id })
       .then((response) => {
@@ -93,7 +108,7 @@ export const removeProduct = (id) => {
 
         if (!success) {
           dispatch({
-            type: REMOVE_PRODUCT + FAILURE,
+            type: CHECKOUT_REMOVE_PRODUCT + FAILURE,
             alert: errorMessage
           });
           return;
@@ -102,22 +117,22 @@ export const removeProduct = (id) => {
         getTotalPrice(dispatch);
 
         dispatch({
-          type: REMOVE_PRODUCT + SUCCESS,
-          payload: {
-            ui: payload
-          }
+          type: CHECKOUT_REMOVE_PRODUCT + SUCCESS,
+          payload
         });
 
         toastr.success(NOTIFICATION.removeProduct.title, NOTIFICATION.removeProduct.text);
       })
       .catch((error) => {
-        dispatch({ type: REMOVE_PRODUCT + FAILURE });
+        dispatch({ type: CHECKOUT_REMOVE_PRODUCT + FAILURE });
       });
   };
 };
 
 export const changeProductQuantity = (id, quantity) => {
   return (dispatch) => {
+    dispatch({ type: CHECKOUT_CHANGE_QUANTITY + FETCH });
+
     const url = CHECKOUT_URL.changeQuantityURL;
     axios.post(url, { id, quantity })
       .then((response) => {
@@ -125,7 +140,7 @@ export const changeProductQuantity = (id, quantity) => {
 
         if (!success) {
           dispatch({
-            type: CHANGE_PRODUCT_QUANTITY + FAILURE,
+            type: CHECKOUT_CHANGE_QUANTITY + FAILURE,
             alert: errorMessage
           });
           return;
@@ -134,14 +149,12 @@ export const changeProductQuantity = (id, quantity) => {
         getTotalPrice(dispatch);
 
         dispatch({
-          type: CHANGE_PRODUCT_QUANTITY + SUCCESS,
-          payload: {
-            ui: payload
-          }
+          type: CHECKOUT_CHANGE_QUANTITY + SUCCESS,
+          payload
         });
       })
       .catch((error) => {
-        dispatch({ type: CHANGE_PRODUCT_QUANTITY + FAILURE });
+        dispatch({ type: CHECKOUT_CHANGE_QUANTITY + FAILURE });
       });
   };
 };
@@ -150,7 +163,7 @@ export const changeDeliveryMethod = (id) => {
   return (dispatch) => {
     const url = CHECKOUT_URL.changeDeliveryMethodURL;
 
-    dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FETCH });
+    dispatch({ type: CHECKOUT_CHANGE_DELIVERY + FETCH });
 
     axios.post(url, { id })
       .then((response) => {
@@ -158,21 +171,22 @@ export const changeDeliveryMethod = (id) => {
 
         if (!success) {
           dispatch({
-            type: RECALCULATE_CHECKOUT_PRICE + FAILURE,
+            type: CHECKOUT_CHANGE_DELIVERY + FAILURE,
             alert: errorMessage
           });
           return;
         }
 
         dispatch({
-          type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
+          type: CHECKOUT_CHANGE_DELIVERY + SUCCESS,
           payload: {
-            ui: payload
+            ...payload,
+            id
           }
         });
       })
       .catch((error) => {
-        dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
+        dispatch({ type: CHECKOUT_CHANGE_DELIVERY + FAILURE });
       });
   };
 };
@@ -181,7 +195,7 @@ export const changeDeliveryAddress = (id) => {
   return (dispatch) => {
     const url = CHECKOUT_URL.changeAddressURL;
 
-    dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FETCH });
+    dispatch({ type: CHECKOUT_CHANGE_ADDRESS + FETCH });
 
     axios.post(url, { id })
       .then((response) => {
@@ -189,7 +203,7 @@ export const changeDeliveryAddress = (id) => {
 
         if (!success) {
           dispatch({
-            type: RECALCULATE_CHECKOUT_PRICE + FAILURE,
+            type: CHECKOUT_CHANGE_ADDRESS + FAILURE,
             alert: errorMessage
           });
           return;
@@ -198,39 +212,32 @@ export const changeDeliveryAddress = (id) => {
         getTotalPrice(dispatch);
 
         dispatch({
-          type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
+          type: CHECKOUT_CHANGE_ADDRESS + SUCCESS,
           payload: {
-            ui: payload
+            deliveryAddresses: payload.deliveryAddresses,
+            id
           }
         });
       })
       .catch((error) => {
-        dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
+        dispatch({ type: CHECKOUT_CHANGE_ADDRESS + FAILURE });
       });
   };
 };
 
-export const changeShoppingData = (field, id, invoice) => {
+export const changePaymentMethod = (id, invoice) => {
   return {
-    type: CHANGE_CHECKOUT_DATA,
+    type: CHECKOUT_CHANGE_PAYMENT,
     payload: {
-      field, id, invoice
-    }
-  };
-};
-
-export const changePaymentMethod = (id) => {
-  return {
-    type: CHANGE_PAYMENT_METHOD,
-    payload: {
-      id
+      id,
+      invoice
     }
   };
 };
 
 export const sendData = (data) => {
   return (dispatch) => {
-    dispatch({ type: SUBMIT_CHECKOUT + FETCH });
+    dispatch({ type: CHECKOUT_PROCEED + FETCH });
     dispatch({ type: APP_LOADING + START });
 
     axios.post(CHECKOUT_URL.submitURL, data)
@@ -241,14 +248,14 @@ export const sendData = (data) => {
 
         if (!success) {
           dispatch({
-            type: SUBMIT_CHECKOUT + FAILURE,
+            type: CHECKOUT_PROCEED + FAILURE,
             alert: errorMessage
           });
           return;
         }
 
         dispatch({
-          type: SUBMIT_CHECKOUT + SUCCESS,
+          type: CHECKOUT_PROCEED + SUCCESS,
           payload: {
             status: success,
             redirectURL: payload.redirectURL
@@ -257,7 +264,7 @@ export const sendData = (data) => {
       })
       .catch((error) => {
         dispatch({ type: APP_LOADING + FINISH });
-        dispatch({ type: SUBMIT_CHECKOUT + FAILURE });
+        dispatch({ type: CHECKOUT_PROCEED + FAILURE });
       });
   };
 };
@@ -278,7 +285,7 @@ export const addNewAddress = (data) => {
 
         if (!success) {
           dispatch({
-            type: CHECKOUT_PRICING + INIT_UI + FAILURE,
+            type: CHECKOUT_GET_TOTALS + INIT_UI + FAILURE,
             alert: errorMessage
           });
           dispatch({ type: APP_LOADING + FINISH });
@@ -286,15 +293,13 @@ export const addNewAddress = (data) => {
         }
 
         dispatch({
-          type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
-          payload: {
-            ui: payload
-          }
+          type: CHECKOUT_GET_TOTALS + INIT_UI + SUCCESS,
+          payload
         });
         dispatch({ type: APP_LOADING + FINISH });
       })
       .catch((error) => {
-        dispatch({ type: CHECKOUT_PRICING + INIT_UI + FAILURE });
+        dispatch({ type: CHECKOUT_GET_TOTALS + INIT_UI + FAILURE });
         dispatch({ type: APP_LOADING + FINISH });
       });
   };

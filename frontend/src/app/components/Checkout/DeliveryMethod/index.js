@@ -4,9 +4,15 @@ import PropTypes from 'prop-types';
 import MethodsGroup from './MethodsGroup';
 
 class DeliveryMethod extends Component {
-  state = {
-    openId: 0
-  };
+  constructor(props) {
+    super(props);
+
+    const openedItem = this.props.ui.items.find(item => item.opened);
+
+    this.state = {
+      openId: openedItem ? openedItem.id : 0
+    };
+  }
 
   static propTypes = {
     changeDeliveryMethod: PropTypes.func.isRequired,

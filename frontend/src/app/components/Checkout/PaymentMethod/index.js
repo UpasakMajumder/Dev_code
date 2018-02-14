@@ -25,13 +25,6 @@ class PaymentMethod extends Component {
     })
   };
 
-  componentDidMount() {
-    const { ui, changePaymentMethod } = this.props;
-
-    if (ui.isPayable) return;
-    changePaymentMethod('paymentMethod', 3, ' ');
-  }
-
   toggleInput = (shownInput) => {
     this.setState({ shownInput });
   };

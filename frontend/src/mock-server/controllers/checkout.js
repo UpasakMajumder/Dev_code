@@ -32,7 +32,8 @@ module.exports.totalPrice = (req, res) => {
     deliveryMethods,
     totals
   };
-  res.json(response);
+
+  setTimeout(() => res.json(response), 1500);
 };
 
 module.exports.changeQuantity = (req, res) => {
@@ -83,11 +84,11 @@ module.exports.changeDeliveryMethod = (req, res) => {
   const response = Object.assign({}, wrapper);
   const { body: { id } } = req;
 
-  const items = deliveryMethods.items.map((deliveryMethod) => {
+  const deliveryMethodsItems = deliveryMethods.items.map((deliveryMethod, i) => {
     let opened = false;
-    const items = deliveryMethod.items.map((item) => {
+    const deliveryMethodItems = deliveryMethod.items.map((item) => {
       const checked = item.id == id;
-      opened = checked;
+      opened = opened || checked;
       return {
         ...item,
         checked
@@ -97,15 +98,16 @@ module.exports.changeDeliveryMethod = (req, res) => {
     return {
       ...deliveryMethod,
       opened,
-      items
+      items: deliveryMethodItems
     };
   });
 
   response.payload = {
-    deliveryMethods: { ...deliveryMethods, items },
+    deliveryMethods: { ...deliveryMethods, items: deliveryMethodsItems },
     totals
   };
-  res.json(response);
+
+  setTimeout(() => res.json(response), 1500);
 };
 
 module.exports.submit = (req, res) => {

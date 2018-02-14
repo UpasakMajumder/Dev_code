@@ -12,7 +12,6 @@ import Spinner from 'app.dump/Spinner';
 import CheckboxInput from 'app.dump/Form/CheckboxInput';
 /* ac */
 import {
-  changeShoppingData,
   sendData,
   initCheckedShoppingData,
   removeProduct,
@@ -46,7 +45,8 @@ class Checkout extends Component {
       fields: {
         [defaultId]: ''
       },
-      agreeWithTandC: !CHECKOUT.tAndC.exists
+      agreeWithTandC: !CHECKOUT.tAndC.exists,
+      initChecked: true
     };
   }
 
@@ -119,8 +119,7 @@ class Checkout extends Component {
   };
 
   componentDidMount() {
-    const { getUI } = this.props;
-    getUI();
+    this.props.getUI();
   }
 
   placeOrder = (checkedData) => {
@@ -203,7 +202,10 @@ class Checkout extends Component {
     const { ui: uiNext } = nextProps.checkout;
     const { ui: uiCurr } = this.props.checkout;
 
-    if (uiNext !== uiCurr) this.initCheckedShoppingData(uiNext);
+    if (uiNext.totals && this.state.initChecked) {
+      this.initCheckedShoppingData(uiNext);
+      this.setState({ initChecked: false });
+    }
     if (uiNext.products !== uiCurr.products) this.refreshCartPreview(uiNext.products);
   }
 
@@ -234,19 +236,16 @@ class Checkout extends Component {
     );
   };
 
-  changeDeliveryAddress = (field, id, invoice) => {
-    this.props.changeShoppingData(field, id, invoice);
+  changeDeliveryAddress = (id) => {
     this.props.changeDeliveryAddress(id);
   };
 
-  changeDeliveryMethod = (field, id, invoice) => {
-    this.props.changeShoppingData(field, id, invoice);
+  changeDeliveryMethod = (id) => {
     this.props.changeDeliveryMethod(id);
   };
 
-  changePaymentMethod = (field, id, invoice) => {
-    this.props.changeShoppingData(field, id, invoice);
-    this.props.changePaymentMethod(id);
+  changePaymentMethod = (id, invoice) => {
+    this.props.changePaymentMethod(id, invoice);
   };
 
   render() {
@@ -412,7 +411,6 @@ export default connect((state) => {
 }, {
   getUI,
   initCheckedShoppingData,
-  changeShoppingData,
   sendData,
   removeProduct,
   changeProductQuantity,

@@ -22,7 +22,7 @@ const Address = ({
   return (
     <div>
       <input
-        onChange={(e) => { changeDeliveryAddress(e.target.name, id); }}
+        onChange={() => { changeDeliveryAddress(id); }}
         id={`da-${id}`}
         disabled={disableInteractivity}
         name="deliveryAddress"
