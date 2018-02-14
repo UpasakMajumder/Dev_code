@@ -18,6 +18,8 @@ using Kadena.Old_App_Code.Kadena.Constants;
 using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
 using System.Linq;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Container.Default;
 
 public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
 {
@@ -61,7 +63,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             rqFiscalYear.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.FiscalYearErrorMessage");
             ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
             ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
-            folderpath = SettingsKeyInfoProvider.GetValue("KDA_CampaignFolderPath", CurrentSiteName);
+            folderpath = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_CampaignFolderPath");  
             if (Request.QueryString["ID"] != null)
             {
                 btnSave.Click += btnSave_Edit;
@@ -150,8 +152,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
         {
             if (!string.IsNullOrEmpty(campaignName))
             {
-                TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-                CMS.DocumentEngine.TreeNode editPage = tree.SelectNodes("KDA.Campaign").OnCurrentSite().Where("CampaignID", QueryOperator.Equals, campaignId);
+                var editPage = DIContainer.Resolve<IKenticoCampaignsProvider>().GetCampaign(campaignId);
                 if (editPage != null)
                 {
                     editPage.DocumentName = campaignName;
@@ -186,8 +187,8 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
     {
         try
         {
-            TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-            CMS.DocumentEngine.TreeNode editPage = tree.SelectNodes("KDA.Campaign").OnCurrentSite().Where("CampaignID", QueryOperator.Equals, _campaignId);
+            var editPage = DIContainer.Resolve<IKenticoCampaignsProvider>().GetCampaign(_campaignId);
+            string gAdminRoleName = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey(CurrentSite.SiteID, "KDA_GlobalAminRoleName");
             if (editPage != null)
             {
                 Name.Text = editPage.GetValue("Name").ToString();
@@ -198,6 +199,25 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                 txtEndDate.Text = (endDate != default(DateTime)) ? endDate.ToShortDateString() : string.Empty;
                 ddlFiscalYear.SelectedValue = editPage.GetValue("FiscalYear", string.Empty);
                 ddlStatus.SelectedValue = ValidationHelper.GetBoolean(editPage.GetValue("Status"), false) == true ? "1" : "0";
+                var opencamp = editPage.GetValue("OpenCampaign", false);
+                var closecamp = editPage.GetValue("CloseCampaign", false);
+                if (opencamp)
+                {
+                    Name.ReadOnly = true;
+                    Description.ReadOnly = true;
+                    txtStartDate.Enabled = false;
+                    if (!CurrentUser.IsInRole(gAdminRoleName, CurrentSiteName))
+                    {
+                        txtEndDate.Enabled = false;
+                    }
+                    else
+                    {
+                        txtEndDate.Enabled = !closecamp;
+                    }
+                    ddlStatus.Enabled = false;
+                    rfvStartDate.Enabled = false;
+                    compareDate.Enabled = false;
+                }
             }
         }
         catch (Exception ex)
@@ -224,7 +244,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
     {
         try
         {
-            string templteName = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSite.SiteName + ".KDA_CampaignProductsTemplateName");
+            string templteName = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_CampaignProductsTemplateName");
             var pageTemplateInfo = PageTemplateInfoProvider.GetPageTemplateInfo(templteName);
             if (!DataHelper.DataSourceIsEmpty(pageTemplateInfo))
                 return pageTemplateInfo.PageTemplateId;

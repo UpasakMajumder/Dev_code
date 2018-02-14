@@ -13,8 +13,10 @@ using System.Web.UI.WebControls;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena2.Container.Default;
 using Kadena.BusinessLogic.Contracts;
+using CMS.DocumentEngine.Types.KDA;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena.Old_App_Code.Kadena.Shoppingcart;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -52,6 +54,20 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 SetValue("PopupCloseButtonText", value);
             }
         }
+        /// <summary>
+        /// gets or sets open campaign
+        /// </summary>
+        public Campaign OpenCampaign
+        {
+            get
+            {
+                return GetOpenCampaign();
+            }
+            set
+            {
+                SetValue("OpenCampaign", value);
+            }
+        }
         #endregion
         #region Events
         /// <summary>
@@ -78,8 +94,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     Response.Cookies["status"].HttpOnly = false;
                     return;
                 }
-                var loggedInUserCartIDs = GetCartsByUserID(CurrentUser.UserID, ProductType.GeneralInventory);
-                settingKeys = DIContainer.Resolve<IKenticoResourceService>();
+                var loggedInUserCartIDs = GetCartsByUserID(CurrentUser.UserID, ProductType.GeneralInventory, OpenCampaign?.CampaignID); settingKeys = DIContainer.Resolve<IKenticoResourceService>();
                 var orderTemplateSettingKey = settingKeys.GetSettingsKey("KDA_OrderReservationEmailTemplateGI");
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 var userInfo = DIContainer.Resolve<IKenticoUserProvider>();
@@ -108,6 +123,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         UpdateAvailableSKUQuantity(Cart);
                         ProductEmailNotifications.SendEmailNotification(ordersDTO, orderTemplateSettingKey, salesPerson);
                         ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
+                        ShoppingCartHelper.UpdateRemainingBudget(ordersDTO, CurrentUser.UserID);
                     }
                     else
                     {
@@ -161,18 +177,18 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 var addrerss = DIContainer.Resolve<IAddressBookService>();
                 var distributors = addrerss.GetAddressesByAddressIds(unprocessedDistributorIDs.Select(x => x.Item1).ToList()).Select(x =>
-                      {
-                          return new { AddressID = x?.Id, AddressPersonalName = x?.AddressPersonalName };
-                      }).ToList();
+                {
+                    return new { AddressID = x?.Id, AddressPersonalName = x?.AddressPersonalName };
+                }).ToList();
                 var unprocessedOrders = unprocessedDistributorIDs.Select(x =>
-                   {
-                       var distributor = distributors.Where(y => y.AddressID == x.Item1).FirstOrDefault();
-                       return new
-                       {
-                           AddressPersonalName = distributor.AddressPersonalName,
-                           Reason = x.Item2
-                       };
-                   }).ToList();
+                {
+                    var distributor = distributors.Where(y => y.AddressID == x.Item1).FirstOrDefault();
+                    return new
+                    {
+                        AddressPersonalName = distributor.AddressPersonalName,
+                        Reason = x.Item2
+                    };
+                }).ToList();
                 if (CurrentUser?.Email != null)
                 {
                     ProductEmailNotifications.SendEmail(settingKeys.GetSettingsKey("KDA_FailedOrdersEmailTemplateGI"), CurrentUser?.Email, unprocessedOrders);
@@ -185,7 +201,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_CartCheckout", "ShowError", ex.Message);
             }
         }
-
         #endregion Methods
 
     }

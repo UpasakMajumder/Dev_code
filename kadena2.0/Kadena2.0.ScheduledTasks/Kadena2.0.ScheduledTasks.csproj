@@ -71,8 +71,11 @@
     <Compile Include="DeleteExpiredMailingLists\DeleteExpiredMailingListsService.cs" />
     <Compile Include="DeleteExpiredMailingLists\KenticoTask.cs" />
     <Compile Include="DeleteExpiredMailingLists\StaticMicroProperties.cs" />
+    <Compile Include="GenerateOrders\KenticoTask.cs" />
+    <Compile Include="GenerateOrders\OrderCreationService.cs" />
     <Compile Include="Infrastructure\IConfigurationProvider.cs" />
     <Compile Include="Infrastructure\IDeleteExpiredMailingListsService.cs" />
+    <Compile Include="Infrastructure\IOrderCreationService.cs" />
     <Compile Include="Infrastructure\IUpdateInventoryDataService.cs" />
     <Compile Include="Infrastructure\Kentico\KenticoConfigurationProvider.cs" />
     <Compile Include="Infrastructure\UpdateInventoryConfiguration.cs" />

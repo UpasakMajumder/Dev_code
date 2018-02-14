@@ -8,7 +8,10 @@
   <TransformationCode>
 <![CDATA[
 <tr>
-	<td style="text-align: right; vertical-align: top;"> {% data[DataItemIndex] |(user)cvoqa2@gmail.com|(hash)06c68cbe21d5c63396f44aa528fbfa6a7be60bb2ab93f158a4140ddd0c62b14e%} </td>
+  
+  {% foreach (spec in data1) { %}
+    <td class="hidden-xs">{% spec.Name %}</td>
+  {% } |(user)cvoqa2@gmail.com|(hash)5aace262d54f11fda071577fa6d8acbf19d4eac0ad5aa16bc6961de18bcbdb2c%}
 </tr>
 ]]>
   </TransformationCode>

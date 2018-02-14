@@ -1091,6 +1091,8 @@ $(document).ready(function () {
             break;
         case 'invalidcartitems': toastr.error(config.localization.orders.cartContainsInvalidProducts);
             break;
+        case 'invalidproduct': toastr.error(config.localization.orders.invalidProduct);
+            break;
     }
     var errorCookie = customHelpers.getCookie("error");
     if (errorCookie == "orderfail") {

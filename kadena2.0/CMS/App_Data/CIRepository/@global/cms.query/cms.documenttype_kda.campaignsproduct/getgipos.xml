@@ -17,7 +17,7 @@
 WITH GI_CTE(POSNumber,ProgramID,Status)
 As
 (
-select s.SKUNumber as POSNumber,Program.ProgramID,C.Status
+select s.SKUProductCustomerReferenceNumber as POSNumber,Program.ProgramID,C.Status
 from KDA_CampaignsProduct p left join View_CMS_Tree_joined t on p.CampaignsProductID=t.DocumentForeignKeyValue
 left join COM_SKU s  on s.SKUID=t.NodeSKUID
 left join KDA_Program Program on p.ProgramID=Program.ProgramID
