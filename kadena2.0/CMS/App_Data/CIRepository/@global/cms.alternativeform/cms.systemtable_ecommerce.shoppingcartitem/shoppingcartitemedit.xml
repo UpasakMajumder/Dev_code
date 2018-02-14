@@ -134,7 +134,7 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field column="CartItemAutoAddedUnits" fieldtype="" reftype="" order="16" />
+      <field column="CartItemAutoAddedUnits" fieldtype="" reftype="" order="15" />
     </form>
   </FormDefinition>
   <FormDisplayName>Shopping Cart Item Edit</FormDisplayName>
