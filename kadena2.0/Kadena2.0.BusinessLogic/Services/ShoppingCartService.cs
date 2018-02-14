@@ -9,7 +9,6 @@ using Kadena.Models.Product;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
-using CMS.DataEngine;
 using System.Data;
 
 namespace Kadena.BusinessLogic.Services
@@ -25,8 +24,6 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKListService mailingService;
         private readonly IShoppingCartProvider shoppingCart;
         private readonly ICheckoutPageFactory checkoutfactory;
-        public readonly string loggedInUserCartData = "Ecommerce.Shoppingcart.LoggedInUserCartData";
-
 
         public ShoppingCartService(IKenticoSiteProvider kenticoSite,
                                    IKenticoLocalizationProvider localization,
@@ -115,7 +112,7 @@ namespace Kadena.BusinessLogic.Services
             SetPricesVisibility(checkoutPage);
             return checkoutPage;
         }
-        
+
         public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals()
         {
             var deliveryAddress = shoppingCart.GetCurrentCartShippingAddress();
@@ -295,7 +292,7 @@ namespace Kadena.BusinessLogic.Services
                 page.DeliveryMethods.HidePrices();
             }
         }
-       
+
         public CheckoutPage SelectShipipng(int id)
         {
             shoppingCart.SelectShipping(id);
@@ -376,15 +373,10 @@ namespace Kadena.BusinessLogic.Services
             bool.TryParse(settingsKey, out otherAddressAvailable);
             return otherAddressAvailable;
         }
-        public List<int> GetLoggedInUserCartData(int inventoryType, int userID, int? campaignID)
+
+        public List<int> GetLoggedInUserCartData(int inventoryType, int userID, int campaignID = 0)
         {
-            var query = new DataQuery(loggedInUserCartData);
-            QueryDataParameters queryParams = new QueryDataParameters();
-            queryParams.Add("@ShoppingCartUserID", userID);
-            queryParams.Add("@ShoppingCartInventoryType", inventoryType);
-            queryParams.Add("@ShoppingCartCampaignID", campaignID);
-            var cartDataSet = ConnectionHelper.ExecuteQuery(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
-            return cartDataSet.Tables[0].AsEnumerable().Select(x => x.Field<int>("ShoppingCartID")).Distinct().ToList(); ;
+            return shoppingCart.GetShoppingCartIDByInventoryType(inventoryType, userID, campaignID);
         }
     }
 }

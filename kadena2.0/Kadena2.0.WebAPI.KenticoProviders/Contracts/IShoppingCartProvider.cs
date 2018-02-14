@@ -77,5 +77,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         List<int> GetUserShoppingCartIDs(int userID);
 
         bool ValidateAllCarts(int userID = 0, int campaignID = 0);
+
+        List<int> GetShoppingCartIDByInventoryType(int inventoryType, int userID, int campaignID = 0);
     }
 }

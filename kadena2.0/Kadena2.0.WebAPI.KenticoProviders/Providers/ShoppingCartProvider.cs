@@ -806,5 +806,13 @@ namespace Kadena.WebAPI.KenticoProviders
             cart.SetValue("BusinessUnitIDForDistributor", businessUnitID);
             cart.Update();
         }
+
+        public List<int> GetShoppingCartIDByInventoryType(int inventoryType, int userID, int campaignID = 0)
+        {
+            return ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID)
+                                    .WhereEquals("ShoppingCartUserID", userID)
+                                    .WhereEquals("ShoppingCartCampaignID", campaignID)
+                                    ?.ToList().Select(x => x.ShoppingCartID).ToList();
+        }
     }
 }
