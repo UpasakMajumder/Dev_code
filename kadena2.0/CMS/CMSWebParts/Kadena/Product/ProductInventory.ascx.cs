@@ -814,7 +814,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 lblErrorMsg.Visible = true;
                 return;
             }
-            var allocatedQuantity = allocatedQuantityItem.GetValue<int>("Quantity", default(int));
+            
             var itemsPlaced = default(int);
             foreach (GridViewRow row in gvCustomersCart.Rows)
             {
@@ -826,6 +826,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     var customerShoppingCartID = ValidationHelper.GetInteger(row.Cells[3].Text, default(int));
                     if (ProductType == (int)ProductsType.GeneralInventory)
                     {
+                        var allocatedQuantity = allocatedQuantityItem.GetValue<int>("Quantity", default(int));
                         itemsPlaced += quantityPlacing;
                         if (itemsPlaced > product.SKUAvailableItems)
                         {
