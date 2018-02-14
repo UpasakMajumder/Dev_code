@@ -80,7 +80,7 @@ namespace Kadena.WebAPI.KenticoProviders
                                     .Where(new WhereCondition().WhereEquals("CloseCampaign", false).Or()
                                     .WhereEquals("CloseCampaign", null))
                                     .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).FirstOrDefault();
-            return openCampaign.GetIntegerValue("CampaignID", default(int));
+            return openCampaign != null ? openCampaign.GetIntegerValue("CampaignID", default(int)) : default(int);
         }
         public string GetCampaignFiscalYear(int campaignID)
         {
