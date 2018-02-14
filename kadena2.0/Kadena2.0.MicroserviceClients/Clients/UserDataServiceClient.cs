@@ -29,6 +29,12 @@ namespace Kadena2.MicroserviceClients.Clients
             var url = $"{_properties.GetServiceUrl(_serviceUrlSettingKey)}/api/CardToken";
             return await Post<string>(url, request).ConfigureAwait(false);
         }
+
+        public async Task<BaseResponseDto<UserStoredCardDto>> GetCardTokens(int userId)
+        {
+            var url = $"{_properties.GetServiceUrl(_serviceUrlSettingKey)}/api/CardToken/{userId}";
+            return await Get<UserStoredCardDto>(url).ConfigureAwait(false);
+        }
     }
 }
 
