@@ -428,7 +428,7 @@ config.localization.userSettings = {
 $(".js-UserBudget").focusout(function () {
         var itemID = parseInt($(this).siblings().first().val());
         var remainingBudget =$(this);
-        var userBudget = parseInt($(this).val());
+        var userBudget = parseFloat($(this).val());
         if (itemID != undefined && userBudget != undefined) {
             UpdateItem(itemID, userBudget,remainingBudget);
         }
@@ -443,8 +443,8 @@ $(".js-UserBudget").focusout(function () {
               url: "api/userbudget",
               contentType: "application/json",
               success: function (data) {
-                if (data.payload != "") {
-                  remainingBudget.parent().siblings("td").find(".js_remainingBudget").text(data.payload);                 
+                if (data.success) {
+                  remainingBudget.parent().siblings("td").find(".js_remainingBudget").text(parseFloat(data.payload));                 
                    toastr.success(config.localization.globalSuccess.updateSuccessMessage)
                 } 
                 else{
