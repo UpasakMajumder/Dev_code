@@ -710,13 +710,15 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             List<AddressData> myAddressList = GetMyAddressBookList();
             if (myAddressList.Count > 0)
             {
-                List<int> shoppingCartIDs = ShoppingCartInfoProvider.GetShoppingCarts()
-                                                                .WhereIn("ShoppingCartDistributorID", myAddressList.Select(g => g.AddressID).ToList())
-                                                                .WhereEquals("ShoppingCartInventoryType", ProductType)
-                                                                .Select(x => x.ShoppingCartID).ToList();
-                List<ShoppingCartItemInfo> cartItems = ShoppingCartItemInfoProvider.GetShoppingCartItems()
-                                                                                   .WhereIn("ShoppingCartID", shoppingCartIDs)
-                                                                                   .ToList();
+                var shoppingCarts = DIContainer.Resolve<IShoppingCartProvider>();
+                var whereCondition = new WhereCondition().WhereIn("ShoppingCartDistributorID", myAddressList.Select(g => g.AddressID).ToList())
+                                                                .WhereEquals("ShoppingCartInventoryType", ProductType);
+                if (ProductType == (int)ProductsType.PreBuy && OpenCampaign != null)
+                {
+                    whereCondition = whereCondition.WhereEquals("ShoppingCartCampaignID", OpenCampaign.CampaignID);
+                }
+                List<int> shoppingCartIDs = shoppingCarts.GetShoppingCartIDs(whereCondition);
+                List<ShoppingCartItemInfo> cartItems = shoppingCarts.GetShoppingCartItemsByCartIDs(shoppingCartIDs);
                 gvCustomersCart.DataSource = myAddressList
                     .Distinct()
                     .Select(g =>
@@ -917,7 +919,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     parameters.Price = (ProductType == (int)ProductsType.GeneralInventory) ? default(double) : product.SKUPrice;
                     ShoppingCartItemInfo cartItem = cart.SetShoppingCartItem(parameters);
                     cartItem.SetValue("CartItemDistributorID", customerAddressID);
-                    cartItem.SetValue("CartItemCampaignID", campaingnID);
+                    cartItem.SetValue("CartItemCampaignID", cartItem.SetValue("CartItemCampaignID", campaingnID));
                     cartItem.SetValue("CartItemProgramID", programID);
                     ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
                 }

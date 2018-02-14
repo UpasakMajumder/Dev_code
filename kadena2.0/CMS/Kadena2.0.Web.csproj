@@ -938,6 +938,20 @@
     <Compile Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx.designer.cs">
       <DependentUpon>DistributorCartDetails.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\FailedOrdersCart.ascx.cs">
+      <DependentUpon>FailedOrdersCart.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\FailedOrdersCart.ascx.designer.cs">
+      <DependentUpon>FailedOrdersCart.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\FailedOrdersCheckout.ascx.cs">
+      <DependentUpon>FailedOrdersCheckout.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\FailedOrdersCheckout.ascx.designer.cs">
+      <DependentUpon>FailedOrdersCheckout.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Cart\GeneratePDFforCart.ascx.cs">
       <DependentUpon>GeneratePDFforCart.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1283,13 +1297,13 @@
     <Compile Include="Old_App_Code\EventHandlers\SettingsKeyEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
     <Compile Include="Old_App_Code\Kadena\Constants\Constants.cs" />
-    <Compile Include="Old_App_Code\Kadena\CustomScheduledTasks\GeneratePrebuyOrder.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Brand.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Division.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\Environment.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\ShippingAddress.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\UserBusinessUnits.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\UserFYBudgetAllocation.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomTableItems\FailedOrders.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\AddressBrands.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\BusinessUnit.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\FiscalYearManagement.generated.cs" />
@@ -1444,6 +1458,8 @@
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\CartCheckout.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx" />
+    <Content Include="CMSWebParts\Kadena\Cart\FailedOrdersCart.ascx" />
+    <Content Include="CMSWebParts\Kadena\Cart\FailedOrdersCheckout.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\GeneratePDFforCart.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\RemoveItemFromCart.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\ShoppingCartCount.ascx" />
