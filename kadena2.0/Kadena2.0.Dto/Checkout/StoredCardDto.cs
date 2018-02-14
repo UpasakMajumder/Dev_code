@@ -2,8 +2,8 @@
 {
     public class StoredCardDto
     {
-        int Id { get; set; }
-        string Label { get; set; }
-        bool Checked { get; set; }
+        public int Id { get; set; }
+        public string Label { get; set; }
+        public bool Checked { get; set; }
     }
 }
