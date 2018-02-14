@@ -87,7 +87,7 @@ class RecentOrders extends Component {
   }
 
   static getFormattedDate(date) {
-    return date !== null ? moment(date).format('YYYYMMDD') : '';
+    return date !== null ? moment(date).format('YYYY-MM-DD') : '';
   }
 
   componentDidMount() {
