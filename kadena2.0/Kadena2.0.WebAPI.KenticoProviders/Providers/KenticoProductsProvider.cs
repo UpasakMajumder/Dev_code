@@ -185,10 +185,9 @@ namespace Kadena.WebAPI.KenticoProviders
                 sku.Update();
             }
         }
-        public int GetAllocatedProductQuantityForUser(int productID, int userID)
+        public CustomTableItem GetAllocatedProductQuantityForUser(int productID, int userID)
         {
-            CustomTableItem userProductAllocation= CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
-            return userProductAllocation != null ? userProductAllocation.GetValue<int>("Quantity", default(int)) : default(int);
+          return  CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
         }
     }
 }
