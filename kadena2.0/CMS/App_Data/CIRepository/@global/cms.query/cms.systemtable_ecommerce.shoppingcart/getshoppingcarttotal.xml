@@ -14,7 +14,7 @@
   <QueryRequiresTransaction>False</QueryRequiresTransaction>
   <QueryText>
 <![CDATA[
-SELECT SUM(SKUUnits*SKUPrice) AS CartTolal FROM COM_ShoppingCart cart INNER JOIN COM_ShoppingCartSKU cartSKU ON cart.ShoppingCartID= cartSKU.ShoppingCartID
+SELECT SUM(SKUUnits*cartSKU.CartItemPrice) AS CartTolal FROM COM_ShoppingCart cart INNER JOIN COM_ShoppingCartSKU cartSKU ON cart.ShoppingCartID= cartSKU.ShoppingCartID
 INNER JOIN COM_SKU sku ON cartSKU.SKUID=sku.SKUID WHERE  Cart.ShoppingCartUserID=@ShoppingCartUserID
 AND Cart.ShoppingCartInventoryType=@ShoppingCartInventoryType
 AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN @ShoppingCartCampaignID ELSE 0  END
