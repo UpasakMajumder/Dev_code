@@ -61,7 +61,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 usersWithShoppingCartItems.ForEach(shoppingCartUser =>
                 {
                     var salesPerson = userInfo.GetUserByUserId(shoppingCartUser);
-                    var loggedInUserCartIDs = ShoppingCartHelper.GetCartsByUserID(shoppingCartUser, ProductType.PreBuy);
+                    var loggedInUserCartIDs = ShoppingCartHelper.GetCartsByUserID(shoppingCartUser, ProductType.PreBuy,openCampaignID);
                     loggedInUserCartIDs.ForEach(cart =>
                     {
                         var shippingCost = default(decimal);
