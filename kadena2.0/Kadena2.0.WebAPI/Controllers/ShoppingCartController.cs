@@ -141,19 +141,8 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult UpdateData([FromBody]DistributorDTO request)
         {
             var submitRequest = mapper.Map<Distributor>(request);
-            if (submitRequest.ItemQuantity < 1)
-            {
-                return ResponseJsonCheckingNull<string>(null, DIContainer.Resolve<IKenticoResourceService>().GetResourceString("KDA.Cart.Update.MinimumQuantityError"));
-            }
             var serviceResponse = provider.UpdateCartQuantity(submitRequest);
-            if (serviceResponse.Item2)
-            {
-                return ResponseJson<string>(serviceResponse.Item1);
-            }
-            else
-            {
-                return ResponseJsonCheckingNull<string>(null, serviceResponse.Item1);
-            }
+            return ResponseJson<string>(serviceResponse);
         }
     }
 }
