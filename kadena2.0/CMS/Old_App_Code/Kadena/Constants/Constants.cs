@@ -43,6 +43,8 @@
         public const string OrderScheduleTaskStart = "ordertask";
         public const string OrderSuccess = "ordersuccess";
         public const string OrderFail = "orderfail";
+        public const string InvalidCartItems = "invalidcartitems";
+        public const string InvalidProduct = "invalidproduct";
     }
     /// <summary>
     /// This class represents shipping options
@@ -57,6 +59,7 @@
     public class SKUMeasuringUnits
     {
         public const string Lb = "Lb";
+        public const string EA = "EA";
     }
     /// <summary>
     /// This class represents Scheduled task names
