@@ -1,5 +1,4 @@
 ﻿using CMS.SiteProvider;
-using Kadena.BusinessLogic.Contracts;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
@@ -11,15 +10,13 @@ namespace Kadena.ScheduledTasks.GenerateOrders
     class OrderCreationService : IOrderCreationService
     {
         private IShoppingCartProvider shoppingCartProvider;
-        private IAddressBookService kenticoAddressBookService;
+        private IKenticoAddressBookProvider kenticoAddressBookService;
         private IKenticoUserProvider KenticoUserProvider;
         private IKenticoResourceService kenticoresourceService;
-        private IShoppingCartService shoppingCartService;
         private IFailedOrderStatusProvider failedOrderStatusProvider;
-        public OrderCreationService(IShoppingCartProvider shoppingCartProvider, 
-            IAddressBookService kenticoAddressBookService, IKenticoUserProvider KenticoUserProvider, 
-            IKenticoResourceService kenticoresourceService,
-            IShoppingCartService shoppingCartService, IFailedOrderStatusProvider failedOrderStatusProvider)
+        public OrderCreationService(IShoppingCartProvider shoppingCartProvider,
+            IKenticoAddressBookProvider kenticoAddressBookService, IKenticoUserProvider KenticoUserProvider, 
+            IKenticoResourceService kenticoresourceService, IFailedOrderStatusProvider failedOrderStatusProvider)
         {
             if (shoppingCartProvider == null)
             {
@@ -37,10 +34,6 @@ namespace Kadena.ScheduledTasks.GenerateOrders
             {
                 throw new ArgumentNullException(nameof(kenticoresourceService));
             }
-            if (shoppingCartService == null)
-            {
-                throw new ArgumentNullException(nameof(shoppingCartService));
-            }
             if (failedOrderStatusProvider == null)
             {
                 throw new ArgumentNullException(nameof(failedOrderStatusProvider));
@@ -49,7 +42,6 @@ namespace Kadena.ScheduledTasks.GenerateOrders
             this.kenticoAddressBookService = kenticoAddressBookService;
             this.KenticoUserProvider = KenticoUserProvider;
             this.kenticoresourceService = kenticoresourceService;
-            this.shoppingCartService = shoppingCartService;
             this.failedOrderStatusProvider = failedOrderStatusProvider;
         }
         public string GenerateOrder(int openCampaignID, int campaignClosingUserID)
@@ -62,7 +54,7 @@ namespace Kadena.ScheduledTasks.GenerateOrders
             usersWithShoppingCartItems.ForEach(shoppingCartUser =>
             {
                 var salesPerson = KenticoUserProvider.GetUserByUserId(shoppingCartUser);
-                var salesPersonrCartIDs = shoppingCartService.GetLoggedInUserCartData(shoppingCartUser, 2, openCampaignID);
+                var salesPersonrCartIDs = shoppingCartProvider.GetShoppingCartIDByInventoryType(shoppingCartUser, 2, openCampaignID);
             });
             var distributors = kenticoAddressBookService.GetAddressesByAddressIds(unprocessedDistributorIDs.Select(x => x.Item1).ToList()).Select(x =>
             {
