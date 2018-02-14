@@ -18,7 +18,7 @@
             <td>
                 <asp:HiddenField runat="server" ID="hdnItemID" Value='<%#Eval("ItemID") %>' />
                 <asp:Label runat="server" ID="userBudget" Visible='<%# (ValidationHelper.GetBoolean(Eval("IsYearEnded"),true)) %>' Text='<%#Eval("Budget") %>'></asp:Label>
-                <asp:TextBox runat="server" CssClass="js-UserBudget"  ID="txtUserBudget" Visible='<%# !(ValidationHelper.GetBoolean(Eval("IsYearEnded"),true)) %>' TextMode="Number" Text='<%#Eval("Budget") %>'></asp:TextBox>
+                <asp:TextBox runat="server" CssClass="js-UserBudget"  ID="txtUserBudget" Visible='<%# !(ValidationHelper.GetBoolean(Eval("IsYearEnded"),true)) %>' Text='<%#Eval("Budget") %>'></asp:TextBox>
             </td>
             <td>
                 <asp:Label runat="server" CssClass="js_remainingBudget" ID="userRemainingBudget" Text='<%#Eval("UserRemainingBudget") %>'></asp:Label>

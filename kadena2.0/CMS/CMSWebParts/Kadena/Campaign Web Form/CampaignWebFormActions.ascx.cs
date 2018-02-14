@@ -1,3 +1,5 @@
+using CMS.CustomTables;
+using CMS.CustomTables.Types.KDA;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.KDA;
@@ -651,8 +653,8 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             {
                 campaign.CloseCampaign = true;
                 campaign.Update();
-                Response.Cookies["status"].Value = QueryStringStatus.OrderScheduleTaskStart;
-                Response.Cookies["status"].HttpOnly = false;
+               var oderStatus= DIContainer.Resolve<IFailedOrderStatusProvider>();
+                oderStatus.InsertCampaignOrdersInProgress(campaign.CampaignID);
                 TaskInfo runTask = TaskInfoProvider.GetTaskInfo(ScheduledTaskNames.PrebuyOrderCreation, CurrentSite.SiteID);
                 if (runTask != null)
                 {
@@ -677,6 +679,5 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
             EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "lnkCloseCampaign_Click", ex, CurrentSite.SiteID, ex.Message);
         }
     }
-
     #endregion "Methods"
 }

@@ -421,7 +421,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 if (!string.IsNullOrEmpty(posNumber) && !string.IsNullOrWhiteSpace(posNumber) && !DataHelper.DataSourceIsEmpty(skuDetails))
                 {
                     skuDetails = skuDetails
-                                 .Where(x => x.GetStringValue("SKUProductCustomerReferenceNumber", string.Empty).ToLower().Contains(posNumber))
+                                 .Where(x => x.GetStringValue("SKUProductCustomerReferenceNumber", string.Empty).ToLower().Contains(posNumber.ToLower()))
                                  .ToList();
                 }
                 if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
@@ -710,13 +710,15 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             List<AddressData> myAddressList = GetMyAddressBookList();
             if (myAddressList.Count > 0)
             {
-                List<int> shoppingCartIDs = ShoppingCartInfoProvider.GetShoppingCarts()
-                                                                .WhereIn("ShoppingCartDistributorID", myAddressList.Select(g => g.AddressID).ToList())
-                                                                .WhereEquals("ShoppingCartInventoryType", ProductType)
-                                                                .Select(x => x.ShoppingCartID).ToList();
-                List<ShoppingCartItemInfo> cartItems = ShoppingCartItemInfoProvider.GetShoppingCartItems()
-                                                                                   .WhereIn("ShoppingCartID", shoppingCartIDs)
-                                                                                   .ToList();
+                var shoppingCarts = DIContainer.Resolve<IShoppingCartProvider>();
+                var whereCondition = new WhereCondition().WhereIn("ShoppingCartDistributorID", myAddressList.Select(g => g.AddressID).ToList())
+                                                                .WhereEquals("ShoppingCartInventoryType", ProductType);
+                if (ProductType == (int)ProductsType.PreBuy && OpenCampaign != null)
+                {
+                    whereCondition = whereCondition.WhereEquals("ShoppingCartCampaignID", OpenCampaign.CampaignID);
+                }
+                List<int> shoppingCartIDs = shoppingCarts.GetShoppingCartIDs(whereCondition);
+                List<ShoppingCartItemInfo> cartItems = shoppingCarts.GetShoppingCartItemsByCartIDs(shoppingCartIDs);
                 gvCustomersCart.DataSource = myAddressList
                     .Distinct()
                     .Select(g =>
@@ -801,8 +803,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         try
         {
             lblErrorMsg.Visible = false;
+            var productProvider = DIContainer.Resolve<IKenticoProductsProvider>();
             ProductSKUID = ValidationHelper.GetInteger(hdnClickSKU.Value, default(int));
             SKUInfo product = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", ProductSKUID).WhereNull("SKUOptionCategoryID").FirstObject;
+            var campProduct = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", product?.SKUID).Columns("CampaignsProductID").FirstOrDefault();
+            var allocatedQuantity = campProduct != null ? productProvider.GetAllocatedProductQuantityForUser(campProduct.CampaignsProductID, CurrentUser.UserID) : default(int);
             var itemsPlaced = default(int);
             foreach (GridViewRow row in gvCustomersCart.Rows)
             {
@@ -815,14 +820,19 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     if (ProductType == (int)ProductsType.GeneralInventory)
                     {
                         itemsPlaced += quantityPlacing;
-                        if (itemsPlaced <= product.SKUAvailableItems)
-                        {
-                            CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
-                        }
-                        else
+                        if (itemsPlaced > product.SKUAvailableItems)
                         {
                             lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.StockError");
                             lblErrorMsg.Visible = true;
+                        }
+                        else if (itemsPlaced > allocatedQuantity)
+                        {
+                            lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError");
+                            lblErrorMsg.Visible = true;
+                        }
+                        else
+                        {
+                            CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
                         }
                     }
                     else
@@ -917,7 +927,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     parameters.Price = (ProductType == (int)ProductsType.GeneralInventory) ? default(double) : product.SKUPrice;
                     ShoppingCartItemInfo cartItem = cart.SetShoppingCartItem(parameters);
                     cartItem.SetValue("CartItemDistributorID", customerAddressID);
-                    cartItem.SetValue("CartItemCampaignID", campaingnID);
+                    cartItem.SetValue("CartItemCampaignID", cartItem.SetValue("CartItemCampaignID", campaingnID));
                     cartItem.SetValue("CartItemProgramID", programID);
                     ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
                 }

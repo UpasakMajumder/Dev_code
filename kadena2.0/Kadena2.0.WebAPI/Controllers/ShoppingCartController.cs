@@ -138,6 +138,7 @@ namespace Kadena.WebAPI.Controllers
         }
         [HttpPost]
         [Route("api/distributor/update")]
+        [CustomerAuthorizationFilter]
         public IHttpActionResult UpdateData([FromBody]DistributorDTO request)
         {
             var submitRequest = mapper.Map<Distributor>(request);
