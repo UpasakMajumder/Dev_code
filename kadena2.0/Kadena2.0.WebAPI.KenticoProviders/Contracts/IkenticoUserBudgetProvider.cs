@@ -8,7 +8,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
     public interface IkenticoUserBudgetProvider
     {
-        string UpdateUserBudgetAllocation(int itemID, double userBudget);
+        string UpdateUserBudgetAllocation(int itemID, decimal userBudget);
 
         List<UserBudgetItem> GetUserBudgetAllocationRecords(int userID, int siteId);
         bool CheckIfYearExists(string year, int userId);

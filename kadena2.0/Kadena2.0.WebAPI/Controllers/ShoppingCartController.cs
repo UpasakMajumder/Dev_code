@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena.Dto.Checkout.Requests;
 using Kadena.Models.Checkout;
-using Kadena.Dto.Product;
 using Kadena.Models;
 using Kadena.Dto.CustomerData;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.CustomerData;
+using Kadena.Dto.Checkout.Responses;
 using Kadena2.Container.Default;
 
 namespace Kadena.WebAPI.Controllers
@@ -78,11 +78,11 @@ namespace Kadena.WebAPI.Controllers
         [HttpPost]
         [Route("api/shoppingcart/selectshipping")]
         [CustomerAuthorizationFilter]
-        public IHttpActionResult SelectShipping([FromBody]ChangeSelectionRequestDto request)
+        public async Task<IHttpActionResult> SelectShipping([FromBody]ChangeSelectionRequestDto request)
         {
-            var result = service.SelectShipipng(request.Id);
-            var resultDto = mapper.Map<CheckoutPageDTO>(result);
-            return ResponseJson(resultDto);
+            var deliveryTotals = await service.SelectShipping(request.Id);
+            var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
+            return ResponseJson(deliveryTotals);
         }
 
         [HttpPost]
@@ -91,7 +91,7 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult SelectAddress([FromBody]ChangeSelectionRequestDto request)
         {
             var result = service.SelectAddress(request.Id);
-            var resultDto = mapper.Map<CheckoutPageDTO>(result);
+            var resultDto = mapper.Map<ChangeDeliveryAddressResponseDto>(result);
             return ResponseJson(resultDto);
         }
 
@@ -101,7 +101,7 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult RemoveItem([FromBody]RemoveItemRequestDto request)
         {
             var result = service.RemoveItem(request.Id);
-            var resultDto = mapper.Map<CheckoutPageDTO>(result);
+            var resultDto = mapper.Map<ChangeItemQuantityResponseDto>(result);
             return ResponseJson(resultDto);
         }
 
@@ -111,7 +111,7 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult ChangeItemQuantity([FromBody]ChangeItemQuantityRequestDto request)
         {
             var result = service.ChangeItemQuantity(request.Id, request.Quantity);
-            var resultDto = mapper.Map<CheckoutPageDTO>(result);
+            var resultDto = mapper.Map<ChangeItemQuantityResponseDto>(result);
             return ResponseJson(resultDto);
         }
 

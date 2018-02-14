@@ -3,14 +3,26 @@ import PropTypes from 'prop-types';
 /* components */
 import USAddress from 'app.dump/USAddress';
 
-const Address = (props) => {
-  const { id, address1, address2, city, state, zip, checkedId, changeShoppingData, disableInteractivity, customerName, email,
-    country, phone } = props;
+const Address = ({
+  id,
+  address1,
+  address2,
+  city,
+  state,
+  zip,
+  checkedId,
+  changeDeliveryAddress,
+  disableInteractivity,
+  customerName,
+  email,
+  country,
+  phone
+}) => {
 
   return (
     <div>
       <input
-        onChange={(e) => { changeShoppingData(e.target.name, id); }}
+        onChange={() => { changeDeliveryAddress(id); }}
         id={`da-${id}`}
         disabled={disableInteractivity}
         name="deliveryAddress"
@@ -37,7 +49,7 @@ const Address = (props) => {
 Address.propTypes = {
   address1: PropTypes.string.isRequired,
   address2: PropTypes.string,
-  changeShoppingData: PropTypes.func.isRequired,
+  changeDeliveryAddress: PropTypes.func.isRequired,
   city: PropTypes.string.isRequired,
   zip: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,

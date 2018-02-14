@@ -27,7 +27,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             }
             this.mapper = mapper;
         }
-        public string UpdateUserBudgetAllocation(int itemID, double userBudget)
+        public string UpdateUserBudgetAllocation(int itemID, decimal userBudget)
         {
             var userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("ItemID", itemID).FirstOrDefault();
             if (userBudgetDetails != null)
