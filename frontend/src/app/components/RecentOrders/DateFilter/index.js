@@ -1,13 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DatePicker from 'react-datepicker';
 import moment from 'moment';
-/* styles */
-import 'react-datepicker/dist/react-datepicker.css';
-/* helpers */
-import { dateFormat } from 'app.helpers/time';
 /* component */
 import Button from 'app.dump/Button';
+import Datepicker from 'app.dump/Form/Datepicker';
 
 const DateFilter = ({
   ui: {
@@ -30,25 +26,23 @@ const DateFilter = ({
       <h2 className="mb-3">{title}</h2>
       <div className="mb-3">
         <div className="flex--center--between mb-3">
-          <DatePicker
+          <Datepicker
             selected={dateFrom}
             selectsStart
             startDate={dateFrom}
             endDate={dateTo}
             onChange={(date) => { changeDate(date, 'dateFrom'); }}
-            dateFormat={dateFormat}
           />
           <a href="#" className="ml-2 link" onClick={e => setNow(e, 'dateFrom')}>{labelNow}</a>
         </div>
 
         <div className="flex--center--between">
-          <DatePicker
+          <Datepicker
             selected={dateTo}
             selectsEnd
             startDate={dateFrom}
             endDate={dateTo}
             onChange={(date) => { changeDate(date, 'dateTo'); }}
-            dateFormat={dateFormat}
           />
           <a href="#" className="link" onClick={e => setNow(e, 'dateTo')}>{labelNow}</a>
         </div>
