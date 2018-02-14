@@ -107,6 +107,8 @@
   <ClassIsDocumentType>True</ClassIsDocumentType>
   <ClassIsForm>False</ClassIsForm>
   <ClassIsMenuItemType>False</ClassIsMenuItemType>
+  <ClassIsProduct>False</ClassIsProduct>
+  <ClassIsProductSection>True</ClassIsProductSection>
   <ClassName>KDA.Program</ClassName>
   <ClassNodeAliasSource />
   <ClassNodeNameSource>ProgramName</ClassNodeNameSource>

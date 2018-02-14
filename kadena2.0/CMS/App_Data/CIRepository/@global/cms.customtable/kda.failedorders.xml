@@ -29,18 +29,18 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field column="IsCampaignOrdersInProgress" columntype="boolean" guid="32d2b6a1-a732-453e-9e6e-507c59093242" publicfield="false" visible="true">
+      <field allowempty="true" column="IsCampaignOrdersInProgress" columntype="boolean" guid="32d2b6a1-a732-453e-9e6e-507c59093242" publicfield="false" visible="true">
         <properties>
-          <defaultvalue>False</defaultvalue>
+          <defaultvalue>false</defaultvalue>
           <fieldcaption>Is Campaign Orders In Progress</fieldcaption>
         </properties>
         <settings>
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
-      <field column="IsCampaignOrdersFailed" columntype="boolean" guid="7c7f3244-0584-4291-8baf-863c51f602f5" publicfield="false" visible="true">
+      <field allowempty="true" column="IsCampaignOrdersFailed" columntype="boolean" guid="7c7f3244-0584-4291-8baf-863c51f602f5" publicfield="false" visible="true">
         <properties>
-          <defaultvalue>False</defaultvalue>
+          <defaultvalue>false</defaultvalue>
           <fieldcaption>Is Campaign Orders Failed</fieldcaption>
         </properties>
         <settings>
