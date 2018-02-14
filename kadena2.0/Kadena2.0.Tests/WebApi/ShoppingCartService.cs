@@ -9,6 +9,7 @@ using Kadena.Models.Checkout;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.Models.Product;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena2.MicroserviceClients.Contracts;
 
 namespace Kadena.Tests.WebApi
 {
@@ -110,18 +111,21 @@ namespace Kadena.Tests.WebApi
                 kenticoResource.Object,
                 taxCalculator.Object,
                 mailingService.Object,
+                new Mock<IUserDataServiceClient>().Object,
                 shoppingCart.Object,
-                checkoutFactory);
+                checkoutFactory,
+                new Mock<IKenticoLogger>().Object
+                );
         }
 
         [Fact]
-        public void GetCheckoutPageTest() 
+        public async Task GetCheckoutPageTest() 
         {
             // Arrange
             var sut = CreateShoppingCartService();
 
             // Act
-            var result = sut.GetCheckoutPage();
+            var result = await sut.GetCheckoutPage();
 
             // Assert
             Assert.NotNull(result);

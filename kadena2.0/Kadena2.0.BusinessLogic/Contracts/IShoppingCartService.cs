@@ -7,13 +7,13 @@ namespace Kadena.BusinessLogic.Contracts
 {
     public interface IShoppingCartService
     {
-        CheckoutPage GetCheckoutPage();
+        Task<CheckoutPage> GetCheckoutPage();
         Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals();
         Task<CheckoutPageDeliveryTotals> SetDeliveryAddress(DeliveryAddress deliveryAddress);
-        CheckoutPage SelectShipipng(int id);
-        CheckoutPage SelectAddress(int id);
-        CheckoutPage ChangeItemQuantity(int id, int quantity);
-        CheckoutPage RemoveItem(int id);
+        Task<CheckoutPage> SelectShipipng(int id);
+        Task<CheckoutPage> SelectAddress(int id);
+        Task<CheckoutPage> ChangeItemQuantity(int id, int quantity);
+        Task<CheckoutPage> RemoveItem(int id);
         CartItemsPreview ItemsPreview();
         Task<AddToCartResult> AddToCart(NewCartItem item);
     }
