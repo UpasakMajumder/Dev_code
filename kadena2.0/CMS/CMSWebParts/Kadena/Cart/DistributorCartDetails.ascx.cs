@@ -226,8 +226,8 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         /// <summary>
         /// gets or sets open campaign
         /// </summary>
-        public int  OpenCampaignID { get; set; }
-       
+        public int OpenCampaignID { get; set; }
+
         #endregion "Public properties"
 
         #region "Page events"
@@ -312,11 +312,11 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     }
                 }
                 BindShippingDropdown(inventoryType, estimatedPrice);
-                ShippingCost = estimatedPrice + EstimateSubTotal(inventoryType);
+                ShippingCost = estimatedPrice + Cart.TotalItemsPrice;
                 var businessUnitID = Cart.GetValue("BusinessUnitIDForDistributor", default(string));
                 ddlBusinessUnits.SelectedValue = businessUnitID;
                 lblTotalPrice.Text = CurrencyInfoProvider.GetFormattedPrice(ShippingCost, CurrentSite.SiteID);
-              
+
             }
             catch (Exception ex)
             {
@@ -414,15 +414,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 }
                 ShoppingCartInfoProvider.EvaluateShoppingCart(Cart);
                 ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
-                var url = Request.RawUrl;
-                if(!string.IsNullOrEmpty(Request.QueryString["status"]))
-                {
-                    URLHelper.Redirect(url);
-                }
-                else
-                {
-                    URLHelper.Redirect($"{Request.RawUrl}?status={QueryStringStatus.Deleted}");
-                }
+                Response.Cookies["status"].Value = QueryStringStatus.Deleted;
+                Response.Cookies["status"].HttpOnly = false;
+                URLHelper.Redirect(Request.RawUrl);
             }
             catch (Exception ex)
             {
@@ -591,6 +585,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
         #endregion "Private Methods"
-      
+
     }
 }
