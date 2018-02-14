@@ -8,6 +8,6 @@ namespace Kadena.BusinessLogic.Contracts
 {
     public interface IUserBudgetService
     {
-        string UpdateUserBudgetAllocation(int itemID, double userBudget);
+        string UpdateUserBudgetAllocation(int itemID, decimal userBudget);
     }
 }
