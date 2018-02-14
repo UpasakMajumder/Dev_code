@@ -80,7 +80,7 @@ namespace Kadena.WebAPI.Controllers
         [CustomerAuthorizationFilter]
         public async Task<IHttpActionResult> SelectShipping([FromBody]ChangeSelectionRequestDto request)
         {
-            var deliveryTotals = await service.SelectShipipng(request.Id);
+            var deliveryTotals = await service.SelectShipping(request.Id);
             var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
             return ResponseJson(deliveryTotals);
         }

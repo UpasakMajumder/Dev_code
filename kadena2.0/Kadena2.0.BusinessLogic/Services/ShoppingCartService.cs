@@ -9,7 +9,6 @@ using Kadena.Models.Product;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
-using System.Data;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -258,7 +257,7 @@ namespace Kadena.BusinessLogic.Services
             shoppingCart.SelectShipping(0);
         }
 
-        public async Task<CheckoutPageDeliveryTotals> SelectShipipng(int id)
+        public async Task<CheckoutPageDeliveryTotals> SelectShipping(int id)
         {
             shoppingCart.SelectShipping(id);
             return await GetDeliveryAndTotals();

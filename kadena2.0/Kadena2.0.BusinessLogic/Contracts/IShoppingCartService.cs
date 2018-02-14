@@ -12,7 +12,7 @@ namespace Kadena.BusinessLogic.Contracts
         CartItems GetCartItems();
         Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals();
         Task<CheckoutPageDeliveryTotals> SetDeliveryAddress(DeliveryAddress deliveryAddress);
-        Task<CheckoutPageDeliveryTotals> SelectShipipng(int id);
+        Task<CheckoutPageDeliveryTotals> SelectShipping(int id);
         DeliveryAddresses SelectAddress(int id);
         CartItems ChangeItemQuantity(int id, int quantity);
         CartItems RemoveItem(int id);
