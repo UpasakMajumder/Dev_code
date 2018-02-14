@@ -52,14 +52,13 @@ namespace Kadena.WebAPI.KenticoProviders
         public List<IBTF> GetIBTFRecords()
         {
             return CustomTableItemProvider.GetItems(IBTFCustomTableName)
-                .WhereEquals("SiteName", SiteContext.CurrentSiteName)
                 .Select(x =>
                 {
                     return new IBTF()
                     {
                         ItemID = ValidationHelper.GetInteger(x["ItemID"], default(int)),
                         SKUID = ValidationHelper.GetInteger(x["SKUID"], default(int)),
-                        ActualPrice = ValidationHelper.GetDecimal(x["SKUID"], default(decimal))
+                        ActualPrice = ValidationHelper.GetDecimal(x["ActualPrice"], default(decimal))
                     };
                 }).ToList();
         }

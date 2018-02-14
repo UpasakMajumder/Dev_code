@@ -31,7 +31,6 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 var programNodes = new TreeProvider(MembershipContext.AuthenticatedUser).SelectNodes(PageTypeClassName)
                                     .Where("CampaignID", QueryOperator.Equals, campaignID)
-                                    .Column("ProgramID")
                                     .OnCurrentSite();
                 if (programNodes != null && programNodes.HasResults() && programNodes.TypedResult.Items.Count > 0)
                 {
