@@ -27,8 +27,8 @@
                 <asp:HiddenField runat="server" ID="hdnCartItemID" Value='<%# Eval("CartItemID") %>' />
             </td>
             <td>
-                <asp:Label runat="server" ID="lblPrice" Text='<%#(EvalInteger("ShoppingCartInventoryType")==1) ? (CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(0, CurrentSite.SiteID)):(CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalInteger("SKUUnits")*EvalDouble("SKUPrice"), CurrentSite.SiteID))%>'></asp:Label>
-                <asp:HiddenField runat="server" ID="hdnSKUPrice" Value='<%# (EvalInteger("ShoppingCartInventoryType")==1) ? 0 : EvalInteger("SKUUnits")*EvalDouble("SKUPrice") %>' />
+                <asp:Label runat="server" ID="lblPrice" Text='<%# CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("SKUUnitsPrice"), CurrentSite.SiteID)%>'></asp:Label>
+                <asp:HiddenField runat="server" ID="hdnSKUPrice" Value='<%#  CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("SKUUnitsPrice"), CurrentSite.SiteID) %>' />
             </td>
             <td>
                 <div class="webform_view">

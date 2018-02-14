@@ -20,6 +20,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 CustomTableItem newCustomTableItem = CustomTableItem.New(customTableClassName);
                 newCustomTableItem.SetValue("CampaignID", campaignID);
                 newCustomTableItem.SetValue("IsCampaignOrdersInProgress", true);
+                newCustomTableItem.SetValue("IsCampaignOrdersFailed", false);
                 newCustomTableItem.Insert();
             }
         }
