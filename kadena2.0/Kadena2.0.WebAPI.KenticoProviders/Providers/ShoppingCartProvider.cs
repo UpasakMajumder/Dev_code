@@ -715,8 +715,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 {
                     throw new Exception(ResHelper.GetString("KDA.Cart.Update.ProductNotAllocatedMessage", LocalizationContext.CurrentCulture.CultureCode));
                 }
-                var allocatedQuantity = allocatedQuantityItem.GetValue<int?>("Quantity", default(int?));
-
+                var allocatedQuantity = allocatedQuantityItem.GetValue<int>("Quantity", default(int));
                 if (sku.SKUAvailableItems < totalItems + distributorData.ItemQuantity)
                 {
                     throw new Exception(ResHelper.GetString("KDA.Cart.Update.InsufficientStockMessage", LocalizationContext.CurrentCulture.CultureCode));
