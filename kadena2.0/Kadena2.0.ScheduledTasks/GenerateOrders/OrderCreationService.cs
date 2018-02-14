@@ -1,9 +1,7 @@
-﻿using CMS.Helpers;
-using CMS.SiteProvider;
+﻿using CMS.SiteProvider;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.Container.Default;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,11 +63,6 @@ namespace Kadena.ScheduledTasks.GenerateOrders
             {
                 var salesPerson = KenticoUserProvider.GetUserByUserId(shoppingCartUser);
                 var salesPersonrCartIDs = shoppingCartService.GetLoggedInUserCartData(shoppingCartUser, 2, openCampaignID);
-                salesPersonrCartIDs.ForEach(cart =>
-                {
-                    var shippingCost = default(decimal);
-                    var Cart = shoppingCartProvider.GetShoppingCartByID(cart);
-                });
             });
             var distributors = kenticoAddressBookService.GetAddressesByAddressIds(unprocessedDistributorIDs.Select(x => x.Item1).ToList()).Select(x =>
             {
@@ -87,7 +80,7 @@ namespace Kadena.ScheduledTasks.GenerateOrders
             var user = KenticoUserProvider.GetUserByUserId(campaignClosingUserID);
             if (user?.Email != null && listofFailedOrders.Count > 0)
             {
-                object[,] orderdata = { {"url", URLHelper.AddHTTPToUrl($"{SiteContext.CurrentSite.DomainName}{failedOrdersUrl}?campid={openCampaignID}") } ,
+                object[,] orderdata = { {"url", $"{SiteContext.CurrentSite.DomainName}{failedOrdersUrl}?campid={openCampaignID}" } ,
                                                              { "failedordercount",listofFailedOrders.Count}           };
                 UpdatetFailedOrders(openCampaignID, true);
             }
@@ -95,7 +88,7 @@ namespace Kadena.ScheduledTasks.GenerateOrders
             {
                 UpdatetFailedOrders(openCampaignID, false);
             }
-            return ResHelper.GetString("KDA.OrderSchedular.TaskSuccessfulMessage");
+            return kenticoresourceService.GetResourceString("KDA.OrderSchedular.TaskSuccessfulMessage");
         }
 
         private void UpdatetFailedOrders(int campaignID, bool isFailed)

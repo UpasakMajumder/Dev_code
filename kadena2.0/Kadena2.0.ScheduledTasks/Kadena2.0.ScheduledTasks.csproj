@@ -44,18 +44,6 @@
     <Reference Include="CMS.DataEngine">
       <HintPath>..\Lib\CMS.DataEngine.dll</HintPath>
     </Reference>
-    <Reference Include="CMS.Ecommerce, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\React\kadena-k10-core\kadena2.0\Lib\CMS.Ecommerce.dll</HintPath>
-    </Reference>
-    <Reference Include="CMS.EventLog, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\React\kadena-k10-core\kadena2.0\Lib\CMS.EventLog.dll</HintPath>
-    </Reference>
-    <Reference Include="CMS.Helpers, Version=10.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\React\kadena-k10-core\kadena2.0\Lib\CMS.Helpers.dll</HintPath>
-    </Reference>
     <Reference Include="CMS.Scheduler">
       <HintPath>..\Lib\CMS.Scheduler.dll</HintPath>
     </Reference>
