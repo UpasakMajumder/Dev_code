@@ -808,7 +808,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             SKUInfo product = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", ProductSKUID).WhereNull("SKUOptionCategoryID").FirstObject;
             var campProduct = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", product?.SKUID).Columns("CampaignsProductID").FirstOrDefault();
             var allocatedQuantityItem = campProduct != null ? productProvider.GetAllocatedProductQuantityForUser(campProduct.CampaignsProductID, CurrentUser.UserID) : null;
-            if (allocatedQuantityItem == null)
+            if (allocatedQuantityItem == null && ProductType == (int)ProductsType.GeneralInventory)
             {
                 lblErrorMsg.Text = ResHelper.GetString("KDA.Cart.Update.ProductNotAllocatedMessage");
                 lblErrorMsg.Visible = true;
