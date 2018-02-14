@@ -8,6 +8,8 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Product;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
+using System.Collections.Generic;
+using System.Data;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -110,7 +112,7 @@ namespace Kadena.BusinessLogic.Services
             SetPricesVisibility(checkoutPage);
             return checkoutPage;
         }
-        
+
         public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals()
         {
             var deliveryAddress = shoppingCart.GetCurrentCartShippingAddress();
@@ -290,7 +292,7 @@ namespace Kadena.BusinessLogic.Services
                 page.DeliveryMethods.HidePrices();
             }
         }
-       
+
         public CheckoutPage SelectShipipng(int id)
         {
             shoppingCart.SelectShipping(id);
@@ -370,6 +372,11 @@ namespace Kadena.BusinessLogic.Services
             bool otherAddressAvailable = false;
             bool.TryParse(settingsKey, out otherAddressAvailable);
             return otherAddressAvailable;
+        }
+
+        public List<int> GetLoggedInUserCartData(int inventoryType, int userID, int campaignID = 0)
+        {
+            return shoppingCart.GetShoppingCartIDByInventoryType(inventoryType, userID, campaignID);
         }
     }
 }

@@ -17,7 +17,8 @@
 SELECT cart.ShoppingCartID,cartSKU.CartItemID,cartSKU.CartItemDistributorID,sku.SKUNumber,sku.SKUName,cartSKU.SKUUnits,sku.SKUPrice,
  cart.ShoppingCartInventoryType,sku.SKUProductCustomerReferenceNumber FROM COM_ShoppingCart cart INNER JOIN COM_ShoppingCartSKU cartSKU ON cart.ShoppingCartID= cartSKU.ShoppingCartID
   INNER JOIN COM_SKU sku ON cartSKU.SKUID=sku.SKUID  WHERE CartItemDistributorID=@CartItemDistributorID  AND 
-  cart.ShoppingCartInventoryType=@ShoppingCartInventoryType
+  cart.ShoppingCartInventoryType=@ShoppingCartInventoryType 
+AND cart.ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN @ShoppingCartCampaignID ELSE 0  END
 ]]>
   </QueryText>
   <QueryTypeID>0</QueryTypeID>

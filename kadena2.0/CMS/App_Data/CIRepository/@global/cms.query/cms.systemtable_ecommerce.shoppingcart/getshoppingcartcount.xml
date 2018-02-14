@@ -17,6 +17,7 @@
 SELECT COUNT(DISTINCT Cart.ShoppingCartID) FROM COM_ShoppingCart Cart INNER JOIN COM_ShoppingCartSKU CartSku ON Cart.ShoppingCartID= CartSku.ShoppingCartID 
 WHERE Cart.ShoppingCartUserID=@ShoppingCartUserID
 AND Cart.ShoppingCartInventoryType=@ShoppingCartInventoryType
+AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN @ShoppingCartCampaignID ELSE 0  END
 ]]>
   </QueryText>
   <QueryTypeID>0</QueryTypeID>
