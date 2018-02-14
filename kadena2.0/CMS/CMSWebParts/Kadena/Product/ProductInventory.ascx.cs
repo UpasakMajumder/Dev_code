@@ -421,7 +421,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 if (!string.IsNullOrEmpty(posNumber) && !string.IsNullOrWhiteSpace(posNumber) && !DataHelper.DataSourceIsEmpty(skuDetails))
                 {
                     skuDetails = skuDetails
-                                 .Where(x => x.GetStringValue("SKUProductCustomerReferenceNumber", string.Empty).ToLower().Contains(posNumber))
+                                 .Where(x => x.GetStringValue("SKUProductCustomerReferenceNumber", string.Empty).ToLower().Contains(posNumber.ToLower()))
                                  .ToList();
                 }
                 if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
@@ -803,8 +803,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         try
         {
             lblErrorMsg.Visible = false;
+            var productProvider = DIContainer.Resolve<IKenticoProductsProvider>();
             ProductSKUID = ValidationHelper.GetInteger(hdnClickSKU.Value, default(int));
             SKUInfo product = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", ProductSKUID).WhereNull("SKUOptionCategoryID").FirstObject;
+            var campProduct = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", product?.SKUID).Columns("CampaignsProductID").FirstOrDefault();
+            var allocatedQuantity = campProduct != null ? productProvider.GetAllocatedProductQuantityForUser(campProduct.CampaignsProductID, CurrentUser.UserID) : default(int);
             var itemsPlaced = default(int);
             foreach (GridViewRow row in gvCustomersCart.Rows)
             {
@@ -817,14 +820,19 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     if (ProductType == (int)ProductsType.GeneralInventory)
                     {
                         itemsPlaced += quantityPlacing;
-                        if (itemsPlaced <= product.SKUAvailableItems)
-                        {
-                            CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
-                        }
-                        else
+                        if (itemsPlaced > product.SKUAvailableItems)
                         {
                             lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.StockError");
                             lblErrorMsg.Visible = true;
+                        }
+                        else if (itemsPlaced > allocatedQuantity)
+                        {
+                            lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError");
+                            lblErrorMsg.Visible = true;
+                        }
+                        else
+                        {
+                            CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
                         }
                     }
                     else

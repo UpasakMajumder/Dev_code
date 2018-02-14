@@ -8,6 +8,8 @@ using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Container.Default;
 using System;
 using System.Data;
 using System.Linq;
@@ -613,6 +615,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
         try
         {
             var nodeGuid = CurrentDocument.NodeGUID;
+            var emailTemplate = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey(SiteContext.CurrentSiteID, "KDA_CampaignProductAddedTemplate");
             Campaign campaign = CampaignProvider.GetCampaign(nodeGuid, CurrentDocument.DocumentCulture, CurrentSite.SiteName);
             var program = ProgramProvider.GetPrograms()
                 .WhereEquals("ProgramId", ddlPrograms.SelectedValue)
@@ -630,7 +633,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                     {
                         foreach (var user in users.AsEnumerable().ToList())
                         {
-                            ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Field<string>("Email"), "ProductsAddedToCampaign", program.DocumentName);
+                            ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Field<string>("Email"), emailTemplate, program.DocumentName);
                         }
                     }
                 }
