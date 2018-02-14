@@ -19,5 +19,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         UserBudgetItem CreateUserBudgetWithYear(string year, int siteID, int userId);
 
+        void AdjustUserRemainingBudget(string year, int userID, decimal adjustment);
     }
 }

@@ -75,6 +75,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                             InBoundFormHelper.InsertIBFForm(ordersDTO);
                             ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
                             ShoppingCartHelper.UpdateRemainingBudget(ordersDTO, salesPerson.UserId);
+                            DIContainer.Resolve<IIBTFService>().InsertIBTFAdjustmentRecord(ordersDTO);
                         }
                         else
                         {
