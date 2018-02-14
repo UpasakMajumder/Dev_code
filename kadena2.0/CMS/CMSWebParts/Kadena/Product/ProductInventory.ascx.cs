@@ -806,8 +806,17 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             var productProvider = DIContainer.Resolve<IKenticoProductsProvider>();
             ProductSKUID = ValidationHelper.GetInteger(hdnClickSKU.Value, default(int));
             SKUInfo product = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", ProductSKUID).WhereNull("SKUOptionCategoryID").FirstObject;
-            var campProduct = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", product?.SKUID).Columns("CampaignsProductID").FirstOrDefault();
-            var allocatedQuantityItem = campProduct != null ? productProvider.GetAllocatedProductQuantityForUser(campProduct.CampaignsProductID, CurrentUser.UserID) : null;
+            var campProduct = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", product?.SKUID).Columns("CampaignsProductID,EstimatedPrice").FirstOrDefault();
+            var skuPrice = default(double);
+            if (ProductType == (int)ProductsType.GeneralInventory)
+            {
+                skuPrice = 0;
+            }
+            else
+            {
+                skuPrice = campProduct.EstimatedPrice;
+            }
+                var allocatedQuantityItem = campProduct != null ? productProvider.GetAllocatedProductQuantityForUser(campProduct.CampaignsProductID, CurrentUser.UserID) : null;
             if (allocatedQuantityItem == null && ProductType == (int)ProductsType.GeneralInventory)
             {
                 lblErrorMsg.Text = ResHelper.GetString("KDA.Cart.Update.ProductNotAllocatedMessage");
@@ -840,12 +849,12 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                         }
                         else
                         {
-                            CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
+                            CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID, skuPrice);
                         }
                     }
                     else
                     {
-                        CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID);
+                        CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID, skuPrice);
                     }
                 }
             }
@@ -871,7 +880,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="quantity">units placing</param>
     /// <param name="productInfo">skuinfo object</param>
     /// <param name="addressID">distributor addressid</param>
-    private void CartProcessOperations(int cartID, int quantity, SKUInfo productInfo, int addressID)
+    private void CartProcessOperations(int cartID, int quantity, SKUInfo productInfo, int addressID,double skuPrice)
     {
         try
         {
@@ -880,12 +889,12 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 GetPrebuyData(productInfo.SKUID);
                 if (cartID == default(int) && quantity > 0)
                 {
-                    CreateShoppingCartByCustomer(productInfo, addressID, quantity);
+                    CreateShoppingCartByCustomer(productInfo, addressID, quantity, skuPrice);
                     BindCustomersList(ProductSKUID);
                 }
                 else if (cartID > 0 && quantity > 0)
                 {
-                    Updatingtheunitcountofcartitem(productInfo, cartID, quantity, addressID);
+                    Updatingtheunitcountofcartitem(productInfo, cartID, quantity, addressID, skuPrice);
                     BindCustomersList(ProductSKUID);
                 }
                 else if (cartID > 0 && quantity <= 0)
@@ -903,7 +912,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <summary>
     /// Updating the unit count of shopping cart Item
     /// </summary>
-    private void Updatingtheunitcountofcartitem(SKUInfo product, int shoppinCartID, int unitCount, int customerAddressID)
+    private void Updatingtheunitcountofcartitem(SKUInfo product, int shoppinCartID, int unitCount, int customerAddressID, double skuPrice)
     {
         try
         {
@@ -924,7 +933,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 item = cart.CartItems.Where(g => g.SKUID == product.SKUID).FirstOrDefault();
                 if (!DataHelper.DataSourceIsEmpty(item))
                 {
-                    item.CartItemPrice = product.SKUPrice;
+                    item.CartItemPrice = skuPrice;
                     ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, unitCount);
                     cart.InvalidateCalculations();
                 }
@@ -932,8 +941,8 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 {
                     ShoppingCartItemParameters parameters = new ShoppingCartItemParameters(product.SKUID, unitCount);
                     parameters.CustomParameters.Add("CartItemCustomerID", customerAddressID);
-                    parameters.Price = (ProductType == (int)ProductsType.GeneralInventory) ? default(double) : product.SKUPrice;
                     ShoppingCartItemInfo cartItem = cart.SetShoppingCartItem(parameters);
+                    cartItem.SetValue("CartItemPrice", skuPrice);
                     cartItem.SetValue("CartItemDistributorID", customerAddressID);
                     cartItem.SetValue("CartItemCampaignID", cartItem.SetValue("CartItemCampaignID", campaingnID));
                     cartItem.SetValue("CartItemProgramID", programID);
@@ -982,7 +991,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// </summary>
     /// <param name="customerAddressID"></param>
     /// <param name="txtQty"></param>
-    private void CreateShoppingCartByCustomer(SKUInfo product, int customerAddressID, int productQty)
+    private void CreateShoppingCartByCustomer(SKUInfo product, int customerAddressID, int productQty, double skuPrice)
     {
         try
         {
@@ -1003,8 +1012,8 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
                 ShoppingCartItemParameters parameters = new ShoppingCartItemParameters(product.SKUID, productQty);
                 parameters.CustomParameters.Add("CartItemCustomerID", customerAddressID);
-                parameters.Price = (ProductType == (int)ProductsType.GeneralInventory) ? default(double) : product.SKUPrice;
                 ShoppingCartItemInfo cartItem = cart.SetShoppingCartItem(parameters);
+                cartItem.SetValue("CartItemPrice", skuPrice);
                 cartItem.SetValue("CartItemDistributorID", customerAddressID);
                 cartItem.SetValue("CartItemCampaignID", ProductCampaignID);
                 cartItem.SetValue("CartItemProgramID", ProductProgramID);

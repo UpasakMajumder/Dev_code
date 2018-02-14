@@ -27,14 +27,16 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             }
             this.mapper = mapper;
         }
-        public string UpdateUserBudgetAllocation(int itemID, double userBudget)
+        public string UpdateUserBudgetAllocation(int itemID, decimal userBudget)
         {
             var userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("ItemID", itemID).FirstOrDefault();
             if (userBudgetDetails != null)
             {
-                userBudgetDetails.SetValue("Budget", userBudget);
+                var oldBudget = userBudgetDetails.GetValue("Budget", default(decimal));
+                var newBudget = userBudget;
+                userBudgetDetails.SetValue("Budget", newBudget);
                 userBudgetDetails.Update();
-                userBudgetDetails.SetValue("UserRemainingBudget", userBudgetDetails.GetValue("UserRemainingBudget", default(decimal)) + (userBudgetDetails.GetValue("Budget", default(decimal)) - userBudgetDetails.GetValue("UserRemainingBudget", default(decimal))));
+                userBudgetDetails.SetValue("UserRemainingBudget", userBudgetDetails.GetValue("UserRemainingBudget", default(decimal)) + (newBudget - oldBudget));
                 userBudgetDetails.Update();
                 return userBudgetDetails.GetValue("UserRemainingBudget", string.Empty);
             }
@@ -73,7 +75,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
         public void UpdateUserBudgetAllocationRecords(int userId, string year, decimal? totalToBeDeducted)
         {
             var userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("UserID", userId).WhereEquals("Year", year).FirstOrDefault();
-            userBudgetDetails.SetValue("UserRemainingBudget", userBudgetDetails.GetValue("Budget", default(decimal)) - totalToBeDeducted);
+            userBudgetDetails.SetValue("UserRemainingBudget", userBudgetDetails.GetValue("UserRemainingBudget", default(decimal)) - totalToBeDeducted);
             userBudgetDetails.Update();
         }
 
