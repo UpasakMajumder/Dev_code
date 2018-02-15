@@ -213,5 +213,10 @@ namespace Kadena.WebAPI.KenticoProviders
                 return new List<CampaignsProduct>();
             }
         }
+
+        public bool IsProductHasAllocation(int productID)
+        {
+            return CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).Any();
+        }
     }
 }
