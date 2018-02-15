@@ -295,7 +295,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     ddlBrand.Visible = true;
                     productsDetails = CampaignsProductProvider.GetCampaignsProducts()
                                       .WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                                      .WhereEquals("ProgramID", null)
+                                      .Where(new WhereCondition().WhereEquals("ProgramID", null).Or().WhereEquals("ProgramID", 0))
                                       .ToList();
                     if (!DataHelper.DataSourceIsEmpty(productsDetails))
                     {
@@ -816,14 +816,14 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             {
                 skuPrice = campProduct.EstimatedPrice;
             }
-                var allocatedQuantityItem = campProduct != null ? productProvider.GetAllocatedProductQuantityForUser(campProduct.CampaignsProductID, CurrentUser.UserID) : null;
-            if (allocatedQuantityItem == null && ProductType == (int)ProductsType.GeneralInventory)
+
+            var allocatedQuantityItem = campProduct != null ? productProvider.GetAllocatedProductQuantityForUser(campProduct.CampaignsProductID, CurrentUser.UserID) : null;
+            var allocatedQuantity = allocatedQuantityItem!=null? allocatedQuantityItem.GetValue<int>("Quantity", default(int)):default(int);
+            bool productHasAllocation = false;
+            if (ProductType == (int)ProductsType.GeneralInventory)
             {
-                lblErrorMsg.Text = ResHelper.GetString("KDA.Cart.Update.ProductNotAllocatedMessage");
-                lblErrorMsg.Visible = true;
-                return;
+                productHasAllocation = campProduct != null ? productProvider.IsProductHasAllocation(campProduct.CampaignsProductID) : false;
             }
-            
             var itemsPlaced = default(int);
             foreach (GridViewRow row in gvCustomersCart.Rows)
             {
@@ -835,14 +835,13 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     var customerShoppingCartID = ValidationHelper.GetInteger(row.Cells[3].Text, default(int));
                     if (ProductType == (int)ProductsType.GeneralInventory)
                     {
-                        var allocatedQuantity = allocatedQuantityItem.GetValue<int>("Quantity", default(int));
                         itemsPlaced += quantityPlacing;
                         if (itemsPlaced > product.SKUAvailableItems)
                         {
                             lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.StockError");
                             lblErrorMsg.Visible = true;
                         }
-                        else if (itemsPlaced > allocatedQuantity)
+                        else if (itemsPlaced > allocatedQuantity && productHasAllocation)
                         {
                             lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError");
                             lblErrorMsg.Visible = true;
@@ -880,7 +879,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="quantity">units placing</param>
     /// <param name="productInfo">skuinfo object</param>
     /// <param name="addressID">distributor addressid</param>
-    private void CartProcessOperations(int cartID, int quantity, SKUInfo productInfo, int addressID,double skuPrice)
+    private void CartProcessOperations(int cartID, int quantity, SKUInfo productInfo, int addressID, double skuPrice)
     {
         try
         {

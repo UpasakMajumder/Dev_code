@@ -167,6 +167,9 @@
   </ClassSearchSettings>
   <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
   <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowColumns>
+    <![CDATA[SKUID;UserID;CampaignID;OrderedQuantity;OrderedProductPrice]]>
+  </ClassShowColumns>
   <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
   <ClassTableName>KDA_IBTFAdjustment</ClassTableName>
   <ClassUsePublishFromTo>False</ClassUsePublishFromTo>

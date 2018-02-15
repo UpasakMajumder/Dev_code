@@ -356,11 +356,12 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
+                var carrier = CarrierInfoProvider.GetCarrierInfo(Cart.ShippingOption.ShippingOptionCarrierID);
                 return new ShippingOptionDTO
                 {
                     KenticoShippingOptionID = Cart.ShoppingCartShippingOptionID,
                     ShippingService = Cart.ShippingOption.ShippingOptionCarrierServiceName,
-                    ShippingCompany = Cart.ShippingOption.ShippingOptionName,
+                    ShippingCompany = carrier != null ? carrier.CarrierName : Cart.ShippingOption.ShippingOptionName,
                     CarrierCode = Cart.ShippingOption.GetStringValue("ShippingOptionSAPName", string.Empty)
                 };
             }
@@ -459,7 +460,8 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                         },
                         UnitCount = item.CartItemUnits,
                         UnitOfMeasure = SKUMeasuringUnits.EA,
-                        UnitPrice = ValidationHelper.GetDecimal(item.UnitPrice, default(decimal))
+                        UnitPrice = ValidationHelper.GetDecimal(item.UnitPrice, default(decimal)),
+                        TotalPrice = ValidationHelper.GetDecimal(item.TotalPrice, default(decimal))
                     });
                 });
             }
@@ -639,4 +641,4 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             }
         }
     }
-}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+}

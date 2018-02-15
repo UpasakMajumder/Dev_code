@@ -637,7 +637,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                         }
                     }
                 }
-                Response.Redirect(CurrentDocument.DocumentUrlPath);
+                Response.Redirect(CurrentDocument.DocumentUrlPath,false);
             }
         }
         catch (Exception ex)
