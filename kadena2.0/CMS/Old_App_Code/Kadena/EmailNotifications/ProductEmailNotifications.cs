@@ -88,7 +88,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         /// <param name="campaignName"></param>
         /// <param name="reciepientEmail"></param>
         /// <param name="templateName"></param>
-        public static void SendEmail<T>(string templateName, string recipientEmail, IEnumerable<T> emailDataSource)
+        public static void SendEmail<T>(string templateName, string recipientEmail, IEnumerable<T> emailDataSource,object[,] macroData=null)
         {
             try
             {
@@ -97,7 +97,8 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                 if (email != null)
                 {
                     MacroResolver resolver = MacroResolver.GetInstance();
-                    resolver.SetNamedSourceData("data", emailDataSource);
+                    resolver.SetNamedSourceData("data",emailDataSource);
+                    resolver.SetNamedSourceData("orderdata",macroData);
                     msg.From = resolver.ResolveMacros(email.TemplateFrom);
                     msg.Recipients = recipientEmail;
                     msg.EmailFormat = EmailFormatEnum.Default;

@@ -184,7 +184,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             var saveTokenRequest = new SaveCardTokenRequestDto
             {
                 // TODO some more properties needed for storing card:
-                // flag if threat card as stored
+                // flag if treat card as stored
                 // last 4 digits
                 // username 
                 UserId = userId,

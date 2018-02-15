@@ -121,13 +121,13 @@
       checkout: {
         initRenderUIURL: PATH + 'checkout/ui',
         initTotalDeliveryUIURL: PATH + 'checkout/total-price',
-        changeAddressURL: '',
-        changeDeliveryMethodURL: '',
-        changeQuantityURL: '',
-        removeProductURL: '',
-        submitURL: '',
+        changeAddressURL: PATH + 'checkout/change-address',
+        changeDeliveryMethodURL: PATH + 'checkout/change-delivery-method',
+        changeQuantityURL: PATH + 'checkout/change-quantity',
+        removeProductURL: PATH + 'checkout/remove-producs',
+        submitURL: PATH + 'checkout/submit',
         submittableURL: '',
-        addNewAddressURL: '',
+        addNewAddressURL: PATH + 'checkout/add-new-address',
         tAndC: {
           exists: true,
           text: 'I have reviewed <a href="#">both</a> the storefront Terms and Conditions and the order and certify that it is acceptable.'

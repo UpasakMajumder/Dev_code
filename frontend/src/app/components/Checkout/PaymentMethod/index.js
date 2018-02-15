@@ -8,7 +8,7 @@ import MethodsGroup from './MethodsGroup';
 class PaymentMethod extends Component {
   static propTypes = {
     validationMessage: PropTypes.string.isRequired,
-    changeShoppingData: PropTypes.func.isRequired,
+    changePaymentMethod: PropTypes.func.isRequired,
     checkedObj: PropTypes.object.isRequired,
     ui: PropTypes.shape({
       title: PropTypes.string.isRequired,
@@ -19,15 +19,8 @@ class PaymentMethod extends Component {
     })
   };
 
-  componentDidMount() {
-    const { ui, changeShoppingData } = this.props;
-
-    if (ui.isPayable) return;
-    changeShoppingData('paymentMethod', 3, ' ');
-  }
-
   render() {
-    const { ui, checkedObj, changeShoppingData, validationMessage } = this.props;
+    const { ui, checkedObj, changePaymentMethod, validationMessage } = this.props;
     const { title, description, items, isPayable, unPayableText } = ui;
 
     const descriptionElement = description ? <p className="cart-fill__info">{description}</p> : null;
@@ -38,7 +31,7 @@ class PaymentMethod extends Component {
 
       return (
         <MethodsGroup
-          changeShoppingData={changeShoppingData}
+          changePaymentMethod={changePaymentMethod}
           checkedObj={checkedObj}
           {...item}
           className={className}

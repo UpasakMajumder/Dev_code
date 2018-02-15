@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena.Dto.Checkout.Requests;
 using Kadena.Models.Checkout;
-using Kadena.Dto.Product;
 using Kadena.Models;
 using Kadena.Dto.CustomerData;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.CustomerData;
+using Kadena.Dto.Checkout.Responses;
 using Kadena2.Container.Default;
 
 namespace Kadena.WebAPI.Controllers
@@ -80,38 +80,38 @@ namespace Kadena.WebAPI.Controllers
         [CustomerAuthorizationFilter]
         public async Task<IHttpActionResult> SelectShipping([FromBody]ChangeSelectionRequestDto request)
         {
-            var result = await service.SelectShipipng(request.Id);
-            var resultDto = mapper.Map<CheckoutPageDTO>(result);
-            return ResponseJson(resultDto);
+            var deliveryTotals = await service.SelectShipping(request.Id);
+            var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
+            return ResponseJson(deliveryTotals);
         }
 
         [HttpPost]
         [Route("api/shoppingcart/selectaddress")]
         [CustomerAuthorizationFilter]
-        public async Task<IHttpActionResult> SelectAddress([FromBody]ChangeSelectionRequestDto request)
+        public IHttpActionResult SelectAddress([FromBody]ChangeSelectionRequestDto request)
         {
-            var result = await service.SelectAddress(request.Id);
-            var resultDto = mapper.Map<CheckoutPageDTO>(result);
+            var result = service.SelectAddress(request.Id);
+            var resultDto = mapper.Map<ChangeDeliveryAddressResponseDto>(result);
             return ResponseJson(resultDto);
         }
 
         [HttpPost]
         [Route("api/shoppingcart/removeitem")]
         [CustomerAuthorizationFilter]
-        public async Task<IHttpActionResult> RemoveItem([FromBody]RemoveItemRequestDto request)
+        public IHttpActionResult RemoveItem([FromBody]RemoveItemRequestDto request)
         {
-            var result = await service.RemoveItem(request.Id);
-            var resultDto = mapper.Map<CheckoutPageDTO>(result);
+            var result = service.RemoveItem(request.Id);
+            var resultDto = mapper.Map<ChangeItemQuantityResponseDto>(result);
             return ResponseJson(resultDto);
         }
 
         [HttpPost]
         [Route("api/shoppingcart/changequantity")]
         [CustomerAuthorizationFilter]
-        public async Task<IHttpActionResult> ChangeItemQuantity([FromBody]ChangeItemQuantityRequestDto request)
+        public IHttpActionResult ChangeItemQuantity([FromBody]ChangeItemQuantityRequestDto request)
         {
-            var result = await service.ChangeItemQuantity(request.Id, request.Quantity);
-            var resultDto = mapper.Map<CheckoutPageDTO>(result);
+            var result = service.ChangeItemQuantity(request.Id, request.Quantity);
+            var resultDto = mapper.Map<ChangeItemQuantityResponseDto>(result);
             return ResponseJson(resultDto);
         }
 
@@ -138,22 +138,12 @@ namespace Kadena.WebAPI.Controllers
         }
         [HttpPost]
         [Route("api/distributor/update")]
+        [CustomerAuthorizationFilter]
         public IHttpActionResult UpdateData([FromBody]DistributorDTO request)
         {
             var submitRequest = mapper.Map<Distributor>(request);
-            if (submitRequest.ItemQuantity < 1)
-            {
-                return ResponseJsonCheckingNull<string>(null, DIContainer.Resolve<IKenticoResourceService>().GetResourceString("KDA.Cart.Update.MinimumQuantityError"));
-            }
             var serviceResponse = provider.UpdateCartQuantity(submitRequest);
-            if (serviceResponse.Item2)
-            {
-                return ResponseJson<string>(serviceResponse.Item1);
-            }
-            else
-            {
-                return ResponseJsonCheckingNull<string>(null, serviceResponse.Item1);
-            }
+            return ResponseJson<string>(serviceResponse);
         }
     }
 }

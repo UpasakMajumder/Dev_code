@@ -8,7 +8,7 @@ import Method from './Method';
 class MethodsGroup extends Component {
   static propTypes = {
     validationMessage: PropTypes.string.isRequired,
-    changeShoppingData: PropTypes.func.isRequired,
+    changePaymentMethod: PropTypes.func.isRequired,
     className: PropTypes.string.isRequired,
     checked: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
@@ -20,17 +20,13 @@ class MethodsGroup extends Component {
     checkedObj: PropTypes.shape({
       id: PropTypes.number.isRequired,
       invoice: PropTypes.string,
-      card: PropTypes.number
+      card: PropTypes.string
     }).isRequired,
     items: PropTypes.arrayOf(PropTypes.object.isRequired)
   };
 
-  changePaymentMethod = (name, id) => {
-    this.props.changeShoppingData(name, id);
-  };
-
   changePaymentCard = (id, card) => {
-    this.props.changeShoppingData('paymentMethod', id, undefined, card);
+    this.props.changePaymentMethod(id, undefined, card);
   };
 
   render() {
@@ -41,7 +37,7 @@ class MethodsGroup extends Component {
       id,
       inputPlaceholder,
       checkedObj,
-      changeShoppingData,
+      changePaymentMethod,
       hasInput,
       items
     } = this.props;
@@ -51,7 +47,7 @@ class MethodsGroup extends Component {
       ? (
         <div className="input__wrapper">
           <input
-                onChange={(e) => { changeShoppingData('paymentMethod', id, e.target.value); }}
+                onChange={(e) => { changePaymentMethod(id, e.target.value); }}
                 type="text"
                 className="input__text"
                 name="paymentMethodInvoice"
@@ -79,7 +75,7 @@ class MethodsGroup extends Component {
       <div>
         <div className={className}>
           <input disabled={disabled}
-                onChange={(e) => { this.changePaymentMethod(e.target.name, id); }}
+                onChange={(e) => { changePaymentMethod(id); }}
                 checked={id === checkedObj.id}
                 id={`pmg-${id}`}
                 name="paymentMethod"

@@ -427,38 +427,43 @@ config.localization.userSettings = {
 <![CDATA[
 $(".js-UserBudget").focusout(function () {
         var itemID = parseInt($(this).siblings().first().val());
+        var remainingBudget =$(this);
         var userBudget = parseInt($(this).val());
         if (itemID != undefined && userBudget != undefined) {
-            UpdateItem(itemID, userBudget);
+            UpdateItem(itemID, userBudget,remainingBudget);
         }
         $(".js-CloseMesaage").on("click", function () {
             $(this).closest(".dialog").removeClass("active");
         })
-      function UpdateItem(itemID,userBudget){
+      function UpdateItem(itemID,userBudget,remainingBudget){
           var request = { ItemID: itemID, UserBudget: userBudget }
             $.ajax({
               type: "POST",
               data :JSON.stringify(request),
-              url: "api/userbudget/updateUserBudget",
+              url: "api/userbudget",
               contentType: "application/json",
               success: function (data) {
-                $('#autoSave_Dialog').addClass('active');
-                if (data == 200) {
-                  $('.response_Success').show();
-                  $('.response_failure').hide();
+                if (data.payload != "") {
+                  remainingBudget.parent().siblings("td").find(".js_remainingBudget").text(data.payload);                 
+                   toastr.success(config.localization.globalSuccess.updateSuccessMessage)
                 } 
                 else{
-                  $('.response_Success').hide();
-                  $('.response_failure').show();
+                  toastr.error(config.localization.globalSuccess.errorMessage);
                 }
               },
               error:function (xhr, ajaxOptions, thrownError) {
-                $('.response_Success').hide();
-                $('.response_failure').show();
+                toastr.error(config.localization.globalSuccess.errorMessage);
               }
             });
       }
     });
+
+$(".js-UserBudget").on("keypress keyup blur",function (event) {
+     $(this).val($(this).val().replace(/[^0-9\.]/g,''));
+            if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+        });
 ]]>
           </property>
           <property name="inlinescriptpagelocation">Startup</property>

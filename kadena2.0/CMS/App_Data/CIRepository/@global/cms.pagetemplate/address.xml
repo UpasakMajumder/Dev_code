@@ -110,7 +110,7 @@
       var addressID = parseInt(decodeURIComponent(window.location.href.slice(window.location.href.indexOf('?') + 1).split('id=')[1]));
       $.ajax({
         type:"POST",
-        url:'api/getaddressbrands/'+addressID,
+        url:'/api/getaddressbrands/'+addressID,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success:function(data){

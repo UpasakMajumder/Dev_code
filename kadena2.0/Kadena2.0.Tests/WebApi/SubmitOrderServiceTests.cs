@@ -28,22 +28,6 @@ namespace Kadena.Tests.WebApi
             };
         }
 
-        /*private SubmitOrderService CreateSubmitOrderService(
-            string paymentMethodClassName,
-            Mock<IShoppingCartProvider> shoppingCart = null,
-            Mock<ICreditCard3dsi> card3dsi = null,
-            Mock<ISavedCreditCard3dsi> card3dsiSaved = null,
-            Mock<ICreditCard3dsiDemo> card3dsiDemo = null, 
-            Mock<IPurchaseOrder> purchaseOrder = null)
-        {            
-            return new SubmitOrderService(shoppingCart?.Object ?? new Mock<IShoppingCartProvider>().Object,
-                card3dsi?.Object ?? new Mock<ICreditCard3dsi>().Object,
-                card3dsiSaved?.Object ?? new Mock<ISavedCreditCard3dsi>().Object,
-                card3dsiDemo?.Object ?? new Mock<ICreditCard3dsiDemo>().Object,
-                purchaseOrder?.Object ?? new Mock<IPurchaseOrder>().Object
-            );
-        }*/
-
         [Theory]
         [InlineData("KDA.PaymentMethods.CreditCard", true, false, false)]
         [InlineData("KDA.PaymentMethods.CreditCardDemo", false, true, false)]
@@ -80,10 +64,14 @@ namespace Kadena.Tests.WebApi
         {
             // Arrange
             var autoMocker = new AutoMocker();
-            var card3dsi = new Mock<ICreditCard3dsi>();
-            var card3dsiDemo = new Mock<ICreditCard3dsiDemo>();
-            var poOrder = new Mock<IPurchaseOrder>();
+            var card3dsi = autoMocker.GetMock<ICreditCard3dsi>();
+            var card3dsiDemo = autoMocker.GetMock<ICreditCard3dsiDemo>();
+            var poOrder = autoMocker.GetMock<IPurchaseOrder>();
+            var shoppingCart = autoMocker.GetMock<IShoppingCartProvider>();
+            shoppingCart.Setup(c => c.GetPaymentMethods())
+                .Returns(CreatePaymentMethod(paymentClass));
             var sut = autoMocker.CreateInstance<SubmitOrderService>();
+
             var orderRequest = CreateOrderRequest();
 
             // Act
