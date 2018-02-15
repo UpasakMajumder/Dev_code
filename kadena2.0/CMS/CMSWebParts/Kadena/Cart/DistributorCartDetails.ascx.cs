@@ -248,6 +248,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 if (InventoryType == (Int32)ProductType.GeneralInventory)
                 {
                     BindShippingOptions();
+                    ddlShippingOption.SelectedValue = ValidationHelper.GetString(Cart.ShoppingCartShippingOptionID, default(string));
                 }
                 else
                 {
