@@ -189,7 +189,20 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
         }
-
+        public void UpdateAllocatedProductQuantityForUser(int productID, int userID,int quantity)
+        {
+            DataClassInfo customTable = DataClassInfoProvider.GetDataClassInfo(CustomTableName);
+            if (customTable != null)
+            {
+                var customTableData = CustomTableItemProvider.GetItems(CustomTableName)
+                                                                    .WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
+                if (customTableData != null)
+                {
+                    customTableData.SetValue("Quantity", customTableData.GetIntegerValue("Quantity",0)-quantity);
+                    customTableData.Update();
+                }
+            }
+        }
         public List<CampaignsProduct> GetCampaignsProductSKUIDs(int campaignID)
         {
             List<int> programIDs = new KenticoProgramsProvider().GetProgramIDsByCampaign(campaignID);
