@@ -144,11 +144,8 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             if (!(sendOrderResult?.Success ?? false))
             {
                 MarkSubmissionProcessed(submission, false, sendOrderResult?.Payload);
-                logger.LogError("PayOrderByCard", "Failed to save order to microservice.  " + sendOrderResult?.Error?.Message);
                 return false;
             }
-
-            logger.LogInfo("PayOrderByCard", "info", $"Order #{sendOrderResult.Payload} was saved into microservice");
 
             var orderSuccess = ClearKenticoShoppingCart(submission.UserId, submission.SiteId);
 
@@ -159,8 +156,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
         private void MarkSubmissionProcessed(Submission submission, bool orderSuccess, string orderId)
         {
-            var redirectUrlBase = resources.GetSettingsKey("KDA_CreditCard_PaymentResultPage");
-            var redirectUrl = resultUrlFactory.GetOrderResultPageUrl(redirectUrlBase, orderSuccess, orderId);
+            var redirectUrl = resultUrlFactory.GetCardPaymentResultPageUrl(orderSuccess, orderId);
             submissionService.SetAsProcessed(submission, redirectUrl);
         }
 

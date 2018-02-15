@@ -83,6 +83,7 @@ namespace Kadena2.Container.Default
             container.Register<IShippingCostServiceClient, ShippingCostServiceClient>();
             container.Register<ISettingsSynchronizationService, SettingsSynchronizationService>();
             container.Register<IUserBudgetService, UserBudgetService>();
+            container.Register<ISavedCreditCard3dsi, SavedCreditCard3dsi>();
             return container;
         }
 

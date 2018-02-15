@@ -54,11 +54,11 @@ namespace Kadena2._0.BusinessLogic.Services.Orders
 
             if (serviceResult.Success)
             {
-                log.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully created");             
+                log.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully saved in microservice");             
             }
             else
             {
-                log.LogError("Submit order", $"Order {serviceResult?.Payload} error. {serviceResult?.Error?.Message}");
+                log.LogError("Submit order", $"Order {serviceResult?.Payload} failed to save in microservice. {serviceResult?.Error?.Message}");
             }
 
             return serviceResult;
