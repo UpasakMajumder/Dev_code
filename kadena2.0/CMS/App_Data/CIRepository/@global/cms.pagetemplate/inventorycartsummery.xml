@@ -143,7 +143,8 @@
     $(document).ready(function () {
       $(".js-ItemQuantity").focusout(function(){
         var cID=parseInt($(this).siblings().first().val());
-        if (! /^\d*$/.test($(this).val()) ){
+        var qtyValue=$(this).val();
+        if (! /^\d*$/.test(qtyValue) || qtyValue==='' ){
           errorMessage="{$KDA.Cart.Update.InvalidQuantityError$}";
           toastr.error(errorMessage);
           isError=true;
@@ -189,6 +190,14 @@
       e.preventDefault();
     }
   });
+   function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
 </script>
 ]]>
           </property>
