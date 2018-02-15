@@ -295,7 +295,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     ddlBrand.Visible = true;
                     productsDetails = CampaignsProductProvider.GetCampaignsProducts()
                                       .WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                                      .WhereEquals("ProgramID", null)
+                                      .Where(new WhereCondition().WhereEquals("ProgramID", null).Or().WhereEquals("ProgramID", 0))
                                       .ToList();
                     if (!DataHelper.DataSourceIsEmpty(productsDetails))
                     {
