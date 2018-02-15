@@ -263,7 +263,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             BindBrands();
             BindProductTypes();
             products = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                .WhereEquals("ProgramID", null).ToList();
+                .Where(new WhereCondition().WhereEquals("ProgramID", null).Or().WhereEquals("ProgramID", 0)).ToList();
             BindingProductsToRepeater(products);
         }
     }
@@ -415,7 +415,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             }
             if (TypeOfProduct == (int)ProductsType.GeneralInventory)
             {
-                var products = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereEquals("ProgramID", null).ToList();
+                var products = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID).Where(new WhereCondition().WhereEquals("ProgramID", null).Or().WhereEquals("ProgramID", 0)).ToList();
                 if (brandID != default(int) && !DataHelper.DataSourceIsEmpty(products))
                 {
                     products = products.Where(x => x.BrandID == brandID).ToList();
