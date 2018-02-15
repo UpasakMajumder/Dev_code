@@ -101,9 +101,11 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 var user = userInfo.GetUserByUserId(campaignClosingUserID);
                 if (user?.Email != null && listofFailedOrders.Count > 0)
                 {
-                    object[,] orderdata = { {"url", URLHelper.AddHTTPToUrl($"{SiteContext.CurrentSite.DomainName}{failedOrdersUrl}?campid={openCampaignID}") } ,
-                                                             { "failedordercount",listofFailedOrders.Count}};
-                    ProductEmailNotifications.SendEmail(failedOrderTemplateSettingKey, user.Email, listofFailedOrders, orderdata);
+                    Dictionary<string, object> failedOrderData = new Dictionary<string, object>();
+                    failedOrderData.Add("failedorderurl", URLHelper.AddHTTPToUrl($"{SiteContext.CurrentSite.DomainName}{failedOrdersUrl}?campid={openCampaignID}"));
+                    failedOrderData.Add("failedordercount", listofFailedOrders.Count);
+                    failedOrderData.Add("failedorders", listofFailedOrders);
+                    ProductEmailNotifications.SendEmail(failedOrderTemplateSettingKey, user.Email, listofFailedOrders, failedOrderData);
                     UpdatetFailedOrders(openCampaignID, true);
                 }
                 return ResHelper.GetString("KDA.OrderSchedular.TaskSuccessfulMessage");
