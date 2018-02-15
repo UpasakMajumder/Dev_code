@@ -143,10 +143,17 @@
     $(document).ready(function () {
       $(".js-ItemQuantity").focusout(function(){
         var cID=parseInt($(this).siblings().first().val());
+        if (! /^\d*$/.test($(this).val()) ){
+          errorMessage="{$KDA.Cart.Update.InvalidQuantityError$}";
+          toastr.error(errorMessage);
+          isError=true;
+          return;
+        }
         var iQTY=parseInt($(this).val());
         if(cID!=undefined && iQTY!=undefined && cID!=0){
-          UpdateItem(cID,iQTY,this);
-        }
+          var iQTY=parseInt($(this).val());
+           UpdateItem(cID,iQTY,this);
+         }
       });
       function UpdateItem(id,qty,box){
         var request= {CartItemId: id,ItemQuantity:qty,UserID:{%CurrentUser.UserID|(user)cvoqa2@gmail.com|(hash)151ea260d45cbb40b6b460c3d41821d9e9dbc03b916f839032f8f77203b978ef%},InventoryType:1}
@@ -166,6 +173,7 @@
                 {
                   toastr.error(data.errorMessage); 
                   isError=true;
+                  errorMessage=data.errorMessage;
                 }
               },
               error:function (xhr, ajaxOptions, thrownError) {
@@ -177,9 +185,9 @@
     }); 
   $(".js-Checkout").on("click",function(e){
     if(isError===true){
-      toastr.error("{$KDA.Cart.Update.InsufficientStockMessage#$}"); 
+      toastr.error(errorMessage); 
       e.preventDefault();
-      }
+    }
   });
 </script>
 ]]>
