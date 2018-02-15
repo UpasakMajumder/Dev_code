@@ -55,7 +55,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                     userBudgetItems.Add(new UserBudgetItem()
                     {
                         ItemID = item.ItemID,
-                        Budget = item.GetValue("Budget",default(decimal)),
+                        Budget = item.GetValue("Budget", default(decimal)),
                         Year = item.GetValue("Year", default(string)),
                         UserRemainingBudget = item.GetValue("UserRemainingBudget", default(decimal)),
                         UserID = item.GetValue("UserID", default(int))
@@ -121,6 +121,16 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 };
             }
             return null;
+        }
+
+        public void AdjustUserRemainingBudget(string year, int userID, decimal adjustment)
+        {
+            CustomTableItem userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("UserID", userID).WhereEquals("Year", year).FirstOrDefault();
+            if (userBudgetDetails != null)
+            {
+                userBudgetDetails.SetValue("UserRemainingBudget", userBudgetDetails.GetValue("UserRemainingBudget", default(decimal)) + (adjustment));
+                userBudgetDetails.Update();
+            }
         }
     }
 }

@@ -17,5 +17,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetProductStatus(int skuid);
         void SetSkuAvailableQty(int skuid, int qty);
         CustomTableItem GetAllocatedProductQuantityForUser(int productID, int userID);
+        List<CampaignsProduct> GetCampaignsProductSKUIDs(int campaignID);
     }
 }
