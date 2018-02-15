@@ -459,7 +459,8 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                         },
                         UnitCount = item.CartItemUnits,
                         UnitOfMeasure = SKUMeasuringUnits.EA,
-                        UnitPrice = ValidationHelper.GetDecimal(item.UnitPrice, default(decimal))
+                        UnitPrice = ValidationHelper.GetDecimal(item.UnitPrice, default(decimal)),
+                        TotalPrice = ValidationHelper.GetDecimal(item.TotalPrice, default(decimal))
                     });
                 });
             }
@@ -639,4 +640,4 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             }
         }
     }
-}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+}
