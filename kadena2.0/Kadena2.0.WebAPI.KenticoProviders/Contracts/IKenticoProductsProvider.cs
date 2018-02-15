@@ -1,4 +1,5 @@
-﻿using Kadena.Models.Product;
+﻿using CMS.CustomTables;
+using Kadena.Models.Product;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
@@ -15,6 +16,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void SetSkuAvailableQty(string skunumber, int availableItems);
         string GetProductStatus(int skuid);
         void SetSkuAvailableQty(int skuid, int qty);
-        int GetAllocatedProductQuantityForUser(int productID, int userID);
+        CustomTableItem GetAllocatedProductQuantityForUser(int productID, int userID);
     }
 }

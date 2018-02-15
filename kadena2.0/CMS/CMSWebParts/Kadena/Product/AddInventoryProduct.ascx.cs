@@ -569,7 +569,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             }
             RepterDetails.DataSource = lstAllocatedProd;
             RepterDetails.DataBind();
-            PopulatePager(UserInfoProvider.GetUsers().Count(), pageIndex);
+            PopulatePager(UserInfoProvider.GetUsers().OnSite(CurrentSite.SiteID).Count(), pageIndex);
         }
 
         /// <summary>

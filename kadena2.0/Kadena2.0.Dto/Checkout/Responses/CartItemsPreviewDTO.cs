@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Kadena.Dto.Checkout
+namespace Kadena.Dto.Checkout.Responses
 {
     public class CartItemsPreviewDTO
     {

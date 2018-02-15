@@ -73,6 +73,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_ProductEditButton : CM
                     {
                         lnkEdit.Visible = true;
                         lnkEdit.Enabled = true;
+                        BindEditURL();
                     }
                     else
                     {
@@ -87,6 +88,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_ProductEditButton : CM
                     {
                         lnkEdit.Visible = true;
                         lnkEdit.Enabled = true;
+                        BindEditURL();
                     }
                     else if (isGlobalAdminNotified || openCampaign || !closeCampaign)
                     {
@@ -103,37 +105,24 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_ProductEditButton : CM
         }
     }
 
-    /// <summary>
-    /// Edit Product
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void lnkEdit_Click(object sender, EventArgs e)
+    private void BindEditURL()
     {
-        try
+        if (ProductID != 0)
         {
-            LinkButton btn = (LinkButton)sender;
-            int productID = ValidationHelper.GetInteger(btn.CommandArgument, 0);
-            if (productID != 0)
+            Guid nodeGUID = ValidationHelper.GetGuid(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_ProductsPath"), Guid.Empty);
             {
-                Guid nodeGUID = ValidationHelper.GetGuid(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_ProductsPath"), Guid.Empty);
+                if (!nodeGUID.Equals(Guid.Empty))
                 {
-                    if (!nodeGUID.Equals(Guid.Empty))
+                    var document = new TreeProvider().SelectSingleNode(nodeGUID, CurrentDocument.DocumentCulture, CurrentSite.SiteName);
+                    if (document != null)
                     {
-                        var document = new TreeProvider().SelectSingleNode(nodeGUID, CurrentDocument.DocumentCulture, CurrentSite.SiteName);
-                        if (document != null)
-                        {
-                            Response.Redirect($"{document.DocumentUrlPath}?camp={ CurrentDocument.NodeID }&id={ productID}");
-                        }
+                        lnkEdit.Attributes.Add("href", $"{document.DocumentUrlPath}?camp={ CurrentDocument.NodeID }&id={ ProductID}");
                     }
                 }
             }
         }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_ProductEditButton", "lnkEdit_Click", ex, CurrentSite.SiteID, ex.Message);
-        }
     }
+
 }
 
 #endregion "Methods"

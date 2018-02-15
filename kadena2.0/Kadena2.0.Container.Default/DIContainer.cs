@@ -116,6 +116,7 @@ namespace Kadena2.Container.Default
             container.Register<IKenticoSettingsProvider, KenticoSettingsProvider>();
             container.Register<IDynamicPriceRangeProvider, DynamicPriceRangeProvider>();
 			container.Register<IkenticoUserBudgetProvider, KenticoUserBudgetProvider>();
+            container.Register<IFailedOrderStatusProvider, FailedOrderStatusProvider>();
             return container;
         }
 

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpart>
+  <WebPartCategoryID>
+    <CodeName>TWECart</CodeName>
+    <GUID>ce497b7b-989e-4dab-a904-32f133041784</GUID>
+    <ObjectType>cms.webpartcategory</ObjectType>
+  </WebPartCategoryID>
+  <WebPartDefaultConfiguration>
+    <page />
+  </WebPartDefaultConfiguration>
+  <WebPartDefaultValues>
+    <form />
+  </WebPartDefaultValues>
+  <WebPartDescription />
+  <WebPartDisplayName>Failed Orders CheckOut</WebPartDisplayName>
+  <WebPartFileName>Kadena/Cart/FailedOrdersCheckout.ascx</WebPartFileName>
+  <WebPartGUID>dc89c617-10af-4813-8be0-3bc03740a8f7</WebPartGUID>
+  <WebPartLoadGeneration>0</WebPartLoadGeneration>
+  <WebPartName>FailedOrdersCheckOut</WebPartName>
+  <WebPartProperties>
+    <form />
+  </WebPartProperties>
+  <WebPartType>0</WebPartType>
+</cms.webpart>
