@@ -13,6 +13,7 @@ using System;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Checkout;
 using Kadena.Models.Common;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.BusinessLogic.Services.Orders
 {
@@ -27,8 +28,22 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoPermissionsProvider _permissions;
         private readonly IKenticoLogger _logger;
         private readonly IKenticoAddressBookProvider _kenticoAddressBook;
+        private readonly IKenticoDocumentProvider _documents;
 
-        private readonly string _orderDetailUrl;
+        private string _orderDetailUrl = string.Empty;
+        public string OrderDetailUrl
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_orderDetailUrl))
+                {
+                    var defaultUrl = _kenticoResources.GetSettingsKey(Settings.KDA_OrderDetailUrl);
+                    _orderDetailUrl = _documents.GetDocumentUrl(defaultUrl);
+                }
+                return _orderDetailUrl;
+            }
+        }
+
         private int _pageCapacity;
         private string _pageCapacityKey;
         private Dictionary<int, string> _addressBookList;
@@ -52,7 +67,8 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public OrderListService(IMapper mapper, IOrderViewClient orderClient, IKenticoUserProvider kenticoUsers,
             IKenticoResourceService kenticoResources, IKenticoSiteProvider site, IKenticoOrderProvider order,
-            IKenticoDocumentProvider documents, IKenticoPermissionsProvider permissions, IKenticoLogger logger, IKenticoAddressBookProvider kenticoAddressBook)
+            IKenticoDocumentProvider documents, IKenticoPermissionsProvider permissions, IKenticoLogger logger, 
+            IKenticoAddressBookProvider kenticoAddressBook)
         {
             if (mapper == null)
             {
@@ -104,8 +120,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             _permissions = permissions;
             _logger = logger;
             _kenticoAddressBook = kenticoAddressBook;
-
-            _orderDetailUrl = documents.GetDocumentUrl(kenticoResources.GetSettingsKey("KDA_OrderDetailUrl"));
+            _documents = documents;
         }
 
         public async Task<OrderHead> GetHeaders()
@@ -136,7 +151,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems"),
                 Rows = orderList.Orders.Select(o =>
                 {
-                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{_orderDetailUrl}?orderID={o.Id}" };
+                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{OrderDetailUrl}?orderID={o.Id}" };
                     return o;
                 })
             };
@@ -150,7 +165,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 Rows = orderList.Orders.Select(o =>
                 {
-                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{_orderDetailUrl}?orderID={o.Id}" };
+                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{OrderDetailUrl}?orderID={o.Id}" };
                     return o;
                 })
             };
@@ -298,7 +313,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     new OrderTableCell() { value = GetDistributorName(o.campaign.DistributorID), type = "longtext" },
                     new OrderTableCell() { value = o.Status, type = "hover-hide" },
                     new OrderTableCell() { value = o.ShippingDate.ToString(), type = "hover-hide" },
-                    new OrderTableCell() { value = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), type = "link", url = $"{_orderDetailUrl}?orderID={o.Id}" }
+                    new OrderTableCell() { value = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), type = "link", url = $"{OrderDetailUrl}?orderID={o.Id}" }
                 };
         }
 
