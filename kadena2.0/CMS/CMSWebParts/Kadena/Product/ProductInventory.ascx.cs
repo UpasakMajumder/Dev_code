@@ -818,18 +818,12 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             }
 
             var allocatedQuantityItem = campProduct != null ? productProvider.GetAllocatedProductQuantityForUser(campProduct.CampaignsProductID, CurrentUser.UserID) : null;
+            var allocatedQuantity = allocatedQuantityItem!=null? allocatedQuantityItem.GetValue<int>("Quantity", default(int)):default(int);
             bool productHasAllocation = false;
             if (ProductType == (int)ProductsType.GeneralInventory)
             {
                 productHasAllocation = campProduct != null ? productProvider.IsProductHasAllocation(campProduct.CampaignsProductID) : false;
             }
-            if (productHasAllocation && allocatedQuantityItem == null && ProductType == (int)ProductsType.GeneralInventory)
-            {
-                lblErrorMsg.Text = ResHelper.GetString("KDA.Cart.Update.ProductNotAllocatedMessage");
-                lblErrorMsg.Visible = true;
-                return;
-            }
-
             var itemsPlaced = default(int);
             foreach (GridViewRow row in gvCustomersCart.Rows)
             {
@@ -841,14 +835,13 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     var customerShoppingCartID = ValidationHelper.GetInteger(row.Cells[3].Text, default(int));
                     if (ProductType == (int)ProductsType.GeneralInventory)
                     {
-                        var allocatedQuantity = allocatedQuantityItem.GetValue<int>("Quantity", default(int));
                         itemsPlaced += quantityPlacing;
                         if (itemsPlaced > product.SKUAvailableItems)
                         {
                             lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.StockError");
                             lblErrorMsg.Visible = true;
                         }
-                        else if (itemsPlaced > allocatedQuantity)
+                        else if (itemsPlaced > allocatedQuantity && productHasAllocation)
                         {
                             lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError");
                             lblErrorMsg.Visible = true;
