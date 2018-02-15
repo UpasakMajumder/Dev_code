@@ -1,4 +1,4 @@
-﻿namespace Kadena.Dto.Product
+﻿namespace Kadena.Dto.Checkout
 {
     public class RequestResultDto
     {

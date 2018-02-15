@@ -1,6 +1,4 @@
-﻿using Kadena.Dto.Checkout;
-
-namespace Kadena.Dto.Product
+﻿namespace Kadena.Dto.Checkout.Responses
 {
     public class AddToCartResultDto
     {
