@@ -816,14 +816,20 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             {
                 skuPrice = campProduct.EstimatedPrice;
             }
-                var allocatedQuantityItem = campProduct != null ? productProvider.GetAllocatedProductQuantityForUser(campProduct.CampaignsProductID, CurrentUser.UserID) : null;
-            if (allocatedQuantityItem == null && ProductType == (int)ProductsType.GeneralInventory)
+
+            var allocatedQuantityItem = campProduct != null ? productProvider.GetAllocatedProductQuantityForUser(campProduct.CampaignsProductID, CurrentUser.UserID) : null;
+            bool productHasAllocation = false;
+            if (ProductType == (int)ProductsType.GeneralInventory)
+            {
+                productHasAllocation = campProduct != null ? productProvider.IsProductHasAllocation(campProduct.CampaignsProductID) : false;
+            }
+            if (productHasAllocation && allocatedQuantityItem == null && ProductType == (int)ProductsType.GeneralInventory)
             {
                 lblErrorMsg.Text = ResHelper.GetString("KDA.Cart.Update.ProductNotAllocatedMessage");
                 lblErrorMsg.Visible = true;
                 return;
             }
-            
+
             var itemsPlaced = default(int);
             foreach (GridViewRow row in gvCustomersCart.Rows)
             {
@@ -880,7 +886,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="quantity">units placing</param>
     /// <param name="productInfo">skuinfo object</param>
     /// <param name="addressID">distributor addressid</param>
-    private void CartProcessOperations(int cartID, int quantity, SKUInfo productInfo, int addressID,double skuPrice)
+    private void CartProcessOperations(int cartID, int quantity, SKUInfo productInfo, int addressID, double skuPrice)
     {
         try
         {
