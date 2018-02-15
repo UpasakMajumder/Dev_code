@@ -351,10 +351,10 @@ namespace Kadena.AmazonFileSystemProvider
             this.obj.Lock();
             this.obj.Length += this.Length;
             List<string> stringList = new List<string>();
-            this.MultiPartUploader.UploadPartFromStream(uploadSessionId, this.obj.Key, this.obj.BucketName, nextPartNumber, this);
+            var eTag = this.MultiPartUploader.UploadPartFromStream(uploadSessionId, this.obj.Key, this.obj.BucketName, nextPartNumber, this);
             this.obj.UnLock();
             S3ObjectInfoProvider.RemoveRequestCache(this.obj.Key);
-            return stringList;
+            yield return eTag;
         }
 
         /// <summary>
