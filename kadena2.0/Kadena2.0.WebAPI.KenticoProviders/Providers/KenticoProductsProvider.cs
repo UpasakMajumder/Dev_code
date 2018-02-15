@@ -181,13 +181,37 @@ namespace Kadena.WebAPI.KenticoProviders
             SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
             if (sku != null)
             {
-                sku.SKUAvailableItems = sku.SKUAvailableItems-qty;
+                sku.SKUAvailableItems = sku.SKUAvailableItems - qty;
                 sku.Update();
             }
         }
         public CustomTableItem GetAllocatedProductQuantityForUser(int productID, int userID)
         {
-          return  CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
+            return CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
+        }
+
+        public List<CampaignsProduct> GetCampaignsProductSKUIDs(int campaignID)
+        {
+            List<int> programIDs = new KenticoProgramsProvider().GetProgramIDsByCampaign(campaignID);
+            var productNodes = new TreeProvider(MembershipContext.AuthenticatedUser).SelectNodes("KDA.CampaignsProduct")
+                                    .WhereIn("ProgramID", programIDs)
+                                    .OnCurrentSite();
+            if (productNodes != null && productNodes.HasResults() && productNodes.TypedResult.Items.Count > 0)
+            {
+                return productNodes.TypedResult.Items.ToList().Select(x =>
+                {
+                    return new CampaignsProduct()
+                    {
+                        SKUID = x.NodeSKUID,
+                        ProductName = x.DocumentName,
+                        EstimatedPrice = x.GetValue<decimal>("EstimatedPrice", 0)
+                    };
+                }).ToList();
+            }
+            else
+            {
+                return new List<CampaignsProduct>();
+            }
         }
     }
 }

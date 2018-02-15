@@ -120,6 +120,7 @@
     <Compile Include="Contracts\IDynamicPriceRangeProvider.cs" />
     <Compile Include="Contracts\IFailedOrderStatusProvider.cs" />
     <Compile Include="Contracts\IKenticoCustomerProvider.cs" />
+    <Compile Include="Contracts\IKenticoIBTFProvider.cs" />
     <Compile Include="Contracts\IKenticoSettingsProvider.cs" />
     <Compile Include="Contracts\IkenticoUserBudgetProvider.cs" />
     <Compile Include="Contracts\KadenaSettings\IShippingEstimationSettings.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="Providers\FailedOrderStatusProvider.cs" />
     <Compile Include="Providers\KadenaSettings\ShippingEstimationSettings.cs" />
     <Compile Include="Providers\KadenaSettings\KadenaSettings.cs" />
+    <Compile Include="Providers\KenticoIBTFProvider.cs" />
     <Compile Include="Providers\KenticoCustomerProvider.cs" />
     <Compile Include="Providers\KenticoLocalizationProvider.cs" />
     <Compile Include="Providers\KenticoPermissionsProvider.cs" />

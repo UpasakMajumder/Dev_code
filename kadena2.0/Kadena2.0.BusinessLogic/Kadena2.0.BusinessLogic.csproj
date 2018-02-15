@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IIBTFService.cs" />
     <Compile Include="Contracts\ISubmissionService.cs" />
     <Compile Include="Contracts\IFileService.cs" />
     <Compile Include="Contracts\IProgramsService.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Factories\IOrderResultPageUrlFactory.cs" />
     <Compile Include="Factories\OrderResultPageUrlFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IBTFService.cs" />
     <Compile Include="Services\Orders\GetOrderDataService.cs" />
     <Compile Include="Services\Orders\SendSubmitOrder.cs" />
     <Compile Include="Services\SubmissionService.cs" />

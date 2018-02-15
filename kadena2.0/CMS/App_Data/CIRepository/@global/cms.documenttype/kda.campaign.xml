@@ -34,7 +34,7 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field allowempty="true" column="IBTFFinalized" columntype="boolean" guid="a8b650a2-2663-4584-b6da-72551dfc51c6" publicfield="false">
+      <field allowempty="true" column="IBTFFinalized" columntype="boolean" guid="a8b650a2-2663-4584-b6da-72551dfc51c6" publicfield="false" visible="true">
         <properties>
           <defaultvalue>false</defaultvalue>
           <fieldcaption>IBTF Finalized</fieldcaption>

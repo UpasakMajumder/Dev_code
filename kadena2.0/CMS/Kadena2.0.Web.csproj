@@ -1308,6 +1308,7 @@
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\AddressBrands.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\BusinessUnit.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\FiscalYearManagement.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\IBTFAdjustment.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\InboundTracking.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSCategory.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSNumber.generated.cs" />
