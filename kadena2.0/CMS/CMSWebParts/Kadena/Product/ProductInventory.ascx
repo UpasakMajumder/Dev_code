@@ -51,7 +51,7 @@
                     <asp:TemplateField>
                         <HeaderTemplate><%# ResHelper.GetString("KDA.ShoppingCart.Quantity") %></HeaderTemplate>
                         <ItemTemplate>
-                            <asp:TextBox runat="server" CssClass="input__text js-txtQty" ID="txtQuanityOrdering" Text='<%# ValidationHelper.GetString(Eval("SKUUnits"),"0") %>' TextMode="Number" min="0" ClientIDMode="Static" />
+                            <asp:TextBox runat="server" CssClass="input__text js-txtQty" ID="txtQuanityOrdering" onkeypress="return isNumber(event)" Text='<%# ValidationHelper.GetString(Eval("SKUUnits"),"0") %>' TextMode="Number" min="0" ClientIDMode="Static" />
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField DataField="ShoppingCartID" Visible="true" HeaderText="" HeaderStyle-CssClass="u-hidden" ItemStyle-CssClass="u-hidden" />

@@ -148,12 +148,14 @@ AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN {%KadenaM
     $(document).ready(function () {
       $(".js-ItemQuantity").focusout(function(){
         var cID=parseInt($(this).siblings().first().val());
-        if (! /^\d*$/.test($(this).val()) ){
+        var cID=parseInt($(this).siblings().first().val());
+        var qtyValue=$(this).val();
+        if (! /^\d*$/.test(qtyValue) || qtyValue==='' ){
           errorMessage="{$KDA.Cart.Update.InvalidQuantityError$}";
           toastr.error(errorMessage);
           isError=true;
-           return;
-         }
+          return;
+        }
         var iQTY=parseInt($(this).val());
         if(cID!=undefined && iQTY!=undefined && cID!=0){
           UpdateItem(cID,iQTY,this);
@@ -172,7 +174,6 @@ AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN {%KadenaM
                 {
                   toastr.success(data.payload);
                   setTimeout(function(){ $(box).parentsUntil('.show-table-bottom').find('.js-BusinessUnit').trigger('change')}, 1000);
-                  // $(box).parentsUntil('.show-table-bottom').find('.js-Shipping').trigger('change');
                 }
                 else
                 {
@@ -186,6 +187,14 @@ AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN {%KadenaM
             });
       }
     }); 
+  function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
 </script>
 ]]>
           </property>
