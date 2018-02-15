@@ -146,7 +146,6 @@
     <Compile Include="RecentOrders\OrderHeadDto.cs" />
     <Compile Include="RecentOrders\OrderItemDto.cs" />
     <Compile Include="RecentOrders\OrderRowDto.cs" />
-    <Compile Include="RecentOrders\PaginationDto.cs" />
     <Compile Include="MailingList\MicroserviceResponses\MailingListDataDTO.cs" />
     <Compile Include="Settings\AddressDialogDto.cs" />
     <Compile Include="Settings\AddressListDto.cs" />

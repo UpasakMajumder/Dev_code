@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DryIoc;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Factories;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.BusinessLogic.Services;
@@ -58,6 +59,7 @@ namespace Kadena2.Container.Default
             container.Register<ITaxEstimationService, TaxEstimationService>();
             container.Register<ISubmitOrderService, SubmitOrderService>();
             container.Register<IOrderDetailService, OrderDetailService>();
+            container.Register<IOrderService, OrderService>();
             container.Register<IKListService, KListService>();
             container.Register<ITemplateService, TemplateService>();
             container.Register<IMailTemplateService, MailTemplateService>();

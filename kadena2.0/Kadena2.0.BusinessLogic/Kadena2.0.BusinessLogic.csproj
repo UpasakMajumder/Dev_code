@@ -69,6 +69,7 @@
     <Compile Include="Contracts\Orders\IOrderListService.cs" />
     <Compile Include="Contracts\Orders\IOrderListServiceFactory.cs" />
     <Compile Include="Contracts\Orders\IOrderDetailService.cs" />
+    <Compile Include="Contracts\Orders\IOrderService.cs" />
     <Compile Include="Contracts\Orders\ISendSubmitOrder.cs" />
     <Compile Include="Contracts\Orders\ISubmitOrderService.cs" />
     <Compile Include="Contracts\IPdfService.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Factories\OrderResultPageUrlFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Orders\GetOrderDataService.cs" />
+    <Compile Include="Services\Orders\OrderService.cs" />
     <Compile Include="Services\Orders\SendSubmitOrder.cs" />
     <Compile Include="Services\SubmissionService.cs" />
     <Compile Include="Services\OrderPayment\CreditCard3dsiDemo.cs" />

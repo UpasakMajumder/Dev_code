@@ -149,7 +149,6 @@
     <Compile Include="_Common\Button.cs" />
     <Compile Include="RecentOrders\OrderBody.cs" />
     <Compile Include="RecentOrders\OrderHead.cs" />
-    <Compile Include="RecentOrders\Pagination.cs" />
     <Compile Include="Search\AutocompletePage.cs" />
     <Compile Include="Search\AutocompletePages.cs" />
     <Compile Include="Search\AutocompleteProduct.cs" />

@@ -2,6 +2,7 @@
 using Kadena.Dto.Brands;
 using Kadena.Dto.BusinessUnits;
 using Kadena.Dto.Checkout;
+using Kadena.Dto.Common;
 using Kadena.Dto.CreditCard._3DSi.Requests;
 using Kadena.Dto.CreditCard._3DSi.Responses;
 using Kadena.Dto.CustomerData;
@@ -27,6 +28,7 @@ using Kadena.Models;
 using Kadena.Models.Brand;
 using Kadena.Models.BusinessUnit;
 using Kadena.Models.Checkout;
+using Kadena.Models.Common;
 using Kadena.Models.CreditCard;
 using Kadena.Models.CustomerData;
 using Kadena.Models.Login;
@@ -176,6 +178,11 @@ namespace Kadena2.Container.Default
                     d.OrderStatus = s.Status;
                 });
             CreateMap<OrderBody, OrderBodyDto>();
+
+            CreateMap<TableView, TableViewDto>();
+            CreateMap<TableRow, TableRowDto>();
+            CreateMap<Pagination, PaginationDto>();
+
             CreateMap<NewAddressButton, NewAddressButtonDTO>();
             CreateMap<DeliveryAddressesBounds, DeliveryAddressesBoundsDTO>();
             CreateMap<CheckoutPageDeliveryTotals, CheckoutPageDeliveryTotalsDTO>();

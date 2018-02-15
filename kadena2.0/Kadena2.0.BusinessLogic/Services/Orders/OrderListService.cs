@@ -12,6 +12,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Checkout;
+using Kadena.Models.Common;
 
 namespace Kadena.BusinessLogic.Services.Orders
 {

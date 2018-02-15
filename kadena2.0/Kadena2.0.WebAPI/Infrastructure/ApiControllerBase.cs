@@ -1,4 +1,8 @@
-﻿using Kadena.WebAPI.Infrastructure.Communication;
+﻿using Kadena.Models.Common;
+using Kadena.WebAPI.Infrastructure.Communication;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Results;
 
@@ -45,6 +49,21 @@ namespace Kadena.WebAPI.Infrastructure
             };
 
             return Json(response, CamelCaseSerializer);
+        }
+
+        /// <summary>
+        /// Creates standard IHttpActionResult from file
+        /// </summary>
+        /// <param name="file">File result</param>
+        protected IHttpActionResult File(FileResult file)
+        {
+            var response = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new ByteArrayContent(file.Data)
+            };
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue(file.Mime);
+            return ResponseMessage(response);
         }
     }
 }
