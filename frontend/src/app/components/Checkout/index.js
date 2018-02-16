@@ -131,7 +131,7 @@ class Checkout extends Component {
 
     if (itemFromProps.hasInput && !checkedPM.invoice) invalidFields.push('invoice');
 
-    if (itemFromProps.items.length && !checkedPM.card) invalidFields.push('paymentMethod');
+    if (itemFromProps.items.length && checkedPM.card === undefined) invalidFields.push('paymentMethod'); // new card has id = ''
   }
 
   placeOrder = (checkedData) => {
