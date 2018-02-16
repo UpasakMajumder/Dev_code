@@ -86,9 +86,8 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult SaveCard([FromBody][Required]SaveCreditCardRequestDto request)
         {
             var saveCardData = mapper.Map<SaveCardData>(request);
-            //var redirectUrl = service.CreditcardSaved(submissionId);
-            //var resultDto = mapper.Map<CreditCardPaymentDoneDto>(redirectUrl);
-            return ResponseJson("TODO");
+            service.MarkCardAsSaved(saveCardData);
+            return SuccessJson();
         }
     }
 }

@@ -127,7 +127,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             logger.LogInfo("3DSi SaveToken", "Info", $"Received SaveTokenData request, status: " + tokenData?.SubmissionStatusMessage);
 
-            var tokenId = await SaveTokenToUserData(submission.UserId.ToString(), tokenData);
+            var tokenId = await SaveTokenToUserData(submission, tokenData);
 
             if (string.IsNullOrEmpty(tokenId))
             {
@@ -179,17 +179,24 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         /// <summary>
         /// Saves the Token into UserData microservice
         /// </summary>
-        public async Task<string> SaveTokenToUserData(string userId, SaveTokenData token)
+        public async Task<string> SaveTokenToUserData(Submission submission, SaveTokenData token)
         {
-            var saveTokenRequest = new SaveCardTokenRequestDto
+            SaveCardTokenRequestDto saveTokenRequest;
+
+            if (string.IsNullOrEmpty(submission.SaveCardJson))
             {
-                // TODO some more properties needed for storing card:
-                // flag if treat card as stored
-                // last 4 digits
-                // username 
-                UserId = userId,
-                Token = token.Token
-            };
+                saveTokenRequest = new SaveCardTokenRequestDto
+                {
+                    UserId = submission.UserId.ToString(),
+                    SaveToken = false
+                };
+            }
+            else
+            {
+                saveTokenRequest = JsonConvert.DeserializeObject<SaveCardTokenRequestDto>(submission.SaveCardJson);
+            }
+
+            saveTokenRequest.Token = token.Token;
 
             var result = await userClient.SaveCardToken(saveTokenRequest);
 
@@ -229,18 +236,18 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             return string.Empty;
         }
 
-        public async Task SaveCreditCard(SaveCardData cardData)
-        {
+        public void MarkCardAsSaved(SaveCardData cardData)
+        {            
             var saveRequest = new SaveCardTokenRequestDto
             {
                 CardNumber = cardData.CardNumber,
-                Name = cardData.Name, // TODO some user friendly name ?
-                //Token = cardData.Token,
-                TokenExpirationDate = "TODO, will FE pass it ?",
+                Name = cardData.Name, 
                 UserId = kenticoUsers.GetCurrentUser().UserId.ToString(),
+                SaveToken = true
             };
 
-            var tokenId = await userClient.SaveCardToken(saveRequest);
+            var saveJson = JsonConvert.SerializeObject(saveRequest, SerializerConfig.CamelCaseSerializer);
+            submissionService.SetSaveCardJson(cardData.SubmissionID, saveJson);
         }
     }
 }

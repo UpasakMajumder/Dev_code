@@ -13,7 +13,6 @@ using Kadena.Dto.CustomerData;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.CustomerData;
 using Kadena.Dto.Checkout.Responses;
-using Kadena2.Container.Default;
 
 namespace Kadena.WebAPI.Controllers
 {

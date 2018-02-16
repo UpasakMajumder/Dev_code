@@ -46,9 +46,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.purchaseOrder = purchaseOrder;
         }
 
-
-
-
         public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
         {
             var paymentMethods = shoppingCart.GetPaymentMethods();

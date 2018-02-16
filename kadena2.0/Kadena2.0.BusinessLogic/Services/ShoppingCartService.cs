@@ -278,7 +278,7 @@ namespace Kadena.BusinessLogic.Services
             else
             {
                 var defaultAddressId = kenticoUsers.GetCurrentCustomer().DefaultShippingAddressId;
-                if (defaultAddressId == 0)
+                if (defaultAddressId == 0 || shoppingCart.GetAddress(defaultAddressId) == null)
                 {
                     defaultAddressId = page.DeliveryAddresses.GetDefaultAddressId();
                 }

@@ -9,7 +9,7 @@ namespace Kadena2.BusinessLogic.Contracts.OrderPayment
         Task<SubmitOrderResult> PayByCard3dsi(SubmitOrderRequest orderRequest);        
         Task<bool> SaveToken(SaveTokenData tokenData);
         string CreditcardSaved(string submissionId);
-        Task<string> SaveTokenToUserData(string userId, SaveTokenData token);
-        Task SaveCreditCard(SaveCardData cardData);
+        Task<string> SaveTokenToUserData(Submission submission, SaveTokenData token);
+        void MarkCardAsSaved(SaveCardData cardData);
     }
 }
