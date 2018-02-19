@@ -146,7 +146,7 @@ namespace Kadena.BusinessLogic.Services
                     log.LogError("GetStroredCards", storedCardsResult.ErrorMessages);
                 }
 
-                creditCardMethod.Items.Add(new StoredCard { Checked = true, Id = string.Empty, Label = "Enter new" });
+                creditCardMethod.Items.Add(new StoredCard { Checked = true, Id = string.Empty, Label = resources.GetResourceString("Kadena.CreditCard.EnterNew") });
             }
 
             methods.CheckDefault();
