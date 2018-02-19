@@ -3,7 +3,7 @@ using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models.CreditCard;
 using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2._0.BusinessLogic.Contracts.Orders;
+using Kadena2.BusinessLogic.Contracts.Orders;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
@@ -194,9 +194,11 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             else
             {
                 saveTokenRequest = JsonConvert.DeserializeObject<SaveCardTokenRequestDto>(submission.SaveCardJson);
+                saveTokenRequest.Name = $"{token.CardType} *-{token.CardEnd}";
             }
 
             saveTokenRequest.Token = token.Token;
+            
 
             var result = await userClient.SaveCardToken(saveTokenRequest);
 
