@@ -1,6 +1,6 @@
 ﻿using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2._0.BusinessLogic.Contracts.Orders;
+using Kadena2.BusinessLogic.Contracts.Orders;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
 using System;
 using System.Threading.Tasks;
