@@ -1,4 +1,7 @@
-﻿namespace Kadena.Models.OrderDetail
+﻿using Kadena.Models.Checkout;
+using System.Collections.Generic;
+
+namespace Kadena.Models.OrderDetail
 {
     public class OrderedItem
     {
@@ -19,5 +22,6 @@
         public int QuantityShipped { get; set; }
         public string ProductStatusPrefix { get; set; }
         public string ProductStatus { get; set; }
+        public IEnumerable<ItemOption> Options { get; set; }
     }
 }

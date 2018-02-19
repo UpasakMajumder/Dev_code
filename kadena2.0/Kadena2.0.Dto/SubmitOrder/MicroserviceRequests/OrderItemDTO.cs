@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
@@ -27,5 +28,6 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
         public Guid ChiliTaskId { get; set; }
         public Guid ChiliTemplateId { get; set; }
         public string DesignFileKey { get; set; }
+        public Dictionary<string, string> Attributes { get; set; }
   }
 }

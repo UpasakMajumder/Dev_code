@@ -1,0 +1,17 @@
+{% from "macro/svg.nunj" import svg %}
+
+<div class="product-view__tables">
+  <table class="table">
+    <tbody>
+    <tr>
+      <th colspan="2">
+        {{ svg('money', 'icon-dollar') }}
+        Unit price</th>
+    </tr>
+    <tr>
+      <td>1 + pcs</td>
+      <td id="price-element">$ 12.50</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
