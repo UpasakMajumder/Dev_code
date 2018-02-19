@@ -55,6 +55,29 @@ namespace Kadena.Tests.WebApi
             autoMocker.GetMock<IPurchaseOrder>().Verify(c => c.SubmitPOOrder(orderRequest), Times.Exactly(callPoOrder ? 1 : 0));
         }
 
+        [Theory]
+        [InlineData("someCardIdxxxxxxxxxxxx", false, true)]
+        [InlineData("", true, false)]
+        public async Task SubmitOrder_CallSavedCreditCard3dsi( string savedCardid, bool call3dsi, bool callSaved3dsi)
+        {
+            // Arrange
+            var autoMocker = new AutoMocker();
+            var shoppingCart = autoMocker.GetMock<IShoppingCartProvider>();
+            shoppingCart.Setup(s => s.GetPaymentMethods())
+                .Returns(CreatePaymentMethod("KDA.PaymentMethods.CreditCard"));
+
+            var sut = autoMocker.CreateInstance<SubmitOrderService>();
+            var orderRequest = CreateOrderRequest();
+            orderRequest.PaymentMethod.Card = savedCardid;
+
+            // Act
+            await sut.SubmitOrder(orderRequest);
+
+            // Assert
+            autoMocker.GetMock<ICreditCard3dsi>().Verify(c => c.PayByCard3dsi(orderRequest), Times.Exactly(call3dsi ? 1 : 0));
+            autoMocker.GetMock<ISavedCreditCard3dsi>().Verify(c => c.PayBySavedCard3dsi(orderRequest), Times.Exactly(callSaved3dsi ? 1 : 0));
+        }
+
 
         [Theory]
         [InlineData("KDA.PaymentMethods.PayPal", false, false, false)]
