@@ -497,7 +497,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 lblNoProducts.Visible = false;
                 List<string> selectedProducts = selectedValues.Split(',').ToList();
                 var skuDetails = SKUInfoProvider.GetSKUs()
-                                            .WhereIn("SKUProductCustomerReferenceNumberr", selectedProducts)
+                                            .WhereIn("SKUID", selectedProducts)
                                             .ToList();
                 string htmlTextheader = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.ProductsPDFHeader");
                 string programFooterText = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProgramFooterText");

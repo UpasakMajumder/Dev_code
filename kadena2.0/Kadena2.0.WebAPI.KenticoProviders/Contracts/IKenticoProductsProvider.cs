@@ -1,4 +1,5 @@
-﻿using Kadena.Models.Product;
+﻿using CMS.CustomTables;
+using Kadena.Models.Product;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
@@ -17,7 +18,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetProductStatus(int skuid);
         Sku GetVariant(int skuId, IEnumerable<int> optionsIds);
         void SetSkuAvailableQty(int skuid, int qty);
-        int GetAllocatedProductQuantityForUser(int productID, int userID);
+        CustomTableItem GetAllocatedProductQuantityForUser(int productID, int userID);
         OptionCategory GetOptionCategory(string codeName);
     }
 }

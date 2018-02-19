@@ -38,14 +38,29 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 userBudgetDetails.Update();
                 return userBudgetDetails.GetValue("UserRemainingBudget", string.Empty);
             }
-            
+
             return string.Empty;
         }
 
         public List<UserBudgetItem> GetUserBudgetAllocationRecords(int userId, int siteId)
         {
+            List<UserBudgetItem> userBudgetItems = new List<UserBudgetItem>();
             var userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("UserID", userId).WhereEquals("SiteID", siteId).ToList();
-            return mapper.Map<List<UserBudgetItem>>(userBudgetDetails);
+            if (userBudgetDetails.Count > 0)
+            {
+                foreach (CustomTableItem item in userBudgetDetails)
+                {
+                    userBudgetItems.Add(new UserBudgetItem()
+                    {
+                        ItemID = item.ItemID,
+                        Budget = item.GetValue("Budget",default(decimal)),
+                        Year = item.GetValue("Year", default(string)),
+                        UserRemainingBudget = item.GetValue("UserRemainingBudget", default(decimal)),
+                        UserID = item.GetValue("UserID", default(int))
+                    });
+                }
+            }
+            return userBudgetItems;
         }
 
         public bool CheckIfYearExists(string year, int userId)
@@ -64,8 +79,22 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
 
         public List<FiscalYear> GetFiscalYearRecords()
         {
+            List<FiscalYear> fiscalYearsList = new List<FiscalYear>();
             var fiscalYearData = CustomTableItemProvider.GetItems(FiscalYearClassName).ToList();
-            return mapper.Map<List<FiscalYear>>(fiscalYearData);
+            if (fiscalYearData.Count > 0)
+            {
+                foreach (CustomTableItem item in fiscalYearData)
+                {
+                    fiscalYearsList.Add(new FiscalYear()
+                    {
+                        ItemID = item.ItemID,
+                        Year = item.GetStringValue("Year", string.Empty),
+                        StartDate = item.GetDateTimeValue("FiscalYearStartDate", DateTime.Now),
+                        EndDate = item.GetDateTimeValue("FiscalYearEndDate", DateTime.Now)
+                    });
+                }
+            }
+            return fiscalYearsList;
         }
 
         public UserBudgetItem CreateUserBudgetWithYear(string year, int siteID, int userId)
@@ -80,9 +109,16 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 newCustomTableItem.SetValue("UserRemainingBudget", default(decimal));
                 newCustomTableItem.SetValue("SiteID", siteID);
                 newCustomTableItem.Insert();
-                return mapper.Map<UserBudgetItem>(newCustomTableItem);
+                return new UserBudgetItem()
+                {
+                    ItemID = newCustomTableItem.ItemID,
+                    Budget = newCustomTableItem.GetValue("Budget", default(decimal)),
+                    UserID = userId,
+                    UserRemainingBudget = newCustomTableItem.GetValue("UserRemainingBudget", default(decimal)),
+                    Year = year
+                };
             }
-            return mapper.Map<UserBudgetItem>(newCustomTableItem);
+            return null;
         }
     }
 }
