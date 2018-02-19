@@ -97,13 +97,12 @@ export const submitCard = (fields, cardType, submissionId) => {
   };
 };
 
-export const saveToProfile = (fields, url, save, submissionId) => {
+export const saveToProfile = (cardNumber, url, save, submissionId) => {
   return (dispatch) => {
     const data = { save };
 
     if (save) {
-      data.Name = fields.name;
-      data.CardNumber = fields.number.substr(-4); // send last 4 digits
+      data.CardNumber = cardNumber.substr(-4); // send last 4 digits
       data.SubmissionID = submissionId;
     }
 
