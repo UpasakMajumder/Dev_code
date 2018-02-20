@@ -60,8 +60,8 @@ namespace Kadena.BusinessLogic.Services
 
             var productsPage = new ProductsPage
             {
-                Categories = categories.OrderBy(c => c.Order).ToList(),
-                Products = products.OrderBy(p => p.Order).ToList()
+                Categories = categories,
+                Products = products
             };
 
             productsPage.MarkFavoriteProducts(favoriteIds);
