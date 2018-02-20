@@ -128,7 +128,7 @@
           <property name="webparttype">queryrepeater</property>
           <property name="wherecondition" ismacro="true">
 <![CDATA[
-ShoppingCartUserID={%CurrentUser.UserID|(user)cvoqa2@gmail.com|(hash)151ea260d45cbb40b6b460c3d41821d9e9dbc03b916f839032f8f77203b978ef%} AND ShoppingCartInventoryType=2 AND ShoppingCartSiteID={%CurrentSite.SiteID|(user)cvoqa2@gmail.com|(hash)7cfc90a7531eb28cb1698bcc36ccdc6093504c59ab4a8814d9ecdfe6eb948648%}
+ShoppingCartInventoryType=2 AND ShoppingCartSiteID={%CurrentSite.SiteID|(user)cvoqa2@gmail.com|(hash)7cfc90a7531eb28cb1698bcc36ccdc6093504c59ab4a8814d9ecdfe6eb948648%}
 AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN {%ToInt(QueryString["campid"],-1)|(user)cvoqa2@gmail.com|(hash)95d135b0e026aecf056e7c9de440e9e9b0284f4d09db449cfaa26a47102e9261%} End
 
 

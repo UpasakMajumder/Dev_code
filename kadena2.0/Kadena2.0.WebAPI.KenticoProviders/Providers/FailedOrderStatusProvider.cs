@@ -20,6 +20,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 CustomTableItem newCustomTableItem = CustomTableItem.New(customTableClassName);
                 newCustomTableItem.SetValue("CampaignID", campaignID);
                 newCustomTableItem.SetValue("IsCampaignOrdersInProgress", true);
+                newCustomTableItem.SetValue("IsCampaignOrdersFailed", false);
                 newCustomTableItem.Insert();
             }
         }
@@ -29,7 +30,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             if (customTable != null)
             {
                 var customTableData = CustomTableItemProvider.GetItems(customTableClassName)
-                                                                    .WhereEquals("CapmaignID", campaignID).FirstOrDefault();
+                                                                    .WhereEquals("CampaignID", campaignID).FirstOrDefault();
                 if (customTableData != null)
                 {
                     customTableData.SetValue("IsCampaignOrdersInProgress", true);
@@ -43,7 +44,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             if (customTable != null)
             {
                 return CustomTableItemProvider.GetItems(customTableClassName)
-                                                                     .WhereEquals("CapmaignID", campaignID).Any();
+                                                                     .WhereEquals("CampaignID", campaignID).Any();
             }
             return false;
         }
@@ -53,7 +54,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             if (customTable != null)
             {
                 var customTableData = CustomTableItemProvider.GetItems(customTableClassName)
-                                                                    .WhereEquals("CapmaignID", campaignID).FirstOrDefault();
+                                                                    .WhereEquals("CampaignID", campaignID).FirstOrDefault();
                 if (customTableData != null)
                 {
                     customTableData.SetValue("IsCampaignOrdersInProgress", false);

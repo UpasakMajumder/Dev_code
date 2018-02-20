@@ -111,6 +111,15 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory {
     protected global::CMS.Base.Web.UI.LocalizedLabel lblErrorMsg;
     
     /// <summary>
+    /// lblqtyError control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.LocalizedLabel lblqtyError;
+    
+    /// <summary>
     /// lblAvailbleItems control.
     /// </summary>
     /// <remarks>
