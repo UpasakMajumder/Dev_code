@@ -1,6 +1,6 @@
 ﻿namespace Kadena.WebAPI.Infrastructure
 {
-    public class Routes
+    public partial class Routes
     {
         public class Order
         {
