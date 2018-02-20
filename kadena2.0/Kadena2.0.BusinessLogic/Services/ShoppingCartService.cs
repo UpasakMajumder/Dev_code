@@ -86,7 +86,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var addresses = kenticoUsers.GetCustomerAddresses(AddressType.Shipping);
             var paymentMethods = shoppingCart.GetPaymentMethods();
-            var emailConfirmationEnabled = resources.GetSettingsKey("KDA_UseNotificationEmailsOnCheckout") == bool.TrueString;
+            var emailConfirmationEnabled = resources.GetSettingsKey<bool>("KDA_UseNotificationEmailsOnCheckout");
 
             var checkoutPage = new CheckoutPage()
             {

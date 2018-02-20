@@ -663,6 +663,15 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return string.Empty;
         }
 
+
+        [MacroMethod(typeof(string), "Returns per-site localization string.", 1)]
+        [MacroMethodParam(0, "name", typeof(string), "Name of localization project.")]
+        public static object GetPerSiteResourceString(EvaluationContext context, params object[] parameters)
+        {
+            string name = parameters[0] as string;
+            return DIContainer.Resolve<IKenticoResourceService>().GetPerSiteResourceString(name);
+        }
+
         /// <summary>
         /// Returns Category name based on Category ID
         /// </summary>
