@@ -30,7 +30,7 @@ const redirectUser = (dispatch, RedirectURL, submissionId) => {
   });
 };
 
-export default (fields, cardType, submissionId) => {
+export const submitCard = (fields, cardType, submissionId) => {
   const { name, cvc, number, expiry } = fields;
 
   return async (dispatch) => {
@@ -94,5 +94,22 @@ export default (fields, cardType, submissionId) => {
     } catch (e) {
       dispatch({ type: SUBMIT_CARD + FAILURE });
     }
+  };
+};
+
+export const saveToProfile = (cardNumber, url, save, submissionId) => {
+  return (dispatch) => {
+    const data = { save };
+
+    if (save) {
+      data.CardNumber = cardNumber.substr(-4); // send last 4 digits
+      data.SubmissionID = submissionId;
+    }
+
+    axios({
+      method: 'post',
+      url,
+      data
+    });
   };
 };

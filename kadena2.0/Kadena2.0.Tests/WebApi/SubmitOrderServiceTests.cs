@@ -3,6 +3,7 @@ using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
 using Moq;
+using Moq.AutoMock;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -27,20 +28,6 @@ namespace Kadena.Tests.WebApi
             };
         }
 
-        private SubmitOrderService CreateSubmitOrderService(
-            string paymentMethodClassName,
-            Mock<IShoppingCartProvider> shoppingCart = null,
-            Mock<ICreditCard3dsi> card3dsi = null,
-            Mock<ICreditCard3dsiDemo> card3dsiDemo = null, 
-            Mock<IPurchaseOrder> purchaseOrder = null)
-        {            
-            return new SubmitOrderService(shoppingCart?.Object ?? new Mock<IShoppingCartProvider>().Object,
-                card3dsi?.Object ?? new Mock<ICreditCard3dsi>().Object,
-                card3dsiDemo?.Object ?? new Mock<ICreditCard3dsiDemo>().Object,
-                purchaseOrder?.Object ?? new Mock<IPurchaseOrder>().Object
-            );
-        }
-
         [Theory]
         [InlineData("KDA.PaymentMethods.CreditCard", true, false, false)]
         [InlineData("KDA.PaymentMethods.CreditCardDemo", false, true, false)]
@@ -50,13 +37,12 @@ namespace Kadena.Tests.WebApi
         public async Task SubmitOrder_CallCreditCard3dsi(string paymentClass, bool call3dsi, bool call3dsiDemo, bool callPoOrder)
         {
             // Arrange
-            var shoppingCart = new Mock<IShoppingCartProvider>();
+            var autoMocker = new AutoMocker();
+            var shoppingCart = autoMocker.GetMock<IShoppingCartProvider>();
             shoppingCart.Setup(s => s.GetPaymentMethods())
                 .Returns(CreatePaymentMethod(paymentClass));
-            var card3dsi = new Mock<ICreditCard3dsi>();
-            var card3dsiDemo = new Mock<ICreditCard3dsiDemo>();
-            var poOrder = new Mock<IPurchaseOrder>();
-            var sut = CreateSubmitOrderService(paymentClass, shoppingCart, card3dsi, card3dsiDemo, poOrder);
+
+            var sut = autoMocker.CreateInstance<SubmitOrderService>();
             var orderRequest = CreateOrderRequest();
 
             // Act
@@ -64,9 +50,32 @@ namespace Kadena.Tests.WebApi
 
             // Assert
             shoppingCart.Verify(c => c.GetPaymentMethods(), Times.Once);
-            card3dsi.Verify(c => c.PayByCard3dsi(orderRequest), Times.Exactly( call3dsi ? 1 : 0 ) );
-            card3dsiDemo.Verify(c => c.PayByCard3dsi(), Times.Exactly(call3dsiDemo ? 1 : 0));
-            poOrder.Verify(c => c.SubmitPOOrder(orderRequest), Times.Exactly(callPoOrder ? 1 : 0));
+            autoMocker.GetMock<ICreditCard3dsi>().Verify(c => c.PayByCard3dsi(orderRequest), Times.Exactly( call3dsi ? 1 : 0 ) );
+            autoMocker.GetMock<ICreditCard3dsiDemo>().Verify(c => c.PayByCard3dsi(), Times.Exactly(call3dsiDemo ? 1 : 0));
+            autoMocker.GetMock<IPurchaseOrder>().Verify(c => c.SubmitPOOrder(orderRequest), Times.Exactly(callPoOrder ? 1 : 0));
+        }
+
+        [Theory]
+        [InlineData("someCardIdxxxxxxxxxxxx", false, true)]
+        [InlineData("", true, false)]
+        public async Task SubmitOrder_CallSavedCreditCard3dsi( string savedCardid, bool call3dsi, bool callSaved3dsi)
+        {
+            // Arrange
+            var autoMocker = new AutoMocker();
+            var shoppingCart = autoMocker.GetMock<IShoppingCartProvider>();
+            shoppingCart.Setup(s => s.GetPaymentMethods())
+                .Returns(CreatePaymentMethod("KDA.PaymentMethods.CreditCard"));
+
+            var sut = autoMocker.CreateInstance<SubmitOrderService>();
+            var orderRequest = CreateOrderRequest();
+            orderRequest.PaymentMethod.Card = savedCardid;
+
+            // Act
+            await sut.SubmitOrder(orderRequest);
+
+            // Assert
+            autoMocker.GetMock<ICreditCard3dsi>().Verify(c => c.PayByCard3dsi(orderRequest), Times.Exactly(call3dsi ? 1 : 0));
+            autoMocker.GetMock<ISavedCreditCard3dsi>().Verify(c => c.PayBySavedCard3dsi(orderRequest), Times.Exactly(callSaved3dsi ? 1 : 0));
         }
 
 
@@ -77,10 +86,15 @@ namespace Kadena.Tests.WebApi
         public async Task SubmitOrder_UnknownPaymentShouldRaiseException(string paymentClass, bool call3dsi, bool call3dsiDemo, bool callPoOrder)
         {
             // Arrange
-            var card3dsi = new Mock<ICreditCard3dsi>();
-            var card3dsiDemo = new Mock<ICreditCard3dsiDemo>();
-            var poOrder = new Mock<IPurchaseOrder>();
-            var sut = CreateSubmitOrderService(paymentClass, card3dsi: card3dsi, card3dsiDemo: card3dsiDemo, purchaseOrder: poOrder);
+            var autoMocker = new AutoMocker();
+            var card3dsi = autoMocker.GetMock<ICreditCard3dsi>();
+            var card3dsiDemo = autoMocker.GetMock<ICreditCard3dsiDemo>();
+            var poOrder = autoMocker.GetMock<IPurchaseOrder>();
+            var shoppingCart = autoMocker.GetMock<IShoppingCartProvider>();
+            shoppingCart.Setup(c => c.GetPaymentMethods())
+                .Returns(CreatePaymentMethod(paymentClass));
+            var sut = autoMocker.CreateInstance<SubmitOrderService>();
+
             var orderRequest = CreateOrderRequest();
 
             // Act

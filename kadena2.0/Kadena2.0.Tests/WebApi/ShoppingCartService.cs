@@ -71,7 +71,9 @@ namespace Kadena.Tests.WebApi
                 .Returns(new[] { CreateDeliveryAddress() });
             kenticoUser.Setup(p => p.GetCurrentCustomer())
                 .Returns(new Customer { DefaultShippingAddressId = 1, Id = 1});
-            
+            kenticoUser.Setup(p => p.GetCurrentUser())
+                .Returns(new User { UserId = 1 });
+
             var shoppingCart = autoMocker.GetMock<IShoppingCartProvider>();
             shoppingCart.Setup(p => p.GetShippingCarriers())
                 .Returns(new[] { CreateDeliveryCarrier() });
@@ -100,14 +102,15 @@ namespace Kadena.Tests.WebApi
         }
 
         [Fact]
-        public void GetCheckoutPageTest() 
+        public async Task GetCheckoutPageTest() 
         {
             // Arrange
             var autoMocker = new AutoMocker();
+
             var sut = CreateShoppingCartService(autoMocker);
 
             // Act
-            var result = sut.GetCheckoutPage();
+            var result = await sut.GetCheckoutPage();
 
             // Assert
             Assert.NotNull(result);

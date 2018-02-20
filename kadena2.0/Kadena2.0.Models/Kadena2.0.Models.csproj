@@ -51,6 +51,8 @@
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
     <Compile Include="Campaign.cs" />
     <Compile Include="CampaignData\CampaignData.cs" />
+    <Compile Include="CreditCard\SaveCardData.cs" />
+    <Compile Include="CreditCard\StoredCard.cs" />
     <Compile Include="FyBudget\FyBudget.cs" />
     <Compile Include="IBTF\IBTF.cs" />
     <Compile Include="IBTF\IBTFAdjustment.cs" />
