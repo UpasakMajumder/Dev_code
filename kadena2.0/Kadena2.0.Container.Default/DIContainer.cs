@@ -85,6 +85,7 @@ namespace Kadena2.Container.Default
             container.Register<IShippingCostServiceClient, ShippingCostServiceClient>();
             container.Register<ISettingsSynchronizationService, SettingsSynchronizationService>();
             container.Register<IUserBudgetService, UserBudgetService>();
+            container.Register<IIBTFService, IBTFService>();
             return container;
         }
 
@@ -117,6 +118,7 @@ namespace Kadena2.Container.Default
             container.Register<IDynamicPriceRangeProvider, DynamicPriceRangeProvider>();
 			container.Register<IkenticoUserBudgetProvider, KenticoUserBudgetProvider>();
             container.Register<IFailedOrderStatusProvider, FailedOrderStatusProvider>();
+            container.Register<IKenticoIBTFProvider, KenticoIBTFProvider>();
             return container;
         }
 

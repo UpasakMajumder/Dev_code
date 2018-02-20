@@ -1,4 +1,6 @@
-﻿namespace Kadena.Dto.Checkout
+﻿using System.Collections.Generic;
+
+namespace Kadena.Dto.Checkout
 {
     public class CartItemDTO
     {
@@ -20,5 +22,6 @@
         public string TemplatePrefix { get; set; }
         public string ProductionTime { get; set; }
         public string ShipTime { get; set; }
+        public IEnumerable<ItemOptionDto> Options { get; set; }
     }
 }

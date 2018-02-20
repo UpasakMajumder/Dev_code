@@ -1,0 +1,4 @@
+{% from "macro/select.nunj" import select %}
+
+{{ select(optHolder="(Please select)", className="product-options__input", selectClassName="js-product-option js-add-to-cart-property", options=['red', 'blue', 'green'], name='size') }}
+{{ select(optHolder="(Please select)", className="product-options__input", selectClassName="js-product-option js-add-to-cart-property", options=['s', 'm', 'l'], name='color') }}

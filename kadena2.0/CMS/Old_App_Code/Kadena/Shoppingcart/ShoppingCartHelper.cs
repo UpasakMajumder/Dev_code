@@ -356,11 +356,12 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
+                var carrier = CarrierInfoProvider.GetCarrierInfo(Cart.ShippingOption.ShippingOptionCarrierID);
                 return new ShippingOptionDTO
                 {
                     KenticoShippingOptionID = Cart.ShoppingCartShippingOptionID,
                     ShippingService = Cart.ShippingOption.ShippingOptionCarrierServiceName,
-                    ShippingCompany = Cart.ShippingOption.ShippingOptionName,
+                    ShippingCompany = carrier != null ? carrier.CarrierName : Cart.ShippingOption.ShippingOptionName,
                     CarrierCode = Cart.ShippingOption.GetStringValue("ShippingOptionSAPName", string.Empty)
                 };
             }
@@ -459,7 +460,8 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                         },
                         UnitCount = item.CartItemUnits,
                         UnitOfMeasure = SKUMeasuringUnits.EA,
-                        UnitPrice = ValidationHelper.GetDecimal(item.UnitPrice, default(decimal))
+                        UnitPrice = ValidationHelper.GetDecimal(item.UnitPrice, default(decimal)),
+                        TotalPrice = ValidationHelper.GetDecimal(item.TotalPrice, default(decimal))
                     });
                 });
             }
@@ -596,6 +598,29 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             }
         }
         /// <summary>
+        /// update available sku quantity
+        /// </summary>
+        /// <param name="inventoryType"></param>
+        /// <returns></returns>
+        public static void UpdateAllocatedProductQuantity(ShoppingCartInfo cart,int userID)
+        {
+            try
+            {
+                var productProvider = DIContainer.Resolve<IKenticoProductsProvider>();
+                cart.CartItems.ForEach(cartItem =>
+                {
+                    var campProduct = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", cartItem?.SKUID).Columns("CampaignsProductID,EstimatedPrice").FirstOrDefault();
+                    if(campProduct!=null)
+                    productProvider.UpdateAllocatedProductQuantityForUser(campProduct.GetIntegerValue("CampaignsProductID",0), userID,cartItem.CartItemUnits);
+                });
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("ShoppingCartHelper", "UpdateAvailableSKUQuantity", ex.Message);
+            }
+        }
+
+        /// <summary>
         /// returns open campaign
         /// </summary>
         /// <param name="inventoryType"></param>
@@ -639,4 +664,4 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             }
         }
     }
-}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+}

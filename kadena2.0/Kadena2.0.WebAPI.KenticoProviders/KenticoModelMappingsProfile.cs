@@ -22,6 +22,14 @@ namespace Kadena2.WebAPI.KenticoProviders
     {
         public KenticoModelMappingsProfile()
         {
+            CreateMap<OptionCategoryInfo, OptionCategory>()
+                .ForMember(dest => dest.CodeName, opt => opt.MapFrom(src => src.CategoryName))
+                .ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.CategoryDisplayName));
+
+            CreateMap<SKUInfo, Sku>()
+                .ForMember(dest => dest.NeedsShipping, opt => opt.MapFrom(src => src.SKUNeedsShipping))
+                .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.SKUWeight));
+
             CreateMap<StateInfo, State>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.StateID));
             CreateMap<CountryInfo, Country>()
