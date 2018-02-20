@@ -11,7 +11,7 @@ namespace Kadena.Models.Product
         public bool IsFavourite { get; set; }
         public string ParentPath { get; set; }
         public Border Border { get; set; }
-
+        public int Order { get; set; }
         public void SetBorderInfo(bool bordersEnabledOnSite, bool borderEnabledOnParentCategory, string borderStyle)
         {
             if (Border == null)
