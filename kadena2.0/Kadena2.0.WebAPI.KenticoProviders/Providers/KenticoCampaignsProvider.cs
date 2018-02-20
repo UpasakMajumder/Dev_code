@@ -85,7 +85,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public string GetCampaignFiscalYear(int campaignID)
         {
             var campaign = DocumentHelper.GetDocuments(PageTypeClassName).OnSite(SiteContext.CurrentSiteID).WhereEquals("CampaignID", campaignID).FirstOrDefault();
-            return campaign.GetValue("FiscalYear", string.Empty);
+            return campaign != null ? campaign.GetValue("FiscalYear", string.Empty) : null;
         }
     }
 }

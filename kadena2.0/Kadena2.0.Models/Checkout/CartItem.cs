@@ -1,5 +1,6 @@
 ﻿using Kadena.Models.Product;
 using System;
+using System.Collections.Generic;
 
 namespace Kadena.Models.Checkout
 {
@@ -133,5 +134,6 @@ namespace Kadena.Models.Checkout
         public string TemplatePrefix { get; set; }
         public string ProductionTime { get; set; }
         public string ShipTime { get; set; }
+        public IEnumerable<ItemOption> Options { get; set; }
     }
 }

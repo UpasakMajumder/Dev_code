@@ -88,11 +88,11 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
         if (openOrders != null)
         {
             lblCurrentWeekOpenOrder.InnerText = openOrders.Week?.Count.ToString() ?? "0";
-            lblCurrentWeekOpenMoney.InnerText = string.Format(CurrentCurrencyFormat, ValidationHelper.GetDouble(openOrders.Week.Cost, 0));
+            lblCurrentWeekOpenMoney.InnerText = CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(openOrders.Week.Cost, 0), CurrentSite.SiteID, true);
             lblCurrentMonthOpenOrder.InnerText = openOrders.Month?.Count.ToString() ?? "0";
-            lblCurrentMonthOpenMoney.InnerText = string.Format(CurrentCurrencyFormat, ValidationHelper.GetDouble(openOrders.Month.Cost, 0));
+            lblCurrentMonthOpenMoney.InnerText = CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(openOrders.Month.Cost, 0), CurrentSite.SiteID, true);
             lblCurrentYearOpenOrdersCount.InnerText = openOrders.Year?.Count.ToString() ?? "0";
-            lblCurrentYearOpenOrdersMoney.InnerText = string.Format(CurrentCurrencyFormat, ValidationHelper.GetDouble(openOrders.Year.Cost, 0));
+            lblCurrentYearOpenOrdersMoney.InnerText = CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(openOrders.Year.Cost, 0), CurrentSite.SiteID, true);
         }
     }
     /// <summary>
@@ -104,11 +104,11 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
         if (ordersPlaced != null)
         {
             lblCurrentWeekOrdersPlacedCount.InnerText = ordersPlaced.Week?.Count.ToString() ?? "0";
-            lblCurrentWeekOrdersPlacedMoney.InnerText = string.Format(CurrentCurrencyFormat, ValidationHelper.GetDouble(ordersPlaced.Week.Cost, 0));
+            lblCurrentWeekOrdersPlacedMoney.InnerText = CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(ordersPlaced.Week.Cost, 0), CurrentSite.SiteID, true);
             lblCurrentMonthOrdersPlacedCount.InnerText = ordersPlaced.Month?.Count.ToString() ?? "0";
-            lblCurrentMonthOrdersPlacedMoney.InnerText = string.Format(CurrentCurrencyFormat, ValidationHelper.GetDouble(ordersPlaced.Month.Cost, 0));
+            lblCurrentMonthOrdersPlacedMoney.InnerText = CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(ordersPlaced.Month.Cost, 0), CurrentSite.SiteID, true);
             lblcurrentYearordersPlacedMoneyCount.InnerText = ordersPlaced.Year?.Count.ToString() ?? "0";
-            lblcurrentYearordersPlacedMoney.InnerText = string.Format(CurrentCurrencyFormat, ValidationHelper.GetDouble(ordersPlaced.Year.Cost, 0));
+            lblcurrentYearordersPlacedMoney.InnerText = CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(ordersPlaced.Year.Cost, 0), CurrentSite.SiteID, true);
         }
     }
     /// <summary>

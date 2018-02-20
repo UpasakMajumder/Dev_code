@@ -54,6 +54,7 @@
     <Compile Include="BusinessUnits\BusinessUnitDto.cs" />
     <Compile Include="Checkout\Responses\ChangeDeliveryAddressResponseDto.cs" />
     <Compile Include="Checkout\Responses\ChangeItemQuantityResponseDto.cs" />
+    <Compile Include="Checkout\ItemOptionDto.cs" />
     <Compile Include="CreditCard\3DSi\Requests\SaveTokenDataRequestDto.cs" />
     <Compile Include="Checkout\StoredCardDto.cs" />
     <Compile Include="CreditCard\MicroserviceResponses\UserStoredCardDto.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="CreditCard\Responses\CreditCardPaymentDoneDto.cs" />
     <Compile Include="CustomerData\UserBudgetDto.cs" />
     <Compile Include="Product\BorderDto.cs" />
+    <Compile Include="Product\PriceDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDailogLabelDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialogDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialogTableCellDto.cs" />

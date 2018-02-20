@@ -1,0 +1,13 @@
+{% extends "layouts/default.nunj" %}
+
+{% set title = 'Products Clothes' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
+
+{% block content %}
+  <ul>
+    <li><a href="products-dropdown.html">products-dropdown</a></li>
+    <li><a href="products-radio.html">products-radio</a></li>
+  </ul>
+{% endblock %}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Kadena.Dto.Checkout
 {
@@ -9,5 +10,6 @@ namespace Kadena.Dto.Checkout
         public int Quantity { get; set; }
         public Guid TemplateId { get; set; }
         public Guid ContainerId { get; set; }
+        public Dictionary<string, int> Options { get; set; }
     }
 }

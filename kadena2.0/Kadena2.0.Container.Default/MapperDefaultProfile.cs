@@ -41,6 +41,7 @@ using Kadena.Models.Site;
 using Kadena.Models.SubmitOrder;
 using Kadena.Models.TemplatedProduct;
 using Kadena2.MicroserviceClients.MicroserviceResponses;
+using System.Linq;
 
 namespace Kadena2.Container.Default
 {
@@ -48,6 +49,11 @@ namespace Kadena2.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<ItemOption, ItemOptionDto>();
+
+            CreateMap<Price, PriceDto>()
+                .ForMember(dest => dest.PricePrefix, opt => opt.MapFrom(src => src.Prefix))
+                .ForMember(dest => dest.PriceValue, opt => opt.MapFrom(src => src.Value));
             CreateMap<CartItem, SKUDTO>()
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SKUName))
                     .ForMember(dest => dest.KenticoSKUID, opt => opt.MapFrom(src => src.SKUID));
@@ -56,7 +62,8 @@ namespace Kadena2.Container.Default
                 .ForMember(dest => dest.SKU, opt => opt.MapFrom(src => src))
                 .ForMember(dest => dest.UnitCount, opt => opt.MapFrom(src => src.Quantity))
                 .ForMember(dest => dest.ChiliTaskId, opt => opt.MapFrom(src => src.DesignFilePathTaskId))
-                .ForMember(dest => dest.ChiliTemplateId, opt => opt.MapFrom(src => src.ChiliEditorTemplateId));
+                .ForMember(dest => dest.ChiliTemplateId, opt => opt.MapFrom(src => src.ChiliEditorTemplateId))
+                .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src => src.Options.ToDictionary(i => i.Name, i => i.Value)));
 
             CreateMap<CustomerData, CustomerDataDTO>();
             CreateMap<CustomerAddress, CustomerAddressDTO>();

@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.customtable>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <NameSpace>KDA</NameSpace>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDisplayName>IBTF Adjustment</ClassDisplayName>
+  <ClassFormDefinition>
+    <form version="2">
+      <field column="ItemID" columnprecision="0" columntype="integer" guid="5dc9fb95-faad-4d0f-9b26-cc2723a22538" isPK="true" publicfield="false">
+        <properties>
+          <fieldcaption>ItemID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemCreatedBy" columnprecision="0" columntype="integer" guid="f50087ef-a22a-4edb-9ede-d355dba11d9b" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Created by</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemCreatedWhen" columnprecision="0" columntype="datetime" guid="cd22718f-3c64-4408-a475-41057fc4c49d" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Created when</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemModifiedBy" columnprecision="0" columntype="integer" guid="7bf03e26-38f0-433f-a523-ebf26ab63fd3" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Modified by</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemModifiedWhen" columnprecision="0" columntype="datetime" guid="44dd1876-adb6-4797-9bfd-ab6a93481747" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Modified when</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="ItemGUID" columnprecision="0" columntype="guid" guid="363465fc-3ea1-4b2a-a1a2-97a36973b1fb" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>GUID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="SKUID" columntype="integer" guid="d40b3d5f-38a1-4645-b2f5-88f335b3dda4" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>SKUID</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="UserID" columntype="integer" guid="a5c6ae23-9948-4112-a570-f60481748998" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>User ID</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="CampaignID" columntype="integer" guid="24a8877b-6300-4536-b5fe-499feeca8584" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>0</defaultvalue>
+          <fieldcaption>Campaign ID</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="OrderedQuantity" columntype="integer" guid="80a92f15-472d-4a02-9fd3-0637966e8903" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>1</defaultvalue>
+          <fieldcaption>Ordered Quantity</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="OrderedProductPrice" columnprecision="4" columnsize="19" columntype="decimal" guid="7607be84-951e-4ac7-bacf-9c7160d3e6f4" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>0</defaultvalue>
+          <fieldcaption>Ordered Product Price</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="SiteName" columnsize="200" columntype="text" guid="d04a1e52-10b8-4242-8240-c14156b37fc2" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Site Name</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>f0c73ad8-3a43-49e1-9a5d-50b079cb9fec</ClassGUID>
+  <ClassIsContentOnly>False</ClassIsContentOnly>
+  <ClassIsCoupledClass>True</ClassIsCoupledClass>
+  <ClassIsCustomTable>True</ClassIsCustomTable>
+  <ClassIsDocumentType>False</ClassIsDocumentType>
+  <ClassIsForm>False</ClassIsForm>
+  <ClassIsMenuItemType>False</ClassIsMenuItemType>
+  <ClassIsProduct>False</ClassIsProduct>
+  <ClassName>KDA.IBTFAdjustment</ClassName>
+  <ClassNodeNameSource />
+  <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>
+  <ClassSearchCreationDateColumn>DocumentCreatedWhen</ClassSearchCreationDateColumn>
+  <ClassSearchEnabled>True</ClassSearchEnabled>
+  <ClassSearchSettings>
+    <search>
+      <item content="False" id="1b40461b-c2a3-4572-a81b-96c75932e803" name="OrderedProductPrice" searchable="True" tokenized="False" />
+      <item content="False" id="2c269744-0712-4003-a08f-a1230af661ea" name="ItemCreatedWhen" searchable="True" tokenized="False" />
+      <item content="False" id="48fafb29-5330-422c-ae3e-58c8b3f7de23" name="ItemCreatedBy" searchable="True" tokenized="False" />
+      <item content="False" id="5aac6b2c-ddc2-4abb-beaf-2a85e1787a7b" name="ItemGUID" searchable="False" tokenized="False" />
+      <item content="False" id="5b35a21f-4647-4a8c-9fd2-6ded51664391" name="UserID" searchable="True" tokenized="False" />
+      <item content="False" id="6332386e-c4ce-4764-82cf-206aa26bc88f" name="ItemID" searchable="True" tokenized="False" />
+      <item content="False" id="735e7f0a-c00d-4f6d-a46f-e3ebcfd4eddf" name="SKUID" searchable="True" tokenized="False" />
+      <item content="False" id="a49f8cb6-3a72-4175-bd5f-e3399c3a643a" name="ItemModifiedWhen" searchable="True" tokenized="False" />
+      <item content="False" id="dd78154d-49c2-44e1-b4e3-48a49b26370d" name="ItemModifiedBy" searchable="True" tokenized="False" />
+    </search>
+  </ClassSearchSettings>
+  <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
+  <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowColumns>
+    <![CDATA[SKUID;UserID;CampaignID;OrderedQuantity;OrderedProductPrice]]>
+  </ClassShowColumns>
+  <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
+  <ClassTableName>KDA_IBTFAdjustment</ClassTableName>
+  <ClassUsePublishFromTo>False</ClassUsePublishFromTo>
+  <ClassUsesVersioning>False</ClassUsesVersioning>
+</cms.customtable>

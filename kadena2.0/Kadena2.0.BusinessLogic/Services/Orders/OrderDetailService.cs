@@ -2,6 +2,7 @@ using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models;
+using Kadena.Models.Checkout;
 using Kadena.Models.OrderDetail;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
@@ -28,7 +29,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoLocalizationProvider localization;
         private readonly IKenticoPermissionsProvider permissions;
         private readonly IKenticoBusinessUnitsProvider businessUnits;
-        
+
 
         public OrderDetailService(IMapper mapper,
             IOrderViewClient orderViewClient,
@@ -151,7 +152,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 },
                 PaymentInfo = new PaymentInfo()
                 {
-                    Date = null, // TODO payment date unknown yet
+                    Date = data.PaymentInfo.CapturedDate,
                     PaidBy = data.PaymentInfo.PaymentMethod,
                     PaymentDetail = string.Empty,
                     PaymentIcon = GetPaymentMethodIcon(data.PaymentInfo.PaymentMethod),
@@ -251,7 +252,8 @@ namespace Kadena.BusinessLogic.Services.Orders
                 TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix"),
                 TrackingIdPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix"),
                 ProductStatusPrefix = resources.GetResourceString("Kadena.Order.ProductStatusPrefix"),
-                ProductStatus = products.GetProductStatus(i.SkuId)
+                ProductStatus = products.GetProductStatus(i.SkuId),
+                Options = i.Attributes?.Select(a => new ItemOption { Name = products.GetOptionCategory(a.Key)?.DisplayName ?? a.Key, Value = a.Value }) ?? Enumerable.Empty<ItemOption>()
             }).ToList();
 
 

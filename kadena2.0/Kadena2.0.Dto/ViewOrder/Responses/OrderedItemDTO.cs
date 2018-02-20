@@ -1,4 +1,7 @@
-﻿namespace Kadena.Dto.ViewOrder.Responses
+﻿using Kadena.Dto.Checkout;
+using System.Collections.Generic;
+
+namespace Kadena.Dto.ViewOrder.Responses
 {
     public class OrderedItemDTO
     {
@@ -20,5 +23,6 @@
         public string DownloadPdfURL { get; set; }
         public string ProductStatusPrefix { get; set; }
         public string ProductStatus { get; set; }
+        public IEnumerable<ItemOptionDto> Options { get; set; }
     }
 }
