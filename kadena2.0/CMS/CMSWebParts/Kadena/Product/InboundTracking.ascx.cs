@@ -8,6 +8,7 @@ using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -1053,6 +1054,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             var emailNotificationTemplate = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey(SiteContext.CurrentSiteID, "KDA_IBTFFinalizeEmailTemplate");
             if (result)
             {
+                DIContainer.Resolve<IIBTFService>().UpdateRemainingBudget(campaignID);
                 ProductEmailNotifications.GetCampaignOrders(campaignID, emailNotificationTemplate);
                 btnClose.Enabled = false;
                 GetProducts();

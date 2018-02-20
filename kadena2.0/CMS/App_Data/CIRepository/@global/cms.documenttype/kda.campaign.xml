@@ -34,7 +34,7 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field allowempty="true" column="IBTFFinalized" columntype="boolean" guid="a8b650a2-2663-4584-b6da-72551dfc51c6" publicfield="false">
+      <field allowempty="true" column="IBTFFinalized" columntype="boolean" guid="a8b650a2-2663-4584-b6da-72551dfc51c6" publicfield="false" visible="true">
         <properties>
           <defaultvalue>false</defaultvalue>
           <fieldcaption>IBTF Finalized</fieldcaption>
@@ -148,6 +148,8 @@
   <ClassIsDocumentType>True</ClassIsDocumentType>
   <ClassIsForm>False</ClassIsForm>
   <ClassIsMenuItemType>False</ClassIsMenuItemType>
+  <ClassIsProduct>False</ClassIsProduct>
+  <ClassIsProductSection>True</ClassIsProductSection>
   <ClassName>KDA.Campaign</ClassName>
   <ClassNodeNameSource>Name</ClassNodeNameSource>
   <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>

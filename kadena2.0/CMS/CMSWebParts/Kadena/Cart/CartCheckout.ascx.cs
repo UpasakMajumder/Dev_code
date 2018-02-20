@@ -121,6 +121,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     if (response != null && response.Success)
                     {
                         UpdateAvailableSKUQuantity(Cart);
+                        UpdateAllocatedProductQuantity(Cart, salesPerson.UserId);
                         ProductEmailNotifications.SendEmailNotification(ordersDTO, orderTemplateSettingKey, salesPerson);
                         ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
                         ShoppingCartHelper.UpdateRemainingBudget(ordersDTO, CurrentUser.UserID);
