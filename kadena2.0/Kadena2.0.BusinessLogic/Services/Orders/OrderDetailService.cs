@@ -152,7 +152,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 },
                 PaymentInfo = new PaymentInfo()
                 {
-                    Date = null, // TODO payment date unknown yet
+                    Date = data.PaymentInfo.CapturedDate,
                     PaidBy = data.PaymentInfo.PaymentMethod,
                     PaymentDetail = string.Empty,
                     PaymentIcon = GetPaymentMethodIcon(data.PaymentInfo.PaymentMethod),
