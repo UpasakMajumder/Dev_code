@@ -93,7 +93,6 @@ namespace Kadena.WebAPI.KenticoProviders
                             .Path(path, pathType)
                             .WhereEquals("ClassName", className)
                             .Culture(LocalizationContext.CurrentCulture.CultureCode)
-                            .OrderBy("NodeOrder")
                             .CheckPermissions()
                             .NestingLevel(1)
                             .OnCurrentSite()

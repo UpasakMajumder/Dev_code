@@ -9,7 +9,7 @@ namespace Kadena.Models.Product
         public List<ProductLink> Products { get; set; }
         public void MarkFavoriteProducts(List<int> favoriteIds)
         {
-            Products.ForEach(p => p.IsFavourite = favoriteIds.Contains(p.Id));
+            Products.ForEach(p => p.IsFavourite = (favoriteIds?.Contains(p.Id) ?? false));
         }
     }
 }
