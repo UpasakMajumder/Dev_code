@@ -552,7 +552,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                         if (TypeOfProduct == (int)ProductsType.PreBuy)
                         {
                             productBrandHeader = productBrandHeader.Replace("BrandName", programs.Where(x => x.BrandID == brand).Select(y => y.ProgramName).FirstOrDefault());
-                            productBrandHeader = productBrandHeader.Replace("PROGRAMNAME", GetProgramName(brand));
+                            productBrandHeader = productBrandHeader.Replace("PROGRAMNAME", GetBrandName(brand));
                         }
                         else if (TypeOfProduct == (int)ProductsType.GeneralInventory)
                         {
