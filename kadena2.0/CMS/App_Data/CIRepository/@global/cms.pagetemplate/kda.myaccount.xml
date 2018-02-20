@@ -444,7 +444,7 @@ $(".js-UserBudget").focusout(function () {
               contentType: "application/json",
               success: function (data) {
                 if (data.success) {
-                  remainingBudget.parent().siblings("td").find(".js_remainingBudget").text(parseFloat(data.payload));                 
+                  remainingBudget.parent().siblings("td").find(".js_remainingBudget").text(data.payload);                 
                    toastr.success(config.localization.globalSuccess.updateSuccessMessage)
                 } 
                 else{
