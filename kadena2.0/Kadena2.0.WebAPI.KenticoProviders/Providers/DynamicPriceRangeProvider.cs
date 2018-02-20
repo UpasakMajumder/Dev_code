@@ -1,8 +1,10 @@
 ﻿using CMS.DocumentEngine;
+using CMS.Ecommerce;
 using CMS.Membership;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,24 +12,33 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
 {
     public class DynamicPriceRangeProvider : IDynamicPriceRangeProvider
     {
-        public decimal GetDynamicPrice(int quantity, IEnumerable<DynamicPricingRange> ranges)
+        private readonly IKenticoResourceService resources;
+
+        public DynamicPriceRangeProvider(IKenticoResourceService resources)
         {
-            if (ranges != null)
+            if (resources == null)
             {
-                var matchingRange = ranges.FirstOrDefault(i => quantity >= i.MinVal && quantity <= i.MaxVal);
-                if (matchingRange != null)
-                {
-                    return matchingRange.Price;
-                }
+                throw new ArgumentNullException(nameof(resources));
             }
-            return 0.0m;
+            this.resources = resources;
         }
 
-        public decimal GetDynamicPrice(int documentId, int quantity)
-        {
-            var document = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
-            var ranges = GetDynamicPricingRanges(document);
 
+        public decimal GetDynamicPrice(int quantity, int documentId)
+        {
+            var document = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser)) as SKUTreeNode;
+            var ranges = GetDynamicPricingRanges(document?.GetStringValue("ProductDynamicPricing", string.Empty));
+            return GetDynamicPrice(quantity, ranges);
+        }
+
+        public decimal GetDynamicPrice(int quantity, string rangesJson)
+        {
+            var ranges = GetDynamicPricingRanges(rangesJson);
+            return GetDynamicPrice(quantity, ranges);
+        }
+
+        private decimal GetDynamicPrice(int quantity, IEnumerable<DynamicPricingRange> ranges)
+        {
             if (ranges != null && ranges.Count() > 0)
             {
                 var matchingRange = ranges.FirstOrDefault(i => quantity >= i.MinVal && quantity <= i.MaxVal);
@@ -37,26 +48,15 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 }
                 else
                 {
-                    return decimal.MinusOne;
+                    throw new ArgumentException(resources.GetResourceString("Kadena.Product.QuantityOutOfRange"));
                 }
             }
-            else
-            {
-                return (decimal)document.GetDoubleValue("SKUPrice", 0);
-            }
+            return decimal.MinusOne;
         }
 
-        public IEnumerable<DynamicPricingRange> GetDynamicPricingRanges(int documentId)
+        private IEnumerable<DynamicPricingRange> GetDynamicPricingRanges(string rawJson)
         {
-            var document = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
-            return GetDynamicPricingRanges(document);
-        }
-
-        private IEnumerable<DynamicPricingRange> GetDynamicPricingRanges(TreeNode document)
-        {
-            var rawJson = document?.GetStringValue("ProductDynamicPricing", string.Empty);
             var ranges = JsonConvert.DeserializeObject<List<DynamicPricingRange>>(rawJson ?? string.Empty);
-
             return ranges;
         }
     }

@@ -445,10 +445,20 @@ module.exports.detail =  {
           "quantityShippedPrefix": "Quantity shipped:",
           "quantityShipped": 22,
           "quantity": 11,
-          "downloadPdfURL": "#"
+          "downloadPdfURL": "#",
+          "options": [
+            {
+              "name": "Color",
+              "value": "Red"
+            },
+            {
+              "name": "Size",
+              "value": "S"
+            }
+          ]
         },
         {
-          "id": 1,
+          "id": 2,
           "isReport": true,
           "image": "http://satyr.io/200-500x300-700",
           "template": "Information letter lamp post Mar 30 3017",
@@ -464,7 +474,13 @@ module.exports.detail =  {
           "quantityShippedPrefix": "Quantity shipped:",
           "quantityShipped": 22,
           "quantity": 11,
-          "downloadPdfURL": "#"
+          "downloadPdfURL": "#",
+          "options": [
+            {
+              "name": "Color",
+              "value": "Blue"
+            }
+          ]
         }
       ]
     }

@@ -52,7 +52,10 @@
     <Compile Include="Campaign.cs" />
     <Compile Include="CampaignData\CampaignData.cs" />
     <Compile Include="FyBudget\FyBudget.cs" />
+    <Compile Include="Checkout\ItemOption.cs" />
     <Compile Include="Product\Border.cs" />
+    <Compile Include="Product\OptionCategory.cs" />
+    <Compile Include="Product\Price.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDailogLabel.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialog.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialogTable.cs" />
