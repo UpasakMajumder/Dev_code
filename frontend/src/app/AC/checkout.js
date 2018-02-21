@@ -225,12 +225,13 @@ export const changeDeliveryAddress = (id) => {
   };
 };
 
-export const changePaymentMethod = (id, invoice) => {
+export const changePaymentMethod = (id, invoice, card) => {
   return {
     type: CHECKOUT_CHANGE_PAYMENT,
     payload: {
       id,
-      invoice
+      invoice,
+      card
     }
   };
 };

@@ -30,7 +30,7 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly IMapper mapper;
         private readonly IShippingEstimationSettings estimationSettings;
         private readonly IDynamicPriceRangeProvider dynamicPrices;
-        private readonly IKenticoProductsProvider productProvider;  
+        private readonly IKenticoProductsProvider productProvider;
         private readonly string campaignClassName = "KDA.CampaignsProduct";
         private readonly string CustomTableName = "KDA.UserAllocatedProducts";
 
@@ -77,6 +77,12 @@ namespace Kadena.WebAPI.KenticoProviders
         public DeliveryAddress GetCurrentCartShippingAddress()
         {
             var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
+            return mapper.Map<DeliveryAddress>(address);
+        }
+
+        public DeliveryAddress GetAddress(int addressId)
+        {
+            var address = AddressInfoProvider.GetAddressInfo(addressId);
             return mapper.Map<DeliveryAddress>(address);
         }
 
@@ -795,9 +801,18 @@ namespace Kadena.WebAPI.KenticoProviders
         public List<int> GetShoppingCartIDByInventoryType(int inventoryType, int userID, int campaignID = 0)
         {
             return ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID)
+                                    .OnSite(SiteContext.CurrentSiteID)
                                     .WhereEquals("ShoppingCartUserID", userID)
                                     .WhereEquals("ShoppingCartCampaignID", campaignID)
                                     ?.ToList().Select(x => x.ShoppingCartID).ToList();
+        }
+
+        public int GetPreBuyDemandCount(int SKUID)
+        {
+            return ShoppingCartItemInfoProvider.GetShoppingCartItems()
+                                         .OnSite(SiteContext.CurrentSiteID)
+                                         .Where(x => x.SKUID.Equals(SKUID))
+                                         .Sum(x => x.CartItemUnits);
         }
     }
 }

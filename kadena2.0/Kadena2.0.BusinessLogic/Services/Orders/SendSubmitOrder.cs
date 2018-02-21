@@ -2,13 +2,13 @@
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2._0.BusinessLogic.Contracts.Orders;
+using Kadena2.BusinessLogic.Contracts.Orders;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Kadena2._0.BusinessLogic.Services.Orders
+namespace Kadena2.BusinessLogic.Services.Orders
 {
     public class SendSubmitOrder : ISendSubmitOrder
     {
@@ -54,11 +54,11 @@ namespace Kadena2._0.BusinessLogic.Services.Orders
 
             if (serviceResult.Success)
             {
-                log.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully created");             
+                log.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully saved in microservice");             
             }
             else
             {
-                log.LogError("Submit order", $"Order {serviceResult?.Payload} error. {serviceResult?.Error?.Message}");
+                log.LogError("Submit order", $"Order {serviceResult?.Payload} failed to save in microservice. {serviceResult?.Error?.Message}");
             }
 
             return serviceResult;

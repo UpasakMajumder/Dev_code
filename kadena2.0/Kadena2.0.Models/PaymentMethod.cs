@@ -1,4 +1,7 @@
-﻿namespace Kadena.Models
+﻿using Kadena.Models.CreditCard;
+using System.Collections.Generic;
+
+namespace Kadena.Models
 {
     public class PaymentMethod
     {
@@ -12,6 +15,7 @@
         public string InputPlaceholder { get; set; }
         public string ClassName { get; set; }
         public bool IsUnpayable { get; set; }
+        public IList<StoredCard> Items { get; set; } = new List<StoredCard>();
         public string ShortClassName
         {
             get

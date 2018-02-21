@@ -3,7 +3,7 @@ using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models.CreditCard;
 using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2._0.BusinessLogic.Contracts.Orders;
+using Kadena2.BusinessLogic.Contracts.Orders;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
@@ -127,7 +127,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             logger.LogInfo("3DSi SaveToken", "Info", $"Received SaveTokenData request, status: " + tokenData?.SubmissionStatusMessage);
 
-            var tokenId = await SaveTokenToUserData(submission.UserId.ToString(), tokenData);
+            var tokenId = await SaveTokenToUserData(submission, tokenData);
 
             if (string.IsNullOrEmpty(tokenId))
             {
@@ -144,11 +144,8 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             if (!(sendOrderResult?.Success ?? false))
             {
                 MarkSubmissionProcessed(submission, false, sendOrderResult?.Payload);
-                logger.LogError("PayOrderByCard", "Failed to save order to microservice.  " + sendOrderResult?.Error?.Message);
                 return false;
             }
-
-            logger.LogInfo("PayOrderByCard", "info", $"Order #{sendOrderResult.Payload} was saved into microservice");
 
             var orderSuccess = ClearKenticoShoppingCart(submission.UserId, submission.SiteId);
 
@@ -159,8 +156,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
         private void MarkSubmissionProcessed(Submission submission, bool orderSuccess, string orderId)
         {
-            var redirectUrlBase = resources.GetSettingsKey("KDA_CreditCard_PaymentResultPage");
-            var redirectUrl = resultUrlFactory.GetOrderResultPageUrl(redirectUrlBase, orderSuccess, orderId);
+            var redirectUrl = resultUrlFactory.GetCardPaymentResultPageUrl(orderSuccess, orderId);
             submissionService.SetAsProcessed(submission, redirectUrl);
         }
 
@@ -183,17 +179,26 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         /// <summary>
         /// Saves the Token into UserData microservice
         /// </summary>
-        public async Task<string> SaveTokenToUserData(string userId, SaveTokenData token)
+        public async Task<string> SaveTokenToUserData(Submission submission, SaveTokenData token)
         {
-            var saveTokenRequest = new SaveCardTokenRequestDto
+            SaveCardTokenRequestDto saveTokenRequest;
+
+            if (string.IsNullOrEmpty(submission.SaveCardJson))
             {
-                // TODO some more properties needed for storing card:
-                // flag if treat card as stored
-                // last 4 digits
-                // username 
-                UserId = userId,
-                Token = token.Token
-            };
+                saveTokenRequest = new SaveCardTokenRequestDto
+                {
+                    UserId = submission.UserId.ToString(),
+                    SaveToken = false
+                };
+            }
+            else
+            {
+                saveTokenRequest = JsonConvert.DeserializeObject<SaveCardTokenRequestDto>(submission.SaveCardJson);
+                saveTokenRequest.Name = $"{token.CardType} *-{token.CardEnd}";
+            }
+
+            saveTokenRequest.Token = token.Token;
+            
 
             var result = await userClient.SaveCardToken(saveTokenRequest);
 
@@ -231,6 +236,20 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             }
 
             return string.Empty;
+        }
+
+        public void MarkCardAsSaved(SaveCardData cardData)
+        {            
+            var saveRequest = new SaveCardTokenRequestDto
+            {
+                CardNumber = cardData.CardNumber,
+                Name = cardData.Name, 
+                UserId = kenticoUsers.GetCurrentUser().UserId.ToString(),
+                SaveToken = true
+            };
+
+            var saveJson = JsonConvert.SerializeObject(saveRequest, SerializerConfig.CamelCaseSerializer);
+            submissionService.SetSaveCardJson(cardData.SubmissionID, saveJson);
         }
     }
 }

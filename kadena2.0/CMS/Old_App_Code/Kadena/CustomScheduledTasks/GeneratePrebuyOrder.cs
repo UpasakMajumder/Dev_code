@@ -73,7 +73,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                         if (response != null && response.Success)
                         {
                             ordersDTO.OrderID = response.Payload;
-                            ProductEmailNotifications.SendEmailNotification(ordersDTO, orderTemplateSettingKey, salesPerson);
+                            ProductEmailNotifications.SendMail(salesPerson, ordersDTO, orderTemplateSettingKey);
                             InBoundFormHelper.InsertIBFForm(ordersDTO);
                             ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
                             ShoppingCartHelper.UpdateRemainingBudget(ordersDTO, salesPerson.UserId);
@@ -105,7 +105,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                     failedOrderData.Add("failedorderurl", URLHelper.AddHTTPToUrl($"{SiteContext.CurrentSite.DomainName}{failedOrdersUrl}?campid={openCampaignID}"));
                     failedOrderData.Add("failedordercount", listofFailedOrders.Count);
                     failedOrderData.Add("failedorders", listofFailedOrders);
-                    ProductEmailNotifications.SendEmail(failedOrderTemplateSettingKey, user.Email, listofFailedOrders, failedOrderData);
+                    ProductEmailNotifications.SendEmailNotification(failedOrderTemplateSettingKey, user.Email, listofFailedOrders, "failedOrders",failedOrderData);
                     UpdatetFailedOrders(openCampaignID, true);
                 }
                 return ResHelper.GetString("KDA.OrderSchedular.TaskSuccessfulMessage");

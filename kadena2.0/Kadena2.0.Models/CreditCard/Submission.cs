@@ -25,6 +25,7 @@ namespace Kadena.Models.CreditCard
 
         public string OrderJson { get; set; }
         public string RedirectUrl { get; set; }
+        public string SaveCardJson { get; set; }
 
         public bool CheckOwner(int siteId, int userId, int customerId)
         {

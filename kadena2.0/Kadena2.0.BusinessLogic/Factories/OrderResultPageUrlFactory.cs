@@ -23,10 +23,21 @@ namespace Kadena.BusinessLogic.Factories
             this.documents = documents;
         }
 
-        public string GetOrderResultPageUrl(string baseUrl, bool orderSuccess, string orderId)
+        public string GetOrderResultPageUrl(bool orderSuccess, string orderId)
         {
             var redirectUrlBase = resources.GetSettingsKey("KDA_OrderSubmittedUrl");
-            var redirectUrlBaseLocalized = documents.GetDocumentUrl(redirectUrlBase);
+            return GetResultPageUrl(redirectUrlBase, orderSuccess, orderId);
+        }
+
+        public string GetCardPaymentResultPageUrl(bool orderSuccess, string orderId)
+        {
+            var redirectUrlBase = resources.GetSettingsKey("KDA_CreditCard_PaymentResultPage");
+            return GetResultPageUrl(redirectUrlBase, orderSuccess, orderId);
+        }
+
+        private string GetResultPageUrl(string baseUrl, bool orderSuccess, string orderId)
+        {
+            var redirectUrlBaseLocalized = documents.GetDocumentUrl(baseUrl);
             var redirectUrl = $"{redirectUrlBaseLocalized}?success={orderSuccess}".ToLower();
             if (orderSuccess)
             {

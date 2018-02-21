@@ -21,7 +21,7 @@
                 <asp:TextBox runat="server" CssClass="js-UserBudget"  ID="txtUserBudget" Visible='<%# !(ValidationHelper.GetBoolean(Eval("IsYearEnded"),true)) %>' Text='<%#Eval("Budget") %>'></asp:TextBox>
             </td>
             <td>
-                <asp:Label runat="server" CssClass="js_remainingBudget" ID="userRemainingBudget" Text='<%#Eval("UserRemainingBudget") %>'></asp:Label>
+                <asp:Label runat="server" CssClass="js_remainingBudget" ID="userRemainingBudget" Text='<%# $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("UserRemainingBudget"), CurrentSite.SiteID,true)}" %>'></asp:Label>
             </td>
         </tr>
     </ItemTemplate>

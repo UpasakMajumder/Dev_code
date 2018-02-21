@@ -464,6 +464,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="3dsiCreditCard\SavedCreditCard3dsiTests.cs" />
     <Compile Include="3dsiCreditCard\CreditCard3dsiTests.cs" />
     <Compile Include="3dsiCreditCard\PaymentMethodTest.cs" />
     <Compile Include="BusinessLogic\DateTimeFormatterTest.cs" />

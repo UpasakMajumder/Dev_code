@@ -10,5 +10,6 @@ namespace Kadena.BusinessLogic.Contracts
         Submission GetSubmission(string submissionId);
         void SetAsProcessed(Submission submission, string redirectUrl);
         void DeleteProcessedSubmission(Submission submission);
+        void SetSaveCardJson(string submissionId, string saveCardJson);
     }
 }
