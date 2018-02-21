@@ -112,7 +112,7 @@
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
+          <property name="cat_open_visibility">False</property>
           <property name="container"></property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
@@ -148,14 +148,72 @@
           <property name="text" ismacro="true">
 <![CDATA[
 <div class="submitted__btn-group">
-  <a href='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_ProductsPageUrl) |(user)rostyslav.diachenko@actum.cz|(hash)9880c1fcdd88f5967f748d2bc79dc46bb8e9fc96b7e54f4bba7b65fa2f5d3e57%}' type="type" class="btn-action btn-action--secondary">{$ Kadena.OrderSubmitted.SeeProducts $}</a>
-  <a href="/" type="type" class="btn-action">{$ Kadena.OrderSubmitted.GoToDashboard $}</a> </div>
+  <a href='/api/3dsi/retry?submissionId={?submissionId?}' type="type" class="btn-action">{$ Kadena.OrderByCardFailed.InsertCardDetailsAgain $}</a>
+  <a href="{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_CheckoutPageUrl) |(user)michal.machacek@actum.cz|(hash)f0acb6245b8966f2c4dadde572cc344919e3afed0c4418a3a1b0fd58b5cd4dce%}" type="type" class="btn-action">{$ Kadena.OrderByCardFailed.GoToCheckout $}</a> </div>
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle">buttons</property>
+          <property name="visible" ismacro="true">
+            <![CDATA[{% QueryString.success != "true" |(user)michal.machacek@actum.cz|(hash)670a5e98d758651f969abe7717abba5f1df83b797377943053dacae7dc949da9%}]]>
+          </property>
+          <property name="webparttitle">buttons Fail</property>
+          <property name="webparttype">statichtml</property>
+        </webpart>
+        <webpart controlid="BottomButtons1" guid="c5b737d9-e6cc-4f2e-b79a-bd3cab02d204" type="statichtml" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility">False</property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">BottomButtons1</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">c5b737d9-e6cc-4f2e-b79a-bd3cab02d204</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="positionleft"></property>
+          <property name="positiontop"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="text" ismacro="true">
+<![CDATA[
+<div class="submitted__btn-group">
+  <a href='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_ProductsPageUrl) |(user)michal.machacek@actum.cz|(hash)3eb2074881c8cad56b7b78060524e71dad981886ff4b13d4b5008b59a3e85669%}' type="type" class="btn-action btn-action--secondary">{$ Kadena.OrderSubmitted.SeeProducts $}</a>
+  <a href="/" type="type" class="btn-action">{$ Kadena.OrderSubmitted.GoToDashboard $}</a> </div>
+
+]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible" ismacro="true">
+            <![CDATA[{% QueryString.success == "true" |(user)michal.machacek@actum.cz|(hash)127c102057c157da8b813ab435277d87dc7437c2d798759f7d0d90fa3a54271a%}]]>
+          </property>
+          <property name="webparttitle">buttons OK</property>
           <property name="webparttype">statichtml</property>
         </webpart>
       </webpartzone>
