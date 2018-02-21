@@ -89,5 +89,14 @@ namespace Kadena.WebAPI.Controllers
             service.MarkCardAsSaved(saveCardData);
             return SuccessJson();
         }
+
+        [HttpGet]
+        [Route("api/3dsi/retry")]
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult RetryInsertCardDetails([FromUri][Required]string submissionId)
+        {
+            var redirectUrl = service.RetryInsertCardDetails(submissionId);
+            return Redirect(redirectUrl);
+        }
     }
 }

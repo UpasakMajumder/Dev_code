@@ -24,6 +24,22 @@ namespace Kadena.WebAPI.KenticoProviders
             this.mapper = mapper;
         }
 
+        public void UpdateSubmissionId(Guid oldId, Guid newId)
+        {
+            var submissionItem = CustomTableItemProvider.GetItems(SubmissionsTable)
+                .WhereEquals("SubmissionId", oldId)
+                .FirstOrDefault();
+
+            if (submissionItem == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(oldId), "Couldn't find existing submission to update");
+            }
+
+            submissionItem.SetValue("SubmissionId", newId);
+
+            submissionItem.Update();
+        }
+
         public void SaveSubmission(Submission submission)
         {
             if (submission == null || submission.SubmissionId == Guid.Empty)
@@ -51,6 +67,7 @@ namespace Kadena.WebAPI.KenticoProviders
             submissionItem.SetValue("RedirectUrl", submission.RedirectUrl);
             submissionItem.SetValue("OrderJson", submission.OrderJson);
             submissionItem.SetValue("SaveCardJson", submission.SaveCardJson);
+            submissionItem.SetValue("Success", submission.Success);
 
             if (originalSubmissionItem == null)
             {

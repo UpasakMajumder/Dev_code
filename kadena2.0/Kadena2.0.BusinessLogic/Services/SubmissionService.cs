@@ -44,7 +44,12 @@ namespace Kadena.BusinessLogic.Services
             this.kenticoUsers = kenticoUsers;
             this.kenticoSite = kenticoSite;
             this.kenticoLog = kenticoLog;
-        }      
+        }
+
+        public Guid GenerateNewSubmissionId()
+        {
+            return Guid.NewGuid();
+        }
 
         public Submission GenerateNewSubmission(string orderJson = "")
         {
@@ -61,7 +66,7 @@ namespace Kadena.BusinessLogic.Services
 
             var submission = new Submission()
             {
-                SubmissionId = Guid.NewGuid(),
+                SubmissionId = GenerateNewSubmissionId(),
                 AlreadyVerified = false,
                 Processed = false,
                 UserId = userId,
@@ -86,9 +91,10 @@ namespace Kadena.BusinessLogic.Services
             return submissionProvider.GetSubmission(submissionGuid);
         }
 
-        public void SetAsProcessed(Submission submission, string redirectUrl)
+        public void SetAsProcessed(Submission submission, bool orderSuccess, string redirectUrl)
         {
             submission.Processed = true;
+            submission.Success = orderSuccess;
             submission.RedirectUrl = redirectUrl;
             submissionProvider.SaveSubmission(submission);
             kenticoLog.LogInfo("Submission Processed", "Info", $"Submission {submission.SubmissionId} was marked as processed");
@@ -131,6 +137,29 @@ namespace Kadena.BusinessLogic.Services
 
             submission.SaveCardJson = saveCardJson;
             submissionProvider.SaveSubmission(submission);
+        }
+
+        public bool CheckOwner(Submission submission)
+        {
+            int siteId = kenticoSite.GetKenticoSite().Id;
+            int userId = kenticoUsers.GetCurrentUser().UserId;
+            int customerId = kenticoUsers.GetCurrentCustomer().Id;
+            return submission.CheckOwner(siteId, userId, customerId);
+        }
+
+        public Guid RenewSubmission(string submissionId)
+        {
+            var newSubmissionId = GenerateNewSubmissionId();
+            submissionProvider.UpdateSubmissionId(Guid.Parse(submissionId), newSubmissionId);
+
+            var submission = submissionProvider.GetSubmission(newSubmissionId);
+            submission.SubmissionId = newSubmissionId;
+            submission.AlreadyVerified = false;
+            submission.Processed = false;
+            submission.RedirectUrl = string.Empty;
+            submission.Success = false;
+            submissionProvider.SaveSubmission(submission);
+            return submission.SubmissionId;
         }
     }
 }

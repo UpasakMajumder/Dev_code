@@ -92,18 +92,25 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
         public async Task<SubmitOrderResult> PayByCard3dsi(SubmitOrderRequest orderRequest)
         {
-            var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
             var orderData = await orderDataProvider.GetSubmitOrderData(orderRequest);
             var orderJson = JsonConvert.SerializeObject(orderData, SerializerConfig.CamelCaseSerializer);
             var newSubmission = submissionService.GenerateNewSubmission(orderJson);
-            var redirectUrl = documents.GetDocumentUrl(insertCardUrl, absoluteUrl: true);
-            var uri = new Uri(redirectUrl, UriKind.Absolute).AddParameter("submissionId", newSubmission.SubmissionId.ToString());
+            var url = GetInsertCardDetailsUrl(newSubmission.SubmissionId.ToString());
 
             return new SubmitOrderResult
             {
                 Success = true,
-                RedirectURL = uri.ToString()
+                RedirectURL = url
             };
+        }
+
+
+        private string GetInsertCardDetailsUrl(string submissionId)
+        {
+            var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
+            var redirectUrl = documents.GetDocumentUrl(insertCardUrl, absoluteUrl: true);
+            var uri = new Uri(redirectUrl, UriKind.Absolute).AddParameter("submissionId", submissionId);
+            return uri.ToString();
         }
 
         /// <summary>
@@ -111,17 +118,18 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         /// </summary>
         public async Task<bool> SaveToken(SaveTokenData tokenData)
         {
-            if (tokenData == null || tokenData.Approved == 0)
-            {
-                logger.LogError("3DSi SaveToken", "Empty or not approved token data received from 3DSi");
-                return false;
-            }
-            
             var submission = submissionService.GetSubmission(tokenData.SubmissionID);
 
             if (submission == null || !submission.AlreadyVerified)
             {
                 logger.LogError("3DSi SaveToken", $"Unknown or already used submissionId : {tokenData.SubmissionID}");
+                return false;
+            }
+
+            if (tokenData == null || tokenData.Approved == 0)
+            {
+                logger.LogError("3DSi SaveToken", "Empty or not approved token data received from 3DSi");
+                MarkSubmissionProcessed(submission, false, string.Empty);
                 return false;
             }
 
@@ -156,8 +164,8 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
         private void MarkSubmissionProcessed(Submission submission, bool orderSuccess, string orderId)
         {
-            var redirectUrl = resultUrlFactory.GetCardPaymentResultPageUrl(orderSuccess, orderId);
-            submissionService.SetAsProcessed(submission, redirectUrl);
+            var redirectUrl = resultUrlFactory.GetCardPaymentResultPageUrl(orderSuccess, orderId, submission.SubmissionId.ToString());
+            submissionService.SetAsProcessed(submission, orderSuccess, redirectUrl);
         }
 
         private bool ClearKenticoShoppingCart(int userId, int siteId)
@@ -222,15 +230,17 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             if (submission?.AlreadyVerified ?? false)
             {
-                int siteId = kenticoSite.GetKenticoSite().Id;
-                int userId = kenticoUsers.GetCurrentUser().UserId;
-                int customerId = kenticoUsers.GetCurrentCustomer().Id;
-                var submissonOwnerChecked = submission.CheckOwner(siteId, userId, customerId);
+                var submissonOwnerChecked = submissionService.CheckOwner(submission);
 
                 if (submissonOwnerChecked && submission.Processed)
                 {
                     var redirectUrl = submission.RedirectUrl;
-                    submissionService.DeleteProcessedSubmission(submission);
+
+                    if (submission.Success)
+                    {
+                        submissionService.DeleteProcessedSubmission(submission);
+                    }
+
                     return redirectUrl;
                 }
             }
@@ -239,7 +249,12 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         }
 
         public void MarkCardAsSaved(SaveCardData cardData)
-        {            
+        {
+            if (!(cardData?.Save ?? false))
+            {
+                return;
+            }
+
             var saveRequest = new SaveCardTokenRequestDto
             {
                 CardNumber = cardData.CardNumber,
@@ -250,6 +265,12 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             var saveJson = JsonConvert.SerializeObject(saveRequest, SerializerConfig.CamelCaseSerializer);
             submissionService.SetSaveCardJson(cardData.SubmissionID, saveJson);
+        }
+
+        public string RetryInsertCardDetails(string submissionId)
+        {
+            var newSubmissionId = submissionService.RenewSubmission(submissionId);
+            return GetInsertCardDetailsUrl(newSubmissionId.ToString());
         }
     }
 }
