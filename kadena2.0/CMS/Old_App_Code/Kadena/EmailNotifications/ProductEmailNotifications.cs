@@ -38,7 +38,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                 {
                     MacroResolver resolver = MacroResolver.GetInstance();
                     resolver.SetNamedSourceData("CampaignName", campaignName);
-                    resolver.SetNamedSourceData("programName", campaignName);
+                    resolver.SetNamedSourceData("programName", programName);
                     msg.From = resolver.ResolveMacros(email.TemplateFrom);
                     msg.Recipients = recipientEmail;
                     msg.EmailFormat = EmailFormatEnum.Default;
