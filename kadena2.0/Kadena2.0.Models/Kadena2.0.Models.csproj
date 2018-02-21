@@ -176,6 +176,7 @@
     <Compile Include="Settings\SettingsAddresses.cs" />
     <Compile Include="Site\LanguageSelectorItem.cs" />
     <Compile Include="Site\Site.cs" />
+    <Compile Include="_Common\PagedData.cs" />
     <Compile Include="_Common\Pagination.cs" />
     <Compile Include="_Common\State.cs" />
     <Compile Include="SubmitOrder\PaymentMethod.cs" />

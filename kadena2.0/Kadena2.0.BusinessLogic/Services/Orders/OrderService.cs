@@ -1,8 +1,11 @@
-﻿using Kadena.BusinessLogic.Contracts.Orders;
+﻿using Kadena.BusinessLogic.Contracts;
+using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Models.Common;
+using Kadena.Models.Orders;
 using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Kadena.BusinessLogic.Services.Orders
@@ -10,7 +13,7 @@ namespace Kadena.BusinessLogic.Services.Orders
     public class OrderService : IOrderService
     {
         private readonly IKenticoResourceService kenticoResources;
-
+        private readonly IDateTimeFormatter dateTimeFormatter;
         public const int DefaultOrdersPerPage = 20;
 
         private int _ordersPerPage;
@@ -27,23 +30,66 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
         }
 
-        public OrderService(IKenticoResourceService kenticoResources)
+        public OrderService(IKenticoResourceService kenticoResources, IDateTimeFormatter dateTimeFormatter)
         {
             this.kenticoResources = kenticoResources;
+            this.dateTimeFormatter = dateTimeFormatter;
         }
 
-        public Task<FileResult> ExportOrders(DateTime? fromDate, DateTime? toDate, string format)
+        public Task<PagedData<Order>> GetOrders(OrderFilter filter, int page)
         {
-            return Task.FromResult(new FileResult
+            throw new NotImplementedException();
+        }
+
+        public Task<PagedData<Order>> GetOrdersForSite(string site, int page, OrderFilter filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TableView ConvertOrdersToView(PagedData<Order> orders)
+        {
+            if (orders == null)
             {
-                Data = System.Text.UTF8Encoding.UTF8.GetBytes("test file"),
-                Mime = "text/plain"
-            });
+                throw new ArgumentNullException(nameof(orders));
+            }
+
+            var rows = orders.Data?
+                .SelectMany(o => o.Items.Select(it => new TableRow
+                {
+                    Url = o.Url,
+                    Items = new object[] 
+                    {
+                        o.Site,
+                        o.Number,
+                        dateTimeFormatter.Format(o.OrderingDate),
+                        o.User,
+                        it.Name,
+                        it.SKU,
+                        it.Quantity,
+                        it.Price,
+                        o.Status,
+                        o.ShippingDate.HasValue ? dateTimeFormatter.Format(o.ShippingDate.Value) : string.Empty,
+                        o.TrackingNumber
+                    }
+                }))
+                .ToArray();
+
+            var view = new TableView
+            {
+                Pagination = orders.Pagination,
+                Rows = rows
+            };
+            return view;
         }
 
-        public Task<TableView> GetOrdersView(DateTime? fromDate, DateTime? toDate, string sort, int page)
+        public Task<FileResult> GetOrdersExport(string format, OrderFilter filter)
         {
-            return Task.FromResult(new TableView());
+            throw new NotImplementedException();
+        }
+
+        public Task<FileResult> GetOrdersExportForSite(string site, string format, OrderFilter filter)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -3,6 +3,7 @@ using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.Common;
 using Kadena.Dto.ViewOrder.Responses;
+using Kadena.Models.Orders;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
 using System;
@@ -52,7 +53,9 @@ namespace Kadena.WebAPI.Controllers
         [Route(Routes.Order.Get)]
         public async Task<IHttpActionResult> Get(DateTime? dateFrom = null, DateTime? dateTo = null, string sort = null, int page = 1)
         {
-            var ordersTableView = await orderService.GetOrdersView(dateFrom, dateTo, sort, page);
+            var orders = await orderService
+                .GetOrders(new OrderFilter { FromDate = dateFrom, ToDate = dateTo, Sort = sort }, page);
+            var ordersTableView = orderService.ConvertOrdersToView(orders);
             var resultDto = mapper.Map<TableViewDto>(ordersTableView);
             return ResponseJson(resultDto);
         }
@@ -61,7 +64,8 @@ namespace Kadena.WebAPI.Controllers
         [Route(Routes.Order.Export)]
         public async Task<IHttpActionResult> Export(string format, DateTime? dateFrom = null, DateTime? dateTo = null)
         {
-            var export = await orderService.ExportOrders(dateFrom, dateTo, format);
+            var export = await orderService
+                .GetOrdersExport(format, new OrderFilter { FromDate = dateFrom, ToDate = dateTo });
             return File(export);
         }
     }

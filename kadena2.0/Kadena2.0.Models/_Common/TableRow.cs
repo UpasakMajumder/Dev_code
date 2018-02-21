@@ -3,6 +3,6 @@
     public class TableRow
     {
         public string Url { get; set; }
-        public object[] Items { get; set; }
+        public object[] Items { get; set; } = new object[0];
     }
 }
