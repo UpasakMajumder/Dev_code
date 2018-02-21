@@ -188,6 +188,21 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             SetValue("PosSearchPlaceholder", value);
         }
     }
+
+    /// <summary>
+    /// POS number text
+    /// </summary>
+    public string POSNumberText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Catalog.POSNumberText"), string.Empty);
+        }
+        set
+        {
+            SetValue("POSNumberText", value);
+        }
+    }
     #endregion "Properties"
 
     #region "Methods"

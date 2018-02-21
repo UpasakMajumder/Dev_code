@@ -194,6 +194,21 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             SetValue("EnableAddToCart", value);
         }
     }
+
+    /// <summary>
+    /// POS number text
+    /// </summary>
+    public string POSNumberText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Product.POSNumberText"), string.Empty);
+        }
+        set
+        {
+            SetValue("POSNumberText", value);
+        }
+    }
     #endregion "Properties"
 
     #region "Methods"
@@ -315,7 +330,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 }
                 else if (ProductType == (int)ProductsType.PreBuy)
                 {
-                    ddlProgram.Visible = true;
+                    ddlBrand.Visible = true;
                     ddlCategory.Visible = true;
                     List<int> programIds = GetProgramIDs();
                     if (!DataHelper.DataSourceIsEmpty(programIds))
@@ -326,10 +341,10 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                                           .ToList();
                         if (!DataHelper.DataSourceIsEmpty(productsDetails))
                         {
-                            if (programID != default(int))
+                            if (brandID != default(int))
                             {
                                 productsDetails = productsDetails
-                                    .Where(x => x.ProgramID == programID)
+                                    .Where(x => x.BrandID == brandID)
                                     .ToList();
                             }
                             if (categoryID != default(int))
