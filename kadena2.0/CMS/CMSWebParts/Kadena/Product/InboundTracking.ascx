@@ -124,7 +124,7 @@
                     <asp:Label runat="server" ID="lblActualPrice" Text='<%# $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("ActualPrice"), CurrentSite.SiteID,true)}"  %>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:TextBox runat="server" ID="txtActualPrice" Text='<%#Eval("ActualPrice") %>'></asp:TextBox>
+                    <asp:TextBox runat="server" CssClass="js-ActualPrice" ID="txtActualPrice" Text='<%#Eval("ActualPrice") %>'></asp:TextBox>
                 </EditItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField>
