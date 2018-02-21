@@ -80,6 +80,12 @@ namespace Kadena.WebAPI.KenticoProviders
             return mapper.Map<DeliveryAddress>(address);
         }
 
+        public DeliveryAddress GetAddress(int addressId)
+        {
+            var address = AddressInfoProvider.GetAddressInfo(addressId);
+            return mapper.Map<DeliveryAddress>(address);
+        }
+
         public BillingAddress GetDefaultBillingAddress()
         {
             var streets = new[]

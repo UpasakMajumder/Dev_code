@@ -4,7 +4,8 @@ using Kadena.Dto.BusinessUnits;
 using Kadena.Dto.Checkout;
 using Kadena.Dto.Checkout.Responses;
 using Kadena.Dto.CreditCard._3DSi.Requests;
-using Kadena.Dto.CreditCard._3DSi.Responses;
+using Kadena.Dto.CreditCard.Requests;
+using Kadena.Dto.CreditCard.Responses;
 using Kadena.Dto.CustomerData;
 using Kadena.Dto.General;
 using Kadena.Dto.Logon.Requests;
@@ -254,6 +255,8 @@ namespace Kadena2.Container.Default
                 .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src));
             CreateMap<DeliveryAddresses, ChangeDeliveryAddressResponseDto>()
                 .ForMember(dest => dest.DeliveryAddresses, opt => opt.MapFrom(src => src));
+   		    CreateMap<SaveCreditCardRequestDto, SaveCardData>();
+            CreateMap<StoredCard, StoredCardDto>();
         }
     }
 }

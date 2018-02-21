@@ -1,4 +1,6 @@
-﻿namespace Kadena.Dto.Checkout
+﻿using System.Collections.Generic;
+
+namespace Kadena.Dto.Checkout
 {
     public class PaymentMethodDTO
     {
@@ -9,5 +11,6 @@
         public bool Checked { get; set; }
         public bool HasInput { get; set; }
         public string InputPlaceholder { get; set; }
+        public IList<StoredCardDto> Items { get; set; }
     }
 }

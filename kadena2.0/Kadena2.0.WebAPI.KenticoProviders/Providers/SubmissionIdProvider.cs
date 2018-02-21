@@ -50,6 +50,7 @@ namespace Kadena.WebAPI.KenticoProviders
             submissionItem.SetValue("Processed", submission.Processed);
             submissionItem.SetValue("RedirectUrl", submission.RedirectUrl);
             submissionItem.SetValue("OrderJson", submission.OrderJson);
+            submissionItem.SetValue("SaveCardJson", submission.SaveCardJson);
 
             if (originalSubmissionItem == null)
             {
