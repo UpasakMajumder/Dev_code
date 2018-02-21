@@ -70,7 +70,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             if (string.IsNullOrEmpty(savedCardId))
             {
                 logger.LogError("PayOrderBySavedCard", "No saved card Id was given");
-                return ReturnResult(false);
+                return ReturnResult(false, error: "Kadena.OrderByCardFailed.ApprovalFailed");
             }
 
             logger.LogInfo("PayOrderBySavedCard", "Info", "Attempting to pay by saved card with Id " + savedCardId);
@@ -83,21 +83,24 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             if (!(sendOrderResult?.Success ?? false))
             {
-                return ReturnResult(false, sendOrderResult?.Payload);
+                return ReturnResult(success: false, 
+                                    orderId: sendOrderResult?.Payload, 
+                                    error: "Kadena.OrderByCardFailed.SaveDataToMicroserviceFailed");
             }
 
             shoppingCart.RemoveCurrentItemsFromStock();
             shoppingCart.ClearCart();
 
-            return ReturnResult(true, sendOrderResult.Payload);
+            return ReturnResult(success: true, 
+                                orderId: sendOrderResult.Payload);
         }
 
-        private SubmitOrderResult ReturnResult(bool success, string orderId = "")
+        private SubmitOrderResult ReturnResult(bool success, string orderId = "", string error = "")
         {
             return new SubmitOrderResult
             {
                 Success = success,
-                RedirectURL = resultUrlFactory.GetCardPaymentResultPageUrl(success, orderId)
+                RedirectURL = resultUrlFactory.GetCardPaymentResultPageUrl(success, orderId, error: error)
             };
         }
     }

@@ -91,11 +91,12 @@ namespace Kadena.BusinessLogic.Services
             return submissionProvider.GetSubmission(submissionGuid);
         }
 
-        public void SetAsProcessed(Submission submission, bool orderSuccess, string redirectUrl)
+        public void SetAsProcessed(Submission submission, bool orderSuccess, string redirectUrl, string error = "")
         {
             submission.Processed = true;
             submission.Success = orderSuccess;
             submission.RedirectUrl = redirectUrl;
+            submission.Error = error;
             submissionProvider.SaveSubmission(submission);
             kenticoLog.LogInfo("Submission Processed", "Info", $"Submission {submission.SubmissionId} was marked as processed");
         }
@@ -158,6 +159,7 @@ namespace Kadena.BusinessLogic.Services
             submission.Processed = false;
             submission.RedirectUrl = string.Empty;
             submission.Success = false;
+            submission.Error = string.Empty;
             submissionProvider.SaveSubmission(submission);
             return submission.SubmissionId;
         }

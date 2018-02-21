@@ -9,7 +9,7 @@ namespace Kadena.BusinessLogic.Contracts
         Guid GenerateNewSubmissionId();
         bool VerifySubmissionId(string submissionId);
         Submission GetSubmission(string submissionId);
-        void SetAsProcessed(Submission submission, bool orderSuccesss, string redirectUrl);
+        void SetAsProcessed(Submission submission, bool orderSuccesss, string redirectUrl, string error = "");
         void DeleteProcessedSubmission(Submission submission);
         void SetSaveCardJson(string submissionId, string saveCardJson);
         bool CheckOwner(Submission submission);

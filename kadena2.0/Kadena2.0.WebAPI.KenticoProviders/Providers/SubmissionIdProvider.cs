@@ -68,6 +68,7 @@ namespace Kadena.WebAPI.KenticoProviders
             submissionItem.SetValue("OrderJson", submission.OrderJson);
             submissionItem.SetValue("SaveCardJson", submission.SaveCardJson);
             submissionItem.SetValue("Success", submission.Success);
+            submissionItem.SetValue("Error", submission.Error);
 
             if (originalSubmissionItem == null)
             {

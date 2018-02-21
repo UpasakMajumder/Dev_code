@@ -126,10 +126,13 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 return false;
             }
 
-            if (tokenData == null || tokenData.Approved == 0)
+            if (tokenData == null || tokenData.Approved == 0 || string.IsNullOrEmpty(tokenData.Token))
             {
-                logger.LogError("3DSi SaveToken", "Empty or not approved token data received from 3DSi");
-                MarkSubmissionProcessed(submission, false, string.Empty);
+                logger.LogError("3DSi SaveToken", "Empty or not approved token data received from 3DSi. " + tokenData?.SubmissionStatusMessage);
+                MarkSubmissionProcessed(submission, 
+                                        orderSuccess: false, 
+                                        orderId: string.Empty, 
+                                        error: "Kadena.OrderByCardFailed.ApprovalFailed");
                 return false;
             }
 
@@ -139,7 +142,10 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             if (string.IsNullOrEmpty(tokenId))
             {
-                MarkSubmissionProcessed(submission, false, string.Empty);
+                MarkSubmissionProcessed(submission, 
+                                        orderSuccess: false, 
+                                        orderId: string.Empty, 
+                                        error: "Kadena.OrderByCardFailed.PlaceOrderFailed");
                 return false;
             }
 
@@ -151,21 +157,27 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             if (!(sendOrderResult?.Success ?? false))
             {
-                MarkSubmissionProcessed(submission, false, sendOrderResult?.Payload);
+                MarkSubmissionProcessed(submission, 
+                                        orderSuccess: false, 
+                                        orderId: sendOrderResult?.Payload, 
+                                        error: "Kadena.OrderByCardFailed.PlaceOrderFailed");
                 return false;
             }
 
             var orderSuccess = ClearKenticoShoppingCart(submission.UserId, submission.SiteId);
+            var error = orderSuccess ? string.Empty : "Kadena.OrderByCardFailed.PlaceOrderFailed";
 
-            MarkSubmissionProcessed(submission, orderSuccess, sendOrderResult?.Payload);
+            MarkSubmissionProcessed(submission, orderSuccess, 
+                                    orderId: sendOrderResult?.Payload, 
+                                    error : error);
 
             return orderSuccess;
         }
 
-        private void MarkSubmissionProcessed(Submission submission, bool orderSuccess, string orderId)
+        private void MarkSubmissionProcessed(Submission submission, bool orderSuccess, string orderId, string error = "")
         {
-            var redirectUrl = resultUrlFactory.GetCardPaymentResultPageUrl(orderSuccess, orderId, submission.SubmissionId.ToString());
-            submissionService.SetAsProcessed(submission, orderSuccess, redirectUrl);
+            var redirectUrl = resultUrlFactory.GetCardPaymentResultPageUrl(orderSuccess, orderId, submission.SubmissionId.ToString(), error);
+            submissionService.SetAsProcessed(submission, orderSuccess, redirectUrl, error);
         }
 
         private bool ClearKenticoShoppingCart(int userId, int siteId)
@@ -228,21 +240,14 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         {
             var submission = submissionService.GetSubmission(submissionId);
 
-            if (submission?.AlreadyVerified ?? false)
+            if (submission != null && submission.AlreadyVerified && submission.Processed && submissionService.CheckOwner(submission))
             {
-                var submissonOwnerChecked = submissionService.CheckOwner(submission);
-
-                if (submissonOwnerChecked && submission.Processed)
+                if (submission.Success)
                 {
-                    var redirectUrl = submission.RedirectUrl;
-
-                    if (submission.Success)
-                    {
-                        submissionService.DeleteProcessedSubmission(submission);
-                    }
-
-                    return redirectUrl;
+                    submissionService.DeleteProcessedSubmission(submission);
                 }
+
+                return submission.RedirectUrl;
             }
 
             return string.Empty;

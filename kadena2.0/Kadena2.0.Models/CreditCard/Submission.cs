@@ -23,6 +23,7 @@ namespace Kadena.Models.CreditCard
 
         public bool Processed { get; set; }
         public bool Success { get; set; }
+        public string Error { get; set; }
 
         public string OrderJson { get; set; }
         public string RedirectUrl { get; set; }
