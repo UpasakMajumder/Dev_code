@@ -825,9 +825,18 @@ namespace Kadena.WebAPI.KenticoProviders
         public List<int> GetShoppingCartIDByInventoryType(int inventoryType, int userID, int campaignID = 0)
         {
             return ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID)
+                                    .OnSite(SiteContext.CurrentSiteID)
                                     .WhereEquals("ShoppingCartUserID", userID)
                                     .WhereEquals("ShoppingCartCampaignID", campaignID)
                                     ?.ToList().Select(x => x.ShoppingCartID).ToList();
+        }
+
+        public int GetPreBuyDemandCount(int SKUID)
+        {
+            return ShoppingCartItemInfoProvider.GetShoppingCartItems()
+                                         .OnSite(SiteContext.CurrentSiteID)
+                                         .Where(x => x.SKUID.Equals(SKUID))
+                                         .Sum(x => x.CartItemUnits);
         }
     }
 }

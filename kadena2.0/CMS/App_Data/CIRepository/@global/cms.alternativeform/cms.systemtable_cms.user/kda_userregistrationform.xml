@@ -319,7 +319,7 @@ Select ItemID,DivisionName from KDA_Division
 
 <div class="input__wrapper"><span class="input__label">{$kadena.signup.LastName$}</span>$$input:LastName$$$$validation:LastName$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$kadena.signup.DivisionID$}</span> $$input:UserDivisionID$$</div>
+<div class="input__wrapper" {%if(!Settings.KDA_DisplaySignupDivision){"style='display:none;'"}|(user)cvoqa2@gmail.com|(hash)074c1a35deb3354e30a4cd50e68eb099b9142d3b8c8e091509708d13c96068dc%}><span class="input__label">{$kadena.signup.DivisionID$}</span> $$input:UserDivisionID$$</div>
 
 <div class="input__wrapper"><span class="input__label">{$kadena.signup.Country$}</span> $$input:UserCountry$$$$validation:UserCountry$$</div>
 
@@ -339,7 +339,7 @@ Select ItemID,DivisionName from KDA_Division
 
 <div class="input__wrapper"><span class="input__label">{$kadena.signup.Password$}</span> <a class="js-tooltip tooltip__css" data-tooltip-placement="bottom" href="#" title="{$Kadena.Common.PasswordTooltipText$}"><svg class="icon"> <use xlink:href="/gfx/svg/sprites/icons.svg#FAQ" xmlns:xlink="http://www.w3.org/1999/xlink"></use> </svg></a> $$input:UserPassword$$$$validation:UserPassword$$</div>
 </div>
-</div>
+<div></div>
 
 ]]>
   </FormLayout>

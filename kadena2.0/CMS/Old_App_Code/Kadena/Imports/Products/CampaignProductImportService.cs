@@ -36,14 +36,14 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             EnsureCulture(site);
             var rows = GetExcelRows(importFileData, type);
             var products = GetDtosFromExcelRows<CampaignProductDto>(rows);
-
+            string[] posList = CustomTableItemProvider.GetItems<POSNumberItem>().ToList().Select(x => x.POSNumber.ToString()).ToArray();
             var currentItemNumber = 0;
             foreach (var CampaignProductDto in products)
             {
                 currentItemNumber++;
 
                 List<string> validationResults;
-                if (!ValidateImportItem(CampaignProductDto, out validationResults))
+                if (!ValidateImportItem(CampaignProductDto, posList, out validationResults))
                 {
                     statusMessages.Add($"Item number {currentItemNumber} has invalid values ({ string.Join("; ", validationResults) })");
                     continue;
@@ -116,7 +116,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             };
         }
 
-        private static bool ValidateImportItem(CampaignProductDto product, out List<string> validationErrors)
+        private static bool ValidateImportItem(CampaignProductDto product, string[] posList, out List<string> validationErrors)
         {
             var errorMessageFormat = "field {0} - {1}";
             bool isValid = ValidatorHelper.ValidateDto(product, out validationErrors, errorMessageFormat);
@@ -124,6 +124,11 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             if (!isValid)
             {
                 return false;
+            }
+            if (posList != null && posList.Count() > 0 && !posList.Contains(product.POSNumber))
+            {
+                isValid = false;
+                validationErrors.Add("Invalid POS Number, POS Number not found");
             }
 
             return isValid;
