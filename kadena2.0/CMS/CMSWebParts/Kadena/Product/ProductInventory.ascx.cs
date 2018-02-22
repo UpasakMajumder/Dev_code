@@ -1074,6 +1074,12 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "GetPrebuyData()", ex);
         }
     }
+
+    public int GetDemandCount(int SKUID)
+    {
+        return DIContainer.Resolve<IShoppingCartProvider>().GetPreBuyDemandCount(SKUID);
+    }
+
     #endregion "Methods"
 }
 

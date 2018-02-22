@@ -41,7 +41,11 @@ const products = {
       "stockQuantity": 15,
       "isQuantityEditable": true,
       "productionTime": "Now",
-      "shipTime": "Tomorrow"
+      "shipTime": "Tomorrow",
+      "options": [{
+        "name": "Size",
+        "value": "L"
+      }]
     },
     {
       "id": 34,
@@ -59,7 +63,11 @@ const products = {
       "stockQuantity": 15,
       "isQuantityEditable": true,
       "productionTime": "",
-      "shipTime": "Tomorrow"
+      "shipTime": "Tomorrow",
+      "options": [{
+        "name": "Size",
+        "value": "XS"
+      }]
     }
   ]
 };
