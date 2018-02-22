@@ -29,7 +29,7 @@ namespace Kadena.Tests._3dsiCreditCard
             Assert.NotNull(result);
             Assert.False(result.Success);
             autoMocker.GetMock<IKenticoLogger>().Verify(l => l.LogError("PayOrderBySavedCard", "No saved card Id was given"), Times.Once);
-            resultfactoryMock.Verify(f => f.GetCardPaymentResultPageUrl(false, "", "", "Kadena.OrderByCardFailed.WrongSavedCardId"), Times.Once);
+            resultfactoryMock.Verify(f => f.GetCardPaymentResultPageUrl(false, "", "", "Kadena.OrderByCardFailed.ApprovalFailed"), Times.Once);
             resultfactoryMock.Verify(f => f.GetOrderResultPageUrl(It.IsAny<bool>(), It.IsAny<string>()), Times.Never);
         }
 

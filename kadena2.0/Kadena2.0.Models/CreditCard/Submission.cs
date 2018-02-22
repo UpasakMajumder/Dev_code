@@ -35,5 +35,15 @@ namespace Kadena.Models.CreditCard
                    UserId == userId &&
                    CustomerId == customerId;
         }
+
+        public void Renew(Guid newSubmissionId)
+        {
+            SubmissionId = newSubmissionId;
+            AlreadyVerified = false;
+            Processed = false;
+            RedirectUrl = string.Empty;
+            Success = false;
+            Error = string.Empty;
+        }
     }
 }

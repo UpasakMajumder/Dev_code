@@ -154,12 +154,7 @@ namespace Kadena.BusinessLogic.Services
             submissionProvider.UpdateSubmissionId(Guid.Parse(submissionId), newSubmissionId);
 
             var submission = submissionProvider.GetSubmission(newSubmissionId);
-            submission.SubmissionId = newSubmissionId;
-            submission.AlreadyVerified = false;
-            submission.Processed = false;
-            submission.RedirectUrl = string.Empty;
-            submission.Success = false;
-            submission.Error = string.Empty;
+            submission.Renew(newSubmissionId);            
             submissionProvider.SaveSubmission(submission);
             return submission.SubmissionId;
         }
