@@ -11,5 +11,6 @@ namespace Kadena2.BusinessLogic.Contracts.OrderPayment
         string CreditcardSaved(string submissionId);
         Task<string> SaveTokenToUserData(Submission submission, SaveTokenData token);
         void MarkCardAsSaved(SaveCardData cardData);
+        string RetryInsertCardDetails(string submissionId);
     }
 }

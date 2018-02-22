@@ -9,7 +9,7 @@ const Total = ({ ui }) => {
   const descriptionElement = description ? <p className="cart-fill__info">{description}</p> : null;
 
   return (
-    <div>
+    <div id="totals">
       <h2>{title}</h2>
       <div className="cart-fill__block">
         {descriptionElement}
