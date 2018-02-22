@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<tr>
+  <td>
+    {% SKUNumber%}
+  </td>
+  <td>
+    {% Name %}
+  </td>
+  <td>
+    {% Quantity %}
+  </td>
+  <td>
+    {% Price %}
+  </td>
+</tr>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>45ece94e-cf14-4c78-a0bc-43bcc9e954fd</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>xOrderCartItems</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

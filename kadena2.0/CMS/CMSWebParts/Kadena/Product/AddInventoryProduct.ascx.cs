@@ -552,6 +552,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
         private void BindUsers(int pageIndex)
         {
             List<AllocateProduct> lstAllocatedProd = new List<AllocateProduct>();
+            string customTableClassName = "KDA.UserAllocatedProducts";
             var users = UserInfoProvider.GetUsers().Columns("Email", "UserID", "FullName").OnSite(CurrentSite.SiteID).OrderBy("FullName")
                 .Skip(PageSize * (pageIndex - 1))
                 .Take(PageSize);
@@ -561,6 +562,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 objProduct.EmailID = user.Email;
                 objProduct.UserID = user.UserID;
                 objProduct.UserName = user.FullName;
+                objProduct.Quantity = CustomTableItemProvider.GetItems(customTableClassName)
+                                                             .WhereEquals("ProductID", productId).WhereEquals("UserID", user.UserID).FirstOrDefault()?.GetValue("Quantity", default(int)) ?? 0;
                 if (lstUsers.FindIndex(item => item.UserID == user.UserID) > -1)
                 {
                     objProduct.Selected = true;

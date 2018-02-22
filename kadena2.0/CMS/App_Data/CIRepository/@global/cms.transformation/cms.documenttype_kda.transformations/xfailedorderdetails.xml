@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<tr>
+  <td>
+    {% Name %}
+  </td>
+  <td>
+    {% Reason %}
+  </td>
+</tr>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>55b3734c-6b42-4752-a900-b3c5d5a858ad</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>xFailedOrderDetails</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>
