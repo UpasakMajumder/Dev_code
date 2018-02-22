@@ -23,7 +23,10 @@
                     <div class="custom__blockin">
                         <h4>POS#: <%# Eval("SKUProductCustomerReferenceNumber")%></h4>
                         <h3><%#Eval("SKUName") %></h3>
-                        <span><%# ProductType == (int)ProductsType.GeneralInventory? $"${Eval("SKUPrice")} pack of {Eval("QtyPerPack")}" : $"${Eval("EstimatedPrice")} pack of {Eval("QtyPerPack")}" %></span>
+                        <span><%# ProductType == (int)ProductsType.GeneralInventory? $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("SKUPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" : $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("EstimatedPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" %></span>
+                        <asp:Label runat="server" Visible='<%# ProductType == (int)ProductsType.PreBuy %>'>
+                            <cms:LocalizedLiteral runat="server" ResourceString="Kadena.PreBuyOrder.CurrentDemand"></cms:LocalizedLiteral>&nbsp;<%# GetDemandCount(Eval<int>("SKUID")) %>
+                        </asp:Label>
                         <asp:LinkButton ID="lnkAddToCart" runat="server" CommandArgument='<%# Eval("SKUID") %>' CommandName="Add" OnCommand="lnkAddToCart_Command" Text='<%#AddToCartLinkText%>' EnableViewState="true" Enabled='<%# ProductType == (int)ProductsType.PreBuy ? EnableAddToCart : true %>'></asp:LinkButton>
                     </div>
                     <p><%#Eval("SKUDescription") %></p>
@@ -42,6 +45,7 @@
         <div class="dialog__content">
             <asp:Label Text="" ID="lblError" Visible="false" runat="server" />
             <cms:LocalizedLabel runat="server" ID="lblErrorMsg" Visible="false"></cms:LocalizedLabel><br />
+            <cms:LocalizedLabel runat="server" ID="lblqtyError" ClientIDMode="Static"></cms:LocalizedLabel><br />
             <asp:Label Text="" runat="server" ID="lblAvailbleItems" />
             <asp:GridView runat="server" ID="gvCustomersCart" AutoGenerateColumns="false" CssClass="table">
                 <Columns>
@@ -50,7 +54,7 @@
                     <asp:TemplateField>
                         <HeaderTemplate><%# ResHelper.GetString("KDA.ShoppingCart.Quantity") %></HeaderTemplate>
                         <ItemTemplate>
-                            <asp:TextBox runat="server" CssClass="input__text" ID="txtQuanityOrdering" Text='<%# ValidationHelper.GetString(Eval("SKUUnits"),"0") %>' TextMode="Number" min="0" ClientIDMode="Static" />
+                            <asp:TextBox runat="server" CssClass="input__text js-txtQty" ID="txtQuanityOrdering" onkeypress="return isNumber(event)" Text='<%# ValidationHelper.GetString(Eval("SKUUnits"),"0") %>' TextMode="Number" min="0" ClientIDMode="Static" />
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField DataField="ShoppingCartID" Visible="true" HeaderText="" HeaderStyle-CssClass="u-hidden" ItemStyle-CssClass="u-hidden" />

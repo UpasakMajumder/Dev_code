@@ -6,13 +6,16 @@ using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
+using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Reflection;
 
 namespace Kadena.Old_App_Code.Kadena.EmailNotifications
 {
@@ -35,6 +38,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                 {
                     MacroResolver resolver = MacroResolver.GetInstance();
                     resolver.SetNamedSourceData("CampaignName", campaignName);
+                    resolver.SetNamedSourceData("programName", programName);
                     msg.From = resolver.ResolveMacros(email.TemplateFrom);
                     msg.Recipients = recipientEmail;
                     msg.EmailFormat = EmailFormatEnum.Default;
@@ -49,56 +53,24 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                 EventLogProvider.LogException("ProductEmailNotifications", "CampaignEmail", ex, SiteContext.CurrentSite.SiteID, ex.Message);
             }
         }
-
-        /// <summary>
-        ///    Send emails to all sales persons
-        /// </summary>
-        /// <typeparam name="T">object type</typeparam>
-        /// <param name="orderDetails"></param>
-        /// <param name="templateName">email template name</param>
-        /// <param name="customer">user details</param>
-        public static void SendEmailNotification<T>(T orderDetails, string templateName, User customer)
-        {
-            try
-            {
-                var email = DIContainer.Resolve<IKenticoMailProvider>().GetEmailTemplate(templateName, SiteContext.CurrentSiteID);
-                EmailMessage msg = new EmailMessage();
-                if (email != null)
-                {
-                    MacroResolver resolver = MacroResolver.GetInstance();
-                    resolver.SetAnonymousSourceData(orderDetails);
-                    resolver.SetAnonymousSourceData(customer);
-                    msg.From = resolver.ResolveMacros(email.TemplateFrom);
-                    msg.Recipients = customer.Email;
-                    msg.EmailFormat = EmailFormatEnum.Default;
-                    msg.ReplyTo = resolver.ResolveMacros(email.TemplateReplyTo);
-                    msg.Subject = resolver.ResolveMacros(email.TemplateSubject);
-                    msg.Body = resolver.ResolveMacros(email.TemplateText);
-                    EmailSender.SendEmail(SiteContext.CurrentSite.SiteName, msg, true);
-                }
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogException("ProductEmailNotifications", "SendEmailNotification", ex, SiteContext.CurrentSite.SiteID, ex.Message);
-            }
-        }
         /// <summary>
         /// Sending the emails based on datasource
         /// </summary>
         /// <param name="campaignName"></param>
         /// <param name="reciepientEmail"></param>
         /// <param name="templateName"></param>
-        public static void SendEmail<T>(string templateName, string recipientEmail, IEnumerable<T> emailDataSource,object[,] macroData=null)
+        public static void SendEmailNotification<T>(string templateName, string recipientEmail, IEnumerable<T> emailDataSource,string dataSourceName, Dictionary<string, object> macroData = null)
         {
             try
             {
                 var email = DIContainer.Resolve<IKenticoMailProvider>().GetEmailTemplate(templateName, SiteContext.CurrentSiteID);
+                var itemTable = ConvertToDataTable(emailDataSource.ToList());
                 EmailMessage msg = new EmailMessage();
                 if (email != null)
                 {
                     MacroResolver resolver = MacroResolver.GetInstance();
-                    resolver.SetNamedSourceData("data",emailDataSource);
-                    resolver.SetNamedSourceData("orderdata",macroData);
+                    resolver.SetNamedSourceData(dataSourceName, itemTable.Rows);
+                    resolver.SetNamedSourceData(macroData);
                     msg.From = resolver.ResolveMacros(email.TemplateFrom);
                     msg.Recipients = recipientEmail;
                     msg.EmailFormat = EmailFormatEnum.Default;
@@ -129,17 +101,30 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                 if (response.Success && response.Payload.TotalCount != 0)
                 {
                     var responseData = response.Payload.Orders.ToList();
-                     var customerOrderData = responseData.GroupBy(x => x.CustomerId).ToList();
+                    var customerOrderData = responseData.GroupBy(x => x.CustomerId).ToList();
                     customerOrderData.ForEach(x =>
                     {
                         var userID = DIContainer.Resolve<IKenticoCustomerProvider>().GetUserIDByCustomerID(x.Key);
                         var customerData = DIContainer.Resolve<IKenticoUserProvider>().GetUserByUserId(userID);
                         if (customerData != null)
                         {
-                            x.ToList().ForEach(o =>
-                        {
-                            SendEmailNotification(o, templateName, customerData);
-                        });
+                            x.ToList().ForEach(recentoder =>
+                            {
+                                var cartItems = recentoder.Items.Select(item =>
+                                {
+                                    return new
+                                    {
+                                        SKUNumber = item.Name,
+                                        Name = item.Quantity,
+                                    };
+                                }).ToList();
+                                Dictionary<string, object> orderDetails = new Dictionary<string, object>();
+                                orderDetails.Add("name", customerData.FirstName);
+                                orderDetails.Add("totalprice", recentoder.TotalPrice);
+                                orderDetails.Add("shippingdate", recentoder.ShippingDate);
+                                orderDetails.Add("campaignid", recentoder.campaign.ID);
+                                SendEmailNotification(templateName, customerData.Email, cartItems,"orderitems", orderDetails);
+                            });
                         }
                     });
                     return true;
@@ -152,5 +137,48 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
             }
             return false;
         }
+        public static void SendMail(User user, OrderDTO ordersDTO, string orderTemplateSettingKey)
+        {
+            if (user?.Email != null)
+            {
+                var cartItems = ordersDTO.Items.Select(item =>
+                {
+                    return new
+                    {
+                        SKUNumber = item.SKU.SKUNumber,
+                        Name = item.SKU.Name,
+                        Quantity = item.UnitCount,
+                        Price = item.TotalPrice
+                    };
+                }).ToList();
+                Dictionary<string, object> orderDetails = new Dictionary<string, object>();
+                orderDetails.Add("name", user.FirstName);
+                orderDetails.Add("totalprice", ordersDTO.TotalPrice);
+                orderDetails.Add("totalshipping", ordersDTO.TotalShipping);
+                orderDetails.Add("campaignid", ordersDTO.TotalShipping);
+                SendEmailNotification(orderTemplateSettingKey, user.Email, cartItems,"orderitems", orderDetails);
+            }
+        }
+        public static DataTable ConvertToDataTable<T>(List<T> items)
+        {
+            DataTable dataTable = new DataTable(typeof(T).Name);
+            PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (PropertyInfo prop in Props)
+            {
+                var type = (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) ? Nullable.GetUnderlyingType(prop.PropertyType) : prop.PropertyType);
+                dataTable.Columns.Add(prop.Name, type);
+            }
+            foreach (T item in items)
+            {
+                var values = new object[Props.Length];
+                for (int i = 0; i < Props.Length; i++)
+                {
+                    values[i] = Props[i].GetValue(item, null);
+                }
+                dataTable.Rows.Add(values);
+            }
+            return dataTable;
+        }
+
     }
 }

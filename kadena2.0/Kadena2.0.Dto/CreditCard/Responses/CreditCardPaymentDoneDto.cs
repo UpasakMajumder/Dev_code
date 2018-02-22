@@ -1,4 +1,4 @@
-﻿namespace Kadena.Dto.CreditCard._3DSi.Responses
+﻿namespace Kadena.Dto.CreditCard.Responses
 {
     public class CreditCardPaymentDoneDto
     {

@@ -15,7 +15,7 @@
   <QueryText>
 <![CDATA[
 SELECT AddressPersonalName,AddressZip,AddressName,AddressCity,AddressPhone,states.StateDisplayName,SKUImagePath,sku.SKUID,
-country.CountryDisplayName,cart.ShoppingCartID,ShoppingCartDistributorID,SKUName,SKUNumber,SKUUnits,SKUPrice,SKUPrice*SKUUnits AS SKUUnitsPrice,sku.SKUValidUntil,
+country.CountryDisplayName,cart.ShoppingCartID,ShoppingCartDistributorID,SKUName,SKUNumber,SKUUnits,SKUPrice,(cartSKU.CartItemPrice*SKUUnits) AS SKUUnitsPrice,sku.SKUValidUntil,
 sku.SKUProductCustomerReferenceNumber
 FROM COM_Address customer
 INNER JOIN COM_ShoppingCart cart ON customer.AddressID =cart.ShoppingCartDistributorID 

@@ -7,5 +7,7 @@ namespace Kadena.Dto.SubmitOrder.Requests
         public int Id { get; set; }
         [MaxLength(25)]
         public string Invoice { get; set; }
+
+        public string Card {get; set; }
     }
 }

@@ -3,7 +3,6 @@ using CMS.Ecommerce;
 using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.CustomerData;
-using System;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
@@ -11,6 +10,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
     public interface IShoppingCartProvider
     {
         DeliveryAddress GetCurrentCartShippingAddress();
+
+        DeliveryAddress GetAddress(int addressId);
 
         BillingAddress GetDefaultBillingAddress();
 
@@ -79,5 +80,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         bool ValidateAllCarts(int userID = 0, int campaignID = 0);
 
         List<int> GetShoppingCartIDByInventoryType(int inventoryType, int userID, int campaignID = 0);
+
+        int GetPreBuyDemandCount(int SKUID);
     }
 }

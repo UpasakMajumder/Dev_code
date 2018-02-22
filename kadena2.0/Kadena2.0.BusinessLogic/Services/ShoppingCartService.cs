@@ -8,6 +8,8 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Product;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena.Models.CreditCard;
+using Kadena2.MicroserviceClients.Contracts;
 using System.Collections.Generic;
 
 namespace Kadena.BusinessLogic.Services
@@ -21,8 +23,10 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoResourceService resources;
         private readonly ITaxEstimationService taxCalculator;
         private readonly IKListService mailingService;
+        private readonly IUserDataServiceClient userDataClient;
         private readonly IShoppingCartProvider shoppingCart;
         private readonly ICheckoutPageFactory checkoutfactory;
+        private readonly IKenticoLogger log;
 
         public ShoppingCartService(IKenticoSiteProvider kenticoSite,
                                    IKenticoLocalizationProvider localization,
@@ -31,8 +35,10 @@ namespace Kadena.BusinessLogic.Services
                                    IKenticoResourceService resources,
                                    ITaxEstimationService taxCalculator,
                                    IKListService mailingService,
+                                   IUserDataServiceClient userDataClient,
                                    IShoppingCartProvider shoppingCart,
-                                   ICheckoutPageFactory checkoutfactory)
+                                   ICheckoutPageFactory checkoutfactory,
+                                   IKenticoLogger log)
         {
             if (kenticoSite == null)
             {
@@ -62,6 +68,10 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(mailingService));
             }
+            if (userDataClient == null)
+            {
+                throw new ArgumentNullException(nameof(userDataClient));
+            }
             if (shoppingCart == null)
             {
                 throw new ArgumentNullException(nameof(shoppingCart));
@@ -69,6 +79,10 @@ namespace Kadena.BusinessLogic.Services
             if (checkoutfactory == null)
             {
                 throw new ArgumentNullException(nameof(checkoutfactory));
+            }
+            if (log == null)
+            {
+                throw new ArgumentNullException(nameof(log));
             }
 
             this.kenticoSite = kenticoSite;
@@ -78,15 +92,18 @@ namespace Kadena.BusinessLogic.Services
             this.resources = resources;
             this.taxCalculator = taxCalculator;
             this.mailingService = mailingService;
+            this.userDataClient = userDataClient;
             this.shoppingCart = shoppingCart;
             this.checkoutfactory = checkoutfactory;
+            this.log = log;
         }
 
-        public CheckoutPage GetCheckoutPage()
+        public async Task<CheckoutPage> GetCheckoutPage()
         {
             var addresses = kenticoUsers.GetCustomerAddresses(AddressType.Shipping);
             var paymentMethods = shoppingCart.GetPaymentMethods();
             var emailConfirmationEnabled = resources.GetSettingsKey<bool>("KDA_UseNotificationEmailsOnCheckout");
+            var currentUserId = kenticoUsers.GetCurrentUser().UserId;
 
             var checkoutPage = new CheckoutPage()
             {
@@ -100,10 +117,40 @@ namespace Kadena.BusinessLogic.Services
             };
 
             CheckCurrentOrDefaultAddress(checkoutPage);
-            checkoutPage.PaymentMethods.CheckDefault();
-            checkoutPage.PaymentMethods.CheckPayability();
+            await ArragnePaymentMethods(checkoutPage.PaymentMethods, currentUserId);
             checkoutPage.SetDisplayType();
             return checkoutPage;
+        }
+
+        private async Task ArragnePaymentMethods(PaymentMethods methods, int userId)
+        {
+            var creditCardMethod = methods.Items.FirstOrDefault(pm => pm.ClassName == "KDA.PaymentMethods.CreditCard");
+
+            if ( creditCardMethod != null && resources.GetSettingsKey("KDA_CreditCard_EnableSaveCard").ToLower() == "true")
+            {
+                var storedCardsResult = await userDataClient.GetCardTokens(userId);
+
+                if (storedCardsResult.Success)
+                {
+                    creditCardMethod.Items = storedCardsResult.Payload.Select(c => 
+                        new StoredCard
+                        {
+                            Id = c.Id,
+                            Label = c.Name
+                        }
+                    ).ToList();
+                }
+                else
+                {
+                    creditCardMethod.Items = new List<StoredCard>();
+                    log.LogError("GetStroredCards", storedCardsResult.ErrorMessages);
+                }
+
+                creditCardMethod.Items.Add(new StoredCard { Checked = true, Id = string.Empty, Label = resources.GetResourceString("Kadena.CreditCard.EnterNew") });
+            }
+
+            methods.CheckDefault();
+            methods.CheckPayability();
         }
 
         public async Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals()
@@ -231,7 +278,7 @@ namespace Kadena.BusinessLogic.Services
             else
             {
                 var defaultAddressId = kenticoUsers.GetCurrentCustomer().DefaultShippingAddressId;
-                if (defaultAddressId == 0)
+                if (defaultAddressId == 0 || shoppingCart.GetAddress(defaultAddressId) == null)
                 {
                     defaultAddressId = page.DeliveryAddresses.GetDefaultAddressId();
                 }
