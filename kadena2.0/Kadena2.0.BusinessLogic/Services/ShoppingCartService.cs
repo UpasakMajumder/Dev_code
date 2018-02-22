@@ -128,7 +128,7 @@ namespace Kadena.BusinessLogic.Services
 
             if ( creditCardMethod != null && resources.GetSettingsKey("KDA_CreditCard_EnableSaveCard").ToLower() == "true")
             {
-                var storedCardsResult = await userDataClient.GetCardTokens(userId);
+                var storedCardsResult = await userDataClient.GetValidCardTokens(userId);
 
                 if (storedCardsResult.Success)
                 {
