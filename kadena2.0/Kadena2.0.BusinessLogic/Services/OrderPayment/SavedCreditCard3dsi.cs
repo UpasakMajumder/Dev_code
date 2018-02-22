@@ -85,7 +85,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             {
                 return ReturnResult(success: false, 
                                     orderId: sendOrderResult?.Payload, 
-                                    error: "Kadena.OrderByCardFailed.SaveDataToMicroserviceFailed");
+                                    error: "Kadena.OrderByCardFailed.PlaceOrderFailed");
             }
 
             shoppingCart.RemoveCurrentItemsFromStock();
