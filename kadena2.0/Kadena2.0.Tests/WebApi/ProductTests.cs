@@ -5,6 +5,7 @@ using Xunit;
 using System.Collections.Generic;
 using Kadena.Models.Product;
 using Kadena.BusinessLogic.Contracts;
+using Moq.AutoMock;
 
 namespace Kadena.Tests.WebApi
 {
@@ -107,6 +108,40 @@ namespace Kadena.Tests.WebApi
             Assert.Equal(11, result.Categories[1].Id);
             Assert.False(result.Products[0].IsFavourite);
             Assert.True(result.Products[1].IsFavourite);
+        }
+
+        [Fact]
+        public void OrderingByOrderTest()
+        {
+            // Arrange
+            var autoMocker = new AutoMocker();
+            var productsMock = autoMocker.GetMock<IKenticoProductsProvider>();
+            productsMock.Setup(p => p.GetProducts("/"))
+                .Returns(new List<ProductLink> {
+                    new ProductLink { Order = 3, Title = "p3" },
+                    new ProductLink { Order = 1, Title = "p1" },
+                    new ProductLink { Order = 2, Title = "p2" },
+                });
+            productsMock.Setup(p => p.GetCategories("/"))
+                .Returns(new List<ProductCategoryLink> {
+                    new ProductCategoryLink { Order = 3, Title = "c3" },
+                    new ProductCategoryLink { Order = 1, Title = "c1" },
+                    new ProductCategoryLink { Order = 2, Title = "c2" },
+                });
+            var sut = autoMocker.CreateInstance<ProductsService>();
+
+            // Act
+            var result = sut.GetProducts("/");
+
+            // Assert
+            Assert.True(result.Products.Count == 3);
+            Assert.True(result.Categories.Count == 3);
+            Assert.Equal("p1", result.Products[0].Title);
+            Assert.Equal("p2", result.Products[1].Title);
+            Assert.Equal("p3", result.Products[2].Title);
+            Assert.Equal("c1", result.Categories[0].Title);
+            Assert.Equal("c2", result.Categories[1].Title);
+            Assert.Equal("c3", result.Categories[2].Title);
         }
     }
 }
