@@ -122,7 +122,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     {
                         UpdateAvailableSKUQuantity(Cart);
                         UpdateAllocatedProductQuantity(Cart, salesPerson.UserId);
-                        ProductEmailNotifications.SendEmailNotification(ordersDTO, orderTemplateSettingKey, salesPerson);
+                        ProductEmailNotifications.SendMail(salesPerson, ordersDTO, orderTemplateSettingKey);
                         ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
                         ShoppingCartHelper.UpdateRemainingBudget(ordersDTO, CurrentUser.UserID);
                     }
@@ -190,10 +190,15 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         Reason = x.Item2
                     };
                 }).ToList();
-                if (CurrentUser?.Email != null)
+                var userInfo = DIContainer.Resolve<IKenticoUserProvider>().GetUserByUserId(CurrentUser.UserID);
+                if (userInfo?.Email != null)
                 {
-                    ProductEmailNotifications.SendEmail(settingKeys.GetSettingsKey("KDA_FailedOrdersEmailTemplateGI"), CurrentUser?.Email, unprocessedOrders);
+                    Dictionary<string, object> orderDetails = new Dictionary<string, object>();
+                    orderDetails.Add("name", userInfo.FirstName);
+                    orderDetails.Add("failedordercount", unprocessedOrders.Count);
+                    ProductEmailNotifications.SendEmailNotification(settingKeys.GetSettingsKey("KDA_FailedOrdersEmailTemplateGI"), CurrentUser?.Email, unprocessedOrders, "failedOrders", orderDetails);
                 }
+
                 rptErrors.DataSource = unprocessedOrders;
                 rptErrors.DataBind();
             }

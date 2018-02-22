@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using CMS.CustomTables;
 using CMS.DataEngine;
+using CMS.Ecommerce;
 using CMS.Helpers;
+using CMS.SiteProvider;
 using Kadena.Models.FyBudget;
 using Kadena.Models.UserBudget;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -38,7 +40,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 userBudgetDetails.Update();
                 userBudgetDetails.SetValue("UserRemainingBudget", userBudgetDetails.GetValue("UserRemainingBudget", default(decimal)) + (newBudget - oldBudget));
                 userBudgetDetails.Update();
-                return userBudgetDetails.GetValue("UserRemainingBudget", string.Empty);
+                return CurrencyInfoProvider.GetFormattedPrice(userBudgetDetails.GetValue("UserRemainingBudget", default(double)), SiteContext.CurrentSiteID, true);
             }
 
             return string.Empty;

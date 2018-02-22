@@ -196,6 +196,34 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="webparttitle"></property>
           <property name="webparttype">InboundTracking</property>
         </webpart>
+        <webpart controlid="IBTF_Javascript" guid="3b8ebc4f-6e50-48fb-b2ac-59d8a00c4b59" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">IBTF_Javascript</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+$(".js-ActualPrice").on("keypress keyup blur", function (event) {
+        $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
+        if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
+    });
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Startup</property>
+          <property name="instanceguid">3b8ebc4f-6e50-48fb-b2ac-59d8a00c4b59</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
       </webpartzone>
       <webpartzone id="ZonePager" v="1">
         <webpart controlid="Pager" guid="f88ca02b-5a43-472a-802a-91f2957c0e14" type="UniPager" v="1">
