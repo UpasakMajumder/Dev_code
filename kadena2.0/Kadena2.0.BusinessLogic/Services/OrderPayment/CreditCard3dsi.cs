@@ -155,7 +155,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             var sendOrderResult = await sendOrder.SubmitOrderData(orderData);
 
-            if (!(sendOrderResult?.Success ?? false))
+            if (sendOrderResult?.Success != true)
             {
                 MarkSubmissionProcessed(submission, 
                                         orderSuccess: false, 
