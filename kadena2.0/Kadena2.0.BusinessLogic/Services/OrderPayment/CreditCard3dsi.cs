@@ -255,7 +255,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
         public void MarkCardAsSaved(SaveCardData cardData)
         {
-            if (!(cardData?.Save ?? false))
+            if (cardData?.Save != true)
             {
                 return;
             }
