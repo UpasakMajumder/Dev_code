@@ -232,7 +232,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<img src='{% SKUImagePath %}'>]]>
+            <![CDATA[<img src='{% ProductImage %}'>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
