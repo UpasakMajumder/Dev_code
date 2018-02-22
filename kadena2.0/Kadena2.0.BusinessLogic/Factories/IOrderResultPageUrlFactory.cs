@@ -2,6 +2,7 @@
 {
     public interface  IOrderResultPageUrlFactory
     {
-        string GetOrderResultPageUrl(string baseUrl, bool orderSuccess, string orderId);
+        string GetOrderResultPageUrl(bool orderSuccess, string orderId);
+        string GetCardPaymentResultPageUrl(bool orderSuccess, string orderId);
     }
 }

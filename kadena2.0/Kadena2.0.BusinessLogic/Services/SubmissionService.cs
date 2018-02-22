@@ -119,5 +119,18 @@ namespace Kadena.BusinessLogic.Services
             submissionProvider.DeleteSubmission(submission.SubmissionId);
             kenticoLog.LogInfo("Submission Deleted", "Info", $"Submission {submission.SubmissionId} was deleted");
         }
+
+        public void SetSaveCardJson(string submissionId, string saveCardJson)
+        {
+            var submission = GetSubmission(submissionId);
+
+            if (submission == null)
+            {
+                throw new ArgumentOutOfRangeException("submissionId", "Invalid of missing submissionId");
+            }
+
+            submission.SaveCardJson = saveCardJson;
+            submissionProvider.SaveSubmission(submission);
+        }
     }
 }

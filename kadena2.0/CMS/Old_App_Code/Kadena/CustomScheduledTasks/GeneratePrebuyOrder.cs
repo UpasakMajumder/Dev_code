@@ -54,9 +54,11 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 var shoppingCartInfo = DIContainer.Resolve<IShoppingCartProvider>();
                 var addrerss = DIContainer.Resolve<IAddressBookService>();
                 var userInfo = DIContainer.Resolve<IKenticoUserProvider>();
+                var kenticoResourceService = DIContainer.Resolve<IKenticoResourceService>();
                 var usersWithShoppingCartItems = shoppingCartInfo.GetUserIDsWithShoppingCart(openCampaignID,Convert.ToInt32(ProductsType.PreBuy));
-                var orderTemplateSettingKey=DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_OrderReservationEmailTemplate");
-                var failedOrderTemplateSettingKey = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_FailedOrdersEmailTemplate");
+                var orderTemplateSettingKey= kenticoResourceService.GetSettingsKey("KDA_OrderReservationEmailTemplate");
+                var failedOrderTemplateSettingKey = kenticoResourceService.GetSettingsKey("KDA_FailedOrdersEmailTemplate");
+                var failedOrdersUrl = kenticoResourceService.GetSettingsKey("KDA_FailedOrdersPageUrl");
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 usersWithShoppingCartItems.ForEach(shoppingCartUser =>
                 {
@@ -71,10 +73,11 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                         if (response != null && response.Success)
                         {
                             ordersDTO.OrderID = response.Payload;
-                            ProductEmailNotifications.SendEmailNotification(ordersDTO, orderTemplateSettingKey, salesPerson);
+                            ProductEmailNotifications.SendMail(salesPerson, ordersDTO, orderTemplateSettingKey);
                             InBoundFormHelper.InsertIBFForm(ordersDTO);
                             ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
                             ShoppingCartHelper.UpdateRemainingBudget(ordersDTO, salesPerson.UserId);
+                            DIContainer.Resolve<IIBTFService>().InsertIBTFAdjustmentRecord(ordersDTO);
                         }
                         else
                         {
@@ -86,7 +89,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 {
                     return new { AddressID = x?.Id, AddressPersonalName = x?.AddressPersonalName };
                 }).ToList();
-                var list = unprocessedDistributorIDs.Select(x =>
+                var listofFailedOrders = unprocessedDistributorIDs.Select(x =>
                   {
                       var distributor = distributors.Where(y => y.AddressID == x.Item1).FirstOrDefault();
                       return new
@@ -96,8 +99,15 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                       };
                   }).ToList();
                 var user = userInfo.GetUserByUserId(campaignClosingUserID);
-                if (user?.Email != null)
-                    ProductEmailNotifications.SendEmail(failedOrderTemplateSettingKey, user?.Email, list);
+                if (user?.Email != null && listofFailedOrders.Count > 0)
+                {
+                    Dictionary<string, object> failedOrderData = new Dictionary<string, object>();
+                    failedOrderData.Add("failedorderurl", URLHelper.AddHTTPToUrl($"{SiteContext.CurrentSite.DomainName}{failedOrdersUrl}?campid={openCampaignID}"));
+                    failedOrderData.Add("failedordercount", listofFailedOrders.Count);
+                    failedOrderData.Add("failedorders", listofFailedOrders);
+                    ProductEmailNotifications.SendEmailNotification(failedOrderTemplateSettingKey, user.Email, listofFailedOrders, "failedOrders",failedOrderData);
+                    UpdatetFailedOrders(openCampaignID, true);
+                }
                 return ResHelper.GetString("KDA.OrderSchedular.TaskSuccessfulMessage");
             }
             catch (Exception ex)
@@ -105,6 +115,11 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 EventLogProvider.LogException("GeneratePrebuyOrderTask", "GenerateOrder", ex, SiteContext.CurrentSiteID, ex.Message);
                 return ex.Message;
             }
+        }
+        private void UpdatetFailedOrders(int campaignID, bool isFailed)
+        {
+            var failedOrderStatusProvider = DIContainer.Resolve<IFailedOrderStatusProvider>();
+            failedOrderStatusProvider.UpdatetFailedOrders(campaignID, isFailed);
         }
     }
 }

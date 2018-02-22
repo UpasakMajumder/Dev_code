@@ -3,15 +3,9 @@ import PropTypes from 'prop-types';
 /* components */
 import Alert from 'app.dump/Alert';
 /* local components */
-import Method from './Method';
+import MethodsGroup from './MethodsGroup';
 
 class PaymentMethod extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { shownInput: props.ui.items.find(item => item.checked).id };
-  }
-
   static propTypes = {
     validationMessage: PropTypes.string.isRequired,
     changePaymentMethod: PropTypes.func.isRequired,
@@ -25,10 +19,6 @@ class PaymentMethod extends Component {
     })
   };
 
-  toggleInput = (shownInput) => {
-    this.setState({ shownInput });
-  };
-
   render() {
     const { ui, checkedObj, changePaymentMethod, validationMessage } = this.props;
     const { title, description, items, isPayable, unPayableText } = ui;
@@ -36,15 +26,13 @@ class PaymentMethod extends Component {
     const descriptionElement = description ? <p className="cart-fill__info">{description}</p> : null;
 
     const methods = items.map((item) => {
-      let className = 'input__wrapper input__wrapper--icon-label';
+      let className = 'select-accordion__item input__wrapper input__wrapper--icon-label';
       if (item.hasInput) className += ' cart-fill__block-input-wrapper';
 
       return (
-        <Method
+        <MethodsGroup
           changePaymentMethod={changePaymentMethod}
           checkedObj={checkedObj}
-          toggleInput={this.toggleInput}
-          shownInput={this.state.shownInput}
           {...item}
           className={className}
           validationMessage={validationMessage}

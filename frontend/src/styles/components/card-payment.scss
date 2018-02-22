@@ -49,7 +49,9 @@
   }
 
   &__submit {
+    @extend %flex--center--between;
     @extend .mt-4;
+    width: $form-width;
   }
 
   // Rewrite react-credit-cards style

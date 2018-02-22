@@ -56,7 +56,10 @@
     <Compile Include="Checkout\Responses\ChangeItemQuantityResponseDto.cs" />
     <Compile Include="Checkout\ItemOptionDto.cs" />
     <Compile Include="CreditCard\3DSi\Requests\SaveTokenDataRequestDto.cs" />
-    <Compile Include="CreditCard\3DSi\Responses\CreditCardPaymentDoneDto.cs" />
+    <Compile Include="Checkout\StoredCardDto.cs" />
+    <Compile Include="CreditCard\MicroserviceResponses\UserStoredCardDto.cs" />
+    <Compile Include="CreditCard\Requests\SaveCreditCardRequestDto.cs" />
+    <Compile Include="CreditCard\Responses\CreditCardPaymentDoneDto.cs" />
     <Compile Include="CustomerData\UserBudgetDto.cs" />
     <Compile Include="Product\BorderDto.cs" />
     <Compile Include="Product\PriceDto.cs" />

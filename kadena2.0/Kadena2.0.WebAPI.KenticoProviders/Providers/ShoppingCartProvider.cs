@@ -30,10 +30,11 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly IMapper mapper;
         private readonly IShippingEstimationSettings estimationSettings;
         private readonly IDynamicPriceRangeProvider dynamicPrices;
+        private readonly IKenticoProductsProvider productProvider;
         private readonly string campaignClassName = "KDA.CampaignsProduct";
         private readonly string CustomTableName = "KDA.UserAllocatedProducts";
 
-        public ShoppingCartProvider(IKenticoResourceService resources, IKenticoLogger logger, IKenticoDocumentProvider documents, IMapper mapper, IShippingEstimationSettings estimationSettings, IDynamicPriceRangeProvider dynamicPrices)
+        public ShoppingCartProvider(IKenticoResourceService resources, IKenticoLogger logger, IKenticoDocumentProvider documents, IMapper mapper, IShippingEstimationSettings estimationSettings, IDynamicPriceRangeProvider dynamicPrices, IKenticoProductsProvider productProvider)
         {
             if (resources == null)
             {
@@ -59,6 +60,10 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 throw new ArgumentNullException(nameof(dynamicPrices));
             }
+            if (productProvider == null)
+            {
+                throw new ArgumentNullException(nameof(dynamicPrices));
+            }
 
             this.resources = resources;
             this.logger = logger;
@@ -66,11 +71,18 @@ namespace Kadena.WebAPI.KenticoProviders
             this.mapper = mapper;
             this.estimationSettings = estimationSettings;
             this.dynamicPrices = dynamicPrices;
+            this.productProvider = productProvider;
         }
 
         public DeliveryAddress GetCurrentCartShippingAddress()
         {
             var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
+            return mapper.Map<DeliveryAddress>(address);
+        }
+
+        public DeliveryAddress GetAddress(int addressId)
+        {
+            var address = AddressInfoProvider.GetAddressInfo(addressId);
             return mapper.Map<DeliveryAddress>(address);
         }
 
@@ -680,18 +692,14 @@ namespace Kadena.WebAPI.KenticoProviders
                 });
                 var sku = SKUInfoProvider.GetSKUInfo(shoppingCartItem.SKUID);
                 var currentProduct = DocumentHelper.GetDocuments(campaignClassName).WhereEquals("NodeSKUID", sku.SKUID).Columns("CampaignsProductID").FirstOrDefault();
+                var productHasAllocation = currentProduct != null ? productProvider.IsProductHasAllocation(currentProduct.GetValue<int>("CampaignsProductID", default(int))) : false;
                 var allocatedQuantityItem = GetAllocatedProductQuantityForUser(currentProduct.GetValue<int>("CampaignsProductID", default(int)), distributorData.UserID);
-                if (allocatedQuantityItem == null)
-                {
-                    throw new Exception(ResHelper.GetString("KDA.Cart.Update.ProductNotAllocatedMessage", LocalizationContext.CurrentCulture.CultureCode));
-                }
-                var allocatedQuantity = allocatedQuantityItem.GetValue<int?>("Quantity", default(int?));
-
+                var allocatedQuantity = allocatedQuantityItem != null ? allocatedQuantityItem.GetValue<int>("Quantity", default(int)) : default(int);
                 if (sku.SKUAvailableItems < totalItems + distributorData.ItemQuantity)
                 {
                     throw new Exception(ResHelper.GetString("KDA.Cart.Update.InsufficientStockMessage", LocalizationContext.CurrentCulture.CultureCode));
                 }
-                else if (allocatedQuantity < totalItems + distributorData.ItemQuantity)
+                else if (allocatedQuantity < totalItems + distributorData.ItemQuantity && productHasAllocation)
                 {
                     throw new Exception(ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError", LocalizationContext.CurrentCulture.CultureCode));
                 }
@@ -793,9 +801,18 @@ namespace Kadena.WebAPI.KenticoProviders
         public List<int> GetShoppingCartIDByInventoryType(int inventoryType, int userID, int campaignID = 0)
         {
             return ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID)
+                                    .OnSite(SiteContext.CurrentSiteID)
                                     .WhereEquals("ShoppingCartUserID", userID)
                                     .WhereEquals("ShoppingCartCampaignID", campaignID)
                                     ?.ToList().Select(x => x.ShoppingCartID).ToList();
+        }
+
+        public int GetPreBuyDemandCount(int SKUID)
+        {
+            return ShoppingCartItemInfoProvider.GetShoppingCartItems()
+                                         .OnSite(SiteContext.CurrentSiteID)
+                                         .Where(x => x.SKUID.Equals(SKUID))
+                                         .Sum(x => x.CartItemUnits);
         }
     }
 }
