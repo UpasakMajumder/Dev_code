@@ -244,7 +244,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 QuantityShipped = i.QuantityShipped,
                 QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? resources.GetResourceString("Kadena.Order.QuantityPrefixAddresses") : resources.GetResourceString("Kadena.Order.QuantityPrefix"),
                 QuantityShippedPrefix = resources.GetResourceString("Kadena.Order.QuantityShippedPrefix"),
-                ShippingDate = string.Empty, // TODO Shipping date per item unknown
+                ShippingDate = string.Empty,
                 Template = i.Name,
                 TrackingId = i.TrackingId,
                 MailingListPrefix = resources.GetResourceString("Kadena.Order.MailingListPrefix"),
