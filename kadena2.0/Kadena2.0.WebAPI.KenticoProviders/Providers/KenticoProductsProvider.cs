@@ -62,6 +62,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 Id = p.DocumentID,
                 Title = p.DocumentName,
                 Url = p.DocumentUrlPath,
+                Order = p.NodeOrder,
                 ImageUrl = URLHelper.ResolveUrl(p.GetValue("SKUImagePath", string.Empty), false),
                 IsFavourite = false,
                 Border = new Border

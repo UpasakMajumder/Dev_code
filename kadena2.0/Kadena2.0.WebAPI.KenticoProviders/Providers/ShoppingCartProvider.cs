@@ -615,7 +615,15 @@ namespace Kadena.WebAPI.KenticoProviders
             }
 
             var variant = VariantHelper.GetProductVariant(document.NodeSKUID, new ProductAttributeSet(attributes));
-            var parameters = new ShoppingCartItemParameters(variant?.SKUID ?? document.NodeSKUID, quantity);
+            ShoppingCartItemParameters parameters;
+            if (variant != null && variant.SKUEnabled)
+            {
+                parameters = new ShoppingCartItemParameters(variant.SKUID, quantity);
+            }
+            else
+            {
+                parameters = new ShoppingCartItemParameters(document.NodeSKUID, quantity);
+            }
 
             if (Guid.Empty != templateId)
             {

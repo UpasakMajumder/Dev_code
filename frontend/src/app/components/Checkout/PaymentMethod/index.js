@@ -51,7 +51,7 @@ class PaymentMethod extends Component {
     : <Alert type="grey" text={unPayableText} />;
 
     return (
-      <div>
+      <div id="payment-method">
         <h2>{title}</h2>
         {content}
       </div>

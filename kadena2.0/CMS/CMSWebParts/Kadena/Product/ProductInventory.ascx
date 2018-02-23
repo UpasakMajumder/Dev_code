@@ -21,7 +21,7 @@
                             <img src='<%#Eval<string>("SKUImagePath")==string.Empty?CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage"):Eval<string>("SKUImagePath")%>' />
                     </div>
                     <div class="custom__blockin">
-                        <h4>POS#: <%# Eval("SKUProductCustomerReferenceNumber")%></h4>
+                        <h4><%= POSNumberText %> : <%# Eval("SKUProductCustomerReferenceNumber")%></h4>
                         <h3><%#Eval("SKUName") %></h3>
                         <span><%# ProductType == (int)ProductsType.GeneralInventory? $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("SKUPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" : $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("EstimatedPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" %></span>
                         <asp:Label runat="server" Visible='<%# ProductType == (int)ProductsType.PreBuy %>'>

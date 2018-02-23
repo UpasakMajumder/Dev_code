@@ -29,7 +29,7 @@ namespace Kadena.AmazonFileSystemProvider
         }
 
         /// <summary>Gets or sets path to local storage for temp.</summary>
-        public static string TempPath
+        internal static string TempPath
         {
             get
             {
@@ -42,7 +42,7 @@ namespace Kadena.AmazonFileSystemProvider
         }
 
         /// <summary>Gets or sets path to local storage for cache.</summary>
-        public static string CachePath
+        internal static string CachePath
         {
             get
             {
@@ -55,7 +55,7 @@ namespace Kadena.AmazonFileSystemProvider
         }
 
         /// <summary>Gets or sets current directory.</summary>
-        public static string CurrentDirectory
+        internal static string CurrentDirectory
         {
             get
             {
@@ -94,7 +94,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// Converts path to valid one (replaces slash to back slash) and lower the case in the path.
         /// </summary>
         /// <param name="path">Path</param>
-        public static string GetValidPath(string path)
+        internal static string GetValidPath(string path)
         {
             return GetValidPath(path, true);
         }
@@ -104,7 +104,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// </summary>
         /// <param name="path">Path</param>
         /// <param name="lower">Specifies whether path should be lowered inside method.</param>
-        public static string GetValidPath(string path, bool lower)
+        internal static string GetValidPath(string path, bool lower)
         {
             if (path == null)
             {
@@ -121,7 +121,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <summary>Returns path from given object key.</summary>
         /// <param name="objectKey">Object key.</param>
         /// <param name="absolute">Indicates whether returned path is absolute</param>
-        public static string GetPathFromObjectKey(string objectKey, bool absolute)
+        internal static string GetPathFromObjectKey(string objectKey, bool absolute)
         {
             return GetPathFromObjectKey(objectKey, absolute, false);
         }
@@ -130,7 +130,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="objectKey">Object key.</param>
         /// <param name="absolute">Indicates whether returned path is absolute</param>
         /// <param name="directory">Specifies whether object is directory.</param>
-        public static string GetPathFromObjectKey(string objectKey, bool absolute, bool directory)
+        internal static string GetPathFromObjectKey(string objectKey, bool absolute, bool directory)
         {
             return GetPathFromObjectKey(objectKey, absolute, directory, true);
         }
@@ -140,7 +140,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="absolute">Indicates whether returned path is absolute</param>
         /// <param name="directory">Specifies whether object is directory.</param>
         /// <param name="lower">Specifies whether path should be lowered inside method.</param>
-        public static string GetPathFromObjectKey(string objectKey, bool absolute, bool directory, bool lower)
+        internal static string GetPathFromObjectKey(string objectKey, bool absolute, bool directory, bool lower)
         {
             if (objectKey == null)
             {
@@ -174,7 +174,12 @@ namespace Kadena.AmazonFileSystemProvider
         /// <summary>Returns object key from given path.</summary>
         /// <param name="path">Path.</param>
         /// <param name="lower">Specifies whether path should be lowered inside method.</param>
-        public static string GetObjectKeyFromPath(string path, bool lower)
+        internal static string GetObjectKeyFromPath(string path, bool lower)
+        {
+            return $"{_specialFolder}{GetObjectKeyFromPathNonEnvironment(path, lower)}";
+        }
+
+        internal static string GetObjectKeyFromPathNonEnvironment(string path, bool lower = true)
         {
             if (path == null)
             {
@@ -196,12 +201,21 @@ namespace Kadena.AmazonFileSystemProvider
                 path += "/";
             }
             path = Path.EnsureSlashes(path, false);
-            return $"{_specialFolder}{path.TrimStart('/')}";
+            return $"{path.TrimStart('/')}";
+        }
+
+        public static string EnsureFullKey(string key)
+        {
+            if (key.StartsWith(_specialFolder))
+            {
+                return key;
+            }
+            return $"{_specialFolder}{key}";
         }
 
         /// <summary>Returns relative path from absolute one.</summary>
         /// <param name="absolute">Absolute path to process</param>
-        public static string GetRelativePath(string absolute)
+        internal static string GetRelativePath(string absolute)
         {
             if (absolute.StartsWith(CurrentDirectory, StringComparison.OrdinalIgnoreCase))
             {

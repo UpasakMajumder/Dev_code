@@ -102,7 +102,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var addresses = kenticoUsers.GetCustomerAddresses(AddressType.Shipping);
             var paymentMethods = shoppingCart.GetPaymentMethods();
-            var emailConfirmationEnabled = resources.GetSettingsKey("KDA_UseNotificationEmailsOnCheckout") == bool.TrueString;
+            var emailConfirmationEnabled = resources.GetSettingsKey<bool>("KDA_UseNotificationEmailsOnCheckout");
             var currentUserId = kenticoUsers.GetCurrentUser().UserId;
 
             var checkoutPage = new CheckoutPage()
@@ -128,7 +128,7 @@ namespace Kadena.BusinessLogic.Services
 
             if ( creditCardMethod != null && resources.GetSettingsKey("KDA_CreditCard_EnableSaveCard").ToLower() == "true")
             {
-                var storedCardsResult = await userDataClient.GetCardTokens(userId);
+                var storedCardsResult = await userDataClient.GetValidCardTokens(userId);
 
                 if (storedCardsResult.Success)
                 {

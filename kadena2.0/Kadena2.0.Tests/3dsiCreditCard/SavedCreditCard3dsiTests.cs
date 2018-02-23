@@ -29,8 +29,8 @@ namespace Kadena.Tests._3dsiCreditCard
             Assert.NotNull(result);
             Assert.False(result.Success);
             autoMocker.GetMock<IKenticoLogger>().Verify(l => l.LogError("PayOrderBySavedCard", "No saved card Id was given"), Times.Once);
-            resultfactoryMock.Verify(f => f.GetCardPaymentResultPageUrl(false, ""), Times.Once);
-            resultfactoryMock.Verify(f => f.GetOrderResultPageUrl(It.IsAny<bool>(), It.IsAny<string>()), Times.Never);
+            resultfactoryMock.Verify(f => f.GetCardPaymentResultPageUrl(false, "", "", "Kadena.OrderByCardFailed.ApprovalFailed"), Times.Once);
+            resultfactoryMock.Verify(f => f.GetOrderResultPageUrl(It.IsAny<SubmitOrderResult>()), Times.Never);
         }
 
         [Fact]
@@ -49,7 +49,7 @@ namespace Kadena.Tests._3dsiCreditCard
                 .Returns(Task.FromResult(orderDto));
             var saveOrderMock = autoMocker.GetMock<ISendSubmitOrder>();
             saveOrderMock.Setup(s => s.SubmitOrderData(orderDto))
-                .Returns(Task.FromResult(new SubmitOrderResult { Success = true, Payload = newOrderId }));
+                .Returns(Task.FromResult(new SubmitOrderResult { Success = true, OrderId = newOrderId }));
             var shoppingCartMock = autoMocker.GetMock<IShoppingCartProvider>();
 
             // Act
@@ -59,8 +59,8 @@ namespace Kadena.Tests._3dsiCreditCard
             Assert.NotNull(result);
             Assert.True(result.Success);
             autoMocker.GetMock<IKenticoLogger>().Verify(l => l.LogInfo(It.IsAny<string>(), It.IsAny<string>(), It.Is<string>(s => s.Contains(cardTokenId))), Times.AtLeastOnce);
-            resultfactoryMock.Verify(f => f.GetCardPaymentResultPageUrl(true, newOrderId), Times.Once);
-            resultfactoryMock.Verify(f => f.GetOrderResultPageUrl(It.IsAny<bool>(), It.IsAny<string>()), Times.Never);
+            resultfactoryMock.Verify(f => f.GetCardPaymentResultPageUrl(true, newOrderId, "", ""), Times.Once);
+            resultfactoryMock.Verify(f => f.GetOrderResultPageUrl(It.IsAny<SubmitOrderResult>()), Times.Never);
             shoppingCartMock.Verify(s => s.ClearCart(0), Times.Once);
             shoppingCartMock.Verify(s => s.RemoveCurrentItemsFromStock(0), Times.Once);
         }
