@@ -6,12 +6,23 @@ import SVG from 'app.dump/SVG';
 /* local components */
 import Method from './Method';
 
-const MethodsGroup = (props) => {
-  const { id, title, icon, disabled, pricePrefix, price, datePrefix, date, items, checkedId,
-    changeShoppingData, openId, changeOpenId } = props;
-
+const MethodsGroup = ({
+  id,
+  title,
+  icon,
+  disabled,
+  pricePrefix,
+  price,
+  datePrefix,
+  date,
+  items,
+  checkedId,
+  changeDeliveryMethod,
+  openId,
+  changeOpenId
+}) => {
   const methods = items.map((item) => {
-    return <Method changeShoppingData={changeShoppingData} checkedId={checkedId} key={`m-${item.id}`} {...item} />;
+    return <Method changeDeliveryMethod={changeDeliveryMethod} checkedId={checkedId} key={`m-${item.id}`} {...item} />;
   });
 
   let className = 'input__wrapper select-accordion__item';
@@ -87,7 +98,7 @@ const MethodsGroup = (props) => {
 
 MethodsGroup.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object.isRequired),
-  changeShoppingData: PropTypes.func.isRequired,
+  changeDeliveryMethod: PropTypes.func.isRequired,
   changeOpenId: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,

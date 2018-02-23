@@ -15,7 +15,8 @@
   <QueryText>
 <![CDATA[
 SELECT AddressPersonalName,AddressZip,AddressName,AddressCity,AddressPhone,states.StateDisplayName,SKUImagePath,sku.SKUID,
-country.CountryDisplayName,cart.ShoppingCartID,ShoppingCartDistributorID,SKUName,SKUNumber,SKUUnits,SKUPrice,SKUPrice*SKUUnits AS SKUUnitsPrice,sku.SKUValidUntil
+country.CountryDisplayName,cart.ShoppingCartID,ShoppingCartDistributorID,SKUName,SKUNumber,SKUUnits,SKUPrice,(cartSKU.CartItemPrice*SKUUnits) AS SKUUnitsPrice,sku.SKUValidUntil,
+sku.SKUProductCustomerReferenceNumber
 FROM COM_Address customer
 INNER JOIN COM_ShoppingCart cart ON customer.AddressID =cart.ShoppingCartDistributorID 
 INNER JOIN COM_ShoppingCartSKU cartSKU on cart.ShoppingCartID=cartSKU.ShoppingCartID
@@ -23,6 +24,7 @@ INNER JOIN COM_SKU sku ON cartSKU.SKUID=sku.SKUID
 LEFT JOIN CMS_Country country ON customer.AddressCountryID=country.CountryID 
 LEFT JOIN  CMS_State states ON customer.AddressStateID=states.StateID 
 WHERE cart.ShoppingCartID=@ShoppingCartUserID AND ShoppingCartInventoryType=@ShoppingCartInventoryType
+AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN @ShoppingCartCampaignID ELSE 0  END
 ]]>
   </QueryText>
   <QueryTypeID>0</QueryTypeID>

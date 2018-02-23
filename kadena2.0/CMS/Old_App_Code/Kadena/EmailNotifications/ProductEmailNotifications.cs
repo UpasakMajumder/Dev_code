@@ -1,7 +1,6 @@
 ﻿using CMS.DocumentEngine;
 using CMS.EmailEngine;
 using CMS.EventLog;
-using CMS.Helpers;
 using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
@@ -25,7 +24,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         /// <param name="campaignName"></param>
         /// <param name="reciepientEmail"></param>
         /// <param name="templateName"></param>
-        public static void CampaignEmail(string campaignName, string recipientEmail, string templateName)
+        public static void CampaignEmail(string campaignName, string recipientEmail, string templateName, string programName = "")
         {
             try
             {
@@ -36,6 +35,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                 {
                     MacroResolver resolver = MacroResolver.GetInstance();
                     resolver.SetNamedSourceData("CampaignName", campaignName);
+                    resolver.SetNamedSourceData("programName", campaignName);                    
                     msg.From = resolver.ResolveMacros(email.TemplateFrom);
                     msg.Recipients = recipientEmail;
                     msg.EmailFormat = EmailFormatEnum.Default;
@@ -89,7 +89,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         /// <param name="campaignName"></param>
         /// <param name="reciepientEmail"></param>
         /// <param name="templateName"></param>
-        public static void SendEmail<T>(string templateName, string recipientEmail, IEnumerable<T> emailDataSource)
+        public static void SendEmail<T>(string templateName, string recipientEmail, IEnumerable<T> emailDataSource, Dictionary<string, object> macroData =null)
         {
             try
             {
@@ -98,7 +98,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                 if (email != null)
                 {
                     MacroResolver resolver = MacroResolver.GetInstance();
-                    resolver.SetNamedSourceData("data", emailDataSource);
+                    resolver.SetNamedSourceData(macroData);
                     msg.From = resolver.ResolveMacros(email.TemplateFrom);
                     msg.Recipients = recipientEmail;
                     msg.EmailFormat = EmailFormatEnum.Default;

@@ -21,7 +21,20 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
-      <field allowempty="true" column="IBTFFinalized" columntype="boolean" guid="a8b650a2-2663-4584-b6da-72551dfc51c6" publicfield="false">
+      <field allowempty="true" column="FiscalYear" columnsize="200" columntype="text" guid="9f76b1da-a970-4c62-add0-ce7d5a2e2a19" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Fiscal Year</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="IBTFFinalized" columntype="boolean" guid="a8b650a2-2663-4584-b6da-72551dfc51c6" publicfield="false" visible="true">
         <properties>
           <defaultvalue>false</defaultvalue>
           <fieldcaption>IBTF Finalized</fieldcaption>
@@ -135,6 +148,8 @@
   <ClassIsDocumentType>True</ClassIsDocumentType>
   <ClassIsForm>False</ClassIsForm>
   <ClassIsMenuItemType>False</ClassIsMenuItemType>
+  <ClassIsProduct>False</ClassIsProduct>
+  <ClassIsProductSection>True</ClassIsProductSection>
   <ClassName>KDA.Campaign</ClassName>
   <ClassNodeNameSource>Name</ClassNodeNameSource>
   <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>

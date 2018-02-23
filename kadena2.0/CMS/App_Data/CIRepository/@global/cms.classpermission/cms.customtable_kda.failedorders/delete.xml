@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.FailedOrders</CodeName>
+    <GUID>584f782f-4c0b-4a0c-b7b0-1a4fd6040f15</GUID>
+    <ObjectType>cms.customtable</ObjectType>
+  </ClassID>
+  <PermissionDescription>{$permissiondescription.customtable.delete$}</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>{$general.delete$}</PermissionDisplayName>
+  <PermissionGUID>0ab58256-f2f2-4007-a5e4-41f408888da7</PermissionGUID>
+  <PermissionName>Delete</PermissionName>
+  <PermissionOrder>4</PermissionOrder>
+</cms.classpermission>

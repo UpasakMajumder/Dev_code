@@ -938,6 +938,20 @@
     <Compile Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx.designer.cs">
       <DependentUpon>DistributorCartDetails.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\FailedOrdersCart.ascx.cs">
+      <DependentUpon>FailedOrdersCart.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\FailedOrdersCart.ascx.designer.cs">
+      <DependentUpon>FailedOrdersCart.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\FailedOrdersCheckout.ascx.cs">
+      <DependentUpon>FailedOrdersCheckout.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\FailedOrdersCheckout.ascx.designer.cs">
+      <DependentUpon>FailedOrdersCheckout.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Cart\GeneratePDFforCart.ascx.cs">
       <DependentUpon>GeneratePDFforCart.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1000,6 +1014,13 @@
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Filters\BrandsFilter.ascx.designer.cs">
       <DependentUpon>BrandsFilter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\FYBudget\FyBudget.ascx.cs">
+      <DependentUpon>FyBudget.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\FYBudget\FyBudget.ascx.designer.cs">
+      <DependentUpon>FyBudget.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\General\RichMessage.ascx.cs">
       <DependentUpon>RichMessage.ascx</DependentUpon>
@@ -1225,6 +1246,13 @@
     <Compile Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx.designer.cs">
       <DependentUpon>EstimatesTable.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\SwapSKUNumberToCRN.ascx.cs">
+      <DependentUpon>SwapSKUNumberToCRN.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Product\SwapSKUNumberToCRN.ascx.designer.cs">
+      <DependentUpon>SwapSKUNumberToCRN.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx.cs">
       <DependentUpon>AddNewProgram.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1276,8 +1304,11 @@
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\ShippingAddress.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\UserBusinessUnits.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableClasses\UserFYBudgetAllocation.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomTableItems\FailedOrders.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\AddressBrands.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\BusinessUnit.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\FiscalYearManagement.generated.cs" />
+    <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\IBTFAdjustment.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\InboundTracking.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSCategory.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSNumber.generated.cs" />
@@ -1324,6 +1355,7 @@
     <Compile Include="Old_App_Code\Kadena\Imports\Users\UserTemplateService.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\StatusMessages.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\ValidatorHelper.cs" />
+    <Compile Include="Old_App_Code\Kadena\InBoundTrackingForm\InBoundFormHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\MailingList\MailingListState.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\Campaign.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignProvider.generated.cs" />
@@ -1428,6 +1460,8 @@
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\CartCheckout.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx" />
+    <Content Include="CMSWebParts\Kadena\Cart\FailedOrdersCart.ascx" />
+    <Content Include="CMSWebParts\Kadena\Cart\FailedOrdersCheckout.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\GeneratePDFforCart.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\RemoveItemFromCart.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\ShoppingCartCount.ascx" />
@@ -1437,6 +1471,7 @@
     <Content Include="CMSWebParts\Kadena\Category\Category.ascx" />
     <Content Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Filters\BrandsFilter.ascx" />
+    <Content Include="CMSWebParts\Kadena\FYBudget\FyBudget.ascx" />
     <Content Include="CMSWebParts\Kadena\General\RichMessage.ascx" />
     <Content Include="CMSWebParts\Kadena\Global Admin Dashboard\GlobalAdminDashboard.ascx" />
     <Content Include="CMSWebParts\Kadena\KInsights\SpotfireControl.ascx" />
@@ -1464,6 +1499,7 @@
     <Content Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\ProductInventory.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx" />
+    <Content Include="CMSWebParts\Kadena\Product\SwapSKUNumberToCRN.ascx" />
     <Content Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx" />
     <Content Include="CMSWebParts\Kadena\Programs\ProgramFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\ShoppingCart\CustomerCartOperations.ascx" />

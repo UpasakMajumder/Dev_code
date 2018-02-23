@@ -8,50 +8,45 @@
   <FormCustomizedColumns />
   <FormDefinition>
     <form version="2">
-      <field column="SKUID" fieldtype="" reftype="" />
-      <field column="SKUGUID" fieldtype="" reftype="" />
-      <field column="SKUOptionCategoryID" fieldtype="" reftype="" />
-      <field column="SKUOrder" fieldtype="" reftype="" />
-      <field column="SKUSiteID" fieldtype="" reftype="" />
-      <field column="SKUName" fieldtype="" reftype="">
+      <field column="SKUID" guid="95abe990-8663-4a8d-8db4-a4d104579424" />
+      <field column="SKUGUID" guid="99228497-3209-44bd-8e5c-cd9de56e7fbd" />
+      <field column="SKUOptionCategoryID" guid="5781a44f-28d4-4ac6-b393-55c9fb2b1f3a" />
+      <field column="SKUOrder" guid="3e41eb69-f9f4-42ea-a51b-f47ebb489b6e" />
+      <field column="SKUSiteID" guid="69b49087-e19b-4b94-990c-f174f146b7db" />
+      <field column="SKUName" guid="161e6482-fbd6-41df-b251-5ef9603f8576">
         <properties>
           <fieldcaption>{$com.variants.variantname$}</fieldcaption>
         </properties>
       </field>
-      <field column="SKUNumber" fieldtype="" visibility="" reftype="" />
-      <field column="SKUPrice" fieldtype="" reftype="">
-        <properties>
-          <fielddescription>{$com.variants.variantpricetooltip$}</fielddescription>
-          <fieldcaption>{$com.variants.variantprice$}</fieldcaption>
-        </properties>
-      </field>
-      <field column="SKUEnabled" fieldtype="" reftype="" order="9" />
-      <field column="SKURetailPrice" visible="" fieldtype="" reftype="" order="10">
+      <field column="SKUNumber" guid="c37e01b4-9477-4ccd-86f8-b6f000743184" visibility="" />
+      <field column="SKUProductCustomerReferenceNumber" guid="c047b0b4-a37c-47d9-aebd-a2b090aeab8e" visible="" />
+      <field column="SKUEnabled" guid="bedcaf24-ad52-4293-9418-f7fcecbb9811" order="9" />
+      <field column="SKURetailPrice" guid="93d5d6bd-c3c4-4108-b886-24540b17ed56" visible="">
         <properties>
           <fieldcaption>List price</fieldcaption>
         </properties>
       </field>
-      <field column="SKUDepartmentID" visible="" fieldtype="" visibility="" reftype="" order="11">
+      <field column="SKUDepartmentID" guid="f97d35fc-6b5a-4c23-a666-15f8cfe7faa6" visibility="" visible="">
         <properties>
           <fieldcaption>Department</fieldcaption>
         </properties>
       </field>
-      <field column="SKUManufacturerID" visible="" fieldtype="" reftype="" order="12">
+      <field column="SKUManufacturerID" guid="808244ef-6595-42f2-90a0-9bf0717645e1" visible="">
         <properties>
           <fieldcaption>Manufacturer</fieldcaption>
         </properties>
       </field>
-      <field column="SKUSupplierID" visible="" fieldtype="" visibility="" reftype="" order="13">
+      <field column="SKUSupplierID" guid="57cc81c5-1f0c-45d4-9741-e37d7f35db34" visibility="" visible="">
         <properties>
           <fieldcaption>Supplier</fieldcaption>
         </properties>
       </field>
-      <field column="SKUImagePath" visible="" fieldtype="" visibility="" reftype="" order="14">
+      <field column="SKUImagePath" guid="6174e45a-ca37-4946-a8b9-a53bd4fb76d2" visibility="" visible="">
         <properties>
           <fieldcaption>Image</fieldcaption>
         </properties>
       </field>
-      <field column="SKUShortDescription" visible="" fieldtype="" reftype="" order="15">
+      <field column="SKUShortDescription" guid="0e18113d-59b6-4fba-9c46-796465b2251e" visible="">
         <settings>
           <Autoresize_Hashtable />
           <Dialogs_Content_Hide />
@@ -60,7 +55,7 @@
           <fieldcaption>Short description</fieldcaption>
         </properties>
       </field>
-      <field column="SKUDescription" visible="" fieldtype="" reftype="" order="16">
+      <field column="SKUDescription" guid="b13a8a29-f8a9-49ed-8cb4-4db417e174ab" visible="">
         <settings>
           <Autoresize_Hashtable />
           <Dialogs_Content_Hide />
@@ -69,87 +64,85 @@
           <fieldcaption>Description</fieldcaption>
         </properties>
       </field>
-      <field column="SKUProductType" visible="" fieldtype="" visibility="" reftype="" order="17">
+      <field column="SKUProductType" guid="33da4205-7ff2-46f9-ae88-3f28ae663ff8" visibility="" visible="">
         <properties>
           <fieldcaption>Representing</fieldcaption>
         </properties>
       </field>
-      <field column="SKUCustomData" fieldtype="" reftype="" order="18" />
-      <field column="SKUCreated" fieldtype="" reftype="" order="19" />
-      <field column="SKULastModified" columnprecision="7" fieldtype="" order="20" />
-      <category name="com.sku.representingcategory" order="21" />
-      <field column="SKUMembershipGUID" visible="" fieldtype="" visibility="" reftype="" order="22">
+      <field column="SKUCustomData" guid="29e8c9c5-d3c7-4846-a18f-057d5cd0a352" />
+      <field column="SKUCreated" guid="046115eb-09d5-4c9f-b4ae-e5da3761b436" />
+      <field column="SKULastModified" columnprecision="7" guid="87e7a912-8806-4971-9912-af8711f71707" />
+      <field column="SKUMembershipGUID" guid="1bdbe0d4-4142-4aac-9eff-51709cfa8b06" visibility="" visible="">
         <properties>
           <fieldcaption>Membership group</fieldcaption>
         </properties>
       </field>
-      <field column="SKUValidity" visible="" fieldtype="" reftype="" order="23">
+      <field column="SKUValidity" guid="24a8c5b1-f065-4a4b-a608-836e06d07083" visible="">
         <properties>
           <fieldcaption>Validity</fieldcaption>
         </properties>
       </field>
-      <field column="SKUValidFor" fieldtype="" reftype="" order="24" />
-      <field column="SKUValidUntil" fieldtype="" reftype="" order="25" />
-      <field column="SKUEproductFilesCount" visible="" fieldtype="" visibility="" reftype="" order="26">
+      <field column="SKUValidFor" guid="e708cdc4-502c-46a3-b8a7-120167863a7e" />
+      <field column="SKUValidUntil" guid="fea9d168-8b89-4b05-8243-2cd26c6b9773" />
+      <field column="SKUEproductFilesCount" guid="4b93bdbb-4ef6-44b5-8f24-371438ce8945" visibility="" visible="">
         <properties>
           <fieldcaption>Files</fieldcaption>
         </properties>
       </field>
-      <field column="SKUMinPrice" visible="" fieldtype="" visibility="" reftype="" order="27">
+      <field column="SKUMinPrice" guid="f6464371-2fc6-42bb-a2f2-3021efb4c455" visibility="" visible="">
         <properties>
           <fieldcaption>Min price</fieldcaption>
         </properties>
       </field>
-      <field column="SKUMaxPrice" visible="" fieldtype="" visibility="" reftype="" order="28">
+      <field column="SKUMaxPrice" guid="5fd253dd-6dfa-4a2b-a106-055fe2ab90a0" visibility="" visible="">
         <properties>
           <fieldcaption>Max price</fieldcaption>
         </properties>
       </field>
-      <field column="SKUPrivateDonation" visible="" fieldtype="" visibility="" reftype="" order="29">
+      <field column="SKUPrivateDonation" guid="72fe9474-dd53-40e2-b9c3-7501baded3bd" visibility="" visible="">
         <properties>
           <fieldcaption>Allow private donation</fieldcaption>
         </properties>
       </field>
-      <field column="SKUBundleInventoryType" visible="" fieldtype="" reftype="" order="30">
+      <field column="SKUBundleInventoryType" guid="4f095aab-f4fe-409b-9990-fd491bdfa7f8" visible="">
         <properties>
           <fieldcaption>Remove from inventory</fieldcaption>
         </properties>
       </field>
-      <field column="SKUBundleItemsCount" visible="" fieldtype="" visibility="" reftype="" order="31">
+      <field column="SKUBundleItemsCount" guid="0b485e64-28e3-44f1-a4d7-52a2116b9007" visibility="" visible="">
         <properties>
           <fieldcaption>Products</fieldcaption>
         </properties>
       </field>
-      <category name="com.sku.statuscategory" order="32" />
-      <field column="SKUInStoreFrom" visible="" fieldtype="" reftype="" order="33">
+      <field column="SKUInStoreFrom" guid="09e82b4e-75c1-4cbb-958a-9b7c5a3ff7b2" visible="">
         <properties>
           <fieldcaption>In store from</fieldcaption>
         </properties>
       </field>
-      <field column="SKUPublicStatusID" visible="" fieldtype="" visibility="" reftype="" order="34">
+      <field column="SKUPublicStatusID" guid="9e5eaa25-43b3-40af-b651-94387a5b77ef" visibility="" visible="">
         <properties>
           <fieldcaption>Public status</fieldcaption>
         </properties>
       </field>
-      <field column="SKUInternalStatusID" visible="" fieldtype="" visibility="" reftype="" order="35">
+      <field column="SKUInternalStatusID" guid="e6053672-514c-4f66-8c2e-87da9dd3f310" visibility="" visible="">
         <properties>
           <fieldcaption>Internal status</fieldcaption>
         </properties>
       </field>
       <category name="com.sku.inventorycategory" order="36" />
-      <field column="InfoText" visible="true" columntype="text" allowempty="true" columnsize="1" publicfield="false" guid="1bd0df55-75e2-4bf3-a5ff-f4133d76ed9b" dummy="altform" order="37">
+      <field allowempty="true" column="InfoText" columnsize="1" columntype="text" dummy="altform" guid="1bd0df55-75e2-4bf3-a5ff-f4133d76ed9b" publicfield="false" visible="true" order="37">
         <properties>
           <contentafter ismacro="true">{$com.variantedit.trackinginfo$}</contentafter>
+          <controlcellcssclass>form-control-text</controlcellcssclass>
           <visiblemacro ismacro="true">
             <![CDATA[{%ParentObject.skutrackinventory != "ByVariants"|(user)administrator|(hash)37367eb744a79e437efaa28c506cdb8f713eb2fa77a200f17a54465bd67b8e20%}]]>
           </visiblemacro>
-          <controlcellcssclass>form-control-text</controlcellcssclass>
         </properties>
         <settings>
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
-      <field column="SKUAvailableItems" fieldtype="" reftype="" order="38">
+      <field column="SKUAvailableItems" guid="db263b45-b660-45e4-b02e-fa0819e75472" order="38">
         <settings>
           <Trim>False</Trim>
         </settings>
@@ -159,85 +152,84 @@
           </visiblemacro>
         </properties>
       </field>
-      <field column="SKUReorderAt" fieldtype="" reftype="" order="39">
+      <field column="SKUReorderAt" guid="8ff5a58e-6a4f-4a3d-9b98-0dc5e0c0b57f" order="39">
         <properties>
+          <fieldcaption>Reorder at</fieldcaption>
           <visiblemacro>
             <![CDATA[{%ParentObject.skutrackinventory == "ByVariants"|(user)administrator|(hash)62972af1788975e596042670e5cda13a9bb8d3d34ddbf27ca633f0c56691b089%}]]>
           </visiblemacro>
-          <fieldcaption>Reorder at</fieldcaption>
         </properties>
       </field>
-      <field column="SKUSellOnlyAvailable" visible="" fieldtype="" reftype="" order="40">
+      <field column="SKUSellOnlyAvailable" guid="ca3ef874-bccc-401d-ae31-f5b40c99f900" visible="" order="40">
         <properties>
           <fieldcaption>Sell only if items available</fieldcaption>
         </properties>
       </field>
-      <field column="SKUAvailableInDays" fieldtype="" reftype="" order="41">
+      <field column="SKUAvailableInDays" guid="7d56b109-15d2-41ed-ab41-c505b50b8386" order="41">
         <properties>
           <fieldcaption>Availability (days)</fieldcaption>
         </properties>
       </field>
-      <field column="SKUMinItemsInOrder" visible="" fieldtype="" visibility="" reftype="" order="42">
+      <field column="SKUMinItemsInOrder" guid="429d99b0-8c88-4a2c-9022-4e71e96d2998" visibility="" visible="" order="42">
         <properties>
           <fieldcaption>Min items in one order</fieldcaption>
         </properties>
       </field>
-      <field column="SKUMaxItemsInOrder" visible="" fieldtype="" visibility="" reftype="" order="43">
+      <field column="SKUMaxItemsInOrder" guid="cf170044-35ac-4710-b82f-4c0162d805ff" visibility="" visible="" order="43">
         <properties>
           <fieldcaption>Max items in one order</fieldcaption>
         </properties>
       </field>
-      <field column="SKUTrackInventory" visible="" fieldtype="" reftype="" order="44" />
+      <field column="SKUTrackInventory" guid="b008a40a-2651-4341-8779-872030271467" visible="" />
       <category name="com.sku.shippingcategory" order="45">
         <properties>
           <collapsedbydefault>true</collapsedbydefault>
           <collapsible>true</collapsible>
         </properties>
       </category>
-      <field column="SKUNeedsShipping" visible="" fieldtype="" visibility="" reftype="" order="46">
+      <field column="SKUNeedsShipping" guid="0fd1ef55-4dd6-4c0e-8030-244dda90ffa3" visibility="" visible="" order="46">
         <properties>
           <fieldcaption>Needs shipping</fieldcaption>
         </properties>
       </field>
-      <field column="SKUWeight" fieldtype="" visibility="" reftype="" order="47">
+      <field column="SKUWeight" guid="433ec6bf-2a24-46f7-ab64-413723f8d2d4" visibility="" order="47">
         <settings>
+          <Trim>False</Trim>
           <ValidChars>,.</ValidChars>
-          <WatermarkText ismacro="True">
+          <WatermarkText ismacro="true">
             <![CDATA[{% ParentObject.SKUWeight |(user)administrator|(hash)b8ca9147bf594d310efdb373925ce3a240b7391d3fe0fa719e96a35dba50ceac%}]]>
           </WatermarkText>
-          <Trim>False</Trim>
           <FilterType />
         </settings>
       </field>
-      <field column="SKUHeight" fieldtype="" visibility="" reftype="" order="48">
+      <field column="SKUHeight" guid="960b12da-a78a-47af-b30a-dd5d4c963c7f" visibility="" order="48">
         <settings>
-          <WatermarkText ismacro="True">
+          <WatermarkText ismacro="true">
             <![CDATA[{% ParentObject.SKUHeight |(user)administrator|(hash)98ac05bcb61775d82d2a19ecca982ac8a18834a791460f1879e369e486b8354f%}]]>
           </WatermarkText>
         </settings>
       </field>
-      <field column="SKUWidth" fieldtype="" visibility="" reftype="" order="49">
+      <field column="SKUWidth" guid="cada95d5-f56f-47b8-8ec5-2311f6420e8f" visibility="" order="49">
         <settings>
-          <WatermarkText ismacro="True">
+          <WatermarkText ismacro="true">
             <![CDATA[{% ParentObject.SKUWidth |(user)administrator|(hash)829ccaa003741e1d997db40767990cfaa4f10e93ce80af6083143f6445f17805%}]]>
           </WatermarkText>
         </settings>
       </field>
-      <field column="SKUDepth" fieldtype="" visibility="" reftype="" order="50">
+      <field column="SKUDepth" guid="01b371cb-8598-4409-82a5-955e5178dbfa" visibility="" order="50">
         <settings>
-          <WatermarkText ismacro="True">
+          <WatermarkText ismacro="true">
             <![CDATA[{% ParentObject.SKUDepth |(user)administrator|(hash)a91cc906e01f4ff169765c090e2e872710ff3d4aba711225c87a74049d89a2c9%}]]>
           </WatermarkText>
         </settings>
       </field>
-      <category name="com.sku.analyticscategory" order="51" />
-      <field column="SKUParentSKUID" fieldtype="" visibility="" reftype="" order="52">
+      <field column="SKUParentSKUID" guid="cfda202f-ccbf-47b8-9b24-d6feae3a470c" visibility="" order="52">
         <settings>
-          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
-          <Trim>False</Trim>
-          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
-          <FilterMode>False</FilterMode>
           <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
           <controlname />
         </settings>
         <properties>
@@ -249,8 +241,14 @@
           <visible>false</visible>
         </properties>
       </category>
-      <field column="SKUConversionName" fieldtype="" visibility="" reftype="" order="54" />
-      <field column="SKUConversionValue" fieldtype="" visibility="" reftype="" order="55" />
+      <field column="SKUConversionName" guid="0132fdb3-0cfc-4966-99ce-a7d8cfd4bf9a" visibility="" order="54" />
+      <field column="SKUConversionValue" guid="870a3279-5120-4bc6-817c-318360a7fbb3" visibility="" order="55" />
+      <field column="SKUPrice" guid="a3c3478f-0507-44ef-a8be-26f7fd3833c5" order="56">
+        <properties>
+          <fieldcaption>{$com.variants.variantprice$}</fieldcaption>
+          <fielddescription>{$com.variants.variantpricetooltip$}</fielddescription>
+        </properties>
+      </field>
     </form>
   </FormDefinition>
   <FormDisplayName>Variant  properties</FormDisplayName>

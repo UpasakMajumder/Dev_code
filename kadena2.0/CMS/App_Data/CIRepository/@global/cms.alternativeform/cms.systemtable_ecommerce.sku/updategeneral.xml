@@ -18,11 +18,12 @@
           <controlname>TextBoxControl</controlname>
         </settings>
       </field>
-      <field column="SKUNumber" guid="c37e01b4-9477-4ccd-86f8-b6f000743184" reftype="Required" allowempty="">
+      <field column="SKUNumber" guid="c37e01b4-9477-4ccd-86f8-b6f000743184" allowempty="">
         <settings>
           <controlname>TextBoxControl</controlname>
         </settings>
       </field>
+      <field column="SKUProductCustomerReferenceNumber" guid="c047b0b4-a37c-47d9-aebd-a2b090aeab8e" />
       <field column="SKUPrice" guid="a3c3478f-0507-44ef-a8be-26f7fd3833c5" />
       <field column="SKURetailPrice" guid="93d5d6bd-c3c4-4108-b886-24540b17ed56" visible="" />
       <field column="SKUDepartmentID" guid="f97d35fc-6b5a-4c23-a666-15f8cfe7faa6" visibility="" visible="">
@@ -175,6 +176,7 @@
         </properties>
       </field>
       <field column="SKUParentSKUID" guid="cfda202f-ccbf-47b8-9b24-d6feae3a470c" />
+      <field column="SKUCustomerReferenceNumber" guid="acc7ffb4-eb2e-40bb-a6e1-b454bad2b597" order="56" />
     </form>
   </FormDefinition>
   <FormDisplayName>Product - General properties</FormDisplayName>

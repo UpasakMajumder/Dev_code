@@ -78,7 +78,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
         /// This will returns distributor cart items
         /// </summary>
         /// <returns></returns>
-        public static DataTable GetDistributorCartData(int cartID, int inventoryType)
+        public static DataTable GetDistributorCartData(int cartID, int inventoryType,int? campaignID)
         {
             try
             {
@@ -86,6 +86,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", cartID);
                 queryParams.Add("@ShoppingCartInventoryType", inventoryType);
+                queryParams.Add("@ShoppingCartCampaignID", campaignID);
                 var cartDataSet = ConnectionHelper.ExecuteQuery(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
                 return cartDataSet.Tables[0];
             }
@@ -100,7 +101,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
         /// This will returns distributor cart items
         /// </summary>
         /// <returns></returns>
-        public static DataTable GetLoggedInUserCartData(int inventoryType, int userID)
+        public static DataTable GetLoggedInUserCartData(int inventoryType, int userID,int? campaignID)
         {
             try
             {
@@ -108,6 +109,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", userID);
                 queryParams.Add("@ShoppingCartInventoryType", inventoryType);
+                queryParams.Add("@ShoppingCartCampaignID", campaignID);
                 var cartDataSet = ConnectionHelper.ExecuteQuery(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
                 return cartDataSet.Tables[0];
             }
@@ -149,7 +151,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                     var states = stateGroups.Where(x => x.ItemID == product.State).FirstOrDefault();
                     var skuValidity = ValidationHelper.GetDateTime(row["SKUValidUntil"], default(DateTime));
                     pdfContent = pdfContent.Replace("{PRODUCTNAME}", ValidationHelper.GetString(row["SKUName"], "&nbsp"))
-                                           .Replace("{SKUNUMBER}", ValidationHelper.GetString(row["SKUNumber"], "&nbsp"))
+                                           .Replace("{SKUNUMBER}", ValidationHelper.GetString(row["SKUProductCustomerReferenceNumber"], "&nbsp"))
                                            .Replace("{SKUUNITS}", ValidationHelper.GetString(row["SKUUnits"], "&nbsp"))
                                            .Replace("{BUNDLECOST}", inventoryType == Convert.ToInt32(ProductType.GeneralInventory) ?$"${ValidationHelper.GetDouble(row["SKUPrice"], default(double)).ToString()}":$"${ ValidationHelper.GetDouble(product.EstimatedPrice, default(double)).ToString()}")
                                            .Replace("{BUNDLEQUANTITY}", ValidationHelper.GetString(product.QtyPerPack, "&nbsp"))

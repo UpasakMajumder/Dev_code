@@ -16,6 +16,20 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="UserRemainingBudget" columntype="double" guid="1c57532e-6b62-4e6f-b0ac-99ed3725c91c" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>0</defaultvalue>
+          <fieldcaption>User Remaining Budget</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
       <field column="Year" columnsize="10" columntype="text" guid="3aa96c3b-d578-4701-841a-1912d318c929" publicfield="false" visible="true">
         <properties>
           <defaultvalue ismacro="true">

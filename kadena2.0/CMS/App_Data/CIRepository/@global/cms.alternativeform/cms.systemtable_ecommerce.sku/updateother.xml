@@ -19,6 +19,7 @@
           <fieldcaption>Product number</fieldcaption>
         </properties>
       </field>
+      <field column="SKUProductCustomerReferenceNumber" guid="c047b0b4-a37c-47d9-aebd-a2b090aeab8e" visible="" />
       <field column="SKUPrice" guid="a3c3478f-0507-44ef-a8be-26f7fd3833c5" visible="">
         <properties>
           <fieldcaption>Price</fieldcaption>
@@ -128,12 +129,12 @@
         </settings>
       </field>
       <field column="SKUEnabled" guid="bedcaf24-ad52-4293-9418-f7fcecbb9811" visible="" />
-      <field column="SKUNeedsShipping" guid="0fd1ef55-4dd6-4c0e-8030-244dda90ffa3" reftype="Required" visible="">
+      <field column="SKUNeedsShipping" guid="0fd1ef55-4dd6-4c0e-8030-244dda90ffa3" visible="">
         <settings>
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
-      <field column="SKUWeight" guid="433ec6bf-2a24-46f7-ab64-413723f8d2d4" reftype="" visible="">
+      <field column="SKUWeight" guid="433ec6bf-2a24-46f7-ab64-413723f8d2d4" visible="">
         <settings>
           <ValidChars>,.</ValidChars>
         </settings>
@@ -183,6 +184,7 @@
       <field column="SKUConversionName" guid="0132fdb3-0cfc-4966-99ce-a7d8cfd4bf9a" />
       <field column="SKUConversionValue" guid="870a3279-5120-4bc6-817c-318360a7fbb3" />
       <field column="SKUParentSKUID" guid="cfda202f-ccbf-47b8-9b24-d6feae3a470c" />
+      <field column="SKUCustomerReferenceNumber" guid="9f57564b-f04b-4ae3-8c24-3c730b74799f" order="56" />
     </form>
   </FormDefinition>
   <FormDisplayName>Product - Other properties</FormDisplayName>

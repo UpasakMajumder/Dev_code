@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<%@ Register Src="~/CMSWebParts/Kadena/Cart/FailedOrdersCart.ascx" TagName="FailedOrdersCart" TagPrefix="cms" %>
+<div class="content-block mb30">
+  <div class="prebuy__distdata">
+    <div class="general__left">
+      <div class="details__sec">
+        <div class="input__label">
+          <label><b><%# Localize("{$KDA.DistributorCart.Distributor$}") %> :</b></label>
+        </div>
+        <div class="input__con">
+          <label> <%#Eval("AddressPersonalName") %></label>
+        </div>
+      </div>
+      <div class="details__sec">
+        <div class="input__label">
+          <label><b><%# Localize("{$KDA.DistributorCart.DistributorAddress$}") %> :</b></label>
+        </div>
+        <div class="input__con">
+          <label> 
+            <%# IfEmpty(Eval("AddressName"), "",Eval("AddressName")) %>
+            <%# IfEmpty(Eval("StateDisplayName"), "",","+Eval("StateDisplayName")) %>
+            <%# IfEmpty(Eval("AddressZip"), "",","+Eval("AddressZip")) %>
+          </label>
+        </div>
+      </div>
+      </div>
+      <div class="general__right">
+      <cms:FailedOrdersCart runat="server" ID="rptDistributorCartDetails" CartID='<%# Eval("ShoppingCartID")%>' InventoryType='<%# Eval("ShoppingCartInventoryType")%>' ShoppingCartDistributorID='<%# Eval("ShoppingCartDistributorID")%>'/>  
+    </div>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>449970a5-47af-44f8-bb83-74e2a2b76eee</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>XFailedOrderDistributors</TransformationName>
+  <TransformationType>ascx</TransformationType>
+</cms.transformation>

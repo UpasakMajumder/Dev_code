@@ -93,6 +93,11 @@
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="GlobalAdminNotified" columntype="boolean" guid="9fc167bf-3eb6-497f-bf7c-b525c10ac1e5" publicfield="false">
+        <properties>
+          <defaultvalue>false</defaultvalue>
+        </properties>
+      </field>
     </form>
   </ClassFormDefinition>
   <ClassGUID>3014d09e-c493-4c7d-8e58-6564e28a1344</ClassGUID>
@@ -102,6 +107,8 @@
   <ClassIsDocumentType>True</ClassIsDocumentType>
   <ClassIsForm>False</ClassIsForm>
   <ClassIsMenuItemType>False</ClassIsMenuItemType>
+  <ClassIsProduct>False</ClassIsProduct>
+  <ClassIsProductSection>True</ClassIsProductSection>
   <ClassName>KDA.Program</ClassName>
   <ClassNodeAliasSource />
   <ClassNodeNameSource>ProgramName</ClassNodeNameSource>

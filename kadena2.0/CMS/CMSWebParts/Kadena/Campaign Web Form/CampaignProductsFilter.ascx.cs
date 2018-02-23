@@ -6,7 +6,10 @@ using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.SiteProvider;
+using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Container.Default;
 using System;
 using System.Data;
 using System.Linq;
@@ -52,7 +55,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             string where = null;
             if (!string.IsNullOrEmpty(txtSearchProducts.Text))
             {
-                where += $"p.ProductName like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))} %'";
+                where += $"(p.ProductName like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}%' OR SKUProductCustomerReferenceNumber = '{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}')";
             }
             if (ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0) != 0)
             {
@@ -92,104 +95,337 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                     .Where(xx => xx.ClassName == CampaignsProduct.CLASS_NAME && xx.NodeSiteID == CurrentSite.SiteID)
                     .ToList();
                 bool initiated = campaign.CampaignInitiate;
-                bool gAdminNotified = campaign.GlobalAdminNotified;
                 bool openCampaign = campaign.OpenCampaign;
                 bool closeCampaign = campaign.CloseCampaign;
                 string gAdminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
                 string adminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_AdminRoleName");
+                Program program = ProgramProvider.GetPrograms()
+                    .WhereEquals("ProgramId", ddlPrograms.SelectedValue)
+                    .FirstOrDefault();
+                var gAdminNotified = program != null ? program.GlobalAdminNotified : false;
+                bool gAdminNotifiedAll = IsCampaignNotified();
+                var productsExist = ProgramHasProducts(CurrentDocument.NodeID);
                 if (CurrentUser.IsInRole(gAdminRoleName, SiteContext.CurrentSiteName))
                 {
-                    if (products.Count == 0)
-                    {
-                        btnAllowUpates.Visible = true;
-                        btnAllowUpates.Enabled = false;
-                        btnAllowUpates.CssClass = "disable btn-action";
-                    }
-                    if (!initiated)
-                    {
-                        btnNewProduct.Visible = true;
-                        btnNewProduct.Enabled = false;
-                        btnNewProduct.CssClass = "disable btn-action";
-                        btnAllowUpates.Visible = true;
-                        btnAllowUpates.Enabled = false;
-                        btnAllowUpates.CssClass = "disable btn-action";
-                    }
-                    else if (gAdminNotified && !openCampaign && !closeCampaign)
-                    {
-                        btnNotifyAdmin.Visible = false;
-                        btnAllowUpates.Visible = true;
-                        btnAllowUpates.Enabled = true;
-                        btnNewProduct.Visible = true;
-                        btnNewProduct.Enabled = true;
-                    }
-                    else if (!gAdminNotified && !openCampaign && !closeCampaign)
-                    {
-                        btnAllowUpates.Visible = true;
-                        btnAllowUpates.Enabled = false;
-                        btnAllowUpates.CssClass = "disable btn-action";
-                        btnNewProduct.Visible = true;
-                        btnNewProduct.Enabled = true;
-                    }
-                    else
-                    {
-                        btnAllowUpates.Visible = true;
-                        btnAllowUpates.Enabled = false;
-                        btnAllowUpates.CssClass = "disable btn-action";
-                        btnNewProduct.Visible = true;
-                        btnNewProduct.Enabled = false;
-                        btnNewProduct.CssClass = "disable btn-action";
-                    }
+                    BindActionsForGlobalAdmin(initiated, openCampaign, closeCampaign, gAdminNotified, gAdminNotifiedAll, productsExist, program);
                 }
                 else if (CurrentUser.IsInRole(adminRoleName, SiteContext.CurrentSiteName))
                 {
-                    if (products.Count == 0)
-                    {
-                        btnNotifyAdmin.Visible = true;
-                        btnNotifyAdmin.Enabled = false;
-                        btnNotifyAdmin.CssClass = "disable btn-action";
-                    }
-                    else if (!initiated)
-                    {
-                        btnNewProduct.Visible = true;
-                        btnNewProduct.Enabled = false;
-                        btnNewProduct.CssClass = "disable btn-action";
-                        btnNotifyAdmin.Visible = true;
-                        btnNotifyAdmin.Enabled = false;
-                        btnNotifyAdmin.CssClass = "disable btn-action";
-                    }
-                    else if (gAdminNotified && !openCampaign && !closeCampaign)
-                    {
-                        btnNotifyAdmin.Visible = true;
-                        btnNotifyAdmin.Enabled = false;
-                        btnNotifyAdmin.CssClass = "disable btn-action";
-                        btnAllowUpates.Visible = false;
-                        btnNewProduct.Visible = true;
-                        btnNewProduct.Enabled = false;
-                        btnNewProduct.CssClass = "disable btn-action";
-                    }
-                    else if (openCampaign || closeCampaign)
-                    {
-                        btnNotifyAdmin.Visible = true;
-                        btnNotifyAdmin.Enabled = false;
-                        btnNotifyAdmin.CssClass = "disable btn-action";
-                        btnNewProduct.Visible = true;
-                        btnNewProduct.Enabled = false;
-                        btnNewProduct.CssClass = "disable btn-action";
-                        btnAllowUpates.Visible = false;
-                    }
-                    else
-                    {
-                        btnNotifyAdmin.Visible = true;
-                        btnNotifyAdmin.Enabled = true;
-                        btnNewProduct.Visible = true;
-                        btnNewProduct.Enabled = true;
-                    }
+                    BindActionsForAdmin(initiated, openCampaign, closeCampaign, gAdminNotified, gAdminNotifiedAll, productsExist, program);
                 }
             }
         }
         catch (Exception ex)
         {
             EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "BindButtons", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Binds actions for global admin
+    /// </summary>
+    /// <param name="initiated"></param>
+    /// <param name="openCampaign"></param>
+    /// <param name="closeCampaign"></param>
+    /// <param name="gAdminNotified"></param>
+    /// <param name="gAdminNotifiedAll"></param>
+    /// <param name="productsExist"></param>
+    /// <param name="program"></param>
+    public void BindActionsForGlobalAdmin(bool initiated, bool openCampaign, bool closeCampaign, bool gAdminNotified, bool gAdminNotifiedAll, bool productsExist, Program program)
+    {
+        try
+        {
+            if (!initiated)
+            {
+                btnAllowUpates.Visible = true;
+                btnAllowUpates.Enabled = false;
+                btnAllowUpates.CssClass = "disable btn-action";
+                btnNewProduct.Visible = true;
+                btnNewProduct.Enabled = true;
+            }
+            else if (initiated && !openCampaign)
+            {
+                GAdminActionsAfterCampaignInitiation(program, gAdminNotified);
+            }
+            else if (openCampaign && !closeCampaign)
+            {
+                GAdminActionsAfterCampaignOpen(program, gAdminNotified, gAdminNotifiedAll);
+            }
+            else if (closeCampaign)
+            {
+                btnAllowUpates.Visible = true;
+                btnAllowUpates.Enabled = false;
+                btnAllowUpates.CssClass = "disable btn-action";
+                btnNewProduct.Visible = true;
+                btnNewProduct.Enabled = false;
+                btnNewProduct.CssClass = "disable btn-action";
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "BindActionsForGlobalAdmin", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Binds actions for global admin after initiating campaign
+    /// </summary>
+    /// <param name="program"></param>
+    /// <param name="gAdminNotified"></param>
+    public void GAdminActionsAfterCampaignInitiation(Program program, bool gAdminNotified)
+    {
+        try
+        {
+            if (program != null)
+            {
+                if (gAdminNotified)
+                {
+                    btnAllowUpates.Visible = true;
+                    btnAllowUpates.Enabled = true;
+                }
+                else
+                {
+                    btnAllowUpates.Visible = true;
+                    btnAllowUpates.Enabled = false;
+                    btnAllowUpates.CssClass = "disable btn-action";
+                }
+            }
+            else
+            {
+                btnAllowUpates.Visible = true;
+                btnAllowUpates.Enabled = false;
+                btnAllowUpates.CssClass = "disable btn-action";
+                btnNewProduct.Visible = true;
+                btnNewProduct.Enabled = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "GAdminActionsAfterCampaignInitiation", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Binds actions for global admin after opening campaign
+    /// </summary>
+    /// <param name="program"></param>
+    /// <param name="gAdminNotified"></param>
+    /// <param name="gAdminNotifiedAll"></param>
+
+    public void GAdminActionsAfterCampaignOpen(Program program, bool gAdminNotified, bool gAdminNotifiedAll)
+    {
+        try
+        {
+            if (program != null && gAdminNotified)
+            {
+                btnAllowUpates.Visible = true;
+                btnAllowUpates.Enabled = true;
+                btnNewProduct.Visible = true;
+                btnNewProduct.Enabled = false;
+                btnNewProduct.CssClass = "disable btn-action";
+            }
+            else if (program != null && !gAdminNotified)
+            {
+                btnAllowUpates.Visible = true;
+                btnAllowUpates.Enabled = false;
+                btnAllowUpates.CssClass = "disable btn-action";
+                btnNewProduct.Visible = true;
+                btnNewProduct.Enabled = true;
+            }
+            else
+            {
+                btnAllowUpates.Visible = true;
+                btnAllowUpates.Enabled = false;
+                btnAllowUpates.CssClass = "disable btn-action";
+                if (gAdminNotifiedAll)
+                {
+                    btnNewProduct.Visible = true;
+                    btnNewProduct.Enabled = false;
+                    btnNewProduct.CssClass = "disable btn-action";
+                }
+                else
+                {
+                    btnNewProduct.Visible = true;
+                    btnNewProduct.Enabled = true;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "GAdminActionsAfterCampaignOpen", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Binds actions for admin
+    /// </summary>
+    /// <param name="initiated"></param>
+    /// <param name="openCampaign"></param>
+    /// <param name="closeCampaign"></param>
+    /// <param name="gAdminNotified"></param>
+    /// <param name="gAdminNotifiedAll"></param>
+    /// <param name="productsExist"></param>
+    /// <param name="program"></param>
+    public void BindActionsForAdmin(bool initiated, bool openCampaign, bool closeCampaign, bool gAdminNotified, bool gAdminNotifiedAll, bool productsExist, Program program)
+    {
+        try
+        {
+            if (!initiated)
+            {
+                btnNotifyAdmin.Visible = true;
+                btnNotifyAdmin.Enabled = false; ;
+                btnNotifyAdmin.CssClass = "disable btn-action";
+                btnNewProduct.Visible = true;
+                btnNewProduct.Enabled = false;
+                btnNewProduct.CssClass = "disable btn-action";
+            }
+            else if (initiated && !openCampaign)
+            {
+                AdminActionsAfterCampaignInitiation(program, productsExist, gAdminNotified);
+            }
+            else if (openCampaign && !closeCampaign)
+            {
+                AdminActionsAfterCampaignOpen(program, productsExist, gAdminNotified, gAdminNotifiedAll);
+            }
+            else if (closeCampaign)
+            {
+                btnNotifyAdmin.Visible = true;
+                btnNotifyAdmin.Enabled = false;
+                btnNotifyAdmin.CssClass = "disable btn-action";
+                btnNewProduct.Visible = true;
+                btnNewProduct.Enabled = false;
+                btnNewProduct.CssClass = "disable btn-action";
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "BindActionsForAdmin", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Binds actions for admin after campaign initiation
+    /// </summary>
+    /// <param name="program"></param>
+    /// <param name="productsExist"></param>
+    /// <param name="gAdminNotified"></param>
+    public void AdminActionsAfterCampaignInitiation(Program program, bool productsExist, bool gAdminNotified)
+    {
+        try
+        {
+            if (program != null && productsExist)
+            {
+                if (gAdminNotified)
+                {
+                    btnNotifyAdmin.Visible = true;
+                    btnNotifyAdmin.Enabled = false; ;
+                    btnNotifyAdmin.CssClass = "disable btn-action";
+                    btnNewProduct.Visible = true;
+                    btnNewProduct.Enabled = false;
+                    btnNewProduct.CssClass = "disable btn-action";
+                }
+                else
+                {
+                    btnNotifyAdmin.Visible = true;
+                    btnNotifyAdmin.Enabled = true; ;
+                    btnNewProduct.Visible = true;
+                    btnNewProduct.Enabled = true;
+                }
+            }
+            else
+            {
+                btnNotifyAdmin.Visible = true;
+                btnNotifyAdmin.Enabled = false;
+                btnNotifyAdmin.CssClass = "disable btn-action";
+                btnNewProduct.Visible = true;
+                btnNewProduct.Enabled = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "AdminActionsAfterCampaignInitiation", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Binds actions for admin after opening campaign
+    /// </summary>
+    /// <param name="program"></param>
+    /// <param name="productsExist"></param>
+    /// <param name="gAdminNotified"></param>
+    /// <param name="gAdminNotifiedAll"></param>
+    public void AdminActionsAfterCampaignOpen(Program program, bool productsExist, bool gAdminNotified, bool gAdminNotifiedAll)
+    {
+        try
+        {
+            if (program != null)
+            {
+                AdminActionsForProgram(productsExist, gAdminNotified);
+            }
+            else
+            {
+                btnNotifyAdmin.Visible = true;
+                btnNotifyAdmin.Enabled = false;
+                btnNotifyAdmin.CssClass = "disable btn-action";
+                if (gAdminNotifiedAll)
+                {
+                    btnNewProduct.Visible = true;
+                    btnNewProduct.Enabled = false;
+                    btnNewProduct.CssClass = "disable btn-action";
+                }
+                else
+                {
+                    btnNewProduct.Visible = true;
+                    btnNewProduct.Enabled = true;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "AdminActionsAfterCampaignOpen", ex, CurrentSite.SiteID, ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Binds actions for admin
+    /// </summary>
+    /// <param name="productsExist"></param>
+    /// <param name="gAdminNotified"></param>
+    public void AdminActionsForProgram(bool productsExist, bool gAdminNotified)
+    {
+        try
+        {
+            if (productsExist)
+            {
+                if (gAdminNotified)
+                {
+                    btnNotifyAdmin.Visible = true;
+                    btnNotifyAdmin.Enabled = false;
+                    btnNotifyAdmin.CssClass = "disable btn-action";
+                    btnNewProduct.Visible = true;
+                    btnNewProduct.Enabled = false;
+                    btnNewProduct.CssClass = "disable btn-action";
+                }
+                else
+                {
+                    btnNotifyAdmin.Visible = true;
+                    btnNotifyAdmin.Enabled = true;
+                    btnNewProduct.Visible = true;
+                    btnNewProduct.Enabled = true;
+                }
+            }
+            else
+            {
+                btnNotifyAdmin.Visible = true;
+                btnNotifyAdmin.Enabled = false;
+                btnNotifyAdmin.CssClass = "disable btn-action";
+                btnNewProduct.Visible = true;
+                btnNewProduct.Enabled = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "AdminActionsForProgram", ex, CurrentSite.SiteID, ex.Message);
         }
     }
 
@@ -285,6 +521,71 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
     }
 
     /// <summary>
+    /// CHecks whether program has products or not
+    /// </summary>
+    public bool ProgramHasProducts(int campaignNodeId)
+    {
+        try
+        {
+            var query = new DataQuery(SQLQueries.getPrebuyProductCount);
+            QueryDataParameters queryParams = new QueryDataParameters();
+            queryParams.Add("@CampaignNodeId", campaignNodeId);
+            queryParams.Add("@SiteId", CurrentSite.SiteID);
+            GeneralConnection cn = ConnectionHelper.GetConnection();
+            string where = null;
+            if (!string.IsNullOrEmpty(txtSearchProducts.Text))
+            {
+                where += $"and (p.ProductName like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}%' OR SKUProductCustomerReferenceNumber = '{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}')";
+            }
+            if (ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0) != 0)
+            {
+                int programID = ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0);
+                where += $"and p.ProgramID={ programID}";
+            }
+            if (ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0) != 0)
+            {
+                int categoryID = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0);
+                where += $"and p.CategoryID={ categoryID}";
+            }
+            if (where != null)
+            {
+                this.WhereCondition = where;
+            }
+            QueryParameters qp = new QueryParameters(query.QueryText + where, queryParams, QueryTypeEnum.SQLQuery, false);
+            var productData = cn.ExecuteQuery(qp);
+            var productCount = productData != null ? ValidationHelper.GetInteger(productData.Tables[0].Rows[0][0], default(int)) : default(int);
+            return productCount > 0 ? true : false;
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "ProgramHasProducts", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Checks all the programs are notified
+    /// </summary>
+    /// <returns></returns>
+    public bool IsCampaignNotified()
+    {
+        try
+        {
+            var programs = DocumentHelper.GetDocuments(Program.CLASS_NAME)
+                .Path(CurrentDocument.NodeAliasPath, PathTypeEnum.Children)
+                .WhereEquals("NodeSiteId", CurrentSite.SiteID)
+                .WhereEqualsOrNull("GlobalAdminNotified", false)
+                .Columns("GlobalAdminNotified").Any();
+            return !programs;
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions", "AllProgramsNotified", ex, CurrentSite.SiteID, ex.Message);
+        }
+        return false;
+    }
+
+    /// <summary>
     /// filter data by category id
     /// </summary>
     /// <param name="sender"></param>
@@ -314,11 +615,15 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
         try
         {
             var nodeGuid = CurrentDocument.NodeGUID;
+            var emailTemplate = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey(SiteContext.CurrentSiteID, "KDA_CampaignProductAddedTemplate");
             Campaign campaign = CampaignProvider.GetCampaign(nodeGuid, CurrentDocument.DocumentCulture, CurrentSite.SiteName);
-            if (campaign != null)
+            var program = ProgramProvider.GetPrograms()
+                .WhereEquals("ProgramId", ddlPrograms.SelectedValue)
+                .FirstOrDefault();
+            if (program != null)
             {
-                campaign.GlobalAdminNotified = true;
-                campaign.Update();
+                program.GlobalAdminNotified = true;
+                program.Update();
                 var roleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
                 var role = RoleInfoProvider.GetRoleInfo(roleName, CurrentSite.SiteID);
                 if (role != null)
@@ -328,11 +633,11 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                     {
                         foreach (var user in users.AsEnumerable().ToList())
                         {
-                            ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Field<string>("Email"), "ProductsAddedToCampaign");
+                            ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Field<string>("Email"), emailTemplate, program.DocumentName);
                         }
                     }
                 }
-                Response.Redirect(CurrentDocument.DocumentUrlPath);
+                Response.Redirect(CurrentDocument.DocumentUrlPath,false);
             }
         }
         catch (Exception ex)
@@ -350,12 +655,13 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
     {
         try
         {
-            var nodeGuid = CurrentDocument.NodeGUID;
-            Campaign campaign = CampaignProvider.GetCampaign(nodeGuid, CurrentDocument.DocumentCulture, CurrentSite.SiteName);
-            if (campaign != null)
+            var program = ProgramProvider.GetPrograms()
+                .WhereEquals("ProgramId", ddlPrograms.SelectedValue)
+                .FirstOrDefault();
+            if (program != null)
             {
-                campaign.GlobalAdminNotified = false;
-                campaign.Update();
+                program.GlobalAdminNotified = false;
+                program.Update();
                 Response.Redirect(CurrentDocument.DocumentUrlPath);
             }
         }

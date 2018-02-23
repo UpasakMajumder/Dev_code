@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using CMS.DataEngine;
+using CMS.CustomTables;
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.Globalization;
@@ -10,6 +12,7 @@ using CMS.SiteProvider;
 using Kadena.AmazonFileSystemProvider;
 using Kadena.Models;
 using Kadena.Models.Checkout;
+using Kadena.Models.CustomerData;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
@@ -27,8 +30,11 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly IMapper mapper;
         private readonly IShippingEstimationSettings estimationSettings;
         private readonly IDynamicPriceRangeProvider dynamicPrices;
+        private readonly IKenticoProductsProvider productProvider;  
+        private readonly string campaignClassName = "KDA.CampaignsProduct";
+        private readonly string CustomTableName = "KDA.UserAllocatedProducts";
 
-        public ShoppingCartProvider(IKenticoResourceService resources, IKenticoLogger logger, IKenticoDocumentProvider documents, IMapper mapper, IShippingEstimationSettings estimationSettings, IDynamicPriceRangeProvider dynamicPrices)
+        public ShoppingCartProvider(IKenticoResourceService resources, IKenticoLogger logger, IKenticoDocumentProvider documents, IMapper mapper, IShippingEstimationSettings estimationSettings, IDynamicPriceRangeProvider dynamicPrices, IKenticoProductsProvider productProvider)
         {
             if (resources == null)
             {
@@ -54,6 +60,10 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 throw new ArgumentNullException(nameof(dynamicPrices));
             }
+            if (productProvider == null)
+            {
+                throw new ArgumentNullException(nameof(dynamicPrices));
+            }
 
             this.resources = resources;
             this.logger = logger;
@@ -61,6 +71,7 @@ namespace Kadena.WebAPI.KenticoProviders
             this.mapper = mapper;
             this.estimationSettings = estimationSettings;
             this.dynamicPrices = dynamicPrices;
+            this.productProvider = productProvider;
         }
 
         public DeliveryAddress GetCurrentCartShippingAddress()
@@ -684,23 +695,139 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             cartItem.CartItemUnits = amount;
         }
-
-        public bool UpdateCartQuantity(int cartItemID, int quantity)
+        public string UpdateCartQuantity(Distributor distributorData)
         {
-
-            var shoppingCartItem = ShoppingCartItemInfoProvider.GetShoppingCartItemInfo(cartItemID);
+            if (distributorData.ItemQuantity < 1)
+            {
+                throw new Exception(ResHelper.GetString("KDA.Cart.Update.MinimumQuantityError", LocalizationContext.CurrentCulture.CultureCode));
+            }
+            var shoppingCartItem = ShoppingCartItemInfoProvider.GetShoppingCartItemInfo(distributorData.CartItemId);
+            if (distributorData.InventoryType == 1)
+            {
+                var shoppingCartIDs = ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartUserID", distributorData.UserID).WhereEquals("ShoppingCartInventoryType", 1).ToList().Select(x => x.ShoppingCartID).ToList();
+                var shoppingcartItems = ShoppingCartItemInfoProvider.GetShoppingCartItems().WhereIn("ShoppingCartID", shoppingCartIDs).WhereEquals("SKUID", shoppingCartItem.SKUID).ToList();
+                int totalItems = 0;
+                shoppingcartItems.ForEach(cartItem =>
+                {
+                    if (cartItem != null && cartItem.CartItemID != distributorData.CartItemId)
+                    {
+                        totalItems += cartItem.CartItemUnits;
+                    }
+                });
+                var sku = SKUInfoProvider.GetSKUInfo(shoppingCartItem.SKUID);
+                var currentProduct = DocumentHelper.GetDocuments(campaignClassName).WhereEquals("NodeSKUID", sku.SKUID).Columns("CampaignsProductID").FirstOrDefault();
+                var productHasAllocation = currentProduct != null ? productProvider.IsProductHasAllocation(currentProduct.GetValue<int>("CampaignsProductID", default(int))) : false;
+                var allocatedQuantityItem = GetAllocatedProductQuantityForUser(currentProduct.GetValue<int>("CampaignsProductID", default(int)), distributorData.UserID);
+                var allocatedQuantity = allocatedQuantityItem != null ? allocatedQuantityItem.GetValue<int>("Quantity", default(int)) : default(int);
+                if (sku.SKUAvailableItems < totalItems + distributorData.ItemQuantity)
+                {
+                    throw new Exception(ResHelper.GetString("KDA.Cart.Update.InsufficientStockMessage", LocalizationContext.CurrentCulture.CultureCode));
+                }
+                else if (allocatedQuantity < totalItems + distributorData.ItemQuantity && productHasAllocation)
+                {
+                    throw new Exception(ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError", LocalizationContext.CurrentCulture.CultureCode));
+                }
+            }
             if (shoppingCartItem != null)
             {
-                shoppingCartItem.CartItemUnits = quantity;
+                shoppingCartItem.CartItemUnits = distributorData.ItemQuantity;
                 shoppingCartItem.Update();
-                return true;
+                return ResHelper.GetString("KDA.Cart.Update.Success");
             }
-            return false;
+            else
+            {
+                throw new Exception(ResHelper.GetString("KDA.Cart.Update.Failure", LocalizationContext.CurrentCulture.CultureCode));
+            }
         }
+
+
         public List<int> GetUserIDsWithShoppingCart(int campaignID, int productType)
         {
-          return  ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartCampaignID", campaignID)
-                                                                   .WhereEquals("ShoppingCartInventoryType", productType).ToList().Select(x => x.ShoppingCartUserID).Distinct().ToList();
+            return ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartCampaignID", campaignID)
+                                                                     .WhereEquals("ShoppingCartInventoryType", productType).ToList().Select(x => x.ShoppingCartUserID).Distinct().ToList();
+        }
+
+        public bool IsCartContainsInvalidProduct(int shoppingCartId = 0)
+        {
+            bool isValidCart = true;
+            ShoppingCartInfo shoppingCart = GetShoppingCart(shoppingCartId);
+            if (shoppingCart != null)
+            {
+                var inValidCartItems = shoppingCart.CartItems.Where(x => string.IsNullOrWhiteSpace(x.SKU.SKUNumber) || x.SKU.SKUNumber.Equals("00000"));
+                if (inValidCartItems != null && inValidCartItems.Count() > 0)
+                {
+                    isValidCart = false;
+                }
+            }
+            return isValidCart;
+        }
+
+        public List<int> GetCampaingShoppingCartIDs(int campaignID)
+        {
+            return ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID).WhereEquals("ShoppingCartCampaignID", campaignID)?.ToList().Select(x => x.ShoppingCartID).ToList();
+        }
+
+        public List<int> GetUserShoppingCartIDs(int userID)
+        {
+            return ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID).WhereEquals("ShoppingCartUserID", userID)?.ToList().Select(x => x.ShoppingCartID).ToList();
+        }
+
+        public bool ValidateAllCarts(int userID = 0, int campaignID = 0)
+        {
+            bool isValid = true;
+            List<int> shoppingCartIDs = new List<int>();
+            if (campaignID > 0)
+            {
+                shoppingCartIDs = GetCampaingShoppingCartIDs(campaignID);
+            }
+            else if (userID > 0)
+            {
+                shoppingCartIDs = GetUserShoppingCartIDs(userID);
+            }
+            if (shoppingCartIDs != null && shoppingCartIDs.Count > 0)
+            {
+                foreach (int shoppingCartID in shoppingCartIDs)
+                {
+                    if (!IsCartContainsInvalidProduct(shoppingCartID))
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+            return isValid;
+        }
+        private CustomTableItem GetAllocatedProductQuantityForUser(int productID, int userID)
+        {
+            return CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
+
+        }
+        public ShoppingCartInfo GetShoppingCartByID(int cartID)
+        {
+            return ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
+        }
+        public List<int> GetShoppingCartIDs(WhereCondition where)
+        {
+            return ShoppingCartInfoProvider.GetShoppingCarts().Where(where)
+                                                                  .Select(x => x.ShoppingCartID).ToList();
+        }
+        public List<ShoppingCartItemInfo> GetShoppingCartItemsByCartIDs(List<int> shoppingCartIDs)
+        {
+            return ShoppingCartItemInfoProvider.GetShoppingCartItems().WhereIn("ShoppingCartID", shoppingCartIDs)
+                                                                                    .ToList();
+        }
+        public void UpdateBusinessUnit(ShoppingCartInfo cart, long businessUnitID)
+        {
+            cart.SetValue("BusinessUnitIDForDistributor", businessUnitID);
+            cart.Update();
+        }
+
+        public List<int> GetShoppingCartIDByInventoryType(int inventoryType, int userID, int campaignID = 0)
+        {
+            return ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID)
+                                    .WhereEquals("ShoppingCartUserID", userID)
+                                    .WhereEquals("ShoppingCartCampaignID", campaignID)
+                                    ?.ToList().Select(x => x.ShoppingCartID).ToList();
         }
     }
 }

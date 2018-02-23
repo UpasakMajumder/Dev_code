@@ -13,5 +13,6 @@ namespace Kadena.Dto.TemplatedProduct.MicroserviceResponses
         public DateTime? Updated { get; set; }
         public TemplateServiceDocumentMailingList MailingList { get; set; }
         public TemplateMetaData MetaData { get; set; }
+        public string[] PreviewUrls { get; set; }
     }
 }

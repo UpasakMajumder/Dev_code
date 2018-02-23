@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.customtable>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <NameSpace>KDA</NameSpace>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDisplayName>Fiscal Year Management</ClassDisplayName>
+  <ClassFormDefinition>
+    <form version="2">
+      <field column="ItemID" columnprecision="0" columntype="integer" guid="fd5b88e3-7f2d-463f-bcba-a25f1c4ee545" isPK="true" publicfield="false">
+        <properties>
+          <fieldcaption>ItemID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="Year" columnsize="200" columntype="text" guid="31a92c6b-d735-487d-b9ab-fece193171c2" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>
+            <![CDATA[{%DateTime.Now.Year|(user)cvoqa2@gmail.com|(hash)a3f13b3815baa25cc593f85f4852a84761453707f9d76747eb6866bc412a9777%}]]>
+          </defaultvalue>
+          <fieldcaption>Year</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Options>
+<![CDATA[
+{%DateTime.Now.AddYears(0).Year|(user)cvoqa2@gmail.com|(hash)8bd16525292843b334b2d8621963e181c7a9a035d4ab7b142bad8e7956e97450%}
+{%DateTime.Now.AddYears(1).Year|(user)cvoqa2@gmail.com|(hash)af61f3455f21f7fff2ebe0c44b2c0fa985c860a7dffe7e64e72a63f85e711f14%}
+{%DateTime.Now.AddYears(2).Year|(user)cvoqa2@gmail.com|(hash)59aa6c5158983e5d97a63ee241b60042a903dbfb7d096e3ed04eabd2396b97f8%}
+{%DateTime.Now.AddYears(3).Year|(user)cvoqa2@gmail.com|(hash)5f553a2677aab9b6d00eaa5e1d82cfe43d7c5914bdd6978ff487f193407e862a%}
+{%DateTime.Now.AddYears(4).Year|(user)cvoqa2@gmail.com|(hash)f2d0ce1a96f25b174b27dd1ddc53f9118987d7fcd0321465097f8a62e139d3de%}
+{%DateTime.Now.AddYears(5).Year|(user)cvoqa2@gmail.com|(hash)2b4137bb8aa155c2820ccab1f07e262fcb60b09f3d50dcbde221d425d973e46f%}
+{%DateTime.Now.AddYears(6).Year|(user)cvoqa2@gmail.com|(hash)e3aa764222f9b76391bc6cd3029ace04f57406720e98629bfcdc5aad688fc9b3%}
+{%DateTime.Now.AddYears(7).Year|(user)cvoqa2@gmail.com|(hash)f6d06d236820530cc45866464e03b7888a5e8af46a7c2c8ee8cfdf57d3d710ce%}
+{%DateTime.Now.AddYears(8).Year|(user)cvoqa2@gmail.com|(hash)40d16e457ca314b82ff61eef3c870164e407f0ee7ec52d4dd6ef523dbc13913c%}
+{%DateTime.Now.AddYears(9).Year|(user)cvoqa2@gmail.com|(hash)4dd5a2697076b525484a094028cd4f04fedcc642f70da3935a44b37d88ecadf5%}
+{%DateTime.Now.AddYears(10).Year|(user)cvoqa2@gmail.com|(hash)852c3979a648df8dde7e5c83e1f48f811245e14acf5545e049602df001f328c4%}
+]]>
+          </Options>
+          <SortItems>False</SortItems>
+        </settings>
+        <rules>
+          <rule errormsg="{$Kadena.FiscalYear.YearErrorMessage$}&#xA;">
+            <![CDATA[{%Rule("(return KadenaNamespace.CheckUniqueInMyTable(\"KDA.FiscalYearManagement\",ItemID.Value,\"Year\",Year.Value);|(user)cvoqa2@gmail.com|(hash)6bd0cb34c135f7f700e8ca708e416923951a47d619e5e3c7286ae3aef4f4ac6b)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"GeneralCondition\" ><p n=\"condition\"><t>return KadenaNamespace.CheckUniqueInMyTable(&quot;KDA.FiscalYearManagement&quot;,ItemID.Value,&quot;Year&quot;,Year.Value);|(user)cvoqa2@gmail.com|(hash)6bd0cb34c135f7f700e8ca708e416923951a47d619e5e3c7286ae3aef4f4ac6b</t><v>return KadenaNamespace.CheckUniqueInMyTable(&quot;KDA.FiscalYearManagement&quot;,ItemID.Value,&quot;Year&quot;,Year.Value);|(user)cvoqa2@gmail.com|(hash)6bd0cb34c135f7f700e8ca708e416923951a47d619e5e3c7286ae3aef4f4ac6b</v><r>0</r><d></d><vt>longtext</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)44f42e3442fbae15fb2963b5e431b4d02cc2063815e067393179bf6d7e390467%}]]>
+          </rule>
+        </rules>
+      </field>
+      <field column="FiscalYearStartDate" columntype="date" guid="b56e80ae-903d-4c51-97fa-f13ab7bc7628" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Fiscal Year Start Date</fieldcaption>
+        </properties>
+        <settings>
+          <CheckRange>True</CheckRange>
+          <controlname>CalendarControl</controlname>
+          <DisplayNow>True</DisplayNow>
+          <EditTime>True</EditTime>
+          <TimeZoneType>inherit</TimeZoneType>
+        </settings>
+      </field>
+      <field column="FiscalYearEndDate" columntype="date" guid="43a3644b-665a-43c3-a4db-bca5cdea9ed6" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Fiscal Year End Date</fieldcaption>
+        </properties>
+        <settings>
+          <CheckRange>True</CheckRange>
+          <controlname>CalendarControl</controlname>
+          <DisplayNow>True</DisplayNow>
+          <EditTime>True</EditTime>
+          <TimeZoneType>inherit</TimeZoneType>
+        </settings>
+        <rules>
+          <rule errormsg="{$Kadena.FiscalYear.EndDateErrorMessage$}">
+            <![CDATA[{%Rule("(Value > Fields[\"b56e80ae-903d-4c51-97fa-f13ab7bc7628\"].Value)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"CompareToField\" ><p n=\"field\"><t>Fiscal Year Start Date</t><v>b56e80ae-903d-4c51-97fa-f13ab7bc7628</v><r>0</r><d></d><vt>text</vt><tv>0</tv></p><p n=\"operator\"><t>Is greater than</t><v>&gt;</v><r>0</r><d></d><vt>text</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)56a425aaa81b39d13d3ea6088904e705c261f68dfc7b2a4032caf9cf27dd0edb%}]]>
+          </rule>
+        </rules>
+      </field>
+      <field allowempty="true" column="ItemCreatedBy" columnprecision="0" columntype="integer" guid="adcc554f-5261-45f9-bca1-ec2542fe0edf" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Created by</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemCreatedWhen" columnprecision="0" columntype="datetime" guid="f02844f0-77b3-4d77-89c1-97d5c985447c" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Created when</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemModifiedBy" columnprecision="0" columntype="integer" guid="bbe8a1b1-d2ae-4ada-bbbd-ad06485c6c95" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Modified by</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemModifiedWhen" columnprecision="0" columntype="datetime" guid="5e4f8b0a-6ba2-4451-a62d-c76a8bda39a0" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Modified when</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemOrder" columnprecision="0" columntype="integer" guid="2a455d05-3ab3-4812-9885-2295c87cef8b" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Order</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="ItemGUID" columnprecision="0" columntype="guid" guid="09f1d26a-484a-4548-90a3-6c84b86d5ee9" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>GUID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>3b8ff925-97b9-4d05-8577-d427b77858b0</ClassGUID>
+  <ClassIsContentOnly>False</ClassIsContentOnly>
+  <ClassIsCoupledClass>True</ClassIsCoupledClass>
+  <ClassIsCustomTable>True</ClassIsCustomTable>
+  <ClassIsDocumentType>False</ClassIsDocumentType>
+  <ClassIsForm>False</ClassIsForm>
+  <ClassIsMenuItemType>False</ClassIsMenuItemType>
+  <ClassIsProduct>False</ClassIsProduct>
+  <ClassName>KDA.FiscalYearManagement</ClassName>
+  <ClassNodeNameSource />
+  <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>
+  <ClassSearchCreationDateColumn>DocumentCreatedWhen</ClassSearchCreationDateColumn>
+  <ClassSearchEnabled>True</ClassSearchEnabled>
+  <ClassSearchSettings>
+    <search>
+      <item content="False" id="037596f1-3b9d-4378-a6af-40ccf83fb8bf" name="ItemCreatedBy" searchable="True" tokenized="False" />
+      <item content="True" id="0b2712f5-e9e9-4380-8ece-3f9c21f39c53" name="Year" searchable="False" tokenized="True" />
+      <item content="False" id="2da70d1c-2fb1-4f59-9b01-683a54b04fa2" name="FiscalYearEndDate" searchable="True" tokenized="False" />
+      <item content="False" id="448223f5-76b7-46ac-92c2-dbfa3a8daac4" name="ItemModifiedBy" searchable="True" tokenized="False" />
+      <item content="False" id="5ed1593b-1a77-465b-afc3-08b46c75771b" name="FiscalYearStartDate" searchable="True" tokenized="False" />
+      <item content="False" id="8e689922-2166-4127-a12c-2117119c5c9b" name="ItemCreatedWhen" searchable="True" tokenized="False" />
+      <item content="False" id="b94f7a4a-a663-4399-8b27-b333d9a74609" name="ItemID" searchable="True" tokenized="False" />
+      <item content="False" id="ebeb0014-462a-4e51-af8d-ebd14913f28a" name="ItemModifiedWhen" searchable="True" tokenized="False" />
+      <item content="False" id="ef48b418-f517-497e-a199-3eef0087cc2d" name="ItemOrder" searchable="True" tokenized="False" />
+      <item content="False" id="fdd8db66-86da-4820-8c92-e3e266aa69f2" name="ItemGUID" searchable="False" tokenized="False" />
+    </search>
+  </ClassSearchSettings>
+  <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
+  <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
+  <ClassTableName>KDA_FiscalYearManagement</ClassTableName>
+  <ClassUsePublishFromTo>False</ClassUsePublishFromTo>
+  <ClassUsesVersioning>False</ClassUsesVersioning>
+</cms.customtable>

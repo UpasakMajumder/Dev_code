@@ -44,12 +44,18 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressData\AddressData.cs" />
     <Compile Include="AddressType.cs" />
     <Compile Include="BillingAddress.cs" />
     <Compile Include="Brand\Brand.cs" />
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
     <Compile Include="Campaign.cs" />
+    <Compile Include="CampaignData\CampaignData.cs" />
+    <Compile Include="FyBudget\FyBudget.cs" />
+    <Compile Include="IBTF\IBTF.cs" />
+    <Compile Include="IBTF\IBTFAdjustment.cs" />
     <Compile Include="Product\Border.cs" />
+    <Compile Include="Product\CampaignsProduct.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDailogLabel.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialog.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialogTable.cs" />
@@ -175,6 +181,7 @@
     <Compile Include="TemplatedProduct\ProductTemplatesHeader.cs" />
     <Compile Include="TemplatedProduct\SortingType.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="UserBudget\UserBudgetItem.cs" />
     <Compile Include="ValidationFieldResult.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +193,7 @@
       <Name>Kadena2.0.Helpers</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
