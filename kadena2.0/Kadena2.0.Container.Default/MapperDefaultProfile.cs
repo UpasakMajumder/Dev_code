@@ -40,7 +40,6 @@ using Kadena.Models.Settings;
 using Kadena.Models.Site;
 using Kadena.Models.SubmitOrder;
 using Kadena.Models.TemplatedProduct;
-using Kadena2.MicroserviceClients.MicroserviceResponses;
 using System.Linq;
 
 namespace Kadena2.Container.Default
@@ -112,10 +111,6 @@ namespace Kadena2.Container.Default
             CreateMap<SubmitButton, SubmitButtonDTO>();
             CreateMap<SubmitRequestDto, SubmitOrderRequest>();
             CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
-            CreateMap<SubmitOrderServiceResponseDto, SubmitOrderResult>();
-            CreateMap<SubmitOrderErrorDto, SubmitOrderError>();
-            CreateMap<BaseResponseDto<string>, SubmitOrderResult>();
-            CreateMap<BaseErrorDto, SubmitOrderError>();
             CreateMap<PaymentMethodDto, Kadena.Models.SubmitOrder.PaymentMethod>();
             CreateMap<DeliveryAddress, Kadena.Dto.Settings.AddressDto>()
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id))

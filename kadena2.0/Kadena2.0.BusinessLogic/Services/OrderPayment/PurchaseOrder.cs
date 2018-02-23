@@ -51,7 +51,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 shoppingCart.ClearCart();
             }
 
-            serviceResult.RedirectURL = resultUrlFactory.GetOrderResultPageUrl(serviceResult.Success, serviceResult.Payload);
+            serviceResult.RedirectURL = resultUrlFactory.GetOrderResultPageUrl(serviceResult);
 
             return serviceResult;
         }
