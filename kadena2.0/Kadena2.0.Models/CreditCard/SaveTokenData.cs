@@ -5,11 +5,14 @@
         public string SilentPostType { get; set; }
         public string SubmissionID { get; set; }
         public int Approved { get; set; }
-        public int CardStored { get; set; }
-        public string Token { get; set; }
         public string ApprovalResponseStatus { get; set; }
         public string ApprovalResponseMessage { get; set; }
+        public int CardStored { get; set; }
         public string SubmissionStatusMessage { get; set; }
+        public string Token { get; set; }
+        public string CardType { get; set; }
+        public string CardEnd { get; set; }
+        public string ExpirationDate { get; set; }
         public int CardVerified { get; set; }
         public string AddressAvsResponse { get; set; }
         public string PostalCodeAvsResponse { get; set; }

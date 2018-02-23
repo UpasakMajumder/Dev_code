@@ -1,10 +1,10 @@
 ﻿namespace Kadena.Models.SubmitOrder
 {
-    public class SubmitOrderResult // TODO refactor use BaseResponse
+    public class SubmitOrderResult 
     {
-        public string Payload { get; set; }
+        public string OrderId { get; set; }
         public bool Success { get; set; }
         public string RedirectURL { get; set; }
-        public SubmitOrderError Error { get; set; }
+        public string Error { get; set; }
     }
 }

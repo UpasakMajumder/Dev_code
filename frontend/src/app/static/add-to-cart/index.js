@@ -1,7 +1,5 @@
 /* helpers */
 import { addToCartRequest } from 'app.helpers/api';
-import { getSearchObj } from 'app.helpers/location';
-import { consoleException } from 'app.helpers/io';
 
 class AddToCart {
   constructor(button) {
@@ -18,11 +16,20 @@ class AddToCart {
     const customProductName = this.nameElement && this.nameElement.value;
     const quantity = this.quantityElement ? this.quantityElement.value : 0;
 
-    const body = { customProductName, quantity };
+    const body = { customProductName, quantity, options: {} };
 
     this.properyFields.forEach((field) => {
-      const name = field.getAttribute('name');
-      body[name] = field.value;
+      const { name, value } = field;
+
+      if (field.classList.contains('js-product-option')) {
+        if (field.type === 'radio') {
+          if (field.checked) body.options[name] = value;
+        } else {
+          body.options[name] = value;
+        }
+      } else {
+        body[name] = value;
+      }
     });
 
     return body;

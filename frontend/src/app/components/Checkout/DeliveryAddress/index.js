@@ -120,7 +120,7 @@ class DeliveryAddress extends Component {
 
 
     return (
-      <div>
+      <div id="delivery-address">
         {this.state.isDialogOpen && <NewAddressDialog
           submit={this.submitNewAddress}
           closeDialog={this.toggleDialog}

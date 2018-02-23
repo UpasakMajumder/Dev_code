@@ -2,13 +2,13 @@
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2._0.BusinessLogic.Contracts.Orders;
+using Kadena2.BusinessLogic.Contracts.Orders;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Kadena2._0.BusinessLogic.Services.Orders
+namespace Kadena2.BusinessLogic.Services.Orders
 {
     public class SendSubmitOrder : ISendSubmitOrder
     {
@@ -50,18 +50,22 @@ namespace Kadena2._0.BusinessLogic.Services.Orders
             }
 
             var serviceResultDto = await orderClient.SubmitOrder(orderData);
-            var serviceResult = mapper.Map<SubmitOrderResult>(serviceResultDto);
 
-            if (serviceResult.Success)
+            if (serviceResultDto.Success)
             {
-                log.LogInfo("Submit order", "INFORMATION", $"Order {serviceResult.Payload} successfully created");             
+                log.LogInfo("Submit order", "INFORMATION", $"Order {serviceResultDto.Payload} successfully saved in microservice");             
             }
             else
             {
-                log.LogError("Submit order", $"Order {serviceResult?.Payload} error. {serviceResult?.Error?.Message}");
+                log.LogError("Submit order", $"Order {serviceResultDto.Payload} failed to save in microservice. {serviceResultDto.ErrorMessages}");
             }
 
-            return serviceResult;
+            return new SubmitOrderResult
+            {
+                Success = serviceResultDto.Success,
+                OrderId = serviceResultDto.Payload,
+                Error = serviceResultDto.ErrorMessages,
+            };
         }
     }
 }

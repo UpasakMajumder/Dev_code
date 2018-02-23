@@ -194,6 +194,21 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             SetValue("EnableAddToCart", value);
         }
     }
+
+    /// <summary>
+    /// POS number text
+    /// </summary>
+    public string POSNumberText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Product.POSNumberText"), string.Empty);
+        }
+        set
+        {
+            SetValue("POSNumberText", value);
+        }
+    }
     #endregion "Properties"
 
     #region "Methods"
@@ -1074,6 +1089,12 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "GetPrebuyData()", ex);
         }
     }
+
+    public int GetDemandCount(int SKUID)
+    {
+        return DIContainer.Resolve<IShoppingCartProvider>().GetPreBuyDemandCount(SKUID);
+    }
+
     #endregion "Methods"
 }
 

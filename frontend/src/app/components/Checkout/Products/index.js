@@ -23,7 +23,7 @@ const Products = (props) => {
   });
 
   return (
-    <div>
+    <div id="products">
       <p className="text-right">{number}</p>
       {products}
     </div>

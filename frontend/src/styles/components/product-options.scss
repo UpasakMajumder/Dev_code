@@ -1,0 +1,33 @@
+.product-options {
+  $select-width: 170px;
+
+  @mixin position($space) {
+    @extend .flex--default--default;
+
+    @each $direction in row, column {
+      &--#{$direction} {
+        flex-direction: $direction;
+
+        & > * {
+          &:not(:last-child) {
+            @if $direction == 'row' { @extend .mr-#{$space}; }
+
+            @if $direction == 'column' { @extend .mb-#{$space}; }
+          }
+        }
+      }
+    }
+  }
+
+  @include position(4);
+
+  &__input {
+    & > * {
+      min-width: $select-width;
+    }
+  }
+
+  &__radio {
+    @include position(3);
+  }
+}

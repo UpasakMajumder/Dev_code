@@ -206,7 +206,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
             if (purchaseOrderMethod != null)
             {
                 purchaseOrderMethod.HasInput = true;
-                purchaseOrderMethod.InputPlaceholder = resources.GetResourceString("Kadena.Checkout.InsertPONumber");
+                purchaseOrderMethod.InputPlaceholder = resources.GetPerSiteResourceString("Kadena.Checkout.InsertPONumber");
             }
 
             return allMethods.ToList();

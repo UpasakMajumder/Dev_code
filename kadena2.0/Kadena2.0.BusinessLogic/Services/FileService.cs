@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Kadena.AmazonFileSystemProvider;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
@@ -33,7 +34,7 @@ namespace Kadena.BusinessLogic.Services
 
         public async Task<string> GetUrlFromS3(string key)
         {
-            var linkResult = await _fileClient.GetShortliveSecureLink(key);
+            var linkResult = await _fileClient.GetShortliveSecureLink(PathHelper.EnsureFullKey(key));
 
             if (!linkResult.Success || string.IsNullOrEmpty(linkResult.Payload))
             {

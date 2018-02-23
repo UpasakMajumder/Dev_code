@@ -8,6 +8,8 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CMS.Ecommerce;
+using CMS.SiteProvider;
 
 namespace Kadena.WebAPI.KenticoProviders.Providers
 {
@@ -38,7 +40,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 userBudgetDetails.Update();
                 userBudgetDetails.SetValue("UserRemainingBudget", userBudgetDetails.GetValue("UserRemainingBudget", default(decimal)) + (newBudget - oldBudget));
                 userBudgetDetails.Update();
-                return userBudgetDetails.GetValue("UserRemainingBudget", string.Empty);
+                return CurrencyInfoProvider.GetFormattedPrice(userBudgetDetails.GetValue("UserRemainingBudget", default(double)), SiteContext.CurrentSiteID, true);
             }
 
             return string.Empty;

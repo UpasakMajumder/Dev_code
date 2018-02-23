@@ -5,6 +5,7 @@ import { toastr } from 'react-redux-toastr';
 import { CHECKOUT, NOTIFICATION } from 'app.globals';
 /* helpers */
 import { emailRegExp } from 'app.helpers/regexp';
+import { scrollTo } from 'app.helpers/dom';
 /* components */
 import Alert from 'app.dump/Alert';
 import Button from 'app.dump/Button';
@@ -46,7 +47,8 @@ class Checkout extends Component {
         [defaultId]: ''
       },
       agreeWithTandC: !CHECKOUT.tAndC.exists,
-      initChecked: true
+      initChecked: true,
+      scrolled: false
     };
   }
 
@@ -122,17 +124,23 @@ class Checkout extends Component {
     this.props.getUI();
   }
 
+  checkPaymentMethod = (checkedData, invalidFields) => {
+    const checkedPM = checkedData.paymentMethod;
+
+    if (!checkedPM.id) invalidFields.push('paymentMethod');
+
+    const itemFromProps = this.props.checkout.ui.paymentMethods.items.find(item => item.id === checkedPM.id);
+
+    if (itemFromProps.hasInput && !checkedPM.invoice) invalidFields.push('invoice');
+
+    if (itemFromProps.items.length && checkedPM.card === undefined) invalidFields.push('paymentMethod'); // new card has id = ''
+  }
+
   placeOrder = (checkedData) => {
     const { sendData, checkout } = this.props;
     const invalidFields = Object.keys(checkedData).filter(key => checkedData[key] === 0);
 
-    if (!checkedData.paymentMethod.id) invalidFields.push('paymentMethod');
-
-    if (checkedData.paymentMethod.id === 3) {
-      if (!checkedData.paymentMethod.invoice) {
-        invalidFields.push('invoice');
-      }
-    }
+    this.checkPaymentMethod(checkedData, invalidFields);
 
     const newEmailConfirmation = Checkout.orginizeEmailConfirmation(checkedData.emailConfirmation);
 
@@ -160,7 +168,7 @@ class Checkout extends Component {
 
     let deliveryAddress = 0;
     let deliveryMethod = 0;
-    let paymentMethod = {
+    const paymentMethod = {
       id: 0
     };
 
@@ -183,7 +191,14 @@ class Checkout extends Component {
     }
 
     paymentMethods.items.forEach((method) => {
-      if (method.checked) paymentMethod = { id: method.id };
+      if (method.checked) {
+        paymentMethod.id = method.id;
+
+        if (method.items.length) {
+          const checkedSubMethod = method.items.find(item => item.checked);
+          paymentMethod.card = checkedSubMethod.id;
+        }
+      }
     });
 
     initCheckedShoppingData({
@@ -192,6 +207,14 @@ class Checkout extends Component {
       paymentMethod
     });
   };
+
+  navigateToContainer = () => {
+    if (this.state.scrolled) return;
+    const { hash } = location;
+    if (!hash) return;
+    const scrolled = scrollTo(hash);
+    this.setState({ scrolled });
+  }
 
   refreshCartPreview = (products) => {
     const { items, summaryPrice } = products;
@@ -204,7 +227,7 @@ class Checkout extends Component {
 
     if (uiNext.totals && this.state.initChecked) {
       this.initCheckedShoppingData(uiNext);
-      this.setState({ initChecked: false });
+      this.setState({ initChecked: false }, this.navigateToContainer);
     }
     if (uiNext.products !== uiCurr.products) this.refreshCartPreview(uiNext.products);
   }
@@ -244,10 +267,6 @@ class Checkout extends Component {
     this.props.changeDeliveryMethod(id);
   };
 
-  changePaymentMethod = (id, invoice) => {
-    this.props.changePaymentMethod(id, invoice);
-  };
-
   render() {
     const {
       checkout: {
@@ -256,6 +275,7 @@ class Checkout extends Component {
         newAddress
       },
       changeProductQuantity,
+      changePaymentMethod,
       removeProduct,
       addNewAddress,
       saveAddress
@@ -368,7 +388,7 @@ class Checkout extends Component {
           <div className="shopping-cart__block">
             <PaymentMethod
               validationMessage={validationMessage}
-              changePaymentMethod={this.changePaymentMethod}
+              changePaymentMethod={changePaymentMethod}
               checkedObj={checkedData.paymentMethod}
               ui={paymentMethods}
             />
