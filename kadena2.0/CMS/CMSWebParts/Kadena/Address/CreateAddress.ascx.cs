@@ -101,6 +101,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             lnkSave.Text = Request.QueryString["id"] != null ? ResHelper.GetString("Kadena.Address.Update") : ResHelper.GetString("Kadena.Address.Save");
             lnkCancel.Text = ResHelper.GetString("Kadena.Address.Cancel");
             lblBrand.InnerText= ResHelper.GetString("Kadena.Address.Brands");
+            rfTelephone.ErrorMessage = ResHelper.GetString("Kadena.Address.TelephoneRequired");
         }
         catch (Exception ex)
         {
