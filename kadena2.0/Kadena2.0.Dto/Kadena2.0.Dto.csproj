@@ -179,8 +179,6 @@
     <Compile Include="TemplatedProduct\Responses\ProductTemplatesDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\GetOrderByOrderIdResponseDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceRequests\GetOrderByOrderIdRequestDTO.cs" />
-    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderErrorDto.cs" />
-    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderServiceResponseDto.cs" />
     <Compile Include="SubmitOrder\Requests\PaymentMethodDto.cs" />
     <Compile Include="Checkout\Requests\RemoveItemRequestDto.cs" />
     <Compile Include="SubmitOrder\Requests\SubmitRequestDto.cs" />
@@ -226,6 +224,7 @@
     <Compile Include="_Attributes\StringListValidationAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="SubmitOrder\MicroserviceResponses\" />
     <Folder Include="Tax\MicroserviceResponses\" />
     <Folder Include="Tax\Requests\" />
     <Folder Include="Tax\Responses\" />
