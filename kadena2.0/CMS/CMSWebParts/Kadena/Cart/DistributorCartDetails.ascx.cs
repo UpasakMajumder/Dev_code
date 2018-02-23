@@ -1,6 +1,7 @@
 ﻿using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
 using CMS.DataEngine;
+using CMS.DocumentEngine.Types.KDA;
 using CMS.Ecommerce;
 using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
@@ -12,6 +13,8 @@ using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.PDFHelpers;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.Container.Default;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -100,6 +103,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 SetValue("POSNumber", value);
             }
         }
+
 
         /// <summary>
         /// Gets or sets the ProductName.
@@ -219,6 +223,10 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 SetValue("SubTotal", value);
             }
         }
+        /// <summary>
+        /// gets or sets open campaign
+        /// </summary>
+        public int OpenCampaignID { get; set; }
 
         #endregion "Public properties"
 
@@ -234,12 +242,17 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             try
             {
                 Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
+                var capmaigns = DIContainer.Resolve<IKenticoCampaignsProvider>();
                 GetItems();
                 BindBusinessUnit();
                 if (InventoryType == (Int32)ProductType.GeneralInventory)
                 {
                     BindShippingOptions();
-                    BindShippingDropdown(InventoryType, default(double));
+                    ddlShippingOption.SelectedValue = ValidationHelper.GetString(Cart.ShoppingCartShippingOptionID, default(string));
+                }
+                else
+                {
+                    OpenCampaignID = capmaigns.GetOpenCampaignID();
                 }
                 ValidCart = true;
                 BindRepeaterData();
@@ -290,7 +303,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 var inventoryType = Cart.GetValue("ShoppingCartInventoryType", default(int));
                 if (inventoryType == (Int32)ProductType.GeneralInventory)
                 {
-                    if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionName.ToLower() != ShippingOption.Ground)
+                    if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
                     {
                         estimation = GetShippingResponse();
                     }
@@ -300,11 +313,11 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     }
                 }
                 BindShippingDropdown(inventoryType, estimatedPrice);
-                ShippingCost = estimatedPrice + EstimateSubTotal(inventoryType);
+                ShippingCost = estimatedPrice + Cart.TotalItemsPrice;
                 var businessUnitID = Cart.GetValue("BusinessUnitIDForDistributor", default(string));
                 ddlBusinessUnits.SelectedValue = businessUnitID;
                 lblTotalPrice.Text = CurrencyInfoProvider.GetFormattedPrice(ShippingCost, CurrentSite.SiteID);
-              
+
             }
             catch (Exception ex)
             {
@@ -374,7 +387,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                DataTable distributorCartData = CartPDFHelper.GetDistributorCartData(CartID, InventoryType);
+                DataTable distributorCartData = CartPDFHelper.GetDistributorCartData(CartID, InventoryType, OpenCampaignID);
                 var pdfBytes = CartPDFHelper.CreateProductPDF(distributorCartData, InventoryType);
                 CartPDFHelper.WriteresponseToPDF(pdfBytes);
             }
@@ -402,10 +415,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 }
                 ShoppingCartInfoProvider.EvaluateShoppingCart(Cart);
                 ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
-                var url = Request.RawUrl;
                 Response.Cookies["status"].Value = QueryStringStatus.Deleted;
                 Response.Cookies["status"].HttpOnly = false;
-                URLHelper.Redirect(url);
+                URLHelper.Redirect(Request.RawUrl);
             }
             catch (Exception ex)
             {
@@ -515,6 +527,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 QueryDataParameters parameters = new QueryDataParameters();
                 parameters.Add("@CartItemDistributorID", ShoppingCartDistributorID);
                 parameters.Add("@ShoppingCartInventoryType", InventoryType);
+                parameters.Add("@ShoppingCartCampaignID", OpenCampaignID);
                 rptCartItems.QueryParameters = parameters;
                 rptCartItems.QueryName = SQLQueries.shoppingCartCartItems;
             }
@@ -554,6 +567,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
+                var cartBusinessUnit = DIContainer.Resolve<IShoppingCartProvider>();
                 if (BusinessUnits != null && BusinessUnits.Count > 0)
                 {
                     ddlBusinessUnits.DataSource = BusinessUnits;
@@ -562,10 +576,8 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     ddlBusinessUnits.DataBind();
                     if (string.IsNullOrEmpty(Cart.GetStringValue("BusinessUnitIDForDistributor", null)))
                     {
-                        Cart.SetValue("BusinessUnitIDForDistributor", BusinessUnits.FirstOrDefault().BusinessUnitNumber);
-                        Cart.Update();
+                        cartBusinessUnit.UpdateBusinessUnit(Cart, BusinessUnits.FirstOrDefault().BusinessUnitNumber);
                     }
-
                 }
             }
             catch (Exception ex)
@@ -574,6 +586,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             }
         }
         #endregion "Private Methods"
-      
+
     }
 }

@@ -535,6 +535,36 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         }
 
         /// <summary>
+        ///Returns  campaign name by campaignID
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Returns  campaign name by campaignID", 1)]
+        [MacroMethodParam(0, "CampaignID", typeof(int), "CampaignID")]
+        public static string GetCampaignNameByID(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                int campaignID = ValidationHelper.GetInteger(parameters[0], 0);
+                string campaignName = string.Empty;
+                var campaign = CampaignProvider.GetCampaigns().Columns("Name")
+                                .WhereEquals("CampaignID", campaignID)
+                                .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).FirstOrDefault();
+                if (campaign != null)
+                {
+                    campaignName = ValidationHelper.GetString(campaign.GetValue("Name"), string.Empty);
+                }
+                return campaignName;
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "BindPrograms", ex.Message);
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
         /// Returns shopping cart items count
         /// </summary>
         /// <param name="context"></param>
@@ -549,10 +579,12 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 int userID = ValidationHelper.GetInteger(parameters[1], default(int));
                 int inventoryType = ValidationHelper.GetInteger(parameters[2], default(int));
+                int openCampaignID = ValidationHelper.GetInteger(parameters[3], default(int));
                 var query = new DataQuery(SQLQueries.getShoppingCartCount);
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", userID);
                 queryParams.Add("@ShoppingCartInventoryType", inventoryType);
+                queryParams.Add("@ShoppingCartCampaignID", openCampaignID);
                 var countData = ConnectionHelper.ExecuteScalar(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
                 return ValidationHelper.GetInteger(countData, default(int));
             }
@@ -578,18 +610,20 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 int userID = ValidationHelper.GetInteger(parameters[1], default(int));
                 int inventoryType = ValidationHelper.GetInteger(parameters[2], default(int));
+                int openCampaignID = ValidationHelper.GetInteger(parameters[3], default(int));
                 if (inventoryType == (Int32)ProductType.PreBuy)
                 {
                     var query = new DataQuery(SQLQueries.getShoppingCartTotal);
                     QueryDataParameters queryParams = new QueryDataParameters();
                     queryParams.Add("@ShoppingCartUserID", userID);
                     queryParams.Add("@ShoppingCartInventoryType", inventoryType);
+                    queryParams.Add("@ShoppingCartCampaignID", openCampaignID);
                     var cartTotal = ConnectionHelper.ExecuteScalar(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
                     return ValidationHelper.GetDecimal(cartTotal, default(decimal));
                 }
                 else
                 {
-                    var loggedInUSerCartIDs = ShoppingCartHelper.GetCartsByUserID(userID, ProductType.GeneralInventory);
+                    var loggedInUSerCartIDs = ShoppingCartHelper.GetCartsByUserID(userID, ProductType.GeneralInventory,openCampaignID);
                     decimal cartTotal = 0;
                     loggedInUSerCartIDs.ForEach(cartID =>
                     {
@@ -659,6 +693,15 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return string.Empty;
         }
 
+
+        [MacroMethod(typeof(string), "Returns per-site localization string.", 1)]
+        [MacroMethodParam(0, "name", typeof(string), "Name of localization project.")]
+        public static object GetPerSiteResourceString(EvaluationContext context, params object[] parameters)
+        {
+            string name = parameters[0] as string;
+            return DIContainer.Resolve<IKenticoResourceService>().GetPerSiteResourceString(name);
+        }
+
         /// <summary>
         /// Returns Category name based on Category ID
         /// </summary>
@@ -715,6 +758,26 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 EventLogProvider.LogInformation("Kadena Macro methods", "IsCampaignOpen", ex.Message);
                 return IsOpen;
+            }
+        }
+        /// <summary>
+        /// Returns if any campaign is open
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(int), "Returns campaignid if any campaign is open",0)]
+        public static object OpenCampaignID(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                var campaign = ShoppingCartHelper.GetOpenCampaign();
+                return campaign!=null? campaign.CampaignID:default(int);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "OpenCampaignID", ex.Message);
+                return default(int);
             }
         }
 

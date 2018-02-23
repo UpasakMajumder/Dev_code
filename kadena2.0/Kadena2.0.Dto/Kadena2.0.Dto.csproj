@@ -52,10 +52,17 @@
   <ItemGroup>
     <Compile Include="Brands\BrandDto.cs" />
     <Compile Include="BusinessUnits\BusinessUnitDto.cs" />
+    <Compile Include="Checkout\Responses\ChangeDeliveryAddressResponseDto.cs" />
+    <Compile Include="Checkout\Responses\ChangeItemQuantityResponseDto.cs" />
+    <Compile Include="Checkout\ItemOptionDto.cs" />
     <Compile Include="CreditCard\3DSi\Requests\SaveTokenDataRequestDto.cs" />
-    <Compile Include="CreditCard\3DSi\Responses\CreditCardPaymentDoneDto.cs" />
+    <Compile Include="Checkout\StoredCardDto.cs" />
+    <Compile Include="CreditCard\MicroserviceResponses\UserStoredCardDto.cs" />
+    <Compile Include="CreditCard\Requests\SaveCreditCardRequestDto.cs" />
+    <Compile Include="CreditCard\Responses\CreditCardPaymentDoneDto.cs" />
     <Compile Include="CustomerData\UserBudgetDto.cs" />
     <Compile Include="Product\BorderDto.cs" />
+    <Compile Include="Product\PriceDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDailogLabelDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialogDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialogTableCellDto.cs" />
@@ -71,16 +78,16 @@
     <Compile Include="Checkout\CartItemPreviewDTO.cs" />
     <Compile Include="Checkout\CartItemsDTO.cs" />
     <Compile Include="Checkout\CartItemDTO.cs" />
-    <Compile Include="Checkout\CartItemsPreviewDTO.cs" />
+    <Compile Include="Checkout\Responses\CartItemsPreviewDTO.cs" />
     <Compile Include="Checkout\CartPriceDTO.cs" />
-    <Compile Include="Checkout\CheckoutPageDeliveryTotalsDTO.cs" />
+    <Compile Include="Checkout\Responses\CheckoutPageDeliveryTotalsDTO.cs" />
     <Compile Include="Checkout\DeliveryAddressesBoundsDTO.cs" />
     <Compile Include="Checkout\NewAddressButtonDTO.cs" />
     <Compile Include="Checkout\NewCartItemDto.cs" />
     <Compile Include="Checkout\NotificationEmailDto.cs" />
     <Compile Include="Checkout\NotificationEmailTooltipDto.cs" />
     <Compile Include="Checkout\SubmitButtonDTO.cs" />
-    <Compile Include="Checkout\CheckoutPageDTO.cs" />
+    <Compile Include="Checkout\Responses\CheckoutPageDTO.cs" />
     <Compile Include="Checkout\DeliveryAddressDTO.cs" />
     <Compile Include="Checkout\DeliveryAddressesDTO.cs" />
     <Compile Include="Checkout\DeliveryMethodsDTO.cs" />
@@ -122,10 +129,10 @@
     <Compile Include="Order\OrderStatisticDto.cs" />
     <Compile Include="Payment\CreditCard\MicroserviceRequests\AddressDto.cs" />
     <Compile Include="Payment\CreditCard\MicroserviceRequests\CreateCustomerContainerRequestDto.cs" />
-    <Compile Include="Product\AddToCartResultDto.cs" />
+    <Compile Include="Checkout\Responses\AddToCartResultDto.cs" />
     <Compile Include="Product\ProductCategoryDto.cs" />
     <Compile Include="Product\ProductDto.cs" />
-    <Compile Include="Product\RequestResultDto.cs" />
+    <Compile Include="Checkout\RequestResultDto.cs" />
     <Compile Include="Product\Responses\GetProductsDto.cs" />
     <Compile Include="RecentOrders\OrderCampaginHeadDto.cs" />
     <Compile Include="Search\Responses\AutocompletePagesDTO.cs" />
@@ -172,8 +179,6 @@
     <Compile Include="TemplatedProduct\Responses\ProductTemplatesDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\GetOrderByOrderIdResponseDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceRequests\GetOrderByOrderIdRequestDTO.cs" />
-    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderErrorDto.cs" />
-    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderServiceResponseDto.cs" />
     <Compile Include="SubmitOrder\Requests\PaymentMethodDto.cs" />
     <Compile Include="Checkout\Requests\RemoveItemRequestDto.cs" />
     <Compile Include="SubmitOrder\Requests\SubmitRequestDto.cs" />
@@ -219,6 +224,7 @@
     <Compile Include="_Attributes\StringListValidationAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="SubmitOrder\MicroserviceResponses\" />
     <Folder Include="Tax\MicroserviceResponses\" />
     <Folder Include="Tax\Requests\" />
     <Folder Include="Tax\Responses\" />

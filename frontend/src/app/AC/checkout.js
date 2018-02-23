@@ -1,18 +1,32 @@
 import axios from 'axios';
 import { toastr } from 'react-redux-toastr';
 /* constants */
-import { FETCH, SUCCESS, FAILURE, INIT_UI, START, FINISH, APP_LOADING, CHECKOUT_PRICING,
-  CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA, RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT,
-  CHANGE_PRODUCT_QUANTITY, CHECKOUT_STATIC, CART_PREVIEW_CHANGE_ITEMS, ADD_NEW_ADDRESS } from 'app.consts';
-/* helpers */
-import { callAC } from 'app.helpers/ac';
+import {
+  FETCH,
+  SUCCESS,
+  FAILURE,
+  INIT_UI,
+  START,
+  FINISH,
+  APP_LOADING,
+  CHECKOUT,
+  CHECKOUT_INIT_CHECKED_DATA,
+  CHECKOUT_CHANGE_PAYMENT,
+  CHECKOUT_CHANGE_QUANTITY,
+  CHECKOUT_REMOVE_PRODUCT,
+  CHECKOUT_CHANGE_ADDRESS,
+  CHECKOUT_GET_TOTALS,
+  CHECKOUT_PROCEED,
+  CHECKOUT_CHANGE_DELIVERY,
+  ADD_NEW_ADDRESS
+} from 'app.consts';
+
 /* globals */
 import { CHECKOUT as CHECKOUT_URL, NOTIFICATION } from 'app.globals';
-/* web service */
-import { staticUI, staticUI2, priceUI, completeUI, newAddress } from 'app.ws/checkoutUI';
-import { newState } from 'app.ws/cartPreviewUI';
 
 const getTotalPrice = (dispatch) => {
+  dispatch({ type: CHECKOUT_GET_TOTALS + FETCH });
+
   const state = window.store.getState();
   let promise;
 
@@ -29,38 +43,26 @@ const getTotalPrice = (dispatch) => {
 
       if (!success) {
         dispatch({
-          type: CHECKOUT_PRICING + INIT_UI + FAILURE,
+          type: CHECKOUT_GET_TOTALS + FAILURE,
           alert: errorMessage
         });
+
         return;
       }
 
       dispatch({
-        type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
-        payload: {
-          ui: payload
-        }
+        type: CHECKOUT_GET_TOTALS + SUCCESS,
+        payload
       });
     })
     .catch((error) => {
-      dispatch({ type: CHECKOUT_PRICING + INIT_UI + FAILURE });
+      dispatch({ type: CHECKOUT_GET_TOTALS + FAILURE });
     });
-};
-
-const getTotalPriceDev = (dispatch) => {
-  setTimeout(() => {
-    dispatch({
-      type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
-      payload: {
-        ui: priceUI.payload
-      }
-    });
-  }, 3000);
 };
 
 export const getUI = () => {
   return (dispatch) => {
-    dispatch({ type: CHECKOUT_STATIC + INIT_UI + FETCH });
+    dispatch({ type: CHECKOUT + INIT_UI + FETCH });
 
     axios.get(CHECKOUT_URL.initRenderUIURL)
       .then((response) => {
@@ -68,7 +70,7 @@ export const getUI = () => {
 
         if (!success) {
           dispatch({
-            type: CHECKOUT_STATIC + INIT_UI + FAILURE,
+            type: CHECKOUT + INIT_UI + FAILURE,
             alert: errorMessage
           });
           return;
@@ -77,222 +79,194 @@ export const getUI = () => {
         getTotalPrice(dispatch);
 
         dispatch({
-          type: CHECKOUT_STATIC + INIT_UI + SUCCESS,
-          payload: {
-            ui: payload
-          }
+          type: CHECKOUT + INIT_UI + SUCCESS,
+          payload
         });
       })
       .catch((error) => {
-        dispatch({ type: CHECKOUT_STATIC + INIT_UI + FAILURE });
+        dispatch({ type: CHECKOUT + INIT_UI + FAILURE });
       });
   };
 };
 
 export const initCheckedShoppingData = (data) => {
-  return (dispatch) => {
-    dispatch({
-      type: INIT_CHECKED_CHECKOUT_DATA,
-      payload: { ...data }
-    });
+  return {
+    type: CHECKOUT_INIT_CHECKED_DATA,
+    payload: data
   };
 };
 
 
 export const removeProduct = (id) => {
   return (dispatch) => {
-    const dev = () => {
-      dispatch({
-        type: REMOVE_PRODUCT + SUCCESS,
-        payload: {
-          ui: staticUI2.payload
-        }
-      });
+    dispatch({ type: CHECKOUT_REMOVE_PRODUCT + FETCH });
 
-      getTotalPriceDev(dispatch);
+    const url = CHECKOUT_URL.removeProductURL;
+    axios.post(url, { id })
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
 
-      toastr.success(NOTIFICATION.removeProduct.title, NOTIFICATION.removeProduct.text);
-    };
-
-    const prod = () => {
-      const url = CHECKOUT_URL.removeProductURL;
-      axios.post(url, { id })
-        .then((response) => {
-          const { payload, success, errorMessage } = response.data;
-
-          if (!success) {
-            dispatch({
-              type: REMOVE_PRODUCT + FAILURE,
-              alert: errorMessage
-            });
-            return;
-          }
-
-          getTotalPrice(dispatch);
-
+        if (!success) {
           dispatch({
-            type: REMOVE_PRODUCT + SUCCESS,
-            payload: {
-              ui: payload
-            }
+            type: CHECKOUT_REMOVE_PRODUCT + FAILURE,
+            alert: errorMessage
           });
+          return;
+        }
 
-          toastr.success(NOTIFICATION.removeProduct.title, NOTIFICATION.removeProduct.text);
-        })
-        .catch((error) => {
-          dispatch({ type: REMOVE_PRODUCT + FAILURE });
+        getTotalPrice(dispatch);
+
+        dispatch({
+          type: CHECKOUT_REMOVE_PRODUCT + SUCCESS,
+          payload
         });
-    };
 
-    callAC(dev, prod);
+        toastr.success(NOTIFICATION.removeProduct.title, NOTIFICATION.removeProduct.text);
+      })
+      .catch((error) => {
+        dispatch({ type: CHECKOUT_REMOVE_PRODUCT + FAILURE });
+      });
   };
 };
 
 export const changeProductQuantity = (id, quantity) => {
   return (dispatch) => {
-    const prod = () => {
-      const url = CHECKOUT_URL.changeQuantityURL;
-      axios.post(url, { id, quantity })
-        .then((response) => {
-          const { payload, success, errorMessage } = response.data;
+    dispatch({ type: CHECKOUT_CHANGE_QUANTITY + FETCH });
 
-          if (!success) {
-            dispatch({
-              type: CHANGE_PRODUCT_QUANTITY + FAILURE,
-              alert: errorMessage
-            });
-            return;
-          }
+    const url = CHECKOUT_URL.changeQuantityURL;
+    axios.post(url, { id, quantity })
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
 
-          getTotalPrice(dispatch);
-
+        if (!success) {
           dispatch({
-            type: CHANGE_PRODUCT_QUANTITY + SUCCESS,
-            payload: {
-              ui: payload
-            }
+            type: CHECKOUT_CHANGE_QUANTITY + FAILURE,
+            alert: errorMessage
           });
-        })
-        .catch((error) => {
-          dispatch({ type: CHANGE_PRODUCT_QUANTITY + FAILURE });
+          return;
+        }
+
+        getTotalPrice(dispatch);
+
+        dispatch({
+          type: CHECKOUT_CHANGE_QUANTITY + SUCCESS,
+          payload
         });
-    };
-
-    const dev = () => {
-      setTimeout(() => {
-        dispatch({ type: APP_LOADING + FINISH });
-      }, 2000);
-    };
-
-    callAC(dev, prod);
+      })
+      .catch((error) => {
+        dispatch({ type: CHECKOUT_CHANGE_QUANTITY + FAILURE });
+      });
   };
 };
 
-export const changeShoppingData = (field, id, invoice) => {
+export const changeDeliveryMethod = (id) => {
   return (dispatch) => {
-    dispatch({
-      type: CHANGE_CHECKOUT_DATA,
-      payload: {
-        field, id, invoice
-      }
-    });
+    const url = CHECKOUT_URL.changeDeliveryMethodURL;
 
-    if (field === 'paymentMethod') return;
+    dispatch({ type: CHECKOUT_CHANGE_DELIVERY + FETCH });
 
-    dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FETCH });
+    axios.post(url, { id })
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
 
-    let url = '';
-    if (field === 'deliveryMethod') {
-      url = CHECKOUT_URL.changeDeliveryMethodURL;
-    } else if (field === 'deliveryAddress') {
-      url = CHECKOUT_URL.changeAddressURL;
-    }
-
-    const prod = () => {
-      axios.post(url, { id })
-        .then((response) => {
-          const { payload, success, errorMessage } = response.data;
-
-          if (!success) {
-            dispatch({
-              type: RECALCULATE_CHECKOUT_PRICE + FAILURE,
-              alert: errorMessage
-            });
-            return;
-          }
-
-          getTotalPrice(dispatch);
-
+        if (!success) {
           dispatch({
-            type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
-            payload: {
-              ui: payload
-            }
+            type: CHECKOUT_CHANGE_DELIVERY + FAILURE,
+            alert: errorMessage
           });
-        })
-        .catch((error) => {
-          dispatch({ type: RECALCULATE_CHECKOUT_PRICE + FAILURE });
-        });
-    };
-
-    const dev = () => {
-      setTimeout(() => {
-        getTotalPriceDev(dispatch);
+          return;
+        }
 
         dispatch({
-          type: RECALCULATE_CHECKOUT_PRICE + SUCCESS,
+          type: CHECKOUT_CHANGE_DELIVERY + SUCCESS,
           payload: {
-            ui: completeUI.payload
+            ...payload,
+            id
           }
         });
-      }, 1000);
-    };
+      })
+      .catch((error) => {
+        dispatch({ type: CHECKOUT_CHANGE_DELIVERY + FAILURE });
+      });
+  };
+};
 
-    callAC(dev, prod);
+export const changeDeliveryAddress = (id) => {
+  return (dispatch) => {
+    const url = CHECKOUT_URL.changeAddressURL;
+
+    dispatch({ type: CHECKOUT_CHANGE_ADDRESS + FETCH });
+
+    axios.post(url, { id })
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
+
+        if (!success) {
+          dispatch({
+            type: CHECKOUT_CHANGE_ADDRESS + FAILURE,
+            alert: errorMessage
+          });
+          return;
+        }
+
+        getTotalPrice(dispatch);
+
+        dispatch({
+          type: CHECKOUT_CHANGE_ADDRESS + SUCCESS,
+          payload: {
+            deliveryAddresses: payload.deliveryAddresses,
+            id
+          }
+        });
+      })
+      .catch((error) => {
+        dispatch({ type: CHECKOUT_CHANGE_ADDRESS + FAILURE });
+      });
+  };
+};
+
+export const changePaymentMethod = (id, invoice, card) => {
+  return {
+    type: CHECKOUT_CHANGE_PAYMENT,
+    payload: {
+      id,
+      invoice,
+      card
+    }
   };
 };
 
 export const sendData = (data) => {
   return (dispatch) => {
-    dispatch({ type: SUBMIT_CHECKOUT + FETCH });
+    dispatch({ type: CHECKOUT_PROCEED + FETCH });
     dispatch({ type: APP_LOADING + START });
 
-    const prod = () => {
-      axios.post(CHECKOUT_URL.submitURL, { ...data })
-        .then((response) => {
-          dispatch({ type: APP_LOADING + FINISH });
-
-          const { payload, success, errorMessage } = response.data;
-
-          if (!success) {
-            dispatch({
-              type: SUBMIT_CHECKOUT + FAILURE,
-              alert: errorMessage
-            });
-            return;
-          }
-
-          dispatch({
-            type: SUBMIT_CHECKOUT + SUCCESS,
-            payload: {
-              status: success,
-              redirectURL: payload.redirectURL
-            }
-          });
-        })
-        .catch((error) => {
-          dispatch({ type: APP_LOADING + FINISH });
-          dispatch({ type: SUBMIT_CHECKOUT + FAILURE });
-        });
-    };
-
-    const dev = () => {
-      setTimeout(() => {
+    axios.post(CHECKOUT_URL.submitURL, data)
+      .then((response) => {
         dispatch({ type: APP_LOADING + FINISH });
-      }, 2000);
-    };
 
-    callAC(dev, prod);
+        const { payload, success, errorMessage } = response.data;
+
+        if (!success) {
+          dispatch({
+            type: CHECKOUT_PROCEED + FAILURE,
+            alert: errorMessage
+          });
+          return;
+        }
+
+        dispatch({
+          type: CHECKOUT_PROCEED + SUCCESS,
+          payload: {
+            status: success,
+            redirectURL: payload.redirectURL
+          }
+        });
+      })
+      .catch((error) => {
+        dispatch({ type: APP_LOADING + FINISH });
+        dispatch({ type: CHECKOUT_PROCEED + FAILURE });
+      });
   };
 };
 
@@ -301,56 +275,33 @@ export const addNewAddress = (data) => {
     dispatch({ type: ADD_NEW_ADDRESS + FETCH });
     dispatch({ type: APP_LOADING + START });
 
-    const dev = () => {
-      dispatch({
-        type: ADD_NEW_ADDRESS + SUCCESS,
-        payload: data
-      });
+    dispatch({
+      type: ADD_NEW_ADDRESS + SUCCESS,
+      payload: data
+    });
 
-      setTimeout(() => {
-        dispatch({
-          type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
-          payload: {
-            ui: priceUI.payload
-          }
-        });
-        dispatch({ type: APP_LOADING + FINISH });
-      }, 3000);
-    };
+    axios.post(CHECKOUT_URL.initTotalDeliveryUIURL, data)
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
 
-    const prod = () => {
-      dispatch({
-        type: ADD_NEW_ADDRESS + SUCCESS,
-        payload: data
-      });
-
-      axios.post(CHECKOUT_URL.initTotalDeliveryUIURL, data)
-        .then((response) => {
-          const { payload, success, errorMessage } = response.data;
-
-          if (!success) {
-            dispatch({
-              type: CHECKOUT_PRICING + INIT_UI + FAILURE,
-              alert: errorMessage
-            });
-            dispatch({ type: APP_LOADING + FINISH });
-            return;
-          }
-
+        if (!success) {
           dispatch({
-            type: CHECKOUT_PRICING + INIT_UI + SUCCESS,
-            payload: {
-              ui: payload
-            }
+            type: CHECKOUT_GET_TOTALS + INIT_UI + FAILURE,
+            alert: errorMessage
           });
           dispatch({ type: APP_LOADING + FINISH });
-        })
-        .catch((error) => {
-          dispatch({ type: CHECKOUT_PRICING + INIT_UI + FAILURE });
-          dispatch({ type: APP_LOADING + FINISH });
-        });
-    };
+          return;
+        }
 
-    callAC(dev, prod);
+        dispatch({
+          type: CHECKOUT_GET_TOTALS + INIT_UI + SUCCESS,
+          payload
+        });
+        dispatch({ type: APP_LOADING + FINISH });
+      })
+      .catch((error) => {
+        dispatch({ type: CHECKOUT_GET_TOTALS + INIT_UI + FAILURE });
+        dispatch({ type: APP_LOADING + FINISH });
+      });
   };
 };

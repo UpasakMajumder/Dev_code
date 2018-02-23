@@ -44,7 +44,12 @@ namespace Kadena.BusinessLogic.Services
             this.kenticoUsers = kenticoUsers;
             this.kenticoSite = kenticoSite;
             this.kenticoLog = kenticoLog;
-        }      
+        }
+
+        public Guid GenerateNewSubmissionId()
+        {
+            return Guid.NewGuid();
+        }
 
         public Submission GenerateNewSubmission(string orderJson = "")
         {
@@ -61,7 +66,7 @@ namespace Kadena.BusinessLogic.Services
 
             var submission = new Submission()
             {
-                SubmissionId = Guid.NewGuid(),
+                SubmissionId = GenerateNewSubmissionId(),
                 AlreadyVerified = false,
                 Processed = false,
                 UserId = userId,
@@ -86,10 +91,12 @@ namespace Kadena.BusinessLogic.Services
             return submissionProvider.GetSubmission(submissionGuid);
         }
 
-        public void SetAsProcessed(Submission submission, string redirectUrl)
+        public void SetAsProcessed(Submission submission, bool orderSuccess, string redirectUrl, string error = "")
         {
             submission.Processed = true;
+            submission.Success = orderSuccess;
             submission.RedirectUrl = redirectUrl;
+            submission.Error = error;
             submissionProvider.SaveSubmission(submission);
             kenticoLog.LogInfo("Submission Processed", "Info", $"Submission {submission.SubmissionId} was marked as processed");
         }
@@ -118,6 +125,38 @@ namespace Kadena.BusinessLogic.Services
            
             submissionProvider.DeleteSubmission(submission.SubmissionId);
             kenticoLog.LogInfo("Submission Deleted", "Info", $"Submission {submission.SubmissionId} was deleted");
+        }
+
+        public void SetSaveCardJson(string submissionId, string saveCardJson)
+        {
+            var submission = GetSubmission(submissionId);
+
+            if (submission == null)
+            {
+                throw new ArgumentOutOfRangeException("submissionId", "Invalid of missing submissionId");
+            }
+
+            submission.SaveCardJson = saveCardJson;
+            submissionProvider.SaveSubmission(submission);
+        }
+
+        public bool CheckOwner(Submission submission)
+        {
+            int siteId = kenticoSite.GetKenticoSite().Id;
+            int userId = kenticoUsers.GetCurrentUser().UserId;
+            int customerId = kenticoUsers.GetCurrentCustomer().Id;
+            return submission.CheckOwner(siteId, userId, customerId);
+        }
+
+        public Guid RenewSubmission(string submissionId)
+        {
+            var newSubmissionId = GenerateNewSubmissionId();
+            submissionProvider.UpdateSubmissionId(Guid.Parse(submissionId), newSubmissionId);
+
+            var submission = submissionProvider.GetSubmission(newSubmissionId);
+            submission.Renew(newSubmissionId);            
+            submissionProvider.SaveSubmission(submission);
+            return submission.SubmissionId;
         }
     }
 }

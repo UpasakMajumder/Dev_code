@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.pagetemplate>
+  <PageTemplateAllowInheritHeader>False</PageTemplateAllowInheritHeader>
+  <PageTemplateCategoryID>
+    <CodeName>Kadena_System</CodeName>
+    <GUID>f8f77f9f-4939-415a-a248-b2551d11f8cb</GUID>
+    <ObjectType>cms.pagetemplatecategory</ObjectType>
+  </PageTemplateCategoryID>
+  <PageTemplateCloneAsAdHoc>False</PageTemplateCloneAsAdHoc>
+  <PageTemplateCodeName>_FailedOrders</PageTemplateCodeName>
+  <PageTemplateDisplayName>_Failed Orders</PageTemplateDisplayName>
+  <PageTemplateFile />
+  <PageTemplateForAllPages>True</PageTemplateForAllPages>
+  <PageTemplateGUID>9a8b9884-a229-4d20-8b27-e26d7a074c03</PageTemplateGUID>
+  <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
+  <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
+  <PageTemplateIsLayout>False</PageTemplateIsLayout>
+  <PageTemplateIsReusable>True</PageTemplateIsReusable>
+  <PageTemplateLayout>
+<![CDATA[
+<div class="content-header">
+  <div class="content-header__inner">
+    <h1 class="content-header__page-name"></h1>
+    <div class="text-right">
+      <div class="add__btn" style="margin-right: 5px;">
+        <cms:CMSWebPartZone ZoneID="ZoneCheckout" runat="server" />
+      </div>
+    </div>
+  </div>
+</div>
+<cms:CMSWebPartZone ZoneID="ZoneFailedCartDetails" runat="server" />
+]]>
+  </PageTemplateLayout>
+  <PageTemplateLayoutType>ascx</PageTemplateLayoutType>
+  <PageTemplateShowAsMasterTemplate>False</PageTemplateShowAsMasterTemplate>
+  <PageTemplateType>portal</PageTemplateType>
+  <PageTemplateWebParts>
+    <page>
+      <webpartzone id="ZoneFailedCartDetails" v="1">
+        <webpart controlid="rptCartDistributors" guid="070be06e-2b95-4a82-b010-2362fc5563f4" type="queryrepeater" v="1">
+          <property name="alternatingtransformationname"></property>
+          <property name="backnextlocation">split</property>
+          <property name="cachedependencies">##NONE##</property>
+          <property name="cacheitemname"></property>
+          <property name="cacheminutes">0</property>
+          <property name="cat_open_ajax">False</property>
+          <property name="cat_open_output_filter">False</property>
+          <property name="cat_open_performance">False</property>
+          <property name="cat_open_time zones">False</property>
+          <property name="cat_open_visibility">False</property>
+          <property name="columns"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter">
+<![CDATA[
+<div class="dialog" id="autoSave_Dialog">
+  <div class="dialog__shadow"></div>
+  <div class="dialog__block">
+    <div class="dialog__content">
+      <p class="response_Success">
+        {$KDA.Cart.Update.Success$}
+      </p>
+      <p class="response_failure">
+        {$KDA.Cart.Update.Failure$}
+      </p>
+    </div>
+    <div class="dialog__footer">
+      <div class="btn-group btn-group--right">
+        <button type="button" class="btn-action btn-action--secondary js-CloseMesaage">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+]]>
+          </property>
+          <property name="contentbefore"></property>
+          <property name="controlid">rptCartDistributors</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="enablepaging">False</property>
+          <property name="filtername"></property>
+          <property name="hidecontrolforzerorows">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">070be06e-2b95-4a82-b010-2362fc5563f4</property>
+          <property name="itemseparator"></property>
+          <property name="loadpagesindividually">False</property>
+          <property name="orderby"></property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="pagenumbersseparator">-</property>
+          <property name="pagerhtmlafter"></property>
+          <property name="pagerhtmlbefore"></property>
+          <property name="pagerposition">bottom</property>
+          <property name="pagesize">10</property>
+          <property name="pagingmode">querystring</property>
+          <property name="partialcachedependencies">##NONE##</property>
+          <property name="partialcacheminutes"></property>
+          <property name="positionleft"></property>
+          <property name="positiontop"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="queryname">Ecommerce.Shoppingcart.GetCartDistributors</property>
+          <property name="querystringkey"></property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="resultsposition">top</property>
+          <property name="selecttopn"></property>
+          <property name="showdeletebutton">False</property>
+          <property name="showeditbutton">False</property>
+          <property name="showeditdeletebuttons">False</property>
+          <property name="showfirstlast">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="transformationname">KDA.Transformations.XFailedOrderDistributors</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webpartlayout"></property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">queryrepeater</property>
+          <property name="wherecondition" ismacro="true">
+<![CDATA[
+ShoppingCartInventoryType=2 AND ShoppingCartSiteID={%CurrentSite.SiteID|(user)cvoqa2@gmail.com|(hash)7cfc90a7531eb28cb1698bcc36ccdc6093504c59ab4a8814d9ecdfe6eb948648%}
+AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN {%ToInt(QueryString["campid"],-1)|(user)cvoqa2@gmail.com|(hash)95d135b0e026aecf056e7c9de440e9e9b0284f4d09db449cfaa26a47102e9261%} End
+
+
+]]>
+          </property>
+          <property name="zerorowstext" ismacro="true">
+<![CDATA[
+<div class=" mt-2">
+    <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span>{$Kadena.ItemList.NoDataFoundText$}</span></div>
+</div>
+]]>
+          </property>
+        </webpart>
+      </webpartzone>
+      <webpartzone id="ZoneCheckout" v="1">
+        <webpart controlid="FailedOrdersCheckOut" guid="3e333398-cccb-4dd3-98d3-45d677dbc88b" type="FailedOrdersCheckOut" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">FailedOrdersCheckOut</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">3e333398-cccb-4dd3-98d3-45d677dbc88b</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">FailedOrdersCheckOut</property>
+        </webpart>
+      </webpartzone>
+    </page>
+  </PageTemplateWebParts>
+</cms.pagetemplate>

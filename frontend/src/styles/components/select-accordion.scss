@@ -2,8 +2,6 @@
   $transition-length: 700ms;
 
   &__item {
-    display: inline-block;
-
     label {
       @extend %flex--center--default;
       @extend .weight--bold;

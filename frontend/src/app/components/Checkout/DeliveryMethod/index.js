@@ -4,12 +4,18 @@ import PropTypes from 'prop-types';
 import MethodsGroup from './MethodsGroup';
 
 class DeliveryMethod extends Component {
-  state = {
-    openId: 0
-  };
+  constructor(props) {
+    super(props);
+
+    const openedItem = this.props.ui.items.find(item => item.opened);
+
+    this.state = {
+      openId: openedItem ? openedItem.id : 0
+    };
+  }
 
   static propTypes = {
-    changeShoppingData: PropTypes.func.isRequired,
+    changeDeliveryMethod: PropTypes.func.isRequired,
     isSending: PropTypes.bool.isRequired,
     checkedId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
     ui: PropTypes.shape({
@@ -34,7 +40,7 @@ class DeliveryMethod extends Component {
 
   render() {
     const { openId } = this.state;
-    const { ui, checkedId, changeShoppingData } = this.props;
+    const { ui, checkedId, changeDeliveryMethod } = this.props;
     const { title, description, items } = ui;
 
     const methodsGroups = items.map((item) => {
@@ -42,7 +48,7 @@ class DeliveryMethod extends Component {
         <MethodsGroup
           openId={openId}
           changeOpenId={this.changeOpenId}
-          changeShoppingData={changeShoppingData}
+          changeDeliveryMethod={changeDeliveryMethod}
           checkedId={checkedId}
           key={`mg-${item.id}`}
           {...item} />
@@ -52,7 +58,7 @@ class DeliveryMethod extends Component {
     const descriptionElement = description ? <p className="cart-fill__info">{description}</p> : null;
 
     return (
-      <div>
+      <div id="delivery-method">
         <h2>{title}</h2>
         <div className="cart-fill__block">
           {descriptionElement}

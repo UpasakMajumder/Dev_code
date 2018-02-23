@@ -50,6 +50,17 @@
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="ProductRequestKitButtonDisabled" columntype="boolean" guid="1a9c6a5a-5734-4c66-a56d-7f747f07553d" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>ProductRequestKitButtonDisabled</fieldcaption>
+          <fielddescription>
+            <![CDATA[If set to true, "Request kit" button will NOT be displayed even if it is enabled on site level]]>
+          </fielddescription>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="ProductMachineType" columnsize="200" columntype="text" guid="277090ed-8f70-4d76-8114-7356caec63bb" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Machine Type</fieldcaption>

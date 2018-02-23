@@ -68,7 +68,7 @@
           <Trim>True</Trim>
         </settings>
       </field>
-      <field allowempty="true" column="SKUProductCustomerReferenceNumber" columnsize="20" columntype="text" guid="c047b0b4-a37c-47d9-aebd-a2b090aeab8e" publicfield="false" visible="true">
+      <field allowempty="true" column="SKUProductCustomerReferenceNumber" columnsize="200" columntype="text" guid="c047b0b4-a37c-47d9-aebd-a2b090aeab8e" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Customer reference number</fieldcaption>
         </properties>

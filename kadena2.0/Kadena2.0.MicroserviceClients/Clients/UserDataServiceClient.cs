@@ -6,6 +6,7 @@ using Kadena.Dto.CreditCard.MicroserviceRequests;
 using Kadena.Dto.CreditCard.MicroserviceResponses;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
+using System.Collections.Generic;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -28,6 +29,12 @@ namespace Kadena2.MicroserviceClients.Clients
         {
             var url = $"{_properties.GetServiceUrl(_serviceUrlSettingKey)}/api/CardToken";
             return await Post<string>(url, request).ConfigureAwait(false);
+        }
+
+        public async Task<BaseResponseDto<IEnumerable<UserStoredCardDto>>> GetValidCardTokens(int userId)
+        {
+            var url = $"{_properties.GetServiceUrl(_serviceUrlSettingKey)}/api/CardToken/valid/{userId}";
+            return await Get<IEnumerable<UserStoredCardDto>>(url).ConfigureAwait(false);
         }
     }
 }

@@ -61,8 +61,8 @@
           <property name="contentbefore" ismacro="true">
 <![CDATA[
 <div class="itemcount">
-  <label>{$ KDA.DistributorCart.CartItemsCountStartText $} {%KadenaMacroMethods.GetCartCountByInventoryType(CurrentUser.UserID,2)|(user)cvoqa2@gmail.com|(hash)1ed0b9f55354b1b931890394450dc4c6e24f10198d4a3d42cf10c0f6016e2a5f%} {$ KDA.DistributorCart.CartItemsCountEndText $} </label>
-  <label>{$ KDA.DistributorCart.CartTotalPrice $} : {%Formatprice(KadenaMacroMethods.GetCartTotalByInventoryType(CurrentUser.UserID,2))|(user)cvoqa2@gmail.com|(hash)40cf89191d47fb4689766db2d7285df93a797c7491aba7095f7be4f3d366ae6b%}</label>
+  <label>{$ KDA.DistributorCart.CartItemsCountStartText $} {%KadenaMacroMethods.GetCartCountByInventoryType(CurrentUser.UserID,2,KadenaMacroMethods.OpenCampaignID())|(user)cvoqa2@gmail.com|(hash)8d18b58392477889bc33ce29e605fa94881deef63cfec27fac1612bd5d5ba2f7%} {$ KDA.DistributorCart.CartItemsCountEndText $} </label>
+  <label>{$ KDA.DistributorCart.CartTotalPrice $} : {%Formatprice(KadenaMacroMethods.GetCartTotalByInventoryType(CurrentUser.UserID,2,KadenaMacroMethods.OpenCampaignID()))|(user)cvoqa2@gmail.com|(hash)31a79ae17e9fd5d9c2e49700e6a7eb0d5841867920ebd7a78010bff986c75399%}</label>
 </div>
 ]]>
           </property>
@@ -116,7 +116,11 @@
           <property name="webparttitle"></property>
           <property name="webparttype">queryrepeater</property>
           <property name="wherecondition" ismacro="true">
-            <![CDATA[ShoppingCartUserID={%CurrentUser.UserID|(user)cvoqa2@gmail.com|(hash)151ea260d45cbb40b6b460c3d41821d9e9dbc03b916f839032f8f77203b978ef%} AND ShoppingCartInventoryType=2 AND ShoppingCartSiteID={%CurrentSite.SiteID|(user)cvoqa2@gmail.com|(hash)7cfc90a7531eb28cb1698bcc36ccdc6093504c59ab4a8814d9ecdfe6eb948648%}]]>
+<![CDATA[
+ShoppingCartUserID={%CurrentUser.UserID|(user)cvoqa2@gmail.com|(hash)151ea260d45cbb40b6b460c3d41821d9e9dbc03b916f839032f8f77203b978ef%} AND ShoppingCartInventoryType=2 AND ShoppingCartSiteID={%CurrentSite.SiteID|(user)cvoqa2@gmail.com|(hash)7cfc90a7531eb28cb1698bcc36ccdc6093504c59ab4a8814d9ecdfe6eb948648%}
+AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN {%KadenaMacroMethods.OpenCampaignID()|(user)cvoqa2@gmail.com|(hash)1795d74d9db5a93ad71f02caf423a1c5f8b98729b199b7071dd686517b1dd5c0%} End
+
+]]>
           </property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[
@@ -144,6 +148,14 @@
     $(document).ready(function () {
       $(".js-ItemQuantity").focusout(function(){
         var cID=parseInt($(this).siblings().first().val());
+        var cID=parseInt($(this).siblings().first().val());
+        var qtyValue=$(this).val();
+        if (! /^\d*$/.test(qtyValue) || qtyValue==='' ){
+          errorMessage="{$KDA.Cart.Update.InvalidQuantityError$}";
+          toastr.error(errorMessage);
+          isError=true;
+          return;
+        }
         var iQTY=parseInt($(this).val());
         if(cID!=undefined && iQTY!=undefined && cID!=0){
           UpdateItem(cID,iQTY,this);
@@ -162,7 +174,6 @@
                 {
                   toastr.success(data.payload);
                   setTimeout(function(){ $(box).parentsUntil('.show-table-bottom').find('.js-BusinessUnit').trigger('change')}, 1000);
-                 // $(box).parentsUntil('.show-table-bottom').find('.js-Shipping').trigger('change');
                 }
                 else
                 {
@@ -176,6 +187,14 @@
             });
       }
     }); 
+  function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
 </script>
 ]]>
           </property>

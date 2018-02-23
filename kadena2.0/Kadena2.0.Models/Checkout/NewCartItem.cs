@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Kadena.Models.Checkout
@@ -15,5 +16,7 @@ namespace Kadena.Models.Checkout
         public Guid TemplateId { get; set; }
 
         public Guid ContainerId { get; set; }
+
+        public Dictionary<string, int> Options { get; set; }
     }
 }

@@ -177,7 +177,7 @@
           <controlcssclass>input__text js-Zipcode</controlcssclass>
         </properties>
       </field>
-      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" allowempty="">
+      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" reftype="Required" allowempty="">
         <settings>
           <controlname>DropDownListControl</controlname>
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
@@ -186,7 +186,7 @@
 <![CDATA[
 select 0,'{$KDA.Common.SelectState$}'
 union
-select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
+select StateID,StateDisplayName from CMS_State where CountryID={%if(UserCountry>0){UserCountry}else{0}|(user)cvoqa2@gmail.com|(hash)c04f178bff69a81c32dbf38c22d99eb0bbeb059b70bd4587f469a0e121d11fe4%}
 ]]>
           </Query>
           <SortItems>False</SortItems>
@@ -235,7 +235,7 @@ select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
           <Trim>False</Trim>
         </settings>
       </field>
-      <field column="FYBudget" guid="225dd61d-35e2-4454-a518-cbd994e70a6c" reftype="Required" visible="" order="88">
+      <field column="FYBudget" guid="225dd61d-35e2-4454-a518-cbd994e70a6c" visible="" order="88">
         <properties>
           <controlcssclass>input__text</controlcssclass>
         </properties>

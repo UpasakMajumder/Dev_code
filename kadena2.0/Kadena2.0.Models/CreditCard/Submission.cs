@@ -22,15 +22,28 @@ namespace Kadena.Models.CreditCard
         public int CustomerId { get; set; }
 
         public bool Processed { get; set; }
+        public bool Success { get; set; }
+        public string Error { get; set; }
 
         public string OrderJson { get; set; }
         public string RedirectUrl { get; set; }
+        public string SaveCardJson { get; set; }
 
         public bool CheckOwner(int siteId, int userId, int customerId)
         {
             return SiteId == siteId &&
                    UserId == userId &&
                    CustomerId == customerId;
+        }
+
+        public void Renew(Guid newSubmissionId)
+        {
+            SubmissionId = newSubmissionId;
+            AlreadyVerified = false;
+            Processed = false;
+            RedirectUrl = string.Empty;
+            Success = false;
+            Error = string.Empty;
         }
     }
 }

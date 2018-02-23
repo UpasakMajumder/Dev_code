@@ -1,9 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Method = (props) => {
-  const { id, title, pricePrefix, price, datePrefix, date, disabled, checkedId, changeShoppingData } = props;
-
+const Method = ({
+  id,
+  title,
+  pricePrefix,
+  price,
+  datePrefix,
+  date,
+  disabled,
+  checkedId,
+  changeDeliveryMethod
+}) => {
   let className = 'input__wrapper select-accordion__item  select-accordion__item--inner';
   if (disabled) className += ' input__wrapper--disabled';
 
@@ -42,7 +50,7 @@ const Method = (props) => {
   return (
     <div className={className}>
       <input disabled={disabled}
-             onChange={(e) => { changeShoppingData(e.target.name, id); }}
+             onChange={() => { changeDeliveryMethod(id); }}
              checked={id === checkedId}
              type="radio"
              name="deliveryMethod"
@@ -59,7 +67,7 @@ const Method = (props) => {
 };
 
 Method.propTypes = {
-  changeShoppingData: PropTypes.func.isRequired,
+  changeDeliveryMethod: PropTypes.func.isRequired,
   checked: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,

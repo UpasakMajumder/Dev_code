@@ -10,5 +10,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         Submission GetSubmission(Guid submissionId);
         IEnumerable<Submission> GetSubmissions(int siteId, int userId, int customerId);
         void DeleteSubmission(Guid submissionId);
+        void UpdateSubmissionId(Guid oldId, Guid newId);
     }
 }

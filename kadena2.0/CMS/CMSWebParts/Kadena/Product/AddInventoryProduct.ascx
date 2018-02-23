@@ -244,7 +244,7 @@
                                     <td>
                                         <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("EmailID") %>' /></td>
                                     <td>
-                                        <asp:TextBox ID="txtAllQuantity" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtAllQuantity" runat="server" Text='<%# Eval("Quantity") %>'></asp:TextBox>
                                         <asp:RegularExpressionValidator ID="revAllQuantity" runat="server"
                                             ErrorMessage='<%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductForm.NumberOnly") %>'
                                             ControlToValidate="txtAllQuantity" ValidationExpression="^[0-9]*$" CssClass="EditingFormErrorLabel">

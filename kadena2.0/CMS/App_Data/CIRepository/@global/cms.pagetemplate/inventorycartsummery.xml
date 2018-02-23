@@ -61,8 +61,8 @@
           <property name="contentbefore" ismacro="true">
 <![CDATA[
 <div class="itemcount">
-  <label>{$ KDA.DistributorCart.CartItemsCountStartText $} {%KadenaMacroMethods.GetCartCountByInventoryType(CurrentUser.UserID,1)|(user)cvoqa2@gmail.com|(hash)671b9de7d0da94985b138b9969c8eda7042579a6f54d7b275acc84e656c97a10%} {$ KDA.DistributorCart.CartItemsCountEndText $}</label>
-  <label>{$ KDA.DistributorCart.CartTotalPrice $} : {% Formatprice(KadenaMacroMethods.GetCartTotalByInventoryType(CurrentUser.UserID,1))|(user)cvoqa2@gmail.com|(hash)ea266f3e8789a6ab56745180063b08292ff3a766b6c27b5266f85fe9ac59fa41%}</label>
+  <label>{$ KDA.DistributorCart.CartItemsCountStartText $} {%KadenaMacroMethods.GetCartCountByInventoryType(CurrentUser.UserID,1,KadenaMacroMethods.OpenCampaignID())|(user)cvoqa2@gmail.com|(hash)6d42e77c1b75eeb41dc30607525c0f0f5cb45556bc52d8bd23c811d5627e6f68%} {$ KDA.DistributorCart.CartItemsCountEndText $}</label>
+  <label>{$ KDA.DistributorCart.CartTotalPrice $} : {% Formatprice(KadenaMacroMethods.GetCartTotalByInventoryType(CurrentUser.UserID,1,KadenaMacroMethods.OpenCampaignID()))|(user)cvoqa2@gmail.com|(hash)e6399a0aaba9c9870604da6b6b6f6a998c299a99fc6a7804d9a7251c37bd5ae1%}</label>
 </div>
 ]]>
           </property>
@@ -143,10 +143,18 @@
     $(document).ready(function () {
       $(".js-ItemQuantity").focusout(function(){
         var cID=parseInt($(this).siblings().first().val());
+        var qtyValue=$(this).val();
+        if (! /^\d*$/.test(qtyValue) || qtyValue==='' ){
+          errorMessage="{$KDA.Cart.Update.InvalidQuantityError$}";
+          toastr.error(errorMessage);
+          isError=true;
+          return;
+        }
         var iQTY=parseInt($(this).val());
         if(cID!=undefined && iQTY!=undefined && cID!=0){
-          UpdateItem(cID,iQTY,this);
-        }
+          var iQTY=parseInt($(this).val());
+           UpdateItem(cID,iQTY,this);
+         }
       });
       function UpdateItem(id,qty,box){
         var request= {CartItemId: id,ItemQuantity:qty,UserID:{%CurrentUser.UserID|(user)cvoqa2@gmail.com|(hash)151ea260d45cbb40b6b460c3d41821d9e9dbc03b916f839032f8f77203b978ef%},InventoryType:1}
@@ -166,6 +174,7 @@
                 {
                   toastr.error(data.errorMessage); 
                   isError=true;
+                  errorMessage=data.errorMessage;
                 }
               },
               error:function (xhr, ajaxOptions, thrownError) {
@@ -177,10 +186,18 @@
     }); 
   $(".js-Checkout").on("click",function(e){
     if(isError===true){
-      toastr.error("{$KDA.Cart.Update.InsufficientStockMessage#$}"); 
+      toastr.error(errorMessage); 
       e.preventDefault();
-      }
+    }
   });
+   function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
 </script>
 ]]>
           </property>

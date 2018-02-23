@@ -8,5 +8,6 @@
         public string Url { get; set; }
         public bool ProductBordersEnabled { get; set; }
         public Border Border { get; set; }
+        public int Order { get; set; }
     }
 }

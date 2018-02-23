@@ -1,5 +1,19 @@
-import { FETCH, SUCCESS, FAILURE, INIT_UI, CHANGE_CHECKOUT_DATA, INIT_CHECKED_CHECKOUT_DATA, CHECKOUT_STATIC,
-  RECALCULATE_CHECKOUT_PRICE, SUBMIT_CHECKOUT, REMOVE_PRODUCT, CHANGE_PRODUCT_QUANTITY, CHECKOUT_PRICING, ADD_NEW_ADDRESS } from 'app.consts';
+import {
+  FETCH,
+  SUCCESS,
+  FAILURE,
+  INIT_UI,
+  CHECKOUT,
+  CHECKOUT_INIT_CHECKED_DATA,
+  CHECKOUT_CHANGE_PAYMENT,
+  CHECKOUT_CHANGE_QUANTITY,
+  CHECKOUT_REMOVE_PRODUCT,
+  CHECKOUT_CHANGE_ADDRESS,
+  CHECKOUT_GET_TOTALS,
+  CHECKOUT_PROCEED,
+  CHECKOUT_CHANGE_DELIVERY,
+  ADD_NEW_ADDRESS
+} from 'app.consts';
 
 const defaultState = {
   ui: {},
@@ -23,46 +37,13 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-  case CHECKOUT_STATIC + INIT_UI + SUCCESS:
-  case CHECKOUT_PRICING + INIT_UI + SUCCESS:
+  case CHECKOUT + INIT_UI + SUCCESS:
     return {
       ...state,
-      ui: {
-        ...state.ui,
-        ...payload.ui
-      }
+      ui: payload
     };
 
-  case ADD_NEW_ADDRESS + SUCCESS:
-    return {
-      ...state,
-      newAddress: payload,
-      checkedData: {
-        ...state.checkedData,
-        deliveryAddress: -1
-      }
-    };
-
-  case CHANGE_PRODUCT_QUANTITY + SUCCESS:
-    return {
-      ...state,
-      ui: payload.ui
-    };
-
-  case REMOVE_PRODUCT + SUCCESS:
-    return {
-      ...state,
-      ui: payload.ui
-    };
-
-  case RECALCULATE_CHECKOUT_PRICE + SUCCESS:
-    return {
-      ...state,
-      ui: payload.ui,
-      isSending: false
-    };
-
-  case INIT_CHECKED_CHECKOUT_DATA:
+  case CHECKOUT_INIT_CHECKED_DATA:
     return {
       ...state,
       checkedData: {
@@ -76,25 +57,102 @@ export default (state = defaultState, action) => {
       }
     };
 
-  case CHANGE_CHECKOUT_DATA:
+  case CHECKOUT_CHANGE_PAYMENT:
     return {
       ...state,
+      ui: {
+        ...state.ui,
+        paymentMethods: {
+          ...state.ui.paymentMethods,
+          items: state.ui.paymentMethods.items.map((item) => {
+            return {
+              ...item,
+              checked: item.id === payload.id,
+              items: !payload.card ? item.items : item.items.map(card => ({ ...card, checked: card.id === payload.card }))
+            };
+          })
+        }
+      },
       checkedData: {
         ...state.checkedData,
-        [payload.field]: payload.field === 'paymentMethod'
-          ? { id: payload.id, invoice: payload.invoice }
-          : payload.id
+        paymentMethod: {
+          id: payload.id,
+          invoice: payload.invoice,
+          card: payload.card
+        }
       }
     };
 
-  case RECALCULATE_CHECKOUT_PRICE + FETCH:
-  case SUBMIT_CHECKOUT + FETCH:
+  case CHECKOUT_CHANGE_QUANTITY + SUCCESS:
+  case CHECKOUT_REMOVE_PRODUCT + SUCCESS:
+    return {
+      ...state,
+      ui: {
+        ...state.ui,
+        products: payload.products
+      }
+    };
+
+  case CHECKOUT_CHANGE_ADDRESS + SUCCESS:
+    return {
+      ...state,
+      ui: {
+        ...state.ui,
+        deliveryAddresses: payload.deliveryAddresses
+      },
+      checkedData: {
+        ...state.checkedData,
+        deliveryAddress: payload.id
+      }
+    };
+
+  case CHECKOUT_GET_TOTALS + FETCH:
+  case CHECKOUT_CHANGE_DELIVERY + FETCH:
+    return {
+      ...state,
+      ui: state.ui.totals ? { ...state.ui, totals: null } : state.ui
+    };
+
+  case CHECKOUT_CHANGE_DELIVERY + SUCCESS:
+    return {
+      ...state,
+      ui: {
+        ...state.ui,
+        totals: payload.totals,
+        deliveryMethods: payload.deliveryMethods
+      },
+      checkedData: {
+        ...state.checkedData,
+        deliveryMethod: payload.id
+      },
+      isSending: false
+    };
+
+  case CHECKOUT_GET_TOTALS + SUCCESS:
+    return {
+      ...state,
+      ui: {
+        ...state.ui,
+        totals: payload.totals,
+        deliveryMethods: payload.deliveryMethods
+      },
+      isSending: false
+    };
+
+  case CHECKOUT_GET_TOTALS + FAILURE:
+  case CHECKOUT_PROCEED + FAILURE:
+    return {
+      ...state,
+      isSending: false
+    };
+
+  case CHECKOUT_PROCEED + FETCH:
     return {
       ...state,
       isSending: true
     };
 
-  case SUBMIT_CHECKOUT + SUCCESS:
+  case CHECKOUT_PROCEED + SUCCESS:
     return {
       ...state,
       sendData: {
@@ -104,11 +162,14 @@ export default (state = defaultState, action) => {
       isSending: false
     };
 
-  case RECALCULATE_CHECKOUT_PRICE + FAILURE:
-  case SUBMIT_CHECKOUT + FAILURE:
+  case ADD_NEW_ADDRESS + SUCCESS:
     return {
       ...state,
-      isSending: false
+      newAddress: payload,
+      checkedData: {
+        ...state.checkedData,
+        deliveryAddress: -1
+      }
     };
 
   default:

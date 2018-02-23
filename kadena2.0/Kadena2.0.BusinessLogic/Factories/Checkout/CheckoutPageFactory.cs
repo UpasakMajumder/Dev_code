@@ -35,11 +35,8 @@ namespace Kadena.BusinessLogic.Factories.Checkout
             this.kenticoLocalization = kenticoLocalization;
         }
 
-        public CartEmptyInfo CreateCartEmptyInfo(CartItem[] cartItems)
+        public CartEmptyInfo CreateCartEmptyInfo()
         {
-            if (cartItems != null && cartItems.Length > 0)
-                return null;
-
             return new CartEmptyInfo
             {
                 Text = resources.GetResourceString("Kadena.Checkout.CartIsEmpty"),
@@ -209,7 +206,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
             if (purchaseOrderMethod != null)
             {
                 purchaseOrderMethod.HasInput = true;
-                purchaseOrderMethod.InputPlaceholder = resources.GetResourceString("Kadena.Checkout.InsertPONumber");
+                purchaseOrderMethod.InputPlaceholder = resources.GetPerSiteResourceString("Kadena.Checkout.InsertPONumber");
             }
 
             return allMethods.ToList();

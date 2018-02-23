@@ -2,6 +2,7 @@
 using CMS.CustomTables.Types.KDA;
 using CMS.DataEngine;
 using CMS.DocumentEngine.Types.KDA;
+using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.SiteProvider;
@@ -78,7 +79,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
         /// This will returns distributor cart items
         /// </summary>
         /// <returns></returns>
-        public static DataTable GetDistributorCartData(int cartID, int inventoryType)
+        public static DataTable GetDistributorCartData(int cartID, int inventoryType,int? campaignID)
         {
             try
             {
@@ -86,6 +87,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", cartID);
                 queryParams.Add("@ShoppingCartInventoryType", inventoryType);
+                queryParams.Add("@ShoppingCartCampaignID", campaignID);
                 var cartDataSet = ConnectionHelper.ExecuteQuery(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
                 return cartDataSet.Tables[0];
             }
@@ -100,7 +102,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
         /// This will returns distributor cart items
         /// </summary>
         /// <returns></returns>
-        public static DataTable GetLoggedInUserCartData(int inventoryType, int userID)
+        public static DataTable GetLoggedInUserCartData(int inventoryType, int userID,int? campaignID)
         {
             try
             {
@@ -108,6 +110,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                 QueryDataParameters queryParams = new QueryDataParameters();
                 queryParams.Add("@ShoppingCartUserID", userID);
                 queryParams.Add("@ShoppingCartInventoryType", inventoryType);
+                queryParams.Add("@ShoppingCartCampaignID", campaignID);
                 var cartDataSet = ConnectionHelper.ExecuteQuery(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
                 return cartDataSet.Tables[0];
             }
@@ -151,7 +154,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                     pdfContent = pdfContent.Replace("{PRODUCTNAME}", ValidationHelper.GetString(row["SKUName"], "&nbsp"))
                                            .Replace("{SKUNUMBER}", ValidationHelper.GetString(row["SKUProductCustomerReferenceNumber"], "&nbsp"))
                                            .Replace("{SKUUNITS}", ValidationHelper.GetString(row["SKUUnits"], "&nbsp"))
-                                           .Replace("{BUNDLECOST}", inventoryType == Convert.ToInt32(ProductType.GeneralInventory) ?$"${ValidationHelper.GetDouble(row["SKUPrice"], default(double)).ToString()}":$"${ ValidationHelper.GetDouble(product.EstimatedPrice, default(double)).ToString()}")
+                                           .Replace("{BUNDLECOST}", inventoryType == Convert.ToInt32(ProductType.GeneralInventory) ? ($"{CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(row["SKUPrice"], default(double)), SiteContext.CurrentSiteID, true)}"): ($"{CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(product.EstimatedPrice, default(double)), SiteContext.CurrentSiteID, true)}"))
                                            .Replace("{BUNDLEQUANTITY}", ValidationHelper.GetString(product.QtyPerPack, "&nbsp"))
                                            .Replace("{IMAGEURL}", GetProductImage(ValidationHelper.GetString(row["SKUImagePath"], default(string))))
                                            .Replace("{VALIDSTATES}", ValidationHelper.GetString(states?.States, "&nbsp"))

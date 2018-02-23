@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 /* AC */
-import submitCard from 'app.ac/card-payment';
+import { submitCard, saveToProfile } from 'app.ac/card-payment';
 /* helpers */
 import { cardPaymentSymbols } from 'app.helpers/validationRules';
 import { cardExpiration } from 'app.helpers/regexp';
@@ -12,6 +12,7 @@ import { CARD_PAYMENT } from 'app.globals';
 import PaymentForm from 'app.dump/Form/PaymentForm';
 import Cards from 'app.dump/CreditCards';
 import Button from 'app.dump/Button';
+import Checkbox from 'app.dump/Form/CheckboxInput';
 /* styles */
 import 'react-credit-cards/lib/styles-compiled.css';
 
@@ -28,7 +29,8 @@ class Payment extends Component {
       },
       cardType: 'unknown',
       focused: '',
-      invalids: []
+      invalids: [],
+      saveToProfile: false
     };
   }
 
@@ -106,7 +108,7 @@ class Payment extends Component {
   submit = () => {
     const submissionId = Payment.getSubmissionId();
 
-    const { proceedCard } = this.props;
+    const { proceedCard, saveToProfile } = this.props;
     const { fields, cardType } = this.state;
 
     const invalids = this.getInvalids();
@@ -114,6 +116,7 @@ class Payment extends Component {
     if (invalids.length) {
       this.setState({ invalids });
     } else {
+      saveToProfile(fields.number, CARD_PAYMENT.saveToProfile.url, this.state.saveToProfile, submissionId);
       proceedCard(fields, cardType, submissionId);
     }
   }
@@ -165,9 +168,27 @@ class Payment extends Component {
     });
   };
 
+  handleSaveToProfile = () => {
+    this.setState({
+      saveToProfile: !this.state.saveToProfile
+    });
+  };
+
   render() {
     const { fields, focused, invalids } = this.state;
     const { isProceeded } = this.props;
+    const { saveToProfile } = CARD_PAYMENT;
+
+    const saveToProfileComponent = saveToProfile.exists
+      ? (
+        <Checkbox
+          id="saveToProfile"
+          label={saveToProfile.label}
+          type="checkbox"
+          checked={this.state.saveToProfile}
+          onChange={this.handleSaveToProfile}
+        />
+      ) : null;
 
     return (
       <div className="card-payment">
@@ -194,6 +215,8 @@ class Payment extends Component {
           </div>
         </div>
         <div className="card-payment__submit">
+          {saveToProfileComponent}
+
           <Button
             text={CARD_PAYMENT.submitButtonText}
             type="action"
@@ -211,5 +234,6 @@ export default connect((state) => {
   const { errorField, errorMessage, isProceeded } = cardPayment;
   return { errorField, errorMessage, isProceeded };
 }, {
-  proceedCard: submitCard
+  proceedCard: submitCard,
+  saveToProfile
 })(Payment);

@@ -31,6 +31,13 @@ apiRouter.post('/search/query', Search.query);
 
 apiRouter.get('/checkout/ui', Checkout.ui);
 apiRouter.get('/checkout/total-price', Checkout.totalPrice);
+apiRouter.post('/checkout/total-price', Checkout.totalPrice);
+apiRouter.post('/checkout/change-quantity', Checkout.changeQuantity);
+apiRouter.post('/checkout/remove-producs', Checkout.removeProducs);
+apiRouter.post('/checkout/change-address', Checkout.changeAddress);
+apiRouter.post('/checkout/change-delivery-method', Checkout.changeDeliveryMethod);
+apiRouter.post('/checkout/submit', Checkout.submit);
+apiRouter.post('/checkout/add-new-address', Checkout.addNewAddress);
 
 apiRouter.get('/settings/address/ui', Settings.address.ui);
 apiRouter.post('/settings/address/modify', Settings.address.modify);
@@ -43,6 +50,7 @@ apiRouter.get('/products/managed', Products.managed);
 apiRouter.put('/products/favourite/:id', Products.setFavourite);
 apiRouter.put('/products/unfavourite/:id', Products.setFavourite);
 apiRouter.post('/products/add-to-cart', Products.addToCart);
+apiRouter.post('/products/options', Products.options);
 
 apiRouter.get('/order/recent/ui', Orders.recent.ui);
 apiRouter.get('/order/recent/page/:page', Orders.recent.page);
