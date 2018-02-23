@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Kadena.BusinessLogic.Contracts;
 using Kadena2.Helpers;
 using Kadena.BusinessLogic.Factories;
+using System.Globalization;
 
 namespace Kadena2.BusinessLogic.Services.OrderPayment
 {
@@ -159,7 +160,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             {
                 MarkSubmissionProcessed(submission, 
                                         orderSuccess: false, 
-                                        orderId: sendOrderResult?.Payload, 
+                                        orderId: sendOrderResult?.OrderId, 
                                         error: "Kadena.OrderByCardFailed.PlaceOrderFailed");
                 return false;
             }
@@ -168,7 +169,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             var error = orderSuccess ? string.Empty : "Kadena.OrderByCardFailed.PlaceOrderFailed";
 
             MarkSubmissionProcessed(submission, orderSuccess, 
-                                    orderId: sendOrderResult?.Payload, 
+                                    orderId: sendOrderResult?.OrderId, 
                                     error : error);
 
             return orderSuccess;
@@ -217,8 +218,9 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 saveTokenRequest.Name = $"{token.CardType} *-{token.CardEnd}";
             }
 
-            saveTokenRequest.Token = token.Token;
             
+            saveTokenRequest.Token = token.Token;
+            saveTokenRequest.CardExpirationDate = ParseCardExpiration(token.ExpirationDate);
 
             var result = await userClient.SaveCardToken(saveTokenRequest);
 
@@ -231,6 +233,13 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             logger.LogInfo("3DSi SaveToken", "info", "Token saved to User data microservice");
             return result.Payload;
+        }
+
+        private DateTime ParseCardExpiration(string expiration)
+        {
+            var cultureInfo = new CultureInfo(CultureInfo.InvariantCulture.LCID);
+            cultureInfo.Calendar.TwoDigitYearMax = 2099;
+            return DateTime.ParseExact(expiration, new string[] { "MMyy", "MMyyyy" }, cultureInfo, DateTimeStyles.None);
         }
 
         /// <summary>

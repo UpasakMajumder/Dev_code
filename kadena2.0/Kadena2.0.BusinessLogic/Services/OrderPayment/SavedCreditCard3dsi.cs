@@ -84,7 +84,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             if (!(sendOrderResult?.Success ?? false))
             {
                 return ReturnResult(success: false, 
-                                    orderId: sendOrderResult?.Payload, 
+                                    orderId: sendOrderResult?.OrderId, 
                                     error: "Kadena.OrderByCardFailed.PlaceOrderFailed");
             }
 
@@ -92,7 +92,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
             shoppingCart.ClearCart();
 
             return ReturnResult(success: true, 
-                                orderId: sendOrderResult.Payload);
+                                orderId: sendOrderResult.OrderId);
         }
 
         private SubmitOrderResult ReturnResult(bool success, string orderId = "", string error = "")
