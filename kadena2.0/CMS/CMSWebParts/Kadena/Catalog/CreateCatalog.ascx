@@ -52,7 +52,8 @@
                     </label>
                 </div>
                  <div class="zoom__in"><a href="javascript:void(0);" onclick="ShowZoomEffect(this)"><svg class="icon"> <use xlink:href="/gfx/svg/sprites/icons.svg#search" xmlns:xlink="http://www.w3.org/1999/xlink"></use> </svg></a></div>
-                <div class="input__wrapper">
+                <div class="input__wrapper custom__blockin">
+                    <h4><%= POSNumberText %> : <%# Eval("SKUProductCustomerReferenceNumber")%></h4>
                     <label for="dom" class="input__label "><%# TypeOfProduct == (int)ProductsType.GeneralInventory? GetBrandName(ValidationHelper.GetInteger(Eval("BrandID"), default(int))):""%></label>
                     <input type="checkbox" id="dom_<%# Eval("NodeSKUID")%>" name="ProductCheckBox" value='<%#Eval("NodeSKUID")%>' class=" input__checkbox  js_Product" />
                     <label for="dom_<%# Eval("NodeSKUID")%>" class="input__label input__label--checkbox"><%#Eval("ProductName")%></label>
