@@ -197,7 +197,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="webparttype">InboundTracking</property>
         </webpart>
         <webpart controlid="IBTF" guid="fb988ce4-f02f-4314-94c9-7b018f165eb5" type="javascript" v="1">
-          <property name="cat_open_behavior"></property>
+          <property name="cat_open_behavior">False</property>
           <property name="cat_open_performance"></property>
           <property name="controlid">IBTF</property>
           <property name="disablemacros">False</property>
@@ -207,11 +207,17 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="hideonsubpages">False</property>
           <property name="inlinescript">
 <![CDATA[
-$(".js-ActualPrice").on("keypress keyup blur", function (event) {
-        $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
-        if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+$(".js-ActualPrice").keydown(function (event) {
+        if (event.shiftKey == true) {
             event.preventDefault();
         }
+        if ((event.keyCode >= 48 && event.keyCode <= 57 ) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 ||
+            event.keyCode == 39 || event.keyCode == 46 || event.keyCode == 190 || event.keyCode == 110 ) {
+        } else {
+            event.preventDefault();
+        }
+        if($(this).val().indexOf('.') !== -1 && (event.keyCode == 190 || event.keyCode == 110) )
+            event.preventDefault();
     });
 ]]>
           </property>
