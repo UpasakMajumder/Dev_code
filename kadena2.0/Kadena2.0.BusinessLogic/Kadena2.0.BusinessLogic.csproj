@@ -133,6 +133,10 @@
     <Compile Include="Services\UserBudgetService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kadena.AmazonFileSystemProvider\Kadena.AmazonFileSystemProvider.csproj">
+      <Project>{91c29a0f-7655-405e-abb0-990877d6fcfa}</Project>
+      <Name>Kadena.AmazonFileSystemProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
       <Project>{eb3a4438-837d-4ccd-a42c-b2c58c90d6ae}</Project>
       <Name>Kadena2.0.Dto</Name>
