@@ -17,7 +17,6 @@ namespace Kadena.Tests.MicroserviceClients
 
             var actualResult = await sut.GetPreview(Guid.Empty, Guid.Empty);
 
-            Assert.IsType<BaseResponseDto<string>>(actualResult);
             Assert.NotNull(actualResult);
         }
     }
