@@ -57,6 +57,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
                 Items = cartItems.ToList(),
                 ButtonLabels = new ButtonLabels
                 {
+                    Preview = resources.GetResourceString("Kadena.Checkout.PreviewButton"),
                     Edit = resources.GetResourceString("Kadena.Checkout.EditButton"),
                     Remove = resources.GetResourceString("Kadena.Checkout.RemoveButton"),
                 },
