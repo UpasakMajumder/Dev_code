@@ -54,7 +54,7 @@ namespace Kadena.WebAPI.Controllers
         public async Task<IHttpActionResult> Get(DateTime? dateFrom = null, DateTime? dateTo = null, string sort = null, int page = 1)
         {
             var orders = await orderService
-                .GetOrders(new OrderFilter { FromDate = dateFrom, ToDate = dateTo, Sort = sort }, page);
+                .GetOrders(page, new OrderFilter { FromDate = dateFrom, ToDate = dateTo, Sort = sort });
             var ordersTableView = orderService.ConvertOrdersToView(orders);
             var resultDto = mapper.Map<TableViewDto>(ordersTableView);
             return ResponseJson(resultDto);

@@ -6,7 +6,7 @@ namespace Kadena.BusinessLogic.Contracts.Orders
 {
     public interface IOrderService
     {
-        Task<PagedData<Order>> GetOrders(OrderFilter filter, int page);
+        Task<PagedData<Order>> GetOrders(int page, OrderFilter filter);
         Task<PagedData<Order>> GetOrdersForSite(string site, int page, OrderFilter filter);
 
         TableView ConvertOrdersToView(PagedData<Order> orders);

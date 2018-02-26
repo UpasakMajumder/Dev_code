@@ -4,6 +4,7 @@ using Kadena.Models.Common;
 using Kadena.Models.Orders;
 using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.MicroserviceClients.Contracts;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,40 @@ namespace Kadena.Tests.WebApi
     public class OrderServiceTests
     {
         Random random = new Random();
-        
+
+        public class OrderFilterTests
+        {
+            [Theory]
+            [InlineData("INVALID")]
+            [InlineData("-ASC")]
+            [InlineData(" -ASC")]
+            [InlineData("prop-RANDOM")]
+            public void TryParseSort_ShouldBeFalse_WhenSortIsInvalid(string invalidSort)
+            {
+                var filter = new OrderFilter { Sort = invalidSort };
+
+                OrderFilter.SortFields sortInfo;
+                var isValid = filter.TryParseSort(out sortInfo);
+
+                Assert.False(isValid);
+            }
+
+            [Theory]
+            [InlineData(OrderFilter.SortDirection.ASC, "propA", "propA-ASC")]
+            [InlineData(OrderFilter.SortDirection.DESC, "propB", "propB-DESC")]
+            public void TryParseSort_ShouldBeTrueAndParsed_WhenSortValid(OrderFilter.SortDirection direction, string property, string validSort)
+            {
+                var filter = new OrderFilter { Sort = validSort };
+
+                OrderFilter.SortFields sortInfo;
+                var isValid = filter.TryParseSort(out sortInfo);
+
+                Assert.True(isValid);
+                Assert.Equal(property, sortInfo.Property);
+                Assert.Equal(direction, sortInfo.Direction);
+            }
+        }        
+
         [Fact]
         public void Service_ShouldLoadPagingSettings_WhenConfigured()
         {
@@ -23,7 +57,9 @@ namespace Kadena.Tests.WebApi
                 res => res.GetSettingsKey(Settings.KDA_RecentOrdersPageCapacity) == "15"
             );
             var dtFormatter = Mock.Of<IDateTimeFormatter>();
-            var sut = new OrderService(resources, dtFormatter);
+            var orderViewClient = Mock.Of<IOrderViewClient>();
+            var siteProvider = Mock.Of<IKenticoSiteProvider>();
+            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
 
             Assert.Equal(15, sut.OrdersPerPage);
         }
@@ -33,9 +69,11 @@ namespace Kadena.Tests.WebApi
         {
             var resources = Mock.Of<IKenticoResourceService>();
             var dtFormatter = Mock.Of<IDateTimeFormatter>();
-            var sut = new OrderService(resources, dtFormatter);
+            var orderViewClient = Mock.Of<IOrderViewClient>();
+            var siteProvider = Mock.Of<IKenticoSiteProvider>();
+            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
 
-            Assert.Equal(OrderService.DefaultOrdersPerPage, sut.OrdersPerPage);
+            Assert.Equal(OrderService.DefaultCountOfOrdersPerPage, sut.OrdersPerPage);
         }
 
         [Fact]
@@ -43,7 +81,9 @@ namespace Kadena.Tests.WebApi
         {
             var resources = Mock.Of<IKenticoResourceService>();
             var dtFormatter = Mock.Of<IDateTimeFormatter>();
-            var sut = new OrderService(resources, dtFormatter);
+            var orderViewClient = Mock.Of<IOrderViewClient>();
+            var siteProvider = Mock.Of<IKenticoSiteProvider>();
+            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
 
             Assert.Throws<ArgumentNullException>(() => sut.ConvertOrdersToView(null));
         }
@@ -53,7 +93,9 @@ namespace Kadena.Tests.WebApi
         {
             var resources = Mock.Of<IKenticoResourceService>();
             var dtFormatter = Mock.Of<IDateTimeFormatter>();
-            var sut = new OrderService(resources, dtFormatter);
+            var orderViewClient = Mock.Of<IOrderViewClient>();
+            var siteProvider = Mock.Of<IKenticoSiteProvider>();
+            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
 
             var ordersCount = 3;
             var perOrderItemsCount = 10;
@@ -69,7 +111,9 @@ namespace Kadena.Tests.WebApi
         {
             var resources = Mock.Of<IKenticoResourceService>();
             var dtFormatter = new DateTimeFormatterStub();
-            var sut = new OrderService(resources, dtFormatter);
+            var orderViewClient = Mock.Of<IOrderViewClient>();
+            var siteProvider = Mock.Of<IKenticoSiteProvider>();
+            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
             var testOrder = CreateTestOrder(orderNumber: 1, itemsCount: 1);
             var orders = new PagedData<Order>() { Data = new List<Order> { testOrder } };
 
@@ -95,7 +139,9 @@ namespace Kadena.Tests.WebApi
         {
             var resources = Mock.Of<IKenticoResourceService>();
             var dtFormatter = new DateTimeFormatterStub();
-            var sut = new OrderService(resources, dtFormatter);
+            var orderViewClient = Mock.Of<IOrderViewClient>();
+            var siteProvider = Mock.Of<IKenticoSiteProvider>();
+            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
             var testOrder = CreateTestOrder(orderNumber: 1, itemsCount: 1);
             testOrder.ShippingDate = null;
             var orders = new PagedData<Order>() { Data = new List<Order> { testOrder } };
@@ -111,7 +157,9 @@ namespace Kadena.Tests.WebApi
         {
             var resources = Mock.Of<IKenticoResourceService>();
             var dtFormatter = new DateTimeFormatterStub();
-            var sut = new OrderService(resources, dtFormatter);
+            var orderViewClient = Mock.Of<IOrderViewClient>();
+            var siteProvider = Mock.Of<IKenticoSiteProvider>();
+            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
             var testOrder = CreateTestOrder(orderNumber: 1, itemsCount: 1);
             var orders = new PagedData<Order>() { Data = new List<Order> { testOrder } };
 
@@ -119,6 +167,102 @@ namespace Kadena.Tests.WebApi
 
             Assert.Equal(orders.Pagination, view.Pagination);
         }
+
+        [Fact]
+        public void GetOrders_ShouldUseCurrentSite()
+        {
+            var resources = Mock.Of<IKenticoResourceService>();
+            var dtFormatter = new DateTimeFormatterStub();
+            var orderViewClient = new Mock<IOrderViewClient>();
+            var currentSite = "test_site";
+            var siteProvider = Mock.Of<IKenticoSiteProvider>(sp => sp.GetCurrentSiteCodeName() == currentSite);
+            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient.Object);
+            var page = 2;
+            var filter = new OrderFilter();
+
+            sut.GetOrders(page, filter);
+
+            orderViewClient.Verify(ovc
+                => ovc.GetOrders(currentSite, null, page, sut.OrdersPerPage,
+                    filter.FromDate, filter.ToDate, null,
+                    false, null, null), Times.Once());
+        }
+
+        [Fact]
+        public void GetOrdersForSite_ShouldValidateArgumentsAndThrow_WhenInvalidPage()
+        {
+            var resources = Mock.Of<IKenticoResourceService>();
+            var dtFormatter = new DateTimeFormatterStub();
+            var orderViewClient = Mock.Of<IOrderViewClient>();
+            var siteProvider = Mock.Of<IKenticoSiteProvider>();
+            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
+            var invalidPageNumber = OrderService.FirstPageNumber - 1;
+            var filter = new OrderFilter();
+
+            Action action = () => sut.GetOrdersForSite("test_site", invalidPageNumber, filter);
+
+            Assert.Throws<ArgumentException>("page", action);
+        }
+
+        [Theory]
+        [InlineData("wrong-sort-expression")]
+        [InlineData("not_supported_property-ASC")]
+        public void GetOrdersForSite_ShouldValidateArgumentsAndThrow_WhenInvalidFilter(string sort)
+        {
+            var resources = Mock.Of<IKenticoResourceService>();
+            var dtFormatter = new DateTimeFormatterStub();
+            var orderViewClient = Mock.Of<IOrderViewClient>();
+            var siteProvider = Mock.Of<IKenticoSiteProvider>();
+            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
+            var filterWithInvalidSort = new OrderFilter { Sort = sort };
+            Action action = () => sut.GetOrdersForSite("test_site", OrderService.FirstPageNumber, filterWithInvalidSort);
+
+            Assert.Throws<ArgumentException>("filter", action);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void GetOrdersForSite_ShouldValidateArgumentsAndNotThrow_WhenFilterEmpty(string sort)
+        {
+            var resources = Mock.Of<IKenticoResourceService>();
+            var dtFormatter = new DateTimeFormatterStub();
+            var orderViewClient = Mock.Of<IOrderViewClient>();
+            var siteProvider = Mock.Of<IKenticoSiteProvider>();
+            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
+            var filterWithEmptySort = new OrderFilter { Sort = sort };
+
+            sut.GetOrdersForSite("test_site", OrderService.FirstPageNumber, filterWithEmptySort);
+
+            Assert.True(true);
+        }
+
+        [Fact]
+        public void GetOrdersForSite_ShouldPassArgumentsToMicroserviceClient()
+        {
+            var resources = Mock.Of<IKenticoResourceService>();
+            var dtFormatter = new DateTimeFormatterStub();
+            var orderViewClient = new Mock<IOrderViewClient>();
+            var siteProvider = Mock.Of<IKenticoSiteProvider>();
+            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient.Object);
+            var page = 2;
+            var currentSite = "test_site";
+            var filter = new OrderFilter
+            {
+                FromDate = new DateTime(),
+                ToDate = new DateTime(),
+                Sort = $"{OrderService.SortableByOrderDate}-{OrderFilter.SortDirection.DESC}"
+            };
+
+            sut.GetOrdersForSite(currentSite, page, filter);
+
+            orderViewClient.Verify(ovc 
+                => ovc.GetOrders(currentSite, null, page, sut.OrdersPerPage, 
+                    filter.FromDate, filter.ToDate, OrderService.SortableByOrderDate, 
+                    true, null, null), Times.Once());
+        }
+
+
 
         private List<Order> CreateTestOrders(int ordersCount, int itemsPerOrderCount)
         {
