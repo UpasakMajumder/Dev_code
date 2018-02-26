@@ -270,7 +270,7 @@ export const sendData = (data) => {
   };
 };
 
-export const addNewAddress = (data) => {
+export const addNewAddress = (data, primary) => {
   return (dispatch) => {
     dispatch({ type: ADD_NEW_ADDRESS + FETCH });
     dispatch({ type: APP_LOADING + START });
@@ -280,7 +280,10 @@ export const addNewAddress = (data) => {
       payload: data
     });
 
-    axios.post(CHECKOUT_URL.saveAddressURL, data)
+    if (primary) {
+      getTotalPrice(dispatch);
+    } else {
+      axios.post(CHECKOUT_URL.saveAddressURL, data)
       .then((response) => {
         const { payload, success, errorMessage } = response.data;
 
@@ -303,5 +306,6 @@ export const addNewAddress = (data) => {
         dispatch({ type: CHECKOUT_GET_TOTALS + INIT_UI + FAILURE });
         dispatch({ type: APP_LOADING + FINISH });
       });
+    }
   };
 };

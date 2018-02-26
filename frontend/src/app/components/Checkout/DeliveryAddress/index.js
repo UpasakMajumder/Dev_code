@@ -21,23 +21,6 @@ class DeliveryAddress extends Component {
     this.setState(prevState => ({ isDialogOpen: !prevState.isDialogOpen }));
   };
 
-  submitNewAddress = (address) => {
-    const data = {
-      id: -1,
-      customerName: address.customerName,
-      address1: address.address1,
-      address2: address.address2,
-      city: address.city,
-      state: address.state,
-      zip: address.zip,
-      country: address.country,
-      phone: address.phone,
-      email: address.email
-    };
-
-    this.props.addNewAddress(data);
-  };
-
   toggleAddressesNumber = () => {
     this.setState((prevState) => {
       if (prevState.addressesNumber === Math.POSITIVE_INFINITY) {
@@ -53,7 +36,7 @@ class DeliveryAddress extends Component {
 
   render() {
     const { addressesNumber } = this.state;
-    const { ui, checkedId, changeDeliveryAddress, disableInteractivity, newAddressObject, saveAddress } = this.props;
+    const { ui, checkedId, changeDeliveryAddress, disableInteractivity, newAddressObject } = this.props;
     const { title, description, newAddress, items, emptyMessage, availableToAdd, dialogUI, userNotification, bounds } = ui;
 
     const renderAddresses = (item, i) => {
@@ -124,11 +107,11 @@ class DeliveryAddress extends Component {
     return (
       <div id="delivery-address">
         {this.state.isDialogOpen && <NewAddressDialog
-          submit={this.submitNewAddress}
+          submit={this.props.addNewAddress}
           closeDialog={this.toggleDialog}
           ui={dialogUI}
           userNotification={userNotification}
-          saveAddress={saveAddress}
+          saveAddress={this.props.saveAddress}
         />}
 
         <div>
