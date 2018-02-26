@@ -85,6 +85,17 @@ namespace Kadena.Models.Checkout
         public decimal TotalTax { get; set; }
         public string PriceText { get; set; }
         public Guid ProductChiliWorkspaceId { get; set; }
+
+        public bool IsPreviewable
+        {
+            get
+            {
+                return IsTemplated && Uri.IsWellFormedUriString(PreviewUrl, UriKind.RelativeOrAbsolute);
+            }
+        }
+
+        public string PreviewUrl { get; set; }
+
         public bool IsEditable
         {
             get

@@ -12,6 +12,8 @@ namespace Kadena.Dto.Checkout
         public string Delivery { get; set; }
         public string PricePrefix { get; set; }
         public string Price { get; set; }
+        public bool IsPreviewable { get; set; }
+        public string PreviewUrl { get; set; }
         public bool IsEditable { get; set; }
         public bool IsQuantityEditable { get; set; }
         public string QuantityPrefix { get; set; }

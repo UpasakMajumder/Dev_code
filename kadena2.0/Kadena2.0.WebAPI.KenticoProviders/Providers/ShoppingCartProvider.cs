@@ -321,13 +321,17 @@ namespace Kadena.WebAPI.KenticoProviders
                 };
                 if (cartItem.IsTemplated)
                 {
-                    cartItem.EditorURL = $@"{documents.GetDocumentUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~'))}
-?nodeId={cartItem.ProductPageId}
-&templateId={cartItem.EditorTemplateId}
-&workspaceid={cartItem.ProductChiliWorkspaceId}
-&containerId={cartItem.MailingListGuid}
-&quantity={cartItem.Quantity}
-&customName={URLHelper.URLEncode(cartItem.CartItemText)}";
+                    var product = productProvider.GetProductByNodeId(cartItem.ProductPageId);
+                    cartItem.PreviewUrl = $"/api/template/{product.ProductChiliTemplateID}/preview/{product.TemplateLowResSettingId}";
+
+                    var editorUrl = documents.GetDocumentUrl(URLHelper.ResolveUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")));
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "nodeId", cartItem.ProductPageId.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "templateId", cartItem.EditorTemplateId.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "workspaceid", cartItem.ProductChiliWorkspaceId.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "containerId", cartItem.MailingListGuid.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "quantity", cartItem.Quantity.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "customName", URLHelper.URLEncode(cartItem.CartItemText));
+                    cartItem.EditorURL = editorUrl;
                 }
                 if (i.VariantParent != null)
                 {
