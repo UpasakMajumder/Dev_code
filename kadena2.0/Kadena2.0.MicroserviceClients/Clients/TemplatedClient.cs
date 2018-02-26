@@ -81,5 +81,12 @@ namespace Kadena2.MicroserviceClients.Clients
                 use3d
             }).ConfigureAwait(false);
         }
+
+        public async Task<BaseResponseDto<string>> GetPreview(Guid templateId, Guid settingId)
+        {
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/template/{templateId}/preview/{settingId}";
+            return await Get<string>(url).ConfigureAwait(false);
+        }
     }
 }

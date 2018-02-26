@@ -478,6 +478,7 @@
     <Compile Include="Infrastructure\ControllerTests.cs" />
     <Compile Include="Infrastructure\NotRegisteredService.cs" />
     <Compile Include="MicroserviceClients\FileModuleTests.cs" />
+    <Compile Include="MicroserviceClients\TemplateClientTest.cs" />
     <Compile Include="Models\ProductValidatorTests.cs" />
     <Compile Include="Models\DeliveryAddressesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,7 +1,6 @@
 ﻿using Kadena.Dto.General;
 using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
-using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -42,5 +41,7 @@ namespace Kadena2.MicroserviceClients.Contracts
         /// <param name="workspaceId">Id of template workspace</param>
         /// <returns>Url to Chili's editor.</returns>
         Task<BaseResponseDto<string>> SetMailingList(string containerId, string templateId, string workSpaceId, bool use3d);
+
+        Task<BaseResponseDto<string>> GetPreview(Guid templateId, Guid settingId);
     }
 }
