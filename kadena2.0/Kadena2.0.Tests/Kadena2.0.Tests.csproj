@@ -491,7 +491,8 @@
     <Compile Include="WebApi\OrderDetailServiceTests.cs" />
     <Compile Include="WebApi\PaymentMethods.cs" />
     <Compile Include="WebApi\SubmitOrderServiceTests.cs" />
-    <Compile Include="WebApi\TemplateServiceTest.cs" />
+    <Compile Include="WebApi\TemplateContollerTest.cs" />
+    <Compile Include="BusinessLogic\TemplateServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CMS\Kadena2.0.Web.csproj">

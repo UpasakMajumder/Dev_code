@@ -23,7 +23,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoDocumentProvider _documents;
         private readonly IKenticoProductsProvider _products;
 
-        public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedClient templateClient, 
+        public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedClient templateClient,
             IKenticoUserProvider users, IKenticoDocumentProvider documents, IKenticoProductsProvider products)
         {
             if (resources == null)
@@ -79,7 +79,7 @@ namespace Kadena.BusinessLogic.Services
             {
                 Title = _resources.GetResourceString("KADENA.PRODUCT.ManageProducts"),
                 OpenInDesignBtn = _resources.GetResourceString("Kadena.Product.ManageProducts.OpenInDesign"),
-                Header = new []
+                Header = new[]
                 {
                     new ProductTemplatesHeader
                     {
@@ -177,7 +177,7 @@ namespace Kadena.BusinessLogic.Services
             return productTemplates;
         }
 
-        private string BuildTemplateEditorUrl(string productEditorBaseUrl, int nodeId, string templateId, string productChiliWorkgroupID, int mailingListRowCount, 
+        private string BuildTemplateEditorUrl(string productEditorBaseUrl, int nodeId, string templateId, string productChiliWorkgroupID, int mailingListRowCount,
             string containerId = null, string customName = null)
         {
             var argumentFormat = "&{0}={1}";
@@ -194,6 +194,17 @@ namespace Kadena.BusinessLogic.Services
                 url.AppendFormat(argumentFormat, "customName", HttpUtility.UrlEncode(customName));
             }
             return url.ToString();
+        }
+
+        public async Task<Uri> GetPreviewUri(Guid templateId, Guid settingId)
+        {
+            var url = await _templateClient.GetPreview(templateId, settingId);
+            if (!url.Success)
+            {
+                _logger.LogError(this.GetType().Name, url.ErrorMessages);
+                return null;
+            }
+            return new Uri(url.Payload);
         }
     }
 }
