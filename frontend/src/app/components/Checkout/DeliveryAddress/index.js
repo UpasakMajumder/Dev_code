@@ -84,10 +84,12 @@ class DeliveryAddress extends Component {
       );
     };
 
-    let addresses = items.map(renderAddresses);
+    let addresses = items;
     if (Object.keys(newAddressObject).length > 0) {
-      addresses = [newAddressObject, ...items].map(renderAddresses);
+      addresses = [newAddressObject, ...items];
     }
+
+    const addressesComponent = addresses.map(renderAddresses);
 
     const alert = addresses.length ? null : <Alert type="grey" text={emptyMessage} />;
 
@@ -136,7 +138,7 @@ class DeliveryAddress extends Component {
             {alert}
             {userNotificationComponent}
             <div className="cart-fill__block-inner cart-fill__block--flex">
-              {addresses}
+              {addressesComponent}
               <div className="cart-fill__btns">
                 {newAddressBtn}
                 {showMoreButton}

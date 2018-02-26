@@ -2,7 +2,7 @@ import axios from 'axios';
 import { toastr } from 'react-redux-toastr';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, SHOW, HIDE, START, FINISH, INIT_UI, SETTINGS_ADDRESSES, ADD_SHIPPING_ADDRESS,
-  MODIFY_SHIPPING_ADDRESS, APP_LOADING, DIALOG, isDevelopment, SET_ADDRESS_DEFAULT, UNSET_ADDRESS_DEFAULT } from 'app.consts';
+  MODIFY_SHIPPING_ADDRESS, APP_LOADING, DIALOG, isDevelopment, SET_ADDRESS_DEFAULT, UNSET_ADDRESS_DEFAULT, SAVE_NEW_ADDRESS } from 'app.consts';
 /* helpers */
 import { callAC } from 'app.helpers/ac';
 /* globals */
@@ -102,7 +102,16 @@ export const addAddress = (data, fromCheckout) => {
       const { id } = payload;
       data.id = id;
 
-      if (fromCheckout) await axios.post(CHECKOUT.changeAddressURL, { id });
+      if (fromCheckout) {
+        const responseCheckout = await axios.post(CHECKOUT.changeAddressURL, { id });
+        const { success, payload } = responseCheckout.data;
+        if (success) {
+          dispatch({
+            type: SAVE_NEW_ADDRESS + SUCCESS,
+            payload
+          });
+        }
+      }
 
       dispatch({
         type: ADD_SHIPPING_ADDRESS + SUCCESS,

@@ -280,7 +280,7 @@ export const addNewAddress = (data) => {
       payload: data
     });
 
-    axios.post(CHECKOUT_URL.initTotalDeliveryUIURL, data)
+    axios.post(CHECKOUT_URL.saveAddressURL, data)
       .then((response) => {
         const { payload, success, errorMessage } = response.data;
 
