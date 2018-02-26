@@ -1,7 +1,7 @@
 ﻿using Kadena.Dto.General;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.BusinessLogic.Services;
-using Kadena2.MicroserviceClients.Contracts;
+using Kadena.MicroserviceClients.Contracts;
 using Moq;
 using Xunit;
 using System.Threading.Tasks;

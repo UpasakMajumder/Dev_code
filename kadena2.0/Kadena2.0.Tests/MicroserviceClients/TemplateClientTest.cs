@@ -1,5 +1,5 @@
 ﻿using Kadena.Dto.General;
-using Kadena2.MicroserviceClients.Clients;
+using Kadena.MicroserviceClients.Clients;
 using Moq.AutoMock;
 using System;
 using System.Threading.Tasks;

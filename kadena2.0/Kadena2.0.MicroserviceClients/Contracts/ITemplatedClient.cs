@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Kadena2.MicroserviceClients.Contracts
+namespace Kadena.MicroserviceClients.Contracts
 {
     public interface ITemplatedClient
     {

@@ -7,6 +7,8 @@ using Kadena.BusinessLogic.Services;
 using Kadena.BusinessLogic.Services.Orders;
 using Kadena.BusinessLogic.Services.SettingsSynchronization;
 using Kadena.Helpers;
+using Kadena.MicroserviceClients.Contracts;
+using Kadena.MicroserviceClients.Clients;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.WebAPI.KenticoProviders.Providers;

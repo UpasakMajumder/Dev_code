@@ -8,7 +8,7 @@ using Kadena.Models.Product;
 using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.BusinessLogic.Contracts.Orders;
-using Kadena2.MicroserviceClients.Contracts;
+using Kadena.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;

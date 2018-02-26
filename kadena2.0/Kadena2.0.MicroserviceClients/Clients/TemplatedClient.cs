@@ -2,13 +2,13 @@
 using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
 using Kadena2.MicroserviceClients.Clients.Base;
-using Kadena2.MicroserviceClients.Contracts;
+using Kadena.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Kadena2.MicroserviceClients.Clients
+namespace Kadena.MicroserviceClients.Clients
 {
     public sealed class TemplatedClient : SignedClientBase, ITemplatedClient
     {

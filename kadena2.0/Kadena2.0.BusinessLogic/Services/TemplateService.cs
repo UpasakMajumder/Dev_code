@@ -4,7 +4,7 @@ using Kadena.Helpers;
 using Kadena.Models.Product;
 using Kadena.Models.TemplatedProduct;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.MicroserviceClients.Contracts;
+using Kadena.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
