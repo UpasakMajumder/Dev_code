@@ -56,9 +56,9 @@ class NewAddressDialog extends Component {
     this.setState({ invalids });
     if (invalids.length) return;
     if (this.state.saveAddress) {
-      await this.props.saveAddress({ id: -1, ...address }, true);
+      await this.props.saveAddress({ id: -1, ...address, temporary: !this.state.saveAddress }, true);
     }
-    this.props.addNewAddress({ id: -1, ...address }, this.state.saveAddress);
+    this.props.addNewAddress({ id: -1, ...address, temporary: !this.state.saveAddress }, this.state.saveAddress);
     this.props.closeDialog();
   };
 
