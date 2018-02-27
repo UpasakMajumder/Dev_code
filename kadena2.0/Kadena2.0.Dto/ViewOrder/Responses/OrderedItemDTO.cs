@@ -23,6 +23,7 @@ namespace Kadena.Dto.ViewOrder.Responses
         public string DownloadPdfURL { get; set; }
         public string ProductStatusPrefix { get; set; }
         public string ProductStatus { get; set; }
+        public string PreviewUrl { get; set; }
         public IEnumerable<ItemOptionDto> Options { get; set; }
     }
 }

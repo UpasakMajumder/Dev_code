@@ -1,6 +1,7 @@
 using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using Kadena.Helpers;
 using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.OrderDetail;
@@ -253,6 +254,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 TrackingIdPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix"),
                 ProductStatusPrefix = resources.GetResourceString("Kadena.Order.ProductStatusPrefix"),
                 ProductStatus = products.GetProductStatus(i.SkuId),
+                PreviewUrl = UrlHelper.GetUrlForTemplatePreview(Guid.Empty, Guid.Empty),
                 Options = i.Attributes?.Select(a => new ItemOption { Name = products.GetOptionCategory(a.Key)?.DisplayName ?? a.Key, Value = a.Value }) ?? Enumerable.Empty<ItemOption>()
             }).ToList();
 
