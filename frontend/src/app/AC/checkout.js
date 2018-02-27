@@ -272,6 +272,7 @@ export const addNewAddress = (data, primary) => {
 
     if (primary) {
       getTotalPrice(dispatch);
+      dispatch({ type: APP_LOADING + FINISH });
     } else {
       axios.post(CHECKOUT_URL.saveAddressURL, data)
       .then((response) => {

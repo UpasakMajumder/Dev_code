@@ -120,8 +120,6 @@ export const addAddress = (data, fromCheckout) => {
 
       dispatch({ type: APP_LOADING + FINISH });
       toastr.success(NOTIFICATION.addAddress.title, NOTIFICATION.addAddress.text);
-
-
     } catch (e) {
       dispatch({ type: ADD_SHIPPING_ADDRESS + FAILURE });
       dispatch({ type: APP_LOADING + FINISH });
