@@ -19,6 +19,7 @@ using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kadena.Helpers;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -322,7 +323,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 if (cartItem.IsTemplated)
                 {
                     var product = productProvider.GetProductByNodeId(cartItem.ProductPageId);
-                    cartItem.PreviewUrl = $"/api/template/{product.ProductChiliTemplateID}/preview/{product.TemplateLowResSettingId}";
+                    cartItem.PreviewUrl = UrlHelper.GetUrlForTemplatePreview(product.ProductChiliTemplateID, product.TemplateLowResSettingId);
 
                     var editorUrl = documents.GetDocumentUrl(URLHelper.ResolveUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")));
                     editorUrl = URLHelper.AddParameterToUrl(editorUrl, "nodeId", cartItem.ProductPageId.ToString());
