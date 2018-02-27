@@ -27,17 +27,7 @@ import { CHECKOUT as CHECKOUT_URL, NOTIFICATION } from 'app.globals';
 const getTotalPrice = (dispatch) => {
   dispatch({ type: CHECKOUT_GET_TOTALS + FETCH });
 
-  const state = window.store.getState();
-  let promise;
-
-  if (state.checkout.checkedData.deliveryAddress === -1) {
-    // for new custom address we have to pass newAddress data
-    promise = axios.post(CHECKOUT_URL.initTotalDeliveryUIURL, state.checkout.newAddress);
-  } else {
-    promise = axios.get(CHECKOUT_URL.initTotalDeliveryUIURL);
-  }
-
-  promise
+  axios.get(CHECKOUT_URL.initTotalDeliveryUIURL)
     .then((response) => {
       const { payload, success, errorMessage } = response.data;
 
