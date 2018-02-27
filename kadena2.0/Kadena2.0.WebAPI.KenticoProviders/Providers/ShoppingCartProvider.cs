@@ -753,7 +753,11 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public List<int> GetUserShoppingCartIDs(int userID)
         {
-            return ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID).WhereEquals("ShoppingCartUserID", userID)?.ToList().Select(x => x.ShoppingCartID).ToList();
+            return ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID)
+                                           .WhereEquals("ShoppingCartUserID", userID)
+                                           .And()
+                                           .WhereEquals("ShoppingCartInventoryType", 1)
+                                           ?.ToList().Select(x => x.ShoppingCartID).ToList();
         }
 
         public bool ValidateAllCarts(int userID = 0, int campaignID = 0)
