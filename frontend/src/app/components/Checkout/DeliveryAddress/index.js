@@ -107,7 +107,7 @@ class DeliveryAddress extends Component {
     return (
       <div id="delivery-address">
         {this.state.isDialogOpen && <NewAddressDialog
-          submit={this.props.addNewAddress}
+          addNewAddress={this.props.addNewAddress}
           closeDialog={this.toggleDialog}
           ui={dialogUI}
           userNotification={userNotification}
