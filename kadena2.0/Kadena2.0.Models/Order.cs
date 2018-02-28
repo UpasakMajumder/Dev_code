@@ -1,4 +1,5 @@
 ﻿using Kadena.Models.Checkout;
+using Kadena.Models.Common;
 using Kadena.Models.RecentOrders;
 using System;
 using System.Collections.Generic;

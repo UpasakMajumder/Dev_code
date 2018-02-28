@@ -12,6 +12,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Checkout;
+using Kadena.Models.Common;
 
 namespace Kadena.BusinessLogic.Services.Orders
 {
@@ -135,7 +136,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems"),
                 Rows = orderList.Orders.Select(o =>
                 {
-                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{_orderDetailUrl}?orderID={o.Id}" };
+                    o.ViewBtn = new Button { Exists = true, Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{_orderDetailUrl}?orderID={o.Id}" };
                     return o;
                 })
             };
@@ -149,7 +150,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 Rows = orderList.Orders.Select(o =>
                 {
-                    o.ViewBtn = new Button { Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{_orderDetailUrl}?orderID={o.Id}" };
+                    o.ViewBtn = new Button { Exists = true, Text = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), Url = $"{_orderDetailUrl}?orderID={o.Id}" };
                     return o;
                 })
             };

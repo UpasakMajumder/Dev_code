@@ -148,7 +148,7 @@
     <Compile Include="Order\OrderDto.cs" />
     <Compile Include="Order\OrderListDto.cs" />
     <Compile Include="Order\OrderItemDto.cs" />
-    <Compile Include="RecentOrders\ButtonDto.cs" />
+    <Compile Include="Common\ButtonDto.cs" />
     <Compile Include="RecentOrders\OrderBodyDto.cs" />
     <Compile Include="RecentOrders\OrderHeadDto.cs" />
     <Compile Include="RecentOrders\OrderItemDto.cs" />

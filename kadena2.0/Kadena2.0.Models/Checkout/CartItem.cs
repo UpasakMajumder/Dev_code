@@ -1,4 +1,5 @@
-﻿using Kadena.Models.Product;
+﻿using Kadena.Models.Common;
+using Kadena.Models.Product;
 using System;
 using System.Collections.Generic;
 
@@ -86,15 +87,7 @@ namespace Kadena.Models.Checkout
         public string PriceText { get; set; }
         public Guid ProductChiliWorkspaceId { get; set; }
 
-        public bool IsPreviewable
-        {
-            get
-            {
-                return IsTemplated && Uri.IsWellFormedUriString(PreviewUrl, UriKind.RelativeOrAbsolute);
-            }
-        }
-
-        public string PreviewUrl { get; set; }
+        public Button Preview { get; set; }
 
         public bool IsEditable
         {

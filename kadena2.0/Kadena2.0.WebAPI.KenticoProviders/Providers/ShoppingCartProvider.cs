@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Kadena.Helpers;
+using Kadena.Models.Common;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -318,12 +319,14 @@ namespace Kadena.WebAPI.KenticoProviders
                     MailingListPrefix = resources.GetResourceString("Kadena.Checkout.MailingListLabel"),
                     TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplateLabel"),
                     ProductionTime = displayProductionAndShipping ? i.GetValue("ProductProductionTime", string.Empty) : null,
-                    ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null
+                    ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null,
+                    Preview = new Button { Exists = false, Text = resources.GetResourceString("Kadena.Checkout.PreviewButton") }
                 };
                 if (cartItem.IsTemplated)
                 {
                     var product = productProvider.GetProductByNodeId(cartItem.ProductPageId);
-                    cartItem.PreviewUrl = UrlHelper.GetUrlForTemplatePreview(product.ProductChiliTemplateID, product.TemplateLowResSettingId);
+                    cartItem.Preview.Url = UrlHelper.GetUrlForTemplatePreview(product.ProductChiliTemplateID, product.TemplateLowResSettingId);
+                    cartItem.Preview.Exists = true;
 
                     var editorUrl = documents.GetDocumentUrl(URLHelper.ResolveUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")));
                     editorUrl = URLHelper.AddParameterToUrl(editorUrl, "nodeId", cartItem.ProductPageId.ToString());
