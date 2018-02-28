@@ -11,7 +11,7 @@ namespace Kadena.BusinessLogic.Contracts
         Task<CheckoutPage> GetCheckoutPage();
         CartItems GetCartItems();
         Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals();
-        Task<CheckoutPageDeliveryTotals> SaveTeporaryAddress(DeliveryAddress deliveryAddress);
+        Task<CheckoutPageDeliveryTotals> SaveTemporaryAddress(DeliveryAddress deliveryAddress);
         Task<CheckoutPageDeliveryTotals> SelectShipping(int id);
         DeliveryAddresses SelectAddress(int id);
         CartItems ChangeItemQuantity(int id, int quantity);

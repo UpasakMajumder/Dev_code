@@ -182,7 +182,7 @@ namespace Kadena.WebAPI.KenticoProviders
                     s.Disable();
                 }
 
-                logger.LogError("GetShippingPrice", "Current shopping cart has no shipping address, therefore cannot estimate shipping prices");
+                logger.LogInfo("GetShippingPrice", "Info", "Current shopping cart has no shipping address, therefore cannot estimate shipping prices");
                 return;
             }
 

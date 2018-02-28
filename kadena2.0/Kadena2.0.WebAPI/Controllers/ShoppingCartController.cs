@@ -69,7 +69,7 @@ namespace Kadena.WebAPI.Controllers
         public async Task<IHttpActionResult> SaveTemporaryAddress([FromBody] DeliveryAddressDTO postedAddress)
         {
             var address = mapper.Map<DeliveryAddress>(postedAddress);
-            var deliveryTotals = await service.SaveTeporaryAddress(address);
+            var deliveryTotals = await service.SaveTemporaryAddress(address);
             var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
             return ResponseJson(deliveryTotalsDto);
         }
