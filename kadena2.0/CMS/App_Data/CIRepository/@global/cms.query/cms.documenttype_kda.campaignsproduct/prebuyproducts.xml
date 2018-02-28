@@ -20,6 +20,12 @@ INNER JOIN COM_SKU s ON s.SKUID=t.NodeSKUID
 INNER JOIN KDA_ProductCategory c ON c.ProductCategoryID=p.CategoryID
 INNER JOIN KDA_Program pr ON pr.ProgramID=p.ProgramID
 WHERE p.ProgramID IS NOT NULL and t.ClassName='KDA.CampaignsProduct' and t.NodeSKUID IS NOT NULL and NodeParentID in (select NodeID FROM View_CMS_Tree_Joined WHERE ClassName='KDA.Program' and  ##where##)
+AND 
+(
+  (DocumentPublishFrom is null OR DocumentPublishFrom<GETDATE()) 
+  AND 
+  (DocumentPublishTo is null OR DocumentPublishTo>GETDATE())
+)
 ]]>
   </QueryText>
   <QueryTypeID>0</QueryTypeID>

@@ -62,8 +62,9 @@
           <ShowOnlyCoupled>False</ShowOnlyCoupled>
         </settings>
       </field>
-      <field column="ShippingID" columntype="integer" guid="7f6381ce-27eb-46ca-9103-bf21be48c53f" publicfield="false" reftype="Required" resolvedefaultvalue="False" visible="true">
+      <field column="DefaultShipping" columnsize="200" columntype="text" guid="7f6381ce-27eb-46ca-9103-bf21be48c53f" publicfield="false" reftype="Required" resolvedefaultvalue="False" visible="true">
         <properties>
+          <defaultvalue>Ground</defaultvalue>
           <fieldcaption>Please select shipping option</fieldcaption>
           <fielddescription>
             <![CDATA[Indicates which shipping option should be used if item is pre-buy]]>
@@ -75,8 +76,8 @@
           <EditText>False</EditText>
           <Query>
 <![CDATA[
-select ShippingOptionID as value,ShippingOptionDisplayName as text from COM_ShippingOption
-where ShippingOptionSiteID={%CurrentSite.ID|(user)cvoqa2@gmail.com|(hash)bd1ae4e27dbe1e2a368414c4ebfbc3913c59531047bbe5fb2d0e56619febd3b2%} and ShippingOptionEnabled=1
+select ShippingOptionName as value,ShippingOptionDisplayName as text from COM_ShippingOption
+where ShippingOptionSiteID={%CurrentSite.ID|(user)twe_admin|(hash)ae86ecbf2a2fd90fe8aeeec2587029ad98deb7f3773ce10cf7f9d049c6b5df36%} and ShippingOptionEnabled=1
 ]]>
           </Query>
           <SortItems>True</SortItems>
