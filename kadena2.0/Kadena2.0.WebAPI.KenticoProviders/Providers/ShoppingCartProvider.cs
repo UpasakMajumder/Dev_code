@@ -251,6 +251,12 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var cart = ECommerceContext.CurrentShoppingCart;
             var info = mapper.Map<AddressInfo>(address);
+            info.AddressName = "TemporaryAddress";
+            info.AddressPersonalName = "TemporaryAddress";
+            info.AddressID = 0;
+            info.AddressCustomerID = ECommerceContext.CurrentCustomer.CustomerID;
+
+            info.Insert();
             cart.ShoppingCartShippingAddress = info;
             cart.SubmitChanges(true);
         }
