@@ -293,11 +293,13 @@ namespace Kadena.WebAPI.KenticoProviders
                     CartItemText = i.CartItemText,
                     DesignFileKey = i.GetValue("ArtworkLocation", string.Empty),
                     MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
-                    ChiliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
-                    ProductChiliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
+                    ChiliProcess = new ChiliProcess
+                    {
+                        TemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
+                        PdfSettings = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
+                    },
                     ProductChiliWorkspaceId = i.GetValue("ProductChiliWorkspaceId", Guid.Empty),
                     ChiliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
-                    DesignFilePathTaskId = i.GetValue("DesignFilePathTaskId", Guid.Empty),
                     SKUName = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU?.SKUName,
                     SKUNumber = i.SKU?.SKUNumber,
                     TotalTax = 0.0m,
@@ -312,7 +314,6 @@ namespace Kadena.WebAPI.KenticoProviders
                     QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                     MailingListName = i.GetValue("MailingListName", string.Empty),
                     Template = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
-                    EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
                     ProductPageId = i.GetIntegerValue("ProductPageID", 0),
                     SKUID = i.SKUID,
                     StockQuantity = i.SKU.SKUAvailableItems,
@@ -330,7 +331,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
                     var editorUrl = documents.GetDocumentUrl(URLHelper.ResolveUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")));
                     editorUrl = URLHelper.AddParameterToUrl(editorUrl, "nodeId", cartItem.ProductPageId.ToString());
-                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "templateId", cartItem.EditorTemplateId.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "templateId", cartItem.ChiliProcess.TemplateId.ToString());
                     editorUrl = URLHelper.AddParameterToUrl(editorUrl, "workspaceid", cartItem.ProductChiliWorkspaceId.ToString());
                     editorUrl = URLHelper.AddParameterToUrl(editorUrl, "containerId", cartItem.MailingListGuid.ToString());
                     editorUrl = URLHelper.AddParameterToUrl(editorUrl, "quantity", cartItem.Quantity.ToString());

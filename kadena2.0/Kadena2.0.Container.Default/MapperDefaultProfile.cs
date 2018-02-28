@@ -49,6 +49,7 @@ namespace Kadena2.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<ChiliProcess, ChiliProcessDto>();
             CreateMap<ItemOption, ItemOptionDto>();
 
             CreateMap<Price, PriceDto>()
@@ -61,8 +62,6 @@ namespace Kadena2.Container.Default
             CreateMap<CartItem, OrderItemDTO>()
                 .ForMember(dest => dest.SKU, opt => opt.MapFrom(src => src))
                 .ForMember(dest => dest.UnitCount, opt => opt.MapFrom(src => src.Quantity))
-                .ForMember(dest => dest.ChiliTaskId, opt => opt.MapFrom(src => src.DesignFilePathTaskId))
-                .ForMember(dest => dest.ChiliTemplateId, opt => opt.MapFrom(src => src.ChiliEditorTemplateId))
                 .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src => src.Options.ToDictionary(i => i.Name, i => i.Value)));
 
             CreateMap<CustomerData, CustomerDataDTO>();

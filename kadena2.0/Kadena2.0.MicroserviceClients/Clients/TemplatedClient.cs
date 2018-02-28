@@ -20,13 +20,6 @@ namespace Kadena.MicroserviceClients.Clients
             _properties = properties;
         }
 
-        public async Task<BaseResponseDto<GeneratePdfTaskResponseDto>> RunGeneratePdfTask(string templateId, string settingsId)
-        {
-            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url}/api/template/{templateId}/pdf/{settingsId}";
-            return await Get<GeneratePdfTaskResponseDto>(url).ConfigureAwait(false);
-        }
-
         public async Task<BaseResponseDto<GeneratePdfTaskStatusResponseDto>> GetGeneratePdfTaskStatus(string templateId, string taskId)
         {
             var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
