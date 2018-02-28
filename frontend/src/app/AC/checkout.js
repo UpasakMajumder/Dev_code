@@ -262,25 +262,24 @@ export const sendData = (data) => {
 
 export const addNewAddress = (data, primary) => {
   return (dispatch) => {
-    dispatch({ type: ADD_NEW_ADDRESS + FETCH });
-    dispatch({ type: APP_LOADING + START });
-
-    dispatch({
-      type: ADD_NEW_ADDRESS + SUCCESS,
-      payload: data
-    });
-
     if (primary) {
       getTotalPrice(dispatch);
-      dispatch({ type: APP_LOADING + FINISH });
     } else {
+      dispatch({ type: ADD_NEW_ADDRESS + FETCH });
+      dispatch({ type: APP_LOADING + START });
+
+      dispatch({
+        type: ADD_NEW_ADDRESS + SUCCESS,
+        payload: data
+      });
+
       axios.post(CHECKOUT_URL.saveAddressURL, data)
       .then((response) => {
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
           dispatch({
-            type: CHECKOUT_GET_TOTALS + INIT_UI + FAILURE,
+            type: CHECKOUT_GET_TOTALS + FAILURE,
             alert: errorMessage
           });
           dispatch({ type: APP_LOADING + FINISH });
@@ -288,13 +287,13 @@ export const addNewAddress = (data, primary) => {
         }
 
         dispatch({
-          type: CHECKOUT_GET_TOTALS + INIT_UI + SUCCESS,
+          type: CHECKOUT_GET_TOTALS + SUCCESS,
           payload
         });
         dispatch({ type: APP_LOADING + FINISH });
       })
       .catch((error) => {
-        dispatch({ type: CHECKOUT_GET_TOTALS + INIT_UI + FAILURE });
+        dispatch({ type: CHECKOUT_GET_TOTALS + FAILURE });
         dispatch({ type: APP_LOADING + FINISH });
       });
     }

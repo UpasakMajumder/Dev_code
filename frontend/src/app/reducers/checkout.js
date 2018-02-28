@@ -169,7 +169,7 @@ export default (state = defaultState, action) => {
       newAddress: payload,
       checkedData: {
         ...state.checkedData,
-        deliveryAddress: -1
+        deliveryAddress: payload.id
       }
     };
 
@@ -179,6 +179,10 @@ export default (state = defaultState, action) => {
       ui: {
         ...state.ui,
         deliveryAddresses: payload.deliveryAddresses
+      },
+      checkedData: {
+        ...state.checkedData,
+        deliveryAddress: payload.checkedId
       }
     };
 

@@ -68,7 +68,6 @@ class DeliveryAddress extends Component {
     };
 
     let addresses = items;
-    console.log(newAddressObject);
     if (newAddressObject.temporary === true) {
       addresses = [newAddressObject, ...items];
     }
