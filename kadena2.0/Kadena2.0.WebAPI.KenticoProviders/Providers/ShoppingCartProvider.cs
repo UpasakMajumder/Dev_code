@@ -62,7 +62,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             if (productProvider == null)
             {
-                throw new ArgumentNullException(nameof(dynamicPrices));
+                throw new ArgumentNullException(nameof(productProvider));
             }
 
             this.resources = resources;
@@ -175,6 +175,17 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private void GetShippingPrice(DeliveryOption[] services)
         {
+            if (ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress == null)
+            {
+                foreach (var s in services.Where(s => !s.IsCustomerPrice))
+                {
+                    s.Disable();
+                }
+
+                logger.LogError("GetShippingPrice", "Current shopping cart has no shipping address, therefore cannot estimate shipping prices");
+                return;
+            }
+
             // this method's approach comes from origial kentico webpart (ShippingSeletion)
             int originalCartShippingId = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID;
 
@@ -238,21 +249,10 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public void SetShoppingCartAddress(DeliveryAddress address)
         {
-            if (address != null)
-            {
-                if (address.Id > 0)
-                {
-                    SetShoppingCartAddress(address.Id);
-                }
-                else
-                {
-                    var cart = ECommerceContext.CurrentShoppingCart;
-
-                    var info = mapper.Map<AddressInfo>(address);
-                    cart.ShoppingCartShippingAddress = info;
-                    cart.SubmitChanges(true);
-                }
-            }
+            var cart = ECommerceContext.CurrentShoppingCart;
+            var info = mapper.Map<AddressInfo>(address);
+            cart.ShoppingCartShippingAddress = info;
+            cart.SubmitChanges(true);
         }
 
         public void SelectShipping(int shippingOptionId)
