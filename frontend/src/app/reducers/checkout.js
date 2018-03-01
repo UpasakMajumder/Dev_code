@@ -64,14 +64,21 @@ export default (state = defaultState, action) => {
         ...state.ui,
         paymentMethods: {
           ...state.ui.paymentMethods,
-          items: state.ui.paymentMethods.items.map(item => ({ ...item, checked: item.id === payload.id }))
+          items: state.ui.paymentMethods.items.map((item) => {
+            return {
+              ...item,
+              checked: item.id === payload.id,
+              items: !payload.card ? item.items : item.items.map(card => ({ ...card, checked: card.id === payload.card }))
+            };
+          })
         }
       },
       checkedData: {
         ...state.checkedData,
         paymentMethod: {
           id: payload.id,
-          invoice: payload.invoice
+          invoice: payload.invoice,
+          card: payload.card
         }
       }
     };

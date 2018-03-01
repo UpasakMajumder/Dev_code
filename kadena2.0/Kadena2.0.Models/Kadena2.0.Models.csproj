@@ -51,6 +51,8 @@
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
     <Compile Include="Campaign.cs" />
     <Compile Include="CampaignData\CampaignData.cs" />
+    <Compile Include="CreditCard\SaveCardData.cs" />
+    <Compile Include="CreditCard\StoredCard.cs" />
     <Compile Include="FyBudget\FyBudget.cs" />
     <Compile Include="IBTF\IBTF.cs" />
     <Compile Include="IBTF\IBTFAdjustment.cs" />
@@ -176,7 +178,6 @@
     <Compile Include="Site\Site.cs" />
     <Compile Include="State.cs" />
     <Compile Include="SubmitOrder\PaymentMethod.cs" />
-    <Compile Include="SubmitOrder\SubmitOrderError.cs" />
     <Compile Include="SubmitOrder\SubmitOrderRequest.cs" />
     <Compile Include="SubmitOrder\SubmitOrderResult.cs" />
     <Compile Include="TemplatedProduct\ProductTemplate.cs" />

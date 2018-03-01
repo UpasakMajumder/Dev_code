@@ -13,7 +13,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public void LogError(string source, string error)
         {
-            EventLogProvider.LogInformation(source, "ERROR", error);
+            EventLogProvider.LogEvent(EventType.ERROR, source, "ERROR", error);
         }
 
         public void LogInfo(string source, string eventCode, string info)

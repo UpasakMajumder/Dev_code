@@ -56,7 +56,10 @@
     <Compile Include="Checkout\Responses\ChangeItemQuantityResponseDto.cs" />
     <Compile Include="Checkout\ItemOptionDto.cs" />
     <Compile Include="CreditCard\3DSi\Requests\SaveTokenDataRequestDto.cs" />
-    <Compile Include="CreditCard\3DSi\Responses\CreditCardPaymentDoneDto.cs" />
+    <Compile Include="Checkout\StoredCardDto.cs" />
+    <Compile Include="CreditCard\MicroserviceResponses\UserStoredCardDto.cs" />
+    <Compile Include="CreditCard\Requests\SaveCreditCardRequestDto.cs" />
+    <Compile Include="CreditCard\Responses\CreditCardPaymentDoneDto.cs" />
     <Compile Include="CustomerData\UserBudgetDto.cs" />
     <Compile Include="Product\BorderDto.cs" />
     <Compile Include="Product\PriceDto.cs" />
@@ -176,8 +179,6 @@
     <Compile Include="TemplatedProduct\Responses\ProductTemplatesDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\GetOrderByOrderIdResponseDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceRequests\GetOrderByOrderIdRequestDTO.cs" />
-    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderErrorDto.cs" />
-    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderServiceResponseDto.cs" />
     <Compile Include="SubmitOrder\Requests\PaymentMethodDto.cs" />
     <Compile Include="Checkout\Requests\RemoveItemRequestDto.cs" />
     <Compile Include="SubmitOrder\Requests\SubmitRequestDto.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="_Attributes\StringListValidationAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="SubmitOrder\MicroserviceResponses\" />
     <Folder Include="Tax\MicroserviceResponses\" />
     <Folder Include="Tax\Requests\" />
     <Folder Include="Tax\Responses\" />

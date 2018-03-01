@@ -104,6 +104,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Url, opt => opt.MapFrom(src => src.DocumentUrlPath))
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => URLHelper.GetAbsoluteUrl(src.GetValue("ProductCategoryImage", string.Empty))))
                 .ForMember(dest => dest.ProductBordersEnabled, opt => opt.MapFrom(src => src.GetBooleanValue("ProductCategoryBordersEnabled", false)))
+                .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.NodeOrder))
                 .AfterMap((src, dest) => dest.Border = new Border { Exists = src.GetBooleanValue("ProductCategoryBordersEnabled", false) });
             CreateMap<CustomTableItem, Submission>()
                 .ForMember(dest => dest.SubmissionId, opt => opt.MapFrom(src => src.GetGuidValue("SubmissionId", Guid.Empty)))
@@ -112,7 +113,10 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.GetIntegerValue("UserId", 0)))
                 .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.GetIntegerValue("CustomerId", 0)))
                 .ForMember(dest => dest.Processed, opt => opt.MapFrom(src => src.GetBooleanValue("Processed", false)))
+                .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.GetBooleanValue("Success", false)))
                 .ForMember(dest => dest.OrderJson, opt => opt.MapFrom(src => src.GetStringValue("OrderJson", string.Empty)))
+                .ForMember(dest => dest.Error, opt => opt.MapFrom(src => src.GetStringValue("Error", string.Empty)))
+                .ForMember(dest => dest.SaveCardJson, opt => opt.MapFrom(src => src.GetStringValue("SaveCardJson", string.Empty)))
                 .ForMember(dest => dest.RedirectUrl, opt => opt.MapFrom(src => src.GetStringValue("RedirectUrl", string.Empty)));
             CreateMap<AddressInfo, AddressData>();
         }

@@ -13,7 +13,6 @@ using Kadena.Dto.CustomerData;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.CustomerData;
 using Kadena.Dto.Checkout.Responses;
-using Kadena2.Container.Default;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -47,9 +46,9 @@ namespace Kadena.WebAPI.Controllers
         [HttpGet]
         [Route("api/shoppingcart")]
         [CustomerAuthorizationFilter]
-        public IHttpActionResult Get()
+        public async Task<IHttpActionResult> Get()
         {
-            var checkoutPage = service.GetCheckoutPage();
+            var checkoutPage = await service.GetCheckoutPage();
             var checkoutPageDto = mapper.Map<CheckoutPageDTO>(checkoutPage);
             return ResponseJson(checkoutPageDto);
         }

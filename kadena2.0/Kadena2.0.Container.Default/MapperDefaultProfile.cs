@@ -4,7 +4,8 @@ using Kadena.Dto.BusinessUnits;
 using Kadena.Dto.Checkout;
 using Kadena.Dto.Checkout.Responses;
 using Kadena.Dto.CreditCard._3DSi.Requests;
-using Kadena.Dto.CreditCard._3DSi.Responses;
+using Kadena.Dto.CreditCard.Requests;
+using Kadena.Dto.CreditCard.Responses;
 using Kadena.Dto.CustomerData;
 using Kadena.Dto.General;
 using Kadena.Dto.Logon.Requests;
@@ -39,7 +40,6 @@ using Kadena.Models.Settings;
 using Kadena.Models.Site;
 using Kadena.Models.SubmitOrder;
 using Kadena.Models.TemplatedProduct;
-using Kadena2.MicroserviceClients.MicroserviceResponses;
 using System.Linq;
 
 namespace Kadena2.Container.Default
@@ -111,10 +111,6 @@ namespace Kadena2.Container.Default
             CreateMap<SubmitButton, SubmitButtonDTO>();
             CreateMap<SubmitRequestDto, SubmitOrderRequest>();
             CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
-            CreateMap<SubmitOrderServiceResponseDto, SubmitOrderResult>();
-            CreateMap<SubmitOrderErrorDto, SubmitOrderError>();
-            CreateMap<BaseResponseDto<string>, SubmitOrderResult>();
-            CreateMap<BaseErrorDto, SubmitOrderError>();
             CreateMap<PaymentMethodDto, Kadena.Models.SubmitOrder.PaymentMethod>();
             CreateMap<DeliveryAddress, Kadena.Dto.Settings.AddressDto>()
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id))
@@ -254,6 +250,8 @@ namespace Kadena2.Container.Default
                 .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src));
             CreateMap<DeliveryAddresses, ChangeDeliveryAddressResponseDto>()
                 .ForMember(dest => dest.DeliveryAddresses, opt => opt.MapFrom(src => src));
+   		    CreateMap<SaveCreditCardRequestDto, SaveCardData>();
+            CreateMap<StoredCard, StoredCardDto>();
         }
     }
 }

@@ -952,7 +952,12 @@ config.localization.manageProducts = {
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% ProductType.Contains("KDA.InventoryProduct") || ProductType.Contains("KDA.POD") || ProductType.Contains("KDA.StaticProduct") |(user)administrator|(hash)a851f663eea350af6a2173e7067d5412bb0a89e910dac587ea5e353c9ddce18d%}]]>
+<![CDATA[
+{% (ProductType.Contains("KDA.InventoryProduct") || ProductType.Contains("KDA.POD") || ProductType.Contains("KDA.StaticProduct")) 
+   && Settings.KDA_NewKitRequestEnabledOnSite 
+   && !ProductRequestKitButtonDisabled
+   |(user)michal.machacek@actum.cz|(hash)27352d3e53c8712f844d397efd548bbdccfbccbb0c69d19dee52ac26792b81fd%}
+]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>
@@ -1018,14 +1023,14 @@ config.localization.manageProducts = {
 <ul class="product-view__attachments">
   {% foreach (item in KadenaNamespace.GetUrlsFromMediaMultiField(ProductAttachments)) { %}
   <li>
-    <a class="link link--attachment product-view__attachment" href="{% item %}">
+    <a class="link link--attachment product-view__attachment" href="{% item %}" target="_blank">
       <svg class="icon icon-download">
         <use xlink:href="/gfx/svg/sprites/icons.svg#download--blue"></use>
       </svg>
       <span>{% KadenaNamespace.GetFilenameFromMediaUrl(item) %}</span>
     </a>
   </li>
-  {% } |(user)tomas.rucki@actum.cz|(hash)8b34c5c9b9bdd2df0b5716cd267eae89508aa248bbc0828c9c8c13a23cffd34e%}
+  {% } |(user)tomas.rucki@actum.cz|(hash)73b6f50ea75ae6e3f1cb06368f8e35f3855706de57e9c97b46efef0cb734ae5b%}
 </ul>
 ]]>
           </property>

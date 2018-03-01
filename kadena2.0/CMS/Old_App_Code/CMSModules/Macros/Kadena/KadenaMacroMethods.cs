@@ -535,6 +535,36 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         }
 
         /// <summary>
+        ///Returns  campaign name by campaignID
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        [MacroMethod(typeof(string), "Returns  campaign name by campaignID", 1)]
+        [MacroMethodParam(0, "CampaignID", typeof(int), "CampaignID")]
+        public static string GetCampaignNameByID(EvaluationContext context, params object[] parameters)
+        {
+            try
+            {
+                int campaignID = ValidationHelper.GetInteger(parameters[0], 0);
+                string campaignName = string.Empty;
+                var campaign = CampaignProvider.GetCampaigns().Columns("Name")
+                                .WhereEquals("CampaignID", campaignID)
+                                .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).FirstOrDefault();
+                if (campaign != null)
+                {
+                    campaignName = ValidationHelper.GetString(campaign.GetValue("Name"), string.Empty);
+                }
+                return campaignName;
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena Macro methods", "BindPrograms", ex.Message);
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
         /// Returns shopping cart items count
         /// </summary>
         /// <param name="context"></param>
@@ -661,6 +691,15 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 return documents.GetDocumentUrl(pageGUID);
             }
             return string.Empty;
+        }
+
+
+        [MacroMethod(typeof(string), "Returns per-site localization string.", 1)]
+        [MacroMethodParam(0, "name", typeof(string), "Name of localization project.")]
+        public static object GetPerSiteResourceString(EvaluationContext context, params object[] parameters)
+        {
+            string name = parameters[0] as string;
+            return DIContainer.Resolve<IKenticoResourceService>().GetPerSiteResourceString(name);
         }
 
         /// <summary>

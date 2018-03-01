@@ -4,5 +4,6 @@
     {
         public int Id { get; set; }
         public string Invoice { get; set; }
+        public string Card { get; set; }
     }
 }

@@ -6,9 +6,9 @@
     <ObjectType>cms.pagetemplatecategory</ObjectType>
   </PageTemplateCategoryID>
   <PageTemplateCloneAsAdHoc>False</PageTemplateCloneAsAdHoc>
-  <PageTemplateCodeName>_Chekout</PageTemplateCodeName>
+  <PageTemplateCodeName>_Checkout</PageTemplateCodeName>
   <PageTemplateDescription>Checkout page template</PageTemplateDescription>
-  <PageTemplateDisplayName>_Chekout</PageTemplateDisplayName>
+  <PageTemplateDisplayName>_Checkout</PageTemplateDisplayName>
   <PageTemplateFile />
   <PageTemplateGUID>299c7f19-165b-4217-8ca1-d4c4d4ad1f25</PageTemplateGUID>
   <PageTemplateHeader />

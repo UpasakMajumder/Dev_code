@@ -12,6 +12,8 @@ using Kadena2.BusinessLogic.Contracts.OrderPayment;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Http;
 using System.Net;
+using Kadena.Dto.CreditCard.Requests;
+using Kadena.Dto.CreditCard.Responses;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -75,6 +77,26 @@ namespace Kadena.WebAPI.Controllers
             var redirectUrl = service.CreditcardSaved(submissionId);
             var resultDto = mapper.Map<CreditCardPaymentDoneDto>(redirectUrl);
             return ResponseJson(resultDto);
+        }
+
+
+        [HttpPost]
+        [Route("api/3dsi/saveCard")]
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult SaveCard([FromBody][Required]SaveCreditCardRequestDto request)
+        {
+            var saveCardData = mapper.Map<SaveCardData>(request);
+            service.MarkCardAsSaved(saveCardData);
+            return SuccessJson();
+        }
+
+        [HttpGet]
+        [Route("api/3dsi/retry")]
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult RetryInsertCardDetails([FromUri][Required]string submissionId)
+        {
+            var redirectUrl = service.RetryInsertCardDetails(submissionId);
+            return Redirect(redirectUrl);
         }
     }
 }
