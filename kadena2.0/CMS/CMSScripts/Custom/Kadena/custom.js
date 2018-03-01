@@ -1103,13 +1103,4 @@ $(document).ready(function () {
     }
     customHelpers.deleteCookie("status");
     customHelpers.deleteCookie("error");
-
-
-    if (window.location.search != undefined) {
-
-        var searchText = customHelpers.getQueryStringByName("searchtext");
-        if (searchText != undefined) {
-            $('.js-SearchText').val(searchText);
-        }
-    }
 });
