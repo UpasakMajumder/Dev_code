@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import uniqid from 'uniqid';
 /* components */
 import SVG from 'app.dump/SVG';
 /* local components */
@@ -22,7 +23,14 @@ const MethodsGroup = ({
   changeOpenId
 }) => {
   const methods = items.map((item) => {
-    return <Method changeDeliveryMethod={changeDeliveryMethod} checkedId={checkedId} key={`m-${item.id}`} {...item} />;
+    return (
+      <Method
+        changeDeliveryMethod={changeDeliveryMethod}
+        checkedId={checkedId}
+        key={uniqid()}
+        {...item}
+      />
+    );
   });
 
   let className = 'input__wrapper select-accordion__item';
