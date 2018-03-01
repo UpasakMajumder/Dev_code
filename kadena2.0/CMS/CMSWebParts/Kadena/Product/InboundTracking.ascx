@@ -113,7 +113,7 @@
             </asp:TemplateField>
             <asp:TemplateField>
                 <ItemTemplate>
-                    <asp:Label runat="server" ID="lblTweComments" Text='<%#Eval("TweComments") %>'></asp:Label>
+                    <asp:Label runat="server" ID="lblTweComments" Text='<%#Eval("TweComments") != null ? Eval("TweComments").ToString().Substring(0,20) : Eval("TweComments") %>' class="js-tooltip" data-tooltip-placement="bottom" ToolTip='<%# Eval("TweComments") %>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:TextBox runat="server" ID="txtTweComments" Text='<%#Eval("TweComments") %>'></asp:TextBox>
