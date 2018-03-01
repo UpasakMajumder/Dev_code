@@ -229,7 +229,7 @@ var DeleteBrand = function (brandID)
         </webpart>
       </webpartzone>
       <webpartzone id="ZoneFilter" v="1">
-        <webpart controlid="SQLSearchBox" guid="75e65a08-f954-4da4-bf9a-20af89e396e5" type="cmssearchbox" v="1">
+        <webpart controlid="KDASqlSearchBox" guid="ce4226ca-09b8-4126-b970-bf7a86ca5e7f" type="KDASqlSearchBox" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
@@ -242,7 +242,7 @@ var DeleteBrand = function (brandID)
           <property name="containertitle"></property>
           <property name="contentafter"></property>
           <property name="contentbefore"></property>
-          <property name="controlid">SQLSearchBox</property>
+          <property name="controlid">KDASqlSearchBox</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
@@ -250,7 +250,7 @@ var DeleteBrand = function (brandID)
           <property name="enableoutputfilter">False</property>
           <property name="hideonsubpages">False</property>
           <property name="imageurl"></property>
-          <property name="instanceguid">75e65a08-f954-4da4-bf9a-20af89e396e5</property>
+          <property name="instanceguid">ce4226ca-09b8-4126-b970-bf7a86ca5e7f</property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>
@@ -272,17 +272,16 @@ var DeleteBrand = function (brandID)
           <property name="searchlabeltext"></property>
           <property name="searchmode">anyword</property>
           <property name="searchresultspageurl"></property>
-          <property name="searchtextboxcssclass">input__text</property>
+          <property name="searchtextboxcssclass">form-control input__text js-SearchText</property>
           <property name="showfordocumenttypes"></property>
           <property name="showimagebutton">False</property>
-          <property name="showsearchlabel">False</property>
+          <property name="showsearchlabel">True</property>
           <property name="skinid"></property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
-          <property name="webpartlayout">KDA.SearchBox</property>
-          <property name="webparttitle">Search Box</property>
-          <property name="webparttype">cmssearchbox</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">KDASqlSearchBox</property>
         </webpart>
       </webpartzone>
       <webpartzone id="ZonePagination" v="1">
