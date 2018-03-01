@@ -24,6 +24,20 @@ import {
 /* globals */
 import { CHECKOUT as CHECKOUT_URL, NOTIFICATION } from 'app.globals';
 
+const getCheckedDeliveryMethod = (deliveryMethods) => {
+  let checkedId;
+
+  const openedItems = deliveryMethods.items.filter(item => item.opened);
+  if (openedItems.length) {
+    const checkedItems = openedItems[0].items.filter(item => item.checked);
+    if (checkedItems.length) {
+      checkedId = checkedItems[0].id;
+    }
+  }
+
+  return checkedId;
+};
+
 const getTotalPrice = (dispatch) => {
   dispatch({ type: CHECKOUT_GET_TOTALS + FETCH });
 
@@ -40,9 +54,14 @@ const getTotalPrice = (dispatch) => {
         return;
       }
 
+      const checkedId = getCheckedDeliveryMethod(payload.deliveryMethods);
+
       dispatch({
         type: CHECKOUT_GET_TOTALS + SUCCESS,
-        payload
+        payload: {
+          ...payload,
+          checkedId
+        }
       });
     })
     .catch((error) => {
@@ -274,28 +293,33 @@ export const addNewAddress = (data, primary) => {
       });
 
       axios.post(CHECKOUT_URL.saveAddressURL, data)
-      .then((response) => {
-        const { payload, success, errorMessage } = response.data;
+        .then((response) => {
+          const { payload, success, errorMessage } = response.data;
 
-        if (!success) {
+          if (!success) {
+            dispatch({
+              type: CHECKOUT_GET_TOTALS + FAILURE,
+              alert: errorMessage
+            });
+            dispatch({ type: APP_LOADING + FINISH });
+            return;
+          }
+
+          const checkedId = getCheckedDeliveryMethod(payload.deliveryMethods);
+
           dispatch({
-            type: CHECKOUT_GET_TOTALS + FAILURE,
-            alert: errorMessage
+            type: CHECKOUT_GET_TOTALS + SUCCESS,
+            payload: {
+              ...payload,
+              checkedId
+            }
           });
           dispatch({ type: APP_LOADING + FINISH });
-          return;
-        }
-
-        dispatch({
-          type: CHECKOUT_GET_TOTALS + SUCCESS,
-          payload
+        })
+        .catch((error) => {
+          dispatch({ type: CHECKOUT_GET_TOTALS + FAILURE });
+          dispatch({ type: APP_LOADING + FINISH });
         });
-        dispatch({ type: APP_LOADING + FINISH });
-      })
-      .catch((error) => {
-        dispatch({ type: CHECKOUT_GET_TOTALS + FAILURE });
-        dispatch({ type: APP_LOADING + FINISH });
-      });
     }
   };
 };
