@@ -64,12 +64,12 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("api/deliverytotals")]
+        [Route("api/shoppingcart/savetemporaryaddress")]
         [CustomerAuthorizationFilter]
-        public async Task<IHttpActionResult> SetDeliveryAddress([FromBody] DeliveryAddressDTO postedAddress)
+        public async Task<IHttpActionResult> SaveTemporaryAddress([FromBody] DeliveryAddressDTO postedAddress)
         {
             var address = mapper.Map<DeliveryAddress>(postedAddress);
-            var deliveryTotals = await service.SetDeliveryAddress(address);
+            var deliveryTotals = await service.SaveTemporaryAddress(address);
             var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
             return ResponseJson(deliveryTotalsDto);
         }
