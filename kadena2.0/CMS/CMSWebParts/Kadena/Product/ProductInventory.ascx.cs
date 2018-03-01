@@ -330,7 +330,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 }
                 else if (ProductType == (int)ProductsType.PreBuy)
                 {
-                    ddlBrand.Visible = true;
+                    ddlProgram.Visible = true;
                     ddlCategory.Visible = true;
                     List<int> programIds = GetProgramIDs();
                     if (!DataHelper.DataSourceIsEmpty(programIds))
@@ -341,10 +341,10 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                                           .ToList();
                         if (!DataHelper.DataSourceIsEmpty(productsDetails))
                         {
-                            if (brandID != default(int))
+                            if (programID != default(int))
                             {
                                 productsDetails = productsDetails
-                                    .Where(x => x.BrandID == brandID)
+                                    .Where(x => x.ProgramID == programID)
                                     .ToList();
                             }
                             if (categoryID != default(int))

@@ -275,7 +275,6 @@ iteratedDocument = iteratedDocument.Parent;
 <![CDATA[
 </table>
 </div>
-
 ]]>
           </property>
           <property name="contentbefore">
@@ -367,7 +366,7 @@ BusinessUnitName LIKE '%{?searchtext?}%'
         </webpart>
       </webpartzone>
       <webpartzone id="ZoneBusinessUnitsFilter" v="1">
-        <webpart controlid="KDASqlSearchBox" guid="db771bf9-5370-4ce5-821f-571859ae575e" type="KDASqlSearchBox" v="1">
+        <webpart controlid="SQLSearchBox" guid="3a38ee17-0f0f-4544-9027-d55efe1d3d08" type="cmssearchbox" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
@@ -380,7 +379,7 @@ BusinessUnitName LIKE '%{?searchtext?}%'
           <property name="containertitle"></property>
           <property name="contentafter"></property>
           <property name="contentbefore"></property>
-          <property name="controlid">KDASqlSearchBox</property>
+          <property name="controlid">SQLSearchBox</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
@@ -388,7 +387,7 @@ BusinessUnitName LIKE '%{?searchtext?}%'
           <property name="enableoutputfilter">False</property>
           <property name="hideonsubpages">False</property>
           <property name="imageurl"></property>
-          <property name="instanceguid">db771bf9-5370-4ce5-821f-571859ae575e</property>
+          <property name="instanceguid">3a38ee17-0f0f-4544-9027-d55efe1d3d08</property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>
@@ -403,6 +402,8 @@ BusinessUnitName LIKE '%{?searchtext?}%'
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
+          <property name="positionleft"></property>
+          <property name="positiontop"></property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="searchbuttoncssclass"></property>
           <property name="searchbuttontext"></property>
@@ -410,16 +411,17 @@ BusinessUnitName LIKE '%{?searchtext?}%'
           <property name="searchlabeltext"></property>
           <property name="searchmode">anyword</property>
           <property name="searchresultspageurl"></property>
-          <property name="searchtextboxcssclass">form-control input__text js-SearchText</property>
+          <property name="searchtextboxcssclass">input__text</property>
           <property name="showfordocumenttypes"></property>
           <property name="showimagebutton">False</property>
-          <property name="showsearchlabel">True</property>
+          <property name="showsearchlabel">False</property>
           <property name="skinid"></property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">KDASqlSearchBox</property>
+          <property name="webpartlayout">KDA.SearchBox</property>
+          <property name="webparttitle">Search Box</property>
+          <property name="webparttype">cmssearchbox</property>
         </webpart>
       </webpartzone>
       <webpartzone id="ZonePagination" v="1">

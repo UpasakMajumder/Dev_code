@@ -616,7 +616,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
                 {
                     foreach (var user in users)
                     {
-                        ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Email, "CampaignOpenEmail", campaignURL: campaign.AbsoluteURL);
+                        ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Email, "CampaignOpenEmail");
                     }
                 }
                 Response.Redirect(CurrentDocument.DocumentUrlPath);
@@ -668,7 +668,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
                 {
                     foreach (var user in users)
                     {
-                        ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Email, "CampaignCloseEmail", campaignURL: campaign.AbsoluteURL);
+                        ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Email, "CampaignCloseEmail");
                     }
                 }
                 Response.Redirect(CurrentDocument.DocumentUrlPath);

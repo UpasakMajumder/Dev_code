@@ -293,7 +293,7 @@ AddressPhone LIKE '%{?searchtext?}%'
         </webpart>
       </webpartzone>
       <webpartzone id="ZoneSearch" v="1">
-        <webpart controlid="KDASqlSearchBox" guid="2ef9e400-a23d-456b-9d12-9bcb50798c92" type="KDASqlSearchBox" v="1">
+        <webpart controlid="SQLSearchBox" guid="1fef5ad2-ed2d-4c41-995d-858bcdb688a2" type="cmssearchbox" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
@@ -306,7 +306,7 @@ AddressPhone LIKE '%{?searchtext?}%'
           <property name="containertitle"></property>
           <property name="contentafter"></property>
           <property name="contentbefore"></property>
-          <property name="controlid">KDASqlSearchBox</property>
+          <property name="controlid">SQLSearchBox</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
@@ -314,7 +314,7 @@ AddressPhone LIKE '%{?searchtext?}%'
           <property name="enableoutputfilter">False</property>
           <property name="hideonsubpages">False</property>
           <property name="imageurl"></property>
-          <property name="instanceguid">2ef9e400-a23d-456b-9d12-9bcb50798c92</property>
+          <property name="instanceguid">1fef5ad2-ed2d-4c41-995d-858bcdb688a2</property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>
@@ -329,6 +329,8 @@ AddressPhone LIKE '%{?searchtext?}%'
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
+          <property name="positionleft"></property>
+          <property name="positiontop"></property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="searchbuttoncssclass"></property>
           <property name="searchbuttontext"></property>
@@ -336,16 +338,17 @@ AddressPhone LIKE '%{?searchtext?}%'
           <property name="searchlabeltext"></property>
           <property name="searchmode">anyword</property>
           <property name="searchresultspageurl"></property>
-          <property name="searchtextboxcssclass">form-control input__text js-SearchText</property>
+          <property name="searchtextboxcssclass">input__text</property>
           <property name="showfordocumenttypes"></property>
           <property name="showimagebutton">False</property>
-          <property name="showsearchlabel">True</property>
+          <property name="showsearchlabel">False</property>
           <property name="skinid"></property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">KDASqlSearchBox</property>
+          <property name="webpartlayout">KDA.SearchBox</property>
+          <property name="webparttitle">Search Box</property>
+          <property name="webparttype">cmssearchbox</property>
         </webpart>
       </webpartzone>
       <webpartzone id="ZoneAddAddress" v="1">

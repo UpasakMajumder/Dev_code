@@ -1294,7 +1294,7 @@ config.localization.languages = {
           <property name="transformationname">KDA.Module._MainNavigationEnabled</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{%if(Settings.KDA_AdminModuleEnabled=="enabled" && (CurrentDocument.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.Parent.ClassName=="KDA.AdminModule")){return false;}else{return true;}|(user)twe_admin|(hash)f02cf565ef0f1b65045d931ed99778009ac7791f5dca655e7b23aaad16ddb762%}]]>
+            <![CDATA[{%if(Settings.KDA_AdminModuleEnabled=="enabled" && (CurrentDocument.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.Parent.ClassName=="KDA.AdminModule")){return false;}else{return true;}|(user)cvoqa2@gmail.com|(hash)fd6578c1b76825e16ba1dea7f4efac279b4eed44b47bdf9b52342673449b8576%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">repeater</property>
@@ -1503,7 +1503,7 @@ config.localization.languages = {
           <property name="transformationname">KDA.Module._MainNavigationEnabled</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{%if(Settings.KDA_AdminModuleEnabled=="enabled" && (CurrentDocument.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.Parent.ClassName=="KDA.AdminModule")){return true;}else{return false;}|(user)twe_admin|(hash)1de6a519bd6e672ece88bf49db6c9a692798dd0d56e233b66785bb383ad3d156%}]]>
+            <![CDATA[{%if(Settings.KDA_AdminModuleEnabled=="enabled" && (CurrentDocument.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.Parent.ClassName=="KDA.AdminModule")){return true;}else{return false;}|(user)cvoqa2@gmail.com|(hash)62e3a105844f6e4916ae795815274fe47a2603e80574ee638f8a416b24942a67%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">repeater</property>
