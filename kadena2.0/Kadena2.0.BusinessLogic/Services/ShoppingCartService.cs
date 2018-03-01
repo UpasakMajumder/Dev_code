@@ -186,7 +186,7 @@ namespace Kadena.BusinessLogic.Services
             return result;
         }
 
-        public async Task<CheckoutPageDeliveryTotals> SetDeliveryAddress(DeliveryAddress deliveryAddress)
+        public async Task<CheckoutPageDeliveryTotals> SaveTemporaryAddress(DeliveryAddress deliveryAddress)
         {
             shoppingCart.SetShoppingCartAddress(deliveryAddress);
             return await GetDeliveryAndTotals();

@@ -27,17 +27,7 @@ import { CHECKOUT as CHECKOUT_URL, NOTIFICATION } from 'app.globals';
 const getTotalPrice = (dispatch) => {
   dispatch({ type: CHECKOUT_GET_TOTALS + FETCH });
 
-  const state = window.store.getState();
-  let promise;
-
-  if (state.checkout.checkedData.deliveryAddress === -1) {
-    // for new custom address we have to pass newAddress data
-    promise = axios.post(CHECKOUT_URL.initTotalDeliveryUIURL, state.checkout.newAddress);
-  } else {
-    promise = axios.get(CHECKOUT_URL.initTotalDeliveryUIURL);
-  }
-
-  promise
+  axios.get(CHECKOUT_URL.initTotalDeliveryUIURL)
     .then((response) => {
       const { payload, success, errorMessage } = response.data;
 
@@ -270,23 +260,26 @@ export const sendData = (data) => {
   };
 };
 
-export const addNewAddress = (data) => {
+export const addNewAddress = (data, primary) => {
   return (dispatch) => {
-    dispatch({ type: ADD_NEW_ADDRESS + FETCH });
-    dispatch({ type: APP_LOADING + START });
+    if (primary) {
+      getTotalPrice(dispatch);
+    } else {
+      dispatch({ type: ADD_NEW_ADDRESS + FETCH });
+      dispatch({ type: APP_LOADING + START });
 
-    dispatch({
-      type: ADD_NEW_ADDRESS + SUCCESS,
-      payload: data
-    });
+      dispatch({
+        type: ADD_NEW_ADDRESS + SUCCESS,
+        payload: data
+      });
 
-    axios.post(CHECKOUT_URL.initTotalDeliveryUIURL, data)
+      axios.post(CHECKOUT_URL.saveAddressURL, data)
       .then((response) => {
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
           dispatch({
-            type: CHECKOUT_GET_TOTALS + INIT_UI + FAILURE,
+            type: CHECKOUT_GET_TOTALS + FAILURE,
             alert: errorMessage
           });
           dispatch({ type: APP_LOADING + FINISH });
@@ -294,14 +287,15 @@ export const addNewAddress = (data) => {
         }
 
         dispatch({
-          type: CHECKOUT_GET_TOTALS + INIT_UI + SUCCESS,
+          type: CHECKOUT_GET_TOTALS + SUCCESS,
           payload
         });
         dispatch({ type: APP_LOADING + FINISH });
       })
       .catch((error) => {
-        dispatch({ type: CHECKOUT_GET_TOTALS + INIT_UI + FAILURE });
+        dispatch({ type: CHECKOUT_GET_TOTALS + FAILURE });
         dispatch({ type: APP_LOADING + FINISH });
       });
+    }
   };
 };
