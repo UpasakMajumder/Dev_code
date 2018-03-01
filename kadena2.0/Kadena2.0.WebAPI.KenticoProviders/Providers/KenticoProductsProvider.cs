@@ -155,7 +155,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 DocumentUrl = doc.AbsoluteURL,
                 Category = doc.Parent?.DocumentName ?? string.Empty,
                 ProductType = doc.GetValue("ProductType", string.Empty),
-                ProductChiliTemplateID = doc.GetValue<Guid>("ProductChiliTemplateID", Guid.Empty),
+                ProductMasterTemplateID = doc.GetValue<Guid>("ProductChiliTemplateID", Guid.Empty),
                 ProductChiliWorkgroupID = doc.GetValue<Guid>("ProductChiliWorkgroupID", Guid.Empty),
                 TemplateLowResSettingId = doc.GetValue("ProductChiliLowResSettingId", Guid.Empty)
             };

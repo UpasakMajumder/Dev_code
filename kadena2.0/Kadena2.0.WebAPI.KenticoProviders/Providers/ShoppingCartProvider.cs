@@ -326,7 +326,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 if (cartItem.IsTemplated)
                 {
                     var product = productProvider.GetProductByNodeId(cartItem.ProductPageId);
-                    cartItem.Preview.Url = UrlHelper.GetUrlForTemplatePreview(product.ProductChiliTemplateID, product.TemplateLowResSettingId);
+                    cartItem.Preview.Url = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, product.TemplateLowResSettingId);
                     cartItem.Preview.Exists = true;
 
                     var editorUrl = documents.GetDocumentUrl(URLHelper.ResolveUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")));

@@ -116,7 +116,7 @@ namespace Kadena.BusinessLogic.Services
             }
 
             var requestResult = await _templateClient
-                .GetTemplates(_users.GetCurrentUser().UserId, product.ProductChiliTemplateID);
+                .GetTemplates(_users.GetCurrentUser().UserId, product.ProductMasterTemplateID);
 
             var productEditorUrl = _resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~');
             if (string.IsNullOrWhiteSpace(productEditorUrl))
