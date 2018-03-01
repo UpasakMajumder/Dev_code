@@ -57,15 +57,15 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     // <summary>
     /// Get the Product type.
     /// </summary>
-    public int ShippingID
+    public string DefaultShipping
     {
         get
         {
-            return ValidationHelper.GetInteger(GetValue("ShippingID"), default(int));
+            return ValidationHelper.GetString(GetValue("DefaultShipping"), ShippingOption.Ground);
         }
         set
         {
-            SetValue("ShippingID", value);
+            SetValue("DefaultShipping", value);
         }
     }
 
@@ -833,7 +833,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             }
 
             var allocatedQuantityItem = campProduct != null ? productProvider.GetAllocatedProductQuantityForUser(campProduct.CampaignsProductID, CurrentUser.UserID) : null;
-            var allocatedQuantity = allocatedQuantityItem!=null? allocatedQuantityItem.GetValue<int>("Quantity", default(int)):default(int);
+            var allocatedQuantity = allocatedQuantityItem != null ? allocatedQuantityItem.GetValue<int>("Quantity", default(int)) : default(int);
             bool productHasAllocation = false;
             if (ProductType == (int)ProductsType.GeneralInventory)
             {
@@ -1074,7 +1074,8 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             if (!DataHelper.DataSourceIsEmpty(productDocument))
             {
                 ProductProgramID = ValidationHelper.GetInteger(productDocument?.GetValue("ProgramID"), default(int));
-                ProductShippingID = ShippingID;
+                ShippingOptionInfo defaultShippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(DefaultShipping, CurrentSiteName);
+                ProductShippingID = defaultShippingOption != null ? defaultShippingOption.ShippingOptionID : 0;
                 var program = ProgramProvider.GetPrograms()
                                        .WhereEquals("ProgramID", ProductProgramID)
                                        .FirstOrDefault();
