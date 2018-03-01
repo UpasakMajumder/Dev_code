@@ -282,7 +282,7 @@ function DeleteCategory(categoryID) {
         </webpart>
       </webpartzone>
       <webpartzone id="ZoneSearch" v="1">
-        <webpart controlid="SQLSearchBox" guid="af3151a9-4229-4b33-a2bd-3271022fd48c" type="cmssearchbox" v="1">
+        <webpart controlid="KDASqlSearchBox" guid="6f48b6b7-0835-4647-863e-d5f081b305a1" type="KDASqlSearchBox" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
@@ -295,7 +295,7 @@ function DeleteCategory(categoryID) {
           <property name="containertitle"></property>
           <property name="contentafter"></property>
           <property name="contentbefore"></property>
-          <property name="controlid">SQLSearchBox</property>
+          <property name="controlid">KDASqlSearchBox</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
@@ -303,7 +303,7 @@ function DeleteCategory(categoryID) {
           <property name="enableoutputfilter">False</property>
           <property name="hideonsubpages">False</property>
           <property name="imageurl"></property>
-          <property name="instanceguid">af3151a9-4229-4b33-a2bd-3271022fd48c</property>
+          <property name="instanceguid">6f48b6b7-0835-4647-863e-d5f081b305a1</property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>
@@ -318,8 +318,6 @@ function DeleteCategory(categoryID) {
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
-          <property name="positionleft"></property>
-          <property name="positiontop"></property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="searchbuttoncssclass"></property>
           <property name="searchbuttontext"></property>
@@ -327,17 +325,16 @@ function DeleteCategory(categoryID) {
           <property name="searchlabeltext"></property>
           <property name="searchmode">anyword</property>
           <property name="searchresultspageurl"></property>
-          <property name="searchtextboxcssclass">input__text</property>
+          <property name="searchtextboxcssclass">form-control input__text js-SearchText</property>
           <property name="showfordocumenttypes"></property>
           <property name="showimagebutton">False</property>
-          <property name="showsearchlabel">False</property>
+          <property name="showsearchlabel">True</property>
           <property name="skinid"></property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
-          <property name="webpartlayout">KDA.SearchBox</property>
-          <property name="webparttitle">Search Box</property>
-          <property name="webparttype">cmssearchbox</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">KDASqlSearchBox</property>
         </webpart>
       </webpartzone>
       <webpartzone id="ZoneCategorybutton" v="1">
