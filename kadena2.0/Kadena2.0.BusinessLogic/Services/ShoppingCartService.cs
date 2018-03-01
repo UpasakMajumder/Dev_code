@@ -188,7 +188,7 @@ namespace Kadena.BusinessLogic.Services
 
         public async Task<CheckoutPageDeliveryTotals> SaveTemporaryAddress(DeliveryAddress deliveryAddress)
         {
-            shoppingCart.SetShoppingCartAddress(deliveryAddress);
+            shoppingCart.SetTemporaryShoppingCartAddress(deliveryAddress);
             return await GetDeliveryAndTotals();
         }
 
@@ -232,7 +232,10 @@ namespace Kadena.BusinessLogic.Services
             var totals = page.Totals;
             totals.Title = resources.GetResourceString("Kadena.Checkout.Totals.Title");
             var shoppingCartTotals = shoppingCart.GetShoppingCartTotals();
-            shoppingCartTotals.TotalTax = await taxCalculator.EstimateTotalTax(deliveryAddress);
+            if (deliveryAddress != null)
+            {
+                shoppingCartTotals.TotalTax = await taxCalculator.EstimateTotalTax(deliveryAddress);
+            }
             totals.Items = new Total[]
             {
                 new Total()
