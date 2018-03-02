@@ -22,13 +22,22 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment {
         protected global::CMS.Base.Web.UI.LocalizedLabel lblSite;
         
         /// <summary>
-        /// tbCode control.
+        /// ltlCode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbCode;
+        protected global::System.Web.UI.WebControls.Literal ltlCode;
+        
+        /// <summary>
+        /// ltlCreatePayload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltlCreatePayload;
         
         /// <summary>
         /// btnSubmit control.
@@ -38,6 +47,24 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
+        
+        /// <summary>
+        /// ltlUpdatePayload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltlUpdatePayload;
+        
+        /// <summary>
+        /// Button1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button1;
         
         /// <summary>
         /// RequiredFieldValidator1 control.
