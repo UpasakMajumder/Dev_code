@@ -57,6 +57,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment
         {
             var merchantCode = GetSettingsKey("KDA_CreditCard_MerchantCode");
             var locationCode = GetSettingsKey("KDA_CreditCard_LocationCode");
+            var additionalData = new { MerchantCode = merchantCode, LocationCode = locationCode };
 
             return new CreateCustomerContainerRequestDto()
             {
@@ -70,7 +71,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment
                     City = GetSettingsKey("KDA_EstimateDeliveryPrice_SenderCity"),
                     PostalCode = GetSettingsKey("KDA_EstimateDeliveryPrice_SenderPostal")
                 },
-                AdditionalData = "{\"MerchantCode\":\""+merchantCode+"\",\"LocationCode\":\""+locationCode+"\"}"
+                AdditionalData = JsonConvert.SerializeObject(additionalData)
             };
         }
 
@@ -78,6 +79,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment
         {
             var merchantCode = GetSettingsKey("KDA_CreditCard_MerchantCode");
             var locationCode = GetSettingsKey("KDA_CreditCard_LocationCode");
+            var additionalData = new { MerchantCode = merchantCode, LocationCode = locationCode };
 
             return new UpdateCustomerContainerRequestDto()
             {
@@ -91,7 +93,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment
                     City = GetSettingsKey("KDA_EstimateDeliveryPrice_SenderCity"),
                     PostalCode = GetSettingsKey("KDA_EstimateDeliveryPrice_SenderPostal")
                 },
-                AdditionalData = "{\"MerchantCode\":\"" + merchantCode + "\",\"LocationCode\":\"" + locationCode + "\"}"
+                AdditionalData = JsonConvert.SerializeObject(additionalData)
             };
         }
 

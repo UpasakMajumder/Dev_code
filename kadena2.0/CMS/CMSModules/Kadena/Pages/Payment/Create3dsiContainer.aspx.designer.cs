@@ -13,15 +13,6 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment {
     public partial class Create3dsiContainer {
         
         /// <summary>
-        /// lblSite control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.LocalizedLabel lblSite;
-        
-        /// <summary>
         /// ltlCode control.
         /// </summary>
         /// <remarks>
@@ -65,15 +56,6 @@ namespace Kadena.CMSModules.Kadena.Pages.Payment {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button Button1;
-        
-        /// <summary>
-        /// RequiredFieldValidator1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
         
         /// <summary>
         /// LocalizedLabelResult control.
