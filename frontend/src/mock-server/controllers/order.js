@@ -31,5 +31,14 @@ module.exports.recent = {
   filtered: {
     campaigns: (req, res) => res.json(campaign),
     orders: (req, res) => res.json(filteredOrders)
+  },
+  ui: (req, res) => res.json(order.recent.ui),
+  page: (req, res) => {
+    const { page } = req.params;
+    if (page % 2 === 0) {
+      res.json(order.recent.page1);
+    } else {
+      res.json(order.recent.page2);
+    }
   }
 };

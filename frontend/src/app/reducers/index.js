@@ -14,6 +14,7 @@ import manageProducts from './manageProducts';
 import modifyMailingList from './modifyMailingList';
 import cartPreview from './cartPreview';
 import products from './products';
+import recentOrders from './recentOrders';
 import dialogAlert from './dialogAlert';
 import cardPayment from './card-payment';
 import languageSelector from './languageSelector';
@@ -37,7 +38,8 @@ const rootReducer = combineReducers({
   dialogAlert,
   cardPayment,
   languageSelector,
-  filteredRecentOrders
+  filteredRecentOrders,
+  recentOrders
 });
 
 export default rootReducer;

@@ -22,7 +22,8 @@ const {
   pagination,
   staticFields,
   tac,
-  filteredRecentOrders
+  filteredRecentOrders,
+  recentOrders
 } = localization;
 
 export const LOGIN = login;
@@ -45,5 +46,6 @@ export const BUTTONS_UI = checkoutButtons;
 export const LANGUAGES = languages;
 export const PAGINATION = pagination;
 export const STATIC_FIELDS = staticFields;
+export const RECENT_ORDERS = recentOrders;
 export const TAC = tac;
 export const FILTERED_RECENT_ORDERS = filteredRecentOrders;
