@@ -1,31 +1,23 @@
 import axios from 'axios';
 /* constants */
 import {
-  INIT_UI,
   FETCH,
   SUCCESS,
   FAILURE,
-  START,
-  FINISH,
-  RECENT_ORDERS_CHANGE_PAGE,
-  APP_LOADING,
-  RECENT_ORDERS,
-  RECENT_ORDERS_GET_ROWS,
-  RECENT_ORDERS_CHANGE_DATE
+  ORDERS_REPORTS_GET_ROWS,
+  ORDERS_REPORTS_CHANGE_DATE
 } from 'app.consts';
-/* globals */
-import { RECENT_ORDERS as RECENT_ORDERS_GLOBAL, NOTIFICATION } from 'app.globals';
 
 export const getRows = (url, args = {}) => {
   return async (dispatch) => {
-    dispatch({ type: RECENT_ORDERS_GET_ROWS + FETCH });
+    dispatch({ type: ORDERS_REPORTS_GET_ROWS + FETCH });
 
     try {
       const { data: { payload, success, errorMessage } } = await axios.get(url);
 
       if (!success) {
         dispatch({
-          type: RECENT_ORDERS_GET_ROWS + FAILURE,
+          type: ORDERS_REPORTS_GET_ROWS + FAILURE,
           alert: errorMessage
         });
       } else {
@@ -36,7 +28,7 @@ export const getRows = (url, args = {}) => {
         }
 
         dispatch({
-          type: RECENT_ORDERS_GET_ROWS + SUCCESS,
+          type: ORDERS_REPORTS_GET_ROWS + SUCCESS,
           payload: {
             rows: payload.rows,
             pagination,
@@ -47,7 +39,7 @@ export const getRows = (url, args = {}) => {
       }
     } catch (error) {
       dispatch({
-        type: RECENT_ORDERS_GET_ROWS + FAILURE,
+        type: ORDERS_REPORTS_GET_ROWS + FAILURE,
         alert: false
       });
     }
@@ -56,7 +48,7 @@ export const getRows = (url, args = {}) => {
 
 export const changeDate = (value, field) => {
   return {
-    type: RECENT_ORDERS_CHANGE_DATE,
+    type: ORDERS_REPORTS_CHANGE_DATE,
     payload: {
       value,
       field

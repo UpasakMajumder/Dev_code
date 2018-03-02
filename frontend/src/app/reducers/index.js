@@ -9,7 +9,7 @@ import orderDetail from './orderDetail';
 import searchPage from './searchPage';
 import search from './search';
 import isShownHeaderShadow from './headerShadow';
-import recentOrders from './recentOrders';
+import ordersReports from './ordersReports';
 import manageProducts from './manageProducts';
 import modifyMailingList from './modifyMailingList';
 import cartPreview from './cartPreview';
@@ -28,7 +28,7 @@ const rootReducer = combineReducers({
   search,
   isShownHeaderShadow,
   orderDetail,
-  recentOrders,
+  ordersReports,
   manageProducts,
   modifyMailingList,
   cartPreview,

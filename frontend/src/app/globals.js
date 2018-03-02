@@ -9,7 +9,7 @@ const {
   searchPage,
   search,
   orderDetail,
-  recentOrders,
+  ordersReports,
   checkoutButtons,
   manageProducts,
   modifyMailingList,
@@ -33,7 +33,7 @@ export const USER_SETTINGS = userSettings;
 export const ORDER_DETAIL = orderDetail;
 export const SEARCH_PAGE = searchPage;
 export const SEARCH = search;
-export const RECENT_ORDERS = recentOrders;
+export const ORDERS_REPORTS = ordersReports;
 export const CART_PREVIEW = cartPreview;
 export const ADD_TO_CART_URL = addToCartUrl;
 export const PRODUCTS = products;

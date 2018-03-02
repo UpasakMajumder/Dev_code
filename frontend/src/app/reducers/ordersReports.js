@@ -1,11 +1,8 @@
 import {
-  RECENT_ORDERS_CHANGE_PAGE,
   FETCH,
   SUCCESS,
-  RECENT_ORDERS,
-  INIT_UI,
-  RECENT_ORDERS_GET_ROWS,
-  RECENT_ORDERS_CHANGE_DATE
+  ORDERS_REPORTS_GET_ROWS,
+  ORDERS_REPORTS_CHANGE_DATE
 } from 'app.consts';
 
 const defaultState = {
@@ -29,7 +26,7 @@ export default (state = defaultState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-  case RECENT_ORDERS_CHANGE_DATE:
+  case ORDERS_REPORTS_CHANGE_DATE:
     return {
       ...state,
       filter: {
@@ -41,13 +38,13 @@ export default (state = defaultState, action) => {
       }
     };
 
-  case RECENT_ORDERS_GET_ROWS + FETCH:
+  case ORDERS_REPORTS_GET_ROWS + FETCH:
     return {
       ...state,
       rows: defaultState.rows
     };
 
-  case RECENT_ORDERS_GET_ROWS + SUCCESS:
+  case ORDERS_REPORTS_GET_ROWS + SUCCESS:
     return {
       ...state,
       pagination: {
@@ -62,28 +59,6 @@ export default (state = defaultState, action) => {
         ...state.sort,
         sortOrderAsc: typeof payload.sortOrderAsc === 'undefined' ? state.sort.sortOrderAsc : payload.sortOrderAsc,
         sortBy: typeof payload.sortBy === 'undefined' ? state.sort.sortBy : payload.sortBy
-      }
-    };
-
-
-  case RECENT_ORDERS + INIT_UI + SUCCESS:
-    return {
-      ...state,
-      headings: payload.headings,
-      pageInfo: payload.pageInfo,
-      noOrdersMessage: payload.noOrdersMessage,
-      rows: {
-        ...state.rows,
-        ...payload.rows
-      }
-    };
-
-  case RECENT_ORDERS_CHANGE_PAGE + SUCCESS:
-    return {
-      ...state,
-      rows: {
-        ...state.rows,
-        ...payload.rows
       }
     };
 

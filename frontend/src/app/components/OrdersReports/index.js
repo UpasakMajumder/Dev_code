@@ -8,9 +8,9 @@ import Pagination from 'app.dump/Pagination';
 import Spinner from 'app.dump/Spinner';
 import SortIcon from 'app.dump/SortIcon';
 /* ac */
-import { getRows, changeDate } from 'app.ac/recentOrders';
+import { getRows, changeDate } from 'app.ac/ordersReports';
 /* globals */
-import { RECENT_ORDERS } from 'app.globals';
+import { ORDERS_REPORTS } from 'app.globals';
 /* helpers */
 import { sortObjs } from 'app.helpers/array';
 import { createSearchStr } from 'app.helpers/location';
@@ -18,7 +18,7 @@ import { createSearchStr } from 'app.helpers/location';
 import Order from './Order';
 import DateFilter from './DateFilter';
 
-class RecentOrders extends Component {
+class OrdersReports extends Component {
   static propTypes = {
     headings: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -91,12 +91,12 @@ class RecentOrders extends Component {
   }
 
   componentDidMount() {
-    this.props.getRows(RecentOrders.generateUrl(this.props.pageInfo.getRowsUrl));
+    this.props.getRows(OrdersReports.generateUrl(this.props.pageInfo.getRowsUrl));
   }
 
   handleChangePage = (page) => {
     if (page === this.props.store.pagination.currentPage) return;
-    const url = RecentOrders.generateUrl(this.props.pageInfo.getRowsUrl, { page });
+    const url = OrdersReports.generateUrl(this.props.pageInfo.getRowsUrl, { page });
     this.props.getRows(url, { page });
   };
 
@@ -134,7 +134,7 @@ class RecentOrders extends Component {
 
   sortColumn = (sortBy) => {
     const newSortOrderAsc = !this.props.store.sort.sortOrderAsc;
-    const sort = RecentOrders.getSortId(newSortOrderAsc, sortBy);
+    const sort = OrdersReports.getSortId(newSortOrderAsc, sortBy);
 
     const { dateFrom, dateTo } = this.props.store.filter.orderDate;
 
@@ -142,11 +142,11 @@ class RecentOrders extends Component {
       sort,
       sortOrderAsc: newSortOrderAsc,
       sortBy,
-      dateFrom: RecentOrders.getFormattedDate(dateFrom),
-      dateTo: RecentOrders.getFormattedDate(dateTo)
+      dateFrom: OrdersReports.getFormattedDate(dateFrom),
+      dateTo: OrdersReports.getFormattedDate(dateTo)
     };
 
-    const url = RecentOrders.generateUrl(this.props.pageInfo.getRowsUrl, args);
+    const url = OrdersReports.generateUrl(this.props.pageInfo.getRowsUrl, args);
 
     this.props.getRows(url, args);
   };
@@ -191,15 +191,15 @@ class RecentOrders extends Component {
     const { dateFrom, dateTo } = this.props.store.filter.orderDate;
     if (!dateFrom) return;
 
-    const sort = RecentOrders.getSortId(this.props.store.sort.sortOrderAsc, this.props.store.sort.sortBy);
+    const sort = OrdersReports.getSortId(this.props.store.sort.sortOrderAsc, this.props.store.sort.sortBy);
 
     const args = {
       sort,
-      dateFrom: RecentOrders.getFormattedDate(dateFrom),
-      dateTo: RecentOrders.getFormattedDate(dateTo)
+      dateFrom: OrdersReports.getFormattedDate(dateFrom),
+      dateTo: OrdersReports.getFormattedDate(dateTo)
     };
 
-    const url = RecentOrders.generateUrl(this.props.pageInfo.getRowsUrl, args);
+    const url = OrdersReports.generateUrl(this.props.pageInfo.getRowsUrl, args);
 
     this.props.getRows(url, args);
   };
@@ -222,12 +222,12 @@ class RecentOrders extends Component {
   getExportLink = () => {
     const args = {
       export: true,
-      sort: RecentOrders.getSortId(this.props.store.sort.sortOrderAsc, this.props.store.sort.sortBy),
-      dateFrom: RecentOrders.getFormattedDate(this.props.store.filter.orderDate.dateFrom),
-      dateTo: RecentOrders.getFormattedDate(this.props.store.filter.orderDate.dateTo)
+      sort: OrdersReports.getSortId(this.props.store.sort.sortOrderAsc, this.props.store.sort.sortBy),
+      dateFrom: OrdersReports.getFormattedDate(this.props.store.filter.orderDate.dateFrom),
+      dateTo: OrdersReports.getFormattedDate(this.props.store.filter.orderDate.dateTo)
     };
 
-    const url = RecentOrders.generateUrl(this.props.pageInfo.export.url, args);
+    const url = OrdersReports.generateUrl(this.props.pageInfo.export.url, args);
     const link = <a className="btn-action" href={url}>{this.props.pageInfo.export.label}</a>;
     return link;
   };
@@ -246,12 +246,12 @@ class RecentOrders extends Component {
   }
 }
 
-RecentOrders.defaultProps = { ...RECENT_ORDERS };
+OrdersReports.defaultProps = { ...ORDERS_REPORTS };
 
 export default connect((state) => {
-  const { recentOrders } = state;
-  return { store: { ...recentOrders } };
+  const { ordersReports } = state;
+  return { store: { ...ordersReports } };
 }, {
   getRows,
   changeDate
-})(RecentOrders);
+})(OrdersReports);

@@ -172,7 +172,7 @@
         nextLabel: "Next",
         backLabel: "Previous"
       },
-      recentOrders: {
+      ordersReports: {
         headings: [
           {
             id: '1',
@@ -236,7 +236,7 @@
             url: 'https://some/api'
           },
           noOrdersMessage: 'You have no orders',
-          getRowsUrl: PATH + 'order/recent/rows'
+          getRowsUrl: PATH + 'order/reports/rows'
         }
       },
       filteredRecentOrders: {
