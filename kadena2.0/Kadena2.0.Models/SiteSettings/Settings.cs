@@ -1571,5 +1571,14 @@ namespace Kadena.Models.SiteSettings
         [DefaultValueAttribute(null)]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkFtYXpvbiBTMyBidWNrZXQgbmFtZSIsIktleU5hbWUiOiJLREFfQW1hem9uUzNCdWNrZXROYW1lIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6bnVsbCwiS2V5RGVzY3JpcHRpb24iOiIiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiQW1hem9uIFMzIiwiTmFtZSI6IkFtYXpvblMzIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiS2FkZW5hIn0sIkRpc3BsYXlOYW1lIjoiR2VuZXJhbCJ9fQ==")]
         public const string KDA_AmazonS3BucketName = "KDA_AmazonS3BucketName";
+
+        /// <summary>
+        /// Endpoint from Identity Provider used to authenticate user.
+        /// </summary>
+        [CategoryAttribute("Membership", "KDAMembership", "Kadena")]
+        [GroupAttribute("General")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IklkZW50aXR5IHByb3ZpZGVyIHVybCIsIktleU5hbWUiOiJLREFfSWRQcm92aWRlclVybCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiRW5kcG9pbnQgZnJvbSBJZGVudGl0eSBQcm92aWRlciB1c2VkIHRvIGF1dGhlbnRpY2F0ZSB1c2VyLiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJNZW1iZXJzaGlwIiwiTmFtZSI6IktEQU1lbWJlcnNoaXAiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJLYWRlbmEifSwiRGlzcGxheU5hbWUiOiJHZW5lcmFsIn19")]
+        public const string KDA_IdProviderUrl = "KDA_IdProviderUrl";
     }
 }
