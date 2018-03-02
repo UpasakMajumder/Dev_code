@@ -7,5 +7,6 @@ namespace Kadena2.MicroserviceClients.Contracts
     public interface ICreditCardManagerClient
     {
         Task<BaseResponseDto<object>> CreateCustomerContainer(CreateCustomerContainerRequestDto request);
+        Task<BaseResponseDto<object>> UpdateCustomerContainer(UpdateCustomerContainerRequestDto request);
     }
 }
