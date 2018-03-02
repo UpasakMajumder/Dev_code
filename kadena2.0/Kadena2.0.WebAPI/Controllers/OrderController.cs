@@ -16,10 +16,10 @@ namespace Kadena.WebAPI.Controllers
     public class OrderController : ApiControllerBase
     {
         private readonly IOrderDetailService orderDetailService;
-        private readonly IOrderService orderService;
+        private readonly IOrderReportService orderService;
         private readonly IMapper mapper;
 
-        public OrderController(IOrderDetailService orderDetailService, IOrderService orderService, IMapper mapper)
+        public OrderController(IOrderDetailService orderDetailService, IOrderReportService orderService, IMapper mapper)
         {
             if (orderDetailService == null)
             {

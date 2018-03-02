@@ -1,14 +1,19 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Services.Orders;
+using Kadena.Dto.General;
+using Kadena.Dto.Order;
+using Kadena.Models;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
 using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Kadena.Tests.WebApi
@@ -48,7 +53,7 @@ namespace Kadena.Tests.WebApi
                 Assert.Equal(property, sortInfo.Property);
                 Assert.Equal(direction, sortInfo.Direction);
             }
-        }        
+        }
 
         [Fact]
         public void Service_ShouldLoadPagingSettings_WhenConfigured()
@@ -56,10 +61,9 @@ namespace Kadena.Tests.WebApi
             var resources = Mock.Of<IKenticoResourceService>(
                 res => res.GetSettingsKey(Settings.KDA_RecentOrdersPageCapacity) == "15"
             );
-            var dtFormatter = Mock.Of<IDateTimeFormatter>();
-            var orderViewClient = Mock.Of<IOrderViewClient>();
-            var siteProvider = Mock.Of<IKenticoSiteProvider>();
-            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
+            var sut = new OrderReportServiceBuilder()
+                .WithResources(resources)
+                .Build();
 
             Assert.Equal(15, sut.OrdersPerPage);
         }
@@ -67,23 +71,17 @@ namespace Kadena.Tests.WebApi
         [Fact]
         public void Service_ShouldUseDefaultPagingSettings_WhenNotConfigured()
         {
-            var resources = Mock.Of<IKenticoResourceService>();
-            var dtFormatter = Mock.Of<IDateTimeFormatter>();
-            var orderViewClient = Mock.Of<IOrderViewClient>();
-            var siteProvider = Mock.Of<IKenticoSiteProvider>();
-            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
+            var sut = new OrderReportServiceBuilder()
+                .Build();
 
-            Assert.Equal(OrderService.DefaultCountOfOrdersPerPage, sut.OrdersPerPage);
+            Assert.Equal(OrderReportService.DefaultCountOfOrdersPerPage, sut.OrdersPerPage);
         }
 
         [Fact]
         public void ConvertOrdersToView_ShouldThrow_WhenArgumentNull()
         {
-            var resources = Mock.Of<IKenticoResourceService>();
-            var dtFormatter = Mock.Of<IDateTimeFormatter>();
-            var orderViewClient = Mock.Of<IOrderViewClient>();
-            var siteProvider = Mock.Of<IKenticoSiteProvider>();
-            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
+            var sut = new OrderReportServiceBuilder()
+                .Build();
 
             Assert.Throws<ArgumentNullException>(() => sut.ConvertOrdersToView(null));
         }
@@ -91,16 +89,13 @@ namespace Kadena.Tests.WebApi
         [Fact]
         public void ConvertOrdersToView_ShouldFlattenOrdersToTable()
         {
-            var resources = Mock.Of<IKenticoResourceService>();
-            var dtFormatter = Mock.Of<IDateTimeFormatter>();
-            var orderViewClient = Mock.Of<IOrderViewClient>();
-            var siteProvider = Mock.Of<IKenticoSiteProvider>();
-            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
+            var sut = new OrderReportServiceBuilder()
+                .Build();
 
             var ordersCount = 3;
             var perOrderItemsCount = 10;
             var allItemsCount = 30;
-            var orders = new PagedData<Order> { Data = CreateTestOrders(ordersCount, perOrderItemsCount) };
+            var orders = new PagedData<OrderReport> { Data = CreateTestOrders(ordersCount, perOrderItemsCount) };
 
             var view = sut.ConvertOrdersToView(orders);
             Assert.Equal(allItemsCount, view.Rows.Length);
@@ -109,13 +104,12 @@ namespace Kadena.Tests.WebApi
         [Fact]
         public void ConvertOrdersToView_ShouldMapLineItems_WhenShipped()
         {
-            var resources = Mock.Of<IKenticoResourceService>();
             var dtFormatter = new DateTimeFormatterStub();
-            var orderViewClient = Mock.Of<IOrderViewClient>();
-            var siteProvider = Mock.Of<IKenticoSiteProvider>();
-            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
+            var sut = new OrderReportServiceBuilder()
+                .WithDateTimeFormatter(dtFormatter)
+                .Build();
             var testOrder = CreateTestOrder(orderNumber: 1, itemsCount: 1);
-            var orders = new PagedData<Order>() { Data = new List<Order> { testOrder } };
+            var orders = new PagedData<OrderReport>() { Data = new List<OrderReport> { testOrder } };
 
             var view = sut.ConvertOrdersToView(orders);
 
@@ -137,14 +131,11 @@ namespace Kadena.Tests.WebApi
         [Fact]
         public void ConvertOrdersToView_ShouldMapLineItems_WhenNotShipped()
         {
-            var resources = Mock.Of<IKenticoResourceService>();
-            var dtFormatter = new DateTimeFormatterStub();
-            var orderViewClient = Mock.Of<IOrderViewClient>();
-            var siteProvider = Mock.Of<IKenticoSiteProvider>();
-            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
+            var sut = new OrderReportServiceBuilder()
+                .Build();
             var testOrder = CreateTestOrder(orderNumber: 1, itemsCount: 1);
             testOrder.ShippingDate = null;
-            var orders = new PagedData<Order>() { Data = new List<Order> { testOrder } };
+            var orders = new PagedData<OrderReport>() { Data = new List<OrderReport> { testOrder } };
 
             var view = sut.ConvertOrdersToView(orders);
 
@@ -155,13 +146,10 @@ namespace Kadena.Tests.WebApi
         [Fact]
         public void ConvertOrdersToView_ShouldReusePagination()
         {
-            var resources = Mock.Of<IKenticoResourceService>();
-            var dtFormatter = new DateTimeFormatterStub();
-            var orderViewClient = Mock.Of<IOrderViewClient>();
-            var siteProvider = Mock.Of<IKenticoSiteProvider>();
-            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
+            var sut = new OrderReportServiceBuilder()
+                .Build();
             var testOrder = CreateTestOrder(orderNumber: 1, itemsCount: 1);
-            var orders = new PagedData<Order>() { Data = new List<Order> { testOrder } };
+            var orders = new PagedData<OrderReport>() { Data = new List<OrderReport> { testOrder } };
 
             var view = sut.ConvertOrdersToView(orders);
 
@@ -171,37 +159,32 @@ namespace Kadena.Tests.WebApi
         [Fact]
         public void GetOrders_ShouldUseCurrentSite()
         {
-            var resources = Mock.Of<IKenticoResourceService>();
-            var dtFormatter = new DateTimeFormatterStub();
-            var orderViewClient = new Mock<IOrderViewClient>();
             var currentSite = "test_site";
             var siteProvider = Mock.Of<IKenticoSiteProvider>(sp => sp.GetCurrentSiteCodeName() == currentSite);
-            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient.Object);
+            var sut = new OrderReportServiceBuilder()
+                .WithSiteProvider(siteProvider)
+                .BuildSpy<OrderService_GetOrdersForSiteSpy>();
             var page = 2;
             var filter = new OrderFilter();
 
             sut.GetOrders(page, filter);
 
-            orderViewClient.Verify(ovc
-                => ovc.GetOrders(currentSite, null, page, sut.OrdersPerPage,
-                    filter.FromDate, filter.ToDate, null,
-                    false, null, null), Times.Once());
+            Assert.Equal(currentSite, sut.Site);
+            Assert.Equal(page, sut.Page);
+            Assert.Equal(filter, sut.Filter);
         }
 
         [Fact]
         public void GetOrdersForSite_ShouldValidateArgumentsAndThrow_WhenInvalidPage()
         {
-            var resources = Mock.Of<IKenticoResourceService>();
-            var dtFormatter = new DateTimeFormatterStub();
-            var orderViewClient = Mock.Of<IOrderViewClient>();
-            var siteProvider = Mock.Of<IKenticoSiteProvider>();
-            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
-            var invalidPageNumber = OrderService.FirstPageNumber - 1;
+            var sut = new OrderReportServiceBuilder()
+                .Build();
+            var invalidPageNumber = OrderReportService.FirstPageNumber - 1;
             var filter = new OrderFilter();
 
-            Action action = () => sut.GetOrdersForSite("test_site", invalidPageNumber, filter);
+            Func<Task> action = () => sut.GetOrdersForSite("test_site", invalidPageNumber, filter);
 
-            Assert.Throws<ArgumentException>("page", action);
+            Assert.ThrowsAsync<ArgumentException>("page", action);
         }
 
         [Theory]
@@ -209,15 +192,12 @@ namespace Kadena.Tests.WebApi
         [InlineData("not_supported_property-ASC")]
         public void GetOrdersForSite_ShouldValidateArgumentsAndThrow_WhenInvalidFilter(string sort)
         {
-            var resources = Mock.Of<IKenticoResourceService>();
-            var dtFormatter = new DateTimeFormatterStub();
-            var orderViewClient = Mock.Of<IOrderViewClient>();
-            var siteProvider = Mock.Of<IKenticoSiteProvider>();
-            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
+            var sut = new OrderReportServiceBuilder()
+                .Build();
             var filterWithInvalidSort = new OrderFilter { Sort = sort };
-            Action action = () => sut.GetOrdersForSite("test_site", OrderService.FirstPageNumber, filterWithInvalidSort);
+            Func<Task> action = () => sut.GetOrdersForSite("test_site", OrderReportService.FirstPageNumber, filterWithInvalidSort);
 
-            Assert.Throws<ArgumentException>("filter", action);
+            Assert.ThrowsAsync<ArgumentException>("filter", action);
         }
 
         [Theory]
@@ -225,14 +205,11 @@ namespace Kadena.Tests.WebApi
         [InlineData(null)]
         public void GetOrdersForSite_ShouldValidateArgumentsAndNotThrow_WhenFilterEmpty(string sort)
         {
-            var resources = Mock.Of<IKenticoResourceService>();
-            var dtFormatter = new DateTimeFormatterStub();
-            var orderViewClient = Mock.Of<IOrderViewClient>();
-            var siteProvider = Mock.Of<IKenticoSiteProvider>();
-            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient);
+            var sut = new OrderReportServiceBuilder()
+                .Build();
             var filterWithEmptySort = new OrderFilter { Sort = sort };
 
-            sut.GetOrdersForSite("test_site", OrderService.FirstPageNumber, filterWithEmptySort);
+            sut.GetOrdersForSite("test_site", OrderReportService.FirstPageNumber, filterWithEmptySort);
 
             Assert.True(true);
         }
@@ -240,40 +217,214 @@ namespace Kadena.Tests.WebApi
         [Fact]
         public void GetOrdersForSite_ShouldPassArgumentsToMicroserviceClient()
         {
-            var resources = Mock.Of<IKenticoResourceService>();
-            var dtFormatter = new DateTimeFormatterStub();
             var orderViewClient = new Mock<IOrderViewClient>();
-            var siteProvider = Mock.Of<IKenticoSiteProvider>();
-            var sut = new OrderService(resources, siteProvider, dtFormatter, orderViewClient.Object);
+            var sut = new OrderReportServiceBuilder()
+                .WithOrderViewClient(orderViewClient.Object)
+                .Build();
             var page = 2;
             var currentSite = "test_site";
             var filter = new OrderFilter
             {
                 FromDate = new DateTime(),
                 ToDate = new DateTime(),
-                Sort = $"{OrderService.SortableByOrderDate}-{OrderFilter.SortDirection.DESC}"
+                Sort = $"{OrderReportService.SortableByOrderDate}-{OrderFilter.SortDirection.DESC}"
             };
 
             sut.GetOrdersForSite(currentSite, page, filter);
 
-            orderViewClient.Verify(ovc 
-                => ovc.GetOrders(currentSite, null, page, sut.OrdersPerPage, 
-                    filter.FromDate, filter.ToDate, OrderService.SortableByOrderDate, 
+            orderViewClient.Verify(ovc
+                => ovc.GetOrders(currentSite, null, page, sut.OrdersPerPage,
+                    filter.FromDate, filter.ToDate, OrderReportService.SortableByOrderDate,
                     true, null, null), Times.Once());
         }
 
+        [Fact]
+        public async Task GetOrdersForSite_ShouldMapResponseFromMicroserviceClient()
+        {
+            var customer = new Customer
+            {
+                FirstName = "Bruce",
+                LastName = "Wayne"
+            };
+            var kenticoUserProvider = Mock.Of<IKenticoUserProvider>(
+                kup => kup.GetCustomer(It.IsAny<int>()) == customer
+            );
 
+            var ordersCount = 2;
+            var itemsCount = 5;
+            var pagesCount = 1; // based on ordersCount / OrderReportService.DefaultCountOfOrdersPerPage
+            var orders = CreateTestRecentOrders(ordersCount, itemsCount);
+            var input = new BaseResponseDto<OrderListDto>
+            {
+                Success = true,
+                Payload = new OrderListDto
+                {
+                    TotalCount = ordersCount,
+                    Orders = orders
+                }
+            };
 
-        private List<Order> CreateTestOrders(int ordersCount, int itemsPerOrderCount)
+            var orderViewClient = Mock.Of<IOrderViewClient>(
+                ovc => ovc.GetOrders(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>(), It.IsAny<int?>(), 
+                    It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<bool>(),
+                    It.IsAny<int?>(), It.IsAny<string>()) == Task.FromResult(input)
+            );
+
+            var sut = new OrderReportServiceBuilder()
+                .WithKenticoUserProvider(kenticoUserProvider)
+                .WithOrderViewClient(orderViewClient)
+                .Build();
+
+            var site = "test_site";
+            var page = 1;
+            var filter = new OrderFilter();
+
+            var output = await sut.GetOrdersForSite(site, page, filter);
+
+            // pagination
+            Assert.Equal(ordersCount, output.Pagination.RowsCount);
+            Assert.Equal(page, output.Pagination.CurrentPage);
+            Assert.Equal(pagesCount, output.Pagination.PagesCount);
+            Assert.Equal(sut.OrdersPerPage, output.Pagination.RowsOnPage);
+
+            // order header
+            Assert.Equal(ordersCount, output.Data.Count);
+            Assert.Equal(orders[0].CreateDate, output.Data[0].OrderingDate);
+            Assert.Equal(orders[0].Id, output.Data[0].Number);
+            Assert.Equal(orders[0].ShippingDate, output.Data[0].ShippingDate);
+            Assert.Equal(sut.FormatOrderStatus(orders[0].Status), output.Data[0].Status);
+            Assert.Equal(sut.FormatCustomer(customer), output.Data[0].User);
+            Assert.Equal(orders[0].SiteName, output.Data[0].Site);
+            Assert.Equal(orders[0].TrackingNumber, output.Data[0].TrackingNumber);
+            Assert.Equal(sut.FormatDetailUrl(orders[0]), output.Data[0].Url);
+
+            // order items
+            var firstItem = orders[0].Items.First();
+            Assert.Equal(itemsCount, output.Data[0].Items.Count);
+            Assert.Equal(firstItem.Name, output.Data[0].Items[0].Name);
+            Assert.Equal(firstItem.Quantity, output.Data[0].Items[0].Quantity);
+            Assert.Equal(firstItem.Price, output.Data[0].Items[0].Price);
+            Assert.Equal(firstItem.SKU, output.Data[0].Items[0].SKU);
+        }
+
+        [Fact]
+        public void FormatCustomer_ShouldUseName_WhenNameAvailable()
+        {
+            var customer = new Customer
+            {
+                FirstName = "Bruce",
+                LastName = "Wayne"
+            };
+            var expected = "Bruce Wayne";
+
+            var sut = new OrderReportServiceBuilder()
+                .Build();
+
+            var actual = sut.FormatCustomer(customer);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FormatCustomer_ShouldUseEmail_WhenNameNotAvailable()
+        {
+            var customer = new Customer
+            {
+                Email = "bruce.wayne@therealbat.com"
+            };
+            var expected = "bruce.wayne@therealbat.com";
+
+            var sut = new OrderReportServiceBuilder()
+                .Build();
+
+            var actual = sut.FormatCustomer(customer);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void FormatDetailUrl_ShouldGenerateUrl()
+        {
+            var detailUrlBase = "test.com/product";
+            var resources = Mock.Of<IKenticoResourceService>(res 
+                => res.GetSettingsKey(Settings.KDA_OrderDetailUrl) == detailUrlBase);
+            var documents = Mock.Of<IKenticoDocumentProvider>(doc
+                => doc.GetDocumentUrl(It.IsAny<string>(), It.IsAny<bool>()) == detailUrlBase);
+
+            var order = new RecentOrderDto
+            {
+                Id = "1234"
+            };
+            var expectedUrl = "test.com/product?orderID=1234";
+
+            var sut = new OrderReportServiceBuilder()
+                .WithResources(resources)
+                .WithDocuments(documents)
+                .Build();
+
+            var actualUrl = sut.FormatDetailUrl(order);
+
+            Assert.Equal(expectedUrl, actualUrl);
+        }
+
+        [Fact]
+        public void FormatOrderStatus_ShouldMapOrderStatus()
+        {
+            var microserviceStatus = "some micro status";
+            var mappedStatus = "some status";
+            var orderProvider = Mock.Of<IKenticoOrderProvider>(kop 
+                => kop.MapOrderStatus(microserviceStatus) == mappedStatus);
+
+            var sut = new OrderReportServiceBuilder()
+                .WithKenticoOrderProvider(orderProvider)
+                .Build();
+
+            var actualStatus = sut.FormatOrderStatus(microserviceStatus);
+
+            Assert.Equal(mappedStatus, actualStatus);
+        }
+
+        private RecentOrderDto[] CreateTestRecentOrders(int ordersCount, int itemsPerOrderCount)
+        {
+            return Enumerable.Range(1, ordersCount)
+                .Select(orderNumber => CreateTestRecentOrder(orderNumber, itemsPerOrderCount))
+                .ToArray();
+        }
+
+        private RecentOrderDto CreateTestRecentOrder(int orderNumber, int itemsCount)
+        {
+            var order = new RecentOrderDto
+            {
+                CreateDate = GetRandomDateTime(),
+                CustomerId = 1,
+                Id = GetRandomString(),
+                ShippingDate = GetRandomDateTime(),
+                Status = GetRandomString(),
+                TotalPrice = random.Next(1000),
+                Items = Enumerable.Range(1, itemsCount)
+                    .Select(CreateTestRecentOrderItem)
+                    .ToArray()
+            };
+            return order;
+        }
+
+        private OrderItemDto CreateTestRecentOrderItem(int itemNumber)
+        {
+            return new OrderItemDto
+            {
+                Name = "order item " + itemNumber,
+                Quantity = random.Next(100)
+            };
+        }
+
+        private List<OrderReport> CreateTestOrders(int ordersCount, int itemsPerOrderCount)
         {
             return Enumerable.Range(1, ordersCount)
                 .Select(orderNumber => CreateTestOrder(orderNumber, itemsPerOrderCount))
                 .ToList();
         }
 
-        private Order CreateTestOrder(int orderNumber, int itemsCount)
+        private OrderReport CreateTestOrder(int orderNumber, int itemsCount)
         {
-            var order = new Order
+            var order = new OrderReport
             {
                 Number = orderNumber.ToString(),
                 OrderingDate = GetRandomDateTime(),
@@ -290,9 +441,9 @@ namespace Kadena.Tests.WebApi
             return order;
         }
 
-        private LineItem CreateTestLineItem(int itemNumber)
+        private ReportLineItem CreateTestLineItem(int itemNumber)
         {
-            return new LineItem
+            return new ReportLineItem
             {
                 Name = "Product" + itemNumber,
                 SKU = "SKU" + itemNumber,
@@ -305,6 +456,13 @@ namespace Kadena.Tests.WebApi
         {
             return DateTime.Now
                 .AddSeconds(random.Next(1, 30 * 1000 * 1000));
+        }
+
+        private string GetRandomString()
+        {
+            return Guid.NewGuid()
+                .ToString()
+                .Replace("-", "");
         }
 
         private class DateTimeFormatterStub : IDateTimeFormatter
@@ -324,6 +482,113 @@ namespace Kadena.Tests.WebApi
             public string GetFormatString(string cultureCode)
             {
                 return GetFormatString();
+            }
+        }
+
+        private class OrderService_GetOrdersForSiteSpy : OrderReportService
+        {
+            public OrderService_GetOrdersForSiteSpy(
+                IKenticoResourceService kenticoResources, IKenticoSiteProvider kenticoSiteProvider, 
+                IDateTimeFormatter dateTimeFormatter, IOrderViewClient orderViewClient,
+                IKenticoUserProvider kenticoUserProvider,
+                IKenticoDocumentProvider kenticoDocumentProvider,
+                IKenticoOrderProvider kenticoOrderProvider)
+                : base(kenticoResources, kenticoSiteProvider, dateTimeFormatter, 
+                      orderViewClient, kenticoUserProvider, kenticoDocumentProvider,
+                      kenticoOrderProvider)
+            {
+            }
+
+            public string Site { get; private set; }
+            public int Page { get; private set; }
+            public OrderFilter Filter { get; private set; }
+
+            public override Task<PagedData<OrderReport>> GetOrdersForSite(string site, int page, OrderFilter filter)
+            {
+                Site = site;
+                Page = page;
+                Filter = filter;
+
+                return base.GetOrdersForSite(site, page, filter);
+            }
+        }
+
+        private class OrderReportServiceBuilder
+        {
+            IKenticoResourceService kenticoResources;
+            IKenticoSiteProvider kenticoSiteProvider;
+            IDateTimeFormatter dateTimeFormatter;
+            IOrderViewClient orderViewClient;
+            IKenticoUserProvider kenticoUserProvider;
+            IKenticoDocumentProvider kenticoDocumentProvider;
+            IKenticoOrderProvider kenticoOrderProvider;
+
+            public OrderReportService Build()
+            {
+                return new OrderReportService(
+                    kenticoResources ?? Mock.Of<IKenticoResourceService>(),
+                    kenticoSiteProvider ?? Mock.Of<IKenticoSiteProvider>(),
+                    dateTimeFormatter ?? new DateTimeFormatterStub(),
+                    orderViewClient ?? Mock.Of<IOrderViewClient>(),
+                    kenticoUserProvider ?? Mock.Of<IKenticoUserProvider>(),
+                    kenticoDocumentProvider ?? Mock.Of<IKenticoDocumentProvider>(),
+                    kenticoOrderProvider ?? Mock.Of<IKenticoOrderProvider>()
+                );
+            }
+
+            public T BuildSpy<T>() where T : OrderReportService 
+            {
+                return (T)Activator.CreateInstance(typeof(T),
+                    kenticoResources ?? Mock.Of<IKenticoResourceService>(),
+                    kenticoSiteProvider ?? Mock.Of<IKenticoSiteProvider>(),
+                    dateTimeFormatter ?? new DateTimeFormatterStub(),
+                    orderViewClient ?? Mock.Of<IOrderViewClient>(),
+                    kenticoUserProvider ?? Mock.Of<IKenticoUserProvider>(),
+                    kenticoDocumentProvider ?? Mock.Of<IKenticoDocumentProvider>(),
+                    kenticoOrderProvider ?? Mock.Of<IKenticoOrderProvider>()
+                );
+            }
+
+            public OrderReportServiceBuilder WithResources(IKenticoResourceService kenticoResources)
+            {
+                this.kenticoResources = kenticoResources;
+                return this;
+            }
+
+            public OrderReportServiceBuilder WithDocuments(IKenticoDocumentProvider kenticoDocumentProvider)
+            {
+                this.kenticoDocumentProvider = kenticoDocumentProvider;
+                return this;
+            }
+
+            public OrderReportServiceBuilder WithSiteProvider(IKenticoSiteProvider kenticoSiteProvider)
+            {
+                this.kenticoSiteProvider = kenticoSiteProvider;
+                return this;
+            }
+
+            public OrderReportServiceBuilder WithDateTimeFormatter(IDateTimeFormatter dateTimeFormatter)
+            {
+                this.dateTimeFormatter = dateTimeFormatter;
+                return this;
+            }
+
+            public OrderReportServiceBuilder WithOrderViewClient(IOrderViewClient orderViewClient)
+            {
+                this.orderViewClient = orderViewClient;
+                return this;
+            }
+
+            public OrderReportServiceBuilder WithKenticoUserProvider(IKenticoUserProvider kenticoUserProvider)
+            {
+                this.kenticoUserProvider = kenticoUserProvider;
+                return this;
+            }
+
+            public OrderReportServiceBuilder WithKenticoOrderProvider(IKenticoOrderProvider kenticoOrderProvider)
+            {
+                this.kenticoOrderProvider = kenticoOrderProvider;
+                return this;
             }
         }
     }

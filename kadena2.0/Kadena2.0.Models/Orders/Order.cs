@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Kadena.Models.Orders
 {
-    public class Order
+    public class OrderReport
     {
-        public List<LineItem> Items { get; set; } = new List<LineItem>();
+        public List<ReportLineItem> Items { get; set; } = new List<ReportLineItem>();
 
         public string Url { get; set; }
         public string Site { get; set; }
@@ -17,7 +17,7 @@ namespace Kadena.Models.Orders
         public string User { get; set; }
     }
 
-    public class LineItem
+    public class ReportLineItem
     {
         public string Name { get; set; }
         public string SKU { get; set; }

@@ -1,22 +1,28 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Orders;
+using Kadena.Dto.Order;
+using Kadena.Models;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
 using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Kadena.BusinessLogic.Services.Orders
 {
-    public class OrderService : IOrderService
+    public class OrderReportService : IOrderReportService
     {
         private readonly IKenticoResourceService kenticoResources;
         private readonly IKenticoSiteProvider kenticoSiteProvider;
         private readonly IDateTimeFormatter dateTimeFormatter;
         private readonly IOrderViewClient orderViewClient;
+        private readonly IKenticoUserProvider kenticoUserProvider;
+        private readonly IKenticoDocumentProvider kenticoDocumentProvider;
+        private readonly IKenticoOrderProvider kenticoOrderProvider;
         public const int DefaultCountOfOrdersPerPage = 20;
         public const int FirstPageNumber = 1;
 
@@ -36,24 +42,44 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
         }
 
-        public OrderService(IKenticoResourceService kenticoResources,
+        private string _orderDetailUrl = string.Empty;
+        public string OrderDetailUrl
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_orderDetailUrl))
+                {
+                    var defaultUrl = kenticoResources.GetSettingsKey(Settings.KDA_OrderDetailUrl);
+                    _orderDetailUrl = kenticoDocumentProvider.GetDocumentUrl(defaultUrl);
+                }
+                return _orderDetailUrl;
+            }
+        }
+
+        public OrderReportService(IKenticoResourceService kenticoResources,
             IKenticoSiteProvider kenticoSiteProvider,
             IDateTimeFormatter dateTimeFormatter,
-            IOrderViewClient orderViewClient)
+            IOrderViewClient orderViewClient,
+            IKenticoUserProvider kenticoUserProvider,
+            IKenticoDocumentProvider kenticoDocumentProvider,
+            IKenticoOrderProvider kenticoOrderProvider)
         {
             this.kenticoResources = kenticoResources;
             this.kenticoSiteProvider = kenticoSiteProvider;
             this.dateTimeFormatter = dateTimeFormatter;
             this.orderViewClient = orderViewClient;
+            this.kenticoUserProvider = kenticoUserProvider;
+            this.kenticoDocumentProvider = kenticoDocumentProvider;
+            this.kenticoOrderProvider = kenticoOrderProvider;
         }
 
-        public Task<PagedData<Order>> GetOrders(int page, OrderFilter filter)
+        public virtual Task<PagedData<OrderReport>> GetOrders(int page, OrderFilter filter)
         {
             var currentSite = kenticoSiteProvider.GetCurrentSiteCodeName();
             return GetOrdersForSite(currentSite, page, filter);
         }
 
-        public Task<PagedData<Order>> GetOrdersForSite(string site, int page, OrderFilter filter)
+        public virtual async Task<PagedData<OrderReport>> GetOrdersForSite(string site, int page, OrderFilter filter)
         {
             ValidatePageNumber(page);
             ValidateFilter(filter);
@@ -63,12 +89,48 @@ namespace Kadena.BusinessLogic.Services.Orders
             var sortProperty = sortSpecified ? sort.Property : null;
             var sortDesc = sortSpecified ? sort.Direction == OrderFilter.SortDirection.DESC : false;
 
-            orderViewClient.GetOrders(site, null, page, OrdersPerPage, filter.FromDate, filter.ToDate, sortProperty, sortDesc, null, null);
+            int? customerId = null;
+            int? campaign = null;
+            string orderType = null;
 
-            return null;
+            var orders = await orderViewClient.GetOrders(site, customerId, page, OrdersPerPage, filter.FromDate, filter.ToDate, sortProperty, sortDesc, campaign, orderType);
+            var pagesCount = orders.Payload.TotalCount / OrdersPerPage;
+            if (orders.Payload.TotalCount % OrdersPerPage > 0)
+            {
+                pagesCount++;
+            }
+
+            return new PagedData<OrderReport>
+            {
+                Pagination = new Pagination
+                {
+                    CurrentPage = page,
+                    RowsCount = orders.Payload.TotalCount,
+                    RowsOnPage = OrdersPerPage,
+                    PagesCount = pagesCount
+                },
+                Data = orders.Payload.Orders.Select(o => new OrderReport
+                {
+                    Items = o.Items.Select(it => new ReportLineItem
+                    {
+                        Name = it.Name,
+                        Price = it.Price,
+                        Quantity = it.Quantity,
+                        SKU = it.SKU
+                    }).ToList(),
+                    Number = o.Id,
+                    OrderingDate = o.CreateDate,
+                    ShippingDate = o.ShippingDate,
+                    Site = o.SiteName,
+                    Status = FormatOrderStatus(o.Status),
+                    TrackingNumber = o.TrackingNumber,
+                    Url = FormatDetailUrl(o),
+                    User = FormatCustomer(kenticoUserProvider.GetCustomer(o.CustomerId))
+                }).ToList()
+            };
         }
 
-        public TableView ConvertOrdersToView(PagedData<Order> orders)
+        public TableView ConvertOrdersToView(PagedData<OrderReport> orders)
         {
             if (orders == null)
             {
@@ -104,14 +166,35 @@ namespace Kadena.BusinessLogic.Services.Orders
             return view;
         }
 
-        public Task<FileResult> GetOrdersExport(string format, OrderFilter filter)
+        public virtual Task<FileResult> GetOrdersExport(string format, OrderFilter filter)
         {
             throw new NotImplementedException();
         }
 
-        public Task<FileResult> GetOrdersExportForSite(string site, string format, OrderFilter filter)
+        public virtual Task<FileResult> GetOrdersExportForSite(string site, string format, OrderFilter filter)
         {
             throw new NotImplementedException();
+        }
+
+        public string FormatCustomer(Customer customer)
+        {
+            var name = $"{customer.FirstName} {customer.LastName}";
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                return name;
+            }
+
+            return customer.Email;
+        }
+
+        public string FormatDetailUrl(RecentOrderDto order)
+        {
+            return $"{OrderDetailUrl}?orderID={order.Id}";
+        }
+
+        public string FormatOrderStatus(string status)
+        {
+            return kenticoOrderProvider.MapOrderStatus(status);
         }
 
         private void ValidatePageNumber(int page)

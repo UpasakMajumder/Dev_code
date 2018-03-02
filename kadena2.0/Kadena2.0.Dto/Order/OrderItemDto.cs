@@ -10,5 +10,11 @@ namespace Kadena.Dto.Order
 
         [DataMember(Name = "quantity")]
         public int Quantity { get; set; }
+
+        [DataMember(Name = "SKU")]
+        public string SKU { get; set; }
+
+        [DataMember(Name = "price")]
+        public decimal Price { get; set; }
     }
 }

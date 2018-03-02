@@ -97,7 +97,7 @@
     <Compile Include="Services\OrderPayment\SavedCreditCard3dsi.cs" />
     <Compile Include="Services\IBTFService.cs" />
     <Compile Include="Services\Orders\GetOrderDataService.cs" />
-    <Compile Include="Services\Orders\OrderService.cs" />
+    <Compile Include="Services\Orders\OrderReportService.cs" />
     <Compile Include="Services\Orders\SendSubmitOrder.cs" />
     <Compile Include="Services\SubmissionService.cs" />
     <Compile Include="Services\OrderPayment\CreditCard3dsiDemo.cs" />

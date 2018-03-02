@@ -59,7 +59,7 @@ namespace Kadena2.Container.Default
             container.Register<ITaxEstimationService, TaxEstimationService>();
             container.Register<ISubmitOrderService, SubmitOrderService>();
             container.Register<IOrderDetailService, OrderDetailService>();
-            container.Register<IOrderService, OrderService>();
+            container.Register<IOrderReportService, OrderReportService>();
             container.Register<IKListService, KListService>();
             container.Register<ITemplateService, TemplateService>();
             container.Register<IMailTemplateService, MailTemplateService>();
