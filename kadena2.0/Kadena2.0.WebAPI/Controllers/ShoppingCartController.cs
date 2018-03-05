@@ -13,6 +13,7 @@ using Kadena.Dto.CustomerData;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.CustomerData;
 using Kadena.Dto.Checkout.Responses;
+using Kadena.Dto.Settings;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -66,12 +67,11 @@ namespace Kadena.WebAPI.Controllers
         [HttpPost]
         [Route("api/shoppingcart/savetemporaryaddress")]
         [CustomerAuthorizationFilter]
-        public async Task<IHttpActionResult> SaveTemporaryAddress([FromBody] DeliveryAddressDTO postedAddress)
+        public IHttpActionResult SaveTemporaryAddress([FromBody] DeliveryAddressDTO postedAddress)
         {
             var address = mapper.Map<DeliveryAddress>(postedAddress);
-            var deliveryTotals = await service.SaveTemporaryAddress(address);
-            var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
-            return ResponseJson(deliveryTotalsDto);
+            var addressId = service.SaveTemporaryAddress(address);
+            return ResponseJson(new IdDto { Id = addressId });
         }
 
         [HttpPost]
