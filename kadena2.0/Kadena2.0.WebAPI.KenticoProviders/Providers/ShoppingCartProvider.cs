@@ -255,18 +255,24 @@ namespace Kadena.WebAPI.KenticoProviders
             cart.SubmitChanges(true);
         }
 
-        public void SetTemporaryShoppingCartAddress(DeliveryAddress address)
+        public int SetTemporaryShoppingCartAddress(DeliveryAddress address)
         {
+            var customerId = ECommerceContext.CurrentCustomer.CustomerID;
             var cart = ECommerceContext.CurrentShoppingCart;
+
+            cart.ShoppingCartShippingAddress = null;
+            DeleteTemporaryAddresses(customerId);
+
             var info = mapper.Map<AddressInfo>(address);
             info.AddressName = "TemporaryAddress";
             info.AddressPersonalName = "TemporaryAddress";
             info.AddressID = 0;
-            info.AddressCustomerID = ECommerceContext.CurrentCustomer.CustomerID;
+            info.AddressCustomerID = customerId;
 
             info.Insert();
             cart.ShoppingCartShippingAddress = info;
             cart.SubmitChanges(true);
+            return info.AddressID;
         }
 
         public void SelectShipping(int shippingOptionId)
@@ -839,6 +845,18 @@ namespace Kadena.WebAPI.KenticoProviders
                                          .OnSite(SiteContext.CurrentSiteID)
                                          .Where(x => x.SKUID.Equals(SKUID))
                                          .Sum(x => x.CartItemUnits);
+        }
+
+        public void DeleteTemporaryAddresses(int customerId)
+        {
+            const string tempName = "TemporaryAddress";
+
+            var addresses = AddressInfoProvider.GetAddresses(customerId)
+                .WhereEquals("AddressName", tempName)
+                .WhereEquals("AddressPersonalName", tempName)
+                .ToList();
+
+            addresses.ForEach(a => AddressInfoProvider.DeleteAddressInfo(a));
         }
     }
 }
