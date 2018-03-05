@@ -17,8 +17,7 @@ import {
   CHECKOUT_CHANGE_ADDRESS,
   CHECKOUT_GET_TOTALS,
   CHECKOUT_PROCEED,
-  CHECKOUT_CHANGE_DELIVERY,
-  ADD_NEW_ADDRESS
+  CHECKOUT_CHANGE_DELIVERY
 } from 'app.consts';
 
 /* globals */
@@ -281,45 +280,6 @@ export const sendData = (data) => {
 
 export const addNewAddress = (data, primary) => {
   return (dispatch) => {
-    if (primary) {
-      getTotalPrice(dispatch);
-    } else {
-      dispatch({ type: ADD_NEW_ADDRESS + FETCH });
-      dispatch({ type: APP_LOADING + START });
-
-      dispatch({
-        type: ADD_NEW_ADDRESS + SUCCESS,
-        payload: data
-      });
-
-      axios.post(CHECKOUT_URL.saveAddressURL, data)
-        .then((response) => {
-          const { payload, success, errorMessage } = response.data;
-
-          if (!success) {
-            dispatch({
-              type: CHECKOUT_GET_TOTALS + FAILURE,
-              alert: errorMessage
-            });
-            dispatch({ type: APP_LOADING + FINISH });
-            return;
-          }
-
-          const checkedId = getCheckedDeliveryMethod(payload.deliveryMethods);
-
-          dispatch({
-            type: CHECKOUT_GET_TOTALS + SUCCESS,
-            payload: {
-              ...payload,
-              checkedId
-            }
-          });
-          dispatch({ type: APP_LOADING + FINISH });
-        })
-        .catch((error) => {
-          dispatch({ type: CHECKOUT_GET_TOTALS + FAILURE });
-          dispatch({ type: APP_LOADING + FINISH });
-        });
-    }
+    getTotalPrice(dispatch);
   };
 };
