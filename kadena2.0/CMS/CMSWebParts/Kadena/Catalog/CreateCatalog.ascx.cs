@@ -16,6 +16,7 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using Kadena.Old_App_Code.Kadena.Enums;
 using System.Web;
+using Kadena.Models.Common;
 
 public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPart
 {
@@ -619,7 +620,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 }
                 Response.Clear();
                 MemoryStream ms = new MemoryStream(pdfByte);
-                Response.ContentType = "application/pdf";
+                Response.ContentType = ContentTypes.Pdf;
                 Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
                 Response.Buffer = true;
                 ms.WriteTo(Response.OutputStream);

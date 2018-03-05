@@ -5,6 +5,7 @@ using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Dto.MailingList.MicroserviceResponses;
+using Kadena.Models.Common;
 using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients;
 using Kadena2.MicroserviceClients.Clients;
@@ -230,8 +231,8 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             {
                 var file = Request.Files[i];
                 if (file.ContentLength > 0
-                    && (file.ContentType == "application/vnd.ms-excel"
-                    || file.ContentType == "text/csv"))
+                    && (file.ContentType == ContentTypes.Xls
+                    || file.ContentType == ContentTypes.Csv))
                 {
                     fileStream = file.InputStream;
                     break;

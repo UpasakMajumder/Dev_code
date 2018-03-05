@@ -436,7 +436,7 @@ namespace Kadena.Tests.WebApi
             var result = await sut.GetOrdersExportForSite("test_site", new OrderFilter());
 
             Assert.Equal("export.xlsx", result.Name);
-            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.Name);
+            Assert.Equal(ContentTypes.Xlsx, result.Name);
             Assert.Equal("export.xlsx", result.Name);
         }
 
