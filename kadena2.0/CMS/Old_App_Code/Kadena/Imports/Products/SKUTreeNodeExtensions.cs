@@ -10,7 +10,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         /// </summary>
         public static void SetImage(this SKUTreeNode product, string imageUrl)
         {
-            product.SetValue("SKUImagePath", imageUrl);
+            product.SetValue("ProductImage", imageUrl);
         }
 
         public static void SetImage(this SKUTreeNode product, MediaFileInfo image)
@@ -20,7 +20,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
 
         public static void RemoveImage(this SKUTreeNode product)
         {
-            product?.SetValue("SKUImagePath", null);
+            product?.SetValue("ProductImage", null);
         }
     }
 }
