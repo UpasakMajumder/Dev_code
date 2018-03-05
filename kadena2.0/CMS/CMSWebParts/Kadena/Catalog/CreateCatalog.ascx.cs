@@ -557,11 +557,18 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                         brands.Add(giProducts.BrandID);
                     }
                 }
+                var brandData = brands.Distinct();
+                brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
+                        .WhereIn("ItemID", brandData.ToList())
+                        .Columns("ItemID")
+                        .OrderBy("BrandName")
+                        .Select(x=> x.Field<int>("ItemID"))
+                        .ToList();
                 string pdfProductsContentWithBrands = string.Empty;
                 string closingDiv = SettingsKeyInfoProvider.GetValue("ClosingDIV").ToString();
                 if (!DataHelper.DataSourceIsEmpty(selectedProducts))
                 {
-                    foreach (var brand in brands.Distinct())
+                    foreach (var brand in brands)
                     {
                         string productBrandHeader = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PDFBrand");
                         if (TypeOfProduct == (int)ProductsType.PreBuy)
