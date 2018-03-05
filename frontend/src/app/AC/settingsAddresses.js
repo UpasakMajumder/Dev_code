@@ -120,10 +120,12 @@ export const addAddress = (data, fromCheckout) => {
             }
           });
 
-          dispatch({
-            type: ADD_NEW_ADDRESS + SUCCESS,
-            payload: data
-          });
+          if (data.temporary) {
+            dispatch({
+              type: ADD_NEW_ADDRESS + SUCCESS,
+              payload: data
+            });
+          }
         }
       }
 
