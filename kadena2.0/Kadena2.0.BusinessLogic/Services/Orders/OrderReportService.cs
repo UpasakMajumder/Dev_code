@@ -9,6 +9,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -109,25 +110,30 @@ namespace Kadena.BusinessLogic.Services.Orders
                     RowsOnPage = OrdersPerPage,
                     PagesCount = pagesCount
                 },
-                Data = orders.Payload.Orders.Select(o => new OrderReport
-                {
-                    Items = o.Items.Select(it => new ReportLineItem
-                    {
-                        Name = it.Name,
-                        Price = it.Price,
-                        Quantity = it.Quantity,
-                        SKU = it.SKU
-                    }).ToList(),
-                    Number = o.Id,
-                    OrderingDate = o.CreateDate,
-                    ShippingDate = o.ShippingDate,
-                    Site = o.SiteName,
-                    Status = FormatOrderStatus(o.Status),
-                    TrackingNumber = o.TrackingNumber,
-                    Url = FormatDetailUrl(o),
-                    User = FormatCustomer(kenticoUserProvider.GetCustomer(o.CustomerId))
-                }).ToList()
+                Data = MapOrders(orders.Payload.Orders)
             };
+        }
+
+        private List<OrderReport> MapOrders(IEnumerable<RecentOrderDto> orders)
+        {
+            return orders.Select(o => new OrderReport
+            {
+                Items = o.Items.Select(it => new ReportLineItem
+                {
+                    Name = it.Name,
+                    Price = it.Price,
+                    Quantity = it.Quantity,
+                    SKU = it.SKU
+                }).ToList(),
+                Number = o.Id,
+                OrderingDate = o.CreateDate,
+                ShippingDate = o.ShippingDate,
+                Site = o.SiteName,
+                Status = FormatOrderStatus(o.Status),
+                TrackingNumber = o.TrackingNumber,
+                Url = FormatDetailUrl(o),
+                User = FormatCustomer(kenticoUserProvider.GetCustomer(o.CustomerId))
+            }).ToList();
         }
 
         public TableView ConvertOrdersToView(PagedData<OrderReport> orders)
@@ -166,14 +172,22 @@ namespace Kadena.BusinessLogic.Services.Orders
             return view;
         }
 
-        public virtual Task<FileResult> GetOrdersExport(string format, OrderFilter filter)
+        public virtual Task<FileResult> GetOrdersExport(OrderFilter filter)
         {
-            throw new NotImplementedException();
+            var currentSite = kenticoSiteProvider.GetCurrentSiteCodeName();
+            return GetOrdersExportForSite(currentSite, filter);
         }
 
-        public virtual Task<FileResult> GetOrdersExportForSite(string site, string format, OrderFilter filter)
+        public virtual Task<FileResult> GetOrdersExportForSite(string site, OrderFilter filter)
         {
-            throw new NotImplementedException();
+            // todo: 
+            // call the microservice client without paging
+            // map the response RecentOrderDto -> OrderReport -> TableView -> xls
+
+            ValidateFilter(filter);
+
+
+            return null;
         }
 
         public string FormatCustomer(Customer customer)
@@ -205,7 +219,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
         }
 
-        private void ValidateFilter(OrderFilter filter)
+        public virtual void ValidateFilter(OrderFilter filter)
         {
             if (string.IsNullOrWhiteSpace(filter.Sort))
             {

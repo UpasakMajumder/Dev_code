@@ -62,10 +62,10 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [Route(Routes.Order.Export)]
-        public async Task<IHttpActionResult> Export(string format, DateTime? dateFrom = null, DateTime? dateTo = null)
+        public async Task<IHttpActionResult> Export(DateTime? dateFrom = null, DateTime? dateTo = null)
         {
             var export = await orderService
-                .GetOrdersExport(format, new OrderFilter { FromDate = dateFrom, ToDate = dateTo });
+                .GetOrdersExport(new OrderFilter { FromDate = dateFrom, ToDate = dateTo });
             return File(export);
         }
     }

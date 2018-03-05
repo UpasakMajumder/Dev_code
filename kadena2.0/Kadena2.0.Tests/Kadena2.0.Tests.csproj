@@ -485,7 +485,7 @@
     <Compile Include="UserHierarchyTest.cs" />
     <Compile Include="WebApi\KListServiceTests.cs" />
     <Compile Include="WebApi\ProductsControllerTest.cs" />
-    <Compile Include="WebApi\OrderServiceTests.cs" />
+    <Compile Include="WebApi\OrderReportServiceTests.cs" />
     <Compile Include="WebApi\ProductTests.cs" />
     <Compile Include="WebApi\ShoppingCartService.cs" />
     <Compile Include="WebApi\OrderDetailServiceTests.cs" />

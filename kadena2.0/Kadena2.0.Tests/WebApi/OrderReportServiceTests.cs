@@ -18,7 +18,7 @@ using Xunit;
 
 namespace Kadena.Tests.WebApi
 {
-    public class OrderServiceTests
+    public class OrderReportServiceTests
     {
         Random random = new Random();
 
@@ -76,6 +76,8 @@ namespace Kadena.Tests.WebApi
 
             Assert.Equal(OrderReportService.DefaultCountOfOrdersPerPage, sut.OrdersPerPage);
         }
+
+
 
         [Fact]
         public void ConvertOrdersToView_ShouldThrow_WhenArgumentNull()
@@ -156,6 +158,8 @@ namespace Kadena.Tests.WebApi
             Assert.Equal(orders.Pagination, view.Pagination);
         }
 
+
+
         [Fact]
         public void GetOrders_ShouldUseCurrentSite()
         {
@@ -187,31 +191,15 @@ namespace Kadena.Tests.WebApi
             Assert.ThrowsAsync<ArgumentException>("page", action);
         }
 
-        [Theory]
-        [InlineData("wrong-sort-expression")]
-        [InlineData("not_supported_property-ASC")]
-        public void GetOrdersForSite_ShouldValidateArgumentsAndThrow_WhenInvalidFilter(string sort)
+        [Fact]
+        public void GetOrdersForSite_ShouldValidateFilter()
         {
             var sut = new OrderReportServiceBuilder()
-                .Build();
-            var filterWithInvalidSort = new OrderFilter { Sort = sort };
-            Func<Task> action = () => sut.GetOrdersForSite("test_site", OrderReportService.FirstPageNumber, filterWithInvalidSort);
+                .BuildSpy<OrderReportService_ValidateFilterSpy>();
 
-            Assert.ThrowsAsync<ArgumentException>("filter", action);
-        }
+            sut.GetOrdersForSite("test_site", OrderReportService.FirstPageNumber, new OrderFilter());
 
-        [Theory]
-        [InlineData("")]
-        [InlineData(null)]
-        public void GetOrdersForSite_ShouldValidateArgumentsAndNotThrow_WhenFilterEmpty(string sort)
-        {
-            var sut = new OrderReportServiceBuilder()
-                .Build();
-            var filterWithEmptySort = new OrderFilter { Sort = sort };
-
-            sut.GetOrdersForSite("test_site", OrderReportService.FirstPageNumber, filterWithEmptySort);
-
-            Assert.True(true);
+            Assert.True(sut.ValidateFilterCalled);
         }
 
         [Fact]
@@ -307,6 +295,8 @@ namespace Kadena.Tests.WebApi
             Assert.Equal(firstItem.SKU, output.Data[0].Items[0].SKU);
         }
 
+
+
         [Fact]
         public void FormatCustomer_ShouldUseName_WhenNameAvailable()
         {
@@ -380,6 +370,74 @@ namespace Kadena.Tests.WebApi
             var actualStatus = sut.FormatOrderStatus(microserviceStatus);
 
             Assert.Equal(mappedStatus, actualStatus);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void ValidateFilter_ShouldNotThrow_WhenFilterIsEmpty(string sort)
+        {
+            var sut = new OrderReportServiceBuilder()
+                .Build();
+            var filterWithEmptySort = new OrderFilter { Sort = sort };
+
+            sut.ValidateFilter(filterWithEmptySort);
+
+            Assert.True(true);
+        }
+
+        [Theory]
+        [InlineData("wrong-sort-expression")]
+        [InlineData("not_supported_property-ASC")]
+        public void ValidateFilter_ShouldThrow_WhenFilterIsInvalid(string sort)
+        {
+            var sut = new OrderReportServiceBuilder()
+                .Build();
+            var filterWithInvalidSort = new OrderFilter { Sort = sort };
+
+            Action action = () => sut.ValidateFilter(filterWithInvalidSort);
+
+            Assert.Throws<ArgumentException>(action);
+        }
+
+        [Fact]
+        public void GetOrdersExport_ShouldUseCurrentSite()
+        {
+            var currentSite = "test_site";
+            var siteProvider = Mock.Of<IKenticoSiteProvider>(sp => sp.GetCurrentSiteCodeName() == currentSite);
+            var sut = new OrderReportServiceBuilder()
+                .WithSiteProvider(siteProvider)
+                .BuildSpy<OrderService_GetOrdersExportForSiteSpy>();
+            var filter = new OrderFilter();
+
+            sut.GetOrdersExport(filter);
+
+            Assert.Equal(currentSite, sut.Site);
+            Assert.Equal(filter, sut.Filter);
+        }
+
+        [Fact]
+        public void GetOrdersExportForSite_ShouldValidateFilter()
+        {
+            var sut = new OrderReportServiceBuilder()
+                .BuildSpy<OrderReportService_ValidateFilterSpy>();
+
+            sut.GetOrdersExportForSite("test_site", new OrderFilter());
+
+            Assert.True(sut.ValidateFilterCalled);
+        }
+
+        [Fact]
+        public async Task GetOrdersExportForSite_ShouldCreateExportFileResult()
+        {
+            var sut = new OrderReportServiceBuilder()
+                .Build();
+
+            var result = await sut.GetOrdersExportForSite("test_site", new OrderFilter());
+
+            Assert.Equal("export.xlsx", result.Name);
+            Assert.Equal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", result.Name);
+            Assert.Equal("export.xlsx", result.Name);
         }
 
         private RecentOrderDto[] CreateTestRecentOrders(int ordersCount, int itemsPerOrderCount)
@@ -510,6 +568,56 @@ namespace Kadena.Tests.WebApi
                 Filter = filter;
 
                 return base.GetOrdersForSite(site, page, filter);
+            }
+        }
+
+        private class OrderService_GetOrdersExportForSiteSpy : OrderReportService
+        {
+            public OrderService_GetOrdersExportForSiteSpy(
+                IKenticoResourceService kenticoResources, IKenticoSiteProvider kenticoSiteProvider,
+                IDateTimeFormatter dateTimeFormatter, IOrderViewClient orderViewClient,
+                IKenticoUserProvider kenticoUserProvider,
+                IKenticoDocumentProvider kenticoDocumentProvider,
+                IKenticoOrderProvider kenticoOrderProvider)
+                : base(kenticoResources, kenticoSiteProvider, dateTimeFormatter,
+                      orderViewClient, kenticoUserProvider, kenticoDocumentProvider,
+                      kenticoOrderProvider)
+            {
+            }
+
+            public string Site { get; private set; }
+            public OrderFilter Filter { get; private set; }
+
+            public override Task<FileResult> GetOrdersExportForSite(string site, OrderFilter filter)
+            {
+                Site = site;
+                Filter = filter;
+
+                return base.GetOrdersExportForSite(site, filter);
+            }
+        }
+
+        private class OrderReportService_ValidateFilterSpy : OrderReportService
+        {
+            public OrderReportService_ValidateFilterSpy(
+                IKenticoResourceService kenticoResources, IKenticoSiteProvider kenticoSiteProvider,
+                IDateTimeFormatter dateTimeFormatter, IOrderViewClient orderViewClient,
+                IKenticoUserProvider kenticoUserProvider,
+                IKenticoDocumentProvider kenticoDocumentProvider,
+                IKenticoOrderProvider kenticoOrderProvider)
+                : base(kenticoResources, kenticoSiteProvider, dateTimeFormatter,
+                      orderViewClient, kenticoUserProvider, kenticoDocumentProvider,
+                      kenticoOrderProvider)
+            {
+            }
+
+            public bool ValidateFilterCalled { get; private set; }
+
+            public override void ValidateFilter(OrderFilter filter)
+            {
+                ValidateFilterCalled = true;
+
+                base.ValidateFilter(filter);
             }
         }
 

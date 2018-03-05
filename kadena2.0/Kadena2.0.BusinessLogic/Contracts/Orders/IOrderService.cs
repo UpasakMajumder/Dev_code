@@ -11,7 +11,7 @@ namespace Kadena.BusinessLogic.Contracts.Orders
 
         TableView ConvertOrdersToView(PagedData<OrderReport> orders);
 
-        Task<FileResult> GetOrdersExport(string format, OrderFilter filter);
-        Task<FileResult> GetOrdersExportForSite(string site, string format, OrderFilter filter);
+        Task<FileResult> GetOrdersExport(OrderFilter filter);
+        Task<FileResult> GetOrdersExportForSite(string site, OrderFilter filter);
     }
 }
