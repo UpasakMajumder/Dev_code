@@ -58,5 +58,12 @@ namespace Kadena.WebAPI.Controllers
             service.AcceptTaC(loginRequestModel);
             return ResponseJson<object>(null);
         }
+
+        [HttpPost]
+        [Route("api/login/saml")]
+        public IHttpActionResult LoginSaml([FromBody] SamlAuthenticationDto request)
+        {
+            return ResponseJson(request);
+        }
     }
 }
