@@ -128,7 +128,7 @@ namespace Kadena.BusinessLogic.Services
 
             if ( creditCardMethod != null && resources.GetSettingsKey("KDA_CreditCard_EnableSaveCard").ToLower() == "true")
             {
-                var storedCardsResult = await userDataClient.GetCardTokens(userId);
+                var storedCardsResult = await userDataClient.GetValidCardTokens(userId);
 
                 if (storedCardsResult.Success)
                 {
@@ -186,9 +186,9 @@ namespace Kadena.BusinessLogic.Services
             return result;
         }
 
-        public async Task<CheckoutPageDeliveryTotals> SetDeliveryAddress(DeliveryAddress deliveryAddress)
+        public async Task<CheckoutPageDeliveryTotals> SaveTemporaryAddress(DeliveryAddress deliveryAddress)
         {
-            shoppingCart.SetShoppingCartAddress(deliveryAddress);
+            shoppingCart.SetTemporaryShoppingCartAddress(deliveryAddress);
             return await GetDeliveryAndTotals();
         }
 
@@ -232,7 +232,10 @@ namespace Kadena.BusinessLogic.Services
             var totals = page.Totals;
             totals.Title = resources.GetResourceString("Kadena.Checkout.Totals.Title");
             var shoppingCartTotals = shoppingCart.GetShoppingCartTotals();
-            shoppingCartTotals.TotalTax = await taxCalculator.EstimateTotalTax(deliveryAddress);
+            if (deliveryAddress != null)
+            {
+                shoppingCartTotals.TotalTax = await taxCalculator.EstimateTotalTax(deliveryAddress);
+            }
             totals.Items = new Total[]
             {
                 new Total()
