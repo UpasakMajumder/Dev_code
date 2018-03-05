@@ -82,7 +82,7 @@ export const addAddress = (data, fromCheckout) => {
     dispatch({ type: APP_LOADING + START });
 
     try {
-      const url = data.temporary ? CHECKOUT.saveAdressUrl : USER_SETTINGS.addresses.editAddressURL;
+      const url = data.temporary ? CHECKOUT.saveAddressURL : USER_SETTINGS.addresses.editAddressURL;
 
       const response = await axios({
         method: 'post',
@@ -106,7 +106,7 @@ export const addAddress = (data, fromCheckout) => {
       data.id = id;
 
       if (fromCheckout) {
-        const responseCheckout = await axios.post(CHECKOUT.changeAddressUrl, { id });
+        const responseCheckout = await axios.post(CHECKOUT.changeAddressURL, { id });
         const { success, payload } = responseCheckout.data;
 
         const checkedItems = payload.deliveryAddresses.items.filter(item => item.checked);
