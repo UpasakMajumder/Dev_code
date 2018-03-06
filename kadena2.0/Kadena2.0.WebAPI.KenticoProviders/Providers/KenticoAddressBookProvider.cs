@@ -53,7 +53,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return mapper.Map<List<AddressData>>(addressesList);
         }
 
-        public List<AddressData> GetAddressesListByUserID(int userID, int inventoryType = 1)
+        public List<AddressData> GetAddressesListByUserID(int userID, int inventoryType = 1, int campaignID = 0)
         {
             List<AddressData> myAddressList = new List<AddressData>();
             int currentCustomerId = new KenticoCustomerProvider().GetCustomerIDByUserID(userID);
@@ -61,7 +61,7 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 myAddressList = GetAddressesList(currentCustomerId)?.Select(x =>
                 {
-                    x.DistributorShoppingCartID = shoppingCartProvider.GetDistributorCartID(x.AddressID, inventoryType);
+                    x.DistributorShoppingCartID = shoppingCartProvider.GetDistributorCartID(x.AddressID, inventoryType, campaignID);
                     return x;
                 }).ToList();
             }

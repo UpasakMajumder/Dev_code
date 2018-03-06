@@ -860,11 +860,13 @@ namespace Kadena.WebAPI.KenticoProviders
             addresses.ForEach(a => AddressInfoProvider.DeleteAddressInfo(a));
         }
 
-        public int GetDistributorCartID(int distributorID, int inventoryType = 1)
+        public int GetDistributorCartID(int distributorID, int inventoryType = 1, int campaignID = 0)
         {
             ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID)
                                     .OnSite(SiteContext.CurrentSiteID)
                                     .WhereEquals("ShoppingCartDistributorID", distributorID)
+                                    .And()
+                                    .WhereEqualsOrNull("ShoppingCartCampaignID", campaignID)
                                     .And()
                                     .WhereEquals("ShoppingCartInventoryType", inventoryType).FirstOrDefault();
             return cart != null ? cart.ShoppingCartID : 0;
@@ -932,7 +934,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public void AddDistributorCartItem(int cartID, DistributorCartItem distributorCartItem, CampaignsProduct product, int inventoryType = 1)
         {
             ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
-            if (cart != null && cart.CartItems.Count == 0)
+            if (cart != null)
             {
                 ShoppingCartItemParameters parameters = new ShoppingCartItemParameters(product.SKUID, distributorCartItem.Quantity);
                 parameters.CustomParameters.Add("CartItemCustomerID", distributorCartItem.DistributorID);

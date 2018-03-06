@@ -5,6 +5,9 @@ using Kadena2.Container.Default;
 using CMS.Ecommerce;
 using System;
 using CMS.EventLog;
+using CMS.DocumentEngine.Types.KDA;
+using CMS.DataEngine;
+using System.Linq;
 
 public partial class CMSWebParts_Kadena_Cart_CartDistributorList : CMSAbstractWebPart
 {
@@ -74,8 +77,19 @@ public partial class CMSWebParts_Kadena_Cart_CartDistributorList : CMSAbstractWe
 
     private void BindDistributors()
     {
-        rptCartDistributorList.DataSource = DIContainer.Resolve<IKenticoAddressBookProvider>().GetAddressesListByUserID(CurrentUser.UserID, InventoryType);
+        int campaignID = GetOpenCampaignID();
+        rptCartDistributorList.DataSource = DIContainer.Resolve<IKenticoAddressBookProvider>().GetAddressesListByUserID(CurrentUser.UserID, InventoryType, campaignID);
         rptCartDistributorList.DataBind();
+    }
+
+    private int GetOpenCampaignID()
+    {
+        Campaign campaign = CampaignProvider.GetCampaigns().Columns("CampaignID")
+                                .WhereEquals("OpenCampaign", true)
+                                .Where(new WhereCondition().WhereEquals("CloseCampaign", false).Or()
+                                .WhereEquals("CloseCampaign", null))
+                                .WhereEquals("NodeSiteID", CurrentSite.SiteID).FirstOrDefault();
+        return campaign?.CampaignID ?? 0;
     }
 
     /// <summary>
