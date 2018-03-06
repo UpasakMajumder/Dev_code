@@ -88,7 +88,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.UserID, opt => opt.MapFrom(src => src.CustomerUserID))
                 .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.CustomerCompany))
                 .ForMember(dest => dest.SiteId, opt => opt.MapFrom(src => src.CustomerSiteID))
-                .ForMember(dest => dest.DefaultShippingAddressId, opt => opt.MapFrom(src => src.GetIntegerValue(KenticoUserProvider.CustomerDefaultShippingAddresIDFieldName, 0)))
+                .ForMember(dest => dest.DefaultShippingAddressId, opt => opt.MapFrom(src => src.GetIntegerValue(KenticoAddressBookProvider.CustomerDefaultShippingAddresIDFieldName, 0)))
                 .AfterMap((src, dest) => dest.PreferredLanguage = src.CustomerUser?.PreferredCultureCode ?? string.Empty)
                 .ReverseMap();
 
