@@ -7,7 +7,6 @@ using CMS.PortalEngine;
 using Kadena.Models;
 using Kadena.Models.Product;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;

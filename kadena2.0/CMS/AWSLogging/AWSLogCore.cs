@@ -182,13 +182,11 @@ namespace Kadena.AWSLogging
             }
             catch (OperationCanceledException oc)
             {
-                // TODO how to log ?
                 LogLibraryError(oc);
                 throw;
             }
             catch (Exception e)
             {
-                // TODO how to log ?
                 LogLibraryError(e);
             }
 
@@ -208,7 +206,6 @@ namespace Kadena.AWSLogging
             }
             catch (TaskCanceledException tc)
             {
-                // TODO how to log ?
                 LogLibraryError(tc);
                 throw;
             }
@@ -217,7 +214,6 @@ namespace Kadena.AWSLogging
                 //In case the NextSequenceToken is invalid for the last sent message, a new stream would be 
                 //created for the said application.
 
-                // TODO how to log ?
                 LogLibraryError(e);
 
                 await LogEventTransmissionSetup(token).ConfigureAwait(false);
@@ -254,7 +250,6 @@ namespace Kadena.AWSLogging
             }
             catch (Exception e)
             {
-                // TODO how to log ?
                 LogLibraryError(e);
                 throw;
             }
@@ -273,7 +268,11 @@ namespace Kadena.AWSLogging
 
         public static void LogLibraryError(Exception ex)
         {
+
             /*
+              
+             TODO: If logging itself fails, it is possible to write the error into a file
+             
             try
             {
                 using (StreamWriter w = File.AppendText(@"C:\log\awslog.txt"))
