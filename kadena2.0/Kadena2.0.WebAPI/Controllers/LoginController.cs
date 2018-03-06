@@ -13,8 +13,9 @@ namespace Kadena.WebAPI.Controllers
     {
         private readonly ILoginService service;
         private readonly IMapper mapper;
+        private readonly IIdentityService identityService;
 
-        public LoginController(ILoginService service, IMapper mapper)
+        public LoginController(ILoginService service, IMapper mapper, IIdentityService identityService)
         {
             if (service == null)
             {
@@ -24,9 +25,13 @@ namespace Kadena.WebAPI.Controllers
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
-
+            if (identityService == null)
+            {
+                throw new ArgumentNullException(nameof(identityService));
+            }
             this.service = service;
             this.mapper = mapper;
+            this.identityService = identityService;
         }
 
         [HttpPost]
@@ -63,7 +68,12 @@ namespace Kadena.WebAPI.Controllers
         [Route("api/login/saml2")]
         public IHttpActionResult LoginSaml2([FromBody] SamlAuthenticationDto request)
         {
-            return ResponseJson(request);
+            var authenticationResultPage = identityService.TryAuthenticate(request.Wresult);
+            if (authenticationResultPage == null)
+            {
+                return NotFound();
+            }
+            return Redirect(authenticationResultPage);
         }
     }
 }
