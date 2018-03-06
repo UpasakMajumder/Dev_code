@@ -71,7 +71,7 @@ namespace Kadena.WebAPI.Controllers
         {
             var detailPage = await _orderDetailService.GetOrderDetail(orderId);
             var detailPageDto = _mapper.Map<OrderDetailDTO>(detailPage);
-            return ResponseJson(detailPageDto); // TODO refactor using checking null
+            return ResponseJsonCheckingNull(detailPageDto, "Failed to obtain order detail from microservice");
         }
 
 

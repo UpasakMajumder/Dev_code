@@ -37,7 +37,11 @@
           <AllowCreate>True</AllowCreate>
         </settings>
       </field>
-      <field column="SKUImagePath" guid="6174e45a-ca37-4946-a8b9-a53bd4fb76d2" />
+      <field column="SKUImagePath" guid="6174e45a-ca37-4946-a8b9-a53bd4fb76d2" reftype="Required" visible="">
+        <settings>
+          <controlname>MediaSelectionControl</controlname>
+        </settings>
+      </field>
       <field column="SKUShortDescription" guid="0e18113d-59b6-4fba-9c46-796465b2251e" visible="" />
       <field column="SKUDescription" guid="b13a8a29-f8a9-49ed-8cb4-4db417e174ab" />
       <field column="SKUProductType" guid="33da4205-7ff2-46f9-ae88-3f28ae663ff8" visibility="" />
