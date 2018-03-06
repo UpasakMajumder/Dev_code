@@ -10,11 +10,8 @@ using Kadena.WebAPI.KenticoProviders;
 using CMS.DocumentEngine;
 using Kadena.Models.Product;
 using CMS.Helpers;
-using CMS.DataEngine;
 using CMS.CustomTables;
 using Kadena.Models.CreditCard;
-using Kadena.Models.UserBudget;
-using Kadena.Models.FyBudget;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -92,7 +89,9 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.CustomerCompany))
                 .ForMember(dest => dest.SiteId, opt => opt.MapFrom(src => src.CustomerSiteID))
                 .ForMember(dest => dest.DefaultShippingAddressId, opt => opt.MapFrom(src => src.GetIntegerValue(KenticoUserProvider.CustomerDefaultShippingAddresIDFieldName, 0)))
-                .AfterMap((src, dest) => dest.PreferredLanguage = src.CustomerUser?.PreferredCultureCode ?? string.Empty);
+                .AfterMap((src, dest) => dest.PreferredLanguage = src.CustomerUser?.PreferredCultureCode ?? string.Empty)
+                .ReverseMap();
+
             CreateMap<CarrierInfo, DeliveryCarrier>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarrierID))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.CarrierDisplayName))

@@ -1,5 +1,4 @@
-﻿using CMS.Membership;
-using Kadena.Models;
+﻿using Kadena.Models;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -16,6 +15,10 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void UnsetDefaultShippingAddress();
         bool UserIsInCurrentSite(int userId);
         User GetUserByUserId(int userId);
-
+        int CreateCustomer(Customer customer);
+        void UpdateCustomer(Customer customer);
+        int CreateUser(User user);
+        void UpdateUser(User user);
+        void LinkCustomerToUser(int customerId, int userId);
     }
 }
