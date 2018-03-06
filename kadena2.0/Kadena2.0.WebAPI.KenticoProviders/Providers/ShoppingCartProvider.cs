@@ -481,32 +481,7 @@ namespace Kadena.WebAPI.KenticoProviders
             var shoppingCart = GetShoppingCart(shoppingCartId);
             ShoppingCartInfoProvider.DeleteShoppingCartInfo(shoppingCart);
         }
-
-        public void SaveShippingAddress(DeliveryAddress address)
-        {
-            var customer = ECommerceContext.CurrentCustomer;
-            var info = new AddressInfo
-            {
-                AddressID = address.Id,
-                AddressLine1 = address.Address1,
-                AddressLine2 = address.Address2,
-                AddressCity = address.City,
-                AddressStateID = address.State.Id,
-                AddressCountryID = address.Country.Id,
-                AddressZip = address.Zip,
-                AddressCustomerID = customer.CustomerID,
-                AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}",
-                AddressPhone = address.Phone
-            };
-            info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
-            info.SetValue("AddressType", AddressType.Shipping.Code);
-            info.SetValue("CompanyName", address.CustomerName);
-            info.SetValue("Email", address.Email);
-
-            AddressInfoProvider.SetAddressInfo(info);
-            address.Id = info.AddressID;
-        }
-
+ 
         public double GetCurrentCartTotalItemsPrice()
         {
             return ECommerceContext.CurrentShoppingCart.TotalItemsPrice;
