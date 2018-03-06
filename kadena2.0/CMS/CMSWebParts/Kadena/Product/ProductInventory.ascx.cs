@@ -124,52 +124,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             SetValue("PosSearchPlaceholder", value);
         }
     }
-    /// <summary>
-    /// SKUID of the product adding to cart
-    /// </summary>
-    public int ProductSKUID { get; set; }
-    /// <summary>
-    /// Campaign id of the product if it has
-    /// </summary>
-    public int ProductCampaignID { get; set; }
-    /// <summary>
-    /// Programm id of the product if it has
-    /// </summary>
-    public int ProductProgramID { get; set; }
-    /// <summary>
-    /// Product Shipping id of the product if it product type is pre-buy
-    /// </summary>
-    public int ProductShippingID { get; set; }
-    /// <summary>
-    /// Loads the addressid column heading
-    /// </summary>
-    public string AddressIDText
-    {
-        get
-        {
-            return ValidationHelper.GetString(ResHelper.GetString("KDA.ShoppingCart.StoreID"), string.Empty);
-        }
-    }
-    /// <summary>
-    /// Loads the AddressPersonalName column heading
-    /// </summary>
-    public string AddressPersonalNameText
-    {
-        get
-        {
-            return ValidationHelper.GetString(ResHelper.GetString("KDA.ShoppingCart.CustomerName"), string.Empty);
-        }
-    }
-    /// <summary>
-    /// Loads the CartCloseText button text
-    /// </summary>
-    public string CartCloseText
-    {
-        get
-        {
-            return ValidationHelper.GetString(ResHelper.GetString("KDA.ShoppingCart.DiscardChanges"), string.Empty);
-        }
-    }
 
     /// <summary>
     /// Checks whether the start an dend dates of campaign are in range
@@ -211,6 +165,17 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
 
     #region "Methods"
 
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if(!IsPostBack)
+        {
+            BindPrograms();
+            BindCategories();
+            BindBrands();
+            BindData();
+        }
+    }
+
     /// <summary>
     /// Content loaded event handler.
     /// </summary>
@@ -231,16 +196,9 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         }
         else
         {
-            if (!IsPostBack)
-            {
-                BindUnipagerTransformations();
-                divNoRecords.Visible = false;
-                txtPos.Attributes.Add("placeholder", PosSearchPlaceholder);
-                BindPrograms();
-                BindCategories();
-                BindBrands();
-                BindData();
-            }
+            BindUnipagerTransformations();
+            divNoRecords.Visible = false;
+            txtPos.Attributes.Add("placeholder", PosSearchPlaceholder);
         }
     }
 
@@ -252,7 +210,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         unipager.NextPageTemplate = TransformationHelper.LoadTransformation(unipager, "KDA.Transformations.General-NextPage");
         unipager.PreviousGroupTemplate = TransformationHelper.LoadTransformation(unipager, "CMS.PagerTransformations.General-PreviousGroup");
         unipager.NextGroupTemplate = TransformationHelper.LoadTransformation(unipager, "CMS.PagerTransformations.General-NextGroup");
-        unipager.PageNumbersSeparatorTemplate= TransformationHelper.LoadTransformation(unipager, "CMS.PagerTransformations.General-PageSeparator");
+        unipager.PageNumbersSeparatorTemplate = TransformationHelper.LoadTransformation(unipager, "CMS.PagerTransformations.General-PageSeparator");
     }
 
     /// <summary>
@@ -534,6 +492,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         }
     }
 
+    private void SetFilter()
+    {
+        BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtPos.Text, string.Empty), ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)));
+    }
+
     /// <summary>
     /// Filter products by By selected program
     /// </summary>
@@ -541,7 +504,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="e"></param>
     protected void ddlProgram_SelectedIndexChanged(object sender, EventArgs e)
     {
-        BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtPos.Text, string.Empty), ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)));
+        SetFilter();
     }
 
     /// <summary>
@@ -551,7 +514,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="e"></param>
     protected void ddlCategory_SelectedIndexChanged(object sender, EventArgs e)
     {
-        BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtPos.Text, string.Empty), ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)));
+        SetFilter();
     }
 
     /// <summary>
@@ -561,7 +524,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="e"></param>
     protected void ddlBrand_SelectedIndexChanged(object sender, EventArgs e)
     {
-        BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtPos.Text, string.Empty), ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)));
+        SetFilter();
     }
 
     /// <summary>
@@ -571,7 +534,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="e"></param>
     protected void txtPos_TextChanged(object sender, EventArgs e)
     {
-        BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtPos.Text, string.Empty));
+        SetFilter();
     }
 
     public string GetDemandCount(int SKUID)
@@ -580,6 +543,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     }
 
     #endregion "Methods"
+
+    protected void unipager_OnPageChanged(object sender, int pageNumber)
+    {
+        SetFilter();
+    }
 }
 
 public enum ProductsType
