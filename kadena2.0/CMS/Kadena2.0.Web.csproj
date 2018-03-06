@@ -931,6 +931,13 @@
     <Compile Include="CMSWebParts\Kadena\Cart\CartCheckout.ascx.designer.cs">
       <DependentUpon>CartCheckout.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\CartDistributorList.ascx.cs">
+      <DependentUpon>CartDistributorList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Cart\CartDistributorList.ascx.designer.cs">
+      <DependentUpon>CartDistributorList.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx.cs">
       <DependentUpon>DistributorCartDetails.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1466,6 +1473,7 @@
     <Content Include="CMSWebParts\Kadena\Campaign\CampaignList.ascx" />
     <Content Include="CMSWebParts\Kadena\Campaign\CreateCampaign.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\CartCheckout.ascx" />
+    <Content Include="CMSWebParts\Kadena\Cart\CartDistributorList.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\DistributorCartDetails.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\FailedOrdersCart.ascx" />
     <Content Include="CMSWebParts\Kadena\Cart\FailedOrdersCheckout.ascx" />

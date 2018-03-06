@@ -1,14 +1,12 @@
 using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
 using CMS.DataEngine;
-using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.KDA;
+using CMS.DocumentEngine.Web.UI;
 using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
-using CMS.MediaLibrary;
 using CMS.PortalEngine.Web.UI;
-using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.Container.Default;
@@ -235,6 +233,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         {
             if (!IsPostBack)
             {
+                BindUnipagerTransformations();
                 divNoRecords.Visible = false;
                 txtPos.Attributes.Add("placeholder", PosSearchPlaceholder);
                 BindPrograms();
@@ -245,6 +244,17 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         }
     }
 
+    private void BindUnipagerTransformations()
+    {
+        unipager.PageNumbersTemplate = TransformationHelper.LoadTransformation(unipager, "KDA.Transformations.General-Pages");
+        unipager.CurrentPageTemplate = TransformationHelper.LoadTransformation(unipager, "KDA.Transformations.General-CurrentPage");
+        unipager.PreviousPageTemplate = TransformationHelper.LoadTransformation(unipager, "KDA.Transformations.General-PreviousPage");
+        unipager.NextPageTemplate = TransformationHelper.LoadTransformation(unipager, "KDA.Transformations.General-NextPage");
+        unipager.PreviousGroupTemplate = TransformationHelper.LoadTransformation(unipager, "CMS.PagerTransformations.General-PreviousGroup");
+        unipager.NextGroupTemplate = TransformationHelper.LoadTransformation(unipager, "CMS.PagerTransformations.General-NextGroup");
+        unipager.PageNumbersSeparatorTemplate= TransformationHelper.LoadTransformation(unipager, "CMS.PagerTransformations.General-PageSeparator");
+    }
+
     /// <summary>
     /// Reloads the control data.
     /// </summary>
@@ -252,42 +262,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         base.ReloadData();
         SetupControl();
-    }
-
-    /// <summary>
-    /// Get product Image by Image path
-    /// </summary>
-    /// <param name="imagepath"></param>
-    /// <returns></returns>
-    public string GetProductImage(object imagepath)
-    {
-        string returnValue = string.Empty;
-        try
-        {
-            if (ProductType == (int)ProductsType.PreBuy)
-            {
-                string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
-                folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
-                if (imagepath != null && folderName != null)
-                {
-                    returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
-                }
-            }
-            else
-            {
-                string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_InventoryProductImageFolderName");
-                folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "InventoryProducts";
-                if (imagepath != null && folderName != null)
-                {
-                    returnValue = MediaFileURLProvider.GetMediaFileAbsoluteUrl(CurrentSiteName, folderName, ValidationHelper.GetString(imagepath, string.Empty));
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("Get Product Image", "GetProductImage", ex, CurrentSite.SiteID, ex.Message);
-        }
-        return string.IsNullOrEmpty(returnValue) ? SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage") : returnValue;
     }
 
     /// <summary>
@@ -447,6 +421,8 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                           .ToList();
                     rptProductLists.DataSource = productAndSKUDetails;
                     rptProductLists.DataBind();
+                    rptProductLists.UniPagerControl = unipager;
+                    unipager.PagedControl = rptProductLists;
                 }
                 else
                 {
@@ -598,502 +574,9 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtPos.Text, string.Empty));
     }
 
-    /// <summary>
-    /// Adds items to the cart
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void lnkAddToCart_Command(object sender, CommandEventArgs e)
+    public string GetDemandCount(int SKUID)
     {
-        try
-        {
-            ProductSKUID = ValidationHelper.GetInteger(e.CommandArgument, default(int));
-            hdnClickSKU.Value = ProductSKUID.ToString();
-            SKUInfo product = SKUInfoProvider.GetSKUInfo(ProductSKUID);
-            if (product != null && ProductType == (int)ProductsType.GeneralInventory && (string.IsNullOrWhiteSpace(product.SKUNumber) || product.SKUNumber.Equals("00000")))
-            {
-                Response.Cookies["status"].Value = QueryStringStatus.InvalidProduct;
-                Response.Cookies["status"].HttpOnly = false;
-                return;
-            }
-            dialog_Add_To_Cart.Attributes.Add("class", "dialog active");
-            btnClose.InnerText = CartCloseText;
-            lblPopUpHeader.Text = ResHelper.GetString("KDA.AddToCart.Popup.HeaderText");
-            var hasBusinessUnit = CheckPersonHasBusinessUnit();
-            if (!DataHelper.DataSourceIsEmpty(product))
-            {
-                switch (ProductType)
-                {
-                    case (int)ProductsType.GeneralInventory:
-                        BindGeneralInventory(product, hasBusinessUnit);
-                        break;
-                    case (int)ProductsType.PreBuy:
-                        BindPreBuy(product, hasBusinessUnit);
-                        break;
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("Add items to cart", "lnkAddToCart_Click()", ex, CurrentSite.SiteID, ex.Message);
-        }
-    }
-    /// <summary>
-    /// Binds general inventory data to popup
-    /// </summary>
-    /// <param name="product"></param>
-    /// <param name="hasBusinessUnit"></param>
-    private void BindGeneralInventory(SKUInfo product, bool hasBusinessUnit)
-    {
-        try
-        {
-            if (product.SKUAvailableItems > 0)
-            {
-                lblProductName.Text = product.SKUName;
-                lblAvailbleItems.Text = $"{product.SKUAvailableItems} {ResHelper.GetString("Kadena.AddToCart.StockAvilable")}";
-                lblAvailbleItems.Visible = true;
-                BindPopupGridData(hasBusinessUnit);
-            }
-            else
-            {
-                lblErrorMsg.Visible = true;
-                llbtnAddToCart.Visible = false;
-                lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.NoStockAvailableError");
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "BindGeneralInventory()", ex);
-        }
-    }
-    /// <summary>
-    /// Binds prebuy data to  popup
-    /// </summary>
-    /// <param name="product"></param>
-    /// <param name="hasBusinessUnit"></param>
-    private void BindPreBuy(SKUInfo product, bool hasBusinessUnit)
-    {
-        try
-        {
-            lblProductName.Text = product?.SKUName;
-            lblAvailbleItems.Visible = false;
-            BindPopupGridData(hasBusinessUnit);
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "BindPreBuy()", ex);
-        }
-    }
-    /// <summary>
-    /// showing pop data based on assiged business units
-    /// </summary>
-    /// <param name="hasBusinessUnit"></param>
-    private void BindPopupGridData(bool hasBusinessUnit)
-    {
-        try
-        {
-            if (hasBusinessUnit)
-            {
-                lblErrorMsg.Visible = false;
-                gvCustomersCart.Visible = true;
-                llbtnAddToCart.Visible = true;
-                BindCustomersList(ProductSKUID);
-                llbtnAddToCart.CommandArgument = ProductSKUID.ToString();
-            }
-            else
-            {
-                llbtnAddToCart.Visible = false;
-                lblErrorMsg.Visible = true;
-                lblAvailbleItems.Visible = false;
-                lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.BusinessUnitError");
-                gvCustomersCart.Visible = false;
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "BindPopupGridData()", ex);
-        }
-    }
-    /// <summary>
-    /// Get all Cusromers / Distributers list based on product ID
-    /// </summary>
-    /// <param name="productID">Producct skuid</param>
-    private void BindCustomersList(int productID)
-    {
-        try
-        {
-            List<AddressData> myAddressList = GetMyAddressBookList();
-            if (myAddressList.Count > 0)
-            {
-                var shoppingCarts = DIContainer.Resolve<IShoppingCartProvider>();
-                var whereCondition = new WhereCondition().WhereIn("ShoppingCartDistributorID", myAddressList.Select(g => g.AddressID).ToList())
-                                                                .WhereEquals("ShoppingCartInventoryType", ProductType);
-                if (ProductType == (int)ProductsType.PreBuy && OpenCampaign != null)
-                {
-                    whereCondition = whereCondition.WhereEquals("ShoppingCartCampaignID", OpenCampaign.CampaignID);
-                }
-                List<int> shoppingCartIDs = shoppingCarts.GetShoppingCartIDs(whereCondition);
-                List<ShoppingCartItemInfo> cartItems = shoppingCarts.GetShoppingCartItemsByCartIDs(shoppingCartIDs);
-                gvCustomersCart.DataSource = myAddressList
-                    .Distinct()
-                    .Select(g =>
-                    {
-                        var currentCartItems = cartItems
-                            .Where(k => k.GetValue("CartItemDistributorID", default(int)) == g.AddressID)
-                            .ToList();
-                        var cartData = currentCartItems.FirstOrDefault();
-                        var cartItem = currentCartItems.Where(x => x.SKUID == productID).FirstOrDefault();
-                        if (cartItem != null)
-                        {
-                            return new
-                            {
-                                g.AddressID,
-                                g.AddressPersonalName,
-                                ShoppingCartID = cartItem?.ShoppingCartID ?? default(int),
-                                SKUID = cartItem?.SKUID ?? default(int),
-                                SKUUnits = cartItem?.CartItemUnits ?? default(int)
-                            };
-                        }
-                        else
-                        {
-                            return new
-                            {
-                                g.AddressID,
-                                g.AddressPersonalName,
-                                ShoppingCartID = cartData?.ShoppingCartID ?? default(int),
-                                SKUID = default(int),
-                                SKUUnits = default(int)
-                            };
-                        }
-
-                    })
-                    .ToList();
-                gvCustomersCart.Columns[1].HeaderText = AddressIDText;
-                gvCustomersCart.Columns[2].HeaderText = AddressPersonalNameText;
-                gvCustomersCart.DataBind();
-            }
-            else
-            {
-                lblError.Text = ResHelper.GetString("Kadena.AddToCart.DistributorError");
-                lblError.Visible = true;
-                llbtnAddToCart.Visible = false;
-                btnClose.InnerText = ResHelper.GetString("KDA.ShoppingCart.Close");
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "BindCustomersList()", ex);
-        }
-    }
-    /// <summary>
-    /// Gets the distributors created by current user
-    /// </summary>
-    /// <returns></returns>
-    private List<AddressData> GetMyAddressBookList()
-    {
-        List<AddressData> myAddressList = new List<AddressData>();
-        int currentCustomerId = DIContainer.Resolve<IKenticoCustomerProvider>().GetCustomerIDByUserID(CurrentUser.UserID);
-        if (currentCustomerId != default(int))
-        {
-            myAddressList = DIContainer.Resolve<IKenticoAddressBookProvider>().GetAddressesList(currentCustomerId);
-        }
-        return myAddressList;
-    }
-    /// <summary>
-    /// refreshes the page on buuton close
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void btnClose_ServerClick(object sender, EventArgs e)
-    {
-        Response.Redirect(Request.RawUrl, false);
-    }
-    /// <summary>
-    /// Add to
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void btmAddItemsToCart_Click(object sender, EventArgs e)
-    {
-        try
-        {
-            lblErrorMsg.Visible = false;
-            var productProvider = DIContainer.Resolve<IKenticoProductsProvider>();
-            ProductSKUID = ValidationHelper.GetInteger(hdnClickSKU.Value, default(int));
-            SKUInfo product = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", ProductSKUID).WhereNull("SKUOptionCategoryID").FirstObject;
-            var campProduct = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", product?.SKUID).Columns("CampaignsProductID,EstimatedPrice").FirstOrDefault();
-            var skuPrice = default(double);
-            if (ProductType == (int)ProductsType.GeneralInventory)
-            {
-                skuPrice = 0;
-            }
-            else
-            {
-                skuPrice = campProduct.EstimatedPrice;
-            }
-
-            var allocatedQuantityItem = campProduct != null ? productProvider.GetAllocatedProductQuantityForUser(campProduct.CampaignsProductID, CurrentUser.UserID) : null;
-            var allocatedQuantity = allocatedQuantityItem != null ? allocatedQuantityItem.GetValue<int>("Quantity", default(int)) : default(int);
-            bool productHasAllocation = false;
-            if (ProductType == (int)ProductsType.GeneralInventory)
-            {
-                productHasAllocation = campProduct != null ? productProvider.IsProductHasAllocation(campProduct.CampaignsProductID) : false;
-            }
-            var itemsPlaced = default(int);
-            foreach (GridViewRow row in gvCustomersCart.Rows)
-            {
-                if (row.RowType == DataControlRowType.DataRow && !DataHelper.DataSourceIsEmpty(product))
-                {
-                    int customerAddressID = Convert.ToInt32(row.Cells[0].Text);
-                    TextBox txtQty = (row.Cells[2].FindControl("txtQuanityOrdering") as TextBox);
-                    var quantityPlacing = ValidationHelper.GetInteger(txtQty.Text, default(int));
-                    var customerShoppingCartID = ValidationHelper.GetInteger(row.Cells[3].Text, default(int));
-                    if (ProductType == (int)ProductsType.GeneralInventory)
-                    {
-                        itemsPlaced += quantityPlacing;
-                        if (itemsPlaced > product.SKUAvailableItems)
-                        {
-                            lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.StockError");
-                            lblErrorMsg.Visible = true;
-                        }
-                        else if (itemsPlaced > allocatedQuantity && productHasAllocation)
-                        {
-                            lblErrorMsg.Text = ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError");
-                            lblErrorMsg.Visible = true;
-                        }
-                        else
-                        {
-                            CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID, skuPrice);
-                        }
-                    }
-                    else
-                    {
-                        CartProcessOperations(customerShoppingCartID, quantityPlacing, product, customerAddressID, skuPrice);
-                    }
-                }
-            }
-            btnClose.InnerText = ResHelper.GetString("KDA.ShoppingCart.Close");
-            lblAvailbleItems.Visible = false;
-            if (!lblErrorMsg.Visible)
-            {
-                lblSuccessMsg.Text = ResHelper.GetString("Kadena.AddToCart.SuccessfullyAdded");
-                lblSuccessMsg.Visible = true;
-                gvCustomersCart.Visible = false;
-                llbtnAddToCart.Visible = false;
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "btmAddItemsToCart_Click()", ex);
-        }
-    }
-    /// <summary>
-    /// Cart operations based on the values 
-    /// </summary>
-    /// <param name="cartID">shoppingcart id</param>
-    /// <param name="quantity">units placing</param>
-    /// <param name="productInfo">skuinfo object</param>
-    /// <param name="addressID">distributor addressid</param>
-    private void CartProcessOperations(int cartID, int quantity, SKUInfo productInfo, int addressID, double skuPrice)
-    {
-        try
-        {
-            if (!DataHelper.DataSourceIsEmpty(productInfo) && addressID != default(int))
-            {
-                GetPrebuyData(productInfo.SKUID);
-                if (cartID == default(int) && quantity > 0)
-                {
-                    CreateShoppingCartByCustomer(productInfo, addressID, quantity, skuPrice);
-                    BindCustomersList(ProductSKUID);
-                }
-                else if (cartID > 0 && quantity > 0)
-                {
-                    Updatingtheunitcountofcartitem(productInfo, cartID, quantity, addressID, skuPrice);
-                    BindCustomersList(ProductSKUID);
-                }
-                else if (cartID > 0 && quantity <= 0)
-                {
-                    RemovingProductFromShoppingCart(productInfo, cartID);
-                    BindCustomersList(ProductSKUID);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "CartProcess()", ex);
-        }
-    }
-    /// <summary>
-    /// Updating the unit count of shopping cart Item
-    /// </summary>
-    private void Updatingtheunitcountofcartitem(SKUInfo product, int shoppinCartID, int unitCount, int customerAddressID, double skuPrice)
-    {
-        try
-        {
-            var customerAddress = AddressInfoProvider.GetAddressInfo(customerAddressID);
-            if (!DataHelper.DataSourceIsEmpty(product))
-            {
-                ShoppingCartItemInfo item = null;
-                ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCartInfo(shoppinCartID);
-                cart.User = CurrentUser;
-                cart.ShoppingCartShippingAddress = customerAddress;
-                if (cart.ShoppingCartCurrencyID <= 0)
-                {
-                    cart.ShoppingCartCurrencyID = CurrencyInfoProvider.GetMainCurrency(CurrentSite.SiteID).CurrencyID;
-                    cart.Update();
-                }
-                var campaingnID = ValidationHelper.GetInteger(cart.GetValue("ShoppingCartCampaignID"), default(int));
-                var programID = ValidationHelper.GetInteger(cart.GetValue("ShoppingCartProgramID"), default(int));
-                item = cart.CartItems.Where(g => g.SKUID == product.SKUID).FirstOrDefault();
-                if (!DataHelper.DataSourceIsEmpty(item))
-                {
-                    item.CartItemPrice = skuPrice;
-                    ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, unitCount);
-                    cart.InvalidateCalculations();
-                }
-                else
-                {
-                    ShoppingCartItemParameters parameters = new ShoppingCartItemParameters(product.SKUID, unitCount);
-                    parameters.CustomParameters.Add("CartItemCustomerID", customerAddressID);
-                    ShoppingCartItemInfo cartItem = cart.SetShoppingCartItem(parameters);
-                    cartItem.SetValue("CartItemPrice", skuPrice);
-                    cartItem.SetValue("CartItemDistributorID", customerAddressID);
-                    cartItem.SetValue("CartItemCampaignID", cartItem.SetValue("CartItemCampaignID", campaingnID));
-                    cartItem.SetValue("CartItemProgramID", programID);
-                    ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "Updatingtheunitcountofcartitem()", ex);
-        }
-    }
-    /// <summary>
-    /// Removing Shopping Cart and cart items by cart id
-    /// </summary>
-    /// <param name="shoppingCartID"></param>
-    private void RemovingProductFromShoppingCart(SKUInfo product, int shoppingCartID)
-    {
-        try
-        {
-            if (!DataHelper.DataSourceIsEmpty(product))
-            {
-                ShoppingCartItemInfo item = null;
-                ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCartInfo(shoppingCartID);
-                cart.User = CurrentUser;
-                item = cart.CartItems.Where(g => g.SKUID == product.SKUID).FirstOrDefault();
-                if (!DataHelper.DataSourceIsEmpty(item))
-                {
-                    ShoppingCartInfoProvider.RemoveShoppingCartItem(cart, item.CartItemID);
-                    ShoppingCartItemInfoProvider.DeleteShoppingCartItemInfo(item);
-                    if (cart.CartItems.Count == 0)
-                    {
-                        ShoppingCartInfoProvider.DeleteShoppingCartInfo(shoppingCartID);
-                    }
-                    cart.InvalidateCalculations();
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "RemovingProductFromShoppingCart()", ex);
-        }
-    }
-    /// <summary>
-    /// Create Shopping cart with item by customer
-    /// </summary>
-    /// <param name="customerAddressID"></param>
-    /// <param name="txtQty"></param>
-    private void CreateShoppingCartByCustomer(SKUInfo product, int customerAddressID, int productQty, double skuPrice)
-    {
-        try
-        {
-            var customerAddress = AddressInfoProvider.GetAddressInfo(customerAddressID);
-            if (!DataHelper.DataSourceIsEmpty(product))
-            {
-                ShoppingCartInfo cart = new ShoppingCartInfo();
-                cart.ShoppingCartSiteID = CurrentSite.SiteID;
-                cart.ShoppingCartCustomerID = customerAddressID;
-                cart.ShoppingCartCurrencyID = CurrencyInfoProvider.GetMainCurrency(CurrentSite.SiteID).CurrencyID;
-                cart.SetValue("ShoppingCartCampaignID", ProductCampaignID);
-                cart.SetValue("ShoppingCartProgramID", ProductProgramID);
-                cart.SetValue("ShoppingCartDistributorID", customerAddressID);
-                cart.SetValue("ShoppingCartInventoryType", ProductType);
-                cart.User = CurrentUser;
-                cart.ShoppingCartShippingAddress = customerAddress;
-                cart.ShoppingCartShippingOptionID = ProductShippingID;
-                ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
-                ShoppingCartItemParameters parameters = new ShoppingCartItemParameters(product.SKUID, productQty);
-                parameters.CustomParameters.Add("CartItemCustomerID", customerAddressID);
-                ShoppingCartItemInfo cartItem = cart.SetShoppingCartItem(parameters);
-                cartItem.SetValue("CartItemPrice", skuPrice);
-                cartItem.SetValue("CartItemDistributorID", customerAddressID);
-                cartItem.SetValue("CartItemCampaignID", ProductCampaignID);
-                cartItem.SetValue("CartItemProgramID", ProductProgramID);
-                ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
-                cart.InvalidateCalculations();
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "CreateShoppingCartByCustomer()", ex);
-        }
-    }
-    /// <summary>
-    /// Checks whether the current user has mapped to any business unit
-    /// </summary>
-    /// <returns>Boolean Value</returns>
-    private bool CheckPersonHasBusinessUnit()
-    {
-        var result = default(bool);
-        try
-        {
-            var personBusinessUnits = CustomTableItemProvider.GetItems<UserBusinessUnitsItem>().WhereEquals("UserID", CurrentUser.UserID).TopN(2).Result.Tables[0];
-            if (!DataHelper.DataSourceIsEmpty(personBusinessUnits))
-            {
-                result = personBusinessUnits.Rows.Count > 0;
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "RemovingProductFromShoppingCart()", ex);
-        }
-        return result;
-    }
-
-    /// <summary>
-    /// Gets the campaign and programid of the product
-    /// </summary>
-    /// <param name="skuID"></param>
-    private void GetPrebuyData(int skuID)
-    {
-        try
-        {
-            var productDocument = DocumentHelper.GetDocuments("KDA.CampaignsProduct").WhereEquals("NodeSKUID", skuID).Columns("NodeSKUID,ProgramID").FirstOrDefault();
-            if (!DataHelper.DataSourceIsEmpty(productDocument))
-            {
-                ProductProgramID = ValidationHelper.GetInteger(productDocument?.GetValue("ProgramID"), default(int));
-                ShippingOptionInfo defaultShippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(DefaultShipping, CurrentSiteName);
-                ProductShippingID = defaultShippingOption != null ? defaultShippingOption.ShippingOptionID : 0;
-                var program = ProgramProvider.GetPrograms()
-                                       .WhereEquals("ProgramID", ProductProgramID)
-                                       .FirstOrDefault();
-                if (!DataHelper.DataSourceIsEmpty(program))
-                {
-                    ProductCampaignID = program.CampaignID;
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("CustomerCartOperations.ascx.cs", "GetPrebuyData()", ex);
-        }
-    }
-
-    public int GetDemandCount(int SKUID)
-    {
-        return DIContainer.Resolve<IShoppingCartProvider>().GetPreBuyDemandCount(SKUID);
+        return string.Format("{0:n0}", DIContainer.Resolve<IShoppingCartProvider>().GetPreBuyDemandCount(SKUID));
     }
 
     #endregion "Methods"

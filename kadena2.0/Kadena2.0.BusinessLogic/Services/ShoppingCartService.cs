@@ -11,6 +11,7 @@ using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.CreditCard;
 using Kadena2.MicroserviceClients.Contracts;
 using System.Collections.Generic;
+using Kadena.Models.AddToCart;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -27,6 +28,9 @@ namespace Kadena.BusinessLogic.Services
         private readonly IShoppingCartProvider shoppingCart;
         private readonly ICheckoutPageFactory checkoutfactory;
         private readonly IKenticoLogger log;
+        private readonly IKenticoAddressBookProvider addressBookProvider;
+        private readonly IKenticoProductsProvider productsProvider;
+        private readonly IKenticoBusinessUnitsProvider businessUnitsProvider;
 
         public ShoppingCartService(IKenticoSiteProvider kenticoSite,
                                    IKenticoLocalizationProvider localization,
@@ -38,7 +42,10 @@ namespace Kadena.BusinessLogic.Services
                                    IUserDataServiceClient userDataClient,
                                    IShoppingCartProvider shoppingCart,
                                    ICheckoutPageFactory checkoutfactory,
-                                   IKenticoLogger log)
+                                   IKenticoLogger log,
+                                   IKenticoAddressBookProvider addressBookProvider,
+                                   IKenticoProductsProvider productsProvider,
+                                   IKenticoBusinessUnitsProvider businessUnitsProvider)
         {
             if (kenticoSite == null)
             {
@@ -84,6 +91,18 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(log));
             }
+            if (addressBookProvider == null)
+            {
+                throw new ArgumentNullException(nameof(addressBookProvider));
+            }
+            if (productsProvider == null)
+            {
+                throw new ArgumentNullException(nameof(productsProvider));
+            }
+            if (businessUnitsProvider == null)
+            {
+                throw new ArgumentNullException(nameof(businessUnitsProvider));
+            }
 
             this.kenticoSite = kenticoSite;
             this.localization = localization;
@@ -96,6 +115,9 @@ namespace Kadena.BusinessLogic.Services
             this.shoppingCart = shoppingCart;
             this.checkoutfactory = checkoutfactory;
             this.log = log;
+            this.addressBookProvider = addressBookProvider;
+            this.productsProvider = productsProvider;
+            this.businessUnitsProvider = businessUnitsProvider;
         }
 
         public async Task<CheckoutPage> GetCheckoutPage()
@@ -126,13 +148,13 @@ namespace Kadena.BusinessLogic.Services
         {
             var creditCardMethod = methods.Items.FirstOrDefault(pm => pm.ClassName == "KDA.PaymentMethods.CreditCard");
 
-            if ( creditCardMethod != null && resources.GetSettingsKey("KDA_CreditCard_EnableSaveCard").ToLower() == "true")
+            if (creditCardMethod != null && resources.GetSettingsKey("KDA_CreditCard_EnableSaveCard").ToLower() == "true")
             {
                 var storedCardsResult = await userDataClient.GetValidCardTokens(userId);
 
                 if (storedCardsResult.Success)
                 {
-                    creditCardMethod.Items = storedCardsResult.Payload.Select(c => 
+                    creditCardMethod.Items = storedCardsResult.Payload.Select(c =>
                         new StoredCard
                         {
                             Id = c.Id,
@@ -182,7 +204,7 @@ namespace Kadena.BusinessLogic.Services
             {
                 result.DeliveryMethods?.HidePrices();
             }
-            
+
             return result;
         }
 
@@ -418,6 +440,77 @@ namespace Kadena.BusinessLogic.Services
         public List<int> GetLoggedInUserCartData(int inventoryType, int userID, int campaignID = 0)
         {
             return shoppingCart.GetShoppingCartIDByInventoryType(inventoryType, userID, campaignID);
+        }
+
+        public DistributorCart GetCartDistributorData(int skuID, int inventoryType = 1)
+        {
+            int businessUnitsCount = businessUnitsProvider.GetUserBusinessUnits(kenticoUsers.GetCurrentUser().UserId)?.Count ?? 0;
+            if (businessUnitsCount == 0)
+            {
+                throw new Exception(resources.GetResourceString("Kadena.AddToCart.BusinessUnitError"));
+            }
+            if (inventoryType == 1 && !productsProvider.ProductHasValidSKUNumber(skuID))
+            {
+                throw new Exception(resources.GetResourceString("KDA.Cart.InvalidProduct"));
+            }
+            int availableQty = inventoryType == 1 ? productsProvider.GetSkuAvailableQty(skuID) : -1;
+            if (availableQty == 0)
+            {
+                throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));
+            }
+            int allocatedQty = inventoryType == 1 ? shoppingCart.GetAllocatedQuantity(skuID, kenticoUsers.GetCurrentUser().UserId) : -1;
+            if (allocatedQty == 0)
+            {
+                throw new Exception(resources.GetResourceString("KDA.Cart.Update.ProductNotAllocatedMessage"));
+            }
+            return new DistributorCart()
+            {
+                SKUID = skuID,
+                CartType = inventoryType,
+                AvailableQuantity = availableQty,
+                AllocatedQuantity = allocatedQty,
+                Items = GetDistributorCartItems(skuID, inventoryType)
+            };
+        }
+
+        private List<DistributorCartItem> GetDistributorCartItems(int skuID, int inventoryType = 1)
+        {
+            List<AddressData> distributors = addressBookProvider.GetAddressesListByUserID(kenticoUsers.GetCurrentUser().UserId, inventoryType);
+            return distributors.Select(x =>
+            {
+                return new DistributorCartItem()
+                {
+                    DistributorID = x.AddressID,
+                    ShoppingCartID = x.DistributorShoppingCartID,
+                    Quantity = shoppingCart.GetItemQuantity(skuID, x.DistributorShoppingCartID)
+                };
+            }).ToList();
+        }
+
+        public int UpdateDistributorCarts(DistributorCart cartDistributorData)
+        {
+            if (cartDistributorData == null || (cartDistributorData != null && cartDistributorData.Items.Count <= 0))
+            {
+                throw new Exception("Invalid request");
+            }
+            CampaignsProduct product = productsProvider.GetCampaignProduct(cartDistributorData.SKUID);
+            if (product == null)
+            {
+                throw new Exception("Invalid product");
+            }
+            cartDistributorData.Items.Where(i => i.ShoppingCartID.Equals(default(int)) && i.Quantity > 0)
+                                    ?.ToList().ForEach(x => CreateDistributorCart(x, product, cartDistributorData.CartType));
+            cartDistributorData.Items.Where(i => i.ShoppingCartID > 0 && i.Quantity > 0)
+                                    ?.ToList().ForEach(x => shoppingCart.UpdateDistributorCart(x, product, cartDistributorData.CartType));
+            cartDistributorData.Items.Where(i => i.ShoppingCartID > 0 && i.Quantity == 0)
+                                    ?.ToList().ForEach(x => shoppingCart.DeleteDistributorCartItem(x.ShoppingCartID, cartDistributorData.SKUID));
+            return shoppingCart.GetDistributorCartCount(kenticoUsers.GetCurrentUser().UserId, product.CampaignID, cartDistributorData.CartType);
+        }
+
+        private void CreateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int inventoryType = 1)
+        {
+            int cartID = shoppingCart.CreateDistributorCart(distributorCartItem, product, kenticoUsers.GetCurrentUser().UserId, inventoryType);
+            shoppingCart.AddDistributorCartItem(cartID, distributorCartItem, product, inventoryType);
         }
     }
 }
