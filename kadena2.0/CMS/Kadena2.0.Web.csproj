@@ -1274,6 +1274,13 @@
     <Compile Include="CMSWebParts\Kadena\Programs\ProgramFilter.ascx.designer.cs">
       <DependentUpon>ProgramFilter.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Search\KDASqlSearchBox.ascx.cs">
+      <DependentUpon>KDASqlSearchBox.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Search\KDASqlSearchBox.ascx.designer.cs">
+      <DependentUpon>KDASqlSearchBox.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\ShoppingCart\CustomerCartOperations.ascx.cs">
       <DependentUpon>CustomerCartOperations.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1510,6 +1517,7 @@
     <Content Include="CMSWebParts\Kadena\Product\SwapSKUNumberToCRN.ascx" />
     <Content Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx" />
     <Content Include="CMSWebParts\Kadena\Programs\ProgramFilter.ascx" />
+    <Content Include="CMSWebParts\Kadena\Search\KDASqlSearchBox.ascx" />
     <Content Include="CMSWebParts\Kadena\ShoppingCart\CustomerCartOperations.ascx" />
     <Content Include="CMSWebParts\Kadena\Viewers\Documents\ReletedDocumentsWithPermissions.ascx" />
     <Content Include="DeleteAddressWebService.asmx" />

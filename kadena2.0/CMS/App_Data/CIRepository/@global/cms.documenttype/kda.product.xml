@@ -21,6 +21,15 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="ProductImage" columnsize="400" columntype="text" guid="edb2ebf2-f383-4c87-a71c-11e34d78d244" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Product Image</fieldcaption>
+          <fielddescription>Assigned to product page (per language version)</fielddescription>
+        </properties>
+        <settings>
+          <controlname>MediaSelectionControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="ProductCustomerReferenceNumber" columnsize="50" columntype="text" guid="0b22585a-a199-40c2-bf33-6a653d549ae7" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Customer reference number</fieldcaption>
