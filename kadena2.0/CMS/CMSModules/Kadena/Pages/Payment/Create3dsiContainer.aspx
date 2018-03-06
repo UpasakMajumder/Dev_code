@@ -9,31 +9,48 @@
 <asp:Content ID="cntBody" ContentPlaceHolderID="plcContent" runat="Server">
 
     <div id="m_pM_pMP">
-			<div id="m_pM_lI" class="alert-dismissable alert-info alert" style="opacity: 1; position: absolute; max-width: 988px;">
-				<span class="alert-icon"><i class="icon-i-circle"></i><span class="sr-only">Info</span></span><div id="m_pM_lI_lbl" class="alert-label">This will call Credit Card Manager microservice to create customer container on 3DSi. The 'Customer code' parameter is set in Kadena Settings, in the section 'Credit card payment'</div>
-			<span class="alert-close"><i class="close icon-modal-close"></i><span" class="sr-only">Close</span"></span></div><div class="lblPlc m_pM_lI" style="height: 82px;"></div>
-		</div>
-
-    <div class="form-horizontal">
-        <div class="form-group">
-                
-            <div class="editing-form-label-cell">
-                <cms:LocalizedLabel ID="lblSite" runat="server" CssClass="control-label" EnableViewState="false" Text="Code" DisplayColon="true" />
+		<div id="m_pM_lI" class="alert-dismissable alert-info alert" style="opacity: 1; position: absolute; max-width: 988px;">
+            <span class="alert-icon">
+                <i class="icon-i-circle"></i>
+                <span class="sr-only">Info</span>
+            </span>
+            <div id="m_pM_lI_lbl" class="alert-label">
+                This will call Credit Card Manager microservice to create or update customer container on 3DSi. Parameters are set in Kadena Settings, in sections 'Credit card payment' and 'Delivery price sender address'
             </div>
-            <div class="editing-form-value-cell">
-                <asp:TextBox CssClass="form-control" runat="server" ID="tbCode" ReadOnly="true" />
-                <asp:Button runat="server" CssClass="btn btn-default" Text="Submit" ID="btnSubmit" OnClick="btnSubmit_Click" />
+        </div>
+        <div class="lblPlc m_pM_lI" style="height: 82px;"></div>
+    </div>
+	
+    
+    <div>
+        <div>
+
                 <div>
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"
-                    ControlToValidate="tbCode"
-                    ErrorMessage="Code is a required field."
-                    ForeColor="Red">
-                </asp:RequiredFieldValidator>
+                    <div style="font-weight: bold">Customer code (container name):</div>
+                    <div><asp:Literal runat="server" ID="ltlCode"/> </div>
                 </div>
-            </div>            
-        </div>        
+
+                <br />
+
+                <div>
+                    <div style="font-weight: bold">Create payload:</div>
+                    <div><asp:Literal runat="server" ID="ltlCreatePayload"/> </div>
+                    <div><asp:Button runat="server" CssClass="btn btn-default" Text="Create" ID="btnSubmit" OnClick="btnCreate_Click" /></div>
+                </div>
+                
+                <br />
+
+                <div>
+                    <div style="font-weight: bold">Update payload:</div>
+                    <div><asp:Literal runat="server" ID="ltlUpdatePayload"/> </div>
+                    <asp:Button runat="server" CssClass="btn btn-default" Text="Update" ID="Button1" OnClick="btnUpdate_Click" />
+                </div>
+
+        </div>            
     </div>
     
+    <br />
+
     <div>
         <cms:LocalizedLabel ID="LocalizedLabelResult" runat="server" CssClass="control-label" ForeColor="Black" EnableViewState="false" Text="" DisplayColon="false" />
     </div>
