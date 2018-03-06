@@ -35,9 +35,8 @@ class NewAddressDialog extends Component {
     };
   }
 
-  submit = () => {
+  submit = async () => {
     const { address } = this.state;
-    const { submit, closeDialog, saveAddress } = this.props;
 
     const invalids = [];
     const bodyData = this.getBodyData();
@@ -56,9 +55,9 @@ class NewAddressDialog extends Component {
 
     this.setState({ invalids });
     if (invalids.length) return;
-    this.state.saveAddress && saveAddress({ id: -1, ...address }, true);
-    submit(address);
-    closeDialog();
+    await this.props.saveAddress({ id: -1, ...address, temporary: !this.state.saveAddress }, true);
+    this.props.addNewAddress(); // get totals
+    this.props.closeDialog();
   };
 
   getValidationError = (field) => {
@@ -161,7 +160,7 @@ class NewAddressDialog extends Component {
 
   static propTypes = {
     saveAddress: PropTypes.func.isRequired,
-    submit: PropTypes.func.isRequired,
+    addNewAddress: PropTypes.func.isRequired,
     closeDialog: PropTypes.func.isRequired,
     userNotification: PropTypes.string,
     ui: PropTypes.shape({

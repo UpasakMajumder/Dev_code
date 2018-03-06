@@ -208,10 +208,10 @@ namespace Kadena.BusinessLogic.Services
             return result;
         }
 
-        public async Task<CheckoutPageDeliveryTotals> SetDeliveryAddress(DeliveryAddress deliveryAddress)
+        public int SaveTemporaryAddress(DeliveryAddress deliveryAddress)
         {
-            shoppingCart.SetShoppingCartAddress(deliveryAddress);
-            return await GetDeliveryAndTotals();
+            return shoppingCart.SetTemporaryShoppingCartAddress(deliveryAddress);
+            
         }
 
         private DeliveryCarriers GetDeliveryMethods(bool isShippingApplicable)
@@ -254,7 +254,10 @@ namespace Kadena.BusinessLogic.Services
             var totals = page.Totals;
             totals.Title = resources.GetResourceString("Kadena.Checkout.Totals.Title");
             var shoppingCartTotals = shoppingCart.GetShoppingCartTotals();
-            shoppingCartTotals.TotalTax = await taxCalculator.EstimateTotalTax(deliveryAddress);
+            if (deliveryAddress != null)
+            {
+                shoppingCartTotals.TotalTax = await taxCalculator.EstimateTotalTax(deliveryAddress);
+            }
             totals.Items = new Total[]
             {
                 new Total()

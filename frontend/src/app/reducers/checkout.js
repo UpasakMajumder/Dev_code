@@ -12,7 +12,8 @@ import {
   CHECKOUT_GET_TOTALS,
   CHECKOUT_PROCEED,
   CHECKOUT_CHANGE_DELIVERY,
-  ADD_NEW_ADDRESS
+  ADD_NEW_ADDRESS,
+  SAVE_NEW_ADDRESS
 } from 'app.consts';
 
 const defaultState = {
@@ -136,6 +137,10 @@ export default (state = defaultState, action) => {
         totals: payload.totals,
         deliveryMethods: payload.deliveryMethods
       },
+      checkedData: {
+        ...state.checkedData,
+        deliveryMethod: payload.checkedId
+      },
       isSending: false
     };
 
@@ -168,7 +173,20 @@ export default (state = defaultState, action) => {
       newAddress: payload,
       checkedData: {
         ...state.checkedData,
-        deliveryAddress: -1
+        deliveryAddress: payload.id
+      }
+    };
+
+  case SAVE_NEW_ADDRESS + SUCCESS:
+    return {
+      ...state,
+      ui: {
+        ...state.ui,
+        deliveryAddresses: payload.deliveryAddresses
+      },
+      checkedData: {
+        ...state.checkedData,
+        deliveryAddress: payload.checkedId
       }
     };
 

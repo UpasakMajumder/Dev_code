@@ -30,6 +30,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void SetShoppingCartAddress(int addressId);
 
         void SetShoppingCartAddress(DeliveryAddress address);
+        int SetTemporaryShoppingCartAddress(DeliveryAddress address);
 
         void SelectShipping(int shippingOptionsId);
 

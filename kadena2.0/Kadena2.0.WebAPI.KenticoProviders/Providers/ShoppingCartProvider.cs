@@ -19,7 +19,6 @@ using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data;
 using Kadena.Models.AddToCart;
 
 namespace Kadena.WebAPI.KenticoProviders
@@ -64,7 +63,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             if (productProvider == null)
             {
-                throw new ArgumentNullException(nameof(dynamicPrices));
+                throw new ArgumentNullException(nameof(productProvider));
             }
 
             this.resources = resources;
@@ -177,6 +176,17 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private void GetShippingPrice(DeliveryOption[] services)
         {
+            if (ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress == null)
+            {
+                foreach (var s in services.Where(s => !s.IsCustomerPrice))
+                {
+                    s.Disable();
+                }
+
+                logger.LogInfo("GetShippingPrice", "Info", "Current shopping cart has no shipping address, therefore cannot estimate shipping prices");
+                return;
+            }
+
             // this method's approach comes from origial kentico webpart (ShippingSeletion)
             int originalCartShippingId = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID;
 
@@ -240,21 +250,30 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public void SetShoppingCartAddress(DeliveryAddress address)
         {
-            if (address != null)
-            {
-                if (address.Id > 0)
-                {
-                    SetShoppingCartAddress(address.Id);
-                }
-                else
-                {
-                    var cart = ECommerceContext.CurrentShoppingCart;
+            var cart = ECommerceContext.CurrentShoppingCart;
+            var info = mapper.Map<AddressInfo>(address);
+            cart.ShoppingCartShippingAddress = info;
+            cart.SubmitChanges(true);
+        }
 
-                    var info = mapper.Map<AddressInfo>(address);
-                    cart.ShoppingCartShippingAddress = info;
-                    cart.SubmitChanges(true);
-                }
-            }
+        public int SetTemporaryShoppingCartAddress(DeliveryAddress address)
+        {
+            var customerId = ECommerceContext.CurrentCustomer.CustomerID;
+            var cart = ECommerceContext.CurrentShoppingCart;
+
+            cart.ShoppingCartShippingAddress = null;
+            DeleteTemporaryAddresses(customerId);
+
+            var info = mapper.Map<AddressInfo>(address);
+            info.AddressName = "TemporaryAddress";
+            info.AddressPersonalName = "TemporaryAddress";
+            info.AddressID = 0;
+            info.AddressCustomerID = customerId;
+
+            info.Insert();
+            cart.ShoppingCartShippingAddress = info;
+            cart.SubmitChanges(true);
+            return info.AddressID;
         }
 
         public void SelectShipping(int shippingOptionId)
@@ -827,6 +846,18 @@ namespace Kadena.WebAPI.KenticoProviders
                                          .OnSite(SiteContext.CurrentSiteID)
                                          .Where(x => x.SKUID.Equals(SKUID))
                                          .Sum(x => x.CartItemUnits);
+        }
+
+        public void DeleteTemporaryAddresses(int customerId)
+        {
+            const string tempName = "TemporaryAddress";
+
+            var addresses = AddressInfoProvider.GetAddresses(customerId)
+                .WhereEquals("AddressName", tempName)
+                .WhereEquals("AddressPersonalName", tempName)
+                .ToList();
+
+            addresses.ForEach(a => AddressInfoProvider.DeleteAddressInfo(a));
         }
 
         public int GetDistributorCartID(int distributorID, int inventoryType = 1)

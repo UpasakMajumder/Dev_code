@@ -126,6 +126,7 @@
         changeQuantityURL: PATH + 'checkout/change-quantity',
         removeProductURL: PATH + 'checkout/remove-producs',
         submitURL: PATH + 'checkout/submit',
+        saveAddressURL: PATH + 'checkout/add-new-address',
         submittableURL: '',
         addNewAddressURL: PATH + 'checkout/add-new-address',
         tAndC: {
