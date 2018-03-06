@@ -514,6 +514,10 @@
       <Project>{6B1835F6-5564-40D8-8AB8-63B6ADC56976}</Project>
       <Name>Kadena2.0.Helpers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Infrastructure\Kadena2.0.Infrastructure.csproj">
+      <Project>{21862471-4fce-4096-82cb-79b23fe63a22}</Project>
+      <Name>Kadena2.0.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj">
       <Project>{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}</Project>
       <Name>Kadena2.0.MicroserviceClients</Name>

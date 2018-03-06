@@ -1,6 +1,7 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.Order;
+using Kadena.Infrastructure.Contracts;
 using Kadena.Models;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
@@ -24,6 +25,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoUserProvider kenticoUserProvider;
         private readonly IKenticoDocumentProvider kenticoDocumentProvider;
         private readonly IKenticoOrderProvider kenticoOrderProvider;
+        private readonly IExcelConvert excelConvert;
         public const int DefaultCountOfOrdersPerPage = 20;
         public const int FirstPageNumber = 1;
 
@@ -63,7 +65,8 @@ namespace Kadena.BusinessLogic.Services.Orders
             IOrderViewClient orderViewClient,
             IKenticoUserProvider kenticoUserProvider,
             IKenticoDocumentProvider kenticoDocumentProvider,
-            IKenticoOrderProvider kenticoOrderProvider)
+            IKenticoOrderProvider kenticoOrderProvider,
+            IExcelConvert excelConvert)
         {
             this.kenticoResources = kenticoResources;
             this.kenticoSiteProvider = kenticoSiteProvider;
@@ -72,6 +75,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.kenticoUserProvider = kenticoUserProvider;
             this.kenticoDocumentProvider = kenticoDocumentProvider;
             this.kenticoOrderProvider = kenticoOrderProvider;
+            this.excelConvert = excelConvert;
         }
 
         public virtual Task<PagedData<OrderReport>> GetOrders(int page, OrderFilter filter)
@@ -178,7 +182,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             return GetOrdersExportForSite(currentSite, filter);
         }
 
-        public virtual Task<FileResult> GetOrdersExportForSite(string site, OrderFilter filter)
+        public virtual async Task<FileResult> GetOrdersExportForSite(string site, OrderFilter filter)
         {
             // todo: 
             // call the microservice client without paging
@@ -187,7 +191,27 @@ namespace Kadena.BusinessLogic.Services.Orders
             ValidateFilter(filter);
 
 
-            return null;
+            OrderFilter.SortFields sort;
+            var sortSpecified = filter.TryParseSort(out sort);
+            var sortProperty = sortSpecified ? sort.Property : null;
+            var sortDesc = sortSpecified ? sort.Direction == OrderFilter.SortDirection.DESC : false;
+
+            int? customerId = null;
+            int? page = null;
+            int? campaign = null;
+            string orderType = null;
+
+            var orders = await orderViewClient.GetOrders(site, customerId, page, OrdersPerPage, filter.FromDate, filter.ToDate, sortProperty, sortDesc, campaign, orderType);
+
+            var table = new Infrastructure.FileConversion.Table();
+            var fileData = excelConvert.Convert(table);
+
+            return new FileResult
+            {
+                Data = fileData,
+                Name = "export.xlsx",
+                Mime = ContentTypes.Xlsx
+            };
         }
 
         public string FormatCustomer(Customer customer)

@@ -2,6 +2,8 @@
 using Kadena.BusinessLogic.Services.Orders;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
+using Kadena.Infrastructure.Contracts;
+using Kadena.Infrastructure.FileConversion;
 using Kadena.Models;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
@@ -192,18 +194,25 @@ namespace Kadena.Tests.WebApi
         }
 
         [Fact]
-        public void GetOrdersForSite_ShouldValidateFilter()
+        public async Task GetOrdersForSite_ShouldValidateFilter()
         {
             var sut = new OrderReportServiceBuilder()
                 .BuildSpy<OrderReportService_ValidateFilterSpy>();
 
-            sut.GetOrdersForSite("test_site", OrderReportService.FirstPageNumber, new OrderFilter());
+            try
+            {
+                await sut.GetOrdersForSite("test_site", OrderReportService.FirstPageNumber, new OrderFilter());
+            }
+            catch(NullReferenceException)
+            {
+                // ignore missing implementation
+            }
 
             Assert.True(sut.ValidateFilterCalled);
         }
 
         [Fact]
-        public void GetOrdersForSite_ShouldPassArgumentsToMicroserviceClient()
+        public async Task GetOrdersForSite_ShouldPassArgumentsToMicroserviceClient()
         {
             var orderViewClient = new Mock<IOrderViewClient>();
             var sut = new OrderReportServiceBuilder()
@@ -218,7 +227,14 @@ namespace Kadena.Tests.WebApi
                 Sort = $"{OrderReportService.SortableByOrderDate}-{OrderFilter.SortDirection.DESC}"
             };
 
-            sut.GetOrdersForSite(currentSite, page, filter);
+            try
+            {
+                await sut.GetOrdersForSite(currentSite, page, filter);
+            }
+            catch (NullReferenceException)
+            {
+                // ignore missing implementation
+            }
 
             orderViewClient.Verify(ovc
                 => ovc.GetOrders(currentSite, null, page, sut.OrdersPerPage,
@@ -252,11 +268,7 @@ namespace Kadena.Tests.WebApi
                 }
             };
 
-            var orderViewClient = Mock.Of<IOrderViewClient>(
-                ovc => ovc.GetOrders(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>(), It.IsAny<int?>(), 
-                    It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<bool>(),
-                    It.IsAny<int?>(), It.IsAny<string>()) == Task.FromResult(input)
-            );
+            var orderViewClient = CreateOrderViewClientReturning(input);
 
             var sut = new OrderReportServiceBuilder()
                 .WithKenticoUserProvider(kenticoUserProvider)
@@ -430,14 +442,94 @@ namespace Kadena.Tests.WebApi
         [Fact]
         public async Task GetOrdersExportForSite_ShouldCreateExportFileResult()
         {
+            var dummyFileData = new byte[] { 1,2,3 };
+            var convert = Mock.Of<IExcelConvert>(ec =>
+                ec.Convert(It.IsAny<Table>()) == dummyFileData);
             var sut = new OrderReportServiceBuilder()
+                .WithExcelConvert(convert)
                 .Build();
 
             var result = await sut.GetOrdersExportForSite("test_site", new OrderFilter());
 
             Assert.Equal("export.xlsx", result.Name);
-            Assert.Equal(ContentTypes.Xlsx, result.Name);
-            Assert.Equal("export.xlsx", result.Name);
+            Assert.Equal(ContentTypes.Xlsx, result.Mime);
+            Assert.Equal(dummyFileData, result.Data);
+        }
+
+        [Fact]
+        public async Task GetOrdersExportForSite_ShouldFormatDataForExport()
+        {
+            // fake ovc response
+            var orders = new BaseResponseDto<OrderListDto>
+            {
+                Success = true,
+                Payload = new OrderListDto
+                {
+                    TotalCount = 1,
+                    Orders = CreateTestRecentOrders(ordersCount: 1, itemsPerOrderCount: 1)
+                }
+            };
+            var orderViewClient = CreateOrderViewClientReturning(orders);
+
+            var convert = new ExcelConvertFake();
+            var sut = new OrderReportServiceBuilder()
+                .WithOrderViewClient(orderViewClient)
+                .WithExcelConvert(convert)
+                .Build();
+
+            // expected table to be passed to excelconvert
+            var orderView = sut.
+            var expected = new Table
+            {
+                Rows = new[]
+                {
+                    new Kadena.Infrastructure.FileConversion.TableRow
+                    {
+                        Cells = new object[]
+                        {
+                            order.SiteName,
+                            order.Id,
+
+                        }
+                    }
+                }
+            };
+
+            // act
+            await sut.GetOrdersExportForSite("test_site", new OrderFilter());
+
+            // assert - compare rowcount and cell arrays of expected and actual
+            Assert.Collection(?, convert.TableToConvert);
+        }
+
+        [Fact]
+        public async Task GetOrdersExportForSite_ShouldPassArgumentsToMicroserviceClient()
+        {
+            var orderViewClient = new Mock<IOrderViewClient>();
+            var sut = new OrderReportServiceBuilder()
+                .WithOrderViewClient(orderViewClient.Object)
+                .Build();
+            var currentSite = "test_site";
+            var filter = new OrderFilter
+            {
+                FromDate = new DateTime(),
+                ToDate = new DateTime(),
+                Sort = $"{OrderReportService.SortableByOrderDate}-{OrderFilter.SortDirection.DESC}"
+            };
+
+            try
+            {
+                await sut.GetOrdersExportForSite(currentSite, filter);
+            }
+            catch (NullReferenceException)
+            {
+                // ignore missing implementation
+            }
+
+            orderViewClient.Verify(ovc
+                => ovc.GetOrders(currentSite, null, null, sut.OrdersPerPage,
+                    filter.FromDate, filter.ToDate, OrderReportService.SortableByOrderDate,
+                    true, null, null), Times.Once());
         }
 
         private RecentOrderDto[] CreateTestRecentOrders(int ordersCount, int itemsPerOrderCount)
@@ -548,12 +640,11 @@ namespace Kadena.Tests.WebApi
             public OrderService_GetOrdersForSiteSpy(
                 IKenticoResourceService kenticoResources, IKenticoSiteProvider kenticoSiteProvider, 
                 IDateTimeFormatter dateTimeFormatter, IOrderViewClient orderViewClient,
-                IKenticoUserProvider kenticoUserProvider,
-                IKenticoDocumentProvider kenticoDocumentProvider,
-                IKenticoOrderProvider kenticoOrderProvider)
+                IKenticoUserProvider kenticoUserProvider, IKenticoDocumentProvider kenticoDocumentProvider,
+                IKenticoOrderProvider kenticoOrderProvider, IExcelConvert excelConvert)
                 : base(kenticoResources, kenticoSiteProvider, dateTimeFormatter, 
                       orderViewClient, kenticoUserProvider, kenticoDocumentProvider,
-                      kenticoOrderProvider)
+                      kenticoOrderProvider, excelConvert)
             {
             }
 
@@ -576,12 +667,11 @@ namespace Kadena.Tests.WebApi
             public OrderService_GetOrdersExportForSiteSpy(
                 IKenticoResourceService kenticoResources, IKenticoSiteProvider kenticoSiteProvider,
                 IDateTimeFormatter dateTimeFormatter, IOrderViewClient orderViewClient,
-                IKenticoUserProvider kenticoUserProvider,
-                IKenticoDocumentProvider kenticoDocumentProvider,
-                IKenticoOrderProvider kenticoOrderProvider)
+                IKenticoUserProvider kenticoUserProvider, IKenticoDocumentProvider kenticoDocumentProvider,
+                IKenticoOrderProvider kenticoOrderProvider, IExcelConvert excelConvert)
                 : base(kenticoResources, kenticoSiteProvider, dateTimeFormatter,
                       orderViewClient, kenticoUserProvider, kenticoDocumentProvider,
-                      kenticoOrderProvider)
+                      kenticoOrderProvider, excelConvert)
             {
             }
 
@@ -602,12 +692,11 @@ namespace Kadena.Tests.WebApi
             public OrderReportService_ValidateFilterSpy(
                 IKenticoResourceService kenticoResources, IKenticoSiteProvider kenticoSiteProvider,
                 IDateTimeFormatter dateTimeFormatter, IOrderViewClient orderViewClient,
-                IKenticoUserProvider kenticoUserProvider,
-                IKenticoDocumentProvider kenticoDocumentProvider,
-                IKenticoOrderProvider kenticoOrderProvider)
+                IKenticoUserProvider kenticoUserProvider, IKenticoDocumentProvider kenticoDocumentProvider,
+                IKenticoOrderProvider kenticoOrderProvider, IExcelConvert excelConvert)
                 : base(kenticoResources, kenticoSiteProvider, dateTimeFormatter,
                       orderViewClient, kenticoUserProvider, kenticoDocumentProvider,
-                      kenticoOrderProvider)
+                      kenticoOrderProvider, excelConvert)
             {
             }
 
@@ -630,6 +719,7 @@ namespace Kadena.Tests.WebApi
             IKenticoUserProvider kenticoUserProvider;
             IKenticoDocumentProvider kenticoDocumentProvider;
             IKenticoOrderProvider kenticoOrderProvider;
+            IExcelConvert excelConvert;
 
             public OrderReportService Build()
             {
@@ -640,7 +730,8 @@ namespace Kadena.Tests.WebApi
                     orderViewClient ?? Mock.Of<IOrderViewClient>(),
                     kenticoUserProvider ?? Mock.Of<IKenticoUserProvider>(),
                     kenticoDocumentProvider ?? Mock.Of<IKenticoDocumentProvider>(),
-                    kenticoOrderProvider ?? Mock.Of<IKenticoOrderProvider>()
+                    kenticoOrderProvider ?? Mock.Of<IKenticoOrderProvider>(),
+                    excelConvert ?? Mock.Of<IExcelConvert>()
                 );
             }
 
@@ -653,7 +744,8 @@ namespace Kadena.Tests.WebApi
                     orderViewClient ?? Mock.Of<IOrderViewClient>(),
                     kenticoUserProvider ?? Mock.Of<IKenticoUserProvider>(),
                     kenticoDocumentProvider ?? Mock.Of<IKenticoDocumentProvider>(),
-                    kenticoOrderProvider ?? Mock.Of<IKenticoOrderProvider>()
+                    kenticoOrderProvider ?? Mock.Of<IKenticoOrderProvider>(),
+                    excelConvert ?? Mock.Of<IExcelConvert>()
                 );
             }
 
@@ -697,6 +789,33 @@ namespace Kadena.Tests.WebApi
             {
                 this.kenticoOrderProvider = kenticoOrderProvider;
                 return this;
+            }
+
+            public OrderReportServiceBuilder WithExcelConvert(IExcelConvert excelConvert)
+            {
+                this.excelConvert = excelConvert;
+                return this;
+            }
+        }
+
+        private IOrderViewClient CreateOrderViewClientReturning(BaseResponseDto<OrderListDto> response)
+        {
+            return Mock.Of<IOrderViewClient>(ovc => ovc.GetOrders(
+                It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>(), It.IsAny<int?>(),
+                It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<bool>(),
+                It.IsAny<int?>(), It.IsAny<string>()
+            ) == Task.FromResult(response));
+        }
+
+        private class ExcelConvertFake : IExcelConvert
+        {
+            public Table TableToConvert { get; private set; }
+
+            public byte[] Convert(Table data)
+            {
+                TableToConvert = data;
+
+                return null;
             }
         }
     }
