@@ -574,9 +574,9 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtPos.Text, string.Empty));
     }
 
-    public int GetDemandCount(int SKUID)
+    public string GetDemandCount(int SKUID)
     {
-        return DIContainer.Resolve<IShoppingCartProvider>().GetPreBuyDemandCount(SKUID);
+        return string.Format("{0:n0}", DIContainer.Resolve<IShoppingCartProvider>().GetPreBuyDemandCount(SKUID));
     }
 
     #endregion "Methods"

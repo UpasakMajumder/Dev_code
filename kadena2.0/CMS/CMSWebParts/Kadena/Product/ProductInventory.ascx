@@ -24,9 +24,11 @@
                         <h4><%= POSNumberText %> : <%# Eval("SKUProductCustomerReferenceNumber")%></h4>
                         <h3><%#Eval("SKUName") %></h3>
                         <span><%# ProductType == (int)ProductsType.GeneralInventory? $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("SKUPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" : $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("EstimatedPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" %></span>
-                        <asp:Label runat="server" Visible='<%# ProductType == (int)ProductsType.PreBuy %>'>
+                        <b>
+                            <asp:Label runat="server" Visible='<%# ProductType == (int)ProductsType.PreBuy %>'>
                             <cms:LocalizedLiteral runat="server" ResourceString="Kadena.PreBuyOrder.CurrentDemand"></cms:LocalizedLiteral>&nbsp;<%# GetDemandCount(Eval<int>("SKUID")) %>
                         </asp:Label>
+                        </b>
                         <a class="js-addToCart-Modal" href="javascript:void(0);" data-skuid='<%#Eval<int>("SKUID")%>' data-productname='<%#Eval("SKUName")%>'><%#AddToCartLinkText%></a>
                     </div>
                     <p><%#Eval("SKUDescription") %></p>
