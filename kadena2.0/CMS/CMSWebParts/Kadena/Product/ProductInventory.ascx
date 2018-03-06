@@ -40,9 +40,7 @@
     <div class="data_footer">
         <div class="dataTables_paginate paging_simple_numbers">
             <ul class="pagination mb-0 text--right list--unstyled">
-                <cms:UniPager runat="server" ID="unipager" PageSize="24" GroupSize="10" PageControl="rptProductLists" PagerMode="Querystring" HidePagerForSinglePage="true">
-                    <CurrentPageTemplate><a href='<%#Eval("PageURL")%>'><%#Eval("Page")%></a></CurrentPageTemplate>
-                </cms:UniPager>
+                <cms:UniPager runat="server" ID="unipager" PageSize="24" GroupSize="10" PageControl="rptProductLists" PagerMode="PostBack" HidePagerForSinglePage="true" OnOnPageChanged="unipager_OnPageChanged"></cms:UniPager>
             </ul>
         </div>
     </div>
@@ -57,3 +55,4 @@
             <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%=NoCampaignOpen %></span></div>
         </div>
     </div>
+</div>
