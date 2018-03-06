@@ -475,7 +475,12 @@ namespace Kadena.BusinessLogic.Services
 
         private List<DistributorCartItem> GetDistributorCartItems(int skuID, int inventoryType = 1)
         {
-            List<AddressData> distributors = addressBookProvider.GetAddressesListByUserID(kenticoUsers.GetCurrentUser().UserId, inventoryType);
+            CampaignsProduct product = productsProvider.GetCampaignProduct(skuID);
+            if (product == null)
+            {
+                throw new Exception("Invalid product");
+            }
+            List<AddressData> distributors = addressBookProvider.GetAddressesListByUserID(kenticoUsers.GetCurrentUser().UserId, inventoryType, product.CampaignID);
             return distributors.Select(x =>
             {
                 return new DistributorCartItem()

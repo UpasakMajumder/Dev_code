@@ -86,7 +86,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         int GetPreBuyDemandCount(int SKUID);
 
-        int GetDistributorCartID(int distributorID, int inventoryType = 1);
+        int GetDistributorCartID(int distributorID, int inventoryType = 1, int campaignID = 0);
 
         int GetAllocatedQuantity(int SKUID, int userID);
 
