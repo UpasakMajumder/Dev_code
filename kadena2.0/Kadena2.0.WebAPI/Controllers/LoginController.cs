@@ -60,8 +60,8 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("api/login/saml")]
-        public IHttpActionResult LoginSaml([FromBody] SamlAuthenticationDto request)
+        [Route("api/login/saml2")]
+        public IHttpActionResult LoginSaml2([FromBody] SamlAuthenticationDto request)
         {
             return ResponseJson(request);
         }
