@@ -119,7 +119,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             if (!microserviceResponse.Success || microserviceResponse.Payload == null)
             {
                 kenticoLog.LogError("GetOrderDetail", microserviceResponse.ErrorMessages);
-                throw new Exception("Failed to obtain order detail from microservice"); // TODO refactor using checking null
+                return null;
             }
 
             var data = microserviceResponse.Payload;
@@ -219,7 +219,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     Title = resources.GetResourceString("Kadena.Order.ShippingSection"),
                     DeliveryMethod = shoppingCart.GetShippingProviderIcon(data.ShippingInfo.Provider),
                     Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo),
-                    Tracking = null // TODO Track your package url unknown
+                    Tracking = null
                 };
                 orderDetail.ShippingInfo.Address.Country = localization
                     .GetCountries()
@@ -249,7 +249,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     QuantityShipped = i.QuantityShipped,
                     QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? resources.GetResourceString("Kadena.Order.QuantityPrefixAddresses") : resources.GetResourceString("Kadena.Order.QuantityPrefix"),
                     QuantityShippedPrefix = resources.GetResourceString("Kadena.Order.QuantityShippedPrefix"),
-                    ShippingDate = string.Empty, // TODO Shipping date per item unknown
+                    ShippingDate = string.Empty,
                     Template = i.Name,
                     TrackingId = i.TrackingId,
                     MailingListPrefix = resources.GetResourceString("Kadena.Order.MailingListPrefix"),

@@ -140,7 +140,7 @@ config.localization.cardPayment = {
         TerminalIdentifier_TerminalCode: '{% Settings.GetValue("KDA_CreditCard_TerminalIdentifier_TerminalCode", string.Empty) |(user)michal.machacek@actum.cz|(hash)06ae384ab07f8bdb6fe886c9a4b8b8296d3d9cf81a9305859445a2a182bab99f%}', 
         TerminalIdentifier_MerchantCode: '{% Settings.GetValue("KDA_CreditCard_TerminalIdentifier_MerchantCode", string.Empty) |(user)michal.machacek@actum.cz|(hash)73431169390f08f4e68658bb8065d00877348d8db4d9cc6f53cd329d668aec64%}',
         saveToProfile:{
-          exists: '{%Settings.GetValue("KDA_CreditCard_EnableSaveCard", "false").ToLower()|(user)michal.machacek@actum.cz|(hash)126a3429442500e9d24251ab8e08b4adec74681794e7c5c7e2339be532b08221%}',
+          exists: {%Settings.GetValue("KDA_CreditCard_EnableSaveCard", "false").ToLower()|(user)michal.machacek@actum.cz|(hash)126a3429442500e9d24251ab8e08b4adec74681794e7c5c7e2339be532b08221%},
           label: '{$Kadena.CreditCard.SaveCardLabel$}',
           url: '/api/3dsi/saveCard'
         }
