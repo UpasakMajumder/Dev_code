@@ -55,6 +55,7 @@
 config.localization.checkout = {
   initRenderUIURL: '/api/shoppingcart',
   initTotalDeliveryUIURL: '/api/deliverytotals',
+  saveAddressURL: '/api/shoppingcart/savetemporaryaddress',
   changeAddressURL: '/api/shoppingcart/selectaddress',
   changeDeliveryMethodURL: '/api/shoppingcart/selectshipping',
   changeQuantityURL: '/api/shoppingcart/changequantity',

@@ -42,6 +42,7 @@
                         <div class="input__inner">
                             <asp:TextBox ID="txtTelephone" runat="server" CssClass="input__text" placeholder='<%#ResHelper.GetString("KDA.Address.Watermark.EnterPhone")%>' MaxLength="25"></asp:TextBox>
                             <asp:CustomValidator ID="cvTelephone" runat="server" CssClass="EditingFormErrorLabel" ControlToValidate="txtTelephone" Enabled="false" OnServerValidate="cvTelephone_ServerValidate"></asp:CustomValidator>
+                            <asp:RequiredFieldValidator ID="rfTelephone" runat="server" ControlToValidate="txtTelephone" CssClass="EditingFormErrorLabel"></asp:RequiredFieldValidator>
                         </div>
                     </div>
                 </div>

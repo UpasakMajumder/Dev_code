@@ -319,7 +319,7 @@ Select ItemID,DivisionName from KDA_Division
 
 <div class="input__wrapper"><span class="input__label">{$kadena.signup.LastName$}</span>$$input:LastName$$$$validation:LastName$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$kadena.signup.DivisionID$}</span> $$input:UserDivisionID$$</div>
+<div class="input__wrapper" style="{%if(!Settings.KDA_DisplaySignupDivision){"display:none;"}|(user)cvoqa2@gmail.com|(hash)a9e26523efc0ab20ab060bbf7dceac2bfbdb9845539b22da46606bd0a6c25766%}"><span class="input__label">{$kadena.signup.DivisionID$}</span> $$input:UserDivisionID$$</div>
 
 <div class="input__wrapper"><span class="input__label">{$kadena.signup.Country$}</span> $$input:UserCountry$$$$validation:UserCountry$$</div>
 

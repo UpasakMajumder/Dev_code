@@ -116,7 +116,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 using (var html = new HtmlTextWriter(stringWriter))
                 {
 
-                    html.AddAttribute(HtmlTextWriterAttribute.Class, isHorizontal ? "product-options__radio product-options__radio--column" : "product-options__radio product-options__radio--row");
+                    html.AddAttribute(HtmlTextWriterAttribute.Class, isHorizontal ? "product-options__radio product-options__radio--row" : "product-options__radio product-options__radio--column");
                     html.RenderBeginTag(HtmlTextWriterTag.Div);
                     foreach (var sku in skus)
                     {
