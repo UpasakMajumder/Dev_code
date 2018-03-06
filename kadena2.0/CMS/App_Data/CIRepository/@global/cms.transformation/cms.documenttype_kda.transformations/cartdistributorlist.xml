@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Transformations</CodeName>
+    <GUID>4b4b1bfc-3742-4999-8e89-8b78b30219d3</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<tr class="js-distributor" data-distributorid="<%#Eval("AddressID")%>" data-shoppingcartid="<%#Eval("DistributorShoppingCartID")%>">
+  <td><%#Eval("AddressID")%></td>
+  <td><%#Eval("AddressPersonalName")%></td>
+  <td><input type="text" class="input__text js-txtQty" onkeypress="return isNumber(event)" value="0"></td>
+</tr>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>87bd1a6b-8ccc-445e-bbd6-de7e29ec70f0</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>CartDistributorList</TransformationName>
+  <TransformationType>ascx</TransformationType>
+</cms.transformation>

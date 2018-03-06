@@ -19,6 +19,8 @@ using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data;
+using Kadena.Models.AddToCart;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -825,6 +827,117 @@ namespace Kadena.WebAPI.KenticoProviders
                                          .OnSite(SiteContext.CurrentSiteID)
                                          .Where(x => x.SKUID.Equals(SKUID))
                                          .Sum(x => x.CartItemUnits);
+        }
+
+        public int GetDistributorCartID(int distributorID, int inventoryType = 1)
+        {
+            ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID)
+                                    .OnSite(SiteContext.CurrentSiteID)
+                                    .WhereEquals("ShoppingCartDistributorID", distributorID)
+                                    .And()
+                                    .WhereEquals("ShoppingCartInventoryType", inventoryType).FirstOrDefault();
+            return cart != null ? cart.ShoppingCartID : 0;
+        }
+
+        public int GetAllocatedQuantity(int SKUID, int userID)
+        {
+            int campaignProductID = productProvider.GetCampaignProductIDBySKUID(SKUID);
+            if (productProvider.IsProductHasAllocation(campaignProductID))
+            {
+                return productProvider.GetAllocatedProductQuantityForUser(campaignProductID, userID);
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        public int GetItemQuantity(int SKUID, int shoppingCartID)
+        {
+            return ShoppingCartItemInfoProvider.GetShoppingCartItems()
+                                                .OnSite(SiteContext.CurrentSiteID)
+                                                .Where(x => x.ShoppingCartID.Equals(shoppingCartID) && x.SKUID.Equals(SKUID))
+                                                .Sum(x => x.CartItemUnits);
+        }
+
+        public int CreateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int userID, int inventoryType = 1)
+        {
+            ShippingOptionInfo shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(resources.GetSettingsKey(SiteContext.CurrentSiteID, "KDA_DefaultShipppingOption"), SiteContext.CurrentSiteName);
+            var customerAddress = AddressInfoProvider.GetAddressInfo(distributorCartItem.DistributorID);
+            ShoppingCartInfo cart = new ShoppingCartInfo()
+            {
+                ShoppingCartSiteID = SiteContext.CurrentSiteID,
+                ShoppingCartCustomerID = distributorCartItem.DistributorID,
+                ShoppingCartCurrencyID = CurrencyInfoProvider.GetMainCurrency(SiteContext.CurrentSiteID).CurrencyID,
+                User = UserInfoProvider.GetUserInfo(userID),
+                ShoppingCartShippingAddress = customerAddress,
+                ShoppingCartShippingOptionID = shippingOption?.ShippingOptionID ?? 0
+            };
+            cart.SetValue("ShoppingCartCampaignID", product.CampaignID);
+            cart.SetValue("ShoppingCartProgramID", product.ProgramID);
+            cart.SetValue("ShoppingCartDistributorID", distributorCartItem.DistributorID);
+            cart.SetValue("ShoppingCartInventoryType", inventoryType);
+            ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
+            return cart?.ShoppingCartID ?? 0;
+        }
+
+        public void UpdateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int inventoryType = 1)
+        {
+            ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCartInfo(distributorCartItem.ShoppingCartID);
+            ShoppingCartItemInfo item = cart.CartItems.Where(g => g.SKUID == product.SKUID).FirstOrDefault();
+            if (cart != null)
+            {
+                if (item != null)
+                {
+                    ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, distributorCartItem.Quantity);
+                }
+                else
+                {
+                    AddDistributorCartItem(cart.ShoppingCartID, distributorCartItem, product, inventoryType);
+                }
+            }
+        }
+
+        public void AddDistributorCartItem(int cartID, DistributorCartItem distributorCartItem, CampaignsProduct product, int inventoryType = 1)
+        {
+            ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
+            if (cart != null && cart.CartItems.Count == 0)
+            {
+                ShoppingCartItemParameters parameters = new ShoppingCartItemParameters(product.SKUID, distributorCartItem.Quantity);
+                parameters.CustomParameters.Add("CartItemCustomerID", distributorCartItem.DistributorID);
+                ShoppingCartItemInfo cartItem = cart.SetShoppingCartItem(parameters);
+                cartItem.SetValue("CartItemPrice", (inventoryType == 1 ? product.ActualPrice : product.EstimatedPrice));
+                cartItem.SetValue("CartItemDistributorID", distributorCartItem.DistributorID);
+                cartItem.SetValue("CartItemCampaignID", product.CampaignID);
+                cartItem.SetValue("CartItemProgramID", product.ProgramID);
+                ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
+            }
+        }
+
+        public void DeleteDistributorCartItem(int cartID, int SKUID)
+        {
+            ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
+            ShoppingCartItemInfo item = cart.CartItems.Where(g => g.SKUID == SKUID).FirstOrDefault();
+            if (cart != null && item != null)
+            {
+                ShoppingCartInfoProvider.RemoveShoppingCartItem(cart, item.CartItemID);
+                ShoppingCartItemInfoProvider.DeleteShoppingCartItemInfo(item);
+                if (cart.CartItems.Count == 0)
+                {
+                    ShoppingCartInfoProvider.DeleteShoppingCartInfo(cart);
+                }
+            }
+        }
+
+        public int GetDistributorCartCount(int userID, int campaignID, int inventoryType = 1)
+        {
+            var query = new DataQuery("Ecommerce.Shoppingcart.GetShoppingCartCount");
+            QueryDataParameters queryParams = new QueryDataParameters();
+            queryParams.Add("@ShoppingCartUserID", userID);
+            queryParams.Add("@ShoppingCartInventoryType", inventoryType);
+            queryParams.Add("@ShoppingCartCampaignID", campaignID);
+            var countData = ConnectionHelper.ExecuteScalar(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
+            return ValidationHelper.GetInteger(countData, default(int));
         }
     }
 }

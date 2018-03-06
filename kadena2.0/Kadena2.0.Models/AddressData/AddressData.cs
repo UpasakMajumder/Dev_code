@@ -10,5 +10,6 @@ namespace Kadena.Models
     {
         public int AddressID { get; set; }
         public string AddressPersonalName { get; set; }
+        public int DistributorShoppingCartID { get; set; }
     }
 }

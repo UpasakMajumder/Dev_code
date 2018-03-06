@@ -13,6 +13,8 @@ using Kadena.Dto.CustomerData;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.CustomerData;
 using Kadena.Dto.Checkout.Responses;
+using Kadena.Dto.AddToCart;
+using Kadena.Models.AddToCart;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -143,6 +145,24 @@ namespace Kadena.WebAPI.Controllers
             var submitRequest = mapper.Map<Distributor>(request);
             var serviceResponse = provider.UpdateCartQuantity(submitRequest);
             return ResponseJson<string>(serviceResponse);
+        }
+        [HttpGet]
+        [Route("api/getcartdistributordata/{skuID}/{inventoryType}")]
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult GetCartDistributorData(int skuID, int inventoryType)
+        {
+            var distributorData = service.GetCartDistributorData(skuID, inventoryType);
+            var result = mapper.Map<DistributorCartDto>(distributorData);
+            return ResponseJson(result);
+        }
+        [HttpPost]
+        [Route("api/updatedistributorcarts")]
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult UpdateDistributorCarts([FromBody]DistributorCartDto request)
+        {
+            var submitRequest = mapper.Map<DistributorCart>(request);
+            var serviceResponse = service.UpdateDistributorCarts(submitRequest);
+            return ResponseJson(new { cartCount = serviceResponse });
         }
     }
 }

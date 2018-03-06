@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="custom__content row">
-        <asp:Repeater runat="server" ID="rptProductLists">
+        <cms:BasicRepeater runat="server" ID="rptProductLists">
             <ItemTemplate>
                 <div class="cus__content--block col-sm-3">
                     <div class="img__block">
@@ -27,58 +27,31 @@
                         <asp:Label runat="server" Visible='<%# ProductType == (int)ProductsType.PreBuy %>'>
                             <cms:LocalizedLiteral runat="server" ResourceString="Kadena.PreBuyOrder.CurrentDemand"></cms:LocalizedLiteral>&nbsp;<%# GetDemandCount(Eval<int>("SKUID")) %>
                         </asp:Label>
-                        <asp:LinkButton ID="lnkAddToCart" runat="server" CommandArgument='<%# Eval("SKUID") %>' CommandName="Add" OnCommand="lnkAddToCart_Command" Text='<%#AddToCartLinkText%>' EnableViewState="true" Enabled='<%# ProductType == (int)ProductsType.PreBuy ? EnableAddToCart : true %>'></asp:LinkButton>
+                        <a class="js-addToCart-Modal" href="javascript:void(0);" data-skuid='<%#Eval<int>("SKUID")%>' data-productname='<%#Eval("SKUName")%>'><%#AddToCartLinkText%></a>
                     </div>
                     <p><%#Eval("SKUDescription") %></p>
                 </div>
             </ItemTemplate>
-        </asp:Repeater>
+        </cms:BasicRepeater>
     </div>
-</div>
-<div class="dialog" id="dialog_Add_To_Cart" runat="server" clientidmode="Static">
-    <div class="dialog__shadow"></div>
-    <div class="dialog__block">
-        <div class="dialog__header">
-            <asp:Label runat="server" ID="lblPopUpHeader"></asp:Label>
-            <asp:Label Text="" ID="lblProductName" runat="server" />
-        </div>
-        <div class="dialog__content">
-            <asp:Label Text="" ID="lblError" Visible="false" runat="server" />
-            <cms:LocalizedLabel runat="server" ID="lblErrorMsg" Visible="false"></cms:LocalizedLabel><br />
-            <cms:LocalizedLabel runat="server" ID="lblqtyError" ClientIDMode="Static"></cms:LocalizedLabel><br />
-            <asp:Label Text="" runat="server" ID="lblAvailbleItems" />
-            <asp:GridView runat="server" ID="gvCustomersCart" AutoGenerateColumns="false" CssClass="table">
-                <Columns>
-                    <asp:BoundField DataField="AddressID" />
-                    <asp:BoundField DataField="AddressPersonalName" />
-                    <asp:TemplateField>
-                        <HeaderTemplate><%# ResHelper.GetString("KDA.ShoppingCart.Quantity") %></HeaderTemplate>
-                        <ItemTemplate>
-                            <asp:TextBox runat="server" CssClass="input__text js-txtQty" ID="txtQuanityOrdering" onkeypress="return isNumber(event)" Text='<%# ValidationHelper.GetString(Eval("SKUUnits"),"0") %>' TextMode="Number" min="0" ClientIDMode="Static" />
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:BoundField DataField="ShoppingCartID" Visible="true" HeaderText="" HeaderStyle-CssClass="u-hidden" ItemStyle-CssClass="u-hidden" />
-                    <asp:BoundField DataField="SKUID" Visible="true" HeaderText="" HeaderStyle-CssClass="u-hidden" ItemStyle-CssClass="u-hidden" />
-                </Columns>
-            </asp:GridView>
-            <asp:Label runat="server" ID="lblSuccessMsg" Visible="false"></asp:Label>
-        </div>
-        <div class="dialog__footer">
-            <div class="btn-group btn-group--right">
-                <button type="button" class="btn-action btn-action--secondary" id="btnClose" runat="server" onserverclick="btnClose_ServerClick" clientidmode="Static"></button>
-                <cms:LocalizedLinkButton runat="server" ClientIDMode="Static" ID="llbtnAddToCart" ResourceString="KDA.ShoppingCart.AddItemsToCart" CssClass="btn-action" OnClick="btmAddItemsToCart_Click"></cms:LocalizedLinkButton>
-            </div>
+
+    <div class="data_footer">
+        <div class="dataTables_paginate paging_simple_numbers">
+            <ul class="pagination mb-0 text--right list--unstyled">
+                <cms:UniPager runat="server" ID="unipager" PageSize="24" GroupSize="10" PageControl="rptProductLists" PagerMode="Querystring" HidePagerForSinglePage="true">
+                    <CurrentPageTemplate><a href='<%#Eval("PageURL")%>'><%#Eval("Page")%></a></CurrentPageTemplate>
+                </cms:UniPager>
+            </ul>
         </div>
     </div>
-</div>
-<asp:HiddenField runat="server" ID="hdnClickSKU" />
-<div id="divNoRecords" runat="server" visible="false">
-    <div class=" mt-2">
-        <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%=NoDataText %></span></div>
+
+    <div id="divNoRecords" runat="server" visible="false">
+        <div class=" mt-2">
+            <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%=NoDataText %></span></div>
+        </div>
     </div>
-</div>
-<div id="divNoCampaign" runat="server" visible="false">
-    <div class=" mt-2">
-        <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%=NoCampaignOpen %></span></div>
+    <div id="divNoCampaign" runat="server" visible="false">
+        <div class=" mt-2">
+            <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%=NoCampaignOpen %></span></div>
+        </div>
     </div>
-</div>
