@@ -187,6 +187,10 @@
       <Project>{91c29a0f-7655-405e-abb0-990877d6fcfa}</Project>
       <Name>Kadena.AmazonFileSystemProvider</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Helpers\Kadena2.0.Helpers.csproj">
+      <Project>{6b1835f6-5564-40d8-8ab8-63b6adc56976}</Project>
+      <Name>Kadena2.0.Helpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj">
       <Project>{b1fcbfc9-fc06-4c02-8df4-9d1a66e44910}</Project>
       <Name>Kadena2.0.MicroserviceClients</Name>
