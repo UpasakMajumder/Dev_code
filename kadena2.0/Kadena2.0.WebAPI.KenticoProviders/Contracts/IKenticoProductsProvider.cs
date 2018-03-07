@@ -13,6 +13,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetSkuImageUrl(int skuid);
         Product GetProductByDocumentId(int documentId);
         Product GetProductByNodeId(int nodeId);
+        Product GetProductBySkuId(int skuId);
         Price GetSkuPrice(int skuId);
         void SetSkuAvailableQty(string skunumber, int availableItems);
         string GetProductStatus(int skuid);

@@ -130,6 +130,22 @@ class CheckoutProduct extends Component {
     );
   };
 
+  getPreviewButton = () => {
+    const { preview } = this.props;
+    if (!preview) return null;
+    if (!preview.exists) return null;
+    return (
+      <a
+        href={preview.url}
+        className="cart-product__btn"
+        target="_blank"
+      >
+        <SVG name="eye"/>
+        {preview.text}
+      </a>
+    );
+  };
+
   render() {
     const {
       delivery,
@@ -188,6 +204,20 @@ class CheckoutProduct extends Component {
         </div>
       ) : null;
 
+    const removeButton = (
+      <button
+        onClick={() => { removeProduct(id); }}
+        type="button"
+        disabled={disableInteractivity}
+        className="cart-product__btn"
+      >
+        <div>
+          <SVG name="cross--dark"/>
+        </div>
+        {buttonLabels.remove}
+      </button>
+    );
+
     return (
       <div className={productClassName}>
         <div className="cart-product__img">
@@ -218,16 +248,8 @@ class CheckoutProduct extends Component {
 
             <div className="cart-product__action">
               {this.defineEditButton()}
-
-              <button onClick={() => { removeProduct(id); }}
-                      type="button"
-                      disabled={disableInteractivity}
-                      className="cart-product__btn">
-                <div>
-                  <SVG name="cross--dark"/>
-                </div>
-                {buttonLabels.remove}
-              </button>
+              {this.getPreviewButton()}
+              {removeButton}
             </div>
           </div>
         </div>

@@ -303,7 +303,8 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 {
                     ID = Cart.GetValue("ShoppingCartCampaignID", default(int)),
                     ProgramID = Cart.GetValue("ShoppingCartProgramID", default(int)),
-                    DistributorID = Cart.GetIntegerValue("ShoppingCartDistributorID", 0)
+                    DistributorID = Cart.GetIntegerValue("ShoppingCartDistributorID", 0),
+                    BusinessUnitNumber = DIContainer.Resolve<IKenticoBusinessUnitsProvider>().GetDistributorBusinessUnitNumber(Cart.GetIntegerValue("ShoppingCartDistributorID", 0))
                 };
             }
             catch (Exception ex)
@@ -567,7 +568,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     {
                         foreach (var user in users)
                         {
-                            ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Email, "CampaignCloseEmail");
+                            ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Email, "CampaignCloseEmail", campaignURL: campaign.AbsoluteURL);
                         }
                     }
                 }

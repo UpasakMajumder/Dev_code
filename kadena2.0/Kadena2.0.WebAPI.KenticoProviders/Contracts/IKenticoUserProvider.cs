@@ -1,21 +1,20 @@
-﻿using CMS.Membership;
-using Kadena.Models;
+﻿using Kadena.Models;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
     public interface IKenticoUserProvider
-    {
-        DeliveryAddress[] GetCustomerAddresses(AddressType addressType);
-        DeliveryAddress[] GetCustomerAddresses(int customerId, AddressType addressType);
+    {        
         Customer GetCurrentCustomer();
-        Customer GetCustomer(int customerId);        
-        void SetDefaultShippingAddress(int addressId);
+        Customer GetCustomer(int customerId);                
         User GetCurrentUser();
         User GetUser(string mail);
-        bool SaveLocalization(string code);
-        void UnsetDefaultShippingAddress();
+        bool SaveLocalization(string code);        
         bool UserIsInCurrentSite(int userId);
         User GetUserByUserId(int userId);
-
+        int CreateCustomer(Customer customer);
+        void UpdateCustomer(Customer customer);
+        void CreateUser(User user, int siteId);
+        void UpdateUser(User user);
+        void LinkCustomerToUser(int customerId, int userId);
     }
 }

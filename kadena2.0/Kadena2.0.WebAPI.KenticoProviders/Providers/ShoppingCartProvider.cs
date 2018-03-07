@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using CMS.DataEngine;
 using CMS.CustomTables;
+using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.Globalization;
@@ -19,6 +19,8 @@ using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kadena.Helpers;
+using Kadena.Models.Common;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -62,7 +64,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             if (productProvider == null)
             {
-                throw new ArgumentNullException(nameof(dynamicPrices));
+                throw new ArgumentNullException(nameof(productProvider));
             }
 
             this.resources = resources;
@@ -175,6 +177,17 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private void GetShippingPrice(DeliveryOption[] services)
         {
+            if (ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress == null)
+            {
+                foreach (var s in services.Where(s => !s.IsCustomerPrice))
+                {
+                    s.Disable();
+                }
+
+                logger.LogInfo("GetShippingPrice", "Info", "Current shopping cart has no shipping address, therefore cannot estimate shipping prices");
+                return;
+            }
+
             // this method's approach comes from origial kentico webpart (ShippingSeletion)
             int originalCartShippingId = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID;
 
@@ -238,21 +251,24 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public void SetShoppingCartAddress(DeliveryAddress address)
         {
-            if (address != null)
-            {
-                if (address.Id > 0)
-                {
-                    SetShoppingCartAddress(address.Id);
-                }
-                else
-                {
-                    var cart = ECommerceContext.CurrentShoppingCart;
+            var cart = ECommerceContext.CurrentShoppingCart;
+            var info = mapper.Map<AddressInfo>(address);
+            cart.ShoppingCartShippingAddress = info;
+            cart.SubmitChanges(true);
+        }
 
-                    var info = mapper.Map<AddressInfo>(address);
-                    cart.ShoppingCartShippingAddress = info;
-                    cart.SubmitChanges(true);
-                }
-            }
+        public void SetTemporaryShoppingCartAddress(DeliveryAddress address)
+        {
+            var cart = ECommerceContext.CurrentShoppingCart;
+            var info = mapper.Map<AddressInfo>(address);
+            info.AddressName = "TemporaryAddress";
+            info.AddressPersonalName = "TemporaryAddress";
+            info.AddressID = 0;
+            info.AddressCustomerID = ECommerceContext.CurrentCustomer.CustomerID;
+
+            info.Insert();
+            cart.ShoppingCartShippingAddress = info;
+            cart.SubmitChanges(true);
         }
 
         public void SelectShipping(int shippingOptionId)
@@ -291,11 +307,13 @@ namespace Kadena.WebAPI.KenticoProviders
                     CartItemText = i.CartItemText,
                     DesignFileKey = i.GetValue("ArtworkLocation", string.Empty),
                     MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
-                    ChiliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
-                    ProductChiliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
+                    ChiliProcess = new ChiliProcess
+                    {
+                        TemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
+                        PdfSettings = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
+                    },
                     ProductChiliWorkspaceId = i.GetValue("ProductChiliWorkspaceId", Guid.Empty),
                     ChiliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
-                    DesignFilePathTaskId = i.GetValue("DesignFilePathTaskId", Guid.Empty),
                     SKUName = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU?.SKUName,
                     SKUNumber = i.SKU?.SKUNumber,
                     TotalTax = 0.0m,
@@ -310,24 +328,29 @@ namespace Kadena.WebAPI.KenticoProviders
                     QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                     MailingListName = i.GetValue("MailingListName", string.Empty),
                     Template = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
-                    EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
                     ProductPageId = i.GetIntegerValue("ProductPageID", 0),
                     SKUID = i.SKUID,
                     StockQuantity = i.SKU.SKUAvailableItems,
                     MailingListPrefix = resources.GetResourceString("Kadena.Checkout.MailingListLabel"),
                     TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplateLabel"),
                     ProductionTime = displayProductionAndShipping ? i.GetValue("ProductProductionTime", string.Empty) : null,
-                    ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null
+                    ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null,
+                    Preview = new Button { Exists = false, Text = resources.GetResourceString("Kadena.Checkout.PreviewButton") }
                 };
                 if (cartItem.IsTemplated)
                 {
-                    cartItem.EditorURL = $@"{documents.GetDocumentUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~'))}
-?nodeId={cartItem.ProductPageId}
-&templateId={cartItem.EditorTemplateId}
-&workspaceid={cartItem.ProductChiliWorkspaceId}
-&containerId={cartItem.MailingListGuid}
-&quantity={cartItem.Quantity}
-&customName={URLHelper.URLEncode(cartItem.CartItemText)}";
+                    var product = productProvider.GetProductByNodeId(cartItem.ProductPageId);
+                    cartItem.Preview.Url = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, product.TemplateLowResSettingId);
+                    cartItem.Preview.Exists = true;
+
+                    var editorUrl = documents.GetDocumentUrl(URLHelper.ResolveUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")));
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "nodeId", cartItem.ProductPageId.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "templateId", cartItem.ChiliProcess.TemplateId.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "workspaceid", cartItem.ProductChiliWorkspaceId.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "containerId", cartItem.MailingListGuid.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "quantity", cartItem.Quantity.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "customName", URLHelper.URLEncode(cartItem.CartItemText));
+                    cartItem.EditorURL = editorUrl;
                 }
                 if (i.VariantParent != null)
                 {
@@ -411,7 +434,6 @@ namespace Kadena.WebAPI.KenticoProviders
                     ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemID));
             }
 
-
             ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
 
             var documentId = item.GetIntegerValue("ProductPageID", 0);
@@ -468,32 +490,7 @@ namespace Kadena.WebAPI.KenticoProviders
             var shoppingCart = GetShoppingCart(shoppingCartId);
             ShoppingCartInfoProvider.DeleteShoppingCartInfo(shoppingCart);
         }
-
-        public void SaveShippingAddress(DeliveryAddress address)
-        {
-            var customer = ECommerceContext.CurrentCustomer;
-            var info = new AddressInfo
-            {
-                AddressID = address.Id,
-                AddressLine1 = address.Address1,
-                AddressLine2 = address.Address2,
-                AddressCity = address.City,
-                AddressStateID = address.State.Id,
-                AddressCountryID = address.Country.Id,
-                AddressZip = address.Zip,
-                AddressCustomerID = customer.CustomerID,
-                AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}",
-                AddressPhone = address.Phone
-            };
-            info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
-            info.SetValue("AddressType", AddressType.Shipping.Code);
-            info.SetValue("CompanyName", address.CustomerName);
-            info.SetValue("Email", address.Email);
-
-            AddressInfoProvider.SetAddressInfo(info);
-            address.Id = info.AddressID;
-        }
-
+ 
         public double GetCurrentCartTotalItemsPrice()
         {
             return ECommerceContext.CurrentShoppingCart.TotalItemsPrice;
@@ -679,6 +676,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             cartItem.CartItemUnits = amount;
         }
+
         public string UpdateCartQuantity(Distributor distributorData)
         {
             if (distributorData.ItemQuantity < 1)
@@ -688,8 +686,8 @@ namespace Kadena.WebAPI.KenticoProviders
             var shoppingCartItem = ShoppingCartItemInfoProvider.GetShoppingCartItemInfo(distributorData.CartItemId);
             if (distributorData.InventoryType == 1)
             {
-                var shoppingCartIDs = ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartUserID", distributorData.UserID).WhereEquals("ShoppingCartInventoryType", 1).ToList().Select(x => x.ShoppingCartID).ToList();
-                var shoppingcartItems = ShoppingCartItemInfoProvider.GetShoppingCartItems().WhereIn("ShoppingCartID", shoppingCartIDs).WhereEquals("SKUID", shoppingCartItem.SKUID).ToList();
+                var shoppingCartIDs = GetUserShoppingcartIdsByInventory(distributorData.UserID, 1);
+                var shoppingcartItems = GetAllShoppingCartItems(shoppingCartItem.SKUID, shoppingCartIDs);
                 int totalItems = 0;
                 shoppingcartItems.ForEach(cartItem =>
                 {
@@ -699,7 +697,7 @@ namespace Kadena.WebAPI.KenticoProviders
                     }
                 });
                 var sku = SKUInfoProvider.GetSKUInfo(shoppingCartItem.SKUID);
-                var currentProduct = DocumentHelper.GetDocuments(campaignClassName).WhereEquals("NodeSKUID", sku.SKUID).Columns("CampaignsProductID").FirstOrDefault();
+                var currentProduct = GetCampaignsProduct(sku.SKUID);
                 var productHasAllocation = currentProduct != null ? productProvider.IsProductHasAllocation(currentProduct.GetValue<int>("CampaignsProductID", default(int))) : false;
                 var allocatedQuantityItem = GetAllocatedProductQuantityForUser(currentProduct.GetValue<int>("CampaignsProductID", default(int)), distributorData.UserID);
                 var allocatedQuantity = allocatedQuantityItem != null ? allocatedQuantityItem.GetValue<int>("Quantity", default(int)) : default(int);
@@ -723,7 +721,6 @@ namespace Kadena.WebAPI.KenticoProviders
                 throw new Exception(ResHelper.GetString("KDA.Cart.Update.Failure", LocalizationContext.CurrentCulture.CultureCode));
             }
         }
-
 
         public List<int> GetUserIDsWithShoppingCart(int campaignID, int productType)
         {
@@ -781,25 +778,29 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             return isValid;
         }
+
         private CustomTableItem GetAllocatedProductQuantityForUser(int productID, int userID)
         {
             return CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
-
         }
+
         public ShoppingCartInfo GetShoppingCartByID(int cartID)
         {
             return ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
         }
+
         public List<int> GetShoppingCartIDs(WhereCondition where)
         {
             return ShoppingCartInfoProvider.GetShoppingCarts().Where(where)
                                                                   .Select(x => x.ShoppingCartID).ToList();
         }
+
         public List<ShoppingCartItemInfo> GetShoppingCartItemsByCartIDs(List<int> shoppingCartIDs)
         {
             return ShoppingCartItemInfoProvider.GetShoppingCartItems().WhereIn("ShoppingCartID", shoppingCartIDs)
                                                                                     .ToList();
         }
+
         public void UpdateBusinessUnit(ShoppingCartInfo cart, long businessUnitID)
         {
             cart.SetValue("BusinessUnitIDForDistributor", businessUnitID);
@@ -821,6 +822,21 @@ namespace Kadena.WebAPI.KenticoProviders
                                          .OnSite(SiteContext.CurrentSiteID)
                                          .Where(x => x.SKUID.Equals(SKUID))
                                          .Sum(x => x.CartItemUnits);
+        }
+
+        private List<int> GetUserShoppingcartIdsByInventory(int UserId, int InventoryType)
+        {
+            return ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartUserID", UserId).WhereEquals("ShoppingCartInventoryType", InventoryType).ToList().Select(x => x.ShoppingCartID).ToList();
+        }
+
+        private TreeNode GetCampaignsProduct(int SkuId)
+        {
+            return DocumentHelper.GetDocuments(campaignClassName).WhereEquals("NodeSKUID", SkuId).Columns("CampaignsProductID").FirstOrDefault();
+        }
+
+        private List<ShoppingCartItemInfo> GetAllShoppingCartItems(int SkuId, List<int> ShoppingCartIds)
+        {
+            return ShoppingCartItemInfoProvider.GetShoppingCartItems().WhereIn("ShoppingCartID", ShoppingCartIds).WhereEquals("SKUID", SkuId).ToList();
         }
     }
 }

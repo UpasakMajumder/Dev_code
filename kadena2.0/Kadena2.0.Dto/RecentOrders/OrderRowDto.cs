@@ -1,4 +1,5 @@
-﻿using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+﻿using Kadena.Dto.Common;
+using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using System;
 using System.Collections.Generic;
 
