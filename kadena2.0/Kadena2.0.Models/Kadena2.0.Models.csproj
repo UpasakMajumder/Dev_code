@@ -115,6 +115,7 @@
     <Compile Include="OrderDetail\TitleValuePair.cs" />
     <Compile Include="OrderStatisticsData.cs" />
     <Compile Include="Product\ProductValidator.cs" />
+    <Compile Include="Role.cs" />
     <Compile Include="Settings\DefaultAddress.cs" />
     <Compile Include="Product\Sku.cs" />
     <Compile Include="SiteSettings\Attributes\CategoryAttribute.cs" />

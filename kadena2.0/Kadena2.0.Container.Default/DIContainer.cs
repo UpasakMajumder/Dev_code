@@ -118,6 +118,7 @@ namespace Kadena2.Container.Default
 			container.Register<IkenticoUserBudgetProvider, KenticoUserBudgetProvider>();
             container.Register<IFailedOrderStatusProvider, FailedOrderStatusProvider>();
             container.Register<IKenticoIBTFProvider, KenticoIBTFProvider>();
+            container.Register<IKenticoRoleProvider, KenticoRoleProvider>();
             return container;
         }
 
