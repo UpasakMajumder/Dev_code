@@ -105,7 +105,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 UserName = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                FullName = $"{user.FirstName} {user.LastName}",
+                FullName = $"{user.FirstName} {user.LastName}"
             };
 
             newUser.Insert();
