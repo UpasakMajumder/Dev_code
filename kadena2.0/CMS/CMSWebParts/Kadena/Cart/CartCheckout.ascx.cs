@@ -17,6 +17,7 @@ using CMS.DocumentEngine.Types.KDA;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
+using CMS.SiteProvider;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -103,7 +104,17 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 {
                     Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(distributorCart);
                     decimal shippingCost = default(decimal);
-                    if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionName.ToLower() != ShippingOption.Ground)
+                    ShippingOptionInfo shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(Cart.ShoppingCartShippingOptionID);
+                    if (shippingOption == null)
+                    {
+                        shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(settingKeys.GetSettingsKey(SiteContext.CurrentSiteID, "KDA_DefaultShipppingOption"), SiteContext.CurrentSiteName);
+                        if (shippingOption == null)
+                        {
+                            Cart.ShoppingCartShippingOptionID = shippingOption.ShippingOptionID;
+                            ShoppingCartInfoProvider.SetShoppingCartInfo(Cart);
+                        }
+                    }
+                    if (shippingOption != null && shippingOption.ShippingOptionName.ToLower() != ShippingOption.Ground)
                     {
                         var shippingResponse = GetOrderShippingTotal(Cart);
                         if (shippingResponse != null && shippingResponse.Success)
