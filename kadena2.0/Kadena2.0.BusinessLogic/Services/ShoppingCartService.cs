@@ -20,6 +20,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoLocalizationProvider localization;
         private readonly IKenticoPermissionsProvider permissions;
         private readonly IKenticoUserProvider kenticoUsers;
+        private readonly IKenticoAddressBookProvider kenticoAddresses;
         private readonly IKenticoResourceService resources;
         private readonly ITaxEstimationService taxCalculator;
         private readonly IKListService mailingService;
@@ -32,6 +33,7 @@ namespace Kadena.BusinessLogic.Services
                                    IKenticoLocalizationProvider localization,
                                    IKenticoPermissionsProvider permissions,
                                    IKenticoUserProvider kenticoUsers,
+                                   IKenticoAddressBookProvider addresses,
                                    IKenticoResourceService resources,
                                    ITaxEstimationService taxCalculator,
                                    IKListService mailingService,
@@ -55,6 +57,10 @@ namespace Kadena.BusinessLogic.Services
             if (kenticoUsers == null)
             {
                 throw new ArgumentNullException(nameof(kenticoUsers));
+            }
+            if (addresses == null)
+            {
+                throw new ArgumentNullException(nameof(addresses));
             }
             if (resources == null)
             {
@@ -89,6 +95,7 @@ namespace Kadena.BusinessLogic.Services
             this.localization = localization;
             this.permissions = permissions;
             this.kenticoUsers = kenticoUsers;
+            this.kenticoAddresses = addresses;
             this.resources = resources;
             this.taxCalculator = taxCalculator;
             this.mailingService = mailingService;
@@ -100,9 +107,9 @@ namespace Kadena.BusinessLogic.Services
 
         public async Task<CheckoutPage> GetCheckoutPage()
         {
-            var addresses = kenticoUsers.GetCustomerAddresses(AddressType.Shipping);
+            var addresses = kenticoAddresses.GetCustomerAddresses(AddressType.Shipping);
             var paymentMethods = shoppingCart.GetPaymentMethods();
-            var emailConfirmationEnabled = resources.GetSettingsKey("KDA_UseNotificationEmailsOnCheckout") == bool.TrueString;
+            var emailConfirmationEnabled = resources.GetSettingsKey<bool>("KDA_UseNotificationEmailsOnCheckout");
             var currentUserId = kenticoUsers.GetCurrentUser().UserId;
 
             var checkoutPage = new CheckoutPage()
@@ -128,7 +135,7 @@ namespace Kadena.BusinessLogic.Services
 
             if ( creditCardMethod != null && resources.GetSettingsKey("KDA_CreditCard_EnableSaveCard").ToLower() == "true")
             {
-                var storedCardsResult = await userDataClient.GetCardTokens(userId);
+                var storedCardsResult = await userDataClient.GetValidCardTokens(userId);
 
                 if (storedCardsResult.Success)
                 {
@@ -186,9 +193,9 @@ namespace Kadena.BusinessLogic.Services
             return result;
         }
 
-        public async Task<CheckoutPageDeliveryTotals> SetDeliveryAddress(DeliveryAddress deliveryAddress)
+        public async Task<CheckoutPageDeliveryTotals> SaveTemporaryAddress(DeliveryAddress deliveryAddress)
         {
-            shoppingCart.SetShoppingCartAddress(deliveryAddress);
+            shoppingCart.SetTemporaryShoppingCartAddress(deliveryAddress);
             return await GetDeliveryAndTotals();
         }
 
@@ -232,7 +239,10 @@ namespace Kadena.BusinessLogic.Services
             var totals = page.Totals;
             totals.Title = resources.GetResourceString("Kadena.Checkout.Totals.Title");
             var shoppingCartTotals = shoppingCart.GetShoppingCartTotals();
-            shoppingCartTotals.TotalTax = await taxCalculator.EstimateTotalTax(deliveryAddress);
+            if (deliveryAddress != null)
+            {
+                shoppingCartTotals.TotalTax = await taxCalculator.EstimateTotalTax(deliveryAddress);
+            }
             totals.Items = new Total[]
             {
                 new Total()
@@ -318,7 +328,7 @@ namespace Kadena.BusinessLogic.Services
 
         private DeliveryAddresses GetDeliveryAddresses(int checkedAddressId = 0)
         {
-            var customerAddresses = kenticoUsers.GetCustomerAddresses(AddressType.Shipping);
+            var customerAddresses = kenticoAddresses.GetCustomerAddresses(AddressType.Shipping);
             var userNotificationString = GetUserNotificationString();
             var otherAddressEnabled = GetOtherAddressSettingsValue();
 

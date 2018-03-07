@@ -41,9 +41,17 @@
             }
         }
 
+        public void Disable()
+        {
+            this.Disabled = true;
+            this.PriceAmount = 0.0d;
+            this.Price = null;
+        }
+
         public override string ToString()
         {
             return $"Shipping option {Title} Id {Id}";
         }
     }
+
 }

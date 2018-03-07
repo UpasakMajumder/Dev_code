@@ -434,7 +434,7 @@ namespace Kadena.AmazonFileSystemProvider
             {
                 return $"{AmazonHelper.EndPoint}/{objectKeyFromPath}".ToLowerCSafe();
             }
-            string downloadPath = AmazonHelper.GetDownloadPath(objectKeyFromPath);
+            string downloadPath = AmazonHelper.GetDownloadPath(PathHelper.GetObjectKeyFromPathNonEnvironment(path));
             return this.ResolveUrl(downloadPath);
         }
 

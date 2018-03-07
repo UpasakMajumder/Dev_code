@@ -41,7 +41,16 @@ const products = {
       "stockQuantity": 15,
       "isQuantityEditable": true,
       "productionTime": "Now",
-      "shipTime": "Tomorrow"
+      "shipTime": "Tomorrow",
+      "preview": {
+        "exists": true,
+        "text": "Preview",
+        "url": "#"
+      },
+      "options": [{
+        "name": "Size",
+        "value": "L"
+      }]
     },
     {
       "id": 34,
@@ -59,7 +68,16 @@ const products = {
       "stockQuantity": 15,
       "isQuantityEditable": true,
       "productionTime": "",
-      "shipTime": "Tomorrow"
+      "shipTime": "Tomorrow",
+      "preview": {
+        "exists": false,
+        "text": "Preview",
+        "url": "#"
+      },
+      "options": [{
+        "name": "Size",
+        "value": "XS"
+      }]
     }
   ]
 };

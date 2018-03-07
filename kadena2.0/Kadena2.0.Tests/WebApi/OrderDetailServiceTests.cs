@@ -107,11 +107,10 @@ namespace Kadena.Tests.WebApi
             var sut = autoMocker.CreateInstance<OrderDetailService>();
 
             // Act
-            var result = sut.GetOrderDetail("0010-0016-66-00006");
+            var result = await sut.GetOrderDetail("0010-0016-66-00006");
 
             // Assert
-            var exception = await Assert.ThrowsAsync<Exception>(async () => await result);
-            Assert.Contains("Failed to obtain order detail", exception.Message);
+            Assert.Null(result);
             autoMocker.GetMock<IKenticoLogger>().Verify(l => l.LogError("GetOrderDetail", ""), Times.Exactly(1));
         }
 

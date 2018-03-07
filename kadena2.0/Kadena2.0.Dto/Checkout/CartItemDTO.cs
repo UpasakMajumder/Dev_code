@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Kadena.Dto.Common;
+using System.Collections.Generic;
 
 namespace Kadena.Dto.Checkout
 {
@@ -12,6 +13,7 @@ namespace Kadena.Dto.Checkout
         public string Delivery { get; set; }
         public string PricePrefix { get; set; }
         public string Price { get; set; }
+        public ButtonDto Preview { get; set; }
         public bool IsEditable { get; set; }
         public bool IsQuantityEditable { get; set; }
         public string QuantityPrefix { get; set; }

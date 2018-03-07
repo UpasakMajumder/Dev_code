@@ -51,6 +51,7 @@
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
     <Compile Include="CampaignData\Campaign.cs" />
     <Compile Include="CampaignData\CampaignData.cs" />
+    <Compile Include="Checkout\ChiliProcess.cs" />
     <Compile Include="CreditCard\SaveCardData.cs" />
     <Compile Include="CreditCard\StoredCard.cs" />
     <Compile Include="FyBudget\FyBudget.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="OrderDetail\TitleValuePair.cs" />
     <Compile Include="Dashboard\OrderStatisticsData.cs" />
     <Compile Include="Product\ProductValidator.cs" />
+    <Compile Include="Role.cs" />
     <Compile Include="Settings\DefaultAddress.cs" />
     <Compile Include="Product\Sku.cs" />
     <Compile Include="SiteSettings\Attributes\CategoryAttribute.cs" />
@@ -183,7 +185,6 @@
     <Compile Include="_Common\Pagination.cs" />
     <Compile Include="_Common\State.cs" />
     <Compile Include="SubmitOrder\PaymentMethod.cs" />
-    <Compile Include="SubmitOrder\SubmitOrderError.cs" />
     <Compile Include="SubmitOrder\SubmitOrderRequest.cs" />
     <Compile Include="SubmitOrder\SubmitOrderResult.cs" />
     <Compile Include="TemplatedProduct\ProductTemplate.cs" />

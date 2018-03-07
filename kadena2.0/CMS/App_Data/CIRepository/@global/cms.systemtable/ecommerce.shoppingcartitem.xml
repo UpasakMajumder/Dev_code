@@ -64,20 +64,6 @@
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
-      <field allowempty="true" column="DesignFilePathTaskId" columnsize="200" columntype="text" guid="b39910ab-07ac-415e-8720-69c86b04aea8" publicfield="false" visible="true">
-        <properties>
-          <fieldcaption>DesignFilePathTaskId</fieldcaption>
-          <fielddescription>ID of templated procuct microservice task</fielddescription>
-        </properties>
-        <settings>
-          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
-          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
-          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
-          <controlname>TextBoxControl</controlname>
-          <FilterMode>False</FilterMode>
-          <Trim>False</Trim>
-        </settings>
-      </field>
       <field allowempty="true" column="ProductChiliPdfGeneratorSettingsId" columnsize="200" columntype="text" guid="f19b4470-7972-4160-8424-09560ad76e15" publicfield="false" />
       <field allowempty="true" column="ProductType" columnsize="200" columntype="text" guid="8580ef0c-f77d-4ee2-bac6-3719c4157e54" publicfield="false" visible="true">
         <properties>

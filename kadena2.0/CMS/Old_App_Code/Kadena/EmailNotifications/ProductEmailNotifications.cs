@@ -27,7 +27,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         /// <param name="campaignName"></param>
         /// <param name="reciepientEmail"></param>
         /// <param name="templateName"></param>
-        public static void CampaignEmail(string campaignName, string recipientEmail, string templateName, string programName = "")
+        public static void CampaignEmail(string campaignName, string recipientEmail, string templateName, string programName = "", string campaignURL = "")
         {
             try
             {
@@ -39,6 +39,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                     MacroResolver resolver = MacroResolver.GetInstance();
                     resolver.SetNamedSourceData("CampaignName", campaignName);
                     resolver.SetNamedSourceData("programName", programName);
+                    resolver.SetNamedSourceData("CampaignNameURL", campaignURL);
                     msg.From = resolver.ResolveMacros(email.TemplateFrom);
                     msg.Recipients = recipientEmail;
                     msg.EmailFormat = EmailFormatEnum.Default;

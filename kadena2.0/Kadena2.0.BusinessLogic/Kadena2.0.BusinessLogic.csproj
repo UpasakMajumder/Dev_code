@@ -86,6 +86,7 @@
     <Compile Include="Contracts\ITemplateService.cs" />
     <Compile Include="Contracts\OrderPayment\ICreditCard3dsi.cs" />
     <Compile Include="Contracts\OrderPayment\IPurchaseOrder.cs" />
+    <Compile Include="Contracts\IRoleService.cs" />
     <Compile Include="Factories\Checkout\OrderDataFactory.cs" />
     <Compile Include="Factories\Checkout\CheckoutPageFactory.cs" />
     <Compile Include="Factories\Checkout\IOrderDataFactory.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Services\Orders\GetOrderDataService.cs" />
     <Compile Include="Services\Orders\OrderReportService.cs" />
     <Compile Include="Services\Orders\SendSubmitOrder.cs" />
+    <Compile Include="Services\RoleService.cs" />
     <Compile Include="Services\SubmissionService.cs" />
     <Compile Include="Services\OrderPayment\CreditCard3dsiDemo.cs" />
     <Compile Include="Services\Orders\OrderDetailService.cs" />
@@ -136,6 +138,10 @@
     <Compile Include="Services\UserBudgetService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kadena.AmazonFileSystemProvider\Kadena.AmazonFileSystemProvider.csproj">
+      <Project>{91c29a0f-7655-405e-abb0-990877d6fcfa}</Project>
+      <Name>Kadena.AmazonFileSystemProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.Dto\Kadena2.0.Dto.csproj">
       <Project>{eb3a4438-837d-4ccd-a42c-b2c58c90d6ae}</Project>
       <Name>Kadena2.0.Dto</Name>

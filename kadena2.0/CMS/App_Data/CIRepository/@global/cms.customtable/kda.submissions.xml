@@ -16,6 +16,28 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="Error" columnsize="200" columntype="text" guid="15d8ff29-de25-4adb-8231-09794d2ca989" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Error</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="Success" columntype="boolean" guid="76c52d79-91b0-4de3-93f7-31256fb8f355" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>false</defaultvalue>
+          <fieldcaption>Success</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="SaveCardJson" columnsize="400" columntype="text" guid="ea1d28f6-fe0a-4cea-ba45-69532eeb8c15" publicfield="false" visible="true">
         <properties>
           <fieldcaption>SaveCardJson</fieldcaption>

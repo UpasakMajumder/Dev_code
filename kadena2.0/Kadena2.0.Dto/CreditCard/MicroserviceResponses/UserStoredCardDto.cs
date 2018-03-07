@@ -9,7 +9,7 @@ namespace Kadena.Dto.CreditCard.MicroserviceResponses
         public DateTime CreateDateTime { get; set; }
         public string Name { get; set; }
         public string CardNumber { get; set; }
-        public DateTime? TokenExpirationDate { get; set; }
+        public DateTime CardExpirationDate { get; set; }
         public string Token { get; set; }
     }
 }

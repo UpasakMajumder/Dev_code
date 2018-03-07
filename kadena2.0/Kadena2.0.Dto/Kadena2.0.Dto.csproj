@@ -61,6 +61,7 @@
     <Compile Include="CreditCard\Requests\SaveCreditCardRequestDto.cs" />
     <Compile Include="CreditCard\Responses\CreditCardPaymentDoneDto.cs" />
     <Compile Include="CustomerData\UserBudgetDto.cs" />
+    <Compile Include="Payment\CreditCard\MicroserviceRequests\UpdateCustomerContainerRequestDto.cs" />
     <Compile Include="Order\OrderListFilter.cs" />
     <Compile Include="Product\BorderDto.cs" />
     <Compile Include="Product\PriceDto.cs" />
@@ -149,7 +150,7 @@
     <Compile Include="Order\OrderDto.cs" />
     <Compile Include="Order\OrderListDto.cs" />
     <Compile Include="Order\OrderItemDto.cs" />
-    <Compile Include="RecentOrders\ButtonDto.cs" />
+    <Compile Include="Common\ButtonDto.cs" />
     <Compile Include="RecentOrders\OrderBodyDto.cs" />
     <Compile Include="RecentOrders\OrderHeadDto.cs" />
     <Compile Include="RecentOrders\OrderItemDto.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="Site\Responses\FtpCredentialsDto.cs" />
     <Compile Include="Site\Responses\SiteDataResponseDto.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\CampaignDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\ChiliProcessDto.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\NotificationInfoDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceRequests\NewTemplateRequestDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateMetaData.cs" />
@@ -179,8 +181,6 @@
     <Compile Include="TemplatedProduct\Responses\ProductTemplatesDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\GetOrderByOrderIdResponseDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceRequests\GetOrderByOrderIdRequestDTO.cs" />
-    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderErrorDto.cs" />
-    <Compile Include="SubmitOrder\MicroserviceResponses\SubmitOrderServiceResponseDto.cs" />
     <Compile Include="SubmitOrder\Requests\PaymentMethodDto.cs" />
     <Compile Include="Checkout\Requests\RemoveItemRequestDto.cs" />
     <Compile Include="SubmitOrder\Requests\SubmitRequestDto.cs" />
@@ -229,6 +229,7 @@
     <Compile Include="_Common\TableRowDto.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="SubmitOrder\MicroserviceResponses\" />
     <Folder Include="Tax\MicroserviceResponses\" />
     <Folder Include="Tax\Requests\" />
     <Folder Include="Tax\Responses\" />

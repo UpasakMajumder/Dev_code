@@ -14,8 +14,9 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoPermissionsProvider kenticoPermissions;
         private readonly IKenticoLocalizationProvider kenticoLocalization;
+        private readonly IKenticoAddressBookProvider kenticoAddresses;
 
-        public CustomerDataService(IKenticoUserProvider kenticoUsers, IKenticoPermissionsProvider kenticoPermissions, IKenticoLocalizationProvider kenticoLocalization)
+        public CustomerDataService(IKenticoUserProvider kenticoUsers, IKenticoPermissionsProvider kenticoPermissions, IKenticoLocalizationProvider kenticoLocalization, IKenticoAddressBookProvider kenticoAddresses)
         {
             if (kenticoUsers == null)
             {
@@ -29,10 +30,15 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(kenticoLocalization));
             }
+            if (kenticoAddresses == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoAddresses));
+            }
 
             this.kenticoUsers = kenticoUsers;
             this.kenticoPermissions = kenticoPermissions;
             this.kenticoLocalization = kenticoLocalization;
+            this.kenticoAddresses = kenticoAddresses;
         }
 
         public CustomerData GetCustomerData(int siteId, int customerId)
@@ -55,7 +61,7 @@ namespace Kadena.BusinessLogic.Services
                 Claims = claims,
             };
 
-            var address = kenticoUsers.GetCustomerAddresses(customerId, AddressType.Shipping).FirstOrDefault();
+            var address = kenticoAddresses.GetCustomerAddresses(customerId, AddressType.Shipping).FirstOrDefault();
             if (address != null)
             {
                 var country = kenticoLocalization.GetCountries().FirstOrDefault(c => c.Id == address.Country.Id);

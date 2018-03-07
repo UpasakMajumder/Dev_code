@@ -21,23 +21,6 @@ class DeliveryAddress extends Component {
     this.setState(prevState => ({ isDialogOpen: !prevState.isDialogOpen }));
   };
 
-  submitNewAddress = (address) => {
-    const data = {
-      id: -1,
-      customerName: address.customerName,
-      address1: address.address1,
-      address2: address.address2,
-      city: address.city,
-      state: address.state,
-      zip: address.zip,
-      country: address.country,
-      phone: address.phone,
-      email: address.email
-    };
-
-    this.props.addNewAddress(data);
-  };
-
   toggleAddressesNumber = () => {
     this.setState((prevState) => {
       if (prevState.addressesNumber === Math.POSITIVE_INFINITY) {
@@ -53,7 +36,7 @@ class DeliveryAddress extends Component {
 
   render() {
     const { addressesNumber } = this.state;
-    const { ui, checkedId, changeDeliveryAddress, disableInteractivity, newAddressObject, saveAddress } = this.props;
+    const { ui, checkedId, changeDeliveryAddress, disableInteractivity, newAddressObject } = this.props;
     const { title, description, newAddress, items, emptyMessage, availableToAdd, dialogUI, userNotification, bounds } = ui;
 
     const renderAddresses = (item, i) => {
@@ -84,10 +67,12 @@ class DeliveryAddress extends Component {
       );
     };
 
-    let addresses = items.map(renderAddresses);
-    if (Object.keys(newAddressObject).length > 0) {
-      addresses = [newAddressObject, ...items].map(renderAddresses);
+    let addresses = items;
+    if (newAddressObject.temporary === true) {
+      addresses = [newAddressObject, ...items];
     }
+
+    const addressesComponent = addresses.map(renderAddresses);
 
     const alert = addresses.length ? null : <Alert type="grey" text={emptyMessage} />;
 
@@ -120,13 +105,13 @@ class DeliveryAddress extends Component {
 
 
     return (
-      <div>
+      <div id="delivery-address">
         {this.state.isDialogOpen && <NewAddressDialog
-          submit={this.submitNewAddress}
+          addNewAddress={this.props.addNewAddress}
           closeDialog={this.toggleDialog}
           ui={dialogUI}
           userNotification={userNotification}
-          saveAddress={saveAddress}
+          saveAddress={this.props.saveAddress}
         />}
 
         <div>
@@ -136,7 +121,7 @@ class DeliveryAddress extends Component {
             {alert}
             {userNotificationComponent}
             <div className="cart-fill__block-inner cart-fill__block--flex">
-              {addresses}
+              {addressesComponent}
               <div className="cart-fill__btns">
                 {newAddressBtn}
                 {showMoreButton}

@@ -31,7 +31,7 @@
             </asp:TemplateField>
             <asp:TemplateField>
                 <ItemTemplate>
-                    <asp:Label runat="server" ID="lblItemSpecs" Text='<%# Eval("ItemSpec") %>'></asp:Label>
+                    <asp:Label runat="server" ID="lblItemSpecs" Text='<%# Eval("ItemSpec") != null ? Eval("ItemSpec").ToString().Substring(0,20) : Eval("ItemSpec") %>' class="js-tooltip" data-tooltip-placement="bottom" ToolTip='<%# Eval("ItemSpec") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField>
@@ -113,7 +113,7 @@
             </asp:TemplateField>
             <asp:TemplateField>
                 <ItemTemplate>
-                    <asp:Label runat="server" ID="lblTweComments" Text='<%#Eval("TweComments") %>'></asp:Label>
+                    <asp:Label runat="server" ID="lblTweComments" Text='<%#Eval("TweComments") != null ? Eval("TweComments").ToString().Substring(0,20) : Eval("TweComments") %>' class="js-tooltip" data-tooltip-placement="bottom" ToolTip='<%# Eval("TweComments") %>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:TextBox runat="server" ID="txtTweComments" Text='<%#Eval("TweComments") %>'></asp:TextBox>
@@ -124,8 +124,13 @@
                     <asp:Label runat="server" ID="lblActualPrice" Text='<%# $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("ActualPrice"), CurrentSite.SiteID,true)}"  %>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:TextBox runat="server" ID="txtActualPrice" Text='<%#Eval("ActualPrice") %>'></asp:TextBox>
+                    <asp:TextBox runat="server" CssClass="js-ActualPrice" ID="txtActualPrice" Text='<%#Eval("ActualPrice") %>'></asp:TextBox>
                 </EditItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField>
+                <ItemTemplate>
+                    <asp:Label runat="server" ID="lblEstimatedPrice" Text='<%# $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("EstimatedPrice"), CurrentSite.SiteID,true)}"  %>'></asp:Label>
+                </ItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField>
                 <ItemTemplate>

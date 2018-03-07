@@ -469,6 +469,7 @@
     <Compile Include="3dsiCreditCard\PaymentMethodTest.cs" />
     <Compile Include="BusinessLogic\DateTimeFormatterTest.cs" />
     <Compile Include="BusinessLogic\ProductsServiceTest.cs" />
+    <Compile Include="BusinessLogic\RoleServiceTests.cs" />
     <Compile Include="Deployment\AutomatedXunitTests.cs" />
     <Compile Include="EventHandlers\ProductEventHandlerTests.cs" />
     <Compile Include="Infrastructure\AutomockMapperRegistrationTest.cs" />
@@ -478,6 +479,7 @@
     <Compile Include="Infrastructure\ControllerTests.cs" />
     <Compile Include="Infrastructure\NotRegisteredService.cs" />
     <Compile Include="MicroserviceClients\FileModuleTests.cs" />
+    <Compile Include="MicroserviceClients\TemplateClientTest.cs" />
     <Compile Include="Models\ProductValidatorTests.cs" />
     <Compile Include="Models\DeliveryAddressesTests.cs" />
     <Compile Include="OrderReports\OrderReportFactoryTests.cs" />
@@ -493,7 +495,8 @@
     <Compile Include="WebApi\OrderDetailServiceTests.cs" />
     <Compile Include="WebApi\PaymentMethods.cs" />
     <Compile Include="WebApi\SubmitOrderServiceTests.cs" />
-    <Compile Include="WebApi\TemplateServiceTest.cs" />
+    <Compile Include="WebApi\TemplateContollerTest.cs" />
+    <Compile Include="BusinessLogic\TemplateServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CMS\Kadena2.0.Web.csproj">

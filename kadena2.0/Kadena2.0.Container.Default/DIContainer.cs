@@ -8,6 +8,8 @@ using Kadena.BusinessLogic.Services;
 using Kadena.BusinessLogic.Services.Orders;
 using Kadena.BusinessLogic.Services.SettingsSynchronization;
 using Kadena.Helpers;
+using Kadena.MicroserviceClients.Contracts;
+using Kadena.MicroserviceClients.Clients;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.WebAPI.KenticoProviders.Providers;
@@ -89,6 +91,7 @@ namespace Kadena2.Container.Default
             container.Register<IUserBudgetService, UserBudgetService>();
             container.Register<ISavedCreditCard3dsi, SavedCreditCard3dsi>();
 			container.Register<IIBTFService, IBTFService>();
+            container.Register<IRoleService, RoleService>();
             return container;
         }
 
@@ -122,6 +125,7 @@ namespace Kadena2.Container.Default
 			container.Register<IkenticoUserBudgetProvider, KenticoUserBudgetProvider>();
             container.Register<IFailedOrderStatusProvider, FailedOrderStatusProvider>();
             container.Register<IKenticoIBTFProvider, KenticoIBTFProvider>();
+            container.Register<IKenticoRoleProvider, KenticoRoleProvider>();
             return container;
         }
 

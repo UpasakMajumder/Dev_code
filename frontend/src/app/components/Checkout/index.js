@@ -5,6 +5,7 @@ import { toastr } from 'react-redux-toastr';
 import { CHECKOUT, NOTIFICATION } from 'app.globals';
 /* helpers */
 import { emailRegExp } from 'app.helpers/regexp';
+import { scrollTo } from 'app.helpers/dom';
 /* components */
 import Alert from 'app.dump/Alert';
 import Button from 'app.dump/Button';
@@ -46,7 +47,8 @@ class Checkout extends Component {
         [defaultId]: ''
       },
       agreeWithTandC: !CHECKOUT.tAndC.exists,
-      initChecked: true
+      initChecked: true,
+      scrolled: false
     };
   }
 
@@ -206,6 +208,14 @@ class Checkout extends Component {
     });
   };
 
+  navigateToContainer = () => {
+    if (this.state.scrolled) return;
+    const { hash } = location;
+    if (!hash) return;
+    const scrolled = scrollTo(hash);
+    this.setState({ scrolled });
+  }
+
   refreshCartPreview = (products) => {
     const { items, summaryPrice } = products;
     this.props.changeProducts(items, summaryPrice);
@@ -217,7 +227,7 @@ class Checkout extends Component {
 
     if (uiNext.totals && this.state.initChecked) {
       this.initCheckedShoppingData(uiNext);
-      this.setState({ initChecked: false });
+      this.setState({ initChecked: false }, this.navigateToContainer);
     }
     if (uiNext.products !== uiCurr.products) this.refreshCartPreview(uiNext.products);
   }

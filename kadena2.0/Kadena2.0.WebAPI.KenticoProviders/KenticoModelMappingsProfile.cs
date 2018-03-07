@@ -10,11 +10,8 @@ using Kadena.WebAPI.KenticoProviders;
 using CMS.DocumentEngine;
 using Kadena.Models.Product;
 using CMS.Helpers;
-using CMS.DataEngine;
 using CMS.CustomTables;
 using Kadena.Models.CreditCard;
-using Kadena.Models.UserBudget;
-using Kadena.Models.FyBudget;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -91,8 +88,10 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.UserID, opt => opt.MapFrom(src => src.CustomerUserID))
                 .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.CustomerCompany))
                 .ForMember(dest => dest.SiteId, opt => opt.MapFrom(src => src.CustomerSiteID))
-                .ForMember(dest => dest.DefaultShippingAddressId, opt => opt.MapFrom(src => src.GetIntegerValue(KenticoUserProvider.CustomerDefaultShippingAddresIDFieldName, 0)))
-                .AfterMap((src, dest) => dest.PreferredLanguage = src.CustomerUser?.PreferredCultureCode ?? string.Empty);
+                .ForMember(dest => dest.DefaultShippingAddressId, opt => opt.MapFrom(src => src.GetIntegerValue(KenticoAddressBookProvider.CustomerDefaultShippingAddresIDFieldName, 0)))
+                .AfterMap((src, dest) => dest.PreferredLanguage = src.CustomerUser?.PreferredCultureCode ?? string.Empty)
+                .ReverseMap();
+
             CreateMap<CarrierInfo, DeliveryCarrier>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarrierID))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.CarrierDisplayName))
@@ -104,6 +103,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Url, opt => opt.MapFrom(src => src.DocumentUrlPath))
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => URLHelper.GetAbsoluteUrl(src.GetValue("ProductCategoryImage", string.Empty))))
                 .ForMember(dest => dest.ProductBordersEnabled, opt => opt.MapFrom(src => src.GetBooleanValue("ProductCategoryBordersEnabled", false)))
+                .ForMember(dest => dest.Order, opt => opt.MapFrom(src => src.NodeOrder))
                 .AfterMap((src, dest) => dest.Border = new Border { Exists = src.GetBooleanValue("ProductCategoryBordersEnabled", false) });
             CreateMap<CustomTableItem, Submission>()
                 .ForMember(dest => dest.SubmissionId, opt => opt.MapFrom(src => src.GetGuidValue("SubmissionId", Guid.Empty)))
@@ -112,10 +112,17 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.GetIntegerValue("UserId", 0)))
                 .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.GetIntegerValue("CustomerId", 0)))
                 .ForMember(dest => dest.Processed, opt => opt.MapFrom(src => src.GetBooleanValue("Processed", false)))
+                .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.GetBooleanValue("Success", false)))
                 .ForMember(dest => dest.OrderJson, opt => opt.MapFrom(src => src.GetStringValue("OrderJson", string.Empty)))
+                .ForMember(dest => dest.Error, opt => opt.MapFrom(src => src.GetStringValue("Error", string.Empty)))
                 .ForMember(dest => dest.SaveCardJson, opt => opt.MapFrom(src => src.GetStringValue("SaveCardJson", string.Empty)))
                 .ForMember(dest => dest.RedirectUrl, opt => opt.MapFrom(src => src.GetStringValue("RedirectUrl", string.Empty)));
             CreateMap<AddressInfo, AddressData>();
+            CreateMap<RoleInfo, Role>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.RoleID))
+                .ForMember(dest => dest.CodeName, opt => opt.MapFrom(src => src.RoleName))
+                .ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.RoleDisplayName))
+                .ReverseMap();
         }
     }
 }

@@ -55,7 +55,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             string where = null;
             if (!string.IsNullOrEmpty(txtSearchProducts.Text))
             {
-                where += $"(p.ProductName like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}%' OR SKUProductCustomerReferenceNumber = '{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}')";
+                where += $"(p.ProductName like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}%' OR SKUProductCustomerReferenceNumber like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}%')";
             }
             if (ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0) != 0)
             {
@@ -535,7 +535,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             string where = null;
             if (!string.IsNullOrEmpty(txtSearchProducts.Text))
             {
-                where += $"and (p.ProductName like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}%' OR SKUProductCustomerReferenceNumber = '{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}')";
+                where += $"and (p.ProductName like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}%' OR SKUProductCustomerReferenceNumber like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}%')";
             }
             if (ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0) != 0)
             {
@@ -633,11 +633,11 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                     {
                         foreach (var user in users.AsEnumerable().ToList())
                         {
-                            ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Field<string>("Email"), emailTemplate, program.DocumentName);
+                            ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Field<string>("Email"), emailTemplate, program.DocumentName, campaign.AbsoluteURL);
                         }
                     }
                 }
-                Response.Redirect(CurrentDocument.DocumentUrlPath,false);
+                Response.Redirect(CurrentDocument.DocumentUrlPath, false);
             }
         }
         catch (Exception ex)

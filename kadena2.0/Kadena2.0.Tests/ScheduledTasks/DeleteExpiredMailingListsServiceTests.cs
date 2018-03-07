@@ -25,9 +25,7 @@ namespace Kadena.Tests.ScheduledTasks
 
         /*
          
-            TODO :
-
-            Improve DeleteExpiredMailingListsService based on https://cenveo.atlassian.net/browse/KDA-2262
+            TODO : Improve DeleteExpiredMailingListsService based on https://cenveo.atlassian.net/browse/KDA-2262
             to be unittestable again
 
         [Fact]

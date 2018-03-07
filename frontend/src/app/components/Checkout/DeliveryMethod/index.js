@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import uniqid from 'uniqid';
 /* local components */
 import MethodsGroup from './MethodsGroup';
 
@@ -50,7 +51,7 @@ class DeliveryMethod extends Component {
           changeOpenId={this.changeOpenId}
           changeDeliveryMethod={changeDeliveryMethod}
           checkedId={checkedId}
-          key={`mg-${item.id}`}
+          key={uniqid()}
           {...item} />
       );
     });
@@ -58,7 +59,7 @@ class DeliveryMethod extends Component {
     const descriptionElement = description ? <p className="cart-fill__info">{description}</p> : null;
 
     return (
-      <div>
+      <div id="delivery-method">
         <h2>{title}</h2>
         <div className="cart-fill__block">
           {descriptionElement}

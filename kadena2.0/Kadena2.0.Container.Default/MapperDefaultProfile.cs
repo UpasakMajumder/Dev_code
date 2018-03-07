@@ -8,7 +8,6 @@ using Kadena.Dto.CreditCard._3DSi.Requests;
 using Kadena.Dto.CreditCard.Requests;
 using Kadena.Dto.CreditCard.Responses;
 using Kadena.Dto.CustomerData;
-using Kadena.Dto.General;
 using Kadena.Dto.Logon.Requests;
 using Kadena.Dto.Logon.Responses;
 using Kadena.Dto.MailingList;
@@ -43,7 +42,6 @@ using Kadena.Models.Settings;
 using Kadena.Models.Site;
 using Kadena.Models.SubmitOrder;
 using Kadena.Models.TemplatedProduct;
-using Kadena2.MicroserviceClients.MicroserviceResponses;
 using System.Linq;
 
 namespace Kadena2.Container.Default
@@ -52,6 +50,7 @@ namespace Kadena2.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<ChiliProcess, ChiliProcessDto>();
             CreateMap<ItemOption, ItemOptionDto>();
 
             CreateMap<Price, PriceDto>()
@@ -64,8 +63,6 @@ namespace Kadena2.Container.Default
             CreateMap<CartItem, OrderItemDTO>()
                 .ForMember(dest => dest.SKU, opt => opt.MapFrom(src => src))
                 .ForMember(dest => dest.UnitCount, opt => opt.MapFrom(src => src.Quantity))
-                .ForMember(dest => dest.ChiliTaskId, opt => opt.MapFrom(src => src.DesignFilePathTaskId))
-                .ForMember(dest => dest.ChiliTemplateId, opt => opt.MapFrom(src => src.ChiliEditorTemplateId))
                 .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src => src.Options.ToDictionary(i => i.Name, i => i.Value)));
 
             CreateMap<CustomerData, CustomerDataDTO>();
@@ -115,10 +112,6 @@ namespace Kadena2.Container.Default
             CreateMap<SubmitButton, SubmitButtonDTO>();
             CreateMap<SubmitRequestDto, SubmitOrderRequest>();
             CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
-            CreateMap<SubmitOrderServiceResponseDto, SubmitOrderResult>();
-            CreateMap<SubmitOrderErrorDto, SubmitOrderError>();
-            CreateMap<BaseResponseDto<string>, SubmitOrderResult>();
-            CreateMap<BaseErrorDto, SubmitOrderError>();
             CreateMap<PaymentMethodDto, Kadena.Models.SubmitOrder.PaymentMethod>();
             CreateMap<DeliveryAddress, Kadena.Dto.Settings.AddressDto>()
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id))

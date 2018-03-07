@@ -58,7 +58,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
                 ButtonLabels = new ButtonLabels
                 {
                     Edit = resources.GetResourceString("Kadena.Checkout.EditButton"),
-                    Remove = resources.GetResourceString("Kadena.Checkout.RemoveButton"),
+                    Remove = resources.GetResourceString("Kadena.Checkout.RemoveButton")
                 },
                 SummaryPrice = CreateCartPrice(cartItemsTotals),
                 ProductionTimeLabel = resources.GetResourceString("Kadena.Checkout.ProductionTimeLabel"),
@@ -206,7 +206,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
             if (purchaseOrderMethod != null)
             {
                 purchaseOrderMethod.HasInput = true;
-                purchaseOrderMethod.InputPlaceholder = resources.GetResourceString("Kadena.Checkout.InsertPONumber");
+                purchaseOrderMethod.InputPlaceholder = resources.GetPerSiteResourceString("Kadena.Checkout.InsertPONumber");
             }
 
             return allMethods.ToList();

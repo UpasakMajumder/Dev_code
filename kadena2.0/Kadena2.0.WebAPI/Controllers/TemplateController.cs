@@ -54,5 +54,18 @@ namespace Kadena.WebAPI.Controllers
             var resultDto = _mapper.Map<ProductTemplatesDTO>(result);
             return ResponseJson(resultDto);
         }
+
+        [HttpGet]
+        [CustomerAuthorizationFilter]
+        [Route("api/template/{templateId}/preview/{settingId}")]
+        public async Task<IHttpActionResult> GetPreview(Guid templateId, Guid settingId)
+        {
+            var result = await _templateService.GetPreviewUri(templateId, settingId);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Redirect(result);
+        }
     }
 }
