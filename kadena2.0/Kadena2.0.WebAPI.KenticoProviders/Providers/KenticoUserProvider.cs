@@ -98,22 +98,20 @@ namespace Kadena.WebAPI.KenticoProviders
             customerInfo.Update();
         }
 
-        /// <summary>
-        /// Creates and saves new User
-        /// </summary>
-        /// <returns>ID of new User</returns>
-        public int CreateUser(User user)
+        public void CreateUser(User user, int siteId)
         {
             var newUser = new UserInfo()
             {
                 UserName = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                FullName = $"{user.FirstName} {user.LastName}"
+                FullName = $"{user.FirstName} {user.LastName}",
             };
 
             newUser.Insert();
-            return newUser.UserID;
+            var newUserId = newUser.UserID;
+            UserSiteInfoProvider.AddUserToSite(newUserId, siteId);
+            user.UserId = newUserId;
         }
 
         public void UpdateUser(User user)

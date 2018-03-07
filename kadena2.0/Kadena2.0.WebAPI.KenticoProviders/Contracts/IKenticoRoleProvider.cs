@@ -7,8 +7,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
     {
         IEnumerable<Role> GetUserRoles(int userId);
         IEnumerable<Role> GetRoles(int siteId);
-        bool RoleExists(string roleName, string siteName);
-        int CreateRole(Role role);
-        void AssignUserRole(int userId, int roleId);
+        void AssignUserRoles(string userName, int siteId, IEnumerable<string> roles);
     }
 }

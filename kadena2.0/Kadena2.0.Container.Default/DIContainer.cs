@@ -85,6 +85,7 @@ namespace Kadena2.Container.Default
             container.Register<IUserBudgetService, UserBudgetService>();
             container.Register<ISavedCreditCard3dsi, SavedCreditCard3dsi>();
 			container.Register<IIBTFService, IBTFService>();
+            container.Register<IRoleService, RoleService>();
             return container;
         }
 

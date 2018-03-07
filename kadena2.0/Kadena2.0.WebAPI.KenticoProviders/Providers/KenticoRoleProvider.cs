@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CMS.Membership;
+using CMS.SiteProvider;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
@@ -40,25 +41,19 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers
             return mapper.Map<List<Role>>(roles);
         }
 
-        public bool RoleExists(string roleName, string siteName)
+        public void AssignUserRoles(string userName, int siteId, IEnumerable<string> roles)
         {
-            return RoleInfoProvider.RoleExists(roleName, siteName);
-        }
+            var siteName = SiteInfoProvider.GetSiteName(siteId);
 
-        /// <summary>
-        /// Creates new Role
-        /// </summary>
-        /// <returns>Id of new role</returns>
-        public int CreateRole(Role role)
-        {
-            var newRole = mapper.Map<RoleInfo>(role);
-            RoleInfoProvider.SetRoleInfo(newRole);
-            return newRole.RoleID;
-        }
+            if (string.IsNullOrEmpty(siteName))
+            {
+                throw new ArgumentOutOfRangeException(nameof(siteId), $"Unable to find site with id {siteId}");
+            }
 
-        public void AssignUserRole(int userId, int roleId)
-        {
-            UserInfoProvider.AddUserToRole(userId, roleId);
+            foreach (var role in roles)
+            {
+                UserInfoProvider.AddUserToRole(userName, siteName, role);
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         User GetUserByUserId(int userId);
         int CreateCustomer(Customer customer);
         void UpdateCustomer(Customer customer);
-        int CreateUser(User user);
+        void CreateUser(User user, int siteId);
         void UpdateUser(User user);
         void LinkCustomerToUser(int customerId, int userId);
     }
