@@ -155,8 +155,9 @@ namespace Kadena.WebAPI.KenticoProviders
                 DocumentUrl = doc.AbsoluteURL,
                 Category = doc.Parent?.DocumentName ?? string.Empty,
                 ProductType = doc.GetValue("ProductType", string.Empty),
-                ProductChiliTemplateID = doc.GetValue<Guid>("ProductChiliTemplateID", Guid.Empty),
-                ProductChiliWorkgroupID = doc.GetValue<Guid>("ProductChiliWorkgroupID", Guid.Empty)
+                ProductMasterTemplateID = doc.GetValue<Guid>("ProductChiliTemplateID", Guid.Empty),
+                ProductChiliWorkgroupID = doc.GetValue<Guid>("ProductChiliWorkgroupID", Guid.Empty),
+                TemplateLowResSettingId = doc.GetValue("ProductChiliLowResSettingId", Guid.Empty)
             };
 
             if (sku != null)
@@ -218,7 +219,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
         }
-        public void UpdateAllocatedProductQuantityForUser(int productID, int userID,int quantity)
+        public void UpdateAllocatedProductQuantityForUser(int productID, int userID, int quantity)
         {
             DataClassInfo customTable = DataClassInfoProvider.GetDataClassInfo(CustomTableName);
             if (customTable != null)
@@ -227,7 +228,7 @@ namespace Kadena.WebAPI.KenticoProviders
                                                                     .WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
                 if (customTableData != null)
                 {
-                    customTableData.SetValue("Quantity", customTableData.GetIntegerValue("Quantity",0)-quantity);
+                    customTableData.SetValue("Quantity", customTableData.GetIntegerValue("Quantity", 0) - quantity);
                     customTableData.Update();
                 }
             }
@@ -266,6 +267,15 @@ namespace Kadena.WebAPI.KenticoProviders
             var category = BaseAbstractInfoProvider
                 .GetInfoByName(OptionCategoryInfo.OBJECT_TYPE, codeName);
             return mapper.Map<OptionCategory>(category);
+        }
+
+        public Product GetProductBySkuId(int skuId)
+        {
+            var node = new TreeProvider(MembershipContext.AuthenticatedUser)
+                .SelectSingleNode(
+                    new NodeSelectionParameters { Where = $"{nameof(TreeNode.NodeSKUID)}={skuId}" }
+                );
+            return GetProductByNodeId(node.NodeID);
         }
     }
 }

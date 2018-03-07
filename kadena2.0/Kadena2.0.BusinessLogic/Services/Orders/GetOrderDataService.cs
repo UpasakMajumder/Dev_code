@@ -8,7 +8,6 @@ using Kadena.Models.Product;
 using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.BusinessLogic.Contracts.Orders;
-using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
@@ -25,7 +24,6 @@ namespace Kadena2.BusinessLogic.Services.Orders
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxService;
-        private readonly ITemplatedClient templateService;
         private readonly IKenticoLocalizationProvider localization;
         private readonly IKenticoSiteProvider siteProvider;
         private readonly IKadenaSettings settings;
@@ -37,7 +35,6 @@ namespace Kadena2.BusinessLogic.Services.Orders
            IKenticoUserProvider kenticoUsers,
            IKenticoLogger kenticoLog,
            ITaxEstimationService taxService,
-           ITemplatedClient templateService,
            IKenticoLocalizationProvider localization,
            IKenticoSiteProvider site,
            IKadenaSettings settings,
@@ -68,10 +65,6 @@ namespace Kadena2.BusinessLogic.Services.Orders
             {
                 throw new ArgumentNullException(nameof(taxService));
             }
-            if (templateService == null)
-            {
-                throw new ArgumentNullException(nameof(templateService));
-            }
             if (localization == null)
             {
                 throw new ArgumentNullException(nameof(localization));
@@ -95,27 +88,10 @@ namespace Kadena2.BusinessLogic.Services.Orders
             this.kenticoUsers = kenticoUsers;
             this.kenticoLog = kenticoLog;
             this.taxService = taxService;
-            this.templateService = templateService;
             this.localization = localization;
             this.siteProvider = site;
             this.settings = settings;
             this.orderDataFactory = orderDataFactory;
-        }
-
-        private async Task<Guid> CallRunGeneratePdfTask(CartItem cartItem)
-        {
-            var response = await templateService.RunGeneratePdfTask(cartItem.EditorTemplateId.ToString(), cartItem.ProductChiliPdfGeneratorSettingsId.ToString());
-            if (response.Success && response.Payload != null)
-            {
-                return new Guid(response.Payload.TaskId);
-            }
-            else
-            {
-                kenticoLog.LogError($"Call run generate PDF task",
-                    $"Template service client with templateId = {cartItem.EditorTemplateId} and settingsId = {cartItem.ProductChiliPdfGeneratorSettingsId}" +
-                    response?.Error?.Message ?? string.Empty);
-            }
-            return Guid.Empty;
         }
 
         public async Task<OrderDTO> GetSubmitOrderData(SubmitOrderRequest request)
@@ -148,12 +124,6 @@ namespace Kadena2.BusinessLogic.Services.Orders
             if (string.IsNullOrWhiteSpace(customer.Company))
             {
                 customer.Company = settings.DefaultCustomerCompanyName;
-            }
-
-            foreach (var item in cartItems.Where(i => i.IsTemplated))
-            {
-                var taskId = await CallRunGeneratePdfTask(item);
-                item.DesignFilePathTaskId = taskId;
             }
 
             var orderDto = new OrderDTO()

@@ -19,6 +19,8 @@ using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kadena.Helpers;
+using Kadena.Models.Common;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -305,11 +307,13 @@ namespace Kadena.WebAPI.KenticoProviders
                     CartItemText = i.CartItemText,
                     DesignFileKey = i.GetValue("ArtworkLocation", string.Empty),
                     MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
-                    ChiliEditorTemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
-                    ProductChiliPdfGeneratorSettingsId = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
+                    ChiliProcess = new ChiliProcess
+                    {
+                        TemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
+                        PdfSettings = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
+                    },
                     ProductChiliWorkspaceId = i.GetValue("ProductChiliWorkspaceId", Guid.Empty),
                     ChiliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
-                    DesignFilePathTaskId = i.GetValue("DesignFilePathTaskId", Guid.Empty),
                     SKUName = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU?.SKUName,
                     SKUNumber = i.SKU?.SKUNumber,
                     TotalTax = 0.0m,
@@ -324,24 +328,29 @@ namespace Kadena.WebAPI.KenticoProviders
                     QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                     MailingListName = i.GetValue("MailingListName", string.Empty),
                     Template = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
-                    EditorTemplateId = i.GetValue("ChilliEditorTemplateID", string.Empty),
                     ProductPageId = i.GetIntegerValue("ProductPageID", 0),
                     SKUID = i.SKUID,
                     StockQuantity = i.SKU.SKUAvailableItems,
                     MailingListPrefix = resources.GetResourceString("Kadena.Checkout.MailingListLabel"),
                     TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplateLabel"),
                     ProductionTime = displayProductionAndShipping ? i.GetValue("ProductProductionTime", string.Empty) : null,
-                    ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null
+                    ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null,
+                    Preview = new Button { Exists = false, Text = resources.GetResourceString("Kadena.Checkout.PreviewButton") }
                 };
                 if (cartItem.IsTemplated)
                 {
-                    cartItem.EditorURL = $@"{documents.GetDocumentUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~'))}
-?nodeId={cartItem.ProductPageId}
-&templateId={cartItem.EditorTemplateId}
-&workspaceid={cartItem.ProductChiliWorkspaceId}
-&containerId={cartItem.MailingListGuid}
-&quantity={cartItem.Quantity}
-&customName={URLHelper.URLEncode(cartItem.CartItemText)}";
+                    var product = productProvider.GetProductByNodeId(cartItem.ProductPageId);
+                    cartItem.Preview.Url = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, product.TemplateLowResSettingId);
+                    cartItem.Preview.Exists = true;
+
+                    var editorUrl = documents.GetDocumentUrl(URLHelper.ResolveUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")));
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "nodeId", cartItem.ProductPageId.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "templateId", cartItem.ChiliProcess.TemplateId.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "workspaceid", cartItem.ProductChiliWorkspaceId.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "containerId", cartItem.MailingListGuid.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "quantity", cartItem.Quantity.ToString());
+                    editorUrl = URLHelper.AddParameterToUrl(editorUrl, "customName", URLHelper.URLEncode(cartItem.CartItemText));
+                    cartItem.EditorURL = editorUrl;
                 }
                 if (i.VariantParent != null)
                 {
@@ -481,32 +490,7 @@ namespace Kadena.WebAPI.KenticoProviders
             var shoppingCart = GetShoppingCart(shoppingCartId);
             ShoppingCartInfoProvider.DeleteShoppingCartInfo(shoppingCart);
         }
-
-        public void SaveShippingAddress(DeliveryAddress address)
-        {
-            var customer = ECommerceContext.CurrentCustomer;
-            var info = new AddressInfo
-            {
-                AddressID = address.Id,
-                AddressLine1 = address.Address1,
-                AddressLine2 = address.Address2,
-                AddressCity = address.City,
-                AddressStateID = address.State.Id,
-                AddressCountryID = address.Country.Id,
-                AddressZip = address.Zip,
-                AddressCustomerID = customer.CustomerID,
-                AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}",
-                AddressPhone = address.Phone
-            };
-            info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
-            info.SetValue("AddressType", AddressType.Shipping.Code);
-            info.SetValue("CompanyName", address.CustomerName);
-            info.SetValue("Email", address.Email);
-
-            AddressInfoProvider.SetAddressInfo(info);
-            address.Id = info.AddressID;
-        }
-
+ 
         public double GetCurrentCartTotalItemsPrice()
         {
             return ECommerceContext.CurrentShoppingCart.TotalItemsPrice;
