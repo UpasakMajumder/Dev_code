@@ -2,7 +2,6 @@
 {
     public class SamlAuthenticationDto
     {
-        public string Wa { get; set; }
-        public string Wresult { get; set; }
+        public string SAMLResponse { get; set; }
     }
 }

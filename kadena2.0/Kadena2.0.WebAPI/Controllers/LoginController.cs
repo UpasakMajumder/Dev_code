@@ -68,7 +68,7 @@ namespace Kadena.WebAPI.Controllers
         [Route("api/login/saml2")]
         public IHttpActionResult LoginSaml2([FromBody] SamlAuthenticationDto request)
         {
-            var authenticationResultPage = identityService.TryAuthenticate(request.Wresult);
+            var authenticationResultPage = identityService.TryAuthenticate(request.SAMLResponse);
             if (authenticationResultPage == null)
             {
                 return NotFound();
