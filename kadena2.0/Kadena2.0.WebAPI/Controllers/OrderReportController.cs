@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.Common;
-using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Models.Orders;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
@@ -13,18 +11,13 @@ using System.Web.Http;
 namespace Kadena.WebAPI.Controllers
 {
     [CustomerAuthorizationFilter]
-    public class OrderController : ApiControllerBase
+    public class OrderReportController : ApiControllerBase
     {
-        private readonly IOrderDetailService orderDetailService;
         private readonly IOrderReportService orderService;
         private readonly IMapper mapper;
 
-        public OrderController(IOrderDetailService orderDetailService, IOrderReportService orderService, IMapper mapper)
+        public OrderReportController(IOrderReportService orderService, IMapper mapper)
         {
-            if (orderDetailService == null)
-            {
-                throw new ArgumentNullException(nameof(orderDetailService));
-            }
             if (orderService == null)
             {
                 throw new ArgumentNullException(nameof(orderService));
@@ -34,24 +27,14 @@ namespace Kadena.WebAPI.Controllers
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            this.orderDetailService = orderDetailService;
             this.orderService = orderService;
             this.mapper = mapper;
         }
 
         [HttpGet]
-        [Route(Routes.Order.Detail)]
-        [Route(Routes.Order.DetailLegacy)]
-        public async Task<IHttpActionResult> Get([FromUri]string orderId)
-        {
-            var detailPage = await orderDetailService.GetOrderDetail(orderId);
-            var detailPageDto = mapper.Map<OrderDetailDTO>(detailPage);
-            return ResponseJson(detailPageDto);
-        }
-
-        [HttpGet]
-        [Route(Routes.Order.Get)]
-        public async Task<IHttpActionResult> Get(DateTime? dateFrom = null, DateTime? dateTo = null, string sort = null, int page = 1)
+        [Route(Routes.OrderReport.Get)]
+        public async Task<IHttpActionResult> Get(
+            DateTime? dateFrom = null, DateTime? dateTo = null, string sort = null, int page = 1)
         {
             var orders = await orderService
                 .GetOrders(page, new OrderFilter { FromDate = dateFrom, ToDate = dateTo, Sort = sort });
@@ -61,7 +44,7 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route(Routes.Order.Export)]
+        [Route(Routes.OrderReport.Export)]
         public async Task<IHttpActionResult> Export(DateTime? dateFrom = null, DateTime? dateTo = null)
         {
             var export = await orderService

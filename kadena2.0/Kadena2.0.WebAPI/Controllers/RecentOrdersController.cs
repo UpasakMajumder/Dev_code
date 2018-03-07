@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.RecentOrders;
+using Kadena.Dto.ViewOrder.Responses;
 using Kadena.WebAPI.Infrastructure;
 using System;
 using System.Threading.Tasks;
@@ -10,10 +11,14 @@ namespace Kadena.WebAPI.Controllers
 {
     public class RecentOrdersController : ApiControllerBase
     {
+        private readonly IOrderDetailService orderDetailService;
         private readonly IMapper _mapper;
         private readonly IOrderListService _orderService;
 
-        public RecentOrdersController(IOrderListServiceFactory orderListServiceFactory, IMapper mapper)
+        public RecentOrdersController(
+            IOrderDetailService orderDetailService, 
+            IOrderListServiceFactory orderListServiceFactory, 
+            IMapper mapper)
         {
             if (orderListServiceFactory == null)
             {
@@ -25,6 +30,7 @@ namespace Kadena.WebAPI.Controllers
             }
 
             _orderService = orderListServiceFactory.GetRecentOrders();
+            this.orderDetailService = orderDetailService;
             _mapper = mapper;
         }
 
@@ -62,6 +68,15 @@ namespace Kadena.WebAPI.Controllers
             var orderHead = await _orderService.GetHeaders(orderType, campaignID);
             var result = _mapper.Map<OrderHeadBlockDto>(orderHead);
             return ResponseJson(result);
+        }
+
+        [HttpGet]
+        [Route(Routes.Order.Detail)]
+        public async Task<IHttpActionResult> Get([FromUri]string orderId)
+        {
+            var detailPage = await orderDetailService.GetOrderDetail(orderId);
+            var detailPageDto = _mapper.Map<OrderDetailDTO>(detailPage);
+            return ResponseJson(detailPageDto);
         }
     }
 }
