@@ -2,13 +2,13 @@
 using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
 using Kadena2.MicroserviceClients.Clients.Base;
-using Kadena2.MicroserviceClients.Contracts;
+using Kadena.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Kadena2.MicroserviceClients.Clients
+namespace Kadena.MicroserviceClients.Clients
 {
     public sealed class TemplatedClient : SignedClientBase, ITemplatedClient
     {
@@ -18,13 +18,6 @@ namespace Kadena2.MicroserviceClients.Clients
         public TemplatedClient(ISuppliantDomainClient suppliantDomain, IMicroProperties properties) : base(suppliantDomain)
         {
             _properties = properties;
-        }
-
-        public async Task<BaseResponseDto<GeneratePdfTaskResponseDto>> RunGeneratePdfTask(string templateId, string settingsId)
-        {
-            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url}/api/template/{templateId}/pdf/{settingsId}";
-            return await Get<GeneratePdfTaskResponseDto>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<GeneratePdfTaskStatusResponseDto>> GetGeneratePdfTaskStatus(string templateId, string taskId)
@@ -80,6 +73,13 @@ namespace Kadena2.MicroserviceClients.Clients
                 workSpaceId,
                 use3d
             }).ConfigureAwait(false);
+        }
+
+        public async Task<BaseResponseDto<string>> GetPreview(Guid templateId, Guid settingId)
+        {
+            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
+            url = $"{url}/api/template/{templateId}/preview/{settingId}";
+            return await Get<string>(url).ConfigureAwait(false);
         }
     }
 }

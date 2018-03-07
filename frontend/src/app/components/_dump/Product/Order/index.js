@@ -5,6 +5,16 @@ import SVG from 'app.dump/SVG';
 /* helpers */
 import timeFormat from 'app.helpers/time';
 
+const getPreviewLink = (preview) => {
+  if (!preview) return null;
+  if (!preview.exists) return null;
+  return (
+    <div className="cart-product__file">
+      <a className="link" target="_blank" href={preview.url}>{preview.text}</a>
+    </div>
+  );
+};
+
 const Order = ({
   image,
   template,
@@ -23,7 +33,8 @@ const Order = ({
   templatePrefix,
   productStatusPrefix,
   productStatus,
-  options
+  options,
+  preview
 }) => {
   const downloadPdfLink = downloadPdfURL
     ? <div className="cart-product__file">
@@ -109,6 +120,7 @@ const Order = ({
           {productStatusInfo}
           {quantityElement}
           {downloadPdfLink}
+          {getPreviewLink(preview)}
         </div>
       </div>
     </div>

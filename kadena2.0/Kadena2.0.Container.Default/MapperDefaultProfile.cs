@@ -3,11 +3,11 @@ using Kadena.Dto.Brands;
 using Kadena.Dto.BusinessUnits;
 using Kadena.Dto.Checkout;
 using Kadena.Dto.Checkout.Responses;
+using Kadena.Dto.Common;
 using Kadena.Dto.CreditCard._3DSi.Requests;
 using Kadena.Dto.CreditCard.Requests;
 using Kadena.Dto.CreditCard.Responses;
 using Kadena.Dto.CustomerData;
-using Kadena.Dto.General;
 using Kadena.Dto.Logon.Requests;
 using Kadena.Dto.Logon.Responses;
 using Kadena.Dto.MailingList;
@@ -29,6 +29,7 @@ using Kadena.Models;
 using Kadena.Models.Brand;
 using Kadena.Models.BusinessUnit;
 using Kadena.Models.Checkout;
+using Kadena.Models.Common;
 using Kadena.Models.CreditCard;
 using Kadena.Models.CustomerData;
 using Kadena.Models.Login;
@@ -48,6 +49,7 @@ namespace Kadena2.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<ChiliProcess, ChiliProcessDto>();
             CreateMap<ItemOption, ItemOptionDto>();
 
             CreateMap<Price, PriceDto>()
@@ -60,8 +62,6 @@ namespace Kadena2.Container.Default
             CreateMap<CartItem, OrderItemDTO>()
                 .ForMember(dest => dest.SKU, opt => opt.MapFrom(src => src))
                 .ForMember(dest => dest.UnitCount, opt => opt.MapFrom(src => src.Quantity))
-                .ForMember(dest => dest.ChiliTaskId, opt => opt.MapFrom(src => src.DesignFilePathTaskId))
-                .ForMember(dest => dest.ChiliTemplateId, opt => opt.MapFrom(src => src.ChiliEditorTemplateId))
                 .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src => src.Options.ToDictionary(i => i.Name, i => i.Value)));
 
             CreateMap<CustomerData, CustomerDataDTO>();

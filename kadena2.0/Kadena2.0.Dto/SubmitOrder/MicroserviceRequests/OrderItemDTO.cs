@@ -25,9 +25,8 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
         public decimal TotalTax { get; set; }
 
         public MailingListDTO MailingList { get; set; }
-        public Guid ChiliTaskId { get; set; }
-        public Guid ChiliTemplateId { get; set; }
         public string DesignFileKey { get; set; }
         public Dictionary<string, string> Attributes { get; set; }
+        public ChiliProcessDto ChiliProcess { get; set; }
   }
 }
