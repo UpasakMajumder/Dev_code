@@ -161,6 +161,7 @@ namespace Kadena2.Container.Default
             container.Register<ICheckoutPageFactory, CheckoutPageFactory>();
             container.Register<IOrderDataFactory, OrderDataFactory>();
             container.Register<IOrderResultPageUrlFactory, OrderResultPageUrlFactory>();
+            container.Register<IOrderReportFactory, OrderReportFactory>();
             return container;
         }
 

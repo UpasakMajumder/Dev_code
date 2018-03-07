@@ -1,16 +1,14 @@
-﻿using Kadena.BusinessLogic.Contracts;
+﻿using AutoMapper;
 using Kadena.BusinessLogic.Contracts.Orders;
-using Kadena.Dto.Order;
+using Kadena.BusinessLogic.Factories;
 using Kadena.Infrastructure.Contracts;
-using Kadena.Models;
+using Kadena.Infrastructure.FileConversion;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
 using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
-using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,12 +18,10 @@ namespace Kadena.BusinessLogic.Services.Orders
     {
         private readonly IKenticoResourceService kenticoResources;
         private readonly IKenticoSiteProvider kenticoSiteProvider;
-        private readonly IDateTimeFormatter dateTimeFormatter;
         private readonly IOrderViewClient orderViewClient;
-        private readonly IKenticoUserProvider kenticoUserProvider;
-        private readonly IKenticoDocumentProvider kenticoDocumentProvider;
-        private readonly IKenticoOrderProvider kenticoOrderProvider;
         private readonly IExcelConvert excelConvert;
+        private readonly IOrderReportFactory orderReportFactory;
+        private readonly IMapper mapper;
         public const int DefaultCountOfOrdersPerPage = 20;
         public const int FirstPageNumber = 1;
 
@@ -45,37 +41,19 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
         }
 
-        private string _orderDetailUrl = string.Empty;
-        public string OrderDetailUrl
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(_orderDetailUrl))
-                {
-                    var defaultUrl = kenticoResources.GetSettingsKey(Settings.KDA_OrderDetailUrl);
-                    _orderDetailUrl = kenticoDocumentProvider.GetDocumentUrl(defaultUrl);
-                }
-                return _orderDetailUrl;
-            }
-        }
-
         public OrderReportService(IKenticoResourceService kenticoResources,
             IKenticoSiteProvider kenticoSiteProvider,
-            IDateTimeFormatter dateTimeFormatter,
             IOrderViewClient orderViewClient,
-            IKenticoUserProvider kenticoUserProvider,
-            IKenticoDocumentProvider kenticoDocumentProvider,
-            IKenticoOrderProvider kenticoOrderProvider,
-            IExcelConvert excelConvert)
+            IExcelConvert excelConvert,
+            IOrderReportFactory orderReportFactory,
+            IMapper mapper)
         {
             this.kenticoResources = kenticoResources;
             this.kenticoSiteProvider = kenticoSiteProvider;
-            this.dateTimeFormatter = dateTimeFormatter;
             this.orderViewClient = orderViewClient;
-            this.kenticoUserProvider = kenticoUserProvider;
-            this.kenticoDocumentProvider = kenticoDocumentProvider;
-            this.kenticoOrderProvider = kenticoOrderProvider;
             this.excelConvert = excelConvert;
+            this.orderReportFactory = orderReportFactory;
+            this.mapper = mapper;
         }
 
         public virtual Task<PagedData<OrderReport>> GetOrders(int page, OrderFilter filter)
@@ -114,32 +92,12 @@ namespace Kadena.BusinessLogic.Services.Orders
                     RowsOnPage = OrdersPerPage,
                     PagesCount = pagesCount
                 },
-                Data = MapOrders(orders.Payload.Orders)
+                Data = orders.Payload.Orders
+                    .Select(o => orderReportFactory.Create(o))
+                    .ToList()
             };
         }
-
-        private List<OrderReport> MapOrders(IEnumerable<RecentOrderDto> orders)
-        {
-            return orders.Select(o => new OrderReport
-            {
-                Items = o.Items.Select(it => new ReportLineItem
-                {
-                    Name = it.Name,
-                    Price = it.Price,
-                    Quantity = it.Quantity,
-                    SKU = it.SKU
-                }).ToList(),
-                Number = o.Id,
-                OrderingDate = o.CreateDate,
-                ShippingDate = o.ShippingDate,
-                Site = o.SiteName,
-                Status = FormatOrderStatus(o.Status),
-                TrackingNumber = o.TrackingNumber,
-                Url = FormatDetailUrl(o),
-                User = FormatCustomer(kenticoUserProvider.GetCustomer(o.CustomerId))
-            }).ToList();
-        }
-
+        
         public TableView ConvertOrdersToView(PagedData<OrderReport> orders)
         {
             if (orders == null)
@@ -147,32 +105,9 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new ArgumentNullException(nameof(orders));
             }
 
-            var rows = orders.Data?
-                .SelectMany(o => o.Items.Select(it => new TableRow
-                {
-                    Url = o.Url,
-                    Items = new object[]
-                    {
-                        o.Site,
-                        o.Number,
-                        dateTimeFormatter.Format(o.OrderingDate),
-                        o.User,
-                        it.Name,
-                        it.SKU,
-                        it.Quantity,
-                        it.Price,
-                        o.Status,
-                        o.ShippingDate.HasValue ? dateTimeFormatter.Format(o.ShippingDate.Value) : string.Empty,
-                        o.TrackingNumber
-                    }
-                }))
-                .ToArray();
+            var view = orderReportFactory.CreateTableView(orders.Data);
+            view.Pagination = orders.Pagination;
 
-            var view = new TableView
-            {
-                Pagination = orders.Pagination,
-                Rows = rows
-            };
             return view;
         }
 
@@ -184,12 +119,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public virtual async Task<FileResult> GetOrdersExportForSite(string site, OrderFilter filter)
         {
-            // todo: 
-            // call the microservice client without paging
-            // map the response RecentOrderDto -> OrderReport -> TableView -> xls
-
             ValidateFilter(filter);
-
 
             OrderFilter.SortFields sort;
             var sortSpecified = filter.TryParseSort(out sort);
@@ -202,9 +132,12 @@ namespace Kadena.BusinessLogic.Services.Orders
             string orderType = null;
 
             var orders = await orderViewClient.GetOrders(site, customerId, page, OrdersPerPage, filter.FromDate, filter.ToDate, sortProperty, sortDesc, campaign, orderType);
+            var ordersReport = orders.Payload.Orders.ToList()
+                .Select(o => orderReportFactory.Create(o));
+            var tableView = orderReportFactory.CreateTableView(ordersReport);
 
-            var table = new Infrastructure.FileConversion.Table();
-            var fileData = excelConvert.Convert(table);
+            var fileDataTable = mapper.Map<Table>(tableView);
+            var fileData = excelConvert.Convert(fileDataTable);
 
             return new FileResult
             {
@@ -212,27 +145,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                 Name = "export.xlsx",
                 Mime = ContentTypes.Xlsx
             };
-        }
-
-        public string FormatCustomer(Customer customer)
-        {
-            var name = $"{customer.FirstName} {customer.LastName}";
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                return name;
-            }
-
-            return customer.Email;
-        }
-
-        public string FormatDetailUrl(RecentOrderDto order)
-        {
-            return $"{OrderDetailUrl}?orderID={order.Id}";
-        }
-
-        public string FormatOrderStatus(string status)
-        {
-            return kenticoOrderProvider.MapOrderStatus(status);
         }
 
         private void ValidatePageNumber(int page)

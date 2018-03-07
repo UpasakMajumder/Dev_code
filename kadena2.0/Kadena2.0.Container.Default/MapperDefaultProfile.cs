@@ -26,6 +26,7 @@ using Kadena.Dto.SubmitOrder.Requests;
 using Kadena.Dto.SubmitOrder.Responses;
 using Kadena.Dto.TemplatedProduct.Responses;
 using Kadena.Dto.ViewOrder.Responses;
+using Kadena.Infrastructure.FileConversion;
 using Kadena.Models;
 using Kadena.Models.Brand;
 using Kadena.Models.BusinessUnit;
@@ -188,8 +189,11 @@ namespace Kadena2.Container.Default
                 });
             CreateMap<OrderBody, OrderBodyDto>();
 
+            CreateMap<TableView, Table>();
+            CreateMap<Kadena.Models.Common.TableRow, Kadena.Infrastructure.FileConversion.TableRow>();
+
             CreateMap<TableView, TableViewDto>();
-            CreateMap<TableRow, TableRowDto>();
+            CreateMap<Kadena.Models.Common.TableRow, TableRowDto>();
             CreateMap<Pagination, PaginationDto>();
 
             CreateMap<NewAddressButton, NewAddressButtonDTO>();
