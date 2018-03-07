@@ -87,6 +87,7 @@ namespace Kadena2.Container.Default
             container.Register<IUserBudgetService, UserBudgetService>();
             container.Register<ISavedCreditCard3dsi, SavedCreditCard3dsi>();
 			container.Register<IIBTFService, IBTFService>();
+            container.Register<IRoleService, RoleService>();
             return container;
         }
 
@@ -120,6 +121,7 @@ namespace Kadena2.Container.Default
 			container.Register<IkenticoUserBudgetProvider, KenticoUserBudgetProvider>();
             container.Register<IFailedOrderStatusProvider, FailedOrderStatusProvider>();
             container.Register<IKenticoIBTFProvider, KenticoIBTFProvider>();
+            container.Register<IKenticoRoleProvider, KenticoRoleProvider>();
             return container;
         }
 
