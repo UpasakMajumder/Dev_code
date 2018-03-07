@@ -633,11 +633,11 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                     {
                         foreach (var user in users.AsEnumerable().ToList())
                         {
-                            ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Field<string>("Email"), emailTemplate, program.DocumentName, campaign.AbsoluteURL);
+                            ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Field<string>("Email"), emailTemplate, program.DocumentName);
                         }
                     }
                 }
-                Response.Redirect(CurrentDocument.DocumentUrlPath, false);
+                Response.Redirect(CurrentDocument.DocumentUrlPath,false);
             }
         }
         catch (Exception ex)

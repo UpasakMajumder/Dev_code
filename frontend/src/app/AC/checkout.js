@@ -17,12 +17,25 @@ import {
   CHECKOUT_CHANGE_ADDRESS,
   CHECKOUT_GET_TOTALS,
   CHECKOUT_PROCEED,
-  CHECKOUT_CHANGE_DELIVERY,
-  ADD_NEW_ADDRESS
+  CHECKOUT_CHANGE_DELIVERY
 } from 'app.consts';
 
 /* globals */
 import { CHECKOUT as CHECKOUT_URL, NOTIFICATION } from 'app.globals';
+
+const getCheckedDeliveryMethod = (deliveryMethods) => {
+  let checkedId;
+
+  const openedItems = deliveryMethods.items.filter(item => item.opened);
+  if (openedItems.length) {
+    const checkedItems = openedItems[0].items.filter(item => item.checked);
+    if (checkedItems.length) {
+      checkedId = checkedItems[0].id;
+    }
+  }
+
+  return checkedId;
+};
 
 const getTotalPrice = (dispatch) => {
   dispatch({ type: CHECKOUT_GET_TOTALS + FETCH });
@@ -40,9 +53,14 @@ const getTotalPrice = (dispatch) => {
         return;
       }
 
+      const checkedId = getCheckedDeliveryMethod(payload.deliveryMethods);
+
       dispatch({
         type: CHECKOUT_GET_TOTALS + SUCCESS,
-        payload
+        payload: {
+          ...payload,
+          checkedId
+        }
       });
     })
     .catch((error) => {
@@ -262,40 +280,6 @@ export const sendData = (data) => {
 
 export const addNewAddress = (data, primary) => {
   return (dispatch) => {
-    if (primary) {
-      getTotalPrice(dispatch);
-    } else {
-      dispatch({ type: ADD_NEW_ADDRESS + FETCH });
-      dispatch({ type: APP_LOADING + START });
-
-      dispatch({
-        type: ADD_NEW_ADDRESS + SUCCESS,
-        payload: data
-      });
-
-      axios.post(CHECKOUT_URL.saveAddressURL, data)
-      .then((response) => {
-        const { payload, success, errorMessage } = response.data;
-
-        if (!success) {
-          dispatch({
-            type: CHECKOUT_GET_TOTALS + FAILURE,
-            alert: errorMessage
-          });
-          dispatch({ type: APP_LOADING + FINISH });
-          return;
-        }
-
-        dispatch({
-          type: CHECKOUT_GET_TOTALS + SUCCESS,
-          payload
-        });
-        dispatch({ type: APP_LOADING + FINISH });
-      })
-      .catch((error) => {
-        dispatch({ type: CHECKOUT_GET_TOTALS + FAILURE });
-        dispatch({ type: APP_LOADING + FINISH });
-      });
-    }
+    getTotalPrice(dispatch);
   };
 };
