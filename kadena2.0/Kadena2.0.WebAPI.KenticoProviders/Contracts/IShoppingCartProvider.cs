@@ -52,9 +52,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         double GetCurrentCartTotalItemsPrice();
 
-        double GetCurrentCartShippingCost();
-
-        void SaveShippingAddress(DeliveryAddress address);
+        double GetCurrentCartShippingCost();        
 
         string GetShippingProviderIcon(string title);
 

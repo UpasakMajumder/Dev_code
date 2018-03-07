@@ -42,6 +42,11 @@ const products = {
       "isQuantityEditable": true,
       "productionTime": "Now",
       "shipTime": "Tomorrow",
+      "preview": {
+        "exists": true,
+        "text": "Preview",
+        "url": "#"
+      },
       "options": [{
         "name": "Size",
         "value": "L"
@@ -64,6 +69,11 @@ const products = {
       "isQuantityEditable": true,
       "productionTime": "",
       "shipTime": "Tomorrow",
+      "preview": {
+        "exists": false,
+        "text": "Preview",
+        "url": "#"
+      },
       "options": [{
         "name": "Size",
         "value": "XS"

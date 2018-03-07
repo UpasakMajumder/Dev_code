@@ -1,4 +1,5 @@
-﻿using Kadena.Models.Product;
+﻿using Kadena.Models.Common;
+using Kadena.Models.Product;
 using System;
 using System.Collections.Generic;
 
@@ -11,7 +12,6 @@ namespace Kadena.Models.Checkout
         public string ProductType { get; set; }
         public string Image { get; set; }
         public string Template { get; set; }
-        public string EditorTemplateId { get; set; }
         public int ProductPageId { get; set; }
 
         /// <summary>
@@ -85,6 +85,9 @@ namespace Kadena.Models.Checkout
         public decimal TotalTax { get; set; }
         public string PriceText { get; set; }
         public Guid ProductChiliWorkspaceId { get; set; }
+
+        public Button Preview { get; set; }
+
         public bool IsEditable
         {
             get
@@ -99,11 +102,6 @@ namespace Kadena.Models.Checkout
         /// Main Chili template ID
         /// </summary>
         public Guid ChiliTemplateId { get; set; }
-
-        /// <summary>
-        /// Selected template instance ID
-        /// </summary>
-        public Guid ChiliEditorTemplateId { get; set; }
 
         public Guid ProductChiliPdfGeneratorSettingsId { get; set; }
 
@@ -122,18 +120,12 @@ namespace Kadena.Models.Checkout
         }
 
         public string UnitOfMeasure { get; set; }
-
-
-
-        /// <summary>
-        /// Template product service's task Id
-        /// </summary>
-        public Guid DesignFilePathTaskId { get; set; }
-
+        
         public string MailingListPrefix { get; set; }
         public string TemplatePrefix { get; set; }
         public string ProductionTime { get; set; }
         public string ShipTime { get; set; }
+        public ChiliProcess ChiliProcess { get; set; }
         public IEnumerable<ItemOption> Options { get; set; }
     }
 }
