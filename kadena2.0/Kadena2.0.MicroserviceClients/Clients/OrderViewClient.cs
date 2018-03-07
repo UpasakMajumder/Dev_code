@@ -29,32 +29,23 @@ namespace Kadena2.MicroserviceClients.Clients
             return await Get<GetOrderByOrderIdResponseDTO>(url).ConfigureAwait(false);
         }
 
-        public async Task<BaseResponseDto<OrderListDto>> GetOrders(string siteName, int? customerId, int? pageNumber, int? itemsPerPage, 
-            DateTime? dateFrom, DateTime? dateTo, string sortBy, bool sortDescending, int? campaignId, string orderType)
+        public async Task<BaseResponseDto<OrderListDto>> GetOrders(OrderListFilter filter)
         {
-            var orderTypeParam = !string.IsNullOrWhiteSpace(orderType) ? $"tp={orderType}" : string.Empty;
-            var campaignParam = campaignId > 0 ? $"CampaignId={campaignId}" : string.Empty;
-            var sortDescParam = sortDescending ? "sortDesc=true" : string.Empty;
-            var sortByParam = !string.IsNullOrWhiteSpace(sortBy) ? $"sort={sortBy}" : string.Empty;
-            var dateToParam = dateTo != null ? $"dateTo={dateTo.Value.ToString(DateArgumentFormat)}" : string.Empty;
-            var dateFromParam = dateFrom != null ? $"dateFrom={dateFrom.Value.ToString(DateArgumentFormat)}" : string.Empty;
-            var itemsPerPageParam = itemsPerPage > 0 ? $"quantity={itemsPerPage}" : string.Empty;
-            var pageNumberParam = pageNumber >= 0 ? $"pageNumber={pageNumber}" : string.Empty;
-            var customerParam = customerId > 0 ? $"ClientId={customerId}" : string.Empty;
-            var siteParam = !string.IsNullOrWhiteSpace(siteName) ? $"siteName={siteName}" : string.Empty;
-
             var args = string.Join("&", new[]
             {
-                orderTypeParam,
-                campaignParam,
-                sortDescParam,
-                sortByParam,
-                dateToParam,
-                dateFromParam,
-                itemsPerPageParam,
-                pageNumberParam,
-                customerParam,
-                siteParam
+                filter.CustomerId > 0 ? $"clientId={filter.CustomerId}" : string.Empty,
+                filter.CampaignId > 0 ? $"campaignId={filter.CampaignId}" : string.Empty,
+                filter.ProgramId > 0 ? $"programId={filter.ProgramId}" : string.Empty,
+                filter.DistributorId > 0 ? $"distributorId={filter.DistributorId}" : string.Empty,
+                !string.IsNullOrWhiteSpace(filter.OrderType) ? $"tp={filter.OrderType}" : string.Empty,
+                !string.IsNullOrWhiteSpace(filter.SortBy) ? $"sort={filter.SortBy}" : string.Empty,
+                filter.SortDescending ? "sortDesc=true" : string.Empty,
+                filter.DateFrom != null ? $"dateFrom={filter.DateFrom.Value.ToString(DateArgumentFormat)}" : string.Empty,
+                filter.DateTo != null ? $"dateTo={filter.DateTo.Value.ToString(DateArgumentFormat)}" : string.Empty,
+                // following args are currently not supported by microservice / wip
+                !string.IsNullOrWhiteSpace(filter.SiteName) ? $"siteName={filter.SiteName}" : string.Empty,
+                filter.PageNumber >= 0 ? $"pageNumber={filter.PageNumber}" : string.Empty,
+                filter.ItemsPerPage > 0 ? $"quantity={filter.ItemsPerPage}" : string.Empty
             }.Where(p => p != string.Empty));
 
             var parameterizedUrl = $"{BaseUrl}/api/Order/byquery?{args}";

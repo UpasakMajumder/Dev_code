@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Factories;
+using Kadena.Dto.Order;
 using Kadena.Infrastructure.Contracts;
 using Kadena.Infrastructure.FileConversion;
 using Kadena.Models.Common;
@@ -71,12 +72,18 @@ namespace Kadena.BusinessLogic.Services.Orders
             var sortSpecified = filter.TryParseSort(out sort);
             var sortProperty = sortSpecified ? sort.Property : null;
             var sortDesc = sortSpecified ? sort.Direction == OrderFilter.SortDirection.DESC : false;
+            var orderFilter = new OrderListFilter
+            {
+                SiteName = site,
+                PageNumber = page,
+                ItemsPerPage = OrdersPerPage,
+                DateFrom = filter.FromDate,
+                DateTo = filter.ToDate,
+                SortBy = sortProperty,
+                SortDescending = sortDesc
+            };
 
-            int? customerId = null;
-            int? campaign = null;
-            string orderType = null;
-
-            var orders = await orderViewClient.GetOrders(site, customerId, page, OrdersPerPage, filter.FromDate, filter.ToDate, sortProperty, sortDesc, campaign, orderType);
+            var orders = await orderViewClient.GetOrders(orderFilter);
             var pagesCount = orders.Payload.TotalCount / OrdersPerPage;
             if (orders.Payload.TotalCount % OrdersPerPage > 0)
             {
@@ -125,13 +132,17 @@ namespace Kadena.BusinessLogic.Services.Orders
             var sortSpecified = filter.TryParseSort(out sort);
             var sortProperty = sortSpecified ? sort.Property : null;
             var sortDesc = sortSpecified ? sort.Direction == OrderFilter.SortDirection.DESC : false;
+            var orderFilter = new OrderListFilter
+            {
+                SiteName = site,
+                ItemsPerPage = OrdersPerPage,
+                DateFrom = filter.FromDate,
+                DateTo = filter.ToDate,
+                SortBy = sortProperty,
+                SortDescending = sortDesc
+            };
 
-            int? customerId = null;
-            int? page = null;
-            int? campaign = null;
-            string orderType = null;
-
-            var orders = await orderViewClient.GetOrders(site, customerId, page, OrdersPerPage, filter.FromDate, filter.ToDate, sortProperty, sortDesc, campaign, orderType);
+            var orders = await orderViewClient.GetOrders(orderFilter);
             var ordersReport = orders.Payload.Orders.ToList()
                 .Select(o => orderReportFactory.Create(o));
             var tableView = orderReportFactory.CreateTableView(ordersReport);

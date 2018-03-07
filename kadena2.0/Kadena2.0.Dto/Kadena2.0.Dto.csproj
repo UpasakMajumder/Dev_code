@@ -61,6 +61,7 @@
     <Compile Include="CreditCard\Requests\SaveCreditCardRequestDto.cs" />
     <Compile Include="CreditCard\Responses\CreditCardPaymentDoneDto.cs" />
     <Compile Include="CustomerData\UserBudgetDto.cs" />
+    <Compile Include="Order\OrderListFilter.cs" />
     <Compile Include="Product\BorderDto.cs" />
     <Compile Include="Product\PriceDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDailogLabelDto.cs" />

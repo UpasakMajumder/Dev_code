@@ -3,6 +3,7 @@ using Kadena.BusinessLogic.Factories;
 using Kadena.BusinessLogic.Services.Orders;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
+using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.Infrastructure.Contracts;
 using Kadena.Infrastructure.FileConversion;
 using Kadena.Models;
@@ -190,9 +191,9 @@ namespace Kadena.Tests.WebApi
         [Fact]
         public async Task GetOrdersForSite_ShouldPassArgumentsToMicroserviceClient()
         {
-            var orderViewClient = new Mock<IOrderViewClient>();
+            var orderViewClient = new OrderViewClient_GetOrdersByFilterSpy();
             var sut = new OrderReportServiceBuilder()
-                .WithOrderViewClient(orderViewClient.Object)
+                .WithOrderViewClient(orderViewClient)
                 .Build();
             var page = 2;
             var currentSite = "test_site";
@@ -201,6 +202,16 @@ namespace Kadena.Tests.WebApi
                 FromDate = new DateTime(),
                 ToDate = new DateTime(),
                 Sort = $"{OrderReportService.SortableByOrderDate}-{OrderFilter.SortDirection.DESC}"
+            };
+            var expectedOrderListFilter = new OrderListFilter
+            {
+                SiteName = currentSite,
+                ItemsPerPage = sut.OrdersPerPage,
+                PageNumber = page,
+                DateFrom = filter.FromDate,
+                DateTo = filter.ToDate,
+                SortBy = OrderReportService.SortableByOrderDate,
+                SortDescending = true
             };
 
             try
@@ -212,10 +223,7 @@ namespace Kadena.Tests.WebApi
                 // ignore missing implementation
             }
 
-            orderViewClient.Verify(ovc
-                => ovc.GetOrders(currentSite, null, page, sut.OrdersPerPage,
-                    filter.FromDate, filter.ToDate, OrderReportService.SortableByOrderDate,
-                    true, null, null), Times.Once());
+            Assert.Equal(expectedOrderListFilter, orderViewClient.Filter);
         }        
 
 
@@ -355,9 +363,9 @@ namespace Kadena.Tests.WebApi
         [Fact]
         public async Task GetOrdersExportForSite_ShouldPassArgumentsToMicroserviceClient()
         {
-            var orderViewClient = new Mock<IOrderViewClient>();
+            var orderViewClient = new OrderViewClient_GetOrdersByFilterSpy();
             var sut = new OrderReportServiceBuilder()
-                .WithOrderViewClient(orderViewClient.Object)
+                .WithOrderViewClient(orderViewClient)
                 .Build();
             var currentSite = "test_site";
             var filter = new OrderFilter
@@ -365,6 +373,15 @@ namespace Kadena.Tests.WebApi
                 FromDate = new DateTime(),
                 ToDate = new DateTime(),
                 Sort = $"{OrderReportService.SortableByOrderDate}-{OrderFilter.SortDirection.DESC}"
+            };
+            var expectedOrderListFilter = new OrderListFilter
+            {
+                SiteName = currentSite,
+                ItemsPerPage = sut.OrdersPerPage,
+                DateFrom = filter.FromDate,
+                DateTo = filter.ToDate,
+                SortBy = OrderReportService.SortableByOrderDate,
+                SortDescending = true
             };
 
             try
@@ -376,10 +393,7 @@ namespace Kadena.Tests.WebApi
                 // ignore missing implementation
             }
 
-            orderViewClient.Verify(ovc
-                => ovc.GetOrders(currentSite, null, null, sut.OrdersPerPage,
-                    filter.FromDate, filter.ToDate, OrderReportService.SortableByOrderDate,
-                    true, null, null), Times.Once());
+            Assert.Equal(expectedOrderListFilter, orderViewClient.Filter);
         }
 
         private bool AreEqual(TableView t1, Table t2)
@@ -561,11 +575,46 @@ namespace Kadena.Tests.WebApi
 
         private IOrderViewClient CreateOrderViewClientReturning(BaseResponseDto<OrderListDto> response)
         {
-            return Mock.Of<IOrderViewClient>(ovc => ovc.GetOrders(
-                It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<int?>(), It.IsAny<int?>(),
-                It.IsAny<DateTime?>(), It.IsAny<DateTime?>(), It.IsAny<string>(), It.IsAny<bool>(),
-                It.IsAny<int?>(), It.IsAny<string>()
-            ) == Task.FromResult(response));
+            return Mock.Of<IOrderViewClient>(ovc => 
+                ovc.GetOrders(It.IsAny<OrderListFilter>()) == Task.FromResult(response)
+            );
+        }
+
+        class OrderViewClient_GetOrdersByFilterSpy : IOrderViewClient
+        {
+            public Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string orderId)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<BaseResponseDto<OrderListDto>> GetOrders(string siteName, int pageNumber, int quantity)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<BaseResponseDto<OrderListDto>> GetOrders(int customerId, int pageNumber, int quantity)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<BaseResponseDto<OrderListDto>> GetOrders(string siteName, int pageNumber, int quantity, int campaignID, string orderType)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<BaseResponseDto<OrderListDto>> GetOrders(int customerId, int pageNumber, int quantity, int campaignID, string orderType)
+            {
+                throw new NotImplementedException();
+            }
+
+            public OrderListFilter Filter { get; private set; }
+
+            public Task<BaseResponseDto<OrderListDto>> GetOrders(OrderListFilter filter)
+            {
+                Filter = filter;
+
+                return null;
+            }
         }
 
         private class ExcelConvertFake : IExcelConvert
