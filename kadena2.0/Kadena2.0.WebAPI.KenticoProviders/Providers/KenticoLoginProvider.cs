@@ -62,19 +62,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public LoginResult Login(LoginRequest loginRequest)
         {
-            CookieHelper.EnsureResponseCookie(FormsAuthentication.FormsCookieName);
-            if (loginRequest.KeepLoggedIn)
-            {
-                CookieHelper.ChangeCookieExpiration(FormsAuthentication.FormsCookieName, DateTime.Now.AddYears(1), false);
-            }
-            else
-            {
-                // Extend the expiration of the authentication cookie if required
-                if (!AuthenticationHelper.UseSessionCookies && (HttpContext.Current != null) && (HttpContext.Current.Session != null))
-                {
-                    CookieHelper.ChangeCookieExpiration(FormsAuthentication.FormsCookieName, DateTime.Now.AddMinutes(HttpContext.Current.Session.Timeout), false);
-                }
-            }
+            ChangeCookieExpiration(loginRequest.KeepLoggedIn);
 
             var user = AuthenticationHelper.AuthenticateUser(loginRequest.LoginEmail, loginRequest.Password, SiteContext.CurrentSiteName);
 
@@ -95,6 +83,45 @@ namespace Kadena.WebAPI.KenticoProviders
                     ErrorPropertyName = "loginEmail",
                     ErrorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode)
                 };
+            }
+        }
+
+        public bool SSOLogin(string username, bool keepLoggedIn = false)
+        {
+            ChangeCookieExpiration(keepLoggedIn);
+
+            AuthenticationHelper.AuthenticateUser(username, createPersistentCookie: true, loadCultures: true);
+
+            // by reflecting Kentico code, it seems that AuthenticateUser doesn't indicate failure
+            // TODO when orchestrating SSO - verify this approach
+            if (string.Equals(username,  MembershipContext.AuthenticatedUser?.UserName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                FormsAuthentication.SetAuthCookie(username, keepLoggedIn);
+                MembershipActivityLogger.LogLogin(username);
+                return true;
+            }
+
+            return false;
+        }
+
+        private void ChangeCookieExpiration(bool keepLoggedIn)
+        {
+            DateTime extendedExpirationDate;
+            CookieHelper.EnsureResponseCookie(FormsAuthentication.FormsCookieName);
+
+            if (keepLoggedIn)
+            {
+                extendedExpirationDate = DateTime.Now.AddYears(1);
+                CookieHelper.ChangeCookieExpiration(FormsAuthentication.FormsCookieName, extendedExpirationDate, false);
+            }
+            else
+            {
+                // Extend the expiration of the authentication cookie if required
+                if (!AuthenticationHelper.UseSessionCookies && (HttpContext.Current != null) && (HttpContext.Current.Session != null))
+                {
+                    extendedExpirationDate = DateTime.Now.AddMinutes(HttpContext.Current.Session.Timeout);
+                    CookieHelper.ChangeCookieExpiration(FormsAuthentication.FormsCookieName, extendedExpirationDate, false);
+                }
             }
         }
     }
