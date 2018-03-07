@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.BusinessLogic.Services;
 using Moq;
@@ -67,12 +66,14 @@ namespace Kadena.Tests.WebApi
         private ShoppingCartService CreateShoppingCartService(AutoMocker autoMocker)
         {            
             var kenticoUser = autoMocker.GetMock<IKenticoUserProvider>();
-            kenticoUser.Setup(p => p.GetCustomerAddresses(AddressType.Shipping))
-                .Returns(new[] { CreateDeliveryAddress() });
             kenticoUser.Setup(p => p.GetCurrentCustomer())
                 .Returns(new Customer { DefaultShippingAddressId = 1, Id = 1});
             kenticoUser.Setup(p => p.GetCurrentUser())
                 .Returns(new User { UserId = 1 });
+
+            var kenticoAddresses = autoMocker.GetMock<IKenticoAddressBookProvider>();
+            kenticoAddresses.Setup(p => p.GetCustomerAddresses(AddressType.Shipping))
+                .Returns(new[] { CreateDeliveryAddress() });
 
             var shoppingCart = autoMocker.GetMock<IShoppingCartProvider>();
             shoppingCart.Setup(p => p.GetShippingCarriers())

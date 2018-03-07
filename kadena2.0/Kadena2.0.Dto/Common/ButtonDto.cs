@@ -1,7 +1,8 @@
-﻿namespace Kadena.Models
+﻿namespace Kadena.Dto.Common
 {
-    public class Button
+    public class ButtonDto
     {
+        public bool Exists { get; set; }
         public string Text { get; set; }
         public string Url { get; set; }
     }

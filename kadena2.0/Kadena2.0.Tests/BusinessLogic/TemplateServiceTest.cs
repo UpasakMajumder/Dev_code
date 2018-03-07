@@ -1,7 +1,7 @@
 ﻿using Kadena.Dto.General;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.BusinessLogic.Services;
-using Kadena2.MicroserviceClients.Contracts;
+using Kadena.MicroserviceClients.Contracts;
 using Moq;
 using Xunit;
 using System.Threading.Tasks;
@@ -10,6 +10,7 @@ using Kadena.Models;
 using Kadena.Models.Product;
 using System.Collections.Generic;
 using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
+using Moq.AutoMock;
 
 namespace Kadena.Tests.WebApi
 {
@@ -185,6 +186,49 @@ namespace Kadena.Tests.WebApi
                 Updated = updatedDatetime,
                 MetaData = new TemplateMetaData()
             };
+        }
+
+        [Fact(DisplayName = "TemplateService.GetPreviewUri() | Fail")]
+        public async Task GetPreviewUriFail()
+        {
+            var autoMock = new AutoMocker();
+            var templateClient = autoMock.GetMock<ITemplatedClient>();
+            templateClient
+                .Setup((cl) => cl.GetPreview(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(Task.FromResult(new BaseResponseDto<string>
+                {
+                    Success = false,
+                    Error = new BaseErrorDto
+                    {
+                        Message = "Some error"
+                    }
+                }));
+            var sut = autoMock.CreateInstance<TemplateService>();
+
+            var actualResult = await sut.GetPreviewUri(Guid.Empty, Guid.Empty);
+
+            Assert.Null(actualResult);
+        }
+
+        [Fact(DisplayName = "TemplateService.GetPreviewUri() | Success")]
+        public async Task GetPreviewUriSuccess()
+        {
+            var expectedResult = new Uri("http://example.com");
+            var autoMock = new AutoMocker();
+            var templateClient = autoMock.GetMock<ITemplatedClient>();
+            templateClient
+                .Setup((cl) => cl.GetPreview(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(Task.FromResult(new BaseResponseDto<string>
+                {
+                    Success = true,
+                    Payload = expectedResult.AbsoluteUri
+                }));
+            var sut = autoMock.CreateInstance<TemplateService>();
+
+            var actualResult = await sut.GetPreviewUri(Guid.Empty, Guid.Empty);
+
+            Assert.NotNull(actualResult);
+            Assert.Equal(expectedResult, actualResult);
         }
     }
 }

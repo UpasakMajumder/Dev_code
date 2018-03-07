@@ -455,7 +455,12 @@ module.exports.detail =  {
               "name": "Size",
               "value": "S"
             }
-          ]
+          ],
+          "preview": {
+            "exists": true,
+            "text": "Preview",
+            "url": "#"
+          }
         },
         {
           "id": 2,
@@ -480,7 +485,12 @@ module.exports.detail =  {
               "name": "Color",
               "value": "Blue"
             }
-          ]
+          ],
+          "preview": {
+            "exists": false,
+            "text": "Preview",
+            "url": "#"
+          }
         }
       ]
     }

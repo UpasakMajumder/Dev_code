@@ -303,7 +303,8 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 {
                     ID = Cart.GetValue("ShoppingCartCampaignID", default(int)),
                     ProgramID = Cart.GetValue("ShoppingCartProgramID", default(int)),
-                    DistributorID = Cart.GetIntegerValue("ShoppingCartDistributorID", 0)
+                    DistributorID = Cart.GetIntegerValue("ShoppingCartDistributorID", 0),
+                    BusinessUnitNumber = DIContainer.Resolve<IKenticoBusinessUnitsProvider>().GetDistributorBusinessUnitNumber(Cart.GetIntegerValue("ShoppingCartDistributorID", 0))
                 };
             }
             catch (Exception ex)

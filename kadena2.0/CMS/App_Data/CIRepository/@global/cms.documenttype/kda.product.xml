@@ -21,6 +21,15 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="ProductImage" columnsize="400" columntype="text" guid="edb2ebf2-f383-4c87-a71c-11e34d78d244" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Product Image</fieldcaption>
+          <fielddescription>Assigned to product page (per language version)</fielddescription>
+        </properties>
+        <settings>
+          <controlname>MediaSelectionControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="ProductCustomerReferenceNumber" columnsize="50" columntype="text" guid="0b22585a-a199-40c2-bf33-6a653d549ae7" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Customer reference number</fieldcaption>
@@ -226,66 +235,6 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field column="ProductChiliTemplateID" columnsize="100" columntype="text" guid="34f919e5-2fce-49c6-bff9-e9f1a1f5049b" hasdependingfields="true" publicfield="false" visible="true">
-        <properties>
-          <fieldcaption>Chili Template ID</fieldcaption>
-          <visiblemacro ismacro="true">
-            <![CDATA[{%ProductType.Contains("KDA.TemplatedProduct")|(user)administrator|(hash)9438ab14491450c438c4387f469d2888a7c1803ec3e4786d7164c1cac1224675%}]]>
-          </visiblemacro>
-        </properties>
-        <settings>
-          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
-          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
-          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
-          <controlname>TextBoxControl</controlname>
-          <FilterMode>False</FilterMode>
-          <Trim>False</Trim>
-        </settings>
-      </field>
-      <field column="ProductChiliWorkgroupID" columnsize="50" columntype="text" guid="37705e0a-f6db-44e2-b2e3-4eada5cf268f" hasdependingfields="true" publicfield="false" visible="true">
-        <properties>
-          <fieldcaption>Chili Workgroup ID</fieldcaption>
-          <visiblemacro ismacro="true">
-            <![CDATA[{%ProductType.Contains("KDA.TemplatedProduct")|(user)administrator|(hash)9438ab14491450c438c4387f469d2888a7c1803ec3e4786d7164c1cac1224675%}]]>
-          </visiblemacro>
-        </properties>
-        <settings>
-          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
-          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
-          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
-          <controlname>TextBoxControl</controlname>
-          <FilterMode>False</FilterMode>
-          <Trim>False</Trim>
-        </settings>
-      </field>
-      <field column="ProductChiliPdfGeneratorSettingsId" columnsize="40" columntype="text" guid="9fba3694-862d-468f-a1ae-51c7f499c5e6" publicfield="false" visible="true">
-        <properties>
-          <fieldcaption>Product Chili Pdf generator SettingsId</fieldcaption>
-          <fielddescription>
-            <![CDATA[Id of settings to be sent in Generate Pdf request to Templated product microservice]]>
-          </fielddescription>
-          <visiblemacro ismacro="true">
-            <![CDATA[{%ProductType.Contains("KDA.TemplatedProduct")|(user)michal.machacek@actum.cz|(hash)4573ed55340f4ba39dc64a9424a4592e82da0ad8cf8e6a339c81c30f63f0645a%}]]>
-          </visiblemacro>
-        </properties>
-        <settings>
-          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
-          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
-          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
-          <controlname>TextBoxControl</controlname>
-          <FilterMode>False</FilterMode>
-          <Trim>False</Trim>
-        </settings>
-      </field>
-      <field allowempty="true" column="ProductChili3dEnabled" columntype="boolean" guid="03312785-902a-4f07-bc18-03e0c69b22fa" publicfield="false" visible="true">
-        <properties>
-          <defaultvalue>false</defaultvalue>
-          <fieldcaption>Chili 3D enabled</fieldcaption>
-        </properties>
-        <settings>
-          <controlname>CheckBoxControl</controlname>
-        </settings>
-      </field>
       <field allowempty="true" column="ProductRelatedSKUs" columnsize="500" columntype="text" guid="769aa7a5-56c2-49f4-bce4-28f671cef36c" hasdependingfields="true" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Related SKUs</fieldcaption>
@@ -308,6 +257,81 @@
         <settings>
           <AllowedExtensions>doc,docx,xls,xlsx,pdf</AllowedExtensions>
           <controlname>MediaMultiSelector</controlname>
+        </settings>
+      </field>
+      <category name="TemplateSettings">
+        <properties>
+          <caption>Template settings</caption>
+          <visible ismacro="true">
+            <![CDATA[{% ProductType.Contains("KDA.TemplatedProduct") |(user)rostyslav.diachenko@actum.cz|(hash)8566e825fa2b2fc6a1a8021932551d12d854be976a2a29c2c30f7568fbbb8922%}]]>
+          </visible>
+        </properties>
+      </category>
+      <field column="ProductChiliTemplateID" columnsize="100" columntype="text" guid="34f919e5-2fce-49c6-bff9-e9f1a1f5049b" hasdependingfields="true" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Chili Template ID</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="ProductChiliWorkgroupID" columnsize="50" columntype="text" guid="37705e0a-f6db-44e2-b2e3-4eada5cf268f" hasdependingfields="true" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Chili Workgroup ID</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="ProductChiliPdfGeneratorSettingsId" columnsize="40" columntype="text" guid="9fba3694-862d-468f-a1ae-51c7f499c5e6" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Product Chili Pdf generator SettingsId</fieldcaption>
+          <fielddescription>
+            <![CDATA[Id of settings to be sent in Generate Pdf request to Templated product microservice]]>
+          </fielddescription>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ProductChiliLowResSettingId" columntype="guid" guid="3c45a29f-970b-45c7-b54c-a7d4d585b131" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Low resolution setting Id</fieldcaption>
+          <fielddescription>
+            <![CDATA[Id of setting in Chili to generate low resolution PDF file]]>
+          </fielddescription>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ProductChili3dEnabled" columntype="boolean" guid="03312785-902a-4f07-bc18-03e0c69b22fa" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>false</defaultvalue>
+          <fieldcaption>Chili 3D enabled</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
       <category name="Estimates">
