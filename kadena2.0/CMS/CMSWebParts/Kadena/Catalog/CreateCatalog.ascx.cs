@@ -761,10 +761,10 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// <returns></returns>
     public string GetProductImage(string imagepath)
     {
-        string returnValue = string.Empty;
+        string returnValue = imagepath;
         try
         {
-            if (!string.IsNullOrWhiteSpace(imagepath))
+            if (!string.IsNullOrWhiteSpace(imagepath) && !imagepath.Contains(CurrentSite.DomainName))
             {
                 string strPathAndQuery = HttpContext.Current.Request.Url.PathAndQuery;
                 returnValue = HttpContext.Current.Request.Url.AbsoluteUri.Replace(strPathAndQuery, "") + imagepath.Trim('~');
