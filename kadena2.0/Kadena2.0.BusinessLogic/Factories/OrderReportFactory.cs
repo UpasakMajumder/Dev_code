@@ -100,6 +100,11 @@ namespace Kadena.BusinessLogic.Factories
 
         public string FormatCustomer(Customer customer)
         {
+            if (customer == null)
+            {
+                return string.Empty;
+            }
+
             var name = $"{customer.FirstName} {customer.LastName}";
             if (!string.IsNullOrWhiteSpace(name))
             {

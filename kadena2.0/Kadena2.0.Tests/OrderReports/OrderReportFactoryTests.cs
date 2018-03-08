@@ -86,6 +86,18 @@ namespace Kadena.Tests.OrderReports
         }
 
         [Fact]
+        public void FormatCustomer_ShouldBeEmpty_WhenCustomerNotFound()
+        {
+            var expected = string.Empty;
+
+            var sut = new OrderReportFactoryBuilder()
+                .Build();
+
+            var actual = sut.FormatCustomer(null);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void FormatCustomer_ShouldUseName_WhenNameAvailable()
         {
             var customer = new Customer
