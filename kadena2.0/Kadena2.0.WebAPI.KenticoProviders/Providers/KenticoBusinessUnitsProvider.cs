@@ -98,6 +98,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public string GetBusinessUnitName(string businessUnitNumber)
         {
+            if (string.IsNullOrEmpty(businessUnitNumber)) return string.Empty;
             CustomTableItem businessUnitItem = CustomTableItemProvider.GetItems(BusinessUnitsCustomTableName, "BusinessUnitNumber=" + businessUnitNumber).FirstOrDefault();
             return businessUnitItem != null ? businessUnitItem.GetStringValue("BusinessUnitName", string.Empty) : string.Empty;
         }
