@@ -77,7 +77,7 @@ namespace Kadena.BusinessLogic.Factories
             var rows = orderReports.SelectMany(o => o.Items.Select(it => new TableRow
             {
                 Url = o.Url,
-                Cells = new object[]
+                Items = new object[]
                 {
                     o.Site,
                     o.Number,

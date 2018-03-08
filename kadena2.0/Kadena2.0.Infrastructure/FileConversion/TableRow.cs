@@ -2,6 +2,6 @@
 {
     public class TableRow
     {
-        public object[] Cells { get; set; }
+        public object[] Items { get; set; }
     }
 }

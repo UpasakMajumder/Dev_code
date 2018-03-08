@@ -323,11 +323,11 @@ namespace Kadena.Tests.WebApi
                 {
                     new Kadena.Models.Common.TableRow
                     {
-                        Cells = Enumerable.Range(1, 7).Cast<object>().ToArray(),
+                        Items = Enumerable.Range(1, 7).Cast<object>().ToArray(),
                     },
                     new Kadena.Models.Common.TableRow
                     {
-                        Cells = Enumerable.Range(12, 9).Cast<object>().ToArray(),
+                        Items = Enumerable.Range(12, 9).Cast<object>().ToArray(),
                     }
                 }
             };
@@ -414,14 +414,14 @@ namespace Kadena.Tests.WebApi
 
             for (int row = 0; row < t1.Rows.Length; row++)
             {
-                if (t1.Rows[row].Cells.Length != t2.Rows[row].Cells.Length)
+                if (t1.Rows[row].Items.Length != t2.Rows[row].Items.Length)
                 {
                     return false;
                 }
 
-                for (int cell = 0; cell < t1.Rows[row].Cells.Length; cell++)
+                for (int cell = 0; cell < t1.Rows[row].Items.Length; cell++)
                 {
-                    if (t1.Rows[row].Cells[cell] != t2.Rows[row].Cells[cell])
+                    if (t1.Rows[row].Items[cell] != t2.Rows[row].Items[cell])
                     {
                         return false;
                     }

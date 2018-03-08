@@ -174,17 +174,17 @@ namespace Kadena.Tests.OrderReports
 
             var row = view.Rows[0];
             Assert.Equal(testOrder.Url, row.Url);
-            Assert.Equal(testOrder.Site, row.Cells[0]);
-            Assert.Equal(testOrder.Number, row.Cells[1]);
-            Assert.Equal(dtFormatter.Format(testOrder.OrderingDate), row.Cells[2]);
-            Assert.Equal(testOrder.User, row.Cells[3]);
-            Assert.Equal(testOrder.Items[0].Name, row.Cells[4]);
-            Assert.Equal(testOrder.Items[0].SKU, row.Cells[5]);
-            Assert.Equal(testOrder.Items[0].Quantity, row.Cells[6]);
-            Assert.Equal(testOrder.Items[0].Price, row.Cells[7]);
-            Assert.Equal(testOrder.Status, row.Cells[8]);
-            Assert.Equal(dtFormatter.Format(testOrder.ShippingDate.Value), row.Cells[9]);
-            Assert.Equal(testOrder.TrackingNumber, row.Cells[10]);
+            Assert.Equal(testOrder.Site, row.Items[0]);
+            Assert.Equal(testOrder.Number, row.Items[1]);
+            Assert.Equal(dtFormatter.Format(testOrder.OrderingDate), row.Items[2]);
+            Assert.Equal(testOrder.User, row.Items[3]);
+            Assert.Equal(testOrder.Items[0].Name, row.Items[4]);
+            Assert.Equal(testOrder.Items[0].SKU, row.Items[5]);
+            Assert.Equal(testOrder.Items[0].Quantity, row.Items[6]);
+            Assert.Equal(testOrder.Items[0].Price, row.Items[7]);
+            Assert.Equal(testOrder.Status, row.Items[8]);
+            Assert.Equal(dtFormatter.Format(testOrder.ShippingDate.Value), row.Items[9]);
+            Assert.Equal(testOrder.TrackingNumber, row.Items[10]);
         }
 
         [Fact]
@@ -199,7 +199,7 @@ namespace Kadena.Tests.OrderReports
             var view = sut.CreateTableView(orders);
 
             var row = view.Rows[0];
-            Assert.Equal(string.Empty, row.Cells[9]);
+            Assert.Equal(string.Empty, row.Items[9]);
         }
 
         [Fact]
