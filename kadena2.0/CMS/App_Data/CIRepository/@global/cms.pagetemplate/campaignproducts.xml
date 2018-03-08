@@ -134,12 +134,8 @@
           <property name="visible">True</property>
           <property name="webparttitle"></property>
           <property name="webparttype">queryrepeater</property>
-          <property name="wherecondition" ismacro="true">
-<![CDATA[
-NodeParentID={%CurrentDocument.NodeID|(user)twe_admin|(hash)6747bbf93bb9ae2039f44e4fc1e2a169727ef989356de91bdf340ad33e789ee8%} 
-AND 
-NodeSiteID={%SiteContext.CurrentSiteID|(user)twe_admin|(hash)99893847a9b83e94c7d65d22839c9474a7a11089e7493f8f7b0eb1376bc502b0%}
-]]>
+          <property name="wherecondition">
+            <![CDATA[NodeParentID={%CurrentDocument.NodeID|(user)cvoqa2@gmail.com|(hash)8496d32f3d11301f1acab0730e0f1302133756f181dcb2f01f82e7adcca14a97%} and  [NodeSiteID]={%SiteContext.CurrentSiteID|(user)cvoqa2@gmail.com|(hash)0d8534ef2762873bc532c320eeacd1a901b9f0b3486cb97901fd8ae6dc3607f5%}]]>
           </property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[

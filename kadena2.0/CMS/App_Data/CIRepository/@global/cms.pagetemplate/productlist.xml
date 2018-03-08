@@ -165,17 +165,7 @@
           <property name="webparttitle"></property>
           <property name="webparttype">queryrepeater</property>
           <property name="wherecondition" ismacro="true">
-<![CDATA[
- [NodeSiteID]={%SiteContext.CurrentSiteID|(user)cvoqa2@gmail.com|(hash)0d8534ef2762873bc532c320eeacd1a901b9f0b3486cb97901fd8ae6dc3607f5%} 
-AND 
-isnull(ProgramID,0)<=0 
-AND 
-(
-  (DocumentPublishFrom is null OR DocumentPublishFrom<GETDATE()) 
-  AND 
-  (DocumentPublishTo is null OR DocumentPublishTo>GETDATE())
-)
-]]>
+            <![CDATA[ [NodeSiteID]={%SiteContext.CurrentSiteID|(user)cvoqa2@gmail.com|(hash)0d8534ef2762873bc532c320eeacd1a901b9f0b3486cb97901fd8ae6dc3607f5%} AND isnull(ProgramID,0)<=0]]>
           </property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[

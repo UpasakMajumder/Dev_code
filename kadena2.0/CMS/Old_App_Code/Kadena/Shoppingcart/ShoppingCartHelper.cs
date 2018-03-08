@@ -568,7 +568,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     {
                         foreach (var user in users)
                         {
-                            ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Email, "CampaignCloseEmail");
+                            ProductEmailNotifications.CampaignEmail(campaign.DocumentName, user.Email, "CampaignCloseEmail", campaignURL: campaign.AbsoluteURL);
                         }
                     }
                 }

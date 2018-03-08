@@ -180,7 +180,6 @@
           <property name="contentbefore"></property>
           <property name="controlid">PreBuyProducts</property>
           <property name="customtimezone"></property>
-          <property name="defaultshipping">Ground</property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
