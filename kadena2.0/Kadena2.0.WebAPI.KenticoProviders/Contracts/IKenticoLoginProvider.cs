@@ -1,5 +1,4 @@
-﻿using Kadena.Models;
-using Kadena.Models.Login;
+﻿using Kadena.Models.Login;
 using System;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
@@ -7,8 +6,9 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
     public interface IKenticoLoginProvider
     {
         DateTime GetTaCValidFrom();
-        bool CheckPasword(string mail, string password);
+        bool CheckPassword(string mail, string password);
         void AcceptTaC(string mail);
         LoginResult Login(LoginRequest loginRequest);
+        bool SSOLogin(string userName, bool keepLoggedIn);
     }
 }

@@ -41,7 +41,7 @@ namespace Kadena.BusinessLogic.Services
 
         public CheckTaCResult CheckTaC(LoginRequest request)
         {
-            if (!login.CheckPasword(request.LoginEmail, request.Password))
+            if (!login.CheckPassword(request.LoginEmail, request.Password))
             {
                 return CheckTaCResult.GetFailedResult("loginEmail", resources.GetResourceString("Kadena.Logon.LogonFailed"));
             }
@@ -72,7 +72,7 @@ namespace Kadena.BusinessLogic.Services
 
         public void AcceptTaC(LoginRequest request)
         {
-            if (!login.CheckPasword(request.LoginEmail, request.Password))
+            if (!login.CheckPassword(request.LoginEmail, request.Password))
             {
                 throw new SecurityException("Invalid username or password");
             }

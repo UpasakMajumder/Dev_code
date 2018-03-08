@@ -41,7 +41,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return tacDocument.GetDateTimeValue("ValidFrom", DateTime.MinValue);
         }
 
-        public bool CheckPasword(string mail, string password)
+        public bool CheckPassword(string mail, string password)
         {
             var user = UserInfoProvider.GetUserInfo(mail);
 
@@ -106,12 +106,11 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private void ChangeCookieExpiration(bool keepLoggedIn)
         {
-            DateTime extendedExpirationDate;
             CookieHelper.EnsureResponseCookie(FormsAuthentication.FormsCookieName);
 
             if (keepLoggedIn)
             {
-                extendedExpirationDate = DateTime.Now.AddYears(1);
+                var extendedExpirationDate = DateTime.Now.AddYears(1);
                 CookieHelper.ChangeCookieExpiration(FormsAuthentication.FormsCookieName, extendedExpirationDate, false);
             }
             else
@@ -119,7 +118,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 // Extend the expiration of the authentication cookie if required
                 if (!AuthenticationHelper.UseSessionCookies && (HttpContext.Current != null) && (HttpContext.Current.Session != null))
                 {
-                    extendedExpirationDate = DateTime.Now.AddMinutes(HttpContext.Current.Session.Timeout);
+                    var extendedExpirationDate = DateTime.Now.AddMinutes(HttpContext.Current.Session.Timeout);
                     CookieHelper.ChangeCookieExpiration(FormsAuthentication.FormsCookieName, extendedExpirationDate, false);
                 }
             }
