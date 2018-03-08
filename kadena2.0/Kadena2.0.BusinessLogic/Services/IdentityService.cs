@@ -4,6 +4,7 @@ using System.IO;
 using System.Xml;
 using System;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System.Text;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -29,7 +30,7 @@ namespace Kadena.BusinessLogic.Services
             {
                 token = GetToken(samlString);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logger.LogException(this.GetType().Name, e);
                 return new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
@@ -37,14 +38,18 @@ namespace Kadena.BusinessLogic.Services
             // create/update user
             // update roles
             // authenticate in Kentico
-            return new Uri("/", UriKind.Relative);
+            return token != null ? new Uri("/", UriKind.Relative) : new Uri("https://en.wikipedia.org/wiki/HTTP_404", UriKind.Absolute);
         }
 
         private Saml2SecurityToken GetToken(string tokenString)
         {
-            var handler = new Saml2SecurityTokenHandler();
-
-            using (var xmlReader = new XmlTextReader(new StringReader(tokenString)))
+            var handler = new Saml2SecurityTokenHandler
+            {
+                Configuration = new SecurityTokenHandlerConfiguration
+                {
+                }
+            };
+            using (var xmlReader = XmlReader.Create(new StringReader(Encoding.UTF8.GetString(Convert.FromBase64String(tokenString)))))
             {
                 if (!xmlReader.ReadToFollowing("saml:Assertion"))
                 {
