@@ -1,12 +1,11 @@
-﻿using Kadena2.MicroserviceClients.Clients.Base;
-using Kadena2.MicroserviceClients.Contracts;
-using System.Threading.Tasks;
-using Kadena.Dto.ViewOrder.MicroserviceResponses;
-using Kadena.Dto.General;
+﻿using Kadena.Dto.General;
 using Kadena.Dto.Order;
+using Kadena.Dto.ViewOrder.MicroserviceResponses;
+using Kadena2.MicroserviceClients.Clients.Base;
+using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
-using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -42,13 +41,12 @@ namespace Kadena2.MicroserviceClients.Clients
                 filter.SortDescending ? "sortDesc=true" : string.Empty,
                 filter.DateFrom != null ? $"dateFrom={filter.DateFrom.Value.ToString(DateArgumentFormat)}" : string.Empty,
                 filter.DateTo != null ? $"dateTo={filter.DateTo.Value.ToString(DateArgumentFormat)}" : string.Empty,
-                // following args are currently not supported by microservice / wip
                 !string.IsNullOrWhiteSpace(filter.SiteName) ? $"siteName={filter.SiteName}" : string.Empty,
                 filter.PageNumber >= 0 ? $"pageNumber={filter.PageNumber}" : string.Empty,
                 filter.ItemsPerPage > 0 ? $"quantity={filter.ItemsPerPage}" : string.Empty
             }.Where(p => p != string.Empty));
 
-            var parameterizedUrl = $"{BaseUrl}/api/Order/byquery?{args}";
+            var parameterizedUrl = $"{BaseUrl}/api/Order?{args}";
             
             return await Get<OrderListDto>(parameterizedUrl).ConfigureAwait(false);
         }
