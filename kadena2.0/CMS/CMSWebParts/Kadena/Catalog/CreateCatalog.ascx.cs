@@ -380,7 +380,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
                                 .Columns("BrandName,ItemID")
                                 .Select(x => new BrandItem { ItemID = x.Field<int>("ItemID"), BrandName = x.Field<string>("BrandName") })
-                                .OrderBy(x=>x.BrandName)
+                                .OrderBy(x => x.BrandName)
                                 .ToList();
                 ddlBrands.DataSource = brand;
                 ddlBrands.DataTextField = "BrandName";
@@ -505,10 +505,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         {
             if (!string.IsNullOrEmpty(selectedValues))
             {
-                var programs = ProgramProvider.GetPrograms()
-                                       .Columns("ProgramName,BrandID,DeliveryDateToDistributors")
-                                       .WhereEquals("CampaignID", OpenCampaign?.CampaignID??default(int))
-                                       .ToList();
+
                 lblNoProducts.Visible = false;
                 List<string> selectedProducts = selectedValues.Split(',').ToList();
                 var skuDetails = SKUInfoProvider.GetSKUs()
@@ -529,19 +526,14 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 }
                 List<int> brands = new List<int>();
                 string programsContent = string.Empty;
+                var programs = ProgramProvider.GetPrograms()
+                                      .Columns("ProgramName,BrandID,DeliveryDateToDistributors")
+                                      .WhereEquals("CampaignID", OpenCampaign?.CampaignID ?? default(int))
+                                      .ToList();
                 if (TypeOfProduct == (int)ProductsType.PreBuy && OpenCampaign != null)
                 {
                     foreach (var program in programs)
-                    {
-                        string programContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.ProgramsContent");
                         brands.Add(program.BrandID);
-                        programContent = programContent.Replace("ProgramBrandName", program.ProgramName);
-                        programContent = programContent.Replace("BRANDNAME", GetBrandName(program.BrandID));
-                        programContent = programContent.Replace("ProgramDate", program.DeliveryDateToDistributors == default(DateTime) ? string.Empty : program.DeliveryDateToDistributors.ToString("MMM dd, yyyy"));
-                        programsContent += programContent;
-                        programContent = string.Empty;
-                    }
-                    programsContent += programFooterText.Replace("PROGRAMFOOTERTEXT", ResHelper.GetString("Kadena.Catalog.ProgramFooterText"));
                 }
                 else
                 {
@@ -550,7 +542,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                         .Where(new WhereCondition().WhereEquals("ProgramID", null).Or().WhereEquals("ProgramID", 0))
                                         .ToList();
                     var inventoryList = productItems
-                                        .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.BrandID, y.SKUNumber,x.Product.SKUProductCustomerReferenceNumber })
+                                        .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.BrandID, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber })
                                         .ToList();
                     foreach (var giProducts in inventoryList)
                     {
@@ -587,6 +579,21 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                         .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProductName, x.EstimatedPrice, x.BrandID, x.ProgramID, x.QtyPerPack, x.State, y.SKUPrice, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber, y.SKUDescription, y.SKUShortDescription, y.SKUImagePath, y.SKUValidUntil })
                                         .Where(x => x.BrandID == brand)
                                         .ToList();
+                        if (catalogList != null)
+                        {
+                            var programList = catalogList.GroupBy(p => p.ProgramID).ToList();
+                            foreach (var product in programList)
+                            {
+                                var program = ProgramProvider.GetPrograms().Where(x => x.ProgramID == product.Key).FirstOrDefault();
+                                string programContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.ProgramsContent");
+                                programContent = programContent.Replace("ProgramBrandName", program?.ProgramName);
+                                programContent = programContent.Replace("BRANDNAME", GetBrandName(program.BrandID));
+                                programContent = programContent.Replace("ProgramDate", program.DeliveryDateToDistributors == default(DateTime) ? string.Empty : program.DeliveryDateToDistributors.ToString("MMM dd, yyyy"));
+                                programsContent += programContent;
+                                programContent = string.Empty;
+                            }
+                            programsContent += programFooterText.Replace("PROGRAMFOOTERTEXT", ResHelper.GetString("Kadena.Catalog.ProgramFooterText"));
+                        }
                         string pdfProductsContent = string.Empty;
                         if (!DataHelper.DataSourceIsEmpty(catalogList))
                         {
@@ -676,7 +683,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             return string.Empty;
         }
     }
-    
+
 
     /// <summary>
     /// saving full catalog to PDF
@@ -723,7 +730,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 {
                     var catalogList = productsList
                                       .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProductName, x.NodeSKUID, x.QtyPerPack, x.State, x.BrandID, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber, y.SKUDescription, y.SKUShortDescription, y.SKUImagePath, y.SKUValidUntil, x.EstimatedPrice })
-                                      .OrderBy(p=>p.ProductName)
+                                      .OrderBy(p => p.ProductName)
                                       .ToList();
                     if (!DataHelper.DataSourceIsEmpty(catalogList) && posNum != null)
                     {
