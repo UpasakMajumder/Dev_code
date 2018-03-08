@@ -62,46 +62,49 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public LoginResult Login(LoginRequest loginRequest)
         {
-            ChangeCookieExpiration(loginRequest.KeepLoggedIn);
-
             var user = AuthenticationHelper.AuthenticateUser(loginRequest.LoginEmail, loginRequest.Password, SiteContext.CurrentSiteName);
 
             if (user != null)
             {
+                ChangeCookieExpiration(loginRequest.KeepLoggedIn);
                 FormsAuthentication.SetAuthCookie(user.UserName, loginRequest.KeepLoggedIn);
                 MembershipActivityLogger.LogLogin(user.UserName);
+
                 return new LoginResult
                 {
                     LogonSuccess = true
                 };
             }
-            else
+            
+            return new LoginResult
             {
-                return new LoginResult
-                {
-                    LogonSuccess = false,
-                    ErrorPropertyName = "loginEmail",
-                    ErrorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode)
-                };
-            }
+                LogonSuccess = false,
+                ErrorPropertyName = "loginEmail",
+                ErrorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode)
+            };
         }
 
         public bool SSOLogin(string username, bool keepLoggedIn = false)
         {
-            ChangeCookieExpiration(keepLoggedIn);
+            var user = UserInfoProvider.GetUserInfo(username);
+
+            if (user == null)
+            {
+                return false;
+            }
 
             AuthenticationHelper.AuthenticateUser(username, createPersistentCookie: true, loadCultures: true);
 
-            // by reflecting Kentico code, it seems that AuthenticateUser doesn't indicate failure
-            // TODO when orchestrating SSO - verify this approach
-            if (string.Equals(username,  MembershipContext.AuthenticatedUser?.UserName, StringComparison.InvariantCultureIgnoreCase))
+            var authenticationSuccess = (MembershipContext.AuthenticatedUser?.UserID ?? 0) == user.UserID;
+
+            if (authenticationSuccess)
             {
+                ChangeCookieExpiration(keepLoggedIn);
                 FormsAuthentication.SetAuthCookie(username, keepLoggedIn);
                 MembershipActivityLogger.LogLogin(username);
-                return true;
             }
 
-            return false;
+            return authenticationSuccess;
         }
 
         private void ChangeCookieExpiration(bool keepLoggedIn)
@@ -116,7 +119,7 @@ namespace Kadena.WebAPI.KenticoProviders
             else
             {
                 // Extend the expiration of the authentication cookie if required
-                if (!AuthenticationHelper.UseSessionCookies && (HttpContext.Current != null) && (HttpContext.Current.Session != null))
+                if (!AuthenticationHelper.UseSessionCookies && (HttpContext.Current?.Session != null))
                 {
                     var extendedExpirationDate = DateTime.Now.AddMinutes(HttpContext.Current.Session.Timeout);
                     CookieHelper.ChangeCookieExpiration(FormsAuthentication.FormsCookieName, extendedExpirationDate, false);
