@@ -29,8 +29,8 @@
                             <cms:LocalizedLiteral runat="server" ResourceString="Kadena.PreBuyOrder.CurrentDemand"></cms:LocalizedLiteral>&nbsp;<%# GetDemandCount(Eval<int>("SKUID")) %>
                         </asp:Label>
                         </b>
-                        <a class="js-addToCart-Modal" href="javascript:void(0);" style='<%=((!EnableAddToCart)?"display:none;": "")%>' data-skuid='<%#Eval<int>("SKUID")%>' data-productname='<%#Eval("SKUName")%>'><%#AddToCartLinkText%></a>
-                        <asp:Label runat="server" Visible='<%#(!EnableAddToCart)%>'><%#AddToCartLinkText%></asp:Label>
+                        <a class="js-addToCart-Modal" href="javascript:void(0);" style='<%=((ProductType == (int)ProductsType.PreBuy && !EnableAddToCart)?"display:none;":"")%>' data-skuid='<%#Eval<int>("SKUID")%>' data-productname='<%#Eval("SKUName")%>'><%#AddToCartLinkText%></a>
+                        <asp:Label runat="server" Visible='<%#(ProductType == (int)ProductsType.PreBuy ? !EnableAddToCart : false)%>'><%#AddToCartLinkText%></asp:Label>
                     </div>
                     <p><%#Eval("SKUDescription") %></p>
                 </div>
