@@ -26,6 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <OldToolsVersion>4.0</OldToolsVersion>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition="'$(CMSAzureBuild)' == ''">
     <CMSAzureBuild>false</CMSAzureBuild>
@@ -4356,7 +4357,6 @@
     <Content Include="IntranetPortal\media\Media\Trees for Bugs\Trees-for-bugs-5.jpg" />
     <Content Include="IntranetPortal\media\Microsoft_Office_Upgrade\Microsoft Office graphics\msoffice.jpg" />
     <Content Include="IntranetPortal\media\Microsoft_Office_Upgrade\Microsoft Office graphics\msoffice_col.jpg" />
-    <Content Include="KadenaWebService.asmx" />
     <Content Include="ObjectTranslationRESTService.svc" />
     <Content Include="DocumentRESTService.svc" />
     <Content Include="Default.aspx" />
@@ -21761,10 +21761,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="KadenaWebService.asmx.cs">
-      <DependentUpon>KadenaWebService.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Old_App_Code\CMSModules\Automation\AutomationFunctions.cs" />
     <Compile Include="Old_App_Code\CMSModules\Badges\BadgesListControlExtender.cs" />
     <Compile Include="Old_App_Code\CMSModules\BadWords\BadWordsListControlExtender.cs" />
@@ -22675,7 +22671,6 @@
     <Content Include="CMSScripts\Vendor\Angular-1.5.5\angular.min.js.map" />
     <Content Include="CMSScripts\Vendor\Angular-1.5.5\angular-resource.min.js.map" />
     <Content Include="CMSScripts\Vendor\Angular-1.5.5\angular-sanitize.min.js.map" />
-    <Content Include="ConnectionStrings.config" />
     <None Include="Old_App_WebReferences\WS\WebService.discomap" />
     <None Include="Old_App_WebReferences\WS\WebService.wsdl" />
     <Content Include="CMSAdminControls\web.config" />
