@@ -592,7 +592,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                 programsContent += programContent;
                                 programContent = string.Empty;
                             }
-                            programsContent += programFooterText.Replace("PROGRAMFOOTERTEXT", ResHelper.GetString("Kadena.Catalog.ProgramFooterText"));
+                            
                         }
                         string pdfProductsContent = string.Empty;
                         if (!DataHelper.DataSourceIsEmpty(catalogList))
@@ -618,6 +618,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                             productBrandHeader = string.Empty;
                         }
                     }
+                    programsContent += programFooterText.Replace("PROGRAMFOOTERTEXT", ResHelper.GetString("Kadena.Catalog.ProgramFooterText"));
                 }
                 string pdfClosingDivs = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PdfEndingTags");
                 string html = pdfProductsContentWithBrands + pdfClosingDivs;
