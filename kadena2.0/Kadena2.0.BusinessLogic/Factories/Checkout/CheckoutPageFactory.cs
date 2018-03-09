@@ -58,7 +58,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
                 ButtonLabels = new ButtonLabels
                 {
                     Edit = resources.GetResourceString("Kadena.Checkout.EditButton"),
-                    Remove = resources.GetResourceString("Kadena.Checkout.RemoveButton"),
+                    Remove = resources.GetResourceString("Kadena.Checkout.RemoveButton")
                 },
                 SummaryPrice = CreateCartPrice(cartItemsTotals),
                 ProductionTimeLabel = resources.GetResourceString("Kadena.Checkout.ProductionTimeLabel"),

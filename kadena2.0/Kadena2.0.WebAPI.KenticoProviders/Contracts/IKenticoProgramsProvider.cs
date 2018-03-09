@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Kadena.Models.Program;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -7,5 +8,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void DeleteProgram(int programID);
 
         List<int> GetProgramIDsByCampaign(int campaignID);
+
+        CampaignProgram GetProgram(int programID);
     }
 }

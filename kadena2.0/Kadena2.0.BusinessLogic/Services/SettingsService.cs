@@ -16,14 +16,14 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoSiteProvider _site;
         private readonly IKenticoUserProvider _kenticoUsers;
         private readonly IKenticoResourceService _resources;
-        private readonly IShoppingCartProvider  _shoppingCart;
+        private readonly IKenticoAddressBookProvider  _addresses;
 
         public SettingsService(IKenticoPermissionsProvider permissions,
                                IKenticoLocalizationProvider localization,
                                IKenticoSiteProvider site,
                                IKenticoUserProvider kenticoUsers, 
-                               IKenticoResourceService resources, 
-                               IShoppingCartProvider shoppingCart)
+                               IKenticoResourceService resources,
+                               IKenticoAddressBookProvider addresses)
         {
             if (permissions == null)
             {
@@ -45,9 +45,9 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(resources));
             }
-            if (shoppingCart == null)
+            if (addresses == null)
             {
-                throw new ArgumentNullException(nameof(shoppingCart));
+                throw new ArgumentNullException(nameof(addresses));
             }
 
             _permissions = permissions;
@@ -55,14 +55,14 @@ namespace Kadena.BusinessLogic.Services
             _site = site;
             _kenticoUsers = kenticoUsers;
             _resources = resources;
-            _shoppingCart = shoppingCart;
+            _addresses = addresses;
         }
 
         public SettingsAddresses GetAddresses()
         {
             var customer = _kenticoUsers.GetCurrentCustomer();
-            var billingAddresses = _kenticoUsers.GetCustomerAddresses(AddressType.Billing);
-            var shippingAddresses = _kenticoUsers.GetCustomerAddresses(AddressType.Shipping);
+            var billingAddresses = _addresses.GetCustomerAddresses(AddressType.Billing);
+            var shippingAddresses = _addresses.GetCustomerAddresses(AddressType.Shipping);
             var shippingAddressesSorted = shippingAddresses
                 .Where(sa => sa.Id == customer.DefaultShippingAddressId)
                 .Concat(shippingAddresses.Where(sa => sa.Id != customer.DefaultShippingAddressId))
@@ -197,17 +197,17 @@ namespace Kadena.BusinessLogic.Services
 
         public void SaveShippingAddress(DeliveryAddress address)
         {
-            _shoppingCart.SaveShippingAddress(address);
+            _addresses.SaveShippingAddress(address);
         }
 
         public void SetDefaultShippingAddress(int addressId)
         {
-            _kenticoUsers.SetDefaultShippingAddress(addressId);
+            _addresses.SetDefaultShippingAddress(addressId);
         }
 
         public void UnsetDefaultShippingAddress()
         {
-            _kenticoUsers.UnsetDefaultShippingAddress();
+            _addresses.UnsetDefaultShippingAddress();
         }
     }
 }

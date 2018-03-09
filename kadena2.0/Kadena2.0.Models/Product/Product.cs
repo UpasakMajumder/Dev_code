@@ -12,8 +12,9 @@ namespace Kadena.Models.Product
         public string DocumentUrl { get; set; }
         public string SkuImageUrl { get; set; }
         public string ProductType { get; set; }
-        public Guid ProductChiliTemplateID { get; set; }
+        public Guid ProductMasterTemplateID { get; set; }
         public Guid ProductChiliWorkgroupID { get; set; }
+        public Guid TemplateLowResSettingId { get; set; }
         public double Weight { get; set; }
 
         public bool HasProductTypeFlag(string productType)

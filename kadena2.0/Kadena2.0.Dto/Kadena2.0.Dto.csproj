@@ -50,6 +50,8 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddToCart\DistributorCartDto.cs" />
+    <Compile Include="AddToCart\DistributorCartItemDto.cs" />
     <Compile Include="Brands\BrandDto.cs" />
     <Compile Include="BusinessUnits\BusinessUnitDto.cs" />
     <Compile Include="Checkout\Responses\ChangeDeliveryAddressResponseDto.cs" />
@@ -149,7 +151,7 @@
     <Compile Include="Order\OrderDto.cs" />
     <Compile Include="Order\OrderListDto.cs" />
     <Compile Include="Order\OrderItemDto.cs" />
-    <Compile Include="RecentOrders\ButtonDto.cs" />
+    <Compile Include="Common\ButtonDto.cs" />
     <Compile Include="RecentOrders\OrderBodyDto.cs" />
     <Compile Include="RecentOrders\OrderHeadDto.cs" />
     <Compile Include="RecentOrders\OrderItemDto.cs" />
@@ -170,6 +172,7 @@
     <Compile Include="Site\Responses\FtpCredentialsDto.cs" />
     <Compile Include="Site\Responses\SiteDataResponseDto.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\CampaignDTO.cs" />
+    <Compile Include="SubmitOrder\MicroserviceRequests\ChiliProcessDto.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\NotificationInfoDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceRequests\NewTemplateRequestDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateMetaData.cs" />

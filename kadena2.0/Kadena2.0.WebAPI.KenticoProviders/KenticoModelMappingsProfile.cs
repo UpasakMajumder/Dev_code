@@ -10,11 +10,8 @@ using Kadena.WebAPI.KenticoProviders;
 using CMS.DocumentEngine;
 using Kadena.Models.Product;
 using CMS.Helpers;
-using CMS.DataEngine;
 using CMS.CustomTables;
 using Kadena.Models.CreditCard;
-using Kadena.Models.UserBudget;
-using Kadena.Models.FyBudget;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -91,8 +88,10 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.UserID, opt => opt.MapFrom(src => src.CustomerUserID))
                 .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.CustomerCompany))
                 .ForMember(dest => dest.SiteId, opt => opt.MapFrom(src => src.CustomerSiteID))
-                .ForMember(dest => dest.DefaultShippingAddressId, opt => opt.MapFrom(src => src.GetIntegerValue(KenticoUserProvider.CustomerDefaultShippingAddresIDFieldName, 0)))
-                .AfterMap((src, dest) => dest.PreferredLanguage = src.CustomerUser?.PreferredCultureCode ?? string.Empty);
+                .ForMember(dest => dest.DefaultShippingAddressId, opt => opt.MapFrom(src => src.GetIntegerValue(KenticoAddressBookProvider.CustomerDefaultShippingAddresIDFieldName, 0)))
+                .AfterMap((src, dest) => dest.PreferredLanguage = src.CustomerUser?.PreferredCultureCode ?? string.Empty)
+                .ReverseMap();
+
             CreateMap<CarrierInfo, DeliveryCarrier>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarrierID))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.CarrierDisplayName))
@@ -119,6 +118,11 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.SaveCardJson, opt => opt.MapFrom(src => src.GetStringValue("SaveCardJson", string.Empty)))
                 .ForMember(dest => dest.RedirectUrl, opt => opt.MapFrom(src => src.GetStringValue("RedirectUrl", string.Empty)));
             CreateMap<AddressInfo, AddressData>();
+            CreateMap<RoleInfo, Role>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.RoleID))
+                .ForMember(dest => dest.CodeName, opt => opt.MapFrom(src => src.RoleName))
+                .ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.RoleDisplayName))
+                .ReverseMap();
         }
     }
 }
