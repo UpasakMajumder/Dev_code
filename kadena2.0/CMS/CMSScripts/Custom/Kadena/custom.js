@@ -1064,6 +1064,7 @@ var customHelpers = {
         document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
     }
 }
+var cartDistributorData;
 $(document).ready(function () {
     customScripts.init();
     var status = customHelpers.getQueryStringByName("status");
@@ -1104,12 +1105,113 @@ $(document).ready(function () {
     customHelpers.deleteCookie("status");
     customHelpers.deleteCookie("error");
 
-
     if (window.location.search != undefined) {
-
         var searchText = customHelpers.getQueryStringByName("searchtext");
         if (searchText != undefined) {
             $('.js-SearchText').val(searchText);
         }
     }
+    $(document).on("click", ".js-addToCart-Modal", function (e) {
+        e.preventDefault();
+        if ($(".js-distributor").length <= 0) {
+            toastr.error($("#hdnNoDistributorsError").val());
+        }
+        else {
+            var skuID = parseInt($(this).attr("data-skuid"));
+            var inventoryType = parseInt($("#hdnInventoryType").val());
+            var productName = $(this).attr("data-productname");
+            $.ajax({
+                type: "GET",
+                url: '/api/getcartdistributordata/' + skuID + '/' + inventoryType,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    if (data.success) {
+                        cartDistributorData = data.payload;
+                        BindCartDistributorListModalData(productName);
+                        $("#CartDistributorListModal").addClass("active");
+                    } else {
+                        toastr.error(data.errorMessage);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    toastr.error(config.localization.globalSuccess.errorMessage);
+                }
+            });
+        }
+    });
+    $("#CartDistributorListModal .js-txtQty").change(function () {
+        var distributorID = parseInt($(this).parents(".js-distributor").attr("data-distributorid"))
+        if (!isNaN(distributorID)) {
+            var quantity = parseInt($(this).val());
+            if (isNaN(quantity)) {
+                quantity = 0;
+            }
+            UpdateDistributorItemQuantity(distributorID, quantity);
+        }
+    });
+    $("#CartDistributorListModal .js-update-distributor-cart").click(function () {
+        if (cartDistributorData.cartType == 1) {
+            var totalQuantity = cartDistributorData.items.reduce(function (sum, i) {
+                return sum + i.quantity;
+            }, 0);
+            if (totalQuantity > cartDistributorData.availableQuantity) {
+                toastr.error($("#hdnInsufficientStockError").val());
+                return;
+            }
+            else if (cartDistributorData.allocatedQuantity > 0 && totalQuantity > cartDistributorData.allocatedQuantity) {
+                toastr.error($("#hdnMoreThanAllocatedError").val());
+                return;
+            }
+        }
+        $.ajax({
+            type: "POST",
+            url: '/api/updatedistributorcarts',
+            data: JSON.stringify(cartDistributorData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (data.success) {
+                    if (cartDistributorData.cartType == 1) {
+                        $("span[id$='GIShoppingCartCount_lblCount']").text(data.payload.cartCount)
+                    }
+                    else {
+                        $("span[id$='PBShoppingCartCount_lblCount']").text(data.payload.cartCount)
+                    }
+                    $("#CartDistributorListModal").removeClass("active");
+                    toastr.success($("#hdnCartUpdatedText").val());
+                } else {
+                    toastr.error(data.errorMessage);
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                toastr.error(config.localization.globalSuccess.errorMessage);
+            }
+        });
+    });
 });
+
+function BindCartDistributorListModalData(productName) {
+    $("#ProductName").text(productName);
+    if (cartDistributorData.availableQuantity >= 0) {
+        $("#AvailableStock").text($("#AvailableStock").attr("data-text") + ": " + cartDistributorData.availableQuantity).show();
+    }
+    else {
+        $("#AvailableStock").hide();
+    }
+    $.each(cartDistributorData.items, function (key, value) {
+        var row = $(".js-distributor[data-distributorid='" + value.distributorID + "']");
+        if (row.length > 0) {
+            row.find(".js-txtQty").val(value.quantity);
+        }
+    });
+}
+
+function UpdateDistributorItemQuantity(distributorID, quantity) {
+    $.each(cartDistributorData.items, function (key, value) {
+        if (value.distributorID == distributorID) {
+            value.quantity = quantity;
+            return;
+        }
+    });
+}
