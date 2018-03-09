@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using CMS.CustomTables;
 using CMS.DataEngine;
+using CMS.CustomTables;
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.Globalization;
@@ -257,18 +257,24 @@ namespace Kadena.WebAPI.KenticoProviders
             cart.SubmitChanges(true);
         }
 
-        public void SetTemporaryShoppingCartAddress(DeliveryAddress address)
+        public int SetTemporaryShoppingCartAddress(DeliveryAddress address)
         {
+            var customerId = ECommerceContext.CurrentCustomer.CustomerID;
             var cart = ECommerceContext.CurrentShoppingCart;
+
+            cart.ShoppingCartShippingAddress = null;
+            DeleteTemporaryAddresses(customerId);
+
             var info = mapper.Map<AddressInfo>(address);
             info.AddressName = "TemporaryAddress";
             info.AddressPersonalName = "TemporaryAddress";
             info.AddressID = 0;
-            info.AddressCustomerID = ECommerceContext.CurrentCustomer.CustomerID;
+            info.AddressCustomerID = customerId;
 
             info.Insert();
             cart.ShoppingCartShippingAddress = info;
             cart.SubmitChanges(true);
+            return info.AddressID;
         }
 
         public void SelectShipping(int shippingOptionId)
@@ -433,6 +439,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 throw new ArgumentOutOfRangeException(string.Format(
                     ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemID));
             }
+
 
             ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
 
@@ -676,7 +683,6 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             cartItem.CartItemUnits = amount;
         }
-
         public string UpdateCartQuantity(Distributor distributorData)
         {
             if (distributorData.ItemQuantity < 1)
@@ -686,8 +692,8 @@ namespace Kadena.WebAPI.KenticoProviders
             var shoppingCartItem = ShoppingCartItemInfoProvider.GetShoppingCartItemInfo(distributorData.CartItemId);
             if (distributorData.InventoryType == 1)
             {
-                var shoppingCartIDs = GetUserShoppingcartIdsByInventory(distributorData.UserID, 1);
-                var shoppingcartItems = GetAllShoppingCartItems(shoppingCartItem.SKUID, shoppingCartIDs);
+                var shoppingCartIDs = ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartUserID", distributorData.UserID).WhereEquals("ShoppingCartInventoryType", 1).ToList().Select(x => x.ShoppingCartID).ToList();
+                var shoppingcartItems = ShoppingCartItemInfoProvider.GetShoppingCartItems().WhereIn("ShoppingCartID", shoppingCartIDs).WhereEquals("SKUID", shoppingCartItem.SKUID).ToList();
                 int totalItems = 0;
                 shoppingcartItems.ForEach(cartItem =>
                 {
@@ -697,7 +703,7 @@ namespace Kadena.WebAPI.KenticoProviders
                     }
                 });
                 var sku = SKUInfoProvider.GetSKUInfo(shoppingCartItem.SKUID);
-                var currentProduct = GetCampaignsProduct(sku.SKUID);
+                var currentProduct = DocumentHelper.GetDocuments(campaignClassName).WhereEquals("NodeSKUID", sku.SKUID).Columns("CampaignsProductID").FirstOrDefault();
                 var productHasAllocation = currentProduct != null ? productProvider.IsProductHasAllocation(currentProduct.GetValue<int>("CampaignsProductID", default(int))) : false;
                 var allocatedQuantityItem = GetAllocatedProductQuantityForUser(currentProduct.GetValue<int>("CampaignsProductID", default(int)), distributorData.UserID);
                 var allocatedQuantity = allocatedQuantityItem != null ? allocatedQuantityItem.GetValue<int>("Quantity", default(int)) : default(int);
@@ -721,6 +727,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 throw new Exception(ResHelper.GetString("KDA.Cart.Update.Failure", LocalizationContext.CurrentCulture.CultureCode));
             }
         }
+
 
         public List<int> GetUserIDsWithShoppingCart(int campaignID, int productType)
         {
@@ -750,7 +757,11 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public List<int> GetUserShoppingCartIDs(int userID)
         {
-            return ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID).WhereEquals("ShoppingCartUserID", userID)?.ToList().Select(x => x.ShoppingCartID).ToList();
+            return ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID)
+                                           .WhereEquals("ShoppingCartUserID", userID)
+                                           .And()
+                                           .WhereEquals("ShoppingCartInventoryType", 1)
+                                           ?.ToList().Select(x => x.ShoppingCartID).ToList();
         }
 
         public bool ValidateAllCarts(int userID = 0, int campaignID = 0)
@@ -778,29 +789,25 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             return isValid;
         }
-
         private CustomTableItem GetAllocatedProductQuantityForUser(int productID, int userID)
         {
             return CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
-        }
 
+        }
         public ShoppingCartInfo GetShoppingCartByID(int cartID)
         {
             return ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
         }
-
         public List<int> GetShoppingCartIDs(WhereCondition where)
         {
             return ShoppingCartInfoProvider.GetShoppingCarts().Where(where)
                                                                   .Select(x => x.ShoppingCartID).ToList();
         }
-
         public List<ShoppingCartItemInfo> GetShoppingCartItemsByCartIDs(List<int> shoppingCartIDs)
         {
             return ShoppingCartItemInfoProvider.GetShoppingCartItems().WhereIn("ShoppingCartID", shoppingCartIDs)
                                                                                     .ToList();
         }
-
         public void UpdateBusinessUnit(ShoppingCartInfo cart, long businessUnitID)
         {
             cart.SetValue("BusinessUnitIDForDistributor", businessUnitID);
@@ -824,19 +831,16 @@ namespace Kadena.WebAPI.KenticoProviders
                                          .Sum(x => x.CartItemUnits);
         }
 
-        private List<int> GetUserShoppingcartIdsByInventory(int UserId, int InventoryType)
+        public void DeleteTemporaryAddresses(int customerId)
         {
-            return ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartUserID", UserId).WhereEquals("ShoppingCartInventoryType", InventoryType).ToList().Select(x => x.ShoppingCartID).ToList();
-        }
+            const string tempName = "TemporaryAddress";
 
-        private TreeNode GetCampaignsProduct(int SkuId)
-        {
-            return DocumentHelper.GetDocuments(campaignClassName).WhereEquals("NodeSKUID", SkuId).Columns("CampaignsProductID").FirstOrDefault();
-        }
+            var addresses = AddressInfoProvider.GetAddresses(customerId)
+                .WhereEquals("AddressName", tempName)
+                .WhereEquals("AddressPersonalName", tempName)
+                .ToList();
 
-        private List<ShoppingCartItemInfo> GetAllShoppingCartItems(int SkuId, List<int> ShoppingCartIds)
-        {
-            return ShoppingCartItemInfoProvider.GetShoppingCartItems().WhereIn("ShoppingCartID", ShoppingCartIds).WhereEquals("SKUID", SkuId).ToList();
+            addresses.ForEach(a => AddressInfoProvider.DeleteAddressInfo(a));
         }
     }
 }
