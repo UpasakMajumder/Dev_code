@@ -1,6 +1,7 @@
 ﻿using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Membership;
+using Kadena.Models.Program;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,27 @@ namespace Kadena.WebAPI.KenticoProviders
                 }
             }
             return programIDs;
+        }
+
+        public CampaignProgram GetProgram(int programID)
+        {
+            TreeNode program = new TreeProvider(MembershipContext.AuthenticatedUser).SelectNodes(PageTypeClassName)
+                                    .Where("ProgramID", QueryOperator.Equals, programID)
+                                    .OnCurrentSite();
+            if (program != null)
+            {
+                return new CampaignProgram()
+                {
+                    ProgramID = program.GetIntegerValue("ProgramID", default(int)),
+                    ProgramName = program.DocumentName,
+                    BrandID = program.GetIntegerValue("BrandID", default(int)),
+                    CampaignID = program.GetIntegerValue("CampaignID", default(int))
+                };
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
