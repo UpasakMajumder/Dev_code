@@ -169,6 +169,9 @@
     <Compile Include="Site\Requests\SiteDataRequestDto.cs" />
     <Compile Include="Site\Responses\FtpCredentialsDto.cs" />
     <Compile Include="Site\Responses\SiteDataResponseDto.cs" />
+    <Compile Include="SSO\AddressDto.cs" />
+    <Compile Include="SSO\CustomerDto.cs" />
+    <Compile Include="SSO\UserDto.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\CampaignDTO.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\ChiliProcessDto.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\NotificationInfoDto.cs" />

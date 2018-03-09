@@ -13,7 +13,8 @@ namespace Kadena.Container.Default
         {
 
             mapper = new MapperConfiguration(cfg => cfg.AddProfiles(typeof(KenticoModelMappingsProfile),
-                                                                    typeof(MapperDefaultProfile)
+                                                                    typeof(MapperDefaultProfile),
+                                                                    typeof(SystemDtoProfile)
                                              )).CreateMapper();
         }
      

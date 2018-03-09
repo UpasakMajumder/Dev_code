@@ -51,6 +51,7 @@
     <Compile Include="MapperBuilder.cs" />
     <Compile Include="MapperDefaultProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemDtoProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
