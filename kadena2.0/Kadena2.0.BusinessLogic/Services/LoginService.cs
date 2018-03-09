@@ -85,7 +85,7 @@ namespace Kadena.BusinessLogic.Services
             var validation = request.Validate();
             if (validation != null)
             {
-                return GetFailedLoginResult(validation.Name,  resources.GetResourceString(validation.Error));
+                return GetFailedLoginResult(validation.Name, resources.GetResourceString(validation.Error));
             }
 
             var user = kenticoUsers.GetUser(request.LoginEmail);
@@ -117,6 +117,13 @@ namespace Kadena.BusinessLogic.Services
                 ErrorPropertyName = property,
                 ErrorMessage = error
             };
+        }
+
+        public string Logout()
+        {
+            login.Logout();
+            string redirectUrl = "/"; // TODO get SAML value here somehow, make parameter for it
+            return redirectUrl;
         }
     }
 }

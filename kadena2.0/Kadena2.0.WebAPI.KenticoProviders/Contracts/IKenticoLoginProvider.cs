@@ -10,5 +10,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void AcceptTaC(string mail);
         LoginResult Login(LoginRequest loginRequest);
         bool SSOLogin(string userName, bool keepLoggedIn);
+        void Logout();
     }
 }

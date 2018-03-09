@@ -126,5 +126,10 @@ namespace Kadena.WebAPI.KenticoProviders
                 }
             }
         }
+
+        public void Logout()
+        {
+            AuthenticationHelper.SignOut();
+        }
     }
 }
