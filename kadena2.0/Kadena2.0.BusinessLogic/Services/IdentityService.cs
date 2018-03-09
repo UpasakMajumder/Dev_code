@@ -5,20 +5,28 @@ using System.Xml;
 using System;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Text;
+using System.IdentityModel.Selectors;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.BusinessLogic.Services
 {
     public class IdentityService : IIdentityService
     {
         private readonly IKenticoLogger logger;
+        private readonly IKenticoResourceService kenticoResource;
 
-        public IdentityService(IKenticoLogger logger)
+        public IdentityService(IKenticoLogger logger, IKenticoResourceService kenticoResource)
         {
             if (logger == null)
             {
                 throw new ArgumentNullException(nameof(logger));
             }
+            if (kenticoResource == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoResource));
+            }
             this.logger = logger;
+            this.kenticoResource = kenticoResource;
         }
 
 
@@ -43,10 +51,21 @@ namespace Kadena.BusinessLogic.Services
 
         private Saml2SecurityToken GetToken(string tokenString)
         {
+            var thumbprint = kenticoResource.GetSettingsKey(Settings.KDA_TrustedCertificateThumbprint);
+            var allowedAudienceUri = kenticoResource.GetSettingsKey(Settings.KDA_AllowedAudienceUri);
+
+            var issuer = new ConfigurationBasedIssuerNameRegistry();
+            issuer.AddTrustedIssuer(thumbprint, "IdPIssuer");
+
+            var audience = new AudienceRestriction(AudienceUriMode.Always);
+            audience.AllowedAudienceUris.Add(new Uri(allowedAudienceUri, UriKind.RelativeOrAbsolute));
+
             var handler = new Saml2SecurityTokenHandler
             {
                 Configuration = new SecurityTokenHandlerConfiguration
                 {
+                    AudienceRestriction = audience,
+                    IssuerNameRegistry = issuer
                 }
             };
             using (var xmlReader = XmlReader.Create(new StringReader(Encoding.UTF8.GetString(Convert.FromBase64String(tokenString)))))
