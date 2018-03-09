@@ -7,7 +7,7 @@
     <ProjectGuid>{BF079DF3-1E13-44C5-8B87-C040257EAC07}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kadena2._0.Container.Default</RootNamespace>
+    <RootNamespace>Kadena.Container.Default</RootNamespace>
     <AssemblyName>Kadena2.0.Container.Default</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

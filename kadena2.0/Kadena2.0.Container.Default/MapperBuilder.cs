@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Kadena2.WebAPI.KenticoProviders;
 
-namespace Kadena2.Container.Default
+namespace Kadena.Container.Default
 {
     public static class MapperBuilder
     {

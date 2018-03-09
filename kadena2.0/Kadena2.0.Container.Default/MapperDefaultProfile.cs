@@ -43,7 +43,7 @@ using Kadena.Models.SubmitOrder;
 using Kadena.Models.TemplatedProduct;
 using System.Linq;
 
-namespace Kadena2.Container.Default
+namespace Kadena.Container.Default
 {
     public class MapperDefaultProfile : Profile
     {

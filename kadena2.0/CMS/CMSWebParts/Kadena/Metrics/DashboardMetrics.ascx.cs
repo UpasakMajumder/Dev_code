@@ -8,7 +8,7 @@ using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Models;
 using Kadena.Models.Product;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 

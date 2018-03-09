@@ -4,7 +4,7 @@ using CMS.SiteProvider;
 using CMS.UIControls;
 using Kadena.Dto.General;
 using Kadena.Dto.Payment.CreditCard.MicroserviceRequests;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
 using Newtonsoft.Json;
 using System;

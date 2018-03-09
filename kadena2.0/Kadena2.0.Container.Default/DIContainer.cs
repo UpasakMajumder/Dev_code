@@ -26,7 +26,7 @@ using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using Kadena2.WebAPI.KenticoProviders.Providers;
 using Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings;
 
-namespace Kadena2.Container.Default
+namespace Kadena.Container.Default
 {
     public static class DIContainer
     {

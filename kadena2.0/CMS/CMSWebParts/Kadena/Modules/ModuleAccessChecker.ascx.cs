@@ -6,7 +6,7 @@ using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using System;
 using System.Collections.Generic;
 using System.Linq;

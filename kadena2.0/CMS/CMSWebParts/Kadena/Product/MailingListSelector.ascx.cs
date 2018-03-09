@@ -9,7 +9,7 @@ using Kadena.MicroserviceClients.Contracts;
 using Kadena.Old_App_Code.Kadena.MailingList;
 using CMS.EventLog;
 using Kadena.WebAPI.KenticoProviders;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
 
 namespace Kadena.CMSWebParts.Kadena.Product

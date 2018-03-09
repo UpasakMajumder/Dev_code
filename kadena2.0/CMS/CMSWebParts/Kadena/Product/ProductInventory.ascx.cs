@@ -11,7 +11,7 @@ using CMS.PortalEngine.Web.UI;
 using Kadena.Models;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using System;
 using System.Collections.Generic;
 using System.Data;
