@@ -19,10 +19,15 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetProductStatus(int skuid);
         Sku GetVariant(int skuId, IEnumerable<int> optionsIds);
         void SetSkuAvailableQty(int skuid, int qty);
-        CustomTableItem GetAllocatedProductQuantityForUser(int productID, int userID);
+        int GetAllocatedProductQuantityForUser(int productID, int userID);
         void UpdateAllocatedProductQuantityForUser(int productID, int userID, int quantity);
         List<CampaignsProduct> GetCampaignsProductSKUIDs(int campaignID);
         bool IsProductHasAllocation(int productID);
         OptionCategory GetOptionCategory(string codeName);
+        int GetSkuAvailableQty(int skuid);
+        int GetCampaignProductIDBySKUID(int skuid);
+        bool ProductHasValidSKUNumber(int skuid);
+
+        CampaignsProduct GetCampaignProduct(int skuid);
     }
 }
