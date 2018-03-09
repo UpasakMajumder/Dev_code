@@ -2,7 +2,7 @@ import axios from 'axios';
 import { toastr } from 'react-redux-toastr';
 /* constants */
 import { FETCH, SUCCESS, FAILURE, SHOW, HIDE, START, FINISH, INIT_UI, SETTINGS_ADDRESSES, ADD_SHIPPING_ADDRESS,
-  MODIFY_SHIPPING_ADDRESS, APP_LOADING, DIALOG, isDevelopment, SET_ADDRESS_DEFAULT, UNSET_ADDRESS_DEFAULT, SAVE_NEW_ADDRESS } from 'app.consts';
+  MODIFY_SHIPPING_ADDRESS, APP_LOADING, DIALOG, isDevelopment, SET_ADDRESS_DEFAULT, UNSET_ADDRESS_DEFAULT, SAVE_NEW_ADDRESS, ADD_NEW_ADDRESS } from 'app.consts';
 /* helpers */
 import { callAC } from 'app.helpers/ac';
 /* globals */
@@ -82,9 +82,11 @@ export const addAddress = (data, fromCheckout) => {
     dispatch({ type: APP_LOADING + START });
 
     try {
+      const url = data.temporary ? CHECKOUT.saveAddressURL : USER_SETTINGS.addresses.editAddressURL;
+
       const response = await axios({
         method: 'post',
-        url: USER_SETTINGS.addresses.editAddressURL,
+        url,
         data
       });
 
@@ -100,6 +102,7 @@ export const addAddress = (data, fromCheckout) => {
       }
 
       const { id } = payload;
+
       data.id = id;
 
       if (fromCheckout) {
@@ -107,17 +110,22 @@ export const addAddress = (data, fromCheckout) => {
         const { success, payload } = responseCheckout.data;
 
         const checkedItems = payload.deliveryAddresses.items.filter(item => item.checked);
-        let checkedId = -1;
-        if (checkedItems.length) checkedId = checkedItems[0].id;
 
         if (success) {
           dispatch({
             type: SAVE_NEW_ADDRESS + SUCCESS,
             payload: {
               deliveryAddresses: payload.deliveryAddresses,
-              checkedId
+              checkedId: data.temporary ? id : checkedItems[0].id
             }
           });
+
+          if (data.temporary) {
+            dispatch({
+              type: ADD_NEW_ADDRESS + SUCCESS,
+              payload: data
+            });
+          }
         }
       }
 

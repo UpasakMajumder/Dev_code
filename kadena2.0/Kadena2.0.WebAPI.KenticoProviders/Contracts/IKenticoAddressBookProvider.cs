@@ -15,5 +15,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void SetDefaultShippingAddress(int addressId);
         void UnsetDefaultShippingAddress();
         void SaveShippingAddress(DeliveryAddress address, int customerId = 0);
+        List<AddressData> GetAddressesListByUserID(int userID, int inventoryType = 1, int campaignID = 0);
     }
 }

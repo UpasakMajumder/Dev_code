@@ -200,10 +200,10 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
         /// <returns></returns>
         public static string GetProductImage(string imagepath)
         {
-            string returnValue = string.Empty;
+            string returnValue = imagepath;
             try
             {
-                if (!string.IsNullOrWhiteSpace(imagepath))
+                if (!string.IsNullOrWhiteSpace(imagepath) && !imagepath.Contains(SiteContext.CurrentSite.DomainName))
                 {
                     string strPathAndQuery = HttpContext.Current.Request.Url.PathAndQuery;
                     returnValue = HttpContext.Current.Request.Url.AbsoluteUri.Replace(strPathAndQuery, "") + imagepath.Trim('~');
