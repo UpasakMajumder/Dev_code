@@ -1,4 +1,5 @@
 ﻿using Kadena.Models;
+using Kadena.Models.AddToCart;
 using Kadena.Models.Checkout;
 using Kadena.Models.Product;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Kadena.BusinessLogic.Contracts
         Task<CheckoutPage> GetCheckoutPage();
         CartItems GetCartItems();
         Task<CheckoutPageDeliveryTotals> GetDeliveryAndTotals();
-        Task<CheckoutPageDeliveryTotals> SaveTemporaryAddress(DeliveryAddress deliveryAddress);
+        int SaveTemporaryAddress(DeliveryAddress deliveryAddress);
         Task<CheckoutPageDeliveryTotals> SelectShipping(int id);
         DeliveryAddresses SelectAddress(int id);
         CartItems ChangeItemQuantity(int id, int quantity);
@@ -19,5 +20,7 @@ namespace Kadena.BusinessLogic.Contracts
         CartItemsPreview ItemsPreview();
         Task<AddToCartResult> AddToCart(NewCartItem item);
         List<int> GetLoggedInUserCartData(int inventoryType, int userID, int campaignID = 0);
+        DistributorCart GetCartDistributorData(int skuID, int inventoryType = 1);
+        int UpdateDistributorCarts(DistributorCart cartDistributorData);
     }
 }
