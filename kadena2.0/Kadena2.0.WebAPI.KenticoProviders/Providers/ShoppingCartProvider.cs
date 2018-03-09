@@ -314,11 +314,6 @@ namespace Kadena.WebAPI.KenticoProviders
                     CartItemText = i.CartItemText,
                     DesignFileKey = i.GetValue("ArtworkLocation", string.Empty),
                     MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
-                    ChiliProcess = new ChiliProcess
-                    {
-                        TemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
-                        PdfSettings = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
-                    },
                     ProductChiliWorkspaceId = i.GetValue("ProductChiliWorkspaceId", Guid.Empty),
                     ChiliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
                     SKUName = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU?.SKUName,
@@ -346,6 +341,11 @@ namespace Kadena.WebAPI.KenticoProviders
                 };
                 if (cartItem.IsTemplated)
                 {
+                    cartItem.ChiliProcess = new ChiliProcess
+                    {
+                        TemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
+                        PdfSettings = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
+                    };
                     var product = productProvider.GetProductByNodeId(cartItem.ProductPageId);
                     cartItem.Preview.Url = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, product.TemplateLowResSettingId);
                     cartItem.Preview.Exists = true;
@@ -498,7 +498,7 @@ namespace Kadena.WebAPI.KenticoProviders
             var shoppingCart = GetShoppingCart(shoppingCartId);
             ShoppingCartInfoProvider.DeleteShoppingCartInfo(shoppingCart);
         }
- 
+
         public double GetCurrentCartTotalItemsPrice()
         {
             return ECommerceContext.CurrentShoppingCart.TotalItemsPrice;
