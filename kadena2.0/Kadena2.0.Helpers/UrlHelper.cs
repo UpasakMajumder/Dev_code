@@ -8,5 +8,10 @@ namespace Kadena.Helpers
         {
             return $"/api/template/{templateId}/preview/{settingId}";
         }
+
+        public static Uri GetACSUri()
+        {
+            return new Uri("/api/login/saml2", UriKind.Relative);
+        }
     }
 }

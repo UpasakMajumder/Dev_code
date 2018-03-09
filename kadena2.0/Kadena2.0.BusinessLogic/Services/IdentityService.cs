@@ -7,6 +7,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Text;
 using System.IdentityModel.Selectors;
 using Kadena.Models.SiteSettings;
+using Kadena.Models.SSO;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -60,7 +61,7 @@ namespace Kadena.BusinessLogic.Services
             var audience = new AudienceRestriction(AudienceUriMode.Always);
             audience.AllowedAudienceUris.Add(new Uri(allowedAudienceUri, UriKind.RelativeOrAbsolute));
 
-            var handler = new Saml2SecurityTokenHandler
+            var handler = new KadenaSaml2SecurityTokenHandler
             {
                 Configuration = new SecurityTokenHandlerConfiguration
                 {
