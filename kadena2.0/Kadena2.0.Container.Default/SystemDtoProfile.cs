@@ -13,7 +13,14 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src[opt.DestinationMember.Name].FirstOrDefault()))
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src[opt.DestinationMember.Name].FirstOrDefault()))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src[opt.DestinationMember.Name].FirstOrDefault()))
-                .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src[opt.DestinationMember.Name]))
+                .ForMember(dest => dest.Roles, opt => opt.ResolveUsing((src) =>
+                {
+                    if (src.TryGetValue(nameof(opt.DestinationMember.Name), out IEnumerable<string> values))
+                    {
+                        return values;
+                    }
+                    return null;
+                }))
                 .ForAllOtherMembers(opt => opt.ResolveUsing((src) =>
                   {
                       if (src.TryGetValue(nameof(opt.DestinationMember.Name), out IEnumerable<string> values))
