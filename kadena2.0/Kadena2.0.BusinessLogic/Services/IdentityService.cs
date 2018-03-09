@@ -37,7 +37,7 @@ namespace Kadena.BusinessLogic.Services
             Saml2SecurityToken token = null;
             try
             {
-                token = GetToken(samlString);
+                token = GetSecuritToken(samlString);
             }
             catch (Exception e)
             {
@@ -50,7 +50,24 @@ namespace Kadena.BusinessLogic.Services
             return token != null ? new Uri("/", UriKind.Relative) : new Uri("https://en.wikipedia.org/wiki/HTTP_404", UriKind.Absolute);
         }
 
-        private Saml2SecurityToken GetToken(string tokenString)
+        private Saml2SecurityToken GetSecuritToken(string tokenString)
+        {
+            var tokenHandler = GetSecurityTokenHandler();
+            var decodedTokenString = Encoding.UTF8.GetString(Convert.FromBase64String(tokenString));
+            using (var stringReader = new StringReader(decodedTokenString))
+            {
+                using (var xmlReader = XmlReader.Create(stringReader))
+                {
+                    if (!xmlReader.ReadToFollowing("saml:Assertion"))
+                    {
+                        throw new ArgumentException("Assertion not found!", nameof(tokenString));
+                    }
+                    return tokenHandler.ReadToken(xmlReader) as Saml2SecurityToken;
+                }
+            }
+        }
+
+        private KadenaSaml2SecurityTokenHandler GetSecurityTokenHandler()
         {
             var thumbprint = kenticoResource.GetSettingsKey(Settings.KDA_TrustedCertificateThumbprint);
             var allowedAudienceUri = kenticoResource.GetSettingsKey(Settings.KDA_AllowedAudienceUri);
@@ -69,14 +86,7 @@ namespace Kadena.BusinessLogic.Services
                     IssuerNameRegistry = issuer
                 }
             };
-            using (var xmlReader = XmlReader.Create(new StringReader(Encoding.UTF8.GetString(Convert.FromBase64String(tokenString)))))
-            {
-                if (!xmlReader.ReadToFollowing("saml:Assertion"))
-                {
-                    throw new ArgumentException("Assertion not found!", nameof(tokenString));
-                }
-                return handler.ReadToken(xmlReader) as Saml2SecurityToken;
-            }
+            return handler;
         }
     }
 }
