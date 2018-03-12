@@ -48,7 +48,7 @@ namespace Kadena.BusinessLogic.Services
                 logger.LogInfo(this.GetType().Name, "SAMLCUSTOMER", JsonConvert.SerializeObject(customer));
                 // authenticate in Kentico
                 logger.LogInfo(this.GetType().Name, "SAMLADDRESS", JsonConvert.SerializeObject(address));
-                new Uri("/", UriKind.Relative);
+                return new Uri("/", UriKind.Relative);
             }
 
             return new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
