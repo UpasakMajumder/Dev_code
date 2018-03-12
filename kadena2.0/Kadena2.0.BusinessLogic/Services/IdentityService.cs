@@ -12,6 +12,7 @@ using Kadena.Models.SSO;
 using System.Collections.Generic;
 using Kadena.Dto.SSO;
 using AutoMapper;
+using Newtonsoft.Json;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -56,9 +57,15 @@ namespace Kadena.BusinessLogic.Services
                 if (token != null)
                 {
                     var attributes = GetAttributes(token);
+                    var user = mapper.Map<UserDto>(attributes);
+                    var customer = mapper.Map<CustomerDto>(attributes);
+                    var address = mapper.Map<AddressDto>(attributes);
                     // create/update user
+                    logger.LogInfo(this.GetType().Name, "SAMLUSER", JsonConvert.SerializeObject(user));
                     // update roles
+                    logger.LogInfo(this.GetType().Name, "SAMLCUSTOMER", JsonConvert.SerializeObject(customer));
                     // authenticate in Kentico
+                    logger.LogInfo(this.GetType().Name, "SAMLADDRESS", JsonConvert.SerializeObject(address));
                     new Uri("/", UriKind.Relative);
                 }
                 else
