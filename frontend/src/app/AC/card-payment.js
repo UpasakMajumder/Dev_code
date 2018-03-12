@@ -44,6 +44,8 @@ export const submitCard = (fields, cardType, submissionId) => {
         TerminalIdentifier_LocationCode,
         TerminalIdentifier_TerminalCode,
         TerminalIdentifier_MerchantCode,
+        CreditCard_BillingAddress_AddressLine1,
+        CreditCard_BillingAddress_PostalCode,
         APCount,
         PTCount,
         DemoURL,
@@ -73,6 +75,8 @@ export const submitCard = (fields, cardType, submissionId) => {
         TerminalIdentifier_LocationCode,
         TerminalIdentifier_TerminalCode,
         TerminalIdentifier_MerchantCode,
+        CreditCard_BillingAddress_AddressLine1,
+        CreditCard_BillingAddress_PostalCode,
         ResultURL,
         ResponseType,
         CreditCard_CSCIndicator
