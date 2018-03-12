@@ -48,11 +48,11 @@ function getDate(datePicker) {
 
             $.ajax({
                 type: "POST",
-                url: '/KadenaWebService.asmx/' + base.attr("data-function"),
+                url: '/api/logout',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (data) {
-                    window.location.href = "/";
+                    window.location.href = data.payload;
                 },
                 error: function (xhr, ajaxOptions, thrownError) { }
             });
