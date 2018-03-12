@@ -885,7 +885,7 @@ config.localization.languages = {
           <property name="text">
 <![CDATA[
 <li class="nav-item">
-  <a id="js-logout" class="nav-link" href="javascript:void(0);" data-function="SignOut">
+  <a id="js-logout" class="nav-link" href="javascript:void(0);">
     <svg class="icon icon-navigation icon-dashboard">
       <use xlink:href="/gfx/svg/sprites/icons.svg#sign-out" />
     </svg> 

@@ -137,6 +137,10 @@ export default (state = defaultState, action) => {
         totals: payload.totals,
         deliveryMethods: payload.deliveryMethods
       },
+      checkedData: {
+        ...state.checkedData,
+        deliveryMethod: payload.checkedId
+      },
       isSending: false
     };
 

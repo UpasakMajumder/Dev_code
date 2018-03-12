@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Kadena.Dto.AddToCart;
 using Kadena.Dto.Brands;
 using Kadena.Dto.BusinessUnits;
 using Kadena.Dto.Checkout;
@@ -27,6 +28,7 @@ using Kadena.Dto.TemplatedProduct.Responses;
 using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Infrastructure.FileConversion;
 using Kadena.Models;
+using Kadena.Models.AddToCart;
 using Kadena.Models.Brand;
 using Kadena.Models.BusinessUnit;
 using Kadena.Models.Checkout;
@@ -261,6 +263,10 @@ namespace Kadena2.Container.Default
                 .ForMember(dest => dest.DeliveryAddresses, opt => opt.MapFrom(src => src));
    		    CreateMap<SaveCreditCardRequestDto, SaveCardData>();
             CreateMap<StoredCard, StoredCardDto>();
+            CreateMap<DistributorCart, DistributorCartDto>();
+            CreateMap<DistributorCartItem, DistributorCartItemDto>();
+            CreateMap<DistributorCartDto, DistributorCart>();
+            CreateMap<DistributorCartItemDto, DistributorCartItem>();
         }
     }
 }
