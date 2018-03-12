@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.documenttype>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <NameSpace>KDA</NameSpace>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDisplayName>_Orders Report Module</ClassDisplayName>
+  <ClassFormDefinition>
+    <form version="2">
+      <field column="OrdersReportModuleID" columnprecision="0" columntype="integer" guid="d35236b8-007e-4e2e-be57-fffb220426c7" isPK="true" publicfield="false">
+        <properties>
+          <fieldcaption>OrdersReportModuleID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="ModuleName" columnsize="200" columntype="text" guid="85e9f4b9-bf08-43da-8177-b6d605250136" isinherited="true" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Name</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="ModuleMainIcon" columnsize="50" columntype="text" guid="6aa33e3d-464d-42ce-a07f-da84a23fd271" isinherited="true" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Main Icon</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Query>
+<![CDATA[
+SELECT IconCodeName, IconName
+FROM KDA_MainMenuIcon WITH(nolock)
+ORDER BY ItemOrder
+]]>
+          </Query>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>8aa86b53-84c5-4d84-8506-d8cbd99ab08b</ClassGUID>
+  <ClassIconClass>icon-doc-o</ClassIconClass>
+  <ClassInheritsFromClassID>
+    <CodeName>KDA.Module</CodeName>
+    <GUID>e389c224-fafd-4166-bf24-968f92202e09</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassInheritsFromClassID>
+  <ClassIsContentOnly>False</ClassIsContentOnly>
+  <ClassIsCoupledClass>True</ClassIsCoupledClass>
+  <ClassIsCustomTable>False</ClassIsCustomTable>
+  <ClassIsDocumentType>True</ClassIsDocumentType>
+  <ClassIsForm>False</ClassIsForm>
+  <ClassName>KDA.OrdersReportModule</ClassName>
+  <ClassNodeNameSource>ModuleName</ClassNodeNameSource>
+  <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>
+  <ClassSearchCreationDateColumn>DocumentCreatedWhen</ClassSearchCreationDateColumn>
+  <ClassSearchEnabled>True</ClassSearchEnabled>
+  <ClassSearchSettings>
+    <search>
+      <item content="True" id="27f12a96-6016-4897-953a-d086f37fad53" name="ModuleMainIcon" searchable="False" tokenized="True" />
+      <item content="False" id="4b3b5ec2-6bf3-4a85-8a25-c0639b2f0f53" name="OrdersReportModuleID" searchable="True" tokenized="False" />
+      <item content="True" id="d0db7dc6-dbde-423b-8ead-90b10e658ac5" name="ModuleName" searchable="False" tokenized="True" />
+    </search>
+  </ClassSearchSettings>
+  <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
+  <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassTableName>KDA_OrdersReportModule</ClassTableName>
+  <ClassUsePublishFromTo>True</ClassUsePublishFromTo>
+  <ClassUsesVersioning>False</ClassUsesVersioning>
+</cms.documenttype>
