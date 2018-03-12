@@ -29,14 +29,6 @@
         #endregion
 
         #region Public methods
-
-        [WebMethod(EnableSession = true)]
-        [ScriptMethod]
-        public void SignOut()
-        {
-            AuthenticationHelper.SignOut();
-        }
-
         [WebMethod(EnableSession = true)]
         [ScriptMethod]
         public GeneralResultDTO InitialPasswordSetting(string password, string confirmPassword, Guid userGUID)

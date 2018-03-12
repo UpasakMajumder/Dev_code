@@ -41,7 +41,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return tacDocument.GetDateTimeValue("ValidFrom", DateTime.MinValue);
         }
 
-        public bool CheckPasword(string mail, string password)
+        public bool CheckPassword(string mail, string password)
         {
             var user = UserInfoProvider.GetUserInfo(mail);
 
@@ -62,40 +62,74 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public LoginResult Login(LoginRequest loginRequest)
         {
-            CookieHelper.EnsureResponseCookie(FormsAuthentication.FormsCookieName);
-            if (loginRequest.KeepLoggedIn)
-            {
-                CookieHelper.ChangeCookieExpiration(FormsAuthentication.FormsCookieName, DateTime.Now.AddYears(1), false);
-            }
-            else
-            {
-                // Extend the expiration of the authentication cookie if required
-                if (!AuthenticationHelper.UseSessionCookies && (HttpContext.Current != null) && (HttpContext.Current.Session != null))
-                {
-                    CookieHelper.ChangeCookieExpiration(FormsAuthentication.FormsCookieName, DateTime.Now.AddMinutes(HttpContext.Current.Session.Timeout), false);
-                }
-            }
-
             var user = AuthenticationHelper.AuthenticateUser(loginRequest.LoginEmail, loginRequest.Password, SiteContext.CurrentSiteName);
 
             if (user != null)
             {
+                ChangeCookieExpiration(loginRequest.KeepLoggedIn);
                 FormsAuthentication.SetAuthCookie(user.UserName, loginRequest.KeepLoggedIn);
                 MembershipActivityLogger.LogLogin(user.UserName);
+
                 return new LoginResult
                 {
                     LogonSuccess = true
                 };
             }
+            
+            return new LoginResult
+            {
+                LogonSuccess = false,
+                ErrorPropertyName = "loginEmail",
+                ErrorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode)
+            };
+        }
+
+        public bool SSOLogin(string username, bool keepLoggedIn = false)
+        {
+            var user = UserInfoProvider.GetUserInfo(username);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            AuthenticationHelper.AuthenticateUser(username, createPersistentCookie: true, loadCultures: true);
+
+            var authenticationSuccess = (MembershipContext.AuthenticatedUser?.UserID ?? 0) == user.UserID;
+
+            if (authenticationSuccess)
+            {
+                ChangeCookieExpiration(keepLoggedIn);
+                FormsAuthentication.SetAuthCookie(username, keepLoggedIn);
+                MembershipActivityLogger.LogLogin(username);
+            }
+
+            return authenticationSuccess;
+        }
+
+        private void ChangeCookieExpiration(bool keepLoggedIn)
+        {
+            CookieHelper.EnsureResponseCookie(FormsAuthentication.FormsCookieName);
+
+            if (keepLoggedIn)
+            {
+                var extendedExpirationDate = DateTime.Now.AddYears(1);
+                CookieHelper.ChangeCookieExpiration(FormsAuthentication.FormsCookieName, extendedExpirationDate, false);
+            }
             else
             {
-                return new LoginResult
+                // Extend the expiration of the authentication cookie if required
+                if (!AuthenticationHelper.UseSessionCookies && (HttpContext.Current?.Session != null))
                 {
-                    LogonSuccess = false,
-                    ErrorPropertyName = "loginEmail",
-                    ErrorMessage = ResHelper.GetString("Kadena.Logon.LogonFailed", LocalizationContext.CurrentCulture.CultureCode)
-                };
+                    var extendedExpirationDate = DateTime.Now.AddMinutes(HttpContext.Current.Session.Timeout);
+                    CookieHelper.ChangeCookieExpiration(FormsAuthentication.FormsCookieName, extendedExpirationDate, false);
+                }
             }
+        }
+
+        public void Logout()
+        {
+            AuthenticationHelper.SignOut();
         }
     }
 }
