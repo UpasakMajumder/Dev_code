@@ -31,6 +31,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var currentUserRolesNames = roles.GetUserRoles(user.UserId).Select(r => r.CodeName);
             var rolesToAdd = ssoRoles.Except(currentUserRolesNames);
+            var rolesToDelete = currentUserRolesNames.Except(ssoRoles);
             var allExistingRolesNames = roles.GetRoles(siteId).Select(r => r.CodeName);
             var unknownSsoRoles = rolesToAdd.Except(allExistingRolesNames);
             var knownRolesToAdd = rolesToAdd.Except(unknownSsoRoles);
@@ -40,6 +41,8 @@ namespace Kadena.BusinessLogic.Services
                 var logMessage = $"Unknown roles received when updating user {user.UserId} on site {siteId} : {string.Join(",", unknownSsoRoles)}";
                 log.LogError("SSO Update Roles", logMessage);
             }
+
+            roles.RemoveUserRoles(user.UserName, siteId, rolesToDelete);
 
             roles.AssignUserRoles(user.UserName, siteId, knownRolesToAdd);
         }
