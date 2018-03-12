@@ -178,7 +178,6 @@
     <Compile Include="Settings\SettingsAddresses.cs" />
     <Compile Include="Site\LanguageSelectorItem.cs" />
     <Compile Include="Site\Site.cs" />
-    <Compile Include="SSO\KadenaSaml2SecurityTokenHandler.cs" />
     <Compile Include="State.cs" />
     <Compile Include="SubmitOrder\PaymentMethod.cs" />
     <Compile Include="SubmitOrder\SubmitOrderRequest.cs" />

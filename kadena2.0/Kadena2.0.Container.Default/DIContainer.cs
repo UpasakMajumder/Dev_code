@@ -25,6 +25,9 @@ using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using Kadena2.WebAPI.KenticoProviders.Providers;
 using Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings;
+using Kadena.BusinessLogic.Contracts.SSO;
+using Kadena.BusinessLogic.Services.SSO;
+using System.IdentityModel.Tokens;
 
 namespace Kadena.Container.Default
 {
@@ -88,6 +91,10 @@ namespace Kadena.Container.Default
             container.Register<ISavedCreditCard3dsi, SavedCreditCard3dsi>();
 			container.Register<IIBTFService, IBTFService>();
 			container.Register<IIdentityService, IdentityService>();
+			container.Register<ISaml2Service, Saml2Service>();
+			container.Register<ISaml2HandlerService, Saml2HandlerService>();
+			container.Register<Saml2SecurityTokenHandler, KadenaSaml2SecurityTokenHandler>();
+			container.Register<ISaml2RecipientValidator, Saml2RecipientValidator>();
             return container;
         }
 

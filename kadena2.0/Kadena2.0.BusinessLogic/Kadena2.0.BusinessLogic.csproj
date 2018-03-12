@@ -56,6 +56,9 @@
   <ItemGroup>
     <Compile Include="Contracts\IIBTFService.cs" />
     <Compile Include="Contracts\IIdentityService.cs" />
+    <Compile Include="Contracts\SSO\ISaml2RecipientValidator.cs" />
+    <Compile Include="Contracts\SSO\ISaml2HandlerService.cs" />
+    <Compile Include="Contracts\SSO\ISaml2Service.cs" />
     <Compile Include="Contracts\ISubmissionService.cs" />
     <Compile Include="Contracts\IFileService.cs" />
     <Compile Include="Contracts\IProgramsService.cs" />
@@ -104,6 +107,10 @@
     <Compile Include="Services\IBTFService.cs" />
     <Compile Include="Services\Orders\GetOrderDataService.cs" />
     <Compile Include="Services\Orders\SendSubmitOrder.cs" />
+    <Compile Include="Services\SSO\KadenaSaml2SecurityTokenHandler.cs" />
+    <Compile Include="Services\SSO\Saml2RecipientValidator.cs" />
+    <Compile Include="Services\SSO\Saml2HandlerService.cs" />
+    <Compile Include="Services\SSO\Saml2Service.cs" />
     <Compile Include="Services\SubmissionService.cs" />
     <Compile Include="Services\OrderPayment\CreditCard3dsiDemo.cs" />
     <Compile Include="Services\Orders\OrderDetailService.cs" />
