@@ -104,7 +104,9 @@ namespace Kadena.BusinessLogic.Services
                     {
                         throw new ArgumentException("Assertion not found!", nameof(tokenString));
                     }
-                    return tokenHandler.ReadToken(xmlReader) as Saml2SecurityToken;
+                    var token = tokenHandler.ReadToken(xmlReader) as Saml2SecurityToken;
+                    tokenHandler.ValidateToken(token);
+                    return token;
                 }
             }
         }
