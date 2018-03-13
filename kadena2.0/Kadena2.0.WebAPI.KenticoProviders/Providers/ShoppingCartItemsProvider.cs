@@ -213,25 +213,24 @@ namespace Kadena.WebAPI.KenticoProviders
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
         }
 
-        public void SaveCartItem(CartItem item)
+        public void SaveCartItem(CartItemEntity item)
         {
-            var cartItemInfo = ShoppingCartItemInfoProvider.GetShoppingCartItemInfo(item.Id);
-
-            cartItemInfo.CartItemText = item.CustomName;
-            cartItemInfo.CartItemUnits = item.Quantity;
-            cartItemInfo.SetValue("MailingListName", item.MailingListName);
-            cartItemInfo.SetValue("MailingListGuid", item.MailingListGuid);
+            var cartItemInfo = mapper.Map<ShoppingCartItemInfo>(item);
 
             ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItemInfo);
+
             foreach (ShoppingCartItemInfo option in cartItemInfo.ProductOptions)
             {
                 ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(option);
             }
         }
 
-        public void SetArtwork(CartItem cartItem)
+        public void SetArtwork(CartItemEntity cartItem, int documentId)
         {
-            var guid = cartItem.Artwork;
+            var productDocument = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser)) as SKUTreeNode;
+
+            var guid = productDocument.GetStringValue("ProductArtwork", string.Empty);
+
             if (!string.IsNullOrWhiteSpace(guid))
             {
                 var attachmentPath = AttachmentURLProvider.GetFilePhysicalURL(SiteContext.CurrentSiteName, guid);
@@ -245,11 +244,11 @@ namespace Kadena.WebAPI.KenticoProviders
                 {
                     attachmentPath = PathHelper.GetObjectKeyFromPath(attachmentPath);
                 }
-                cartItem.Artwork = attachmentPath;
+                cartItem.ArtworkLocation = attachmentPath;
             }
         }
 
-        public CartItem EnsureCartItem(NewCartItem newItem)
+        public CartItemEntity GetOrCreateCartItem(NewCartItem newItem)
         {
             var productDocument = DocumentHelper.GetDocument(newItem.DocumentId, new TreeProvider(MembershipContext.AuthenticatedUser)) as SKUTreeNode;
 
@@ -289,16 +288,16 @@ namespace Kadena.WebAPI.KenticoProviders
             ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
             var cartItemInfo = cart.SetShoppingCartItem(parameters);
 
+            cartItemInfo.CartItemText = cartItemInfo.SKU.SKUName;
+            cartItemInfo.SetValue("ProductType", productDocument.GetStringValue("ProductType", string.Empty));
+            cartItemInfo.SetValue("ProductPageID", productDocument.NodeID);
+            cartItemInfo.SetValue("ProductProductionTime", productDocument.GetStringValue("ProductProductionTime", string.Empty));
+            cartItemInfo.SetValue("ProductShipTime", productDocument.GetStringValue("ProductShipTime", string.Empty));
+
+
             ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItemInfo);
-            
 
-            var cartItem = MapCartItem(cartItemInfo, true, true);
-
-            
-            cartItem.CartItemText = cartItemInfo.SKU.SKUName;
-            cartItem.DynamicPricing = productDocument.GetStringValue("ProductDynamicPricing", string.Empty);
-
-           return cartItem;
+            return mapper.Map<CartItemEntity>(cartItemInfo);
         }
 
         private SKUInfo EnsureTemplateOptionSKU()

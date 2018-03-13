@@ -444,15 +444,15 @@ namespace Kadena.BusinessLogic.Services
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
 
-            var cartItem = shoppingCartItems.EnsureCartItem(newItem);
+            var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);
 
-            if (cartItem.IsInventory)
+            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.InventoryProduct))
             {
-                EnsureInventoryAmount(cartItem.StockQuantity, newItem.Quantity, cartItem.Quantity);
+                EnsureInventoryAmount(cartItem, newItem.Quantity, cartItem.SKUUnits);
             }
 
             MailingList mailingList = null;
-            if (cartItem.IsMailingList)
+            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.MailingProduct))
             {
                 mailingList = await mailingService.GetMailingList(newItem.ContainerId);
 
@@ -461,19 +461,26 @@ namespace Kadena.BusinessLogic.Services
                     throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
                 }
                 SetMailingList(cartItem, mailingList);
-                cartItem.Quantity = addedAmount;
+                cartItem.SKUUnits = addedAmount;
                 
             }
 
-            shoppingCartItems.SetArtwork(cartItem);
+            shoppingCartItems.SetArtwork(cartItem, newItem.DocumentId);
             
-            var price = dynamicPrices.GetDynamicPrice(cartItem.Quantity, cartItem.DynamicPricing);
+            var price = dynamicPrices.GetDynamicPrice(cartItem.SKUUnits, newItem.DocumentId);
             if (price > decimal.MinusOne)
             {
-                cartItem.TotalPrice = price;
+                cartItem.CartItemPrice = price;
+            }
+            else
+            {
+                cartItem.CartItemPrice = null;
             }
 
-            cartItem.CustomName = newItem.CustomProductName;
+            if (!string.IsNullOrEmpty(newItem.CustomProductName))
+            {
+                cartItem.CartItemText = newItem.CustomProductName;
+            }
 
             shoppingCartItems.SaveCartItem(cartItem);
 
@@ -488,7 +495,7 @@ namespace Kadena.BusinessLogic.Services
             return result;
         }
 
-        public void SetMailingList(CartItem cartItem, MailingList mailingList)
+        public void SetMailingList(CartItemEntity cartItem, MailingList mailingList)
         {
             if (mailingList != null)
             {
@@ -498,8 +505,10 @@ namespace Kadena.BusinessLogic.Services
         }
 
 
-        public void EnsureInventoryAmount(int availableQuantity, int addedQuantity, int resultedQuantity)
+        public void EnsureInventoryAmount(CartItemEntity item, int addedQuantity, int resultedQuantity)
         {
+            var availableQuantity = shoppingCart.GetStockQuantity(item);
+
             if (addedQuantity > availableQuantity)
             {
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.LowerNumberOfAvailableProducts"));
