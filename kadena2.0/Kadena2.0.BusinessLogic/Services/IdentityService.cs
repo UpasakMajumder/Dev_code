@@ -78,15 +78,21 @@ namespace Kadena.BusinessLogic.Services
                 var currentSiteId = siteProvider.GetKenticoSite().Id;
 
                 var user = EnsureUpdateUser(userDto, currentSiteId);
-                var customer = EnsureUpdateCustomer(customerDto, user.UserId);
-                EnsureUpdateAddress(addressDto, customer.Id);
-
-                roleService.AssignSSORoles(user, currentSiteId, userDto.Roles);
-
-                var authenticated = loginProvider.SSOLogin(user.UserName, true);
-                if (authenticated)
+                if (user != null)
                 {
-                    return new Uri("/", UriKind.Relative);
+                    var customer = EnsureUpdateCustomer(customerDto, user.UserId);
+                    if (customer != null)
+                    {
+                        EnsureUpdateAddress(addressDto, customer.Id);
+                    }
+
+                    roleService.AssignSSORoles(user, currentSiteId, userDto.Roles);
+
+                    var authenticated = loginProvider.SSOLogin(user.UserName, true);
+                    if (authenticated)
+                    {
+                        return new Uri("/", UriKind.Relative);
+                    }
                 }
             }
             return new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
@@ -95,6 +101,12 @@ namespace Kadena.BusinessLogic.Services
         private User EnsureUpdateUser(UserDto user, int currentSiteId)
         {
             var newUser = mapper.Map<User>(user);
+            if (newUser == null)
+            {
+                logger.LogInfo(this.GetType().Name, "ENSURESAMLUSER", "User info extraction has failed.");
+                return null;
+            }
+
             var existingUser = userProvider.GetUser(newUser.UserName);
             if (existingUser == null)
             {
@@ -112,6 +124,11 @@ namespace Kadena.BusinessLogic.Services
         private Customer EnsureUpdateCustomer(CustomerDto customer, int userId)
         {
             var newCustomer = mapper.Map<Customer>(customer);
+            if (newCustomer == null)
+            {
+                logger.LogInfo(this.GetType().Name, "ENSURESAMLCUSTOMER", "Customer info extraction has failed.");
+                return null;
+            }
             var existingCustomer = userProvider.GetCustomer(userId);
             if (existingCustomer == null)
             {
