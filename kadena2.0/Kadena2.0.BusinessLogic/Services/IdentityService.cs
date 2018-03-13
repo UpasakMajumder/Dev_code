@@ -5,7 +5,6 @@ using Kadena.Dto.SSO;
 using AutoMapper;
 using Newtonsoft.Json;
 using Kadena.BusinessLogic.Contracts.SSO;
-using Kadena.Models.SiteSettings;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -41,7 +40,6 @@ namespace Kadena.BusinessLogic.Services
             this.kenticoResourceService = kenticoResourceService;
         }
 
-
         public Uri TryAuthenticate(string samlString)
         {
             var attributes = saml2Service.GetAttributes(samlString);
@@ -60,16 +58,6 @@ namespace Kadena.BusinessLogic.Services
             }
 
             return new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
-        }
-
-        public Uri GetIdentityProviderUrl()
-        {
-            var url = kenticoResourceService.GetSettingsKey(Settings.KDA_IdProviderUrl);
-            if (string.IsNullOrWhiteSpace(url))
-            {
-                return null;
-            }
-            return new Uri(url, UriKind.RelativeOrAbsolute);
         }
     }
 }

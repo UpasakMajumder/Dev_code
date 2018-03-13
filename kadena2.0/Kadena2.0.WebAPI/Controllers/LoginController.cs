@@ -83,17 +83,5 @@ namespace Kadena.WebAPI.Controllers
             }
             return Redirect(authenticationResultPage);
         }
-
-        [HttpGet]
-        [Route("api/login/idp")]
-        public IHttpActionResult RedirectToIdP()
-        {
-            var url = identityService.GetIdentityProviderUrl();
-            if (url == null)
-            {
-                return NotFound();
-            }
-            return Redirect(url);
-        }
     }
 }
