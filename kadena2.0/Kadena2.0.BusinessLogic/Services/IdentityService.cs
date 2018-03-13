@@ -39,9 +39,13 @@ namespace Kadena.BusinessLogic.Services
             var attributes = saml2Service.GetAttributes(samlString);
             if (attributes != null)
             {
-                var user = mapper.Map<UserDto>(attributes);
-                var customer = mapper.Map<CustomerDto>(attributes);
-                var address = mapper.Map<AddressDto>(attributes);
+                var userDto = mapper.Map<UserDto>(attributes);
+                var customerDto = mapper.Map<CustomerDto>(attributes);
+                var addressDto = mapper.Map<AddressDto>(attributes);
+
+                var user = mapper.Map<User>(userDto);
+                var customer = mapper.Map<Customer>(customerDto);
+                var address = mapper.Map<DeliveryAddress>(addressDto);
                 // create/update user
                 logger.LogInfo(this.GetType().Name, "SAMLUSER", JsonConvert.SerializeObject(user));
                 // update roles
