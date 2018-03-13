@@ -31,7 +31,7 @@
             </asp:TemplateField>
             <asp:TemplateField>
                 <ItemTemplate>
-                    <asp:Label runat="server" ID="lblItemSpecs" Text='<%# Eval("ItemSpec") != null ? Eval("ItemSpec").ToString().Substring(0,20) : Eval("ItemSpec") %>' class="js-tooltip" data-tooltip-placement="bottom" ToolTip='<%# Eval("ItemSpec") %>'></asp:Label>
+                    <asp:Label runat="server" ID="lblItemSpecs" Text='<%# Eval("ItemSpec") != null ? Eval("ItemSpec").ToString().Substring(0, Eval("ItemSpec").ToString().Length > 20 ? 20 :Eval("ItemSpec").ToString().Length) : Eval("ItemSpec") %>' class="js-tooltip" data-tooltip-placement="bottom" ToolTip='<%# Eval("ItemSpec") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField>
@@ -113,7 +113,7 @@
             </asp:TemplateField>
             <asp:TemplateField>
                 <ItemTemplate>
-                    <asp:Label runat="server" ID="lblTweComments" Text='<%#Eval("TweComments") != null ? Eval("TweComments").ToString().Substring(0,20) : Eval("TweComments") %>' class="js-tooltip" data-tooltip-placement="bottom" ToolTip='<%# Eval("TweComments") %>'></asp:Label>
+                    <asp:Label runat="server" ID="lblTweComments" Text='<%#Eval("TweComments") != null ? Eval("TweComments").ToString().Substring(0,Eval("TweComments").ToString().Length > 20 ? 20:Eval("TweComments").ToString().Length) : Eval("TweComments") %>' class="js-tooltip" data-tooltip-placement="bottom" ToolTip='<%# Eval("TweComments") %>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:TextBox runat="server" ID="txtTweComments" Text='<%#Eval("TweComments") %>'></asp:TextBox>
