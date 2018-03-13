@@ -17,9 +17,10 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoUserProvider userProvider;
         private readonly IKenticoSiteProvider siteProvider;
         private readonly IKenticoAddressBookProvider addressProvider;
+        private readonly IRoleService roleService;
 
         public IdentityService(IKenticoLogger logger, IMapper mapper, ISaml2Service saml2Service, IKenticoUserProvider userProvider, IKenticoSiteProvider siteProvider,
-            IKenticoAddressBookProvider addressProvider)
+            IKenticoAddressBookProvider addressProvider, IRoleService roleService)
         {
             if (logger == null)
             {
@@ -45,12 +46,17 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(addressProvider));
             }
+            if (roleService == null)
+            {
+                throw new ArgumentNullException(nameof(roleService));
+            }
             this.logger = logger;
             this.mapper = mapper;
             this.saml2Service = saml2Service;
             this.userProvider = userProvider;
             this.siteProvider = siteProvider;
             this.addressProvider = addressProvider;
+            this.roleService = roleService;
         }
 
 
@@ -66,12 +72,12 @@ namespace Kadena.BusinessLogic.Services
                 var user = mapper.Map<User>(userDto);
                 var customer = mapper.Map<Customer>(customerDto);
                 var existingUser = userProvider.GetUser(userDto.UserName);
+                var currentSiteId = siteProvider.GetKenticoSite().Id;
                 if (existingUser == null)
                 {
                     var address = mapper.Map<DeliveryAddress>(addressDto);
                     user.IsExternal = true;
-                    var currentSite = siteProvider.GetKenticoSite();
-                    userProvider.CreateUser(user, currentSite.Id);
+                    userProvider.CreateUser(user, currentSiteId);
                     userProvider.CreateCustomer(customer);
                     userProvider.LinkCustomerToUser(customer.Id, user.UserId);
                     addressProvider.SaveShippingAddress(address, customer.Id);
@@ -93,8 +99,7 @@ namespace Kadena.BusinessLogic.Services
                         userProvider.UpdateCustomer(customer);
                     }
                 }
-                // update roles
-                logger.LogInfo(this.GetType().Name, "SAMLCUSTOMER", JsonConvert.SerializeObject(customer));
+                roleService.AssignSSORoles(user, currentSiteId, userDto.Roles);
                 // authenticate in Kentico
                 return new Uri("/", UriKind.Relative);
             }
