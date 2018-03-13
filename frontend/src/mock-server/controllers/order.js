@@ -6,8 +6,7 @@ module.exports.detail = (req, res) => res.json(order.detail);
 
 module.exports.reports = {
   rows: (req, res) => {
-    const { page } = req.params;
-    const { sort } = req.query;
+    const { sort, page } = req.query;
 
     if (page) {
       if (page % 2 === 0 || page === undefined) {
