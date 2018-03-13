@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Kadena.Dto.ViewOrder.MicroserviceResponses
 {
@@ -14,6 +15,7 @@ namespace Kadena.Dto.ViewOrder.MicroserviceResponses
         public string FileKey { get; set; }
         public double TotalPrice { get; set; }
         public int LineNumber { get; set; }
+        public Guid TemplateId { get; set; }
         public Dictionary<string, string> Attributes { get; set; }
     }
 }

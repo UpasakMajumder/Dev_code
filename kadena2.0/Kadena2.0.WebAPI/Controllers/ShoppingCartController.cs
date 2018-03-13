@@ -13,6 +13,9 @@ using Kadena.Dto.CustomerData;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.CustomerData;
 using Kadena.Dto.Checkout.Responses;
+using Kadena.Dto.Settings;
+using Kadena.Dto.AddToCart;
+using Kadena.Models.AddToCart;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -66,12 +69,11 @@ namespace Kadena.WebAPI.Controllers
         [HttpPost]
         [Route("api/shoppingcart/savetemporaryaddress")]
         [CustomerAuthorizationFilter]
-        public async Task<IHttpActionResult> SaveTemporaryAddress([FromBody] DeliveryAddressDTO postedAddress)
+        public IHttpActionResult SaveTemporaryAddress([FromBody] DeliveryAddressDTO postedAddress)
         {
             var address = mapper.Map<DeliveryAddress>(postedAddress);
-            var deliveryTotals = await service.SaveTemporaryAddress(address);
-            var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
-            return ResponseJson(deliveryTotalsDto);
+            var addressId = service.SaveTemporaryAddress(address);
+            return ResponseJson(new IdDto { Id = addressId });
         }
 
         [HttpPost]
@@ -143,6 +145,24 @@ namespace Kadena.WebAPI.Controllers
             var submitRequest = mapper.Map<Distributor>(request);
             var serviceResponse = provider.UpdateCartQuantity(submitRequest);
             return ResponseJson<string>(serviceResponse);
+        }
+        [HttpGet]
+        [Route("api/getcartdistributordata/{skuID}/{inventoryType}")]
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult GetCartDistributorData(int skuID, int inventoryType)
+        {
+            var distributorData = service.GetCartDistributorData(skuID, inventoryType);
+            var result = mapper.Map<DistributorCartDto>(distributorData);
+            return ResponseJson(result);
+        }
+        [HttpPost]
+        [Route("api/updatedistributorcarts")]
+        [CustomerAuthorizationFilter]
+        public IHttpActionResult UpdateDistributorCarts([FromBody]DistributorCartDto request)
+        {
+            var submitRequest = mapper.Map<DistributorCart>(request);
+            var serviceResponse = service.UpdateDistributorCarts(submitRequest);
+            return ResponseJson(new { cartCount = serviceResponse });
         }
     }
 }

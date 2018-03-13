@@ -12,5 +12,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         KenticoSite GetKenticoSite(string siteName);
         Currency GetSiteCurrency();
         string GetCurrentSiteDomain();
+        string GetFullUrl();
     }
 }

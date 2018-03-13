@@ -25,12 +25,10 @@ namespace Kadena.WebAPI.Controllers
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
-
             if (identityService == null)
             {
                 throw new ArgumentNullException(nameof(identityService));
             }
-
             this.loginService = loginService;
             this.mapper = mapper;
             this.identityService = identityService;
@@ -63,7 +61,27 @@ namespace Kadena.WebAPI.Controllers
         {
             var loginRequestModel = mapper.Map<LoginRequest>(request);
             loginService.AcceptTaC(loginRequestModel);
-            return ResponseJson<object>(null);
+            return SuccessJson();
+        }
+
+        [HttpPost]
+        [Route("api/logout")]
+        public IHttpActionResult Logout()
+        {
+            var rerirecturl = loginService.Logout();
+            return ResponseJson(rerirecturl);
+        }
+
+        [HttpPost]
+        [Route("api/login/saml2")]
+        public IHttpActionResult LoginSaml2([FromBody] SamlAuthenticationDto request)
+        {
+            var authenticationResultPage = identityService.TryAuthenticate(request.SAMLResponse);
+            if (authenticationResultPage == null)
+            {
+                return NotFound();
+            }
+            return Redirect(authenticationResultPage);
         }
 
         [HttpGet]

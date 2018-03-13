@@ -1,7 +1,6 @@
 ﻿using Kadena.Dto.Product;
 using Kadena.WebAPI.Controllers;
 using Kadena.WebAPI.Infrastructure.Communication;
-using Moq;
 using Moq.AutoMock;
 using System.Collections.Generic;
 using System.Web.Http.Results;

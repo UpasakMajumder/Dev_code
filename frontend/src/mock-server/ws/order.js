@@ -437,8 +437,8 @@ module.exports.detail =  {
           "shippingDate": "2017-08-07T09:12:08.108892Z",
           "trackingId": "",
           "mailingListPrefix": "Mailing list",
-          "shippingDatePrefix": "Tracking ID",
-          "trackingIdPrefix": "Shipping date",
+          "shippingDatePrefix": "Shipping date",
+          "trackingIdPrefix": "Tracking ID",
           "templatePrefix": "Shipping date",
           "price": "$ 112.2",
           "quantityPrefix": "Quantity:", // Addresses/Quantity,
@@ -455,7 +455,12 @@ module.exports.detail =  {
               "name": "Size",
               "value": "S"
             }
-          ]
+          ],
+          "preview": {
+            "exists": true,
+            "text": "Preview",
+            "url": "#"
+          }
         },
         {
           "id": 2,
@@ -480,7 +485,12 @@ module.exports.detail =  {
               "name": "Color",
               "value": "Blue"
             }
-          ]
+          ],
+          "preview": {
+            "exists": false,
+            "text": "Preview",
+            "url": "#"
+          }
         }
       ]
     }

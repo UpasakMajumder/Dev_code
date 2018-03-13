@@ -63,7 +63,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 Title = p.DocumentName,
                 Url = p.DocumentUrlPath,
                 Order = p.NodeOrder,
-                ImageUrl = URLHelper.ResolveUrl(p.GetValue("SKUImagePath", string.Empty), false),
+                ImageUrl = URLHelper.ResolveUrl(p.GetValue("ProductImage", string.Empty), false),
                 IsFavourite = false,
                 Border = new Border
                 {
@@ -155,8 +155,9 @@ namespace Kadena.WebAPI.KenticoProviders
                 DocumentUrl = doc.AbsoluteURL,
                 Category = doc.Parent?.DocumentName ?? string.Empty,
                 ProductType = doc.GetValue("ProductType", string.Empty),
-                ProductChiliTemplateID = doc.GetValue<Guid>("ProductChiliTemplateID", Guid.Empty),
-                ProductChiliWorkgroupID = doc.GetValue<Guid>("ProductChiliWorkgroupID", Guid.Empty)
+                ProductMasterTemplateID = doc.GetValue<Guid>("ProductChiliTemplateID", Guid.Empty),
+                ProductChiliWorkgroupID = doc.GetValue<Guid>("ProductChiliWorkgroupID", Guid.Empty),
+                TemplateLowResSettingId = doc.GetValue("ProductChiliLowResSettingId", Guid.Empty)
             };
 
             if (sku != null)
@@ -214,11 +215,15 @@ namespace Kadena.WebAPI.KenticoProviders
                 sku.Update();
             }
         }
-        public CustomTableItem GetAllocatedProductQuantityForUser(int productID, int userID)
+        public int GetAllocatedProductQuantityForUser(int productID, int userID)
         {
-            return CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
+            CustomTableItem allocatedItem = CustomTableItemProvider.GetItems(CustomTableName)
+                                          .WhereEquals("ProductID", productID)
+                                          .WhereEquals("UserID", userID).FirstOrDefault();
+            return allocatedItem != null ? allocatedItem.GetIntegerValue("Quantity", default(int)) : default(int);
         }
-        public void UpdateAllocatedProductQuantityForUser(int productID, int userID,int quantity)
+
+        public void UpdateAllocatedProductQuantityForUser(int productID, int userID, int quantity)
         {
             DataClassInfo customTable = DataClassInfoProvider.GetDataClassInfo(CustomTableName);
             if (customTable != null)
@@ -227,7 +232,7 @@ namespace Kadena.WebAPI.KenticoProviders
                                                                     .WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
                 if (customTableData != null)
                 {
-                    customTableData.SetValue("Quantity", customTableData.GetIntegerValue("Quantity",0)-quantity);
+                    customTableData.SetValue("Quantity", customTableData.GetIntegerValue("Quantity", 0) - quantity);
                     customTableData.Update();
                 }
             }
@@ -266,6 +271,57 @@ namespace Kadena.WebAPI.KenticoProviders
             var category = BaseAbstractInfoProvider
                 .GetInfoByName(OptionCategoryInfo.OBJECT_TYPE, codeName);
             return mapper.Map<OptionCategory>(category);
+        }
+
+        public Product GetProductBySkuId(int skuId)
+        {
+            var node = new TreeProvider(MembershipContext.AuthenticatedUser)
+                .SelectSingleNode(
+                    new NodeSelectionParameters { Where = $"{nameof(TreeNode.NodeSKUID)}={skuId}" }
+                );
+            return GetProductByNodeId(node.NodeID);
+        }
+
+        public int GetSkuAvailableQty(int skuid)
+        {
+            SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
+            return sku != null ? sku.SKUAvailableItems : 0;
+        }
+
+        public int GetCampaignProductIDBySKUID(int skuid)
+        {
+            var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
+            return document != null ? document.GetIntegerValue("CampaignsProductID", default(int)) : default(int);
+        }
+
+        public bool ProductHasValidSKUNumber(int skuid)
+        {
+            SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
+            return sku != null ? !(string.IsNullOrWhiteSpace(sku.SKUNumber) || sku.SKUNumber.Equals("00000")) : false;
+        }
+
+        public CampaignsProduct GetCampaignProduct(int skuid)
+        {
+            var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
+            SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
+            if (sku != null && document != null)
+            {
+                return new CampaignsProduct()
+                {
+                    SKUID = skuid,
+                    SKUNumber = sku.SKUNumber,
+                    ProductName = sku.SKUName,
+                    ActualPrice = ValidationHelper.GetDecimal(sku.SKUPrice, default(decimal)),
+                    EstimatedPrice = document.GetValue("EstimatedPrice", default(decimal)),
+                    POSNumber = sku.GetStringValue("SKUProductCustomerReferenceNumber", string.Empty),
+                    ProgramID = document.GetIntegerValue("ProgramID", default(int)),
+                    CampaignID = new KenticoProgramsProvider().GetProgram(document.GetIntegerValue("ProgramID", default(int)))?.CampaignID ?? 0
+                };
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

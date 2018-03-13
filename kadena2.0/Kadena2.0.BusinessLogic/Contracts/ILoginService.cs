@@ -9,5 +9,6 @@ namespace Kadena.BusinessLogic.Contracts
         void AcceptTaC(LoginRequest request);
         bool UserHasAcceptedTac(User user);
         LoginResult Login(LoginRequest request);
+        string Logout();
     }
 }

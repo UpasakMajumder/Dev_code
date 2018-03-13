@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Kadena.Dto.Product;
 using Kadena.Models.Product;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using Moq.AutoMock;
 using System;
 using Xunit;

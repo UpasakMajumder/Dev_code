@@ -34,12 +34,17 @@
       <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.IdentityModel">
+      <HintPath>..\Lib\Microsoft.IdentityModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Services" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,6 +56,9 @@
   <ItemGroup>
     <Compile Include="Contracts\IIBTFService.cs" />
     <Compile Include="Contracts\IIdentityService.cs" />
+    <Compile Include="Contracts\SSO\ISaml2RecipientValidator.cs" />
+    <Compile Include="Contracts\SSO\ISaml2HandlerService.cs" />
+    <Compile Include="Contracts\SSO\ISaml2Service.cs" />
     <Compile Include="Contracts\ISubmissionService.cs" />
     <Compile Include="Contracts\IFileService.cs" />
     <Compile Include="Contracts\IProgramsService.cs" />
@@ -86,6 +94,7 @@
     <Compile Include="Contracts\ITemplateService.cs" />
     <Compile Include="Contracts\OrderPayment\ICreditCard3dsi.cs" />
     <Compile Include="Contracts\OrderPayment\IPurchaseOrder.cs" />
+    <Compile Include="Contracts\IRoleService.cs" />
     <Compile Include="Factories\Checkout\OrderDataFactory.cs" />
     <Compile Include="Factories\Checkout\CheckoutPageFactory.cs" />
     <Compile Include="Factories\Checkout\IOrderDataFactory.cs" />
@@ -99,6 +108,11 @@
     <Compile Include="Services\IBTFService.cs" />
     <Compile Include="Services\Orders\GetOrderDataService.cs" />
     <Compile Include="Services\Orders\SendSubmitOrder.cs" />
+    <Compile Include="Services\SSO\KadenaSaml2SecurityTokenHandler.cs" />
+    <Compile Include="Services\SSO\Saml2RecipientValidator.cs" />
+    <Compile Include="Services\SSO\Saml2HandlerService.cs" />
+    <Compile Include="Services\SSO\Saml2Service.cs" />
+    <Compile Include="Services\RoleService.cs" />
     <Compile Include="Services\SubmissionService.cs" />
     <Compile Include="Services\OrderPayment\CreditCard3dsiDemo.cs" />
     <Compile Include="Services\Orders\OrderDetailService.cs" />

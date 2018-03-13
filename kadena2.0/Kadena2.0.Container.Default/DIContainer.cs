@@ -7,6 +7,8 @@ using Kadena.BusinessLogic.Services;
 using Kadena.BusinessLogic.Services.Orders;
 using Kadena.BusinessLogic.Services.SettingsSynchronization;
 using Kadena.Helpers;
+using Kadena.MicroserviceClients.Contracts;
+using Kadena.MicroserviceClients.Clients;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.WebAPI.KenticoProviders.Providers;
@@ -23,8 +25,11 @@ using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using Kadena2.WebAPI.KenticoProviders.Providers;
 using Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings;
+using Kadena.BusinessLogic.Contracts.SSO;
+using Kadena.BusinessLogic.Services.SSO;
+using System.IdentityModel.Tokens;
 
-namespace Kadena2.Container.Default
+namespace Kadena.Container.Default
 {
     public static class DIContainer
     {
@@ -86,6 +91,11 @@ namespace Kadena2.Container.Default
             container.Register<ISavedCreditCard3dsi, SavedCreditCard3dsi>();
 			container.Register<IIBTFService, IBTFService>();
 			container.Register<IIdentityService, IdentityService>();
+			container.Register<ISaml2Service, Saml2Service>();
+			container.Register<ISaml2HandlerService, Saml2HandlerService>();
+			container.Register<Saml2SecurityTokenHandler, KadenaSaml2SecurityTokenHandler>();
+			container.Register<ISaml2RecipientValidator, Saml2RecipientValidator>();
+            container.Register<IRoleService, RoleService>();
             return container;
         }
 
@@ -119,6 +129,7 @@ namespace Kadena2.Container.Default
 			container.Register<IkenticoUserBudgetProvider, KenticoUserBudgetProvider>();
             container.Register<IFailedOrderStatusProvider, FailedOrderStatusProvider>();
             container.Register<IKenticoIBTFProvider, KenticoIBTFProvider>();
+            container.Register<IKenticoRoleProvider, KenticoRoleProvider>();
             return container;
         }
 

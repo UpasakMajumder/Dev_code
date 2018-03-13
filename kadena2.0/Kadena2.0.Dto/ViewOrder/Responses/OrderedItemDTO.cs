@@ -1,4 +1,5 @@
 ﻿using Kadena.Dto.Checkout;
+using Kadena.Dto.Common;
 using System.Collections.Generic;
 
 namespace Kadena.Dto.ViewOrder.Responses
@@ -13,7 +14,7 @@ namespace Kadena.Dto.ViewOrder.Responses
         public string MailingList { get; set; }
         public string ShippingDatePrefix { get; set; }
         public string ShippingDate { get; set; }
-        public string TrackingPrefix { get; set; }
+        public string TrackingIdPrefix { get; set; }
         public string TrackingId { get; set; }
         public string Price { get; set; }
         public string QuantityPrefix { get; set; }
@@ -23,6 +24,7 @@ namespace Kadena.Dto.ViewOrder.Responses
         public string DownloadPdfURL { get; set; }
         public string ProductStatusPrefix { get; set; }
         public string ProductStatus { get; set; }
+        public ButtonDto Preview { get; set; }
         public IEnumerable<ItemOptionDto> Options { get; set; }
     }
 }

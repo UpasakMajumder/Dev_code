@@ -1,8 +1,10 @@
 using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using Kadena.Helpers;
 using Kadena.Models;
 using Kadena.Models.Checkout;
+using Kadena.Models.Common;
 using Kadena.Models.OrderDetail;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
@@ -117,7 +119,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             if (!microserviceResponse.Success || microserviceResponse.Payload == null)
             {
                 kenticoLog.LogError("GetOrderDetail", microserviceResponse.ErrorMessages);
-                throw new Exception("Failed to obtain order detail from microservice"); // TODO refactor using checking null
+                return null;
             }
 
             var data = microserviceResponse.Payload;
@@ -159,7 +161,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     Title = resources.GetResourceString("Kadena.Order.PaymentSection"),
                     DatePrefix = resources.GetResourceString("Kadena.Order.PaymentDatePrefix"),
                     BUnitLabel = resources.GetResourceString("Kadena.Order.BusinessUnitLabel"),
-                    BUnitName = businessUnits.GetDistributorBusinessUnit(data.campaign != null ? data.campaign.DistributorID : 0)
+                    BUnitName = businessUnits.GetBusinessUnitName(data.campaign != null ? data.campaign.BusinessUnitNumber : string.Empty)
                 },
                 PricingInfo = new PricingInfo()
                 {
@@ -217,7 +219,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     Title = resources.GetResourceString("Kadena.Order.ShippingSection"),
                     DeliveryMethod = shoppingCart.GetShippingProviderIcon(data.ShippingInfo.Provider),
                     Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo),
-                    Tracking = null // TODO Track your package url unknown
+                    Tracking = null
                 };
                 orderDetail.ShippingInfo.Address.Country = localization
                     .GetCountries()
@@ -234,26 +236,36 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         private async Task<List<OrderedItem>> MapOrderedItems(List<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO> items)
         {
-            var orderedItems = items.Select(i => new OrderedItem()
+            var orderedItems = items.Select(i =>
             {
-                Id = i.SkuId,
-                Image = products.GetSkuImageUrl(i.SkuId),
-                MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
-                Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
-                Quantity = i.Quantity,
-                QuantityShipped = i.QuantityShipped,
-                QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? resources.GetResourceString("Kadena.Order.QuantityPrefixAddresses") : resources.GetResourceString("Kadena.Order.QuantityPrefix"),
-                QuantityShippedPrefix = resources.GetResourceString("Kadena.Order.QuantityShippedPrefix"),
-                ShippingDate = string.Empty, // TODO Shipping date per item unknown
-                Template = i.Name,
-                TrackingId = i.TrackingId,
-                MailingListPrefix = resources.GetResourceString("Kadena.Order.MailingListPrefix"),
-                ShippingDatePrefix = resources.GetResourceString("Kadena.Order.ItemShippingDatePrefix"),
-                TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix"),
-                TrackingIdPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix"),
-                ProductStatusPrefix = resources.GetResourceString("Kadena.Order.ProductStatusPrefix"),
-                ProductStatus = products.GetProductStatus(i.SkuId),
-                Options = i.Attributes?.Select(a => new ItemOption { Name = products.GetOptionCategory(a.Key)?.DisplayName ?? a.Key, Value = a.Value }) ?? Enumerable.Empty<ItemOption>()
+                var product = i.TemplateId != Guid.Empty ? products.GetProductBySkuId(i.SkuId) : null;
+                return new OrderedItem()
+                {
+                    Id = i.SkuId,
+                    Image = products.GetSkuImageUrl(i.SkuId),
+                    MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
+                    Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
+                    Quantity = i.Quantity,
+                    QuantityShipped = i.QuantityShipped,
+                    QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? resources.GetResourceString("Kadena.Order.QuantityPrefixAddresses") : resources.GetResourceString("Kadena.Order.QuantityPrefix"),
+                    QuantityShippedPrefix = resources.GetResourceString("Kadena.Order.QuantityShippedPrefix"),
+                    ShippingDate = string.Empty,
+                    Template = i.Name,
+                    TrackingId = i.TrackingId,
+                    MailingListPrefix = resources.GetResourceString("Kadena.Order.MailingListPrefix"),
+                    ShippingDatePrefix = resources.GetResourceString("Kadena.Order.ItemShippingDatePrefix"),
+                    TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix"),
+                    TrackingIdPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix"),
+                    ProductStatusPrefix = resources.GetResourceString("Kadena.Order.ProductStatusPrefix"),
+                    ProductStatus = products.GetProductStatus(i.SkuId),
+                    Preview = new Button
+                    {
+                        Exists = product != null,
+                        Text = resources.GetResourceString("Kadena.Checkout.PreviewButton"),
+                        Url = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, product?.TemplateLowResSettingId ?? Guid.Empty)
+                    },
+                    Options = i.Attributes?.Select(a => new ItemOption { Name = products.GetOptionCategory(a.Key)?.DisplayName ?? a.Key, Value = a.Value }) ?? Enumerable.Empty<ItemOption>()
+                };
             }).ToList();
 
 
