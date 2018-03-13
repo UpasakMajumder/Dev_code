@@ -63,115 +63,16 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Repeater rptProductLists;
+    protected global::CMS.DocumentEngine.Web.UI.BasicRepeater rptProductLists;
     
     /// <summary>
-    /// dialog_Add_To_Cart control.
+    /// unipager control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.HtmlControls.HtmlGenericControl dialog_Add_To_Cart;
-    
-    /// <summary>
-    /// lblPopUpHeader control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblPopUpHeader;
-    
-    /// <summary>
-    /// lblProductName control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblProductName;
-    
-    /// <summary>
-    /// lblError control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblError;
-    
-    /// <summary>
-    /// lblErrorMsg control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLabel lblErrorMsg;
-    
-    /// <summary>
-    /// lblqtyError control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLabel lblqtyError;
-    
-    /// <summary>
-    /// lblAvailbleItems control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblAvailbleItems;
-    
-    /// <summary>
-    /// gvCustomersCart control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.GridView gvCustomersCart;
-    
-    /// <summary>
-    /// lblSuccessMsg control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblSuccessMsg;
-    
-    /// <summary>
-    /// btnClose control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.HtmlControls.HtmlButton btnClose;
-    
-    /// <summary>
-    /// llbtnAddToCart control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.Base.Web.UI.LocalizedLinkButton llbtnAddToCart;
-    
-    /// <summary>
-    /// hdnClickSKU control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.HiddenField hdnClickSKU;
+    protected global::CMS.DocumentEngine.Web.UI.UniPager unipager;
     
     /// <summary>
     /// divNoRecords control.

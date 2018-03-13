@@ -433,6 +433,21 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         }
     }
 
+    /// <summary>
+    /// Items specs resource string
+    /// </summary>
+    public string EstimatedPriceHeaderText
+    {
+        get
+        {
+            return ValidationHelper.GetString(ResHelper.GetString("Kadena.Inbound.EstimatedPriceHeaderText"), string.Empty);
+        }
+        set
+        {
+            SetValue("EstimatedPriceHeaderText", value);
+        }
+    }
+
     #endregion Properties
 
     #region "Methods"
@@ -466,8 +481,9 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         gdvInboundProducts.Columns[12].HeaderText = CenveoCommentsHeaderText;
         gdvInboundProducts.Columns[13].HeaderText = TWECommentsHeaderText;
         gdvInboundProducts.Columns[14].HeaderText = ActualPriceHeaderText;
-        gdvInboundProducts.Columns[15].HeaderText = StatusHeaderText;
-        gdvInboundProducts.Columns[16].HeaderText = ActionsText;
+        gdvInboundProducts.Columns[15].HeaderText = EstimatedPriceHeaderText;
+        gdvInboundProducts.Columns[16].HeaderText = StatusHeaderText;
+        gdvInboundProducts.Columns[17].HeaderText = ActionsText;
         btnExport.Text = ExportButtonText;
         btnRefresh.Text = RefreshButtonText;
         btnClose.Text = ResHelper.GetString("Kadena.Inbound.CloseButtonText");
@@ -627,7 +643,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
             {
                 var productAndSKUDetails = productsDetails
-                                  .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.CustomItemSpecs, x.ItemSpecs, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUID }).ToList();
+                                  .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.CustomItemSpecs, x.ItemSpecs, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUID,x.EstimatedPrice }).ToList();
                 var inboundDetails = CustomTableItemProvider.GetItems<InboundTrackingItem>().WhereIn("SKUID", skuDetails.Select(x => x.SKUID).ToList()).ToList();
                 var allDetails = from product in productAndSKUDetails
                                  join inbound in inboundDetails
@@ -653,7 +669,8 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                                      Status = product.SKUEnabled,
                                      IsClosed = IsIBTFClosed(product?.ProgramID ?? 0),
                                      ItemSpec = (product?.ItemSpecs ?? string.Empty) == "0" ? product?.CustomItemSpecs ?? string.Empty : (product?.ItemSpecs ?? string.Empty) == "0" ? string.Empty : GetItemSpecs(product?.ItemSpecs ?? string.Empty),
-                                     CustomItemSpecs = product.CustomItemSpecs ?? string.Empty
+                                     CustomItemSpecs = product.CustomItemSpecs ?? string.Empty,
+                                     EstimatedPrice = product?.EstimatedPrice ?? default(double)
                                  };
                 allDetails = allDetails.ToList();
                 var closeButtonStatus = allDetails.Select(x => x.IsClosed).FirstOrDefault();

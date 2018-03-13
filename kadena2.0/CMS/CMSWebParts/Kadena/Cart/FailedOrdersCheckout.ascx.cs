@@ -46,7 +46,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     }
                     else if(_failedOrders.GetCampaignOrderStatus(CampaignID))
                     {
-                        lnkCheckout.Enabled = false;
+                        lnkCheckout.Enabled = true;
                     }
                 }
             }
@@ -67,7 +67,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 if (AuthenticationHelper.IsAuthenticated() )
                 {
                     int CampaignID = QueryHelper.GetInteger("campid", 0);
-                    if (CampaignID > 0 && !_failedOrders.GetCampaignOrderStatus(CampaignID))
+                    if (CampaignID > 0 && _failedOrders.GetCampaignOrderStatus(CampaignID))
                     {
                         ShoppingCartHelper.ProcessOrders(CampaignID);
                         Response.Redirect(Request.RawUrl);

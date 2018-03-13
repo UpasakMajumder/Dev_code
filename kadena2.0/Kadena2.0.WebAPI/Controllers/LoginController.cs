@@ -61,7 +61,15 @@ namespace Kadena.WebAPI.Controllers
         {
             var loginRequestModel = mapper.Map<LoginRequest>(request);
             service.AcceptTaC(loginRequestModel);
-            return ResponseJson<object>(null);
+            return SuccessJson();
+        }
+
+        [HttpPost]
+        [Route("api/logout")]
+        public IHttpActionResult Logout()
+        {
+            var rerirecturl = service.Logout();
+            return ResponseJson(rerirecturl);
         }
 
         [HttpPost]

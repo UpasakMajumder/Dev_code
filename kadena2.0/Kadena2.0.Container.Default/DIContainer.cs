@@ -95,6 +95,7 @@ namespace Kadena.Container.Default
 			container.Register<ISaml2HandlerService, Saml2HandlerService>();
 			container.Register<Saml2SecurityTokenHandler, KadenaSaml2SecurityTokenHandler>();
 			container.Register<ISaml2RecipientValidator, Saml2RecipientValidator>();
+            container.Register<IRoleService, RoleService>();
             return container;
         }
 
@@ -128,6 +129,7 @@ namespace Kadena.Container.Default
 			container.Register<IkenticoUserBudgetProvider, KenticoUserBudgetProvider>();
             container.Register<IFailedOrderStatusProvider, FailedOrderStatusProvider>();
             container.Register<IKenticoIBTFProvider, KenticoIBTFProvider>();
+            container.Register<IKenticoRoleProvider, KenticoRoleProvider>();
             return container;
         }
 

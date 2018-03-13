@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpart>
+  <WebPartCategoryID>
+    <CodeName>Kadena</CodeName>
+    <GUID>ea902dcb-d5a7-41ee-9175-f9708776cf63</GUID>
+    <ObjectType>cms.webpartcategory</ObjectType>
+  </WebPartCategoryID>
+  <WebPartDefaultConfiguration>
+    <page />
+  </WebPartDefaultConfiguration>
+  <WebPartDefaultValues>
+    <form />
+  </WebPartDefaultValues>
+  <WebPartDescription />
+  <WebPartDisplayName>Cart Distributor List</WebPartDisplayName>
+  <WebPartFileName>Kadena/Cart/CartDistributorList.ascx</WebPartFileName>
+  <WebPartGUID>b500e754-aebc-40ea-b823-80b0100e8849</WebPartGUID>
+  <WebPartLoadGeneration>0</WebPartLoadGeneration>
+  <WebPartName>KDA.CartDistributorList</WebPartName>
+  <WebPartProperties>
+    <form version="2">
+      <field allowempty="true" column="InventoryType" columntype="integer" guid="7640a89f-b1b7-437f-9c88-6474928765de" publicfield="false" reftype="Required" resolvedefaultvalue="False" visible="true">
+        <properties>
+          <defaultvalue>1</defaultvalue>
+          <fieldcaption>Inventory Type</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Options>
+<![CDATA[
+1;General Inventory
+2;Pre-Buy
+]]>
+          </Options>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
+    </form>
+  </WebPartProperties>
+  <WebPartType>0</WebPartType>
+</cms.webpart>

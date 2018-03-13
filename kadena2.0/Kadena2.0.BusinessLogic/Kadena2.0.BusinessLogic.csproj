@@ -94,6 +94,7 @@
     <Compile Include="Contracts\ITemplateService.cs" />
     <Compile Include="Contracts\OrderPayment\ICreditCard3dsi.cs" />
     <Compile Include="Contracts\OrderPayment\IPurchaseOrder.cs" />
+    <Compile Include="Contracts\IRoleService.cs" />
     <Compile Include="Factories\Checkout\OrderDataFactory.cs" />
     <Compile Include="Factories\Checkout\CheckoutPageFactory.cs" />
     <Compile Include="Factories\Checkout\IOrderDataFactory.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Services\SSO\Saml2RecipientValidator.cs" />
     <Compile Include="Services\SSO\Saml2HandlerService.cs" />
     <Compile Include="Services\SSO\Saml2Service.cs" />
+    <Compile Include="Services\RoleService.cs" />
     <Compile Include="Services\SubmissionService.cs" />
     <Compile Include="Services\OrderPayment\CreditCard3dsiDemo.cs" />
     <Compile Include="Services\Orders\OrderDetailService.cs" />

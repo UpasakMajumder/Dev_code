@@ -118,6 +118,11 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.SaveCardJson, opt => opt.MapFrom(src => src.GetStringValue("SaveCardJson", string.Empty)))
                 .ForMember(dest => dest.RedirectUrl, opt => opt.MapFrom(src => src.GetStringValue("RedirectUrl", string.Empty)));
             CreateMap<AddressInfo, AddressData>();
+            CreateMap<RoleInfo, Role>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.RoleID))
+                .ForMember(dest => dest.CodeName, opt => opt.MapFrom(src => src.RoleName))
+                .ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.RoleDisplayName))
+                .ReverseMap();
         }
     }
 }

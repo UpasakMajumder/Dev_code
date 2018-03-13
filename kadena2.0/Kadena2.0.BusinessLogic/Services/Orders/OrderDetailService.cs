@@ -161,7 +161,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     Title = resources.GetResourceString("Kadena.Order.PaymentSection"),
                     DatePrefix = resources.GetResourceString("Kadena.Order.PaymentDatePrefix"),
                     BUnitLabel = resources.GetResourceString("Kadena.Order.BusinessUnitLabel"),
-                    BUnitName = businessUnits.GetDistributorBusinessUnit(data.campaign != null ? data.campaign.DistributorID : 0)
+                    BUnitName = businessUnits.GetBusinessUnitName(data.campaign != null ? data.campaign.BusinessUnitNumber : string.Empty)
                 },
                 PricingInfo = new PricingInfo()
                 {

@@ -47,6 +47,8 @@
   <ItemGroup>
     <Compile Include="AddressData\AddressData.cs" />
     <Compile Include="AddressType.cs" />
+    <Compile Include="AddToCart\DistributorCart.cs" />
+    <Compile Include="AddToCart\DistributorCartItem.cs" />
     <Compile Include="BillingAddress.cs" />
     <Compile Include="Brand\Brand.cs" />
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="Product\Price.cs" />
     <Compile Include="Checkout\ItemOption.cs" />
     <Compile Include="Product\OptionCategory.cs" />
+    <Compile Include="Program\CampaignProgram.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDailogLabel.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialog.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialogTable.cs" />
@@ -117,6 +120,7 @@
     <Compile Include="OrderDetail\TitleValuePair.cs" />
     <Compile Include="OrderStatisticsData.cs" />
     <Compile Include="Product\ProductValidator.cs" />
+    <Compile Include="Role.cs" />
     <Compile Include="Settings\DefaultAddress.cs" />
     <Compile Include="Product\Sku.cs" />
     <Compile Include="SiteSettings\Attributes\CategoryAttribute.cs" />
