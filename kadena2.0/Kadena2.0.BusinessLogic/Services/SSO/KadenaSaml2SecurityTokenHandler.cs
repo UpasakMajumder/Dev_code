@@ -1,6 +1,8 @@
 ﻿using Kadena.BusinessLogic.Contracts.SSO;
 using System;
 using System.IdentityModel.Tokens;
+using System.IO;
+using System.Xml;
 
 namespace Kadena.BusinessLogic.Services.SSO
 {
@@ -22,6 +24,21 @@ namespace Kadena.BusinessLogic.Services.SSO
             if (!recipientValidator.ValidateRecipient(confirmationData.Recipient))
             {
                 throw new SecurityTokenException($"Recipient {confirmationData.Recipient} is not confirmed.");
+            }
+        }
+
+        public override SecurityToken ReadToken(string tokenString)
+        {
+            using (var stringReader = new StringReader(tokenString))
+            {
+                using (var xmlReader = XmlReader.Create(stringReader))
+                {
+                    if (!xmlReader.ReadToFollowing("saml:Assertion"))
+                    {
+                        throw new ArgumentException("SAML token is incomplete. Assertion not found!", nameof(tokenString));
+                    }
+                    return ReadToken(xmlReader);
+                }
             }
         }
     }

@@ -59,19 +59,9 @@ namespace Kadena.BusinessLogic.Services.SSO
         {
             var tokenHandler = tokenHandlerService.GetTokenHandler();
             var decodedTokenString = Encoding.UTF8.GetString(Convert.FromBase64String(tokenString));
-            using (var stringReader = new StringReader(decodedTokenString))
-            {
-                using (var xmlReader = XmlReader.Create(stringReader))
-                {
-                    if (!xmlReader.ReadToFollowing("saml:Assertion"))
-                    {
-                        throw new ArgumentException("SAML token is incomplete. Assertion not found!", nameof(tokenString));
-                    }
-                    var token = tokenHandler.ReadToken(xmlReader) as Saml2SecurityToken;
-                    tokenHandler.ValidateToken(token);
-                    return token;
-                }
-            }
+            var token = tokenHandler.ReadToken(decodedTokenString) as Saml2SecurityToken;
+            tokenHandler.ValidateToken(token);
+            return token;
         }
     }
 }
