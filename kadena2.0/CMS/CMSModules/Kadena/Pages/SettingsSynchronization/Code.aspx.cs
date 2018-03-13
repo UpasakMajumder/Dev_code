@@ -1,6 +1,6 @@
 ﻿using CMS.UIControls;
 using Kadena.BusinessLogic.Contracts;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using System;
 
 namespace Kadena.CMSModules.Kadena.Pages.SettingsSynchronization

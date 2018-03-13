@@ -3,7 +3,7 @@ using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.SiteProvider;
 using Kadena.Dto.KSource;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 

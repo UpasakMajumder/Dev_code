@@ -6,7 +6,7 @@ using CMS.PortalEngine.Web.UI;
 using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using Kadena.MicroserviceClients.Contracts;
 using System;
 using System.Linq;
