@@ -65,10 +65,10 @@ namespace Kadena.BusinessLogic.Services
 
                 var user = mapper.Map<User>(userDto);
                 var customer = mapper.Map<Customer>(customerDto);
-                var address = mapper.Map<DeliveryAddress>(addressDto);
-
-                if (userProvider.GetUser(user.UserName) == null)
+                var existingUser = userProvider.GetUser(userDto.UserName);
+                if (existingUser == null)
                 {
+                    var address = mapper.Map<DeliveryAddress>(addressDto);
                     user.IsExternal = true;
                     var currentSite = siteProvider.GetKenticoSite();
                     userProvider.CreateUser(user, currentSite.Id);
@@ -76,10 +76,26 @@ namespace Kadena.BusinessLogic.Services
                     userProvider.LinkCustomerToUser(customer.Id, user.UserId);
                     addressProvider.SaveShippingAddress(address, customer.Id);
                 }
+                else
+                {
+                    user.UserId = existingUser.UserId;
+                    userProvider.UpdateUser(user);
+
+                    var existingCustomer = userProvider.GetCustomer(user.UserId);
+                    if (existingCustomer == null)
+                    {
+                        userProvider.CreateCustomer(customer);
+                        userProvider.LinkCustomerToUser(customer.Id, user.UserId);
+                    }
+                    else
+                    {
+                        customer.Id = existingCustomer.Id;
+                        userProvider.UpdateCustomer(customer);
+                    }
+                }
                 // update roles
                 logger.LogInfo(this.GetType().Name, "SAMLCUSTOMER", JsonConvert.SerializeObject(customer));
                 // authenticate in Kentico
-                logger.LogInfo(this.GetType().Name, "SAMLADDRESS", JsonConvert.SerializeObject(address));
                 return new Uri("/", UriKind.Relative);
             }
 
