@@ -1607,14 +1607,5 @@ namespace Kadena.Models.SiteSettings
         [DefaultValueAttribute(null)]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkFsbG93ZWQgYXVkaWVuY2UgVVJJIiwiS2V5TmFtZSI6IktEQV9BbGxvd2VkQXVkaWVuY2VVcmkiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjpudWxsLCJLZXlEZXNjcmlwdGlvbiI6IkF1ZGllbmNlIFVSSSBmb3Igd2hpY2ggU0FNTCBvYmplY3QgYWxsb3dlZCB0by4iLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiU2luZ2xlIHNpbmctb24iLCJOYW1lIjoiS0RBU1NPIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiS2FkZW5hIn0sIkRpc3BsYXlOYW1lIjoiU0FNTCAyLjAifX0=")]
         public const string KDA_AllowedAudienceUri = "KDA_AllowedAudienceUri";
-
-        /// <summary>
-        /// Endpoint from Identity Provider used to authenticate user.
-        /// </summary>
-        [CategoryAttribute("Single sing-on", "KDASSO", "Kadena")]
-        [GroupAttribute("Direct login")]
-        [DefaultValueAttribute(null)]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IklkZW50aXR5IHByb3ZpZGVyIHVybCIsIktleU5hbWUiOiJLREFfSWRQcm92aWRlclVybCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiRW5kcG9pbnQgZnJvbSBJZGVudGl0eSBQcm92aWRlciB1c2VkIHRvIGF1dGhlbnRpY2F0ZSB1c2VyLiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJTaW5nbGUgc2luZy1vbiIsIk5hbWUiOiJLREFTU08iLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJLYWRlbmEifSwiRGlzcGxheU5hbWUiOiJEaXJlY3QgbG9naW4ifX0=")]
-        public const string KDA_IdProviderUrl = "KDA_IdProviderUrl";
     }
 }
