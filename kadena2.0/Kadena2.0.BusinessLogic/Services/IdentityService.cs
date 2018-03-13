@@ -57,7 +57,7 @@ namespace Kadena.BusinessLogic.Services
                 return new Uri("/", UriKind.Relative);
             }
 
-            return new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
+            return new Uri(kenticoResourceService.GetLogonPageUrl(), UriKind.RelativeOrAbsolute);
         }
     }
 }
