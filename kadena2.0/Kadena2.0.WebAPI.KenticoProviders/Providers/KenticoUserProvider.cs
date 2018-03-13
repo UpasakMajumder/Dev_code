@@ -137,5 +137,10 @@ namespace Kadena.WebAPI.KenticoProviders
             customer.CustomerUserID = userId;
             customer.Update();
         }
+
+        public Customer GetCustomerByUser(int userId)
+        {
+            return _mapper.Map<Customer>(CustomerInfoProvider.GetCustomerInfoByUserID(userId));
+        }
     }
 }
