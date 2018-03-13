@@ -43,6 +43,26 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers
 
         public void AssignUserRoles(string userName, int siteId, IEnumerable<string> roles)
         {
+            var siteName = GetSiteName(siteId);
+
+            foreach (var role in roles)
+            {
+                UserInfoProvider.AddUserToRole(userName, siteName, role);
+            }
+        }
+
+        public void RemoveUserRoles(string userName, int siteId, IEnumerable<string> roles)
+        {
+            var siteName = GetSiteName(siteId);
+
+            foreach (var role in roles)
+            {
+                UserInfoProvider.RemoveUserFromRole(userName, siteName, role);
+            }
+        }
+
+        private string GetSiteName(int siteId)
+        {
             var siteName = SiteInfoProvider.GetSiteName(siteId);
 
             if (string.IsNullOrEmpty(siteName))
@@ -50,10 +70,7 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers
                 throw new ArgumentOutOfRangeException(nameof(siteId), $"Unable to find site with id {siteId}");
             }
 
-            foreach (var role in roles)
-            {
-                UserInfoProvider.AddUserToRole(userName, siteName, role);
-            }
+            return siteName;
         }
     }
 }

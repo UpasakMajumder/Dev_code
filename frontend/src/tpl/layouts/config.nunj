@@ -452,6 +452,8 @@
         TerminalIdentifier_LocationCode: 'Kadena2.0',
         TerminalIdentifier_TerminalCode: 'Kadena2.0',
         TerminalIdentifier_MerchantCode: 'Kadena2.0',
+        CreditCard_BillingAddress_AddressLine1: '',
+        CreditCard_BillingAddress_PostalCode: '',
         CreditCard_CSCIndicator: '',
         saveToProfile: {
           exists: true,
