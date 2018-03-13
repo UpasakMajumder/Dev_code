@@ -21,6 +21,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
         private readonly IMapper mapper;
         private readonly IKenticoOrderProvider kenticoOrder;
         private readonly IShoppingCartProvider shoppingCart;
+        private readonly IShoppingCartItemsProvider shoppingCartItems;
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxService;
@@ -32,6 +33,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
         public GetOrderDataService(IMapper mapper,
            IKenticoOrderProvider kenticoOrder,
            IShoppingCartProvider shoppingCart,
+           IShoppingCartItemsProvider shoppingCartItems,
            IKenticoUserProvider kenticoUsers,
            IKenticoLogger kenticoLog,
            ITaxEstimationService taxService,
@@ -52,6 +54,10 @@ namespace Kadena2.BusinessLogic.Services.Orders
             if (shoppingCart == null)
             {
                 throw new ArgumentNullException(nameof(shoppingCart));
+            }
+            if (shoppingCartItems == null)
+            {
+                throw new ArgumentNullException(nameof(shoppingCartItems));
             }
             if (kenticoUsers == null)
             {
@@ -85,6 +91,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
             this.mapper = mapper;
             this.kenticoOrder = kenticoOrder;
             this.shoppingCart = shoppingCart;
+            this.shoppingCartItems = shoppingCartItems;
             this.kenticoUsers = kenticoUsers;
             this.kenticoLog = kenticoLog;
             this.taxService = taxService;
@@ -116,7 +123,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
             var billingState = localization.GetStates().FirstOrDefault(c => c.Id == billingAddress.StateId);
             var site = siteProvider.GetKenticoSite();
             var paymentMethod = shoppingCart.GetPaymentMethod(request.PaymentMethod.Id);
-            var cartItems = shoppingCart.GetShoppingCartItems();
+            var cartItems = shoppingCartItems.GetShoppingCartItems();
             var currency = siteProvider.GetSiteCurrency();
             var totals = shoppingCart.GetShoppingCartTotals();
             totals.TotalTax = await taxService.EstimateTotalTax(shippingAddress);
