@@ -75,45 +75,67 @@ namespace Kadena.BusinessLogic.Services
                 var customerDto = mapper.Map<CustomerDto>(attributes);
                 var addressDto = mapper.Map<AddressDto>(attributes);
 
-                var user = mapper.Map<User>(userDto);
-                var customer = mapper.Map<Customer>(customerDto);
-                var existingUser = userProvider.GetUser(userDto.UserName);
                 var currentSiteId = siteProvider.GetKenticoSite().Id;
-                if (existingUser == null)
-                {
-                    var address = mapper.Map<DeliveryAddress>(addressDto);
-                    user.IsExternal = true;
-                    userProvider.CreateUser(user, currentSiteId);
-                    userProvider.CreateCustomer(customer);
-                    userProvider.LinkCustomerToUser(customer.Id, user.UserId);
-                    addressProvider.SaveShippingAddress(address, customer.Id);
-                }
-                else
-                {
-                    user.UserId = existingUser.UserId;
-                    userProvider.UpdateUser(user);
 
-                    var existingCustomer = userProvider.GetCustomer(user.UserId);
-                    if (existingCustomer == null)
-                    {
-                        userProvider.CreateCustomer(customer);
-                        userProvider.LinkCustomerToUser(customer.Id, user.UserId);
-                    }
-                    else
-                    {
-                        customer.Id = existingCustomer.Id;
-                        userProvider.UpdateCustomer(customer);
-                    }
-                }
+                var user = EnsureUpdateUser(userDto, currentSiteId);
+                var customer = EnsureUpdateCustomer(customerDto, user.UserId);
+                EnsureUpdateAddress(addressDto, customer.Id);
+
                 roleService.AssignSSORoles(user, currentSiteId, userDto.Roles);
+
                 var authenticated = loginProvider.SSOLogin(user.UserName, true);
                 if (authenticated)
                 {
                     return new Uri("/", UriKind.Relative);
                 }
             }
-
             return new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
+        }
+
+        private User EnsureUpdateUser(UserDto user, int currentSiteId)
+        {
+            var newUser = mapper.Map<User>(user);
+            var existingUser = userProvider.GetUser(newUser.UserName);
+            if (existingUser == null)
+            {
+                newUser.IsExternal = true;
+                userProvider.CreateUser(newUser, currentSiteId);
+            }
+            else
+            {
+                newUser.UserId = existingUser.UserId;
+                userProvider.UpdateUser(newUser);
+            }
+            return newUser;
+        }
+
+        private Customer EnsureUpdateCustomer(CustomerDto customer, int userId)
+        {
+            var newCustomer = mapper.Map<Customer>(customer);
+            var existingCustomer = userProvider.GetCustomer(userId);
+            if (existingCustomer == null)
+            {
+                userProvider.CreateCustomer(newCustomer);
+                userProvider.LinkCustomerToUser(newCustomer.Id, userId);
+            }
+            else
+            {
+                newCustomer.Id = existingCustomer.Id;
+                userProvider.UpdateCustomer(newCustomer);
+            }
+
+            return newCustomer;
+        }
+
+        private DeliveryAddress EnsureUpdateAddress(AddressDto address, int customerId)
+        {
+            var newAddress = mapper.Map<DeliveryAddress>(address);
+            var existingAddresses = addressProvider.GetAddressesList(customerId);
+            if (existingAddresses.Count == 0)
+            {
+                addressProvider.SaveShippingAddress(newAddress, customerId);
+            }
+            return newAddress;
         }
     }
 }
