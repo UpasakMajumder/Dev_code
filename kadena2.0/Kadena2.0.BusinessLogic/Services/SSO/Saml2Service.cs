@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Xml;
 using Kadena.BusinessLogic.Contracts.SSO;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 
