@@ -5,6 +5,7 @@ using Kadena.Dto.SSO;
 using AutoMapper;
 using Newtonsoft.Json;
 using Kadena.BusinessLogic.Contracts.SSO;
+using Kadena.Models;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -13,8 +14,12 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoLogger logger;
         private readonly IMapper mapper;
         private readonly ISaml2Service saml2Service;
+        private readonly IKenticoUserProvider userProvider;
+        private readonly IKenticoSiteProvider siteProvider;
+        private readonly IKenticoAddressBookProvider addressProvider;
 
-        public IdentityService(IKenticoLogger logger, IMapper mapper, ISaml2Service saml2Service)
+        public IdentityService(IKenticoLogger logger, IMapper mapper, ISaml2Service saml2Service, IKenticoUserProvider userProvider, IKenticoSiteProvider siteProvider,
+            IKenticoAddressBookProvider addressProvider)
         {
             if (logger == null)
             {
@@ -28,9 +33,24 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(saml2Service));
             }
+            if (userProvider == null)
+            {
+                throw new ArgumentNullException(nameof(userProvider));
+            }
+            if (siteProvider == null)
+            {
+                throw new ArgumentNullException(nameof(siteProvider));
+            }
+            if (addressProvider == null)
+            {
+                throw new ArgumentNullException(nameof(addressProvider));
+            }
             this.logger = logger;
             this.mapper = mapper;
             this.saml2Service = saml2Service;
+            this.userProvider = userProvider;
+            this.siteProvider = siteProvider;
+            this.addressProvider = addressProvider;
         }
 
 
@@ -46,8 +66,16 @@ namespace Kadena.BusinessLogic.Services
                 var user = mapper.Map<User>(userDto);
                 var customer = mapper.Map<Customer>(customerDto);
                 var address = mapper.Map<DeliveryAddress>(addressDto);
-                // create/update user
-                logger.LogInfo(this.GetType().Name, "SAMLUSER", JsonConvert.SerializeObject(user));
+
+                if (userProvider.GetUser(user.UserName) == null)
+                {
+                    user.IsExternal = true;
+                    var currentSite = siteProvider.GetKenticoSite();
+                    userProvider.CreateUser(user, currentSite.Id);
+                    userProvider.CreateCustomer(customer);
+                    userProvider.LinkCustomerToUser(customer.Id, user.UserId);
+                    addressProvider.SaveShippingAddress(address, customer.Id);
+                }
                 // update roles
                 logger.LogInfo(this.GetType().Name, "SAMLCUSTOMER", JsonConvert.SerializeObject(customer));
                 // authenticate in Kentico
