@@ -26,7 +26,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         public const int DefaultCountOfOrdersPerPage = 20;
         public const int FirstPageNumber = 1;
 
-        public const string SortableByOrderDate = "OrderDate";
+        public const string SortableByOrderDate = "CreateDate";
 
         private int _ordersPerPage;
         public int OrdersPerPage

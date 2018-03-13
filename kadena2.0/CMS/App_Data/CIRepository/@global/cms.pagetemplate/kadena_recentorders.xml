@@ -176,9 +176,91 @@ result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}"
           <property name="hideonsubpages">False</property>
           <property name="inlinescript">
 <![CDATA[
-config.localization.recentOrders = {
-      getHeaders: '/api/recentorders/getheaders',
-      getPageItems: '/api/recentorders/getbody'
+config.localization.ordersReports = {
+    headings: [
+        {
+            id: 'Site',
+            label: 'lblSite',
+            sort: false,
+            isDate: false
+        },
+        {
+            id: 'Number',
+            label: 'lblNumber',
+            sort: false,
+            isDate: false
+        },				
+        {
+            id: 'OrderDate',
+            label: string,
+            sort: true,
+            isDate: true
+        },
+        {
+            id: 'User',
+            label: 'lblUser',
+            sort: false,
+            isDate: false
+        },				
+        {
+            id: 'Name',
+            label: 'lblName',
+            sort: false,
+            isDate: false
+        },				
+        {
+            id: 'SKU',
+            label: 'lblSKU',
+            sort: false,
+            isDate: false
+        },				
+        {
+            id: 'Quantity',
+            label: 'lblQuantity',
+            sort: false,
+            isDate: false
+        },
+        {
+            id: 'Price',
+            label: 'lblPrice',
+            sort: false,
+            isDate: false
+        },
+        {
+            id: 'Status',
+            label: 'lblStatus',
+            sort: false,
+            isDate: false
+        },
+        {
+            id: 'ShippingDate',
+            label: 'lblShippingDate',
+            sort: false,
+            isDate: true
+        },				
+        {
+            id: 'TrackingNumber',
+            label: 'lblTrackingNumber',
+            sort: false,
+            isDate: false
+        }				
+    ],
+    pageInfo: {
+        filter: {
+            orderDate: {
+                show: true,
+                title: 'filterTit',
+                labelNow: 'lblNow',
+                labelApply: 'lblApply'
+            }
+        },
+        export: {
+            label: 'exportBtn',
+            url: '/api/order/report/export'
+        },
+        noOrdersMessage: 'noOrdersMessage',
+        getRowsUrl: '/api/order/report'
+    }
   };
 ]]>
           </property>
