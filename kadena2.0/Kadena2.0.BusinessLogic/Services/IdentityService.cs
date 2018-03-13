@@ -18,9 +18,10 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoSiteProvider siteProvider;
         private readonly IKenticoAddressBookProvider addressProvider;
         private readonly IRoleService roleService;
+        private readonly IKenticoLoginProvider loginProvider;
 
         public IdentityService(IKenticoLogger logger, IMapper mapper, ISaml2Service saml2Service, IKenticoUserProvider userProvider, IKenticoSiteProvider siteProvider,
-            IKenticoAddressBookProvider addressProvider, IRoleService roleService)
+            IKenticoAddressBookProvider addressProvider, IRoleService roleService, IKenticoLoginProvider loginProvider)
         {
             if (logger == null)
             {
@@ -50,6 +51,10 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(roleService));
             }
+            if (loginProvider == null)
+            {
+                throw new ArgumentNullException(nameof(loginProvider));
+            }
             this.logger = logger;
             this.mapper = mapper;
             this.saml2Service = saml2Service;
@@ -57,6 +62,7 @@ namespace Kadena.BusinessLogic.Services
             this.siteProvider = siteProvider;
             this.addressProvider = addressProvider;
             this.roleService = roleService;
+            this.loginProvider = loginProvider;
         }
 
 
@@ -100,8 +106,11 @@ namespace Kadena.BusinessLogic.Services
                     }
                 }
                 roleService.AssignSSORoles(user, currentSiteId, userDto.Roles);
-                // authenticate in Kentico
-                return new Uri("/", UriKind.Relative);
+                var authenticated = loginProvider.SSOLogin(user.UserName, true);
+                if (authenticated)
+                {
+                    return new Uri("/", UriKind.Relative);
+                }
             }
 
             return new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
