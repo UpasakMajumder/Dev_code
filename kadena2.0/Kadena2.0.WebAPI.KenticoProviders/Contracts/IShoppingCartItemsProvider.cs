@@ -9,7 +9,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void RemoveCartItem(int id);
         void SetCartItemQuantity(int id, int quantity);
         void SaveCartItem(CartItem item);
-        void SetArtwork(CartItem cartItem, string guid);
+        void SetArtwork(CartItem cartItem);
         CartItem EnsureCartItem(NewCartItem newItem);
     }
 }

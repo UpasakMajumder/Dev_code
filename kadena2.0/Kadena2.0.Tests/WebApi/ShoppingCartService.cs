@@ -235,9 +235,16 @@ namespace Kadena.Tests.WebApi
             // Arrange 
             var autoMocker = new AutoMocker();
             var sut = CreateShoppingCartService(autoMocker);
+            var newCartItem = new NewCartItem
+            {
+                Quantity = 1, // todo test negative
+                CustomProductName = "Some custom name",
+                DocumentId = 1123
+            };
+
 
             // Act
-            var result = await sut.AddToCart(new NewCartItem());
+            var result = await sut.AddToCart(newCartItem);
 
             // Assert
             Assert.NotNull(result);

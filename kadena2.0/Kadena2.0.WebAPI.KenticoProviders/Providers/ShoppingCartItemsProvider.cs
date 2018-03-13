@@ -1,27 +1,19 @@
 ﻿using AutoMapper;
-using CMS.DataEngine;
-using CMS.CustomTables;
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
-using CMS.Globalization;
 using CMS.Helpers;
 using CMS.IO;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.AmazonFileSystemProvider;
-using Kadena.Models;
 using Kadena.Models.Checkout;
-using Kadena.Models.CustomerData;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Kadena.Helpers;
 using Kadena.Models.Common;
-using Kadena.Models.AddToCart;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -237,8 +229,9 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public void SetArtwork(CartItem cartItem, string guid)
+        public void SetArtwork(CartItem cartItem)
         {
+            var guid = cartItem.Artwork;
             if (!string.IsNullOrWhiteSpace(guid))
             {
                 var attachmentPath = AttachmentURLProvider.GetFilePhysicalURL(SiteContext.CurrentSiteName, guid);
@@ -253,15 +246,6 @@ namespace Kadena.WebAPI.KenticoProviders
                     attachmentPath = PathHelper.GetObjectKeyFromPath(attachmentPath);
                 }
                 cartItem.Artwork = attachmentPath;
-            }
-        }
-
-        private void SetDynamicPrice(ShoppingCartItemInfo cartItem, string pricesJson)
-        {
-            var price = dynamicPrices.GetDynamicPrice(cartItem.CartItemUnits, pricesJson);
-            if (price > decimal.MinusOne)
-            {
-                cartItem.CartItemPrice = decimal.ToDouble(price);
             }
         }
 
@@ -305,8 +289,12 @@ namespace Kadena.WebAPI.KenticoProviders
             ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
             var cartItemInfo = cart.SetShoppingCartItem(parameters);
 
+            ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItemInfo);
+            
+
             var cartItem = MapCartItem(cartItemInfo, true, true);
 
+            
             cartItem.CartItemText = cartItemInfo.SKU.SKUName;
             cartItem.DynamicPricing = productDocument.GetStringValue("ProductDynamicPricing", string.Empty);
 

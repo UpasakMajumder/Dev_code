@@ -33,6 +33,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoAddressBookProvider addressBookProvider;
         private readonly IKenticoProductsProvider productsProvider;
         private readonly IKenticoBusinessUnitsProvider businessUnitsProvider;
+        private readonly IDynamicPriceRangeProvider dynamicPrices;
 
         public ShoppingCartService(IKenticoSiteProvider kenticoSite,
                                    IKenticoLocalizationProvider localization,
@@ -49,7 +50,8 @@ namespace Kadena.BusinessLogic.Services
                                    IKenticoLogger log,
                                    IKenticoAddressBookProvider addressBookProvider,
                                    IKenticoProductsProvider productsProvider,
-                                   IKenticoBusinessUnitsProvider businessUnitsProvider)
+                                   IKenticoBusinessUnitsProvider businessUnitsProvider,
+                                   IDynamicPriceRangeProvider dynamicPrices)
         {
             if (kenticoSite == null)
             {
@@ -115,6 +117,10 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(businessUnitsProvider));
             }
+            if (dynamicPrices == null)
+            {
+                throw new ArgumentNullException(nameof(dynamicPrices));
+            }
 
             this.kenticoSite = kenticoSite;
             this.localization = localization;
@@ -132,6 +138,7 @@ namespace Kadena.BusinessLogic.Services
             this.addressBookProvider = addressBookProvider;
             this.productsProvider = productsProvider;
             this.businessUnitsProvider = businessUnitsProvider;
+            this.dynamicPrices = dynamicPrices;
         }
 
         public async Task<CheckoutPage> GetCheckoutPage()
@@ -455,8 +462,18 @@ namespace Kadena.BusinessLogic.Services
                 }
                 SetMailingList(cartItem, mailingList);
                 cartItem.Quantity = addedAmount;
-                cartItem.CustomName = newItem.CustomProductName;
+                
             }
+
+            shoppingCartItems.SetArtwork(cartItem);
+            
+            var price = dynamicPrices.GetDynamicPrice(cartItem.Quantity, cartItem.DynamicPricing);
+            if (price > decimal.MinusOne)
+            {
+                cartItem.TotalPrice = price;
+            }
+
+            cartItem.CustomName = newItem.CustomProductName;
 
             shoppingCartItems.SaveCartItem(cartItem);
 
