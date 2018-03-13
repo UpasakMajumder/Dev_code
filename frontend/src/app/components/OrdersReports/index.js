@@ -68,20 +68,30 @@ class OrdersReports extends Component {
     return sortId;
   }
 
-  static generateUrl(defaultUrl, args = {}) {
-    let url = `${defaultUrl}/${args.page}`;
-    if (typeof args.page !== 'undefined') return url;
+  generateUrl = (defaultUrl, args = {}) => {
+    const {
+      pagination,
+      filter
+    } = this.props.store;
+
+    const data = {
+      page: pagination.currentPage,
+      sort: this.sort,
+      dateFrom: filter.orderDate.dateFrom,
+      dateTo: filter.orderDate.dateTo,
+      ...args
+    };
 
     const search = {};
 
-    if (args.sort) search.sort = args.sort;
-    if (args.dateFrom) search.dateFrom = args.dateFrom;
-    if (args.dateTo) search.dateTo = args.dateTo;
-    if (args.export) search.format = 'xlsx';
+    if (typeof data.page !== 'undefined' && !data.export) search.page = data.page + 1;  // BE requires to start the pages from 1
+    if (data.sort && !data.export) search.sort = data.sort;
+    if (data.dateFrom) search.dateFrom = data.dateFrom;
+    if (data.dateTo) search.dateTo = data.dateTo;
 
     const searchUrl = Object.keys(search).length ? createSearchStr(search) : '';
 
-    url = `${defaultUrl}${searchUrl}`;
+    const url = `${defaultUrl}${searchUrl}`;
 
     return url;
   }
@@ -91,12 +101,12 @@ class OrdersReports extends Component {
   }
 
   componentDidMount() {
-    this.props.getRows(OrdersReports.generateUrl(this.props.pageInfo.getRowsUrl));
+    this.props.getRows(this.generateUrl(this.props.pageInfo.getRowsUrl));
   }
 
   handleChangePage = (page) => {
     if (page === this.props.store.pagination.currentPage) return;
-    const url = OrdersReports.generateUrl(this.props.pageInfo.getRowsUrl, { page });
+    const url = this.generateUrl(this.props.pageInfo.getRowsUrl, { page });
     this.props.getRows(url, { page });
   };
 
@@ -134,19 +144,20 @@ class OrdersReports extends Component {
 
   sortColumn = (sortBy) => {
     const newSortOrderAsc = !this.props.store.sort.sortOrderAsc;
-    const sort = OrdersReports.getSortId(newSortOrderAsc, sortBy);
+    this.sort = OrdersReports.getSortId(newSortOrderAsc, sortBy);
 
     const { dateFrom, dateTo } = this.props.store.filter.orderDate;
 
     const args = {
-      sort,
+      page: 0, // reset pages
+      sort: this.sort,
       sortOrderAsc: newSortOrderAsc,
       sortBy,
       dateFrom: OrdersReports.getFormattedDate(dateFrom),
       dateTo: OrdersReports.getFormattedDate(dateTo)
     };
 
-    const url = OrdersReports.generateUrl(this.props.pageInfo.getRowsUrl, args);
+    const url = this.generateUrl(this.props.pageInfo.getRowsUrl, args);
 
     this.props.getRows(url, args);
   };
@@ -183,24 +194,22 @@ class OrdersReports extends Component {
     return content;
   };
 
-  changeDate = (value, field) => {
-    this.props.changeDate(value, field);
-  };
-
-  applyDate = () => {
-    const { dateFrom, dateTo } = this.props.store.filter.orderDate;
+  applyDate = (dateTo, dateFrom) => {
     if (!dateFrom) return;
 
-    const sort = OrdersReports.getSortId(this.props.store.sort.sortOrderAsc, this.props.store.sort.sortBy);
+    this.sort = OrdersReports.getSortId(this.props.store.sort.sortOrderAsc, this.props.store.sort.sortBy);
 
     const args = {
-      sort,
+      page: 0, // reset pages
+      sort: this.sort,
       dateFrom: OrdersReports.getFormattedDate(dateFrom),
       dateTo: OrdersReports.getFormattedDate(dateTo)
     };
 
-    const url = OrdersReports.generateUrl(this.props.pageInfo.getRowsUrl, args);
+    const url = this.generateUrl(this.props.pageInfo.getRowsUrl, args);
 
+    this.props.changeDate(dateFrom, 'dateFrom');
+    this.props.changeDate(dateTo, 'dateTo');
     this.props.getRows(url, args);
   };
 
@@ -213,7 +222,6 @@ class OrdersReports extends Component {
         ui={orderDate}
         dateFrom={this.props.store.filter.orderDate.dateFrom}
         dateTo={this.props.store.filter.orderDate.dateTo}
-        changeDate={this.changeDate}
         applyDate={this.applyDate}
       />
     );
@@ -222,12 +230,11 @@ class OrdersReports extends Component {
   getExportLink = () => {
     const args = {
       export: true,
-      sort: OrdersReports.getSortId(this.props.store.sort.sortOrderAsc, this.props.store.sort.sortBy),
       dateFrom: OrdersReports.getFormattedDate(this.props.store.filter.orderDate.dateFrom),
       dateTo: OrdersReports.getFormattedDate(this.props.store.filter.orderDate.dateTo)
     };
 
-    const url = OrdersReports.generateUrl(this.props.pageInfo.export.url, args);
+    const url = this.generateUrl(this.props.pageInfo.export.url, args);
     const link = <a className="btn-action" href={url}>{this.props.pageInfo.export.label}</a>;
     return link;
   };
