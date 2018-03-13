@@ -7,7 +7,7 @@ import {
 
 const defaultState = {
   pagination: {
-    currentPage: 0
+    currentPage: 0  // BE requires to start the pages from 1
   },
   rows: [],
   sort: {

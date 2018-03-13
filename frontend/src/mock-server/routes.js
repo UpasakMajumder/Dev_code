@@ -55,7 +55,6 @@ apiRouter.post('/products/options', Products.options);
 apiRouter.get('/order/recent/ui', Orders.recent.ui);
 apiRouter.get('/order/recent/page/:page', Orders.recent.page);
 apiRouter.get('/order/reports/rows', Orders.reports.rows);
-apiRouter.get('/order/reports/rows/:page', Orders.reports.rows);
 apiRouter.get('/order/detail', Orders.detail);
 
 apiRouter.post('/mailing-list/use-correct/:containerId', MailingList.useCorrect);
