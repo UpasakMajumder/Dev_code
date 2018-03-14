@@ -1,7 +1,6 @@
 ﻿using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
 using CMS.DataEngine;
-using CMS.DocumentEngine.Types.KDA;
 using CMS.Ecommerce;
 using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
@@ -254,6 +253,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 {
                     OpenCampaignID = capmaigns.GetOpenCampaignID();
                 }
+                ddlBusinessUnits.SelectedValue = Cart.GetValue("BusinessUnitIDForDistributor", default(string));
                 ValidCart = true;
                 BindRepeaterData();
             }
@@ -314,10 +314,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 }
                 BindShippingDropdown(inventoryType, estimatedPrice);
                 ShippingCost = estimatedPrice + Cart.TotalItemsPrice;
-                var businessUnitID = Cart.GetValue("BusinessUnitIDForDistributor", default(string));
-                ddlBusinessUnits.SelectedValue = businessUnitID;
                 lblTotalPrice.Text = CurrencyInfoProvider.GetFormattedPrice(ShippingCost, CurrentSite.SiteID);
-
             }
             catch (Exception ex)
             {
