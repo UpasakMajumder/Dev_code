@@ -152,5 +152,10 @@ namespace Kadena.WebAPI.KenticoProviders
             customer.CustomerUserID = userId;
             customer.Update();
         }
+
+        public UserSettings GetUserSettings(int userId)
+        {
+            return _mapper.Map<UserSettings>(UserSettingsInfoProvider.GetUserSettingsInfoByUser(userId));
+        }
     }
 }

@@ -17,5 +17,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void CreateUser(User user, int siteId, UserSettings userSettings = null);
         void UpdateUser(User user, UserSettings userSettings = null);
         void LinkCustomerToUser(int customerId, int userId);
+        UserSettings GetUserSettings(int userId);
     }
 }
