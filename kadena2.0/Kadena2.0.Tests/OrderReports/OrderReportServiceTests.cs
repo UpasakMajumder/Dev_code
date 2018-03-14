@@ -36,23 +36,23 @@ namespace Kadena.Tests.WebApi
             [InlineData("prop-RANDOM")]
             public void TryParseSort_ShouldBeFalse_WhenSortIsInvalid(string invalidSort)
             {
-                var filter = new OrderFilter { Sort = invalidSort };
+                var filter = new OrderFilter { OrderByExpression = invalidSort };
 
-                OrderFilter.SortFields sortInfo;
-                var isValid = filter.TryParseSort(out sortInfo);
+                OrderFilter.OrderByFields sortInfo;
+                var isValid = filter.TryParseOrderByExpression(out sortInfo);
 
                 Assert.False(isValid);
             }
 
             [Theory]
-            [InlineData(OrderFilter.SortDirection.ASC, "propA", "propA-ASC")]
-            [InlineData(OrderFilter.SortDirection.DESC, "propB", "propB-DESC")]
-            public void TryParseSort_ShouldBeTrueAndParsed_WhenSortValid(OrderFilter.SortDirection direction, string property, string validSort)
+            [InlineData(OrderFilter.OrderByDirection.ASC, "propA", "propA-ASC")]
+            [InlineData(OrderFilter.OrderByDirection.DESC, "propB", "propB-DESC")]
+            public void TryParseSort_ShouldBeTrueAndParsed_WhenSortValid(OrderFilter.OrderByDirection direction, string property, string validSort)
             {
-                var filter = new OrderFilter { Sort = validSort };
+                var filter = new OrderFilter { OrderByExpression = validSort };
 
-                OrderFilter.SortFields sortInfo;
-                var isValid = filter.TryParseSort(out sortInfo);
+                OrderFilter.OrderByFields sortInfo;
+                var isValid = filter.TryParseOrderByExpression(out sortInfo);
 
                 Assert.True(isValid);
                 Assert.Equal(property, sortInfo.Property);
@@ -201,7 +201,7 @@ namespace Kadena.Tests.WebApi
             {
                 FromDate = new DateTime(),
                 ToDate = new DateTime(),
-                Sort = $"{OrderReportService.SortableByOrderDate}-{OrderFilter.SortDirection.DESC}"
+                OrderByExpression = $"{OrderReportService.SortableByOrderDate}-{OrderFilter.OrderByDirection.DESC}"
             };
             var expectedOrderListFilter = new OrderListFilter
             {
@@ -230,11 +230,11 @@ namespace Kadena.Tests.WebApi
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void ValidateFilter_ShouldNotThrow_WhenFilterIsEmpty(string sort)
+        public void ValidateFilter_ShouldNotThrow_WhenFilterHasEmptyOrderByExpression(string orderBy)
         {
             var sut = new OrderReportServiceBuilder()
                 .Build();
-            var filterWithEmptySort = new OrderFilter { Sort = sort };
+            var filterWithEmptySort = new OrderFilter { OrderByExpression = orderBy };
 
             sut.ValidateFilter(filterWithEmptySort);
 
@@ -244,13 +244,32 @@ namespace Kadena.Tests.WebApi
         [Theory]
         [InlineData("wrong-sort-expression")]
         [InlineData("not_supported_property-ASC")]
-        public void ValidateFilter_ShouldThrow_WhenFilterIsInvalid(string sort)
+        public void ValidateFilter_ShouldThrow_WhenFilterHasInvalidOrderByExpression(string orderBy)
         {
             var sut = new OrderReportServiceBuilder()
                 .Build();
-            var filterWithInvalidSort = new OrderFilter { Sort = sort };
+            var filterWithInvalidSort = new OrderFilter { OrderByExpression = orderBy };
 
             Action action = () => sut.ValidateFilter(filterWithInvalidSort);
+
+            Assert.Throws<ArgumentException>(action);
+        }
+
+        [Fact]
+        public void ValidateFilter_ShouldThrow_WhenFilterHasInvalidDateRange()
+        {
+            var pastDate = new DateTime(2010, 1, 1);
+            var futureDate = new DateTime(2010, 2, 1);
+
+            var sut = new OrderReportServiceBuilder()
+                .Build();
+            var filterWithInvalidDateRange = new OrderFilter
+            {
+                FromDate = futureDate,
+                ToDate = pastDate
+            };
+
+            Action action = () => sut.ValidateFilter(filterWithInvalidDateRange);
 
             Assert.Throws<ArgumentException>(action);
         }
@@ -372,7 +391,7 @@ namespace Kadena.Tests.WebApi
             {
                 FromDate = new DateTime(),
                 ToDate = new DateTime(),
-                Sort = $"{OrderReportService.SortableByOrderDate}-{OrderFilter.SortDirection.DESC}"
+                OrderByExpression = $"{OrderReportService.SortableByOrderDate}-{OrderFilter.OrderByDirection.DESC}"
             };
             var expectedOrderListFilter = new OrderListFilter
             {

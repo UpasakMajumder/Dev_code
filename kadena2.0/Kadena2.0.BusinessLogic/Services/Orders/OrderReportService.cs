@@ -68,10 +68,10 @@ namespace Kadena.BusinessLogic.Services.Orders
             ValidatePageNumber(page);
             ValidateFilter(filter);
 
-            OrderFilter.SortFields sort;
-            var sortSpecified = filter.TryParseSort(out sort);
+            OrderFilter.OrderByFields sort;
+            var sortSpecified = filter.TryParseOrderByExpression(out sort);
             var sortProperty = sortSpecified ? sort.Property : null;
-            var sortDesc = sortSpecified ? sort.Direction == OrderFilter.SortDirection.DESC : false;
+            var sortDesc = sortSpecified ? sort.Direction == OrderFilter.OrderByDirection.DESC : false;
             var orderFilter = new OrderListFilter
             {
                 SiteName = site,
@@ -128,10 +128,10 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             ValidateFilter(filter);
 
-            OrderFilter.SortFields sort;
-            var sortSpecified = filter.TryParseSort(out sort);
+            OrderFilter.OrderByFields sort;
+            var sortSpecified = filter.TryParseOrderByExpression(out sort);
             var sortProperty = sortSpecified ? sort.Property : null;
-            var sortDesc = sortSpecified ? sort.Direction == OrderFilter.SortDirection.DESC : false;
+            var sortDesc = sortSpecified ? sort.Direction == OrderFilter.OrderByDirection.DESC : false;
             var orderFilter = new OrderListFilter
             {
                 SiteName = site,
@@ -168,20 +168,26 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public virtual void ValidateFilter(OrderFilter filter)
         {
-            if (string.IsNullOrWhiteSpace(filter.Sort))
+            if (string.IsNullOrWhiteSpace(filter.OrderByExpression))
             {
                 return;
             }
 
-            OrderFilter.SortFields sortFields;
-            if (!filter.TryParseSort(out sortFields))
+            OrderFilter.OrderByFields sortFields;
+            if (!filter.TryParseOrderByExpression(out sortFields))
             {
-                throw new ArgumentException($"Invalid value for filter.Sort '{filter.Sort}'", nameof(filter));
+                throw new ArgumentException($"Invalid value for filter.Sort '{filter.OrderByExpression}'", nameof(filter));
             }
 
             if (sortFields.Property != SortableByOrderDate)
             {
                 throw new ArgumentException($"Invalid value for filter.Sort. Sorting by '{sortFields.Property}' is not supported", nameof(filter));
+            }
+
+            var isInvalidRange = (filter.FromDate != null && filter.ToDate != null) && filter.FromDate > filter.ToDate;
+            if (isInvalidRange)
+            {
+                throw new ArgumentException($"Invalid values for date. 'From date' must be smaller than 'To date'", nameof(filter));
             }
         }
     }

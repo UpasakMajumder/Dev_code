@@ -6,17 +6,17 @@ namespace Kadena.Models.Orders
     {
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
-        public string Sort { get; set; }
+        public string OrderByExpression { get; set; }
 
-        public bool TryParseSort(out SortFields sortInfo)
+        public bool TryParseOrderByExpression(out OrderByFields orderByInfo)
         {
-            sortInfo = null;
-            if (string.IsNullOrWhiteSpace(Sort))
+            orderByInfo = null;
+            if (string.IsNullOrWhiteSpace(OrderByExpression))
             {
                 return false;
             }
 
-            var parts = Sort.Split('-');
+            var parts = OrderByExpression.Split('-');
             if (parts.Length != 2)
             {
                 return false;
@@ -29,13 +29,13 @@ namespace Kadena.Models.Orders
             }
 
             var direction = parts[1].ToUpper();
-            SortDirection directionTyped;
+            OrderByDirection directionTyped;
             if (!Enum.TryParse(direction, out directionTyped))
             {
                 return false;
             }
 
-            sortInfo = new SortFields
+            orderByInfo = new OrderByFields
             {
                 Property = prop,
                 Direction = directionTyped
@@ -43,11 +43,11 @@ namespace Kadena.Models.Orders
             return true;
         }
 
-        public enum SortDirection { ASC, DESC }
-        public class SortFields
+        public enum OrderByDirection { ASC, DESC }
+        public class OrderByFields
         {
             public string Property { get; set; }
-            public SortDirection Direction { get; set; }
+            public OrderByDirection Direction { get; set; }
         }
     }
 }
