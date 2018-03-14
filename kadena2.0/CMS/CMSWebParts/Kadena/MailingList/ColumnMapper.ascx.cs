@@ -1,7 +1,7 @@
 ﻿using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;

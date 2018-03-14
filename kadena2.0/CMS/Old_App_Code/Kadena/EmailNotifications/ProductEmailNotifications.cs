@@ -9,7 +9,7 @@ using Kadena.Dto.Order;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;

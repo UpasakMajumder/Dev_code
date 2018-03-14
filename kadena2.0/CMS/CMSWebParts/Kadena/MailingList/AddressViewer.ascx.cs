@@ -5,7 +5,7 @@ using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using Kadena.Dto.MailingList;
 using Kadena.Dto.MailingList.MicroserviceResponses;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
 using Newtonsoft.Json;
 using System;

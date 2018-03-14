@@ -17,7 +17,7 @@ using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.PDFHelpers;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;

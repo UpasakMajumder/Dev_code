@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Kadena2.WebAPI.KenticoProviders;
 
-namespace Kadena2.Container.Default
+namespace Kadena.Container.Default
 {
     public static class MapperBuilder
     {
@@ -13,7 +13,8 @@ namespace Kadena2.Container.Default
         {
 
             mapper = new MapperConfiguration(cfg => cfg.AddProfiles(typeof(KenticoModelMappingsProfile),
-                                                                    typeof(MapperDefaultProfile)
+                                                                    typeof(MapperDefaultProfile),
+                                                                    typeof(SystemDtoProfile)
                                              )).CreateMapper();
         }
      

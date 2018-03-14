@@ -19,7 +19,7 @@ using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
 using System.Linq;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 
 public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
 {

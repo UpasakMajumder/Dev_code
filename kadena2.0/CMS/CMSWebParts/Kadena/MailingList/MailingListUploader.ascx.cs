@@ -6,7 +6,7 @@ using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Models.Common;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using Kadena2.MicroserviceClients;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;

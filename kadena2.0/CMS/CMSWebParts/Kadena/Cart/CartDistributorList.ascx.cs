@@ -1,7 +1,7 @@
 using CMS.PortalEngine.Web.UI;
 using CMS.Helpers;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using CMS.Ecommerce;
 using System;
 using CMS.EventLog;
