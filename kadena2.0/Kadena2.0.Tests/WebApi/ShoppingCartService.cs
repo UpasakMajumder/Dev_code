@@ -233,8 +233,7 @@ namespace Kadena.Tests.WebApi
         public async Task AddToCart()
         {
             // Arrange 
-            var autoMocker = new AutoMocker();
-            var sut = CreateShoppingCartService(autoMocker);
+
             var newCartItem = new NewCartItem
             {
                 Quantity = 1, // todo test negative
@@ -242,6 +241,12 @@ namespace Kadena.Tests.WebApi
                 DocumentId = 1123
             };
 
+            var autoMocker = new AutoMocker();
+            var itemsProvider = autoMocker.GetMock<IShoppingCartItemsProvider>();
+            itemsProvider.Setup(ip => ip.GetOrCreateCartItem(newCartItem))
+                .Returns(new CartItemEntity {  });
+                
+            var sut = CreateShoppingCartService(autoMocker);
 
             // Act
             var result = await sut.AddToCart(newCartItem);

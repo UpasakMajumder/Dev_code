@@ -450,32 +450,15 @@ namespace Kadena.BusinessLogic.Services
             {
                 EnsureInventoryAmount(cartItem, newItem.Quantity, cartItem.SKUUnits);
             }
-
-            MailingList mailingList = null;
+            
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.MailingProduct))
             {
-                mailingList = await mailingService.GetMailingList(newItem.ContainerId);
-
-                if (mailingList?.AddressCount != addedAmount)
-                {
-                    throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
-                }
-                SetMailingList(cartItem, mailingList);
-                cartItem.SKUUnits = addedAmount;
-                
+                await SetMailingList(cartItem, newItem.ContainerId, addedAmount);
             }
 
             shoppingCartItems.SetArtwork(cartItem, newItem.DocumentId);
-            
-            var price = dynamicPrices.GetDynamicPrice(cartItem.SKUUnits, newItem.DocumentId);
-            if (price > decimal.MinusOne)
-            {
-                cartItem.CartItemPrice = price;
-            }
-            else
-            {
-                cartItem.CartItemPrice = null;
-            }
+
+            SetDynamicPrice(cartItem, newItem.DocumentId);
 
             if (!string.IsNullOrEmpty(newItem.CustomProductName))
             {
@@ -500,17 +483,38 @@ namespace Kadena.BusinessLogic.Services
             return result;
         }
 
-        public void SetMailingList(CartItemEntity cartItem, MailingList mailingList)
+        private void SetDynamicPrice(CartItemEntity cartItem, int documentId)
         {
+            var price = dynamicPrices.GetDynamicPrice(cartItem.SKUUnits, documentId);
+            if (price > decimal.MinusOne)
+            {
+                cartItem.CartItemPrice = price;
+            }
+            else
+            {
+                cartItem.CartItemPrice = null;
+            }
+        }
+
+        private async Task SetMailingList(CartItemEntity cartItem, Guid containerId, int addedAmount)
+        {
+            var mailingList = await mailingService.GetMailingList(containerId);
+
+            if (mailingList?.AddressCount != addedAmount)
+            {
+                throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
+            }
+
             if (mailingList != null)
             {
                 cartItem.MailingListName = mailingList.Name;
                 cartItem.MailingListGuid = Guid.Parse(mailingList.Id);
             }
+
+            cartItem.SKUUnits = addedAmount;
         }
 
-
-        public void EnsureInventoryAmount(CartItemEntity item, int addedQuantity, int resultedQuantity)
+        private void EnsureInventoryAmount(CartItemEntity item, int addedQuantity, int resultedQuantity)
         {
             var availableQuantity = shoppingCart.GetStockQuantity(item);
 

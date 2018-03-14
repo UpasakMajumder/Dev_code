@@ -217,7 +217,6 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var cartItemInfo = ECommerceContext.CurrentShoppingCart.GetShoppingCartItem(item.CartItemGUID);
 
-
             cartItemInfo.CartItemText = item.CartItemText;
             cartItemInfo.CartItemUnits = item.SKUUnits;
             cartItemInfo.SetValue("ProductType", item.ProductType);
@@ -310,11 +309,7 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItemInfo.SetValue("ProductChiliPdfGeneratorSettingsId", productDocument.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));
             cartItemInfo.SetValue("ProductChiliWorkspaceId", productDocument.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
 
-            //ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItemInfo);
-
-            var cartinfo = mapper.Map<CartItemEntity>(cartItemInfo);
-            //cartinfo.CartItemID = cartItemInfo.CartItemID;
-            return cartinfo;
+            return mapper.Map<CartItemEntity>(cartItemInfo);
         }
 
         private SKUInfo EnsureTemplateOptionSKU()
