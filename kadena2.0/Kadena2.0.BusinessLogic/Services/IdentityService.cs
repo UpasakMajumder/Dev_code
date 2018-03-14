@@ -13,8 +13,9 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoLogger logger;
         private readonly IMapper mapper;
         private readonly ISaml2Service saml2Service;
+        private readonly IKenticoResourceService kenticoResourceService;
 
-        public IdentityService(IKenticoLogger logger, IMapper mapper, ISaml2Service saml2Service)
+        public IdentityService(IKenticoLogger logger, IMapper mapper, ISaml2Service saml2Service, IKenticoResourceService kenticoResourceService)
         {
             if (logger == null)
             {
@@ -28,11 +29,16 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(saml2Service));
             }
+            if (kenticoResourceService == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoResourceService));
+            }
+
             this.logger = logger;
             this.mapper = mapper;
             this.saml2Service = saml2Service;
+            this.kenticoResourceService = kenticoResourceService;
         }
-
 
         public Uri TryAuthenticate(string samlString)
         {
@@ -51,7 +57,7 @@ namespace Kadena.BusinessLogic.Services
                 return new Uri("/", UriKind.Relative);
             }
 
-            return new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
+            return new Uri(kenticoResourceService.GetLogonPageUrl(), UriKind.RelativeOrAbsolute);
         }
     }
 }
