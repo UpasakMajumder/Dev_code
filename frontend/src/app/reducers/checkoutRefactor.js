@@ -4,12 +4,14 @@ import {
   SUCCESS,
   CHECKOUT_INIT_ITEMS,
   CHECKOUT_REMOVE_PRODUCT,
-  CHECKOUT_CHANGE_PRODUCT_QUANTITY
+  CHECKOUT_CHANGE_PRODUCT_QUANTITY,
+  CHECKOUT_GET_TOTALS
 } from 'app.consts';
 
 const defaultState = Immutable.fromJS({
   products: [],
-  quantityText: ''
+  quantityText: '',
+  totals: []
 });
 
 export default (state = defaultState, action) => {
@@ -27,6 +29,14 @@ export default (state = defaultState, action) => {
   case CHECKOUT_CHANGE_PRODUCT_QUANTITY + SUCCESS:
     return state.update('products', (products) => {
       return products.map(product => (product.get('id') === payload.id ? product.set('quantity', payload.quantity) : product));
+    });
+
+  case CHECKOUT_GET_TOTALS + SUCCESS:
+    return state.update('totals', (totals) => {
+      return totals.map((total) => {
+        const { value } = payload.totals.filter(payloadTotal => payloadTotal.id === total.get('id'))[0];
+        return total.set('value', value);
+      });
     });
 
   default:

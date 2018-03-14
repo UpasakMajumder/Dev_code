@@ -6,15 +6,18 @@ import { connect } from 'react-redux';
 import {
   initItems,
   removeProduct,
-  changeProductQuantity
+  changeProductQuantity,
+  getTotals
 } from 'app.ac/checkoutRefactor';
 import {
   getUI as updateCartPreview
 } from 'app.ac/cartPreview';
+import * as appLoader from 'app.ac/appLoader';
 /* components */
 import Alert from 'app.dump/Alert';
 import Products from './Products';
 import EmptyCart from './EmptyCart';
+import Totals from './Totals';
 
 class Checkout extends Component {
   static propTypes = {
@@ -26,30 +29,46 @@ class Checkout extends Component {
       }).isRequired,
       api: PropTypes.shape({
         removeProduct: PropTypes.string.isRequired,
-        changeProductQuantity: PropTypes.string.isRequired
+        changeProductQuantity: PropTypes.string.isRequired,
+        getTotals: PropTypes.string.isRequired
       }).isRequired,
-      emptyCart: PropTypes.object.isRequired
+      emptyCart: PropTypes.object.isRequired,
+      totals: PropTypes.object.isRequired
     }).isRequired,
     /* store */
     store: ImmutablePropTypes.contains({
       products: ImmutablePropTypes.list.isRequired,
-      quantityText: PropTypes.string.isRequired
+      quantityText: PropTypes.string.isRequired,
+      totals: ImmutablePropTypes.list.isRequired
     }).isRequired,
     /* func */
     initItems: PropTypes.func.isRequired,
-    updateCartPreview: PropTypes.func.isRequired
+    updateCartPreview: PropTypes.func.isRequired,
+    appLoaderStart: PropTypes.func.isRequired,
+    appLoaderFinish: PropTypes.func.isRequired,
+    getTotals: PropTypes.func.isRequired
   }
 
   /* lifecycles */
   componentDidMount() {
     const {
-      products
+      products,
+      totals,
+      api
     } = this.props.config;
 
-    this.props.initItems({
-      products: products.items,
-      quantityText: products.quantityText
-    });
+    const fn = async () => {
+      await this.props.initItems({
+        products: products.items,
+        quantityText: products.quantityText,
+        totals: totals.items
+      });
+      await this.props.appLoaderStart();
+      await this.props.getTotals(api.getTotals);
+      await this.props.appLoaderFinish();
+    };
+
+    fn();
   }
 
   /* ui */
@@ -71,18 +90,22 @@ class Checkout extends Component {
   /* handlers */
   removeProduct = async (id) => {
     const url = `${this.props.config.api.removeProduct}/${id}`;
+    await this.props.appLoaderStart();
     await this.props.removeProduct(url, id);
     await this.props.updateCartPreview();
     // TODO: get delivery methods prices
-    // TODO: get totals prices
+    await this.props.getTotals(this.props.config.api.getTotals);
+    await this.props.appLoaderFinish();
   };
 
   changeProductQuantity = async (id, quantity) => {
     const url = `${this.props.config.api.changeProductQuantity}/${id}`;
+    await this.props.appLoaderStart();
     await this.props.changeProductQuantity(url, id, quantity);
     await this.props.updateCartPreview();
     // TODO: get delivery methods prices
-    // TODO: get totals prices
+    await this.props.getTotals(this.props.config.api.getTotals);
+    await this.props.appLoaderFinish();
   };
 
   render() {
@@ -102,10 +125,16 @@ class Checkout extends Component {
         <div className="shopping-cart__block">
           <Products
             ui={config.products}
-            items={store.get('products')}
+            items={store.get('products').toJS()}
             removeProduct={this.removeProduct}
             changeProductQuantity={this.changeProductQuantity}
             quantityText={store.get('quantityText')}
+          />
+        </div>
+        <div className="shopping-cart__block">
+          <Totals
+            ui={config.totals}
+            items={store.get('totals').toJS()}
           />
         </div>
       </div>
@@ -120,5 +149,8 @@ export default connect((state) => {
   initItems,
   removeProduct,
   changeProductQuantity,
-  updateCartPreview
+  updateCartPreview,
+  appLoaderStart: appLoader.start,
+  appLoaderFinish: appLoader.finish,
+  getTotals
 })(Checkout);

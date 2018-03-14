@@ -42,6 +42,7 @@ apiRouter.post('/checkout/add-new-address', Checkout.addNewAddress);
 
 apiRouter.delete('/checkoutRefactor/removeProduct/:id', CheckoutRefactor.removeProduct);
 apiRouter.put('/checkoutRefactor/changeProductQuantity/:id', CheckoutRefactor.changeProductQuantity);
+apiRouter.get('/checkoutRefactor/getTotals', CheckoutRefactor.getTotals);
 
 apiRouter.get('/settings/address/ui', Settings.address.ui);
 apiRouter.post('/settings/address/modify', Settings.address.modify);

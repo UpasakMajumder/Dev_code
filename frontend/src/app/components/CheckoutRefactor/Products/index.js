@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 /* components */
 import Product from 'app.dump/Product/Checkout';
 
@@ -14,8 +13,8 @@ const Products = ({
   const products = items.map((item) => {
     return (
       <Product
-        key={item.get('id')}
-        {...item.toJS()}
+        key={item.id}
+        {...item}
         productionTimeLabel={ui.productionTimeLabel}
         shipTimeLabel={ui.shipTimeLabel}
         buttonLabels={ui.buttonLabels}
@@ -43,7 +42,7 @@ Products.propTypes = {
     }).isRequired
   }).isRequired,
   quantityText: PropTypes.string.isRequired,
-  items: ImmutablePropTypes.listOf(ImmutablePropTypes.map.isRequired).isRequired
+  items: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
 };
 
 export default Products;

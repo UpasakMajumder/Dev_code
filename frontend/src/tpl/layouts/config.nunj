@@ -139,7 +139,8 @@
         welcomeMessage: 'Good day and know that all your money are belong to us',
         api: {
           removeProduct: PATH + 'checkoutRefactor/removeProduct',
-          changeProductQuantity: PATH + '/checkoutRefactor/changeProductQuantity'
+          changeProductQuantity: PATH + '/checkoutRefactor/changeProductQuantity',
+          getTotals: PATH + '/checkoutRefactor/getTotals'
         },
         emptyCart: {
           "text": "Your shopping cart is empty.",
@@ -210,6 +211,31 @@
                 "name": "Size",
                 "value": "XS"
               }]
+            }
+          ]
+        },
+        totals: {
+          "title": "Totals",
+          "items": [
+            {
+              id: "summary",
+              "title": "Summary"
+            },
+            {
+              id: "shipping",
+              "title": "Shipping"
+            },
+            {
+              id: "subtotal",
+              "title": "Subtotal"
+            },
+            {
+              id: "tax",
+              "title": "Tax"
+            },
+            {
+              id: "totals",
+              "title": "Totals"
             }
           ]
         }
