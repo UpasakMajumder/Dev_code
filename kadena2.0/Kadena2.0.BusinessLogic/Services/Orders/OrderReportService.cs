@@ -168,20 +168,18 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public virtual void ValidateFilter(OrderFilter filter)
         {
-            if (string.IsNullOrWhiteSpace(filter.OrderByExpression))
+            if (!string.IsNullOrWhiteSpace(filter.OrderByExpression))
             {
-                return;
-            }
+                OrderFilter.OrderByFields sortFields;
+                if (!filter.TryParseOrderByExpression(out sortFields))
+                {
+                    throw new ArgumentException($"Invalid value for filter.Sort '{filter.OrderByExpression}'", nameof(filter));
+                }
 
-            OrderFilter.OrderByFields sortFields;
-            if (!filter.TryParseOrderByExpression(out sortFields))
-            {
-                throw new ArgumentException($"Invalid value for filter.Sort '{filter.OrderByExpression}'", nameof(filter));
-            }
-
-            if (sortFields.Property != SortableByOrderDate)
-            {
-                throw new ArgumentException($"Invalid value for filter.Sort. Sorting by '{sortFields.Property}' is not supported", nameof(filter));
+                if (sortFields.Property != SortableByOrderDate)
+                {
+                    throw new ArgumentException($"Invalid value for filter.Sort. Sorting by '{sortFields.Property}' is not supported", nameof(filter));
+                }
             }
 
             var isInvalidRange = (filter.FromDate != null && filter.ToDate != null) && filter.FromDate > filter.ToDate;
