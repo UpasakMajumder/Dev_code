@@ -10,8 +10,8 @@ namespace Kadena.Dto.Order
         public int? ItemsPerPage { get; set; }
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
-        public string SortBy { get; set; }
-        public bool SortDescending { get; set; }
+        public string OrderBy { get; set; }
+        public bool? OrderByDescending { get; set; }
         public int? CampaignId { get; set; }
         public int? ProgramId { get; set; }
         public int? DistributorId { get; set; }
