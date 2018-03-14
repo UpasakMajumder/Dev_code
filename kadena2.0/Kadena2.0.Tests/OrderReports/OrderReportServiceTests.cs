@@ -1,18 +1,17 @@
 ﻿using AutoMapper;
 using Kadena.BusinessLogic.Factories;
 using Kadena.BusinessLogic.Services.Orders;
+using Kadena.Container.Default;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.Infrastructure.Contracts;
 using Kadena.Infrastructure.FileConversion;
-using Kadena.Models;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
 using Kadena.Models.SiteSettings;
 using Kadena.Tests.OrderReports;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
 using Moq;
 using System;
@@ -210,8 +209,8 @@ namespace Kadena.Tests.WebApi
                 PageNumber = page,
                 DateFrom = filter.FromDate,
                 DateTo = filter.ToDate,
-                SortBy = OrderReportService.SortableByOrderDate,
-                SortDescending = true
+                OrderBy = OrderReportService.SortableByOrderDate,
+                OrderByDescending = true
             };
 
             try
@@ -380,14 +379,14 @@ namespace Kadena.Tests.WebApi
         }
 
         [Fact]
-        public async Task GetOrdersExportForSite_ShouldPassArgumentsToMicroserviceClient()
+        public async Task GetOrdersExportForSite_ShouldPassArgumentsToMicroserviceClient_WhenFilterSpecified()
         {
             var orderViewClient = new OrderViewClient_GetOrdersByFilterSpy();
             var sut = new OrderReportServiceBuilder()
                 .WithOrderViewClient(orderViewClient)
                 .Build();
             var currentSite = "test_site";
-            var filter = new OrderFilter
+            var filterSpecified = new OrderFilter
             {
                 FromDate = new DateTime(),
                 ToDate = new DateTime(),
@@ -396,16 +395,41 @@ namespace Kadena.Tests.WebApi
             var expectedOrderListFilter = new OrderListFilter
             {
                 SiteName = currentSite,
-                ItemsPerPage = sut.OrdersPerPage,
-                DateFrom = filter.FromDate,
-                DateTo = filter.ToDate,
-                SortBy = OrderReportService.SortableByOrderDate,
-                SortDescending = true
+                DateFrom = filterSpecified.FromDate,
+                DateTo = filterSpecified.ToDate,
+                OrderBy = OrderReportService.SortableByOrderDate,
+                OrderByDescending = true
             };
 
             try
             {
-                await sut.GetOrdersExportForSite(currentSite, filter);
+                await sut.GetOrdersExportForSite(currentSite, filterSpecified);
+            }
+            catch (NullReferenceException)
+            {
+                // ignore missing implementation
+            }
+
+            Assert.Equal(expectedOrderListFilter, orderViewClient.Filter);
+        }
+
+        [Fact]
+        public async Task GetOrdersExportForSite_ShouldPassArgumentsToMicroserviceClient_WhenFilterEmpty()
+        {
+            var orderViewClient = new OrderViewClient_GetOrdersByFilterSpy();
+            var sut = new OrderReportServiceBuilder()
+                .WithOrderViewClient(orderViewClient)
+                .Build();
+            var currentSite = "test_site";
+            var filterEmpty = new OrderFilter { };
+            var expectedOrderListFilter = new OrderListFilter
+            {
+                SiteName = currentSite
+            };
+
+            try
+            {
+                await sut.GetOrdersExportForSite(currentSite, filterEmpty);
             }
             catch (NullReferenceException)
             {

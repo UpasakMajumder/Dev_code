@@ -65,7 +65,6 @@
     <Compile Include="Logon\Requests\SamlAuthenticationDto.cs" />
     <Compile Include="Order\OrderListFilter.cs" />
     <Compile Include="Payment\CreditCard\MicroserviceRequests\UpdateCustomerContainerRequestDto.cs" />
-    <Compile Include="Order\OrderListFilter.cs" />
     <Compile Include="Product\BorderDto.cs" />
     <Compile Include="Product\PriceDto.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDailogLabelDto.cs" />

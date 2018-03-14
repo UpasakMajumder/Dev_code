@@ -65,24 +65,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public virtual async Task<PagedData<OrderReport>> GetOrdersForSite(string site, int page, OrderFilter filter)
         {
-            ValidatePageNumber(page);
-            ValidateFilter(filter);
-
-            OrderFilter.OrderByFields sort;
-            var sortSpecified = filter.TryParseOrderByExpression(out sort);
-            var sortProperty = sortSpecified ? sort.Property : null;
-            var sortDesc = sortSpecified ? sort.Direction == OrderFilter.OrderByDirection.DESC : false;
-            var orderFilter = new OrderListFilter
-            {
-                SiteName = site,
-                PageNumber = page,
-                ItemsPerPage = OrdersPerPage,
-                DateFrom = filter.FromDate,
-                DateTo = filter.ToDate,
-                SortBy = sortProperty,
-                SortDescending = sortDesc
-            };
-
+            var orderFilter = CreateOrderListFilter(filter, site, page);
             var orders = await orderViewClient.GetOrders(orderFilter);
             var pagesCount = orders.Payload.TotalCount / OrdersPerPage;
             if (orders.Payload.TotalCount % OrdersPerPage > 0)
@@ -126,22 +109,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public virtual async Task<FileResult> GetOrdersExportForSite(string site, OrderFilter filter)
         {
-            ValidateFilter(filter);
-
-            OrderFilter.OrderByFields sort;
-            var sortSpecified = filter.TryParseOrderByExpression(out sort);
-            var sortProperty = sortSpecified ? sort.Property : null;
-            var sortDesc = sortSpecified ? sort.Direction == OrderFilter.OrderByDirection.DESC : false;
-            var orderFilter = new OrderListFilter
-            {
-                SiteName = site,
-                ItemsPerPage = OrdersPerPage,
-                DateFrom = filter.FromDate,
-                DateTo = filter.ToDate,
-                SortBy = sortProperty,
-                SortDescending = sortDesc
-            };
-
+            var orderFilter = CreateOrderListFilter(filter, site);
             var orders = await orderViewClient.GetOrders(orderFilter);
             var ordersReport = orders.Payload.Orders.ToList()
                 .Select(o => orderReportFactory.Create(o));
@@ -156,6 +124,36 @@ namespace Kadena.BusinessLogic.Services.Orders
                 Name = "export.xlsx",
                 Mime = ContentTypes.Xlsx
             };
+        }
+
+        private OrderListFilter CreateOrderListFilter(OrderFilter filter, string site, int page)
+        {
+            ValidatePageNumber(page);
+
+            var orderFilter = CreateOrderListFilter(filter, site);
+            orderFilter.PageNumber = page;
+            orderFilter.ItemsPerPage = OrdersPerPage;
+
+            return orderFilter;
+        }
+
+        private OrderListFilter CreateOrderListFilter(OrderFilter filter, string site)
+        {
+            ValidateFilter(filter);
+
+            var orderFilter = new OrderListFilter
+            {
+                SiteName = site,
+                DateFrom = filter.FromDate,
+                DateTo = filter.ToDate
+            };
+            OrderFilter.OrderByFields sort;
+            if (filter.TryParseOrderByExpression(out sort))
+            {
+                orderFilter.OrderBy = sort.Property;
+                orderFilter.OrderByDescending = sort.Direction == OrderFilter.OrderByDirection.DESC;
+            }
+            return orderFilter;
         }
 
         private void ValidatePageNumber(int page)
