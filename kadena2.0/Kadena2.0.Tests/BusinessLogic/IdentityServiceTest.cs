@@ -16,11 +16,15 @@ namespace Kadena.Tests.BusinessLogic
 {
     public class IdentityServiceTest
     {
-        [Fact(DisplayName = "IdentityService.TryAuthenticate() | Null attributes")]
+        [Fact(DisplayName = "IdentityService.TryAuthenticate() | Fail")]
         public void TryAuthenticateNullAttributes()
         {
             var expectedResult = new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
             var autoMock = new AutoMocker();
+            autoMock
+                .GetMock<IKenticoResourceService>()
+                .Setup(s => s.GetLogonPageUrl())
+                .Returns(expectedResult.AbsoluteUri);
             var sut = autoMock.CreateInstance<IdentityService>();
 
             var actualResult = sut.TryAuthenticate(string.Empty);
@@ -69,6 +73,10 @@ namespace Kadena.Tests.BusinessLogic
             var expectedResult = new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
             var autoMock = new AutoMocker();
             autoMock
+                .GetMock<IKenticoResourceService>()
+                .Setup(s => s.GetLogonPageUrl())
+                .Returns(expectedResult.AbsoluteUri);
+            autoMock
                 .GetMock<ISaml2Service>()
                 .Setup(s => s.GetAttributes(It.IsAny<string>()))
                 .Returns(new Dictionary<string, IEnumerable<string>>());
@@ -90,6 +98,10 @@ namespace Kadena.Tests.BusinessLogic
         {
             var expectedResult = new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
             var autoMock = new AutoMocker();
+            autoMock
+                .GetMock<IKenticoResourceService>()
+                .Setup(s => s.GetLogonPageUrl())
+                .Returns(expectedResult.AbsoluteUri);
             autoMock
                 .GetMock<ISaml2Service>()
                 .Setup(s => s.GetAttributes(It.IsAny<string>()))
@@ -119,6 +131,10 @@ namespace Kadena.Tests.BusinessLogic
         {
             var expectedResult = new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
             var autoMock = new AutoMocker();
+            autoMock
+                .GetMock<IKenticoResourceService>()
+                .Setup(s => s.GetLogonPageUrl())
+                .Returns(expectedResult.AbsoluteUri);
             autoMock
                 .GetMock<ISaml2Service>()
                 .Setup(s => s.GetAttributes(It.IsAny<string>()))

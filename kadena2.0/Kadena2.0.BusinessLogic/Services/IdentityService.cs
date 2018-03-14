@@ -18,9 +18,10 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoAddressBookProvider addressProvider;
         private readonly IRoleService roleService;
         private readonly IKenticoLoginProvider loginProvider;
+        private readonly IKenticoResourceService kenticoResourceService;
 
         public IdentityService(IKenticoLogger logger, IMapper mapper, ISaml2Service saml2Service, IKenticoUserProvider userProvider, IKenticoSiteProvider siteProvider,
-            IKenticoAddressBookProvider addressProvider, IRoleService roleService, IKenticoLoginProvider loginProvider)
+            IKenticoAddressBookProvider addressProvider, IRoleService roleService, IKenticoLoginProvider loginProvider, IKenticoResourceService kenticoResourceService)
         {
             if (logger == null)
             {
@@ -54,6 +55,11 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentNullException(nameof(loginProvider));
             }
+            if (kenticoResourceService == null)
+            {
+                throw new ArgumentNullException(nameof(kenticoResourceService));
+            }
+
             this.logger = logger;
             this.mapper = mapper;
             this.saml2Service = saml2Service;
@@ -62,8 +68,8 @@ namespace Kadena.BusinessLogic.Services
             this.addressProvider = addressProvider;
             this.roleService = roleService;
             this.loginProvider = loginProvider;
+            this.kenticoResourceService = kenticoResourceService;
         }
-
 
         public Uri TryAuthenticate(string samlString)
         {
@@ -93,7 +99,7 @@ namespace Kadena.BusinessLogic.Services
                     }
                 }
             }
-            return new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
+            return new Uri(kenticoResourceService.GetLogonPageUrl(), UriKind.RelativeOrAbsolute);
         }
 
         private User EnsureUpdateUser(UserDto user, int currentSiteId)
