@@ -482,6 +482,11 @@ namespace Kadena.BusinessLogic.Services
                 cartItem.CartItemText = newItem.CustomProductName;
             }
 
+            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))
+            {
+                cartItem.SKUUnits = newItem.Quantity;
+            }
+
             shoppingCartItems.SaveCartItem(cartItem);
 
             var result = new AddToCartResult

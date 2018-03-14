@@ -217,6 +217,9 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var cartItemInfo = ECommerceContext.CurrentShoppingCart.GetShoppingCartItem(item.CartItemGUID);
 
+
+            cartItemInfo.CartItemText = item.CartItemText;
+            cartItemInfo.CartItemUnits = item.SKUUnits;
             cartItemInfo.SetValue("ProductType", item.ProductType);
             cartItemInfo.SetValue("ProductPageID", item.ProductPageID);
             cartItemInfo.SetValue("ProductProductionTime", item.ProductProductionTime);
