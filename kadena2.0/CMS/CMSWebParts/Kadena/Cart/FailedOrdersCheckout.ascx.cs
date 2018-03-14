@@ -4,7 +4,7 @@ using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using System;
 
 namespace Kadena.CMSWebParts.Kadena.Cart

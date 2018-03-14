@@ -1571,5 +1571,41 @@ namespace Kadena.Models.SiteSettings
         [DefaultValueAttribute(null)]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkFtYXpvbiBTMyBidWNrZXQgbmFtZSIsIktleU5hbWUiOiJLREFfQW1hem9uUzNCdWNrZXROYW1lIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6bnVsbCwiS2V5RGVzY3JpcHRpb24iOiIiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiQW1hem9uIFMzIiwiTmFtZSI6IkFtYXpvblMzIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiS2FkZW5hIn0sIkRpc3BsYXlOYW1lIjoiR2VuZXJhbCJ9fQ==")]
         public const string KDA_AmazonS3BucketName = "KDA_AmazonS3BucketName";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Credit Card Payment")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9DcmVkaXRDYXJkX0JpbGxpbmdBZGRyZXNzX0FkZHJlc3NMaW5lMSIsIktleU5hbWUiOiJLREFfQ3JlZGl0Q2FyZF9CaWxsaW5nQWRkcmVzc19BZGRyZXNzTGluZTEiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjpudWxsLCJLZXlEZXNjcmlwdGlvbiI6IiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiQ3JlZGl0Q2FyZCAzZHNpIn19")]
+        public const string KDA_CreditCard_BillingAddress_AddressLine1 = "KDA_CreditCard_BillingAddress_AddressLine1";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Credit Card Payment")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9DcmVkaXRDYXJkX0JpbGxpbmdBZGRyZXNzX1Bvc3RhbENvZGUiLCJLZXlOYW1lIjoiS0RBX0NyZWRpdENhcmRfQmlsbGluZ0FkZHJlc3NfUG9zdGFsQ29kZSIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJDcmVkaXRDYXJkIDNkc2kifX0=")]
+        public const string KDA_CreditCard_BillingAddress_PostalCode = "KDA_CreditCard_BillingAddress_PostalCode";
+
+        /// <summary>
+        /// Thumbprint of certificate which is trusted to sign incoming SAML object.
+        /// </summary>
+        [CategoryAttribute("Single sing-on", "KDASSO", "Kadena")]
+        [GroupAttribute("SAML 2.0")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IlRydXN0ZWQgY2VydGlmaWNhdGUgdGh1bWJwcmludCIsIktleU5hbWUiOiJLREFfVHJ1c3RlZENlcnRpZmljYXRlVGh1bWJwcmludCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiVGh1bWJwcmludCBvZiBjZXJ0aWZpY2F0ZSB3aGljaCBpcyB0cnVzdGVkIHRvIHNpZ24gaW5jb21pbmcgU0FNTCBvYmplY3QuIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IlNpbmdsZSBzaW5nLW9uIiwiTmFtZSI6IktEQVNTTyIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkthZGVuYSJ9LCJEaXNwbGF5TmFtZSI6IlNBTUwgMi4wIn19")]
+        public const string KDA_TrustedCertificateThumbprint = "KDA_TrustedCertificateThumbprint";
+
+        /// <summary>
+        /// Audience URI for which SAML object allowed to.
+        /// </summary>
+        [CategoryAttribute("Single sing-on", "KDASSO", "Kadena")]
+        [GroupAttribute("SAML 2.0")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkFsbG93ZWQgYXVkaWVuY2UgVVJJIiwiS2V5TmFtZSI6IktEQV9BbGxvd2VkQXVkaWVuY2VVcmkiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjpudWxsLCJLZXlEZXNjcmlwdGlvbiI6IkF1ZGllbmNlIFVSSSBmb3Igd2hpY2ggU0FNTCBvYmplY3QgYWxsb3dlZCB0by4iLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiU2luZ2xlIHNpbmctb24iLCJOYW1lIjoiS0RBU1NPIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiS2FkZW5hIn0sIkRpc3BsYXlOYW1lIjoiU0FNTCAyLjAifX0=")]
+        public const string KDA_AllowedAudienceUri = "KDA_AllowedAudienceUri";
     }
 }
