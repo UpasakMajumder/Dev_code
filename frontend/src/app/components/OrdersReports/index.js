@@ -42,6 +42,7 @@ class OrdersReports extends Component {
     getRows: PropTypes.func.isRequired,
     changeDate: PropTypes.func.isRequired,
     store: PropTypes.shape({
+      rowsAreAsked: PropTypes.bool.isRequired,
       rows: PropTypes.arrayOf(PropTypes.object).isRequired,
       pagination: PropTypes.shape({
         currentPage: PropTypes.number.isRequired,
@@ -164,6 +165,10 @@ class OrdersReports extends Component {
 
   getContent = () => {
     let content = <Spinner />;
+
+    if (!this.props.store.rows.length && this.props.store.rowsAreAsked) {
+      content = <Alert type="info" text={this.props.pageInfo.noOrdersMessage} />;
+    }
 
     if (this.props.store.rows.length) {
       const { pagination } = this.props.store;
