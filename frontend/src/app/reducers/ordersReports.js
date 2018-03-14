@@ -1,11 +1,13 @@
 import {
   FETCH,
   SUCCESS,
+  FAILURE,
   ORDERS_REPORTS_GET_ROWS,
   ORDERS_REPORTS_CHANGE_DATE
 } from 'app.consts';
 
 const defaultState = {
+  rowsAreAsked: false,
   pagination: {
     currentPage: 0  // BE requires to start the pages from 1
   },
@@ -41,12 +43,14 @@ export default (state = defaultState, action) => {
   case ORDERS_REPORTS_GET_ROWS + FETCH:
     return {
       ...state,
-      rows: defaultState.rows
+      rows: defaultState.rows,
+      rowsAreAsked: false
     };
 
   case ORDERS_REPORTS_GET_ROWS + SUCCESS:
     return {
       ...state,
+      rowsAreAsked: true,
       pagination: {
         ...state.pagination,
         ...payload.pagination
@@ -60,6 +64,12 @@ export default (state = defaultState, action) => {
         sortOrderAsc: typeof payload.sortOrderAsc === 'undefined' ? state.sort.sortOrderAsc : payload.sortOrderAsc,
         sortBy: typeof payload.sortBy === 'undefined' ? state.sort.sortBy : payload.sortBy
       }
+    };
+
+  case ORDERS_REPORTS_GET_ROWS + FAILURE:
+    return {
+      ...state,
+      rowsAreAsked: true
     };
 
   default:
