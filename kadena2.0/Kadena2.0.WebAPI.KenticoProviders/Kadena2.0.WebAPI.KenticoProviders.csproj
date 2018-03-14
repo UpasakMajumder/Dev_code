@@ -100,9 +100,8 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -121,6 +120,7 @@
     <Compile Include="Contracts\IFailedOrderStatusProvider.cs" />
     <Compile Include="Contracts\IKenticoCustomerProvider.cs" />
     <Compile Include="Contracts\IKenticoIBTFProvider.cs" />
+    <Compile Include="Contracts\IKenticoRoleProvider.cs" />
     <Compile Include="Contracts\IKenticoSettingsProvider.cs" />
     <Compile Include="Contracts\IkenticoUserBudgetProvider.cs" />
     <Compile Include="Contracts\KadenaSettings\IShippingEstimationSettings.cs" />
@@ -156,6 +156,7 @@
     <Compile Include="Providers\KenticoIBTFProvider.cs" />
     <Compile Include="Providers\KenticoCustomerProvider.cs" />
     <Compile Include="Providers\KenticoLocalizationProvider.cs" />
+    <Compile Include="Providers\KenticoRoleProvider.cs" />
     <Compile Include="Providers\KenticoPermissionsProvider.cs" />
     <Compile Include="Providers\KenticoProgramsProvider.cs" />
     <Compile Include="Providers\KenticoAddressBookProvider.cs" />

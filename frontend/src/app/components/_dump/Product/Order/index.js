@@ -55,7 +55,7 @@ const Order = ({
     ? <div className="cart-product__tracking">
       <p>
         <SVG name="location"/>
-        <span>{shippingDatePrefix}: <strong>{trackingId}</strong></span>
+        <span>{trackingIdPrefix}: <strong>{trackingId}</strong></span>
       </p>
     </div>
     : null;
@@ -64,7 +64,7 @@ const Order = ({
     ? <div className="cart-product__tracking">
       <p>
         <SVG name="courier"/>
-        <span>{trackingIdPrefix}: <strong>{timeFormat(shippingDate)}</strong></span>
+        <span>{shippingDatePrefix}: <strong>{timeFormat(shippingDate)}</strong></span>
       </p>
     </div>
     : null;

@@ -79,5 +79,28 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             return businessUnit;
         }
+
+        public string GetDistributorBusinessUnitNumber(int distributorID)
+        {
+            string businessUnit = string.Empty;
+            if (distributorID > 0)
+            {
+                AddressInfo address = AddressInfoProvider.GetAddressInfo(distributorID);
+                if (address != null)
+                {
+                    long businessUnitNumber = ValidationHelper.GetLong(address.GetValue("BusinessUnit"), default(long));
+                    CustomTableItem businessUnitItem = CustomTableItemProvider.GetItems(BusinessUnitsCustomTableName, "BusinessUnitNumber=" + businessUnitNumber).FirstOrDefault();
+                    businessUnit = businessUnitItem != null ? businessUnitItem.GetStringValue("BusinessUnitNumber", string.Empty) : string.Empty;
+                }
+            }
+            return businessUnit;
+        }
+
+        public string GetBusinessUnitName(string businessUnitNumber)
+        {
+            if (string.IsNullOrEmpty(businessUnitNumber)) return string.Empty;
+            CustomTableItem businessUnitItem = CustomTableItemProvider.GetItems(BusinessUnitsCustomTableName, "BusinessUnitNumber=" + businessUnitNumber).FirstOrDefault();
+            return businessUnitItem != null ? businessUnitItem.GetStringValue("BusinessUnitName", string.Empty) : string.Empty;
+        }
     }
 }

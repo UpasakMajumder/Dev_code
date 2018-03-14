@@ -1,6 +1,6 @@
 ﻿using DryIoc;
 using Kadena.WebAPI.Infrastructure;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using System;
 using System.Linq;
 using System.Reflection;

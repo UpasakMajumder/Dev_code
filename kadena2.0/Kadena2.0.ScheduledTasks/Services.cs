@@ -5,7 +5,7 @@ using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.ScheduledTasks.Infrastructure.Kentico;
 using Kadena.ScheduledTasks.UpdateInventoryData;
 using Kadena.WebAPI.KenticoProviders;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using Kadena2.WebAPI.KenticoProviders;
 
 namespace Kadena.ScheduledTasks
@@ -16,7 +16,7 @@ namespace Kadena.ScheduledTasks
 
         static Services()
         {
-            container = new Container();
+            container = new DryIoc.Container();
             RegisterServices(container);
         }
     
