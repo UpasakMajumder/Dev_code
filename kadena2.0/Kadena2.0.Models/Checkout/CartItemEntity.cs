@@ -5,6 +5,7 @@ namespace Kadena.Models.Checkout
     public class CartItemEntity
     {
         public int CartItemID { get; set; }
+        public Guid CartItemGUID { get; set; }
         public int ShoppingCartID { get; set; }
         public int SKUID { get; set; }
         public int SKUUnits { get; set; }

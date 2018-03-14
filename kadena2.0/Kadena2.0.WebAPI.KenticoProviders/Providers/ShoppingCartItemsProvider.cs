@@ -215,8 +215,17 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public void SaveCartItem(CartItemEntity item)
         {
-            var cartItemInfo = mapper.Map<ShoppingCartItemInfo>(item);
+            var cartItemInfo = ECommerceContext.CurrentShoppingCart.GetShoppingCartItem(item.CartItemGUID);
 
+            cartItemInfo.SetValue("ProductType", item.ProductType);
+            cartItemInfo.SetValue("ProductPageID", item.ProductPageID);
+            cartItemInfo.SetValue("ProductProductionTime", item.ProductProductionTime);
+            cartItemInfo.SetValue("ProductShipTime", item.ProductShipTime);
+            cartItemInfo.SetValue("ChilliEditorTemplateID", item.ChilliEditorTemplateID);
+            cartItemInfo.SetValue("ChiliTemplateID", item.ChiliTemplateID);
+            cartItemInfo.SetValue("ProductChiliPdfGeneratorSettingsId", item.ProductChiliPdfGeneratorSettingsId);
+            cartItemInfo.SetValue("ProductChiliWorkspaceId", item.ProductChiliWorkspaceId);
+            
             ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItemInfo);
 
             foreach (ShoppingCartItemInfo option in cartItemInfo.ProductOptions)
@@ -293,11 +302,16 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItemInfo.SetValue("ProductPageID", productDocument.NodeID);
             cartItemInfo.SetValue("ProductProductionTime", productDocument.GetStringValue("ProductProductionTime", string.Empty));
             cartItemInfo.SetValue("ProductShipTime", productDocument.GetStringValue("ProductShipTime", string.Empty));
+            cartItemInfo.SetValue("ChilliEditorTemplateID", newItem.TemplateId);
+            cartItemInfo.SetValue("ChiliTemplateID", productDocument.GetGuidValue("ProductChiliTemplateID", Guid.Empty));
+            cartItemInfo.SetValue("ProductChiliPdfGeneratorSettingsId", productDocument.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));
+            cartItemInfo.SetValue("ProductChiliWorkspaceId", productDocument.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
 
+            //ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItemInfo);
 
-            ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItemInfo);
-
-            return mapper.Map<CartItemEntity>(cartItemInfo);
+            var cartinfo = mapper.Map<CartItemEntity>(cartItemInfo);
+            //cartinfo.CartItemID = cartItemInfo.CartItemID;
+            return cartinfo;
         }
 
         private SKUInfo EnsureTemplateOptionSKU()
