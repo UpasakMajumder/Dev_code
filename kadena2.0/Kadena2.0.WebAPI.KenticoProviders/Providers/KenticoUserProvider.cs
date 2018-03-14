@@ -99,16 +99,27 @@ namespace Kadena.WebAPI.KenticoProviders
             customerInfo.Update();
         }
 
-        public void CreateUser(User user, int siteId)
+        public void CreateUser(User user, int siteId, UserSettings userSettings = null)
         {
             var newUser = _mapper.Map<UserInfo>(user);
             newUser.Insert();
+            
             var newUserId = newUser.UserID;
             UserSiteInfoProvider.AddUserToSite(newUserId, siteId);
             user.UserId = newUserId;
+
+            var newUserSettings = new UserSettingsInfo
+            {
+                UserSettingsUserID = newUserId
+            };
+            if (userSettings != null)
+            {
+                newUserSettings.UserURLReferrer = userSettings.CallBackUrl;
+            }
+            UserSettingsInfoProvider.SetUserSettingsInfo(newUserSettings);
         }
 
-        public void UpdateUser(User user)
+        public void UpdateUser(User user, UserSettings userSettings = null)
         {
             var userInfo = UserInfoProvider.GetUserInfo(user.UserId);
 
@@ -123,6 +134,16 @@ namespace Kadena.WebAPI.KenticoProviders
             userInfo.Email = user.Email;
             
             userInfo.Update();
+
+            if (userSettings != null)
+            {
+                var userSettingsInfo = UserSettingsInfoProvider.GetUserSettingsInfoByUser(userSettings.UserId);
+                if (userSettingsInfo != null)
+                {
+                    userSettingsInfo.UserURLReferrer = userSettings.CallBackUrl;
+                    userSettingsInfo.Update();
+                }
+            }
         }
 
         public void LinkCustomerToUser(int customerId, int userId)
