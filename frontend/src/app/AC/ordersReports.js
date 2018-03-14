@@ -39,8 +39,7 @@ export const getRows = (url, args = {}) => {
       }
     } catch (error) {
       dispatch({
-        type: ORDERS_REPORTS_GET_ROWS + FAILURE,
-        alert: false
+        type: ORDERS_REPORTS_GET_ROWS + FAILURE
       });
     }
   };

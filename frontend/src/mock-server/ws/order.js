@@ -3,7 +3,8 @@ module.exports.reports = {
     "success": true,
     "errorMessage": null,
     "payload": {
-      "rows": [
+      // "rows": [
+        /*
         {
           url: '#',
           items: [
@@ -34,7 +35,8 @@ module.exports.reports = {
             '1', '2', '2017-08-02T09:12:08.108892Z','d', '4', '5', '6', '7', '8', '2017-08-10T09:12:08.108892Z', '10'
           ]
         }
-      ],
+        */
+      // ],
       "pagination": {
         "pagesCount": 2,
         "rowsCount": 5,
