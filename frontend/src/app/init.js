@@ -31,7 +31,8 @@ export function init(moduleName, containers, ...options) {
 
 /* Initialize React Components */
 export function render(componentName, containers, options = {
-  store: true // true: use Redux store; false: don't
+  store: true, // true: use Redux store; false: don't
+  config: {}
 }) {
   /* Convert containers to Array */
   containers = Array.from(containers);
@@ -42,7 +43,7 @@ export function render(componentName, containers, options = {
 
       return containers.map((container) => { // eslint-disable-line array-callback-return
         /* Configure initial props */
-        let initialProps = {};
+        let initialProps = { config: options.config };
 
         Component.hasOwnProperty('configureProps') && (initialProps = Component.configureProps(container)); // eslint-disable-line no-prototype-builtins
 

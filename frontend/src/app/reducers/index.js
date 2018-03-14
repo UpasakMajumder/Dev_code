@@ -18,6 +18,7 @@ import dialogAlert from './dialogAlert';
 import cardPayment from './card-payment';
 import languageSelector from './languageSelector';
 import filteredRecentOrders from './filteredRecentOrders';
+import checkoutRefactor from './checkoutRefactor';
 
 const rootReducer = combineReducers({
   login,
@@ -37,7 +38,8 @@ const rootReducer = combineReducers({
   dialogAlert,
   cardPayment,
   languageSelector,
-  filteredRecentOrders
+  filteredRecentOrders,
+  checkoutRefactor
 });
 
 export default rootReducer;

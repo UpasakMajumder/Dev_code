@@ -1,0 +1,13 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/select.nunj" import select %}
+{% from "macro/svg.nunj" import svg %}
+{% import "macro/dialog.nunj" as dialog %}
+
+{% set title = 'Checkout' %}
+{% set headerActive = title %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
+
+{% block content %}
+    <div class="shopping-cart" id="r-checkout"></div>
+{% endblock %}

@@ -135,6 +135,86 @@
         },
         message: 'Good day and know that all your money are belong to us'
       },
+      checkoutRefactor: {
+        welcomeMessage: 'Good day and know that all your money are belong to us',
+        api: {
+          removeProduct: PATH + 'checkoutRefactor/removeProduct',
+          changeProductQuantity: PATH + '/checkoutRefactor/changeProductQuantity'
+        },
+        emptyCart: {
+          "text": "Your shopping cart is empty.",
+          "dashboardButtonText": "Go to dashboard",
+          "dashboardButtonUrl": "/dashboard",
+          "productsButtonText" : "See products",
+          "productsButtonUrl": "/products"
+        },
+        products: {
+          "quantityText": "You have 2 items in your shopping cart",
+          "productionTimeLabel": "Production time",
+          "shipTimeLabel": "Shipping time",
+          "buttonLabels": {
+            "edit": "Edit",
+            "remove": "Remove"
+          },
+          "items": [
+            {
+              "id": 33,
+              "image": "",
+              "template": "Template",
+              "isMailingList": false,
+              "mailingList": "Mailing list",
+              "delivery": "",
+              "pricePrefix": "$",
+              "price": "112.2",
+              "isEditable": true,
+              "editorURL": "#",
+              "quantityPrefix": "Quantity:",
+              "quantity": 11,
+              "stockQuantity": 15,
+              "isQuantityEditable": true,
+              "productionTime": "Now",
+              "shipTime": "Tomorrow",
+              "preview": {
+                "exists": true,
+                "text": "Preview",
+                "url": "#"
+              },
+              "options": [{
+                "name": "Size",
+                "value": "L"
+              }]
+            },
+            {
+              "id": 34,
+              "image": "http://satyr.io/100-200x400-500?2",
+              "template": "Template",
+              "isMailingList": false,
+              "mailingList": "Mailing list",
+              "delivery": "",
+              "pricePrefix": "$",
+              "price": "112.2",
+              "isEditable": true,
+              "editorURL": "#",
+              "quantityPrefix": "Quantity:",
+              "quantity": 9,
+              "stockQuantity": 15,
+              "isQuantityEditable": true,
+              "productionTime": "",
+              "shipTime": "Tomorrow",
+              "preview": {
+                "exists": false,
+                "text": "Preview",
+                "url": "#"
+              },
+              "options": [{
+                "name": "Size",
+                "value": "XS"
+              }]
+            }
+          ]
+        }
+      },
+
       spotfire: {
         serverUrl: 'http://10.83.71.208/spotfire/wp/',
         url: '/Kadena/Standard Reports/Inventory and Sales order Report_Single graph',

@@ -6,7 +6,7 @@ import DefaultImg from 'app.dump/DefaultImg';
 
 class CheckoutProduct extends Component {
   state = {
-    quantity: 1,
+    quantity: this.props.quantity,
     workingProcess: 0
   };
 

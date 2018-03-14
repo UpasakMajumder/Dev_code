@@ -85,7 +85,7 @@ export default (state = defaultState, action) => {
     };
 
   case CHECKOUT_CHANGE_QUANTITY + SUCCESS:
-  case CHECKOUT_REMOVE_PRODUCT + SUCCESS:
+  // case CHECKOUT_REMOVE_PRODUCT + SUCCESS:
     return {
       ...state,
       ui: {

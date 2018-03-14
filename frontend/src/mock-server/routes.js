@@ -8,6 +8,7 @@ const MailingList = require('./controllers/mailingList');
 const Login = require('./controllers/login');
 const CheckTaC = require('./controllers/checkTaC');
 const AcceptTaC = require('./controllers/acceptTaC');
+const CheckoutRefactor = require('./controllers/checkoutRefactor');
 
 const apiRouter = require('express').Router();
 
@@ -38,6 +39,9 @@ apiRouter.post('/checkout/change-address', Checkout.changeAddress);
 apiRouter.post('/checkout/change-delivery-method', Checkout.changeDeliveryMethod);
 apiRouter.post('/checkout/submit', Checkout.submit);
 apiRouter.post('/checkout/add-new-address', Checkout.addNewAddress);
+
+apiRouter.delete('/checkoutRefactor/removeProduct/:id', CheckoutRefactor.removeProduct);
+apiRouter.put('/checkoutRefactor/changeProductQuantity/:id', CheckoutRefactor.changeProductQuantity);
 
 apiRouter.get('/settings/address/ui', Settings.address.ui);
 apiRouter.post('/settings/address/modify', Settings.address.modify);

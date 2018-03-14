@@ -67,6 +67,7 @@ const app = {
     render('LanguageSelector', document.querySelectorAll('.r-language-selector'));
     render('TaC', document.querySelectorAll('.r-tac'));
     render('FilteredRecentOrders', document.querySelectorAll('.r-filtered-recent-orders'));
+    render('CheckoutRefactor', document.querySelectorAll('#r-checkout'), { store: true, config: window.config.localization.checkoutRefactor });
   }
 };
 
