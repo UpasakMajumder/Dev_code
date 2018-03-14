@@ -3,7 +3,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Login;
 using System;
 using System.Security;
-using Kadena.Models;
+using Kadena.Models.Membership;
 
 namespace Kadena.BusinessLogic.Services
 {

@@ -3,6 +3,7 @@ using CMS.Ecommerce;
 using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.Models;
+using Kadena.Models.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 

@@ -12,6 +12,7 @@ using Kadena.Models.Product;
 using CMS.Helpers;
 using CMS.CustomTables;
 using Kadena.Models.CreditCard;
+using Kadena.Models.Membership;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {

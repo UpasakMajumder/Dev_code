@@ -7,7 +7,6 @@ using CMS.SiteProvider;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
-using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
@@ -16,6 +15,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using Kadena.Models.Membership;
 
 namespace Kadena.Old_App_Code.Kadena.EmailNotifications
 {

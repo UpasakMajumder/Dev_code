@@ -1,4 +1,5 @@
 ﻿using Kadena.Models;
+using Kadena.Models.Membership;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
