@@ -68,6 +68,9 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.SAPName, opt => opt.MapFrom(src => src.GetStringValue("ShippingOptionSAPName", string.Empty)));
             CreateMap<UserInfo, User>()
                 .ForMember(dest => dest.TermsConditionsAccepted, opt => opt.MapFrom(src => src.GetDateTimeValue("TermsConditionsAccepted", DateTime.MinValue)));
+            CreateMap<UserSettingsInfo, UserSettings>()
+                .ForMember(dest => dest.CallBackUrl, opt => opt.MapFrom(src => src.UserURLReferrer))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserSettingsUserID));
             CreateMap<SiteInfo, Site>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.SiteID))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SiteName));
@@ -127,6 +130,10 @@ namespace Kadena2.WebAPI.KenticoProviders
 
             CreateMap<User, UserInfo>()
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"));
+            CreateMap<UserSettings, UserSettingsInfo>()
+                .ForMember(dest => dest.UserURLReferrer, opt => opt.MapFrom(src => src.CallBackUrl))
+                .ForMember(dest => dest.UserSettingsUserID, opt => opt.MapFrom(src => src.UserId));
+
         }
     }
 }
