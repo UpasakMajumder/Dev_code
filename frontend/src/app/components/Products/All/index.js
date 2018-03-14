@@ -35,13 +35,13 @@ class Products extends Component {
         { categories.map(category => (
           <div key={category.id} className="col-lg-4 col-xl-3">
             <a href={category.url} className="category">
-              <div
+              <img
                 className="category__picture"
+                src={category.imageUrl}
                 style={{
-                  backgroundImage: `url(${category.imageUrl})`,
                   border: category.border.exists ? category.border.value : 'none'
-                }}>
-              </div>
+                }}
+              />
               <div className="category__title">
                 <h2>{category.title}</h2>
               </div>
@@ -73,13 +73,13 @@ class Products extends Component {
               </div>
 
               <a href={product.url} className="category">
-                <div
+                <img
                   className="category__picture"
+                  src={product.imageUrl}
                   style={{
-                    backgroundImage: `url(${product.imageUrl})`,
                     border: product.border.exists ? product.border.value : 'none'
-                  }}>
-                </div>
+                  }}
+                />
                 <div className="category__title">
                   <h2>{product.title}</h2>
                 </div>

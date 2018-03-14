@@ -4,7 +4,7 @@ module.exports.all = {
     "categories": [
       {
         "id": 21,
-        "imageUrl": "http://satyr.io/300-400x200-300?1",
+        "imageUrl": "http://satyr.io/300x200?1",
         "title": "Product category 2",
         "url": "/Products/Product-category-1/Product-category-2",
         "border": {
@@ -16,7 +16,7 @@ module.exports.all = {
     "products": [
       {
         "id": 59,
-        "imageUrl": "http://satyr.io/300-400x200-300?2",
+        "imageUrl": "http://satyr.io/300x200?2",
         "title": "Chilli product",
         "url": "/Products/Product-category-1/Chilli-product",
         "isFavourite": false,
@@ -27,7 +27,7 @@ module.exports.all = {
       },
       {
         "id": 83,
-        "imageUrl": "http://satyr.io/300-400x200-300?3",
+        "imageUrl": "http://satyr.io/300x200?3",
         "title": "Static product",
         "url": "/Products/Product-category-1/Static-product",
         "isFavourite": false,
@@ -38,7 +38,7 @@ module.exports.all = {
       },
       {
         "id": 84,
-        "imageUrl": "http://satyr.io/300-400x200-300?4",
+        "imageUrl": "http://satyr.io/300x200?4",
         "title": "POD static product",
         "url": "/Products/Product-category-1/POD-static-product",
         "isFavourite": true,
@@ -49,7 +49,7 @@ module.exports.all = {
       },
       {
         "id": 85,
-        "imageUrl": "http://satyr.io/300-400x200-300?5",
+        "imageUrl": "http://satyr.io/300x200?5",
         "title": "Mailing templated product",
         "url": "/Products/Product-category-1/Mailing-templated-product",
         "isFavourite": false,
@@ -60,7 +60,7 @@ module.exports.all = {
       },
       {
         "id": 86,
-        "imageUrl": "http://satyr.io/300-400x200-300?6",
+        "imageUrl": "http://satyr.io/300x200?6",
         "title": "Templated product",
         "url": "/Products/Product-category-1/Templated-product",
         "isFavourite": true,
@@ -71,7 +71,7 @@ module.exports.all = {
       },
       {
         "id": 1088,
-        "imageUrl": "http://satyr.io/300-400x200-300?7",
+        "imageUrl": "http://satyr.io/300x200?7",
         "title": "New Product for Testing",
         "url": "/Products/Product-category-1/New-Product-for-Testing",
         "isFavourite": false,
@@ -90,14 +90,14 @@ module.exports.favourites = {
   "payload": [
     {
       "id": 83,
-      "imageUrl": "http://satyr.io/300-400x200-300?1",
+      "imageUrl": "http://satyr.io/300x200?1",
       "title": "Static product",
       "url": "/Products/Product-category-1/Static-product",
       "isFavourite": true
     },
     {
       "id": 59,
-      "imageUrl": "http://satyr.io/300-400x200-300?2",
+      "imageUrl": "http://satyr.io/300x200?2",
       "title": "Chilli product",
       "url": "/Products/Product-category-1/Chilli-product",
       "isFavourite": true
