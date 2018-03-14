@@ -30,6 +30,7 @@ using Kadena.BusinessLogic.Contracts.SSO;
 using Kadena.BusinessLogic.Services.SSO;
 using Kadena.Infrastructure.FileConversion;
 using System.IdentityModel.Tokens;
+using Kadena.Infrastructure.Contracts;
 
 namespace Kadena.Container.Default
 {
