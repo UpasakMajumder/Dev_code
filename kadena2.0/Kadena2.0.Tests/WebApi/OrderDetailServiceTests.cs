@@ -12,7 +12,7 @@ using System.Security;
 using System.Threading.Tasks;
 using Xunit;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using Kadena.BusinessLogic.Services.Orders;
 using Moq.AutoMock;
 using AutoMapper;

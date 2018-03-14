@@ -4,7 +4,7 @@ using System.Web.Http.Filters;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http.Controllers;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 
 namespace Kadena.WebAPI.Infrastructure.Filters
 {

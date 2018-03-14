@@ -6,7 +6,7 @@ using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
 using Kadena.Dto.General;
 using Kadena.Helpers;
 using Kadena.WebAPI.KenticoProviders;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings;

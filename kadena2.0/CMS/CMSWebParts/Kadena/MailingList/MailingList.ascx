@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="MailingList.ascx.cs" Inherits="Kadena.CMSWebParts.Kadena.MailingList.MailingList" %>
 <%@ Import Namespace="CMS.MacroEngine" %>
 <%@ Import Namespace="Kadena.BusinessLogic.Contracts" %>
-<%@ Import Namespace="Kadena2.Container.Default" %>
+<%@ Import Namespace="Kadena.Container.Default" %>
 
 <div class="j-klist">
     <asp:Repeater ID="repMailingLists" runat="server" EnableViewState="false">

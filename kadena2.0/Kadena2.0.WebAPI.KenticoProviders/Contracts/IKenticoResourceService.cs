@@ -11,5 +11,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetSettingsKey(int siteId, string key);        
         string ResolveMacroString(string macroString);
         T GetSettingsKey<T>(string key, int siteId = 0) where T : IConvertible;
+        string GetLogonPageUrl();
     }
 }
