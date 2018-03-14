@@ -14,7 +14,7 @@
   <QueryRequiresTransaction>False</QueryRequiresTransaction>
   <QueryText>
 <![CDATA[
-SELECT AddressPersonalName,AddressName,AddressZip,AddressCity,AddressPhone,states.StateDisplayName,country.CountryDisplayName,ShoppingCartID,ShoppingCartDistributorID,ShoppingCartInventoryType
+SELECT AddressID,AddressPersonalName,AddressName,AddressZip,AddressCity,AddressPhone,states.StateDisplayName,country.CountryDisplayName,ShoppingCartID,ShoppingCartDistributorID,ShoppingCartInventoryType
  FROM COM_Address customer
  INNER JOIN COM_ShoppingCart cart ON customer.AddressID =cart.ShoppingCartDistributorID 
  LEFT JOIN CMS_Country country ON customer.AddressCountryID=country.CountryID 
