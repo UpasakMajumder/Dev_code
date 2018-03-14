@@ -3,7 +3,6 @@ using System;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Dto.SSO;
 using AutoMapper;
-using Newtonsoft.Json;
 using Kadena.BusinessLogic.Contracts.SSO;
 using Kadena.Models;
 
@@ -72,17 +71,16 @@ namespace Kadena.BusinessLogic.Services
             if (attributes != null)
             {
                 var userDto = mapper.Map<UserDto>(attributes);
-                var customerDto = mapper.Map<CustomerDto>(attributes);
-                var addressDto = mapper.Map<AddressDto>(attributes);
-
                 var currentSiteId = siteProvider.GetKenticoSite().Id;
 
                 var user = EnsureUpdateUser(userDto, currentSiteId);
                 if (user != null)
                 {
+                    var customerDto = mapper.Map<CustomerDto>(attributes);
                     var customer = EnsureUpdateCustomer(customerDto, user.UserId);
                     if (customer != null)
                     {
+                        var addressDto = mapper.Map<AddressDto>(attributes);
                         EnsureUpdateAddress(addressDto, customer.Id);
                     }
 
