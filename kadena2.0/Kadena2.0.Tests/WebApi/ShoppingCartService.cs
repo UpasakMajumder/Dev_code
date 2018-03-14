@@ -9,6 +9,8 @@ using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.Models.Product;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Moq.AutoMock;
+using System;
+using Kadena2.MicroserviceClients.Contracts;
 
 namespace Kadena.Tests.WebApi
 {
@@ -225,23 +227,45 @@ namespace Kadena.Tests.WebApi
             Assert.Single(result.Items);
         }
 
-        [Fact]
-        public async Task AddToCart()
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(0)]
+        public async Task AddToCart_CannotAddZero(int quantity)
         {
             // Arrange 
+            var autoMocker = new AutoMocker();
+            var sut = CreateShoppingCartService(autoMocker);
 
+            // Act
+            var result = sut.AddToCart(new NewCartItem { Quantity = quantity });
+
+            // Assert
+            var exception = await Assert.ThrowsAsync<ArgumentException>(async () => await result);
+        }
+
+        [Fact]
+        public async Task AddToCart_DynamicPrice()
+        {
+            // Arrange 
             var newCartItem = new NewCartItem
             {
-                Quantity = 1, // todo test negative
-                CustomProductName = "Some custom name",
+                Quantity = 2,
                 DocumentId = 1123
+            };
+
+            var originalCartItemEntity = new CartItemEntity
+            {
+                ProductType = "KDA.StaticProduct",
+                SKUUnits = 3
             };
 
             var autoMocker = new AutoMocker();
             var itemsProvider = autoMocker.GetMock<IShoppingCartItemsProvider>();
             itemsProvider.Setup(ip => ip.GetOrCreateCartItem(newCartItem))
-                .Returns(new CartItemEntity {  });
-                
+                .Returns(originalCartItemEntity);
+            autoMocker.GetMock<IDynamicPriceRangeProvider>()
+                .Setup(dp => dp.GetDynamicPrice(It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(12.34m);
             var sut = CreateShoppingCartService(autoMocker);
 
             // Act
@@ -251,6 +275,88 @@ namespace Kadena.Tests.WebApi
             Assert.NotNull(result);
             Assert.NotNull(result.CartPreview.Items);
             Assert.Single(result.CartPreview.Items);
+            itemsProvider.Verify(i => i.SaveCartItem(It.Is<CartItemEntity>(
+                    e => e.CartItemPrice == 12.34m)
+                ), Times.Once);
+        }
+
+        [Fact]
+        public async Task AddToCart_StaticProduct()
+        {
+            // Arrange 
+            const string name = "Some static product";
+
+            var newCartItem = new NewCartItem
+            {
+                Quantity = 2,
+                CustomProductName = name,
+                DocumentId = 1123
+            };
+
+            var originalCartItemEntity = new CartItemEntity
+            {
+                CartItemText = name,
+                ProductType = "KDA.StaticProduct",
+                SKUUnits = 3
+            };
+
+            var autoMocker = new AutoMocker();
+            var itemsProvider = autoMocker.GetMock<IShoppingCartItemsProvider>();
+            itemsProvider.Setup(ip => ip.GetOrCreateCartItem(newCartItem))
+                .Returns(originalCartItemEntity);
+            var sut = CreateShoppingCartService(autoMocker);
+
+            // Act
+            var result = await sut.AddToCart(newCartItem);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.NotNull(result.CartPreview.Items);
+            Assert.Single(result.CartPreview.Items);
+            autoMocker.GetMock<IMailingListClient>().VerifyNoOtherCalls();
+            itemsProvider.Verify(i => i.SaveCartItem( It.Is<CartItemEntity>(
+                    e => e.CartItemText == name)
+                ), Times.Once);
+        }
+
+        [Fact]
+        public async Task AddToCart_TemplatedProduct()
+        {
+            // Arrange 
+            const string name = "Templated default name";
+            const string customName = "Templated custom name";
+
+            var newCartItem = new NewCartItem
+            {
+                Quantity = 2,
+                CustomProductName = customName,
+                DocumentId = 1123
+            };
+
+            var originalCartItemEntity = new CartItemEntity
+            {
+                CartItemText = name,
+                ProductType = "KDA.TemplatedProduct",
+                SKUUnits = 3
+            };
+
+            var autoMocker = new AutoMocker();
+            var itemsProvider = autoMocker.GetMock<IShoppingCartItemsProvider>();
+            itemsProvider.Setup(ip => ip.GetOrCreateCartItem(newCartItem))
+                .Returns(originalCartItemEntity);
+            var sut = CreateShoppingCartService(autoMocker);
+
+            // Act
+            var result = await sut.AddToCart(newCartItem);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.NotNull(result.CartPreview.Items);
+            Assert.Single(result.CartPreview.Items);
+            autoMocker.GetMock<IMailingListClient>().VerifyNoOtherCalls();
+            itemsProvider.Verify(i => i.SaveCartItem(It.Is<CartItemEntity>(
+                    e => e.CartItemText == customName)
+                ), Times.Once);
         }
     }
 }
