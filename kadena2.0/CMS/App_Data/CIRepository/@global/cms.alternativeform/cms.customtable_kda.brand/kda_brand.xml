@@ -14,7 +14,7 @@
           <validationerrormessage>{$Kadena.Brand.BrandCodeRequired$}</validationerrormessage>
         </properties>
       </field>
-      <field column="BrandName" guid="342dca97-2875-4142-990c-0b2867ec607c">
+      <field column="BrandName" guid="342dca97-2875-4142-990c-0b2867ec607c" reftype="Required">
         <properties>
           <controlcssclass>input__text js_brandName</controlcssclass>
           <validationerrormessage>{$Kadena.Brand.BrandNameRequired$}</validationerrormessage>
@@ -24,11 +24,11 @@
             <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
           </rule>
           <rule errormsg="Brand Name should not be more than 20 character">
-            <![CDATA[{%Rule("(Value.Length <= 20)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>20</t><v>20</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)cf08b793c88446bcd6e41fb212565a9b6e12f70531a841ee87e4ca1f29dc6f65%}]]>
+            <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)2a2f4705cdec2abbbe1cb46f9a1b25ee25f87cf5beb950f79eedfab3d39719de%}]]>
           </rule>
         </rules>
       </field>
-      <field column="BrandDescription" guid="ed55844d-701c-4c10-ae87-831a41465c02" reftype="Required">
+      <field column="BrandDescription" guid="ed55844d-701c-4c10-ae87-831a41465c02">
         <settings>
           <controlname>TextAreaControl</controlname>
           <Wrap>True</Wrap>
