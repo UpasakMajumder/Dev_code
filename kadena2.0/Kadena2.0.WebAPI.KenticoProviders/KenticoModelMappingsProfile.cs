@@ -123,6 +123,9 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.CodeName, opt => opt.MapFrom(src => src.RoleName))
                 .ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.RoleDisplayName))
                 .ReverseMap();
+
+            CreateMap<User, UserInfo>()
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"));
         }
     }
 }

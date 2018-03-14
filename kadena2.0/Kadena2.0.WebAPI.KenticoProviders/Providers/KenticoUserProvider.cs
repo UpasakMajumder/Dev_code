@@ -100,14 +100,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public void CreateUser(User user, int siteId)
         {
-            var newUser = new UserInfo()
-            {
-                UserName = user.UserName,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                FullName = $"{user.FirstName} {user.LastName}"
-            };
-
+            var newUser = _mapper.Map<UserInfo>(user);
             newUser.Insert();
             var newUserId = newUser.UserID;
             UserSiteInfoProvider.AddUserToSite(newUserId, siteId);
