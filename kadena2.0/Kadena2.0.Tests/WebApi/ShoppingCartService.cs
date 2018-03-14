@@ -82,13 +82,10 @@ namespace Kadena.Tests.WebApi
                 .Returns(new[] { CreatePaymentMethod() });
             shoppingCart.Setup(p => p.GetShoppingCartTotals())
                 .Returns(() => GetShoppingCartTotals(100));
-            
 
             var shoppingCartItems = autoMocker.GetMock<IShoppingCartItemsProvider>();
             shoppingCartItems.Setup(p => p.GetShoppingCartItems(It.IsAny<bool>()))
                 .Returns(() => new[] { CreateCartitem(1) });
-            //shoppingCartItems.Setup(p => p.AddCartItem(It.IsAny<NewCartItem>(), null))
-              //  .Returns(() => CreateCartitem(1));
 
             var kenticoResource = autoMocker.GetMock<IKenticoResourceService>();
             kenticoResource.Setup(m => m.GetResourceString("Kadena.Checkout.CountOfItems"))
@@ -135,17 +132,16 @@ namespace Kadena.Tests.WebApi
             var sut = CreateShoppingCartService(autoMocker);
             var cartItems = new []{ CreateCartitem(1), CreateCartitem(2) };
             var mockShoppingCart = autoMocker.GetMock<IShoppingCartProvider>();
-            //mockShoppingCart.Setup(m => m.GetShoppingCartItems(true))
-              //  .Returns(cartItems);
             mockShoppingCart.Setup(m => m.GetShoppingCartTotals())
                 .Returns(new ShoppingCartTotals() { TotalItemsPrice = 1, TotalShipping = 2, TotalTax = 3});
+            var mockShoppingCartItems = autoMocker.GetMock<IShoppingCartItemsProvider>();
 
             // Act
             var result = sut.ChangeItemQuantity(1, 100);
 
             // Assert
             Assert.NotNull(result);
-            //mockShoppingCart.Verify(m => m.SetCartItemQuantity(1,100), Times.Once);
+            mockShoppingCartItems.Verify(m => m.SetCartItemQuantity(1,100), Times.Once);
         }
 
 
