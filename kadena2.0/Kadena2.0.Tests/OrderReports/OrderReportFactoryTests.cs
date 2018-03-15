@@ -248,8 +248,8 @@ namespace Kadena.Tests.OrderReports
             Assert.Equal(orderDto.Items.Count(), orderReport.Items.Count);
             Assert.Equal(firstItem.Name, orderReport.Items[0].Name);
             Assert.Equal(firstItem.Quantity, orderReport.Items[0].Quantity);
-            Assert.Equal(firstItem.Price, orderReport.Items[0].Price);
-            Assert.Equal(firstItem.SKU, orderReport.Items[0].SKU);
+            Assert.Equal(firstItem.UnitPrice, orderReport.Items[0].Price);
+            Assert.Equal(firstItem.SKUNumber, orderReport.Items[0].SKU);
         }
 
     }

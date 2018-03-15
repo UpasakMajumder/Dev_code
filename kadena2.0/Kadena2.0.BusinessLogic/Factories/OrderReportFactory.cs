@@ -57,9 +57,9 @@ namespace Kadena.BusinessLogic.Factories
                 Items = orderDto.Items.Select(it => new ReportLineItem
                 {
                     Name = it.Name,
-                    Price = it.Price,
+                    Price = it.UnitPrice,
                     Quantity = it.Quantity,
-                    SKU = it.SKU
+                    SKU = it.SKUNumber
                 }).ToList(),
                 Number = orderDto.Id,
                 OrderingDate = orderDto.CreateDate,
