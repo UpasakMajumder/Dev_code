@@ -10,5 +10,6 @@ namespace Kadena.Models.Membership
         public string LastName { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }
+        public bool IsExternal { get; set; }
     }
 }
