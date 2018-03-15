@@ -108,15 +108,11 @@ namespace Kadena.WebAPI.KenticoProviders
             UserSiteInfoProvider.AddUserToSite(newUserId, siteId);
             user.UserId = newUserId;
 
-            var newUserSettings = new UserSettingsInfo
-            {
-                UserSettingsUserID = newUserId
-            };
             if (userSettings != null)
             {
-                newUserSettings.UserURLReferrer = userSettings.CallBackUrl;
+                userSettings.UserId = newUserId;
+                UpdateUserSettings(userSettings);
             }
-            UserSettingsInfoProvider.SetUserSettingsInfo(newUserSettings);
         }
 
         public void UpdateUser(User user, UserSettings userSettings = null)
@@ -137,12 +133,25 @@ namespace Kadena.WebAPI.KenticoProviders
 
             if (userSettings != null)
             {
-                var userSettingsInfo = UserSettingsInfoProvider.GetUserSettingsInfoByUser(userSettings.UserId);
-                if (userSettingsInfo != null)
+                userSettings.UserId = user.UserId;
+                UpdateUserSettings(userSettings);
+            }
+        }
+
+        private void UpdateUserSettings(UserSettings userSettings)
+        {
+            if (userSettings != null)
+            {
+                UserSettingsInfo userSettingsInfo = UserSettingsInfoProvider.GetUserSettingsInfoByUser(userSettings.UserId);
+                if (userSettingsInfo == null)
+                {
+                    userSettingsInfo = _mapper.Map<UserSettingsInfo>(userSettings);
+                }
+                else
                 {
                     userSettingsInfo.UserURLReferrer = userSettings.CallBackUrl;
-                    userSettingsInfo.Update();
                 }
+                UserSettingsInfoProvider.SetUserSettingsInfo(userSettingsInfo);
             }
         }
 
