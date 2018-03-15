@@ -165,67 +165,67 @@ config.localization.ordersReports = {
     headings: [
         {
             id: 'Site',
-            label: 'lblSite',
+            label: '{$ Kadena.OrdersReport.Table.Site $}',
             sort: false,
             isDate: false
         },
         {
             id: 'Number',
-            label: 'lblNumber',
+            label: '{$ Kadena.OrdersReport.Table.Number $}',
             sort: false,
             isDate: false
         },				
         {
             id: 'CreateDate',
-            label: 'lblOrderDate',
+            label: '{$ Kadena.OrdersReport.Table.OrderDate $}',
             sort: true,
             isDate: true
         },
         {
             id: 'User',
-            label: 'lblUser',
+            label: '{$ Kadena.OrdersReport.Table.User $}',
             sort: false,
             isDate: false
         },				
         {
             id: 'Name',
-            label: 'lblName',
+            label: '{$ Kadena.OrdersReport.Table.Name $}',
             sort: false,
             isDate: false
         },				
         {
             id: 'SKU',
-            label: 'lblSKU',
+            label: '{$ Kadena.OrdersReport.Table.SKU $}',
             sort: false,
             isDate: false
         },				
         {
             id: 'Quantity',
-            label: 'lblQuantity',
+            label: '{$ Kadena.OrdersReport.Table.Quantity $}',
             sort: false,
             isDate: false
         },
         {
             id: 'Price',
-            label: 'lblPrice',
+            label: '{$ Kadena.OrdersReport.Table.Price $}',
             sort: false,
             isDate: false
         },
         {
             id: 'Status',
-            label: 'lblStatus',
+            label: '{$ Kadena.OrdersReport.Table.Status $}',
             sort: false,
             isDate: false
         },
         {
             id: 'ShippingDate',
-            label: 'lblShippingDate',
+            label: '{$ Kadena.OrdersReport.Table.ShippingDate $}',
             sort: false,
             isDate: true
         },				
         {
             id: 'TrackingNumber',
-            label: 'lblTrackingNumber',
+            label: '{$ Kadena.OrdersReport.Table.TrackingNumber $}',
             sort: false,
             isDate: false
         }				
@@ -234,16 +234,16 @@ config.localization.ordersReports = {
         filter: {
             orderDate: {
                 show: true,
-                title: 'filterTit',
-                labelNow: 'lblNow',
-                labelApply: 'lblApply'
+                title: '{$ Kadena.OrdersReport.Filter.Title $}',
+                labelNow: '{$ Kadena.OrdersReport.Filter.Now $}',
+                labelApply: '{$ Kadena.OrdersReport.Filter.Apply $}'
             }
         },
         export: {
-            label: 'exportBtn',
+            label: '{$ Kadena.OrdersReport.Export.Button $}',
             url: '/api/order/report/export'
         },
-        noOrdersMessage: 'noOrdersMessage',
+        noOrdersMessage: '{$ Kadena.OrdersReport.Table.NoOrdersFound $}',
         getRowsUrl: '/api/order/report'
     }
   };

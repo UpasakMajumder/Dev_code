@@ -88,11 +88,12 @@ namespace Kadena.Infrastructure.FileConversion
             }
 
             var headerRow = sheet.CreateRow(0);
-            headerRow.RowStyle = CreateHeaderStyle(sheet.Workbook);
+            var headerStyle = CreateHeaderStyle(sheet.Workbook);
 
             for (int i = 0; i < headers.Length; i++)
             {
                 var cell = headerRow.CreateCell(i);
+                cell.CellStyle = headerStyle;
                 cell.SetCellValue(headers[i]);
             }
         }

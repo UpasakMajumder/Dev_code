@@ -94,7 +94,21 @@ namespace Kadena.BusinessLogic.Factories
             })).ToArray();
             return new TableView
             {
-                Rows = rows
+                Rows = rows,
+                Headers = new[] 
+                {
+                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.Site"),
+                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.Number"),
+                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.OrderDate"),
+                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.User"),
+                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.Name"),
+                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.SKU"),
+                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.Quantity"),
+                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.Price"),
+                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.Status"),
+                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.ShippingDate"),
+                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.TrackingNumber")
+                }
             };
         }
 
