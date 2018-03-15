@@ -262,6 +262,7 @@ namespace Kadena.Container.Default
             CreateMap<DistributorCartItemDto, DistributorCartItem>();
 
             CreateMap<UserDto, User>();
+            CreateMap<UserDto, UserSettings>();
             CreateMap<CustomerDto, Customer>();
             CreateMap<Dto.SSO.AddressDto, DeliveryAddress>()
                 .ForMember(dest => dest.Country, opt => opt.ResolveUsing(src => new Country { Code = src.Country }))
