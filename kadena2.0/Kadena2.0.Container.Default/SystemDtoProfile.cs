@@ -15,8 +15,7 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src[opt.DestinationMember.Name].FirstOrDefault()))
                 .ForMember(dest => dest.Roles, opt => opt.ResolveUsing((src) =>
                 {
-                    IEnumerable<string> values;
-                    if (src.TryGetValue(opt.DestinationMember.Name, out values))
+                    if (src.TryGetValue(opt.DestinationMember.Name, out IEnumerable<string> values))
                     {
                         return values;
                     }
@@ -33,8 +32,7 @@ namespace Kadena.Container.Default
 
         private string GetFirstStringByKey(string key, Dictionary<string, IEnumerable<string>> source)
         {
-            IEnumerable<string> values;
-            if (source.TryGetValue(key, out values))
+            if (source.TryGetValue(key, out IEnumerable<string> values))
             {
                 return values.FirstOrDefault();
             }
