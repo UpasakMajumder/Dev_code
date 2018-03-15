@@ -136,7 +136,7 @@ namespace Kadena.BusinessLogic.Services
             var existingCustomer = userProvider.GetCustomer(userId);
             if (existingCustomer == null)
             {
-                userProvider.CreateCustomer(newCustomer);
+                newCustomer.Id = userProvider.CreateCustomer(newCustomer);
                 userProvider.LinkCustomerToUser(newCustomer.Id, userId);
             }
             else
