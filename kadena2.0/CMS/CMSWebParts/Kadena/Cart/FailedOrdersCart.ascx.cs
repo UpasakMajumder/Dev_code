@@ -14,7 +14,7 @@ using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +30,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         private IKenticoBusinessUnitsProvider _businessUnit;
         #region "Private Properties"
 
-        private List<BusinessUnit> BusinessUnits { get; set; }
+        private List<BusinessUnitItem> BusinessUnits { get; set; }
         private List<ShippingOptionInfo> ShippingOptions { get; set; }
 
         #endregion "Private Properties"
@@ -177,6 +177,20 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 SetValue("Shipping", value);
             }
         }
+        /// <summary>
+        /// Gets or sets the Print
+        /// </summary>
+        public string Action
+        {
+            get
+            {
+                return ResHelper.GetString("KDA.DistributorCart.Action");
+            }
+            set
+            {
+                SetValue("Action", value);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the BusinessUnit
@@ -236,7 +250,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 _shoppingCart = DIContainer.Resolve<IShoppingCartProvider>();
                 _businessUnit = DIContainer.Resolve<IKenticoBusinessUnitsProvider>();
-                if (AuthenticationHelper.IsAuthenticated() && !IsPostBack)
+                if (AuthenticationHelper.IsAuthenticated())
                 {
                     int campaignID = QueryHelper.GetInteger("campid", 0);
                     if (campaignID > 0)
@@ -248,6 +262,60 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             catch (Exception ex)
             {
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_FailedOrdersCart", "Page_Load", ex.Message);
+            }
+        }
+        /// <summary>
+        /// delete event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void linkRemoveItem_Command(object sender, CommandEventArgs e)
+        {
+            try
+            {
+                RepeaterItem item = (sender as LinkButton).Parent as RepeaterItem;
+                int cartItemID = ValidationHelper.GetInteger(e.CommandArgument, default(int));
+               // int cartItemID = int.Parse((item.FindControl("lblCartItemID") as Label).Text);
+                ShoppingCartItemInfoProvider.DeleteShoppingCartItemInfo(cartItemID);
+                ShoppingCartInfoProvider.RemoveShoppingCartItem(Cart, cartItemID);
+                if (Cart.CartItems.Count == 0)
+                {
+                    ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart.ShoppingCartID);
+                }
+                ShoppingCartInfoProvider.EvaluateShoppingCart(Cart);
+                ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
+                Response.Cookies["status"].Value = QueryStringStatus.Deleted;
+                Response.Cookies["status"].HttpOnly = false;
+                URLHelper.Redirect(Request.RawUrl);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_RemoveItemFromCart", "Remove", ex.Message);
+            }
+        }
+        /// <summary>
+        /// Updates the Shipping option selected by the user
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlBusinessUnits_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var businessUnitID = ValidationHelper.GetLong(ddlBusinessUnits.SelectedValue, default(long));
+                if (CartID != default(int) && businessUnitID > 0)
+                {
+                    Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
+                    if (Cart != null)
+                    {
+                        Cart.SetValue("BusinessUnitIDForDistributor", businessUnitID);
+                        Cart.Update();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "ddlBusinessUnits_SelectedIndexChanged", ex.Message);
             }
         }
         #endregion "Page events"
@@ -271,7 +339,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 lblTotalPrice.Text = CurrencyInfoProvider.GetFormattedPrice(ShippingCost, CurrentSite.SiteID);
                 var businessUnitID = Cart.GetValue("BusinessUnitIDForDistributor", default(string));
                 ddlBusinessUnits.SelectedValue = businessUnitID;
-                ddlBusinessUnits.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -327,7 +394,10 @@ namespace Kadena.CMSWebParts.Kadena.Cart
             {
                 if (BusinessUnits == null)
                 {
-                    BusinessUnits = _businessUnit.GetUserBusinessUnits(CurrentUser.UserID);
+                    BusinessUnits = CustomTableItemProvider.GetItems<BusinessUnitItem>()
+                                  .Source(sourceItem => sourceItem.Join<UserBusinessUnitsItem>("ItemID", "BusinessUnitID"))
+                                  .WhereEquals("UserID", CurrentUser.UserID).WhereEquals("SiteID", CurrentSite.SiteID)
+                                  .WhereTrue("Status").Columns("BusinessUnitNumber,BusinessUnitName").ToList();
                 }
             }
             catch (Exception ex)
@@ -365,21 +435,24 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
+                var cartBusinessUnit = DIContainer.Resolve<IShoppingCartProvider>();
                 if (BusinessUnits != null && BusinessUnits.Count > 0)
                 {
                     ddlBusinessUnits.DataSource = BusinessUnits;
                     ddlBusinessUnits.DataValueField = "BusinessUnitNumber";
                     ddlBusinessUnits.DataTextField = "BusinessUnitName";
                     ddlBusinessUnits.DataBind();
-                    Cart.SetValue("BusinessUnitIDForDistributor", BusinessUnits.FirstOrDefault().BusinessUnitNumber);
-                    Cart.Update();
+                    if (string.IsNullOrEmpty(Cart.GetStringValue("BusinessUnitIDForDistributor", null)))
+                    {
+                        cartBusinessUnit.UpdateBusinessUnit(Cart, BusinessUnits.FirstOrDefault().BusinessUnitNumber);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_FailedOrdersCart", "BindBusinessUnit", ex.Message);
             }
-        }
+        }        
     }
     #endregion
 }

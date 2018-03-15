@@ -89,5 +89,10 @@ namespace Kadena.WebAPI.KenticoProviders
                 OrderManagerEmail = kadenaSettings.OrderNotificationEmail
             };
         }
+
+        public string GetFullUrl()
+        {
+            return URLHelper.GetFullApplicationUrl();
+        }
     }
 }

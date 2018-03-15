@@ -3,7 +3,7 @@ using CMS.DocumentEngine;
 using Kadena.Models.Product;
 using Kadena.Old_App_Code.EventHandlers;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.Container.Default;
+using Kadena.Container.Default;
 using Kadena2.WebAPI.KenticoProviders.Classes;
 using System;
 

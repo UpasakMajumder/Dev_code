@@ -7,7 +7,9 @@ using CMS.Helpers;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.Container.Default;
 using Kadena.Old_App_Code.Kadena.Constants;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -403,10 +405,17 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
             var customerID = IsUserCustomer(CurrentUser.UserID);
             if (itemID != default(int))
             {
+                var kenticoResourceService = DIContainer.Resolve<IKenticoResourceService>();
                 UpdateAddressData(itemID);
                 Response.Cookies["status"].Value = QueryStringStatus.Updated;
                 Response.Cookies["status"].HttpOnly = false;
-                URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Updated}");
+                int referrer = ValidationHelper.GetInteger(Request.QueryString["refer"], 0);
+                if (referrer >0)
+                {
+                    var failedOrdersUrl = kenticoResourceService.GetSettingsKey("KDA_FailedOrdersPageUrl");
+                    URLHelper.Redirect($"{failedOrdersUrl}?campid={referrer}");
+                }
+                URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
             }
             else
             {
@@ -421,7 +430,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
                 }
                 Response.Cookies["status"].Value = QueryStringStatus.Added;
                 Response.Cookies["status"].HttpOnly = false;
-                URLHelper.Redirect($"{CurrentDocument.Parent.DocumentUrlPath}?status={QueryStringStatus.Added}");
+                URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
             }
         }
         catch (Exception ex)

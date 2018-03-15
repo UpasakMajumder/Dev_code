@@ -23,6 +23,7 @@ namespace Kadena.Tests.BusinessLogic
                 new Role { CodeName = "King" },
                 new Role { CodeName = "Archer" },
                 new Role { CodeName = "Peasant" },
+                new Role { CodeName = "ManuallyCreatedRole" }
             };
         }
 
@@ -30,7 +31,8 @@ namespace Kadena.Tests.BusinessLogic
         {
             return new[] {
                 new Role { CodeName = "Peasant" },
-                new Role { CodeName = "OtherKenticoRole" }
+                new Role { CodeName = "OtherKenticoRole" },
+                new Role { CodeName = "ManuallyCreatedRole" }
             };
         }
 
@@ -66,6 +68,7 @@ namespace Kadena.Tests.BusinessLogic
             //Assert
             loggerMock.VerifyNoOtherCalls();
             rolesMock.Verify(m => m.AssignUserRoles(userName, siteId, new[] { "King" }), Times.Once);
+            rolesMock.Verify(m => m.RemoveUserRoles(userName, siteId, new[] { "OtherKenticoRole", "ManuallyCreatedRole" }), Times.Once);
         }
 
 
@@ -94,6 +97,7 @@ namespace Kadena.Tests.BusinessLogic
                                               It.Is<string>(s => s.Contains("RoleUnknownInKentico"))), Times.Once);
             loggerMock.VerifyNoOtherCalls();
             rolesMock.Verify(m => m.AssignUserRoles(userName, siteId, new[] { "King", "Archer" }), Times.Once);
+            rolesMock.Verify(m => m.RemoveUserRoles(userName, siteId, new[] { "OtherKenticoRole", "ManuallyCreatedRole" }), Times.Once);
         }
     }
 }

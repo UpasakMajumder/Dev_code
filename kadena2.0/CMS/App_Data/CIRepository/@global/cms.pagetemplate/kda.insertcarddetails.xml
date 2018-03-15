@@ -139,6 +139,8 @@ config.localization.cardPayment = {
         TerminalIdentifier_LocationCode: '{% Settings.GetValue("KDA_CreditCard_TerminalIdentifier_LocationCode", string.Empty) |(user)michal.machacek@actum.cz|(hash)1abdfb77697f41e421b949fb68afb3005f9682509b84164f479913a9734c7c85%}', 
         TerminalIdentifier_TerminalCode: '{% Settings.GetValue("KDA_CreditCard_TerminalIdentifier_TerminalCode", string.Empty) |(user)michal.machacek@actum.cz|(hash)06ae384ab07f8bdb6fe886c9a4b8b8296d3d9cf81a9305859445a2a182bab99f%}', 
         TerminalIdentifier_MerchantCode: '{% Settings.GetValue("KDA_CreditCard_TerminalIdentifier_MerchantCode", string.Empty) |(user)michal.machacek@actum.cz|(hash)73431169390f08f4e68658bb8065d00877348d8db4d9cc6f53cd329d668aec64%}',
+        CreditCard_BillingAddress_AddressLine1: '{% Settings.GetValue("KDA_CreditCard_BillingAddress_AddressLine1", string.Empty) |(user)michal.machacek@actum.cz|(hash)4543df764ce0865dc5ccde3ce62325636c995ce532923029650ce7d617c79039%}',
+        CreditCard_BillingAddress_PostalCode: '{% Settings.GetValue("KDA_CreditCard_BillingAddress_PostalCode", string.Empty) |(user)michal.machacek@actum.cz|(hash)c874c97118b536ec86741f0a946b005f439284f4f6e953812ad15fbbebe611b3%}',
         saveToProfile:{
           exists: {%Settings.GetValue("KDA_CreditCard_EnableSaveCard", "false").ToLower()|(user)michal.machacek@actum.cz|(hash)126a3429442500e9d24251ab8e08b4adec74681794e7c5c7e2339be532b08221%},
           label: '{$Kadena.CreditCard.SaveCardLabel$}',

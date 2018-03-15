@@ -11,22 +11,27 @@ namespace Kadena.WebAPI.Controllers
 {
     public class LoginController : ApiControllerBase
     {
-        private readonly ILoginService service;
+        private readonly ILoginService loginService;
         private readonly IMapper mapper;
+        private readonly IIdentityService identityService;
 
-        public LoginController(ILoginService service, IMapper mapper)
+        public LoginController(ILoginService loginService, IMapper mapper, IIdentityService identityService)
         {
-            if (service == null)
+            if (loginService == null)
             {
-                throw new ArgumentNullException(nameof(service));
+                throw new ArgumentNullException(nameof(loginService));
             }
             if (mapper == null)
             {
                 throw new ArgumentNullException(nameof(mapper));
             }
-
-            this.service = service;
+            if (identityService == null)
+            {
+                throw new ArgumentNullException(nameof(identityService));
+            }
+            this.loginService = loginService;
             this.mapper = mapper;
+            this.identityService = identityService;
         }
 
         [HttpPost]
@@ -34,7 +39,7 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult Login([FromBody] LogonUserRequestDTO request)
         {
             var loginRequestModel = mapper.Map<LoginRequest>(request);
-            var serviceResult = service.Login(loginRequestModel);
+            var serviceResult = loginService.Login(loginRequestModel);
             var result = mapper.Map<LogonUserResultDTO>(serviceResult);
             return ResponseJson(result);
         }
@@ -44,18 +49,18 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult CheckTaC([FromBody] CheckTaCRequestDTO request)
         {
             var loginRequestModel = mapper.Map<LoginRequest>(request);
-            var serviceResult = service.CheckTaC(loginRequestModel);
+            var serviceResult = loginService.CheckTaC(loginRequestModel);
             var result = mapper.Map<CheckTaCResultDTO>(serviceResult);
             return ResponseJson(result);
         }
 
-        
+
         [HttpPost]
         [Route("api/login/accepttac")]
         public IHttpActionResult AcceptTaC([FromBody] AcceptTaCRequestDTO request)
         {
             var loginRequestModel = mapper.Map<LoginRequest>(request);
-            service.AcceptTaC(loginRequestModel);
+            loginService.AcceptTaC(loginRequestModel);
             return SuccessJson();
         }
 
@@ -63,8 +68,20 @@ namespace Kadena.WebAPI.Controllers
         [Route("api/logout")]
         public IHttpActionResult Logout()
         {
-            var rerirecturl = service.Logout();
+            var rerirecturl = loginService.Logout();
             return ResponseJson(rerirecturl);
+        }
+
+        [HttpPost]
+        [Route("api/login/saml2")]
+        public IHttpActionResult LoginSaml2([FromBody] SamlAuthenticationDto request)
+        {
+            var authenticationResultPage = identityService.TryAuthenticate(request.SAMLResponse);
+            if (authenticationResultPage == null)
+            {
+                return NotFound();
+            }
+            return Redirect(authenticationResultPage);
         }
     }
 }

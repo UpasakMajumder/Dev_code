@@ -5,6 +5,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using CMS.Localization;
 using CMS.MacroEngine;
 using System;
+using CMS.Membership;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -31,7 +32,7 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 return perSiteStringInfo.TranslationText;
             }
-        
+
             return ResHelper.GetString(name, LocalizationContext.CurrentCulture.CultureCode);
         }
 
@@ -63,6 +64,11 @@ namespace Kadena.WebAPI.KenticoProviders
         public string ResolveMacroString(string macroString)
         {
             return MacroResolver.Resolve(macroString, new MacroSettings { Culture = LocalizationContext.CurrentCulture.CultureCode });
+        }
+
+        public string GetLogonPageUrl()
+        {
+            return AuthenticationHelper.GetSecuredAreasLogonPage(new SiteInfoIdentifier(SiteContext.CurrentSiteID));
         }
     }
 }
