@@ -121,6 +121,7 @@ namespace Kadena.Container.Default
             container.Register<IKenticoBrandsProvider, KenticoBrandsProvider>();
             container.Register<IKenticoProgramsProvider, KenticoProgramsProvider>();
             container.Register<IShoppingCartProvider, ShoppingCartProvider>();
+            container.Register<IShoppingCartItemsProvider, ShoppingCartItemsProvider>();
             container.Register<IKenticoLocalizationProvider, KenticoLocalizationProvider>();
             container.Register<IKenticoLoginProvider, KenticoLoginProvider>();
             container.Register<IKenticoSiteProvider, KenticoSiteProvider>();

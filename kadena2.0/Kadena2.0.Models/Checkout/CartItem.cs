@@ -105,8 +105,6 @@ namespace Kadena.Models.Checkout
 
         public Guid ProductChiliPdfGeneratorSettingsId { get; set; }
 
-        public string DesignFileKey { get; set; }
-
         /// <summary>
         /// Indicates if it is necessary to obtain design file path
         /// via calling Template product service
@@ -127,5 +125,11 @@ namespace Kadena.Models.Checkout
         public string ShipTime { get; set; }
         public ChiliProcess ChiliProcess { get; set; }
         public IEnumerable<ItemOption> Options { get; set; }
+
+        public string DynamicPricing { get; set; }
+
+        public string Artwork { get; set; }
+
+        public string CustomName { get; set; }
     }
 }

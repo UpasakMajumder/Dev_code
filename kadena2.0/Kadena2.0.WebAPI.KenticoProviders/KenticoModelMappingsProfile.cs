@@ -12,6 +12,7 @@ using Kadena.Models.Product;
 using CMS.Helpers;
 using CMS.CustomTables;
 using Kadena.Models.CreditCard;
+using Kadena.Models.Checkout;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -123,6 +124,36 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.CodeName, opt => opt.MapFrom(src => src.RoleName))
                 .ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.RoleDisplayName))
                 .ReverseMap();
+
+            CreateMap<ShoppingCartItemInfo, CartItemEntity>()
+                .ForMember(dest => dest.ArtworkLocation, opt => opt.MapFrom(src => src.GetStringValue("ArtworkLocation", null)))
+                .ForMember(dest => dest.ChiliTemplateID, opt => opt.MapFrom(src => src.GetGuidValue("ChiliTemplateID", Guid.Empty)))
+                .ForMember(dest => dest.ChilliEditorTemplateID, opt => opt.MapFrom(src => src.GetGuidValue("ChilliEditorTemplateID", Guid.Empty)))
+                .ForMember(dest => dest.MailingListGuid, opt => opt.MapFrom(src => src.GetGuidValue("MailingListGuid", Guid.Empty)  ))
+                .ForMember(dest => dest.MailingListName, opt => opt.MapFrom(src => src.GetStringValue("MailingListName", null)))
+                .ForMember(dest => dest.ProductChiliPdfGeneratorSettingsId, opt => opt.MapFrom(src => src.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty)))
+                .ForMember(dest => dest.ProductChiliWorkspaceId, opt => opt.MapFrom(src => src.GetGuidValue("ProductChiliWorkspaceId", Guid.Empty)))
+                .ForMember(dest => dest.ProductPageID, opt => opt.MapFrom(src => src.GetIntegerValue("ProductPageID", 0)))
+                .ForMember(dest => dest.ProductProductionTime, opt => opt.MapFrom(src => src.GetValue("ProductProductionTime", string.Empty)))
+                .ForMember(dest => dest.ProductShipTime, opt => opt.MapFrom(src => src.GetValue("ProductShipTime", string.Empty)))
+                .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.GetValue("ProductType", string.Empty)))
+                .ForMember(dest => dest.CartItemPrice, opt => opt.MapFrom(src => (decimal)src.GetDoubleValue("CartItemPrice", 0.0d)))
+                .ForMember(dest => dest.SKUUnits, opt => opt.MapFrom(src => src.GetIntegerValue("SKUUnits", 0)));
+
+            CreateMap<CartItemEntity, ShoppingCartItemInfo>()
+                .AfterMap((src, dest) => dest.SetValue("ArtworkLocation", src.ArtworkLocation))
+                .AfterMap((src, dest) => dest.SetValue("ChiliTemplateID", src.ChiliTemplateID))
+                .AfterMap((src, dest) => dest.SetValue("ChilliEditorTemplateID", src.ChilliEditorTemplateID))
+                .AfterMap((src, dest) => dest.SetValue("MailingListGuid", src.MailingListGuid))
+                .AfterMap((src, dest) => dest.SetValue("MailingListName", src.MailingListName))
+                .AfterMap((src, dest) => dest.SetValue("ProductChiliPdfGeneratorSettingsId", src.ProductChiliPdfGeneratorSettingsId))
+                .AfterMap((src, dest) => dest.SetValue("ProductChiliWorkspaceId", src.ProductChiliWorkspaceId))
+                .AfterMap((src, dest) => dest.SetValue("ProductPageID", src.ProductPageID))
+                .AfterMap((src, dest) => dest.SetValue("ProductProductionTime", src.ProductProductionTime))
+                .AfterMap((src, dest) => dest.SetValue("ProductShipTime", src.ProductShipTime))
+                .AfterMap((src, dest) => dest.SetValue("ProductType", src.ProductType))
+                .AfterMap((src, dest) => dest.SetValue("CartItemPrice", src.CartItemPrice ))
+                .AfterMap((src, dest) => dest.SetValue("SKUUnits", src.SKUUnits));
         }
     }
 }

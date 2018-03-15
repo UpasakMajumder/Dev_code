@@ -16,6 +16,7 @@ using Kadena.Dto.Checkout.Responses;
 using Kadena.Dto.Settings;
 using Kadena.Dto.AddToCart;
 using Kadena.Models.AddToCart;
+using System.ComponentModel.DataAnnotations;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -130,7 +131,7 @@ namespace Kadena.WebAPI.Controllers
         [Route("api/shoppingcart/addtocart")]
         [CustomerAuthorizationFilter]
         [RecalculateShoppingCart]
-        public async Task<IHttpActionResult> AddToCart([FromBody] NewCartItemDto item)
+        public async Task<IHttpActionResult> AddToCart([FromBody][Required] NewCartItemDto item)
         {
             var addItem = mapper.Map<NewCartItem>(item);
             var result = await service.AddToCart(addItem);

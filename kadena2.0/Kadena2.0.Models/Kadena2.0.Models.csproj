@@ -54,6 +54,7 @@
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
     <Compile Include="CampaignData\Campaign.cs" />
     <Compile Include="CampaignData\CampaignData.cs" />
+    <Compile Include="Checkout\CartItemEntity.cs" />
     <Compile Include="Checkout\ChiliProcess.cs" />
     <Compile Include="CreditCard\SaveCardData.cs" />
     <Compile Include="CreditCard\StoredCard.cs" />
