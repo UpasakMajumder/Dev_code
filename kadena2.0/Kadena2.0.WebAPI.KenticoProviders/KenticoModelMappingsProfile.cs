@@ -89,8 +89,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.CustomerCompany))
                 .ForMember(dest => dest.SiteId, opt => opt.MapFrom(src => src.CustomerSiteID))
                 .ForMember(dest => dest.DefaultShippingAddressId, opt => opt.MapFrom(src => src.GetIntegerValue(KenticoAddressBookProvider.CustomerDefaultShippingAddresIDFieldName, 0)))
-                .AfterMap((src, dest) => dest.PreferredLanguage = src.CustomerUser?.PreferredCultureCode ?? string.Empty)
-                .ReverseMap();
+                .AfterMap((src, dest) => dest.PreferredLanguage = src.CustomerUser?.PreferredCultureCode ?? string.Empty);
 
             CreateMap<CarrierInfo, DeliveryCarrier>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarrierID))
@@ -123,6 +122,16 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.CodeName, opt => opt.MapFrom(src => src.RoleName))
                 .ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.RoleDisplayName))
                 .ReverseMap();
+            CreateMap<Customer, CustomerInfo>()
+                .ForMember(dest => dest.CustomerID, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.CustomerFirstName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.CustomerLastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.CustomerEmail, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.CustomerGUID, opt => opt.MapFrom(src => new Guid(src.CustomerNumber)))
+                .ForMember(dest => dest.CustomerPhone, opt => opt.MapFrom(src => src.Phone))
+                .ForMember(dest => dest.CustomerUserID, opt => opt.MapFrom(src => src.UserID))
+                .ForMember(dest => dest.CustomerCompany, opt => opt.MapFrom(src => src.Company))
+                .ForMember(dest => dest.CustomerSiteID, opt => opt.MapFrom(src => src.SiteId));
         }
     }
 }
