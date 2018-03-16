@@ -206,6 +206,7 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItemInfo.SetValue("ChiliTemplateID", item.ChiliTemplateID);
             cartItemInfo.SetValue("ProductChiliPdfGeneratorSettingsId", item.ProductChiliPdfGeneratorSettingsId);
             cartItemInfo.SetValue("ProductChiliWorkspaceId", item.ProductChiliWorkspaceId);
+            cartItemInfo.SetValue("ArtworkLocation", item.ArtworkLocation);
             
             ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItemInfo);
 
