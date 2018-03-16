@@ -27,32 +27,11 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public ShoppingCartItemsProvider(IKenticoResourceService resources, IKenticoDocumentProvider documents, IMapper mapper, IDynamicPriceRangeProvider dynamicPrices, IKenticoProductsProvider productProvider)
         {
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (documents == null)
-            {
-                throw new ArgumentNullException(nameof(documents));
-            }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            if (dynamicPrices == null)
-            {
-                throw new ArgumentNullException(nameof(dynamicPrices));
-            }
-            if (productProvider == null)
-            {
-                throw new ArgumentNullException(nameof(productProvider));
-            }
-
-            this.resources = resources;
-            this.documents = documents;
-            this.mapper = mapper;
-            this.dynamicPrices = dynamicPrices;
-            this.productProvider = productProvider;
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.dynamicPrices = dynamicPrices ?? throw new ArgumentNullException(nameof(dynamicPrices));
+            this.productProvider = productProvider ?? throw new ArgumentNullException(nameof(productProvider));
         }
 
         public int GetShoppingCartItemsCount()

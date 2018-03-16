@@ -33,27 +33,10 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public ShoppingCartProvider(IKenticoResourceService resources, IMapper mapper, IShippingEstimationSettings estimationSettings, IKenticoProductsProvider productProvider)
         {
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            if (estimationSettings == null)
-            {
-                throw new ArgumentNullException(nameof(estimationSettings));
-            }
-            if (productProvider == null)
-            {
-                throw new ArgumentNullException(nameof(productProvider));
-            }
-
-            this.resources = resources;
-            this.mapper = mapper;
-            this.estimationSettings = estimationSettings;
-            this.productProvider = productProvider;
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.estimationSettings = estimationSettings ?? throw new ArgumentNullException(nameof(estimationSettings));
+            this.productProvider = productProvider ?? throw new ArgumentNullException(nameof(productProvider));
         }
 
         public DeliveryAddress GetCurrentCartShippingAddress()
@@ -501,10 +484,10 @@ namespace Kadena.WebAPI.KenticoProviders
                                                 .Sum(x => x.CartItemUnits);
         }
 
-        public int GetStockQuantity(CartItemEntity item)
+        public int GetStockQuantity(int skuId)
         {
-            var itemInfo = ShoppingCartItemInfoProvider.GetShoppingCartItemInfo(item.CartItemID);
-            return itemInfo?.SKU?.SKUAvailableItems ?? 0;
+            var sku = SKUInfoProvider.GetSKUInfo(skuId);
+            return sku?.SKUAvailableItems ?? 0;
         }
 
         public void RemoveCurrentItemsFromStock(int shoppingCartId = 0)
