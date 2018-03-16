@@ -163,7 +163,7 @@ namespace Kadena.BusinessLogic.Services
                             CreatedDate = t.Created,
                             UpdatedDate = t.Updated,
                             ProductName = t.Name,
-                            Image = t.PreviewUrls?.FirstOrDefault()
+                            Image = t.ThumbnailUrls?.FirstOrDefault()
                         };
                     })
                     .OrderByDescending(t => t.UpdatedDate)
