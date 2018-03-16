@@ -17,7 +17,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             _logger = logger;
             _mapper = mapper;
-        }        
+        }
 
         public Customer GetCurrentCustomer()
         {
@@ -105,7 +105,9 @@ namespace Kadena.WebAPI.KenticoProviders
                 UserName = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                FullName = $"{user.FirstName} {user.LastName}"
+                FullName = $"{user.FirstName} {user.LastName}",
+                IsExternal = user.IsExternal,
+                Enabled = true
             };
 
             newUser.Insert();
@@ -127,7 +129,7 @@ namespace Kadena.WebAPI.KenticoProviders
             userInfo.FirstName = user.FirstName;
             userInfo.LastName = user.LastName;
             userInfo.Email = user.Email;
-            
+
             userInfo.Update();
         }
 
