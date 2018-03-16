@@ -70,57 +70,16 @@ namespace Kadena.BusinessLogic.Services.Orders
             IKenticoDocumentProvider documents, IKenticoPermissionsProvider permissions, IKenticoLogger logger, 
             IKenticoAddressBookProvider kenticoAddressBook)
         {
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            if (orderClient == null)
-            {
-                throw new ArgumentNullException(nameof(orderClient));
-            }
-            if (kenticoUsers == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoUsers));
-            }
-            if (kenticoResources == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoResources));
-            }
-            if (site == null)
-            {
-                throw new ArgumentNullException(nameof(site));
-            }
-            if (order == null)
-            {
-                throw new ArgumentNullException(nameof(order));
-            }
-            if (permissions == null)
-            {
-                throw new ArgumentNullException(nameof(permissions));
-            }
-            if (documents == null)
-            {
-                throw new ArgumentNullException(nameof(documents));
-            }
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-            if (kenticoAddressBook == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoAddressBook));
-            }
-
-            _mapper = mapper;
-            _orderClient = orderClient;
-            _kenticoUsers = kenticoUsers;
-            _kenticoResources = kenticoResources;
-            _site = site;
-            _order = order;
-            _permissions = permissions;
-            _logger = logger;
-            _kenticoAddressBook = kenticoAddressBook;
-            _documents = documents;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _orderClient = orderClient ?? throw new ArgumentNullException(nameof(orderClient));
+            _kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
+            _kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
+            _site = site ?? throw new ArgumentNullException(nameof(site));
+            _order = order ?? throw new ArgumentNullException(nameof(order));
+            _permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _kenticoAddressBook = kenticoAddressBook ?? throw new ArgumentNullException(nameof(kenticoAddressBook));
+            _documents = documents ?? throw new ArgumentNullException(nameof(documents));
         }
 
         public async Task<OrderHead> GetHeaders()

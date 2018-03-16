@@ -6,6 +6,7 @@ using Kadena.Models.Orders;
 using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,11 +45,11 @@ namespace Kadena.BusinessLogic.Factories
             IKenticoResourceService kenticoResources,
             IKenticoDocumentProvider kenticoDocumentProvider)
         {
-            this.kenticoOrderProvider = kenticoOrderProvider;
-            this.kenticoUserProvider = kenticoUserProvider;
-            this.dateTimeFormatter = dateTimeFormatter;
-            this.kenticoResources = kenticoResources;
-            this.kenticoDocumentProvider = kenticoDocumentProvider;
+            this.kenticoOrderProvider = kenticoOrderProvider ?? throw new ArgumentNullException(nameof(kenticoOrderProvider));
+            this.kenticoUserProvider = kenticoUserProvider ?? throw new ArgumentNullException(nameof(kenticoUserProvider));
+            this.dateTimeFormatter = dateTimeFormatter ?? throw new ArgumentNullException(nameof(dateTimeFormatter));
+            this.kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
+            this.kenticoDocumentProvider = kenticoDocumentProvider ?? throw new ArgumentNullException(nameof(kenticoDocumentProvider));
         }
         public OrderReport Create(RecentOrderDto orderDto)
         {

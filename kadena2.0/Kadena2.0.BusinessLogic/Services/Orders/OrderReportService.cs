@@ -49,12 +49,12 @@ namespace Kadena.BusinessLogic.Services.Orders
             IOrderReportFactory orderReportFactory,
             IMapper mapper)
         {
-            this.kenticoResources = kenticoResources;
-            this.kenticoSiteProvider = kenticoSiteProvider;
-            this.orderViewClient = orderViewClient;
-            this.excelConvert = excelConvert;
-            this.orderReportFactory = orderReportFactory;
-            this.mapper = mapper;
+            this.kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
+            this.kenticoSiteProvider = kenticoSiteProvider ?? throw new ArgumentNullException(nameof(kenticoSiteProvider));
+            this.orderViewClient = orderViewClient ?? throw new ArgumentNullException(nameof(orderViewClient));
+            this.excelConvert = excelConvert ?? throw new ArgumentNullException(nameof(excelConvert));
+            this.orderReportFactory = orderReportFactory ?? throw new ArgumentNullException(nameof(orderReportFactory));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public virtual Task<PagedData<OrderReport>> GetOrders(int page, OrderFilter filter)
