@@ -151,6 +151,7 @@ namespace Kadena.Tests.WebApi
             {
                 CartItemText = Name,
                 ProductType = ProductTypes.InventoryProduct,
+                SKUID = 6654,
                 SKUUnits = 3
             };
 
@@ -159,7 +160,7 @@ namespace Kadena.Tests.WebApi
             itemsProvider.Setup(ip => ip.GetOrCreateCartItem(newCartItem))
                 .Returns(originalCartItemEntity);
             var cartProvider = autoMocker.GetMock<IShoppingCartProvider>();
-            cartProvider.Setup(cp => cp.GetStockQuantity(originalCartItemEntity))
+            cartProvider.Setup(cp => cp.GetStockQuantity(originalCartItemEntity.SKUID))
                 .Returns(100);
 
             var sut = autoMocker.CreateInstance<ShoppingCartService>();
@@ -173,6 +174,7 @@ namespace Kadena.Tests.WebApi
             autoMocker.GetMock<IShoppingCartItemsProvider>().Verify(ip => ip.SetArtwork(It.IsAny<CartItemEntity>(), 1123), Times.Once);
             itemsProvider.Verify(i => i.SaveCartItem(It.Is<CartItemEntity>(
                     e => e.CartItemText == Name &&
+                         e.SKUID == 6654 &&
                          e.SKUUnits == 3)
                 ), Times.Once);
         }
@@ -195,7 +197,7 @@ namespace Kadena.Tests.WebApi
             itemsProvider.Setup(ip => ip.GetOrCreateCartItem(newCartItem))
                 .Returns(originalCartItemEntity);
             var cartProvider = autoMocker.GetMock<IShoppingCartProvider>();
-            cartProvider.Setup(cp => cp.GetStockQuantity(originalCartItemEntity))
+            cartProvider.Setup(cp => cp.GetStockQuantity(originalCartItemEntity.SKUID))
                 .Returns(1);
 
             var sut = autoMocker.CreateInstance<ShoppingCartService>();

@@ -90,6 +90,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         int GetDistributorCartCount(int userID, int campaignID, int inventoryType = 1);
 
-        int GetStockQuantity(CartItemEntity item);
+        int GetStockQuantity(int skuId);
     }
 }
