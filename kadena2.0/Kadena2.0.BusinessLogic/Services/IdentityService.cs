@@ -133,7 +133,7 @@ namespace Kadena.BusinessLogic.Services
                 logger.LogInfo(this.GetType().Name, "ENSURESAMLCUSTOMER", "Customer info extraction has failed.");
                 return null;
             }
-            var existingCustomer = userProvider.GetCustomer(userId);
+            var existingCustomer = userProvider.GetCustomerByUser(userId);
             if (existingCustomer == null)
             {
                 newCustomer.Id = userProvider.CreateCustomer(newCustomer);
