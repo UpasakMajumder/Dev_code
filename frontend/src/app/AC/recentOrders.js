@@ -4,7 +4,7 @@ import { INIT_UI, FETCH, SUCCESS, FAILURE, START, FINISH, RECENT_ORDERS_CHANGE_P
 /* helpers */
 import { callAC } from 'app.helpers/ac';
 /* globals */
-import { RECENT_ORDERS as RECENT_ORDERS_GLOBAL, NOTIFICATION } from 'app.globals';
+import { RECENT_ORDERS as RECENT_ORDERS_GLOBAL } from 'app.globals';
 
 export const initUI = () => {
   return (dispatch) => {

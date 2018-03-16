@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import SVG from 'app.dump/SVG';
 /* components */
 import Spinner from 'app.dump/Spinner';
+import SortIcon from 'app.dump/SortIcon';
 /* ac */
 import { loadManageProducts } from 'app.ac/manageProducts';
 /* helpers */
 import timeFormat from 'app.helpers/time';
+import { sortObjs } from 'app.helpers/array';
 
 class ManageProducts extends Component {
   static propTypes = {
@@ -30,25 +31,7 @@ class ManageProducts extends Component {
   }
 
   sortByColumn = (name) => {
-    const sortedTemplates = [...this.state.sortedTemplates].sort((template1, template2) => {
-      if (template1[name] === null) {
-        return Number.NEGATIVE_INFINITY;
-      }
-      if (template2[name] === null) {
-        return Number.POSITIVE_INFINITY;
-      }
-
-      const name1 = template1[name].toUpperCase();
-      const name2 = template2[name].toUpperCase();
-
-      if (this.state.sortOrderAsc) {
-        if (name1 < name2) return 1;
-        return -1;
-      }
-
-      if (name1 > name2) return 1;
-      return -1;
-    });
+    const sortedTemplates = sortObjs(this.state.sortedTemplates, name, this.state.sortOrderAsc);
 
     this.setState({
       sortBy: name,
@@ -84,31 +67,25 @@ class ManageProducts extends Component {
 
   getHeaders = () => {
     const { sortBy, sortOrderAsc } = this.state;
-
     return this.props.tableHeaders.map((column) => {
-      const { sortable } = column;
+      const { sortable, name, title } = column;
       const sorting = sortable
         ? (
-          <span>
-            <SVG style={{ transform: 'rotate(180deg)', opacity: sortOrderAsc && sortBy === column.name ? 1 : 0.2 }}
-                name="arrowTop"
-                className="icon-modal"
-            />
-            <SVG style={{ opacity: !sortOrderAsc && sortBy === column.name ? 1 : 0.2 }}
-                name="arrowTop"
-                className="icon-modal"
-            />
-          </span>
+          <SortIcon
+            block={false}
+            sortOrderAsc={sortOrderAsc}
+            isActive={name === sortBy}
+          />
         ) : null;
 
       return (
         <th
-          key={column.name}
-          onClick={sortable ? () => this.sortByColumn(column.name) : null}
+          key={name}
+          onClick={sortable ? () => this.sortByColumn(name) : null}
           style={{ cursor: sortable ? 'pointer' : 'initial' }}
         >
           {sorting}
-          {column.title}
+          {title}
         </th>
       );
     });

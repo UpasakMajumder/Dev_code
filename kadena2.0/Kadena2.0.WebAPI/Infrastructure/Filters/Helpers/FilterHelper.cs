@@ -1,4 +1,5 @@
-﻿using Kadena.WebAPI.Infrastructure.Communication;
+﻿using Kadena.Models.Common;
+using Kadena.WebAPI.Infrastructure.Communication;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
@@ -17,7 +18,7 @@ namespace Kadena.WebAPI.Infrastructure.Filters
 
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(responsejson , Encoding.UTF8, "application/json")
+                Content = new StringContent(responsejson , Encoding.UTF8, ContentTypes.Json)
             };
         }
     }

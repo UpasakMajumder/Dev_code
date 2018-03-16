@@ -5,6 +5,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.BusinessLogic.Services.Orders;
 using System;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.BusinessLogic.Factories
 {
@@ -82,7 +83,7 @@ namespace Kadena.BusinessLogic.Factories
         {
             return new OrderListService(_mapper, _orderClient, _kenticoUser, _kenticoResources, _site, _order, _documents, _permissions, _logger, _kenticoAddressBook)
             {
-                PageCapacityKey = "KDA_DashboardOrdersPageCapacity"
+                PageCapacityKey = Settings.KDA_DashboardOrdersPageCapacity
             };
         }
 
@@ -90,7 +91,7 @@ namespace Kadena.BusinessLogic.Factories
         {
             return new OrderListService(_mapper, _orderClient, _kenticoUser, _kenticoResources, _site, _order, _documents, _permissions, _logger, _kenticoAddressBook)
             {
-                PageCapacityKey = "KDA_RecentOrdersPageCapacity",
+                PageCapacityKey = Settings.KDA_RecentOrdersPageCapacity,
                 EnablePaging = true
             };
         }

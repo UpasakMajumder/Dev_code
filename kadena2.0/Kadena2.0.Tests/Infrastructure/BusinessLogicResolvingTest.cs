@@ -1,4 +1,5 @@
-﻿using Kadena.Container.Default;
+﻿using Kadena.BusinessLogic.Contracts;
+using Kadena.Container.Default;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -15,12 +16,13 @@ namespace Kadena.Tests.Infrastructure
             // Arrange
             var assembly = Assembly.LoadFrom("Kadena2.0.BusinessLogic.dll");
             var services = assembly.GetExportedTypes().Where(t => t.IsInterface).ToList();
-            
+
             // Act & Assert
             foreach (var service in services)
             {
-                if (service.Name == "IOrderListService" )//  using factory and calling Kentico in constructor
+                if (service.Name == nameof(IOrderListService))
                 {
+                    // this is resolved using factory
                     continue; 
                 }
 
