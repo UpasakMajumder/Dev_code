@@ -114,19 +114,6 @@ ORDER BY ItemOrder
           <Trim>False</Trim>
         </settings>
       </field>
-      <field allowempty="true" column="SKUProductCustomerReferenceNumber" columnsize="20" columntype="text" guid="5316ce0e-4a61-4175-8aea-c2f27e3e1649" publicfield="false" visible="true">
-        <properties>
-          <fieldcaption>Customer reference number</fieldcaption>
-        </properties>
-        <settings>
-          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
-          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
-          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
-          <controlname>TextBoxControl</controlname>
-          <FilterMode>False</FilterMode>
-          <Trim>False</Trim>
-        </settings>
-      </field>
       <field column="SKUUnits" columntype="integer" guid="233f8ac2-2329-4188-8812-23aa0c4977f6" publicfield="false" system="true" visible="true">
         <properties>
           <fieldcaption>SKUUnits</fieldcaption>
