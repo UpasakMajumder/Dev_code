@@ -151,8 +151,8 @@ namespace Kadena.BusinessLogic.Services
         private DeliveryAddress EnsureUpdateAddress(AddressDto address, int customerId)
         {
             var newAddress = mapper.Map<DeliveryAddress>(address);
-            var existingAddresses = addressProvider.GetAddressesList(customerId);
-            if (existingAddresses.Count == 0)
+            var existingAddresses = addressProvider.GetCustomerAddresses(customerId, AddressType.Shipping);
+            if (existingAddresses.Length == 0)
             {
                 addressProvider.SaveShippingAddress(newAddress, customerId);
             }
