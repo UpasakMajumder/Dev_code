@@ -516,19 +516,20 @@ namespace Kadena.BusinessLogic.Services
 
         private void EnsureInventoryAmount(CartItemEntity item, int addedQuantity, int resultedQuantity)
         {
-            var availableQuantity = shoppingCart.GetStockQuantity(item);
+            var availableQuantity = shoppingCart.GetStockQuantity(item.SKUID);
 
             if (addedQuantity > availableQuantity)
             {
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.LowerNumberOfAvailableProducts"));
             }
-            else
+            
+            if (resultedQuantity > availableQuantity)
             {
-                if (resultedQuantity > availableQuantity)
-                {
-                    throw new ArgumentException(string.Format(resources.GetResourceString("Kadena.Product.ItemsInCartExceeded"),
-                        resultedQuantity - addedQuantity, availableQuantity - resultedQuantity + addedQuantity));
-                }
+                var errorText = string.Format(resources.GetResourceString("Kadena.Product.ItemsInCartExceeded"),
+                                              resultedQuantity - addedQuantity,
+                                              availableQuantity - resultedQuantity + addedQuantity);
+
+                throw new ArgumentException(errorText);
             }
         }
 
