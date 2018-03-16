@@ -33,27 +33,10 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public ShoppingCartProvider(IKenticoResourceService resources, IMapper mapper, IShippingEstimationSettings estimationSettings, IKenticoProductsProvider productProvider)
         {
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            if (estimationSettings == null)
-            {
-                throw new ArgumentNullException(nameof(estimationSettings));
-            }
-            if (productProvider == null)
-            {
-                throw new ArgumentNullException(nameof(productProvider));
-            }
-
-            this.resources = resources;
-            this.mapper = mapper;
-            this.estimationSettings = estimationSettings;
-            this.productProvider = productProvider;
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.estimationSettings = estimationSettings ?? throw new ArgumentNullException(nameof(estimationSettings));
+            this.productProvider = productProvider ?? throw new ArgumentNullException(nameof(productProvider));
         }
 
         public DeliveryAddress GetCurrentCartShippingAddress()

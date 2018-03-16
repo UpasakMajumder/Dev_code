@@ -53,92 +53,23 @@ namespace Kadena.BusinessLogic.Services
                                    IKenticoBusinessUnitsProvider businessUnitsProvider,
                                    IDynamicPriceRangeProvider dynamicPrices)
         {
-            if (kenticoSite == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoSite));
-            }
-            if (localization == null)
-            {
-                throw new ArgumentNullException(nameof(localization));
-            }
-            if (permissions == null)
-            {
-                throw new ArgumentNullException(nameof(permissions));
-            }
-            if (kenticoUsers == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoUsers));
-            }
-            if (addresses == null)
-            {
-                throw new ArgumentNullException(nameof(addresses));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (taxCalculator == null)
-            {
-                throw new ArgumentNullException(nameof(taxCalculator));
-            }
-            if (mailingService == null)
-            {
-                throw new ArgumentNullException(nameof(mailingService));
-            }
-            if (userDataClient == null)
-            {
-                throw new ArgumentNullException(nameof(userDataClient));
-            }
-            if (shoppingCart == null)
-            {
-                throw new ArgumentNullException(nameof(shoppingCart));
-            }
-            if (shoppingCartItems == null)
-            {
-                throw new ArgumentNullException(nameof(shoppingCartItems));
-            }
-            if (checkoutfactory == null)
-            {
-                throw new ArgumentNullException(nameof(checkoutfactory));
-            }
-            if (log == null)
-            {
-                throw new ArgumentNullException(nameof(log));
-            }
-            if (addressBookProvider == null)
-            {
-                throw new ArgumentNullException(nameof(addressBookProvider));
-            }
-            if (productsProvider == null)
-            {
-                throw new ArgumentNullException(nameof(productsProvider));
-            }
-            if (businessUnitsProvider == null)
-            {
-                throw new ArgumentNullException(nameof(businessUnitsProvider));
-            }
-            if (dynamicPrices == null)
-            {
-                throw new ArgumentNullException(nameof(dynamicPrices));
-            }
-
-            this.kenticoSite = kenticoSite;
-            this.localization = localization;
-            this.permissions = permissions;
-            this.kenticoUsers = kenticoUsers;
-            this.kenticoAddresses = addresses;
-            this.resources = resources;
-            this.taxCalculator = taxCalculator;
-            this.mailingService = mailingService;
-            this.userDataClient = userDataClient;
-            this.shoppingCart = shoppingCart;
-            this.shoppingCartItems = shoppingCartItems;
-            this.checkoutfactory = checkoutfactory;
-            this.log = log;
-            this.addressBookProvider = addressBookProvider;
-            this.productsProvider = productsProvider;
-            this.businessUnitsProvider = businessUnitsProvider;
-            this.dynamicPrices = dynamicPrices;
+            this.kenticoSite = kenticoSite ?? throw new ArgumentNullException(nameof(kenticoSite));
+            this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
+            this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
+            this.kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
+            this.kenticoAddresses = addresses ?? throw new ArgumentNullException(nameof(addresses));
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.taxCalculator = taxCalculator ?? throw new ArgumentNullException(nameof(taxCalculator));
+            this.mailingService = mailingService ?? throw new ArgumentNullException(nameof(mailingService));
+            this.userDataClient = userDataClient ?? throw new ArgumentNullException(nameof(userDataClient));
+            this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
+            this.shoppingCartItems = shoppingCartItems ?? throw new ArgumentNullException(nameof(shoppingCartItems));
+            this.checkoutfactory = checkoutfactory ?? throw new ArgumentNullException(nameof(checkoutfactory));
+            this.log = log ?? throw new ArgumentNullException(nameof(log));
+            this.addressBookProvider = addressBookProvider ?? throw new ArgumentNullException(nameof(addressBookProvider));
+            this.productsProvider = productsProvider ?? throw new ArgumentNullException(nameof(productsProvider));
+            this.businessUnitsProvider = businessUnitsProvider ?? throw new ArgumentNullException(nameof(businessUnitsProvider));
+            this.dynamicPrices = dynamicPrices ?? throw new ArgumentNullException(nameof(dynamicPrices));
         }
 
         public async Task<CheckoutPage> GetCheckoutPage()
