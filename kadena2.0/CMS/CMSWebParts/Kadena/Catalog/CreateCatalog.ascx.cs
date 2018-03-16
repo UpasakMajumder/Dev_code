@@ -865,8 +865,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             {
                 string programContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.ProgramsContent");
                 brands.Add(program.BrandID);
-                programContent = programContent.Replace("ProgramBrandName", program.ProgramName);
-                programContent = programContent.Replace("BRANDNAME", GetBrandName(program.BrandID));
+                programContent = programContent.Replace("^ProgramName^", program?.ProgramName);
+                programContent = programContent.Replace("^ProgramBrandName^", GetBrandName(program.BrandID));
                 programContent = programContent.Replace("ProgramDate", program.DeliveryDateToDistributors == default(DateTime) ? string.Empty : program.DeliveryDateToDistributors.ToString("MMM dd, yyyy"));
                 programsContent += programContent;
                 programContent = string.Empty;
@@ -877,8 +877,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             foreach (var brand in brands.Distinct())
             {
                 string productBrandHeader = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PDFBrand");
-                productBrandHeader = productBrandHeader.Replace("BrandName", programs.Where(x => x.BrandID == brand).Select(y => y.ProgramName).FirstOrDefault());
-                productBrandHeader = productBrandHeader.Replace("PROGRAMNAME", GetBrandName(brand));
+                productBrandHeader = productBrandHeader.Replace("^PROGRAMNAME^", programs.Where(x => x.BrandID == brand).Select(y => y.ProgramName).FirstOrDefault());
+                productBrandHeader = productBrandHeader.Replace("^BrandName^", GetBrandName(brand));
                 var catalogList = productData
                  .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProductName, x.EstimatedPrice, x.BrandID, x.ProgramID, x.QtyPerPack, x.State, y.SKUPrice, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber, y.SKUDescription, y.SKUShortDescription, y.SKUImagePath, y.SKUValidUntil })
                  .Where(x => x.BrandID == brand)
@@ -961,8 +961,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 foreach (var brand in brands.Distinct())
                 {
                     string productBrandHeader = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PDFBrand");
-                    productBrandHeader = productBrandHeader.Replace("BrandName", GetBrandName(brand));
-                    productBrandHeader = productBrandHeader.Replace("PROGRAMNAME", string.Empty);
+                    productBrandHeader = productBrandHeader.Replace("^BrandName^", GetBrandName(brand));
+                    productBrandHeader = productBrandHeader.Replace("^PROGRAMNAME^", string.Empty);
                     var catalogList = productData
                                     .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProductName, x.EstimatedPrice, x.BrandID, x.ProgramID, x.QtyPerPack, x.State, y.SKUPrice, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber, y.SKUDescription, y.SKUShortDescription, y.SKUImagePath, y.SKUValidUntil })
                                     .Where(x => x.BrandID == brand)
