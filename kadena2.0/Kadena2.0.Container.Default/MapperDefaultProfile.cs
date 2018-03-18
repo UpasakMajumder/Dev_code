@@ -64,7 +64,8 @@ namespace Kadena.Container.Default
             CreateMap<CartItem, OrderItemDTO>()
                 .ForMember(dest => dest.SKU, opt => opt.MapFrom(src => src))
                 .ForMember(dest => dest.UnitCount, opt => opt.MapFrom(src => src.Quantity))
-                .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src => src.Options.ToDictionary(i => i.Name, i => i.Value)));
+                .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src => src.Options.ToDictionary(i => i.Name, i => i.Value)))
+                .ForMember(dest => dest.DesignFileKey, opt => opt.MapFrom(src => src.Artwork));
 
             CreateMap<CustomerData, CustomerDataDTO>();
             CreateMap<CustomerAddress, CustomerAddressDTO>();
