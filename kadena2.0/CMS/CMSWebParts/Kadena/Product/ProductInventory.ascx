@@ -23,7 +23,10 @@
                     <div class="custom__blockin">
                         <h4>POS#: <%# Eval("SKUProductCustomerReferenceNumber")%></h4>
                         <h3><%#Eval("SKUName") %></h3>
-                        <span><%# ProductType == (int)ProductsType.GeneralInventory? $"${Eval("SKUPrice")} pack of {Eval("QtyPerPack")}" : $"${Eval("EstimatedPrice")} pack of {Eval("QtyPerPack")}" %></span>
+                        <span><%# ProductType == (int)ProductsType.GeneralInventory? $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("SKUPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" : $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("EstimatedPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" %></span>
+                        <b><asp:Label runat="server" Visible='<%# ProductType == (int)ProductsType.PreBuy %>'>
+                            <cms:LocalizedLiteral runat="server" ResourceString="Kadena.PreBuyOrder.CurrentDemand"></cms:LocalizedLiteral>&nbsp;<%# GetDemandCount(Eval<int>("SKUID")) %>
+                        </asp:Label></b>
                         <asp:LinkButton ID="lnkAddToCart" runat="server" CommandArgument='<%# Eval("SKUID") %>' CommandName="Add" OnCommand="lnkAddToCart_Command" Text='<%#AddToCartLinkText%>' EnableViewState="true" Enabled='<%# ProductType == (int)ProductsType.PreBuy ? EnableAddToCart : true %>'></asp:LinkButton>
                     </div>
                     <p><%#Eval("SKUDescription") %></p>
