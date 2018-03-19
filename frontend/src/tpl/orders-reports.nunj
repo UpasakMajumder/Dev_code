@@ -1,0 +1,11 @@
+{% extends "layouts/default.nunj" %}
+
+{% set title = 'Orders Reports' %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
+
+{% block content %}
+  <div class="recent-orders">
+    <div class="r-orders-reports"></div>
+  </div>
+{% endblock %}

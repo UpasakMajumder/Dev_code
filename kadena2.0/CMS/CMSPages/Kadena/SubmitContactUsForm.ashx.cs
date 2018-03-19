@@ -7,6 +7,7 @@ using CMS.Membership;
 using CMS.OnlineForms;
 using CMS.SiteProvider;
 using Kadena.Dto.General;
+using Kadena.Models.Common;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Newtonsoft.Json;
 using System;
@@ -28,7 +29,7 @@ namespace Kadena.CMSPages.Kadena
         public void ProcessRequest(HttpContext context)
         {
             var result = new GeneralResultDTO();
-            context.Response.ContentType = "application/json";
+            context.Response.ContentType = ContentTypes.Json;
 
             string fullName = context.Request.Form["fullName"];
             string companyName = context.Request.Form["companyName"];

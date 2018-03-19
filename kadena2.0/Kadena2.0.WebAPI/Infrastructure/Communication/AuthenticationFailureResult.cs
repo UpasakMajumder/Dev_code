@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Kadena.Models.Common;
+using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -31,7 +32,7 @@ namespace Kadena.WebAPI.Infrastructure.Communication
         {
             var errorDto = new ErrorResponse(ReasonPhrase);
             var requestBody = JsonConvert.SerializeObject(errorDto, CamelCaseSerializer);
-            var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+            var content = new StringContent(requestBody, Encoding.UTF8, ContentTypes.Json);
 
             return new HttpResponseMessage(HttpStatusCode.Unauthorized)
             {

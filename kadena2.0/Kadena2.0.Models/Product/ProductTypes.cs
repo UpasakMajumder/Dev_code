@@ -13,7 +13,7 @@ namespace Kadena.Models.Product
 
         public static bool IsOfType(string types, string type)
         {
-            return types.Contains(type);
+            return types?.Contains(type) ?? false;
         }
 
         public static string[] GetAll()

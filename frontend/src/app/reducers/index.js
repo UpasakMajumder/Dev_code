@@ -9,11 +9,12 @@ import orderDetail from './orderDetail';
 import searchPage from './searchPage';
 import search from './search';
 import isShownHeaderShadow from './headerShadow';
-import recentOrders from './recentOrders';
+import ordersReports from './ordersReports';
 import manageProducts from './manageProducts';
 import modifyMailingList from './modifyMailingList';
 import cartPreview from './cartPreview';
 import products from './products';
+import recentOrders from './recentOrders';
 import dialogAlert from './dialogAlert';
 import cardPayment from './card-payment';
 import languageSelector from './languageSelector';
@@ -28,7 +29,7 @@ const rootReducer = combineReducers({
   search,
   isShownHeaderShadow,
   orderDetail,
-  recentOrders,
+  ordersReports,
   manageProducts,
   modifyMailingList,
   cartPreview,
@@ -37,7 +38,8 @@ const rootReducer = combineReducers({
   dialogAlert,
   cardPayment,
   languageSelector,
-  filteredRecentOrders
+  filteredRecentOrders,
+  recentOrders
 });
 
 export default rootReducer;

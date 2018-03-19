@@ -9,7 +9,7 @@ const {
   searchPage,
   search,
   orderDetail,
-  recentOrders,
+  ordersReports,
   checkoutButtons,
   manageProducts,
   modifyMailingList,
@@ -22,7 +22,8 @@ const {
   pagination,
   staticFields,
   tac,
-  filteredRecentOrders
+  filteredRecentOrders,
+  recentOrders
 } = localization;
 
 export const LOGIN = login;
@@ -33,7 +34,7 @@ export const USER_SETTINGS = userSettings;
 export const ORDER_DETAIL = orderDetail;
 export const SEARCH_PAGE = searchPage;
 export const SEARCH = search;
-export const RECENT_ORDERS = recentOrders;
+export const ORDERS_REPORTS = ordersReports;
 export const CART_PREVIEW = cartPreview;
 export const ADD_TO_CART_URL = addToCartUrl;
 export const PRODUCTS = products;
@@ -45,5 +46,6 @@ export const BUTTONS_UI = checkoutButtons;
 export const LANGUAGES = languages;
 export const PAGINATION = pagination;
 export const STATIC_FIELDS = staticFields;
+export const RECENT_ORDERS = recentOrders;
 export const TAC = tac;
 export const FILTERED_RECENT_ORDERS = filteredRecentOrders;
