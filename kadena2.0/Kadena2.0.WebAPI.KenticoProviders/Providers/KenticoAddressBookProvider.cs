@@ -49,7 +49,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public List<AddressData> GetAddressesList(int customerID)
         {
-            var addressesList =  AddressInfoProvider.GetAddresses(customerID).Columns("AddressID", "AddressPersonalName").WhereEquals("Status", true).ToList();
+            var addressesList = AddressInfoProvider.GetAddresses(customerID).Columns("AddressID", "AddressPersonalName").WhereEquals("Status", true).ToList();
             return mapper.Map<List<AddressData>>(addressesList);
         }
 
@@ -110,9 +110,15 @@ namespace Kadena.WebAPI.KenticoProviders
                 AddressCountryID = address.Country.Id,
                 AddressZip = address.Zip,
                 AddressCustomerID = customer.CustomerID,
-                AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}",
+                AddressPersonalName = address.AddressPersonalName,
                 AddressPhone = address.Phone
             };
+
+            if (string.IsNullOrWhiteSpace(info.AddressPersonalName))
+            {
+                info.AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}";
+            }
+
             info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
             info.SetValue("AddressType", AddressType.Shipping.Code);
             info.SetValue("CompanyName", address.CustomerName);
