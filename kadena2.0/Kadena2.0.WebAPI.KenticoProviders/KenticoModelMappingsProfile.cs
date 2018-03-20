@@ -61,7 +61,9 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.AddressCity, opt => opt.MapFrom(src => src.City))
                 .ForMember(dest => dest.AddressZip, opt => opt.MapFrom(src => src.Zip))
                 .ForMember(dest => dest.AddressStateID, opt => opt.MapFrom(src => src.State.Id))
-                .ForMember(dest => dest.AddressCountryID, opt => opt.MapFrom(src => src.Country.Id));
+                .ForMember(dest => dest.AddressCountryID, opt => opt.MapFrom(src => src.Country.Id))
+                .ForMember(dest => dest.AddressPhone, opt => opt.MapFrom(src => src.Phone))
+                .AfterMap((src, dest) => dest.SetValue("Email", src.Email));
             CreateMap<ShippingOptionInfo, DeliveryOption>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ShippingOptionID))
                 .ForMember(dest => dest.CarrierId, opt => opt.MapFrom(src => src.ShippingOptionCarrierID))
@@ -131,7 +133,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.ArtworkLocation, opt => opt.MapFrom(src => src.GetStringValue("ArtworkLocation", null)))
                 .ForMember(dest => dest.ChiliTemplateID, opt => opt.MapFrom(src => src.GetGuidValue("ChiliTemplateID", Guid.Empty)))
                 .ForMember(dest => dest.ChilliEditorTemplateID, opt => opt.MapFrom(src => src.GetGuidValue("ChilliEditorTemplateID", Guid.Empty)))
-                .ForMember(dest => dest.MailingListGuid, opt => opt.MapFrom(src => src.GetGuidValue("MailingListGuid", Guid.Empty)  ))
+                .ForMember(dest => dest.MailingListGuid, opt => opt.MapFrom(src => src.GetGuidValue("MailingListGuid", Guid.Empty)))
                 .ForMember(dest => dest.MailingListName, opt => opt.MapFrom(src => src.GetStringValue("MailingListName", null)))
                 .ForMember(dest => dest.ProductChiliPdfGeneratorSettingsId, opt => opt.MapFrom(src => src.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty)))
                 .ForMember(dest => dest.ProductChiliWorkspaceId, opt => opt.MapFrom(src => src.GetGuidValue("ProductChiliWorkspaceId", Guid.Empty)))
@@ -154,7 +156,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .AfterMap((src, dest) => dest.SetValue("ProductProductionTime", src.ProductProductionTime))
                 .AfterMap((src, dest) => dest.SetValue("ProductShipTime", src.ProductShipTime))
                 .AfterMap((src, dest) => dest.SetValue("ProductType", src.ProductType))
-                .AfterMap((src, dest) => dest.SetValue("CartItemPrice", src.CartItemPrice ))
+                .AfterMap((src, dest) => dest.SetValue("CartItemPrice", src.CartItemPrice))
                 .AfterMap((src, dest) => dest.SetValue("SKUUnits", src.SKUUnits));
         }
     }

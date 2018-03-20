@@ -59,7 +59,9 @@ namespace Kadena.BusinessLogic.Factories.Checkout
                 AddressPersonalName = shippingAddress.AddressPersonalName,
                 Zip = shippingAddress.Zip,
                 Country = shippingAddress.Country.Name,
-                KenticoAddressID = shippingAddress.Id
+                KenticoAddressID = shippingAddress.Id,
+                Email = shippingAddress.Email,
+                Phone = shippingAddress.Phone
             };
         }
 
