@@ -107,15 +107,6 @@ namespace Kadena2.BusinessLogic.Services.Orders
 
             var notificationEmails = request.EmailConfirmation.Union(new[] { customer.Email });
 
-            if ((request?.DeliveryAddress?.Id ?? 0) < 0)
-            {
-                shoppingCart.SetShoppingCartAddress(request.DeliveryAddress);
-                customer.FirstName = request.DeliveryAddress.CustomerName;
-                customer.LastName = string.Empty;
-                customer.Email = request.DeliveryAddress.Email;
-                customer.Phone = request.DeliveryAddress.Phone;
-            }
-
             var shippingAddress = shoppingCart.GetCurrentCartShippingAddress();
             shippingAddress.Country = localization.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
             shippingAddress.State = localization.GetStates().FirstOrDefault(c => c.Id == shippingAddress.State.Id);
