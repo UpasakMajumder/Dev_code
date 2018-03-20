@@ -46,8 +46,11 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
             var shippingAddress = mapper.Map<DeliveryAddress>(address);
-            shippingAddress.Country = localization.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
-            shippingAddress.State = localization.GetStates().FirstOrDefault(c => c.Id == shippingAddress.State.Id);
+            if (shippingAddress != null)
+            {
+                shippingAddress.Country = localization.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
+                shippingAddress.State = localization.GetStates().FirstOrDefault(c => c.Id == shippingAddress.State.Id);
+            }
             return shippingAddress;
         }
 
