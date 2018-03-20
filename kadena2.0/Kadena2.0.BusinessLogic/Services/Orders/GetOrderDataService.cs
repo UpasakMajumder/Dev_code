@@ -25,7 +25,6 @@ namespace Kadena2.BusinessLogic.Services.Orders
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxService;
-        private readonly IKenticoLocalizationProvider localization;
         private readonly IKenticoSiteProvider siteProvider;
         private readonly IKadenaSettings settings;
         private readonly IOrderDataFactory orderDataFactory;
@@ -37,7 +36,6 @@ namespace Kadena2.BusinessLogic.Services.Orders
            IKenticoUserProvider kenticoUsers,
            IKenticoLogger kenticoLog,
            ITaxEstimationService taxService,
-           IKenticoLocalizationProvider localization,
            IKenticoSiteProvider site,
            IKadenaSettings settings,
            IOrderDataFactory orderDataFactory
@@ -50,7 +48,6 @@ namespace Kadena2.BusinessLogic.Services.Orders
             this.kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
             this.kenticoLog = kenticoLog ?? throw new ArgumentNullException(nameof(kenticoLog));
             this.taxService = taxService ?? throw new ArgumentNullException(nameof(taxService));
-            this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
             this.siteProvider = site ?? throw new ArgumentNullException(nameof(site));
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
             this.orderDataFactory = orderDataFactory ?? throw new ArgumentNullException(nameof(orderDataFactory));
@@ -63,10 +60,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
             var notificationEmails = request.EmailConfirmation.Union(new[] { customer.Email });
 
             var shippingAddress = shoppingCart.GetCurrentCartShippingAddress();
-            shippingAddress.Country = localization.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
-            shippingAddress.State = localization.GetStates().FirstOrDefault(c => c.Id == shippingAddress.State.Id);
             var billingAddress = shoppingCart.GetDefaultBillingAddress();
-            var billingState = localization.GetStates().FirstOrDefault(c => c.Id == billingAddress.StateId);
             var site = siteProvider.GetKenticoSite();
             var paymentMethod = shoppingCart.GetPaymentMethod(request.PaymentMethod.Id);
             var cartItems = shoppingCartItems.GetShoppingCartItems();
@@ -81,7 +75,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
 
             var orderDto = new OrderDTO()
             {
-                BillingAddress = orderDataFactory.CreateBillingAddress(billingAddress, billingState?.StateDisplayName),
+                BillingAddress = orderDataFactory.CreateBillingAddress(billingAddress),
                 ShippingAddress = orderDataFactory.CreateShippingAddress(shippingAddress, customer),
                 Customer = orderDataFactory.CreateCustomer(customer),
                 OrderDate = DateTime.Now,
