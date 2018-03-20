@@ -16,28 +16,10 @@ namespace Kadena.BusinessLogic.Factories.Checkout
 
         public OrderDataFactory(IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoLocalizationProvider kenticoLocalization, IKadenaSettings settings)
         {
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (documents == null)
-            {
-                throw new ArgumentNullException(nameof(documents));
-            }
-            if (kenticoLocalization == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoLocalization));
-            }
-            if (settings == null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-
-            this.resources = resources;
-            this.documents = documents;
-            this.kenticoLocalization = kenticoLocalization;
-            this.settings = settings;
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
+            this.kenticoLocalization = kenticoLocalization ?? throw new ArgumentNullException(nameof(kenticoLocalization));
+            this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
 
