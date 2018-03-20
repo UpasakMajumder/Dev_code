@@ -116,6 +116,7 @@ namespace Kadena.Container.Default
             CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
             CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
             CreateMap<DeliveryAddress, Dto.Settings.AddressDto>()
+                .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.AddressPersonalName))
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Id));
             CreateMap<Dto.Settings.AddressDto, Country>()
