@@ -228,11 +228,9 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var info = mapper.Map<AddressInfo>(address);
             info.AddressName = "TemporaryAddress";
-            info.AddressPersonalName = "TemporaryAddress";
-            info.AddressID = 0;
             info.AddressCustomerID = customerId;
 
-            info.Insert();
+            info.Insert(); 
             cart.ShoppingCartShippingAddress = info;
             cart.SubmitChanges(true);
             return info.AddressID;
@@ -445,7 +443,6 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var addresses = AddressInfoProvider.GetAddresses(customerId)
                 .WhereEquals("AddressName", tempName)
-                .WhereEquals("AddressPersonalName", tempName)
                 .ToList();
 
             addresses.ForEach(a => AddressInfoProvider.DeleteAddressInfo(a));
