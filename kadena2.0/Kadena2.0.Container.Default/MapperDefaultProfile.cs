@@ -122,7 +122,8 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Country));
             CreateMap<Dto.Settings.AddressDto, State>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.State));
-            CreateMap<Kadena.Dto.Settings.AddressDto, DeliveryAddress>()
+            CreateMap<Dto.Settings.AddressDto, DeliveryAddress>()
+                .ForMember(dest => dest.AddressPersonalName, opt => opt.MapFrom(src => src.CustomerName))
                 .ForMember(dest => dest.State, opt =>
                 {
                     opt.MapFrom(src => src);
