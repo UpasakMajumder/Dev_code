@@ -56,7 +56,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
                 KenticoCountryID = shippingAddress.Country.Id,
                 AddressCompanyName = customer.Company,
                 isoCountryCode = shippingAddress.Country.Code,
-                AddressPersonalName = $"{customer.FirstName} {customer.LastName}",
+                AddressPersonalName = shippingAddress.AddressPersonalName,
                 Zip = shippingAddress.Zip,
                 Country = shippingAddress.Country.Name,
                 KenticoAddressID = shippingAddress.Id
