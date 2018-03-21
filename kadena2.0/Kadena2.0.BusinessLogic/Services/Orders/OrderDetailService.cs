@@ -47,67 +47,18 @@ namespace Kadena.BusinessLogic.Services.Orders
             IKenticoBusinessUnitsProvider businessUnits
             )
         {
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            if (orderViewClient == null)
-            {
-                throw new ArgumentNullException(nameof(orderViewClient));
-            }
-            if (mailingClient == null)
-            {
-                throw new ArgumentNullException(nameof(mailingClient));
-            }
-            if (kenticoOrder == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoOrder));
-            }
-            if (shoppingCart == null)
-            {
-                throw new ArgumentNullException(nameof(shoppingCart));
-            }
-            if (products == null)
-            {
-                throw new ArgumentNullException(nameof(products));
-            }
-            if (kenticoUsers == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoUsers));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (kenticoLog == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoLog));
-            }
-            if (localization == null)
-            {
-                throw new ArgumentNullException(nameof(localization));
-            }
-            if (permissions == null)
-            {
-                throw new ArgumentNullException(nameof(permissions));
-            }
-            if (businessUnits == null)
-            {
-                throw new ArgumentNullException(nameof(businessUnits));
-            }
-
-            this.mapper = mapper;
-            this.orderViewClient = orderViewClient;
-            this.kenticoOrder = kenticoOrder;
-            this.shoppingCart = shoppingCart;
-            this.products = products;
-            this.kenticoUsers = kenticoUsers;
-            this.resources = resources;
-            this.mailingClient = mailingClient;
-            this.kenticoLog = kenticoLog;
-            this.localization = localization;
-            this.permissions = permissions;
-            this.businessUnits = businessUnits;
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.orderViewClient = orderViewClient ?? throw new ArgumentNullException(nameof(orderViewClient));
+            this.kenticoOrder = kenticoOrder ?? throw new ArgumentNullException(nameof(kenticoOrder));
+            this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
+            this.products = products ?? throw new ArgumentNullException(nameof(products));
+            this.kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.mailingClient = mailingClient ?? throw new ArgumentNullException(nameof(mailingClient));
+            this.kenticoLog = kenticoLog ?? throw new ArgumentNullException(nameof(kenticoLog));
+            this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
+            this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
+            this.businessUnits = businessUnits ?? throw new ArgumentNullException(nameof(businessUnits));
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)

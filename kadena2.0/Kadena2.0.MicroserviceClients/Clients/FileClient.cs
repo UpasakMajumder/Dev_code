@@ -6,6 +6,7 @@ using System.Web;
 using Kadena2.MicroserviceClients.Clients.Base;
 using System.Net.Http;
 using Kadena2.MicroserviceClients.Contracts.Base;
+using System;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -22,7 +23,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public FileClient(IMicroProperties properties)
         {
-            _properties = properties;
+            _properties = properties ?? throw new ArgumentNullException(nameof(properties));
         }
 
         public string GetFileUrl(string fileName, FileModule moduleName)
