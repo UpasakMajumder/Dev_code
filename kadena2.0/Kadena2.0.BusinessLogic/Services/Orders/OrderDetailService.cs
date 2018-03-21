@@ -198,7 +198,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 OrderedItems = new OrderedItems()
                 {
                     Title = resources.GetResourceString("Kadena.Order.OrderedItemsSection"),
-                    Items = await MapOrderedItems(data.Items)
+                    Items = await MapOrderedItems(data.Items, data.Id)
                 }
             };
 
@@ -234,7 +234,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             return orderDetail;
         }
 
-        private async Task<List<OrderedItem>> MapOrderedItems(List<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO> items)
+        private async Task<List<OrderedItem>> MapOrderedItems(List<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO> items, string orderId)
         {
             var orderedItems = items.Select(i =>
             {
@@ -243,6 +243,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 {
                     Id = i.SkuId,
                     Image = products.GetSkuImageUrl(i.SkuId),
+                    DownloadPdfURL = $"/api/pdf/hires/{orderId}/{i.LineNumber}",
                     MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                     Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                     Quantity = i.Quantity,

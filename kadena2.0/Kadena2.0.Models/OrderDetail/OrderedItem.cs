@@ -1,6 +1,5 @@
 ﻿using Kadena.Models.Checkout;
 using Kadena.Models.Common;
-using System;
 using System.Collections.Generic;
 
 namespace Kadena.Models.OrderDetail
@@ -9,6 +8,7 @@ namespace Kadena.Models.OrderDetail
     {
         public int Id { get; set; }
         public string Image { get; set; }
+        public string DownloadPdfURL { get; set; }
         public string TemplatePrefix { get; set; }
         public string Template { get; set; }
         public string MailingListPrefix { get; set; }
