@@ -47,7 +47,7 @@ namespace Kadena.BusinessLogic.Services
             };
         }
 
-        public bool UserHasAcceptedTac(User user)
+        private bool UserHasAcceptedTac(User user)
         {
             var tacValidFrom = login.GetTaCValidFrom();
             return user.TermsConditionsAccepted > tacValidFrom;

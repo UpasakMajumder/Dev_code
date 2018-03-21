@@ -10,14 +10,12 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoLoginProvider login;
-        private readonly IUserService userService;
 
-        public LoginService(IKenticoUserProvider kenticoUsers, IKenticoResourceService resources, IKenticoLoginProvider login, IUserService userService)
+        public LoginService(IKenticoUserProvider kenticoUsers, IKenticoResourceService resources, IKenticoLoginProvider login)
         {
             this.kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.login = login ?? throw new ArgumentNullException(nameof(login));
-            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         public LoginResult Login(LoginRequest request)
@@ -30,12 +28,6 @@ namespace Kadena.BusinessLogic.Services
 
             var user = kenticoUsers.GetUser(request.LoginEmail);
             if (user == null || !kenticoUsers.UserIsInCurrentSite(user.UserId))
-            {
-                return GetFailedLoginResult("loginEmail", resources.GetResourceString("Kadena.Logon.LogonFailed"));
-            }
-
-            var tacEnabled = resources.GetSettingsKey("KDA_TermsAndConditionsLogin").ToLower() == "true";
-            if (tacEnabled && !userService.UserHasAcceptedTac(user))
             {
                 return GetFailedLoginResult("loginEmail", resources.GetResourceString("Kadena.Logon.LogonFailed"));
             }
