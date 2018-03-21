@@ -16,41 +16,23 @@ namespace Kadena.BusinessLogic.Factories.Checkout
 
         public OrderDataFactory(IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoLocalizationProvider kenticoLocalization, IKadenaSettings settings)
         {
-            if(resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (documents == null)
-            {
-                throw new ArgumentNullException(nameof(documents));
-            }
-            if (kenticoLocalization == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoLocalization));
-            }
-            if (settings == null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-
-            this.resources = resources;
-            this.documents = documents;
-            this.kenticoLocalization = kenticoLocalization;
-            this.settings = settings;
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
+            this.kenticoLocalization = kenticoLocalization ?? throw new ArgumentNullException(nameof(kenticoLocalization));
+            this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
 
-        public AddressDTO CreateBillingAddress(BillingAddress billingAddress, string billingStateDisplayName)
+        public AddressDTO CreateBillingAddress(BillingAddress billingAddress)
         {
             return new AddressDTO()
             {
                 AddressLine1 = billingAddress.Street.Count > 0 ? billingAddress.Street[0] : null,
                 AddressLine2 = billingAddress.Street.Count > 1 ? billingAddress.Street[1] : null,
                 City = billingAddress.City,
-                State = !string.IsNullOrEmpty(billingAddress.State) ? billingAddress.State : billingAddress.Country, // fill in mandatory for countries that have no states
-                StateDisplayName = billingStateDisplayName,
-                KenticoStateID = billingAddress.StateId,
+                State = !string.IsNullOrEmpty(billingAddress.State?.StateCode) ? billingAddress.State?.StateCode : billingAddress.Country, // fill in mandatory for countries that have no states
+                StateDisplayName = billingAddress.State?.StateDisplayName,
+                KenticoStateID = billingAddress.State?.Id ?? 0,
                 KenticoCountryID = billingAddress.CountryId,
                 AddressCompanyName = settings.DefaultSiteCompanyName,
                 isoCountryCode = billingAddress.Country,
@@ -74,10 +56,12 @@ namespace Kadena.BusinessLogic.Factories.Checkout
                 KenticoCountryID = shippingAddress.Country.Id,
                 AddressCompanyName = customer.Company,
                 isoCountryCode = shippingAddress.Country.Code,
-                AddressPersonalName = $"{customer.FirstName} {customer.LastName}",
+                AddressPersonalName = shippingAddress.AddressPersonalName,
                 Zip = shippingAddress.Zip,
                 Country = shippingAddress.Country.Name,
-                KenticoAddressID = shippingAddress.Id
+                KenticoAddressID = shippingAddress.Id,
+                Email = shippingAddress.Email,
+                Phone = shippingAddress.Phone
             };
         }
 
