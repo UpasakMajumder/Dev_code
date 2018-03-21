@@ -62,6 +62,7 @@
     <div class="main-container__inner">
       {% include 'components/header.nunj' %}
       <div class="r-header-shadow"></div>
+      <div class="r-tac"></div>
       {% include "components/product/preview.nunj" %}
       <main class="css-main js-main js-collapse isOpen">
         <script>

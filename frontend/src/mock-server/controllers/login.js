@@ -4,9 +4,9 @@ module.exports = (req, res) => {
     res.json({
       success: true,
       payload: {
-        logonSuccess: false,
+        token: null,
         errorPropertyName: 'password',
-        errorMessage: 'Password is bad'
+        errorMessage: 'Password is incorrect'
       },
       errorMessage: null
     });
@@ -14,7 +14,7 @@ module.exports = (req, res) => {
     res.json({
       success: true,
       payload: {
-        logonSuccess: true,
+        token: `${+new Date}`,
         errorPropertyName: null,
         errorMessage: null
       },

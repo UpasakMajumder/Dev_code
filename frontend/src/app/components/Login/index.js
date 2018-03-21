@@ -1,126 +1,153 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 /* components */
 import Button from 'app.dump/Button';
 import TextInput from 'app.dump/Form/TextInput';
 import PasswordInput from 'app.dump/Form/PasswordInput';
 import CheckboxInput from 'app.dump/Form/CheckboxInput';
 /* ac */
-import {
-  checkTaC,
-  loginSubmit,
-  changeCredentinals
-} from 'app.ac/login';
+import { checkTaC } from 'app.ac/tac';
 /* utilities */
-import { LOGIN } from 'app.globals';
+import { LOGIN, TAC } from 'app.globals';
 import { getSearchObj } from 'app.helpers/location';
+import { emailRegExp } from 'app.helpers/regexp';
+/* constants */
+import { FAILURE } from 'app.consts';
 
 class Login extends Component {
   static defaultProps = {
-    emailText: LOGIN.email,
-    emailPlaceholder: LOGIN.emailPlaceholder,
     keepMeLoggedInText: LOGIN.keepMeLoggedIn,
+    passwordText: LOGIN.password,
+    emailText: LOGIN.email,
     loginText: LOGIN.login,
     passwordPlaceholder: LOGIN.passwordPlaceholder,
-    passwordText: LOGIN.password,
+    emailPlaceholder: LOGIN.emailPlaceholder,
     loginUrl: LOGIN.loginUrl,
-    acceptTaCUrl: LOGIN.acceptTaCUrl,
-    checkTaCUrl: LOGIN.checkTaCUrl
+    emailValidationMessage: LOGIN.emailValidationMessage,
+    passwordValidationMessage: LOGIN.passwordValidationMessage
   };
 
   static propTypes = {
     keepMeLoggedInText: PropTypes.string.isRequired,
     passwordText: PropTypes.string.isRequired,
-    checkTaC: PropTypes.func.isRequired,
-    loginSubmit: PropTypes.func.isRequired,
     emailText: PropTypes.string.isRequired,
     loginText: PropTypes.string.isRequired,
     passwordPlaceholder: PropTypes.string,
     emailPlaceholder: PropTypes.string,
-    login: PropTypes.shape({
-      credentinals: PropTypes.shape({
-        loginEmail: PropTypes.string.isRequired,
-        password: PropTypes.string.isRequired,
-        isKeepMeLoggedIn: PropTypes.bool.isRequired
-      }).isRequired,
-      checkTaC: PropTypes.shape({
-        showTaC: PropTypes.bool.isRequired,
-        url: PropTypes.string.isRequired,
-        isAsked: PropTypes.bool.isRequired
-      }).isRequired,
-      acceptTaC: PropTypes.bool.isRequired,
-      submit: PropTypes.shape({
-        logonSuccess: PropTypes.bool.isRequired,
-        errorPropertyName: PropTypes.string,
-        errorMessage: PropTypes.string,
-        isAsked: PropTypes.bool.isRequired
-      }).isRequired,
-      isLoading: PropTypes.bool.isRequired
-    }).isRequired,
-    loginUrl: PropTypes.string.isRequired
+    loginUrl: PropTypes.string.isRequired,
+    emailValidationMessage: PropTypes.string.isRequired,
+    passwordValidationMessage: PropTypes.string.isRequired
   };
 
-  checkTaCSubmit = () => {
-    const { checkTaCUrl } = LOGIN;
-    const { loginEmail, password } = this.props.login.credentinals;
-    this.props.checkTaC(checkTaCUrl, { loginEmail, password });
+  state = {
+    loginEmail: '',
+    password: '',
+    isKeepMeLoggedIn: false,
+    isLoading: false,
+    invalids: []
   };
 
-  loginSubmit = () => {
-    const { loginUrl } = LOGIN;
-    const { loginEmail, password, isKeepMeLoggedIn } = this.props.login.credentinals;
-    this.props.loginSubmit(loginUrl, { loginEmail, password, isKeepMeLoggedIn });
+  toggleKeepMeLoggedIn = () => this.setState(prevState => ({ isKeepMeLoggedIn: !prevState.isKeepMeLoggedIn }));
+
+  handleChangeField = (field, value) => {
+    this.setState({
+      [field]: value,
+      invalids: this.state.invalids.filter(invalid => invalid.field !== field)
+    });
   };
 
-  componentWillReceiveProps(nextProps) {
-    const { login: loginProps } = this.props;
-    const { login: loginNextProps } = nextProps;
+  isValid = () => {
+    const invalids = [];
 
-    // if necessary not to show TaC
-    if (loginProps.checkTaC.isAsked !== loginNextProps.checkTaC.isAsked
-      && !loginNextProps.submit.isAsked
-      && !loginNextProps.checkTaC.showTaC) {
-      this.loginSubmit();
+    if (!this.state.loginEmail.match(emailRegExp)) {
+      invalids.push({
+        field: 'loginEmail',
+        errorMessage: this.props.emailValidationMessage
+      });
     }
 
-    // if TaC accepted
-    if (loginProps.acceptTaC !== loginNextProps.acceptTaC && loginNextProps.acceptTaC) {
-      this.loginSubmit();
+    if (this.state.password.length === 0) {
+      invalids.push({
+        field: 'password',
+        errorMessage: this.props.passwordValidationMessage
+      });
+    }
+    this.setState({ invalids });
+
+    return !invalids.length;
+  };
+
+  getToken = async () => {
+    const { loginEmail, password, isKeepMeLoggedIn } = this.state;
+    const body = { loginEmail, password, isKeepMeLoggedIn };
+    const response = await axios.post(LOGIN.loginUrl, body);
+    const { success, payload, errorMessage } = response.data;
+    if (success) {
+      if (payload.token) {
+        return payload.token; // return token
+      }
+
+      const invalids = [{ field: payload.errorPropertyName, errorMessage: payload.errorMessage }];
+      this.setState({ invalids });
+      return null;
     }
 
-    // if logged in
-    if (loginProps.submit.isAsked !== loginNextProps.submit.isAsked
-      && loginNextProps.submit.logonSuccess
-      && loginNextProps.submit.isAsked) {
-      const query = getSearchObj();
-      if (query.returnurl) {
-        location.assign(decodeURIComponent(query.returnurl));
-      } else {
-        location.assign('/');
+    window.store.dispatch({
+      type: FAILURE,
+      alert: errorMessage
+    });
+
+    return null;
+  };
+
+  handleSubmit = async () => {
+    this.setState(prevState => ({ isLoading: !prevState.isLoading }));
+    // validation
+    const isValid = this.isValid();
+    if (isValid) {
+      // get token
+      const token = await this.getToken();
+      if (token) {
+        // define redirectUrl to redirect
+        let returnurl;
+        const query = getSearchObj();
+        if (query.returnurl) {
+          returnurl = decodeURIComponent(query.returnurl);
+        } else {
+          returnurl = '/';
+        }
+
+        // checkTaC
+        // redirect
+        this.props.checkTaC({
+          url: TAC.checkTaCUrl,
+          token,
+          redirect: true,
+          returnurl
+        });
       }
     }
-  }
+
+    this.setState(prevState => ({ isLoading: !prevState.isLoading }));
+  };
 
   componentDidMount() {
     document.querySelector('body').addEventListener('keypress', (event) => {
-      if (event.keyCode === 13) this.checkTaCSubmit();
+      if (event.keyCode === 13) this.handleSubmit();
     });
   }
 
-  changeCredentinals = (field, value) => {
-    this.props.changeCredentinals(field, value);
-  };
-
-  static getErrorMessage(propertyName, invalids) {
-    if (!invalids) return '';
-    if (invalids.errorPropertyName === propertyName) return invalids.errorMessage;
-    return '';
+  getErrorMessage = (field) => {
+    if (!this.state.invalids.length) return '';
+    const invalid = this.state.invalids.find(invalid => invalid.field === field);
+    if (!invalid) return '';
+    return invalid.errorMessage;
   }
 
   render() {
     const {
-      login,
       emailText,
       emailPlaceholder,
       keepMeLoggedInText,
@@ -129,7 +156,12 @@ class Login extends Component {
       passwordText
     } = this.props;
 
-    const { credentinals } = login;
+    const {
+      loginEmail,
+      password,
+      isKeepMeLoggedIn,
+      isLoading
+    } = this.state;
 
     return (
       <div>
@@ -138,9 +170,9 @@ class Login extends Component {
             <TextInput
               label={emailText}
               placeholder={emailPlaceholder}
-              value={credentinals.loginEmail}
-              onChange={e => this.changeCredentinals('loginEmail', e.target.value)}
-              error={Login.getErrorMessage('loginEmail', login.submit)}
+              value={loginEmail}
+              onChange={e => this.handleChangeField('loginEmail', e.target.value)}
+              error={this.getErrorMessage('loginEmail')}
             />
           </div>
 
@@ -148,9 +180,9 @@ class Login extends Component {
             <PasswordInput
               label={passwordText}
               placeholder={passwordPlaceholder}
-              value={credentinals.password}
-              onChange={e => this.changeCredentinals('password', e.target.value)}
-              error={Login.getErrorMessage('password', login.submit)}
+              value={password}
+              onChange={e => this.handleChangeField('password', e.target.value)}
+              error={this.getErrorMessage('password')}
             />
           </div>
 
@@ -160,19 +192,20 @@ class Login extends Component {
                 id="dom-1"
                 type="checkbox"
                 label={keepMeLoggedInText}
-                value={credentinals.isKeepMeLoggedIn}
-                onChange={e => this.changeCredentinals('isKeepMeLoggedIn', !credentinals.isKeepMeLoggedIn)}
+                value={isKeepMeLoggedIn}
+                onChange={this.toggleKeepMeLoggedIn}
               />
             </div>
           </div>
 
           <div className="mb-3">
             <div className="text-center">
-              <Button text={loginText}
-                      type="action"
-                      btnClass="login__login-button btn--no-shadow"
-                      isLoading={login.isLoading}
-                      onClick={this.checkTaCSubmit}
+              <Button
+                text={loginText}
+                type="action"
+                btnClass="login__login-button btn--no-shadow"
+                isLoading={isLoading}
+                onClick={this.handleSubmit}
               />
             </div>
           </div>
@@ -182,11 +215,6 @@ class Login extends Component {
   }
 }
 
-export default connect((state) => {
-  const { login } = state;
-  return { login };
-}, {
-  checkTaC,
-  loginSubmit,
-  changeCredentinals
+export default connect(null, {
+  checkTaC
 })(Login);

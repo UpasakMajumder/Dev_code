@@ -57,6 +57,7 @@
   <form>
     {# Main content of the page #}
     <div class="container-fluid">
+      <div class="r-tac"></div>
       {% block content %}{% endblock %}
     </div>
   </form>
@@ -65,6 +66,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 {% include './config.nunj' %}
+
+<script>
+  config.localization.tac.token = null; //turn off TAC
+</script>
 
 {% if _dev %}
   <script src="js/common.js"></script>

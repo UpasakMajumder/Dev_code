@@ -1,5 +1,5 @@
 {
-  "name": "Kadena",
+  "name": "kadena",
   "version": "2.0.0",
   "repository": {
     "type": "git",
@@ -14,7 +14,7 @@
     "lint": "gulp eslint stylelint",
     "prepush-msg": "echo 'Running lint task...' && exit 0",
     "build": "gulp kentico",
-    "start": "concurrently \"gulp --dev\" \"cd src/mock-server && nodemon index.js\"",
+    "start": "concurrently \"gulp --dev\" \"cd src/mock-server && nodemon index.js\" --names \"📦,🐝\" --prefix name",
     "test": "jest",
     "flow": "flow"
   },
