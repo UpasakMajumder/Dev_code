@@ -14,24 +14,14 @@ namespace Kadena.WebAPI.Controllers
         private readonly ILoginService loginService;
         private readonly IMapper mapper;
         private readonly IIdentityService identityService;
+        private readonly IUserService userService;
 
-        public LoginController(ILoginService loginService, IMapper mapper, IIdentityService identityService)
+        public LoginController(ILoginService loginService, IMapper mapper, IIdentityService identityService, IUserService userService)
         {
-            if (loginService == null)
-            {
-                throw new ArgumentNullException(nameof(loginService));
-            }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            if (identityService == null)
-            {
-                throw new ArgumentNullException(nameof(identityService));
-            }
-            this.loginService = loginService;
-            this.mapper = mapper;
-            this.identityService = identityService;
+            this.loginService = loginService ?? throw new ArgumentNullException(nameof(loginService));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         [HttpPost]
@@ -49,7 +39,7 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult CheckTaC([FromBody] CheckTaCRequestDTO request)
         {
             var loginRequestModel = mapper.Map<LoginRequest>(request);
-            var serviceResult = loginService.CheckTaC(loginRequestModel);
+            var serviceResult = userService.CheckTaC(loginRequestModel);
             var result = mapper.Map<CheckTaCResultDTO>(serviceResult);
             return ResponseJson(result);
         }
@@ -60,7 +50,7 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult AcceptTaC([FromBody] AcceptTaCRequestDTO request)
         {
             var loginRequestModel = mapper.Map<LoginRequest>(request);
-            loginService.AcceptTaC(loginRequestModel);
+            userService.AcceptTaC(loginRequestModel);
             return SuccessJson();
         }
 
