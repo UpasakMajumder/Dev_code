@@ -7,6 +7,7 @@ using CMS.Membership;
 using CMS.OnlineForms;
 using CMS.SiteProvider;
 using Kadena.Dto.General;
+using Kadena.Models.Common;
 using Kadena.Old_App_Code.Kadena.Forms;
 using Newtonsoft.Json;
 using System;
@@ -29,7 +30,7 @@ namespace Kadena.CMSPages.Kadena
         public void ProcessRequest(HttpContext context)
         {
             var result = new GeneralResultDTO();
-            context.Response.ContentType = "application/json";
+            context.Response.ContentType = ContentTypes.Json;
 
             string description = context.Request.Form["description"];
             var files = new List<HttpPostedFile>();
@@ -61,7 +62,9 @@ namespace Kadena.CMSPages.Kadena
 
                 foreach (var requestFile in files)
                 {
-                    if (requestFile.ContentType != "image/png" && requestFile.ContentType != "image/jpeg" && requestFile.ContentType != "application/pdf")
+                    if (requestFile.ContentType != ContentTypes.Png 
+                        && requestFile.ContentType != ContentTypes.Jpeg 
+                        && requestFile.ContentType != ContentTypes.Pdf)
                     {
                         result = new GeneralResultDTO { success = false, errorMessage = ResHelper.GetString("Kadena.NewProductForm.FileExtensionIsNotValid", LocalizationContext.CurrentCulture.CultureCode) };
                         context.Response.Write(JsonConvert.SerializeObject(result));

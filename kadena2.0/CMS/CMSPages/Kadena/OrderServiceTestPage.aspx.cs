@@ -1,5 +1,6 @@
 ﻿using CMS.DataEngine;
 using CMS.SiteProvider;
+using Kadena.Models.Common;
 using System;
 using System.IO;
 using System.Net;
@@ -123,7 +124,7 @@ namespace CMSApp.CMSPages.Kadena
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
       var request = (HttpWebRequest)WebRequest.Create(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_OrderServiceEndpoint"));
-      request.ContentType = "application/json";
+      request.ContentType = ContentTypes.Json;
       request.Method = "POST";
 
       using (var streamWriter = new StreamWriter(request.GetRequestStream()))

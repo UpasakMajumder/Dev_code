@@ -6,6 +6,7 @@ using System.IO;
 using System.Web;
 using Kadena.Old_App_Code.Kadena.Imports;
 using System.Linq;
+using Kadena.Models.Common;
 
 namespace Kadena.CMSModules.Kadena.Pages.Users
 {
@@ -107,7 +108,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Users
         private void WriteFileToResponse(string filename, byte[] data)
         {
             Response.Clear();
-            Response.ContentType = "application/octet-stream";
+            Response.ContentType = ContentTypes.Binary;
             Response.AddHeader("Content-Disposition", "attachment; filename=" + filename);
 
             Response.OutputStream.Write(data, 0, data.Length);

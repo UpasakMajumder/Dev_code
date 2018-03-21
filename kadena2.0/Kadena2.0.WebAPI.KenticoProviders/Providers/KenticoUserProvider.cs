@@ -18,7 +18,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             _logger = logger;
             _mapper = mapper;
-        }        
+        }
 
         public Customer GetCurrentCustomer()
         {
@@ -102,6 +102,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public void CreateUser(User user, int siteId, UserSettings userSettings = null)
         {
             var newUser = _mapper.Map<UserInfo>(user);
+            newUser.Enabled = true;
             newUser.Insert();
             
             var newUserId = newUser.UserID;
@@ -128,7 +129,7 @@ namespace Kadena.WebAPI.KenticoProviders
             userInfo.FirstName = user.FirstName;
             userInfo.LastName = user.LastName;
             userInfo.Email = user.Email;
-            
+
             userInfo.Update();
 
             if (userSettings != null)

@@ -9,35 +9,43 @@
                         <th><%= ProductName%> </th>
                         <th><%= Quantity %></th>
                         <th><%= Price %></th>
+                        <th><%= Action %></th>
                     </tr>
         </HeaderTemplate>
         <ItemTemplate>
             <td><%# Eval("SKUNumber") %></td>
             <td><%# Eval("SKUName") %> </td>
             <td>
-                <asp:Label runat="server" ID="lblUnits" Text='<%# Eval("SKUUnits") %>'></asp:Label>
+                <asp:TextBox runat="server" TextMode="Number" ID="txtUnits" min="1" CssClass="input__text js-ItemQuantity" onkeypress="return isNumber(event)" Text='<%# Eval("SKUUnits") %>' />
                 <asp:HiddenField runat="server" ID="hdnCartItemID" Value='<%# Eval("CartItemID") %>' />
             </td>
             <td>
                 <asp:Label runat="server" ID="lblPrice" Text='<%#(EvalInteger("ShoppingCartInventoryType")==1) ? (CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(0, CurrentSite.SiteID)):(CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalInteger("SKUUnits")*EvalDouble("SKUPrice"), CurrentSite.SiteID))%>'></asp:Label>
                 <asp:HiddenField runat="server" ID="hdnSKUPrice" Value='<%# (EvalInteger("ShoppingCartInventoryType")==1) ? 0 : EvalInteger("SKUUnits")*EvalDouble("SKUPrice") %>' />
             </td>
+            <td>
+                <div class="webform_view">
+                    <asp:Label ID="lblCartItemID" runat="server" Text='<%# Eval("CartItemID") %>' Visible="false" />
+                    <asp:LinkButton ID="linkRemoveItem" CausesValidation="false" runat="server" CommandArgument='<%# Eval("CartItemID") %>' CommandName="delete" OnCommand="linkRemoveItem_Command" CssClass="fa fa-trash delete_btn" ></asp:LinkButton>
+                </div>
+            </td>
             </tr>
+       
         </ItemTemplate>
     </cms:QueryRepeater>
     <tr>
-        <td colspan="2" ><%= Shipping %></td>
+        <td colspan="2"><%= Shipping %></td>
         <td>
             <asp:Label runat="server" ID="lblShippingOption" Visible="false"></asp:Label>
         </td>
-        <td >
+        <td>
             <asp:Label ID="lblShippingCharge" runat="server" />
         </td>
     </tr>
     <tr>
         <td colspan="3"><%= BusinessUnit %></td>
         <td>
-            <asp:DropDownList runat="server" ID="ddlBusinessUnits" CssClass="js-BusinessUnit" EnableViewState="true" ></asp:DropDownList>
+            <asp:DropDownList runat="server" ID="ddlBusinessUnits" OnSelectedIndexChanged="ddlBusinessUnits_SelectedIndexChanged" AutoPostBack="true" CssClass="js-BusinessUnit" EnableViewState="true"></asp:DropDownList>
             <asp:Label ID="lblTotalUnits" runat="server" />
         </td>
     </tr>
@@ -49,6 +57,7 @@
     </tr>
     </tbody>
 </table>
+   
     <asp:HiddenField runat="server" ID="hdnDeleteSuccess" />
 </div>
 <div class="dialog" id="divDailogue" runat="server">

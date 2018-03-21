@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Kadena.Dto.Common;
+using System.Collections.Generic;
 
 namespace Kadena.Dto.RecentOrders
 {

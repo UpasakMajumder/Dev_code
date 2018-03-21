@@ -135,10 +135,10 @@ namespace Kadena.BusinessLogic.Services
                 logger.LogInfo(this.GetType().Name, "ENSURESAMLCUSTOMER", "Customer info extraction has failed.");
                 return null;
             }
-            var existingCustomer = userProvider.GetCustomer(userId);
+            var existingCustomer = userProvider.GetCustomerByUser(userId);
             if (existingCustomer == null)
             {
-                userProvider.CreateCustomer(newCustomer);
+                newCustomer.Id = userProvider.CreateCustomer(newCustomer);
                 userProvider.LinkCustomerToUser(newCustomer.Id, userId);
             }
             else
@@ -153,8 +153,8 @@ namespace Kadena.BusinessLogic.Services
         private DeliveryAddress EnsureUpdateAddress(AddressDto address, int customerId)
         {
             var newAddress = mapper.Map<DeliveryAddress>(address);
-            var existingAddresses = addressProvider.GetAddressesList(customerId);
-            if (existingAddresses.Count == 0)
+            var existingAddresses = addressProvider.GetCustomerAddresses(customerId, AddressType.Shipping);
+            if (existingAddresses.Length == 0)
             {
                 addressProvider.SaveShippingAddress(newAddress, customerId);
             }

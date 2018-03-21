@@ -177,9 +177,9 @@ result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}"
           <property name="inlinescript">
 <![CDATA[
 config.localization.recentOrders = {
-      getHeaders: '/api/recentorders/getheaders',
-      getPageItems: '/api/recentorders/getbody'
-  };
+  getHeaders: '/api/recentorders/getheaders',
+  getPageItems: '/api/recentorders/getbody'
+};
 ]]>
           </property>
           <property name="inlinescriptpagelocation">Header</property>

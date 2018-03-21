@@ -27,11 +27,13 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKListService mailingService;
         private readonly IUserDataServiceClient userDataClient;
         private readonly IShoppingCartProvider shoppingCart;
+        private readonly IShoppingCartItemsProvider shoppingCartItems;
         private readonly ICheckoutPageFactory checkoutfactory;
         private readonly IKenticoLogger log;
         private readonly IKenticoAddressBookProvider addressBookProvider;
         private readonly IKenticoProductsProvider productsProvider;
         private readonly IKenticoBusinessUnitsProvider businessUnitsProvider;
+        private readonly IDynamicPriceRangeProvider dynamicPrices;
 
         public ShoppingCartService(IKenticoSiteProvider kenticoSite,
                                    IKenticoLocalizationProvider localization,
@@ -43,88 +45,31 @@ namespace Kadena.BusinessLogic.Services
                                    IKListService mailingService,
                                    IUserDataServiceClient userDataClient,
                                    IShoppingCartProvider shoppingCart,
+                                   IShoppingCartItemsProvider shoppingCartItems,
                                    ICheckoutPageFactory checkoutfactory,
                                    IKenticoLogger log,
                                    IKenticoAddressBookProvider addressBookProvider,
                                    IKenticoProductsProvider productsProvider,
-                                   IKenticoBusinessUnitsProvider businessUnitsProvider)
+                                   IKenticoBusinessUnitsProvider businessUnitsProvider,
+                                   IDynamicPriceRangeProvider dynamicPrices)
         {
-            if (kenticoSite == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoSite));
-            }
-            if (localization == null)
-            {
-                throw new ArgumentNullException(nameof(localization));
-            }
-            if (permissions == null)
-            {
-                throw new ArgumentNullException(nameof(permissions));
-            }
-            if (kenticoUsers == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoUsers));
-            }
-            if (addresses == null)
-            {
-                throw new ArgumentNullException(nameof(addresses));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (taxCalculator == null)
-            {
-                throw new ArgumentNullException(nameof(taxCalculator));
-            }
-            if (mailingService == null)
-            {
-                throw new ArgumentNullException(nameof(mailingService));
-            }
-            if (userDataClient == null)
-            {
-                throw new ArgumentNullException(nameof(userDataClient));
-            }
-            if (shoppingCart == null)
-            {
-                throw new ArgumentNullException(nameof(shoppingCart));
-            }
-            if (checkoutfactory == null)
-            {
-                throw new ArgumentNullException(nameof(checkoutfactory));
-            }
-            if (log == null)
-            {
-                throw new ArgumentNullException(nameof(log));
-            }
-            if (addressBookProvider == null)
-            {
-                throw new ArgumentNullException(nameof(addressBookProvider));
-            }
-            if (productsProvider == null)
-            {
-                throw new ArgumentNullException(nameof(productsProvider));
-            }
-            if (businessUnitsProvider == null)
-            {
-                throw new ArgumentNullException(nameof(businessUnitsProvider));
-            }
-
-            this.kenticoSite = kenticoSite;
-            this.localization = localization;
-            this.permissions = permissions;
-            this.kenticoUsers = kenticoUsers;
-            this.kenticoAddresses = addresses;
-            this.resources = resources;
-            this.taxCalculator = taxCalculator;
-            this.mailingService = mailingService;
-            this.userDataClient = userDataClient;
-            this.shoppingCart = shoppingCart;
-            this.checkoutfactory = checkoutfactory;
-            this.log = log;
-            this.addressBookProvider = addressBookProvider;
-            this.productsProvider = productsProvider;
-            this.businessUnitsProvider = businessUnitsProvider;
+            this.kenticoSite = kenticoSite ?? throw new ArgumentNullException(nameof(kenticoSite));
+            this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
+            this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
+            this.kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
+            this.kenticoAddresses = addresses ?? throw new ArgumentNullException(nameof(addresses));
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.taxCalculator = taxCalculator ?? throw new ArgumentNullException(nameof(taxCalculator));
+            this.mailingService = mailingService ?? throw new ArgumentNullException(nameof(mailingService));
+            this.userDataClient = userDataClient ?? throw new ArgumentNullException(nameof(userDataClient));
+            this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
+            this.shoppingCartItems = shoppingCartItems ?? throw new ArgumentNullException(nameof(shoppingCartItems));
+            this.checkoutfactory = checkoutfactory ?? throw new ArgumentNullException(nameof(checkoutfactory));
+            this.log = log ?? throw new ArgumentNullException(nameof(log));
+            this.addressBookProvider = addressBookProvider ?? throw new ArgumentNullException(nameof(addressBookProvider));
+            this.productsProvider = productsProvider ?? throw new ArgumentNullException(nameof(productsProvider));
+            this.businessUnitsProvider = businessUnitsProvider ?? throw new ArgumentNullException(nameof(businessUnitsProvider));
+            this.dynamicPrices = dynamicPrices ?? throw new ArgumentNullException(nameof(dynamicPrices));
         }
 
         public async Task<CheckoutPage> GetCheckoutPage()
@@ -186,7 +131,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var deliveryAddress = shoppingCart.GetCurrentCartShippingAddress();
 
-            var isShippingApplicable = shoppingCart.GetShoppingCartItems()
+            var isShippingApplicable = shoppingCartItems.GetShoppingCartItems()
                 .Any(item => !item.IsMailingList);
             if (!isShippingApplicable)
             {
@@ -363,14 +308,14 @@ namespace Kadena.BusinessLogic.Services
 
         public CartItems ChangeItemQuantity(int id, int quantity)
         {
-            shoppingCart.SetCartItemQuantity(id, quantity);
+            shoppingCartItems.SetCartItemQuantity(id, quantity);
             return GetCartItems();
         }
 
         public CartItems RemoveItem(int id)
         {
-            shoppingCart.RemoveCartItem(id);
-            var itemsCount = shoppingCart.GetShoppingCartItemsCount();
+            shoppingCartItems.RemoveCartItem(id);
+            var itemsCount = shoppingCartItems.GetShoppingCartItemsCount();
             if (itemsCount == 0)
             {
                 shoppingCart.ClearCart();
@@ -381,7 +326,7 @@ namespace Kadena.BusinessLogic.Services
 
         public CartItems GetCartItems()
         {
-            var cartItems = shoppingCart.GetShoppingCartItems();
+            var cartItems = shoppingCartItems.GetShoppingCartItems();
             var cartItemsTotals = shoppingCart.GetShoppingCartTotals();
             var countOfItemsString = cartItems.Length == 1 ? resources.GetResourceString("Kadena.Checkout.ItemSingular") : resources.GetResourceString("Kadena.Checkout.ItemPlural");
 
@@ -398,7 +343,7 @@ namespace Kadena.BusinessLogic.Services
         public CartItemsPreview ItemsPreview()
         {
             bool userCanSeePrices = permissions.UserCanSeePrices();
-            var cartItems = shoppingCart.GetShoppingCartItems(userCanSeePrices);
+            var cartItems = shoppingCartItems.GetShoppingCartItems(userCanSeePrices);
 
             var preview = new CartItemsPreview
             {
@@ -421,10 +366,43 @@ namespace Kadena.BusinessLogic.Services
             return preview;
         }
 
-        public async Task<AddToCartResult> AddToCart(NewCartItem item)
+        public async Task<AddToCartResult> AddToCart(NewCartItem newItem)
         {
-            var mailingList = await mailingService.GetMailingList(item.ContainerId);
-            var addedItem = shoppingCart.AddCartItem(item, mailingList);
+            var addedAmount = newItem.Quantity;
+
+            if (addedAmount < 1)
+            {
+                throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
+            }
+
+            var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);
+
+            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.InventoryProduct))
+            {
+                EnsureInventoryAmount(cartItem, newItem.Quantity, cartItem.SKUUnits);
+            }
+            
+            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.MailingProduct))
+            {
+                await SetMailingList(cartItem, newItem.ContainerId, addedAmount);
+            }
+
+            shoppingCartItems.SetArtwork(cartItem, newItem.DocumentId);
+
+            SetDynamicPrice(cartItem, newItem.DocumentId);
+
+            if (!string.IsNullOrEmpty(newItem.CustomProductName))
+            {
+                cartItem.CartItemText = newItem.CustomProductName;
+            }
+
+            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))
+            {
+                cartItem.SKUUnits = newItem.Quantity;
+            }
+
+            shoppingCartItems.SaveCartItem(cartItem);
+
             var result = new AddToCartResult
             {
                 CartPreview = ItemsPreview(),
@@ -434,6 +412,56 @@ namespace Kadena.BusinessLogic.Services
                 }
             };
             return result;
+        }
+
+        private void SetDynamicPrice(CartItemEntity cartItem, int documentId)
+        {
+            var price = dynamicPrices.GetDynamicPrice(cartItem.SKUUnits, documentId);
+            if (price > decimal.MinusOne)
+            {
+                cartItem.CartItemPrice = price;
+            }
+            else
+            {
+                cartItem.CartItemPrice = null;
+            }
+        }
+
+        private async Task SetMailingList(CartItemEntity cartItem, Guid containerId, int addedAmount)
+        {
+            var mailingList = await mailingService.GetMailingList(containerId);
+
+            if (mailingList?.AddressCount != addedAmount)
+            {
+                throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
+            }
+
+            if (mailingList != null)
+            {
+                cartItem.MailingListName = mailingList.Name;
+                cartItem.MailingListGuid = Guid.Parse(mailingList.Id);
+            }
+
+            cartItem.SKUUnits = addedAmount;
+        }
+
+        private void EnsureInventoryAmount(CartItemEntity item, int addedQuantity, int resultedQuantity)
+        {
+            var availableQuantity = shoppingCart.GetStockQuantity(item.SKUID);
+
+            if (addedQuantity > availableQuantity)
+            {
+                throw new ArgumentException(resources.GetResourceString("Kadena.Product.LowerNumberOfAvailableProducts"));
+            }
+            
+            if (resultedQuantity > availableQuantity)
+            {
+                var errorText = string.Format(resources.GetResourceString("Kadena.Product.ItemsInCartExceeded"),
+                                              resultedQuantity - addedQuantity,
+                                              availableQuantity - resultedQuantity + addedQuantity);
+
+                throw new ArgumentException(errorText);
+            }
         }
 
         private bool GetOtherAddressSettingsValue()

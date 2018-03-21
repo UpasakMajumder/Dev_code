@@ -47,7 +47,7 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers
 
             foreach (var role in roles)
             {
-                UserInfoProvider.AddUserToRole(userName, siteName, role);
+                UserInfoProvider.AddUserToRole(userName, role, siteName);
             }
         }
 

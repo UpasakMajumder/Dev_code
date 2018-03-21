@@ -10,6 +10,8 @@ using Kadena.Models.Product;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Moq.AutoMock;
 using Kadena.Models.Membership;
+using System;
+using Kadena2.MicroserviceClients.Contracts;
 
 namespace Kadena.Tests.WebApi
 {
@@ -81,12 +83,12 @@ namespace Kadena.Tests.WebApi
                 .Returns(new[] { CreateDeliveryCarrier() });
             shoppingCart.Setup(p => p.GetPaymentMethods())
                 .Returns(new[] { CreatePaymentMethod() });
-            shoppingCart.Setup(p => p.GetShoppingCartItems(It.IsAny<bool>()))
-                .Returns(() => new[] { CreateCartitem(1)});
             shoppingCart.Setup(p => p.GetShoppingCartTotals())
                 .Returns(() => GetShoppingCartTotals(100));
-            shoppingCart.Setup(p => p.AddCartItem(It.IsAny<NewCartItem>(), null))
-                .Returns(() => CreateCartitem(1));
+
+            var shoppingCartItems = autoMocker.GetMock<IShoppingCartItemsProvider>();
+            shoppingCartItems.Setup(p => p.GetShoppingCartItems(It.IsAny<bool>()))
+                .Returns(() => new[] { CreateCartitem(1) });
 
             var kenticoResource = autoMocker.GetMock<IKenticoResourceService>();
             kenticoResource.Setup(m => m.GetResourceString("Kadena.Checkout.CountOfItems"))
@@ -133,17 +135,16 @@ namespace Kadena.Tests.WebApi
             var sut = CreateShoppingCartService(autoMocker);
             var cartItems = new []{ CreateCartitem(1), CreateCartitem(2) };
             var mockShoppingCart = autoMocker.GetMock<IShoppingCartProvider>();
-            mockShoppingCart.Setup(m => m.GetShoppingCartItems(true))
-                .Returns(cartItems);
             mockShoppingCart.Setup(m => m.GetShoppingCartTotals())
                 .Returns(new ShoppingCartTotals() { TotalItemsPrice = 1, TotalShipping = 2, TotalTax = 3});
+            var mockShoppingCartItems = autoMocker.GetMock<IShoppingCartItemsProvider>();
 
             // Act
             var result = sut.ChangeItemQuantity(1, 100);
 
             // Assert
             Assert.NotNull(result);
-            mockShoppingCart.Verify(m => m.SetCartItemQuantity(1,100), Times.Once);
+            mockShoppingCartItems.Verify(m => m.SetCartItemQuantity(1,100), Times.Once);
         }
 
 
@@ -225,22 +226,6 @@ namespace Kadena.Tests.WebApi
             Assert.NotNull(result);
             Assert.NotNull(result.Items);
             Assert.Single(result.Items);
-        }
-
-        [Fact]
-        public async Task AddToCart()
-        {
-            // Arrange 
-            var autoMocker = new AutoMocker();
-            var sut = CreateShoppingCartService(autoMocker);
-
-            // Act
-            var result = await sut.AddToCart(new NewCartItem());
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.NotNull(result.CartPreview.Items);
-            Assert.Single(result.CartPreview.Items);
-        }
+        }     
     }
 }

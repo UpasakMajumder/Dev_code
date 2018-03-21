@@ -13,6 +13,7 @@ using CMS.Helpers;
 using CMS.CustomTables;
 using Kadena.Models.CreditCard;
 using Kadena.Models.Membership;
+using Kadena.Models.Checkout;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -59,7 +60,8 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.AddressCity, opt => opt.MapFrom(src => src.City))
                 .ForMember(dest => dest.AddressZip, opt => opt.MapFrom(src => src.Zip))
                 .ForMember(dest => dest.AddressStateID, opt => opt.MapFrom(src => src.State.Id))
-                .ForMember(dest => dest.AddressCountryID, opt => opt.MapFrom(src => src.Country.Id));
+                .ForMember(dest => dest.AddressCountryID, opt => opt.MapFrom(src => src.Country.Id))
+                .ForMember(dest => dest.AddressPhone, opt => opt.MapFrom(src => src.Phone));
             CreateMap<ShippingOptionInfo, DeliveryOption>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ShippingOptionID))
                 .ForMember(dest => dest.CarrierId, opt => opt.MapFrom(src => src.ShippingOptionCarrierID))
@@ -93,8 +95,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.CustomerCompany))
                 .ForMember(dest => dest.SiteId, opt => opt.MapFrom(src => src.CustomerSiteID))
                 .ForMember(dest => dest.DefaultShippingAddressId, opt => opt.MapFrom(src => src.GetIntegerValue(KenticoAddressBookProvider.CustomerDefaultShippingAddresIDFieldName, 0)))
-                .AfterMap((src, dest) => dest.PreferredLanguage = src.CustomerUser?.PreferredCultureCode ?? string.Empty)
-                .ReverseMap();
+                .AfterMap((src, dest) => dest.PreferredLanguage = src.CustomerUser?.PreferredCultureCode ?? string.Empty);
 
             CreateMap<CarrierInfo, DeliveryCarrier>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarrierID))
@@ -127,6 +128,46 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.CodeName, opt => opt.MapFrom(src => src.RoleName))
                 .ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.RoleDisplayName))
                 .ReverseMap();
+
+            CreateMap<ShoppingCartItemInfo, CartItemEntity>()
+                .ForMember(dest => dest.ArtworkLocation, opt => opt.MapFrom(src => src.GetStringValue("ArtworkLocation", null)))
+                .ForMember(dest => dest.ChiliTemplateID, opt => opt.MapFrom(src => src.GetGuidValue("ChiliTemplateID", Guid.Empty)))
+                .ForMember(dest => dest.ChilliEditorTemplateID, opt => opt.MapFrom(src => src.GetGuidValue("ChilliEditorTemplateID", Guid.Empty)))
+                .ForMember(dest => dest.MailingListGuid, opt => opt.MapFrom(src => src.GetGuidValue("MailingListGuid", Guid.Empty)  ))
+                .ForMember(dest => dest.MailingListName, opt => opt.MapFrom(src => src.GetStringValue("MailingListName", null)))
+                .ForMember(dest => dest.ProductChiliPdfGeneratorSettingsId, opt => opt.MapFrom(src => src.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty)))
+                .ForMember(dest => dest.ProductChiliWorkspaceId, opt => opt.MapFrom(src => src.GetGuidValue("ProductChiliWorkspaceId", Guid.Empty)))
+                .ForMember(dest => dest.ProductPageID, opt => opt.MapFrom(src => src.GetIntegerValue("ProductPageID", 0)))
+                .ForMember(dest => dest.ProductProductionTime, opt => opt.MapFrom(src => src.GetValue("ProductProductionTime", string.Empty)))
+                .ForMember(dest => dest.ProductShipTime, opt => opt.MapFrom(src => src.GetValue("ProductShipTime", string.Empty)))
+                .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.GetValue("ProductType", string.Empty)))
+                .ForMember(dest => dest.CartItemPrice, opt => opt.MapFrom(src => (decimal)src.GetDoubleValue("CartItemPrice", 0.0d)))
+                .ForMember(dest => dest.SKUUnits, opt => opt.MapFrom(src => src.GetIntegerValue("SKUUnits", 0)));
+
+            CreateMap<CartItemEntity, ShoppingCartItemInfo>()
+                .AfterMap((src, dest) => dest.SetValue("ArtworkLocation", src.ArtworkLocation))
+                .AfterMap((src, dest) => dest.SetValue("ChiliTemplateID", src.ChiliTemplateID))
+                .AfterMap((src, dest) => dest.SetValue("ChilliEditorTemplateID", src.ChilliEditorTemplateID))
+                .AfterMap((src, dest) => dest.SetValue("MailingListGuid", src.MailingListGuid))
+                .AfterMap((src, dest) => dest.SetValue("MailingListName", src.MailingListName))
+                .AfterMap((src, dest) => dest.SetValue("ProductChiliPdfGeneratorSettingsId", src.ProductChiliPdfGeneratorSettingsId))
+                .AfterMap((src, dest) => dest.SetValue("ProductChiliWorkspaceId", src.ProductChiliWorkspaceId))
+                .AfterMap((src, dest) => dest.SetValue("ProductPageID", src.ProductPageID))
+                .AfterMap((src, dest) => dest.SetValue("ProductProductionTime", src.ProductProductionTime))
+                .AfterMap((src, dest) => dest.SetValue("ProductShipTime", src.ProductShipTime))
+                .AfterMap((src, dest) => dest.SetValue("ProductType", src.ProductType))
+                .AfterMap((src, dest) => dest.SetValue("CartItemPrice", src.CartItemPrice ))
+                .AfterMap((src, dest) => dest.SetValue("SKUUnits", src.SKUUnits));
+            CreateMap<Customer, CustomerInfo>()
+                .ForMember(dest => dest.CustomerID, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.CustomerFirstName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.CustomerLastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.CustomerEmail, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.CustomerGUID, opt => opt.MapFrom(src => new Guid(src.CustomerNumber)))
+                .ForMember(dest => dest.CustomerPhone, opt => opt.MapFrom(src => src.Phone))
+                .ForMember(dest => dest.CustomerUserID, opt => opt.MapFrom(src => src.UserID))
+                .ForMember(dest => dest.CustomerCompany, opt => opt.MapFrom(src => src.Company))
+                .ForMember(dest => dest.CustomerSiteID, opt => opt.MapFrom(src => src.SiteId));
 
             CreateMap<User, UserInfo>()
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"));

@@ -20,16 +20,22 @@ namespace Kadena.Dto.Order
         [DataMember(Name = "shippingDate")]
         public DateTime? ShippingDate { get; set; }
 
+        [DataMember(Name = "trackingNumber")]
+        public string TrackingNumber { get; set; }
+
         [DataMember(Name = "totalCost")]
         public double TotalPrice { get; set; }
 
         [DataMember(Name = "clientId")]
         public int CustomerId { get; set; }
 
+        [DataMember(Name = "siteName")]
+        public string SiteName { get; set; }
+
         [DataMember(Name = "items")]
         public IEnumerable<OrderItemDto> Items { get; set; }
 
         [DataMember(Name = "campaign")]
-        public CampaignDTO campaign { get; set; }
+        public CampaignDTO Campaign { get; set; }
     }
 }
