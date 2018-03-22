@@ -4,6 +4,7 @@ using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.SiteProvider;
 using Kadena.Container.Default;
+using Kadena.Helpers.Data;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Collections.Generic;
@@ -35,8 +36,8 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
                             data.Payload.Orders.Select(o => o.CustomerId));
 
                         // Unigrid accept only DataSet as source type.
-                        grdOrders.DataSource = ToDataSet(
-                            data.Payload.Orders.Select(o =>
+                        grdOrders.DataSource = data.Payload.Orders
+                            .Select(o =>
                             {
                                 var customer = customers[o.CustomerId] as CustomerInfo;
                                 return new
@@ -49,7 +50,8 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
                                                         $"{customer.CustomerFirstName} {customer.CustomerLastName}"
                                                         : string.Empty
                                 };
-                            }));
+                            })
+                            .ToDataSet();
                     }
                 }
             }
@@ -59,30 +61,6 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
                 var exc = new InvalidOperationException(data?.ErrorMessages);
                 EventLogProvider.LogException("OrdersList - Load", "EXCEPTION", exc);
             }
-        }
-
-        private static DataSet ToDataSet<T>(IEnumerable<T> list)
-        {
-            var properties = typeof(T).GetProperties();
-            var table = new DataTable();
-
-            // Add a column to table for each public property on T   
-            foreach (var propInfo in properties)
-            {
-                table.Columns.Add(propInfo.Name, propInfo.PropertyType);
-            }
-
-            //go through each property on T and add each value to the table   
-            foreach (T item in list)
-            {
-                DataRow row = table.NewRow();
-                foreach (var propInfo in properties)
-                {
-                    row[propInfo.Name] = propInfo.GetValue(item, null);
-                }
-                table.Rows.Add(row);
-            }
-            return new DataSet { Tables = { table } };
         }
     }
 }
