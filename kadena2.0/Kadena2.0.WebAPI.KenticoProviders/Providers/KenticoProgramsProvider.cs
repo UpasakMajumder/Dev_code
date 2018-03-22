@@ -53,7 +53,8 @@ namespace Kadena.WebAPI.KenticoProviders
                     ProgramID = program.GetIntegerValue("ProgramID", default(int)),
                     ProgramName = program.DocumentName,
                     BrandID = program.GetIntegerValue("BrandID", default(int)),
-                    CampaignID = program.GetIntegerValue("CampaignID", default(int))
+                    CampaignID = program.GetIntegerValue("CampaignID", default(int)),
+                    GlobalAdminNotified= program.GetBooleanValue("GlobalAdminNotified", false)
                 };
             }
             else

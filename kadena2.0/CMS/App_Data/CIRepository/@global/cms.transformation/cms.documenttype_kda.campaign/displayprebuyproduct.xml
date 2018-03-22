@@ -23,6 +23,7 @@
     {
       base.OnDataBinding(e);
       ProductEditButton.ProductID = Eval<int>("CampaignsProductID");
+      ProductEditButton.ProgramID = Eval<int>("ProgramID");
       ProductEditButton.ReloadData();
     }
 </script>
