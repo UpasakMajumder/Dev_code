@@ -239,7 +239,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         {
             var cultureInfo = new CultureInfo(CultureInfo.InvariantCulture.LCID);
             cultureInfo.Calendar.TwoDigitYearMax = 2099;
-            return DateTime.ParseExact(expiration, new string[] { "MMyy", "MMyyyy" }, cultureInfo, DateTimeStyles.None);
+            return DateTime.ParseExact(expiration, new string[] { "MMyy", "yyMM", "MMyyyy", "yyyyMM" }, cultureInfo, DateTimeStyles.None);
         }
 
         /// <summary>
