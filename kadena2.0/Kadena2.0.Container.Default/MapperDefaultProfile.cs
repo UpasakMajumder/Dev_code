@@ -227,7 +227,8 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.AddressLine1))
                 .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.AddressLine2))
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src))
-                .ForMember(dest => dest.Country, opt => opt.Ignore());
+                .ForMember(dest => dest.Country, opt => opt.Ignore())
+                .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.AddressCompanyName));
             CreateMap<DeliveryAddress, Dto.ViewOrder.Responses.AddressDto>()
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.StateDisplayName))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name));
