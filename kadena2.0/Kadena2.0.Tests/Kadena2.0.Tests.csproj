@@ -487,6 +487,8 @@
     <Compile Include="MicroserviceClients\TemplateClientTest.cs" />
     <Compile Include="Models\ProductValidatorTests.cs" />
     <Compile Include="Models\DeliveryAddressesTests.cs" />
+    <Compile Include="OrderReports\OrderReportFactoryTests.cs" />
+    <Compile Include="OrderReports\OrderReportTestHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScheduledTasks\DeleteExpiredMailingListsServiceTests.cs" />
     <Compile Include="UserHierarchyTest.cs" />
@@ -494,6 +496,7 @@
     <Compile Include="WebApi\KListServiceTests.cs" />
     <Compile Include="WebApi\LoginControllerTest.cs" />
     <Compile Include="WebApi\ProductsControllerTest.cs" />
+    <Compile Include="OrderReports\OrderReportServiceTests.cs" />
     <Compile Include="WebApi\ProductTests.cs" />
     <Compile Include="WebApi\ShoppingCartService.cs" />
     <Compile Include="WebApi\OrderDetailServiceTests.cs" />
@@ -522,6 +525,10 @@
     <ProjectReference Include="..\Kadena2.0.Helpers\Kadena2.0.Helpers.csproj">
       <Project>{6B1835F6-5564-40D8-8AB8-63B6ADC56976}</Project>
       <Name>Kadena2.0.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Infrastructure\Kadena2.0.Infrastructure.csproj">
+      <Project>{21862471-4fce-4096-82cb-79b23fe63a22}</Project>
+      <Name>Kadena2.0.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj">
       <Project>{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}</Project>

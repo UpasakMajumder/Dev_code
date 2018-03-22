@@ -17,6 +17,9 @@ using Kadena.Dto.Settings;
 using Kadena.Dto.AddToCart;
 using Kadena.Models.AddToCart;
 using System.ComponentModel.DataAnnotations;
+using Kadena.Dto.SubmitOrder.Requests;
+using Kadena.Dto.SubmitOrder.Responses;
+using Kadena.Models.SubmitOrder;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -25,26 +28,18 @@ namespace Kadena.WebAPI.Controllers
         private readonly IShoppingCartService service;
         private readonly IMapper mapper;
         private readonly IShoppingCartProvider provider;
+        private readonly ISubmitOrderService submitOrderService;
 
-        public ShoppingCartController(IShoppingCartService service, IMapper mapper, IShoppingCartProvider provider)
+        public ShoppingCartController(
+            IShoppingCartService service, 
+            IMapper mapper, 
+            IShoppingCartProvider provider, 
+            ISubmitOrderService submitOrderService)
         {
-            if (service == null)
-            {
-                throw new ArgumentNullException(nameof(service));
-            }
-
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            if (provider == null)
-            {
-                throw new ArgumentNullException(nameof(provider));
-            }
-
-            this.service = service;
-            this.mapper = mapper;
-            this.provider = provider;
+            this.service = service ?? throw new ArgumentNullException(nameof(service));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.provider = provider ?? throw new ArgumentNullException(nameof(provider));
+            this.submitOrderService = submitOrderService ?? throw new ArgumentNullException(nameof(submitOrderService));
         }
 
         [HttpGet]
@@ -138,6 +133,7 @@ namespace Kadena.WebAPI.Controllers
             var resultDto = mapper.Map<AddToCartResultDto>(result);
             return ResponseJson(resultDto);
         }
+
         [HttpPost]
         [Route("api/distributor/update")]
         [CustomerAuthorizationFilter]
@@ -147,6 +143,7 @@ namespace Kadena.WebAPI.Controllers
             var serviceResponse = provider.UpdateCartQuantity(submitRequest);
             return ResponseJson<string>(serviceResponse);
         }
+
         [HttpGet]
         [Route("api/getcartdistributordata/{skuID}/{inventoryType}")]
         [CustomerAuthorizationFilter]
@@ -156,6 +153,7 @@ namespace Kadena.WebAPI.Controllers
             var result = mapper.Map<DistributorCartDto>(distributorData);
             return ResponseJson(result);
         }
+
         [HttpPost]
         [Route("api/updatedistributorcarts")]
         [CustomerAuthorizationFilter]
@@ -164,6 +162,17 @@ namespace Kadena.WebAPI.Controllers
             var submitRequest = mapper.Map<DistributorCart>(request);
             var serviceResponse = service.UpdateDistributorCarts(submitRequest);
             return ResponseJson(new { cartCount = serviceResponse });
+        }
+
+        [HttpPost]
+        [Route("api/shoppingcart/submit")]
+        [CustomerAuthorizationFilter]
+        public async Task<IHttpActionResult> Submit([FromBody]SubmitRequestDto request)
+        {
+            var submitRequest = mapper.Map<SubmitOrderRequest>(request);
+            var serviceResponse = await submitOrderService.SubmitOrder(submitRequest);
+            var resultDto = mapper.Map<SubmitOrderResponseDto>(serviceResponse);
+            return ResponseJson(resultDto);
         }
     }
 }
