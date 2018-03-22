@@ -229,6 +229,28 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src))
                 .ForMember(dest => dest.Country, opt => opt.Ignore())
                 .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.AddressCompanyName));
+            CreateMap<DeliveryAddress, AddressDTO>()
+                .ForMember(dest => dest.AddressLine1, opt => opt.MapFrom(src => src.Address1))
+                .ForMember(dest => dest.AddressLine2, opt => opt.MapFrom(src => src.Address2))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
+                .ForMember(dest => dest.KenticoCountryID, opt => opt.MapFrom(src => src.Country.Id))
+                .ForMember(dest => dest.isoCountryCode, opt => opt.MapFrom(src => src.Country.Code))
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name))
+                .ForMember(dest => dest.AddressCompanyName, opt => opt.MapFrom(src => src.CompanyName))
+                .ForMember(dest => dest.KenticoAddressID, opt => opt.MapFrom(src => src.Id))
+                .AfterMap((src, dest) =>
+                {
+                    if (src.State != null)
+                    {
+                        dest.State = !string.IsNullOrEmpty(src.State.StateCode) ? src.State.StateCode : src.Country.Name;
+                        dest.StateDisplayName = src.State.StateDisplayName;
+                        dest.KenticoStateID = src.State.Id;
+                    }
+                    else
+                    {
+                        dest.State = src.Country.Name;
+                    }
+                });
             CreateMap<DeliveryAddress, Dto.ViewOrder.Responses.AddressDto>()
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.StateDisplayName))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name));

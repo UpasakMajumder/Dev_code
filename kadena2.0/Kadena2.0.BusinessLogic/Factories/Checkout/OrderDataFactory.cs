@@ -43,28 +43,6 @@ namespace Kadena.BusinessLogic.Factories.Checkout
             };
         }
 
-        public AddressDTO CreateShippingAddress(DeliveryAddress shippingAddress, Customer customer)
-        {
-            return new AddressDTO()
-            {
-                AddressLine1 = shippingAddress.Address1,
-                AddressLine2 = shippingAddress.Address2,
-                City = shippingAddress.City,
-                State = !string.IsNullOrEmpty(shippingAddress.State?.StateCode) ? shippingAddress.State.StateCode : shippingAddress.Country.Name, // fill in mandatory for countries that have no states
-                StateDisplayName = shippingAddress.State?.StateDisplayName,
-                KenticoStateID = shippingAddress.State?.Id,
-                KenticoCountryID = shippingAddress.Country.Id,
-                AddressCompanyName = shippingAddress.CompanyName,
-                isoCountryCode = shippingAddress.Country.Code,
-                AddressPersonalName = shippingAddress.AddressPersonalName,
-                Zip = shippingAddress.Zip,
-                Country = shippingAddress.Country.Name,
-                KenticoAddressID = shippingAddress.Id,
-                Email = shippingAddress.Email,
-                Phone = shippingAddress.Phone
-            };
-        }
-
         public CustomerDTO CreateCustomer(Customer customer)
         {
             return new CustomerDTO()
