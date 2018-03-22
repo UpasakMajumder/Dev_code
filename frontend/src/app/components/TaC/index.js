@@ -9,34 +9,24 @@ import { TAC } from 'app.globals';
 // /* constants */
 import { FAILURE } from 'app.consts';
 // /* ac */
-import { closeTAC, checkTaC } from 'app.ac/tac';
+import { closeTAC, openTaC } from 'app.ac/tac';
 
 class TaCDialog extends Component {
   static propTypes = {
     show: PropTypes.bool.isRequired,
     redirect: PropTypes.bool.isRequired,
     returnurl: PropTypes.string.isRequired,
-    isChecked: PropTypes.bool.isRequired,
-    token: PropTypes.string.isRequired,
     // func
     closeTAC: PropTypes.func.isRequired,
-    checkTaC: PropTypes.func.isRequired
+    openTaC: PropTypes.func.isRequired
   };
 
   componentDidMount() {
-    if (TAC.token) {
-      this.props.checkTaC({
-        url: TAC.checkTaCUrl,
-        token: TAC.token,
+    if (TAC.accepted === false) { // can be undefined
+      this.props.openTaC({
         redirect: false,
         returnurl: ''
       });
-    }
-  }
-
-  componentWillReceiveProps(next) {
-    if (!this.props.isChecked && next.isChecked && !next.show && next.redirect) {
-      location.assign(next.returnurl);
     }
   }
 
@@ -44,13 +34,12 @@ class TaCDialog extends Component {
     const {
       redirect,
       returnurl,
-      token,
       closeTAC
     } = this.props;
 
     const { acceptTaCUrl } = TAC;
 
-    axios.post(acceptTaCUrl, { token })
+    axios.get(acceptTaCUrl)
       .then((response) => {
         const { success, errorMessage } = response.data;
         if (success) {
@@ -76,11 +65,8 @@ class TaCDialog extends Component {
 
   render() {
     const { title, submitText, iframeUrl } = TAC;
-    const {
-      show
-    } = this.props;
 
-    if (!show) return null;
+    if (!this.props.show) return null;
 
     const body = (
       <iframe src={iframeUrl} width={900} height={450} />
@@ -113,5 +99,5 @@ export default connect((state) => {
   return { ...tac };
 }, {
   closeTAC,
-  checkTaC
+  openTaC
 })(TaCDialog);
