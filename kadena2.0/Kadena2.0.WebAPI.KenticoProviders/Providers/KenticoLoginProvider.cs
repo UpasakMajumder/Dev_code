@@ -34,13 +34,6 @@ namespace Kadena.WebAPI.KenticoProviders
             return !UserInfoProvider.IsUserPasswordDifferent(user, password);
        }
 
-        public void AcceptTaC(string mail)
-        {
-            var user = UserInfoProvider.GetUserInfo(mail);
-            user.SetValue("TermsConditionsAccepted", DateTime.Now);
-            user.Update();
-        }
-
         public LoginResult Login(LoginRequest loginRequest)
         {
             var user = AuthenticationHelper.AuthenticateUser(loginRequest.LoginEmail, loginRequest.Password, SiteContext.CurrentSiteName);

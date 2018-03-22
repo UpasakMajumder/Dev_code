@@ -15,8 +15,8 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public KenticoUserProvider(IKenticoLogger logger, IMapper mapper)
         {
-            _logger = logger;
-            _mapper = mapper;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public Customer GetCurrentCustomer()
@@ -143,6 +143,13 @@ namespace Kadena.WebAPI.KenticoProviders
         public Customer GetCustomerByUser(int userId)
         {
             return _mapper.Map<Customer>(CustomerInfoProvider.GetCustomerInfoByUserID(userId));
+        }
+
+        public void AcceptTaC(string mail)
+        {
+            var user = UserInfoProvider.GetUserInfo(mail);
+            user.SetValue("TermsConditionsAccepted", DateTime.Now);
+            user.Update();
         }
     }
 }

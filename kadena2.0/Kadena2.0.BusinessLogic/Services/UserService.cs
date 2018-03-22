@@ -9,14 +9,14 @@ namespace Kadena.BusinessLogic.Services
 {
     public class UserService : IUserService
     {
-        private readonly IKenticoUserProvider kenticoUsers;
+        private readonly IKenticoUserProvider userProvider;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoDocumentProvider documents;
         private readonly IKenticoLoginProvider login;
 
-        public UserService(IKenticoUserProvider kenticoUsers, IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoLoginProvider login)
+        public UserService(IKenticoUserProvider userProvider, IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoLoginProvider login)
         {
-            this.kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
+            this.userProvider = userProvider ?? throw new ArgumentNullException(nameof(userProvider));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
             this.login = login ?? throw new ArgumentNullException(nameof(login));
@@ -35,7 +35,7 @@ namespace Kadena.BusinessLogic.Services
 
             if (tacEnabled)
             {
-                var user = kenticoUsers.GetUser(request.LoginEmail);
+                var user = userProvider.GetUser(request.LoginEmail);
                 showTaC = !UserHasAcceptedTac(user);
             }
 
@@ -60,7 +60,7 @@ namespace Kadena.BusinessLogic.Services
                 throw new SecurityException("Invalid username or password");
             }
 
-            login.AcceptTaC(request.LoginEmail);
+            userProvider.AcceptTaC(request.LoginEmail);
         }
 
         private string GetTacPageUrl()

@@ -17,5 +17,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void CreateUser(User user, int siteId);
         void UpdateUser(User user);
         void LinkCustomerToUser(int customerId, int userId);
+        void AcceptTaC(string mail);
     }
 }
