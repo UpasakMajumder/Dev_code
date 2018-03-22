@@ -46,6 +46,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.AddressLine2))
                 .ForMember(dest => dest.Zip, opt => opt.MapFrom(src => src.AddressZip))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.GetStringValue("Email", string.Empty)))
+                .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.GetStringValue("CompanyName", string.Empty)))
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.AddressPhone));
             CreateMap<AddressInfo, State>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.AddressStateID))
@@ -63,7 +64,8 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.AddressStateID, opt => opt.MapFrom(src => src.State.Id))
                 .ForMember(dest => dest.AddressCountryID, opt => opt.MapFrom(src => src.Country.Id))
                 .ForMember(dest => dest.AddressPhone, opt => opt.MapFrom(src => src.Phone))
-                .AfterMap((src, dest) => dest.SetValue("Email", src.Email));
+                .AfterMap((src, dest) => dest.SetValue("Email", src.Email))
+                .AfterMap((src, dest) => dest.SetValue("CompanyName", src.CompanyName));
             CreateMap<ShippingOptionInfo, DeliveryOption>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ShippingOptionID))
                 .ForMember(dest => dest.CarrierId, opt => opt.MapFrom(src => src.ShippingOptionCarrierID))

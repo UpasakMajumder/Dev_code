@@ -76,7 +76,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
             var orderDto = new OrderDTO()
             {
                 BillingAddress = orderDataFactory.CreateBillingAddress(billingAddress),
-                ShippingAddress = orderDataFactory.CreateShippingAddress(shippingAddress, customer),
+                ShippingAddress = mapper.Map<AddressDTO>(shippingAddress),
                 Customer = orderDataFactory.CreateCustomer(customer),
                 OrderDate = DateTime.Now,
                 PaymentOption = orderDataFactory.CreatePaymentOption(paymentMethod, request),
