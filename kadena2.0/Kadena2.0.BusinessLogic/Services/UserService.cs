@@ -49,7 +49,7 @@ namespace Kadena.BusinessLogic.Services
 
         private bool UserHasAcceptedTac(User user)
         {
-            var tacValidFrom = login.GetTaCValidFrom();
+            var tacValidFrom = documents.GetTaCValidFrom();
             return user.TermsConditionsAccepted > tacValidFrom;
         }
 
