@@ -543,7 +543,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public static void ProcessOrders(int campaignID)
+        public static void ProcessOrders(int campaignID, int userID)
         {
             try
             {
@@ -560,7 +560,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     {
                         runTask.TaskRunInSeparateThread = true;
                         runTask.TaskEnabled = true;
-                        runTask.TaskData = $"{campaign.CampaignID}|{SiteContext.CurrentSiteID}";
+                        runTask.TaskData = $"{campaign.CampaignID}|{userID}";
                         SchedulingExecutor.ExecuteTask(runTask);
                     }
                     var users = UserInfoProvider.GetUsers();
