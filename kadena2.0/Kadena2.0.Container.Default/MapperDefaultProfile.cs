@@ -239,7 +239,6 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name));
             CreateMap<LogonUserRequestDTO, LoginRequest>();
             CreateMap<LoginResult, LogonUserResultDTO>();
-            CreateMap<CheckTaCRequestDTO, LoginRequest>();
             CreateMap<CheckTaCResult, CheckTaCResultDTO>();
             CreateMap<BusinessUnit, BusinessUnitDto>();
             CreateMap<Brand, BrandDto>();

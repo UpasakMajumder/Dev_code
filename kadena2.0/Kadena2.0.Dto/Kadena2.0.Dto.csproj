@@ -123,7 +123,6 @@
     <Compile Include="KSource\NooshDto.cs" />
     <Compile Include="KSource\ProjectDto.cs" />
     <Compile Include="KSource\RuleDto.cs" />
-    <Compile Include="Logon\Requests\CheckTaCRequestDTO.cs" />
     <Compile Include="Logon\Requests\LogonUserRequestDTO.cs" />
     <Compile Include="Logon\Responses\CheckTaCResultDTO.cs" />
     <Compile Include="MailingList\MicroserviceResponses\MailingAddressDto.cs" />
