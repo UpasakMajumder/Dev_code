@@ -35,16 +35,6 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("api/login/checktac")]
-        public IHttpActionResult CheckTaC([FromBody] CheckTaCRequestDTO request)
-        {
-            var loginRequestModel = mapper.Map<LoginRequest>(request);
-            var serviceResult = userService.CheckTaC(loginRequestModel);
-            var result = mapper.Map<CheckTaCResultDTO>(serviceResult);
-            return ResponseJson(result);
-        }
-
-        [HttpPost]
         [Route("api/logout")]
         public IHttpActionResult Logout()
         {

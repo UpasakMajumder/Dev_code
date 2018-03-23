@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.Dto.Logon.Requests;
+using Kadena.Dto.Logon.Responses;
+using Kadena.Models.Login;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
 using System;
@@ -27,5 +30,16 @@ namespace Kadena.WebAPI.Controllers
             userService.AcceptTaC();
             return SuccessJson();
         }
+
+        [HttpPost]
+        [Route("checktac")]
+        public IHttpActionResult CheckTaC([FromBody] CheckTaCRequestDTO request)
+        {
+            var loginRequestModel = mapper.Map<LoginRequest>(request);
+            var serviceResult = userService.CheckTaC(loginRequestModel);
+            var result = mapper.Map<CheckTaCResultDTO>(serviceResult);
+            return ResponseJson(result);
+        }
+
     }
 }
