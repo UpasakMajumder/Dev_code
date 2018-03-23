@@ -84,6 +84,7 @@
                                             
                                             <th>{% GetResourceString("Kadena.Products.CategoryNameHearder") |(user)cvoqa2@gmail.com|(hash)19d350c6c39c3c6ac8729a4ddc8e37b2326450a5dd556599ea450973afc9ffcd%}</th>
                                             <th>{% GetResourceString("Kadena.Products.ExpirationDateHearder") |(user)cvoqa2@gmail.com|(hash)ad3147caadf815e6759031446abdcb88351265b1f1b1da01586e7a7fbcc0cfe9%}</th>
+                                          <th>{% GetResourceString("Kadena.Products.EstimatedPriceHearder") |(user)twe_admin|(hash)5feebe76a28bcb7060eb700be84bae6ed40d6c0c4375c4ac4680a83426c42d6d%}</th>
                                             <th>{% GetResourceString("Kadena.Products.ActionHearder") |(user)cvoqa2@gmail.com|(hash)627b475e82b4d9137d4f2ba62bfed9c6fce16f72aead6a66170964317a83bfb2%}</th>
                                         </tr>
 ]]>
