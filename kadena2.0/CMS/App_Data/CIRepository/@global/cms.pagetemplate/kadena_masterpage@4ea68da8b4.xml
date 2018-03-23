@@ -23,6 +23,7 @@
       {^WebPartZone|(id)zoneNavigation^}
     </nav>
     <div class="r-header-shadow"></div>
+    <div class="r-tac"></div>
     {^WebPartZone|(id)zoneProductImage^}
     <main class="css-main js-main js-collapse isOpen">
       <script>
