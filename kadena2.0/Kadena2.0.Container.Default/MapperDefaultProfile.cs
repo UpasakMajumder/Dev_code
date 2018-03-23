@@ -240,7 +240,6 @@ namespace Kadena.Container.Default
             CreateMap<LogonUserRequestDTO, LoginRequest>();
             CreateMap<LoginResult, LogonUserResultDTO>();
             CreateMap<CheckTaCRequestDTO, LoginRequest>();
-            CreateMap<AcceptTaCRequestDTO, LoginRequest>();
             CreateMap<CheckTaCResult, CheckTaCResultDTO>();
             CreateMap<BusinessUnit, BusinessUnitDto>();
             CreateMap<Brand, BrandDto>();
