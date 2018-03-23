@@ -6,6 +6,6 @@ namespace Kadena.BusinessLogic.Contracts
     public interface IUserService
     {
         CheckTaCResult CheckTaC(LoginRequest request);
-        void AcceptTaC(LoginRequest request);
+        void AcceptTaC();
     }
 }

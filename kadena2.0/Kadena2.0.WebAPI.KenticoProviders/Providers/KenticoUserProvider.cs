@@ -145,9 +145,9 @@ namespace Kadena.WebAPI.KenticoProviders
             return _mapper.Map<Customer>(CustomerInfoProvider.GetCustomerInfoByUserID(userId));
         }
 
-        public void AcceptTaC(string mail)
+        public void AcceptTaC()
         {
-            var user = UserInfoProvider.GetUserInfo(mail);
+            var user = MembershipContext.AuthenticatedUser;
             user.SetValue("TermsConditionsAccepted", DateTime.Now);
             user.Update();
         }

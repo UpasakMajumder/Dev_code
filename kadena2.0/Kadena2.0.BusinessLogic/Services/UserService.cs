@@ -53,15 +53,7 @@ namespace Kadena.BusinessLogic.Services
             return user.TermsConditionsAccepted > tacValidFrom;
         }
 
-        public void AcceptTaC(LoginRequest request)
-        {
-            if (!login.CheckPassword(request.LoginEmail, request.Password))
-            {
-                throw new SecurityException("Invalid username or password");
-            }
-
-            userProvider.AcceptTaC(request.LoginEmail);
-        }
+        public void AcceptTaC() => userProvider.AcceptTaC();
 
         private string GetTacPageUrl()
         {
