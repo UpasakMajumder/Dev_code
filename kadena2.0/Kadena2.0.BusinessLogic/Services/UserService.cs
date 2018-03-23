@@ -1,6 +1,7 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.Models;
 using Kadena.Models.Login;
+using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 
@@ -21,7 +22,7 @@ namespace Kadena.BusinessLogic.Services
 
         public CheckTaCResult CheckTaC()
         {
-            var tacEnabled = resources.GetSettingsKey<bool>("KDA_TermsAndConditionsLogin");
+            var tacEnabled = resources.GetSettingsKey<bool>(Settings.KDA_TermsAndConditionsLogin);
 
             var showTaC = false;
 
