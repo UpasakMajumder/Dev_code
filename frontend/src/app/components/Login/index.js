@@ -8,7 +8,7 @@ import TextInput from 'app.dump/Form/TextInput';
 import PasswordInput from 'app.dump/Form/PasswordInput';
 import CheckboxInput from 'app.dump/Form/CheckboxInput';
 /* ac */
-import { checkTaC } from 'app.ac/tac';
+import { openTaC } from 'app.ac/tac';
 /* utilities */
 import { LOGIN, TAC } from 'app.globals';
 import { getSearchObj } from 'app.helpers/location';
@@ -79,19 +79,21 @@ class Login extends Component {
     return !invalids.length;
   };
 
-  getToken = async () => {
+  sendLogin = async () => {
     const { loginEmail, password, isKeepMeLoggedIn } = this.state;
     const body = { loginEmail, password, isKeepMeLoggedIn };
     const response = await axios.post(LOGIN.loginUrl, body);
     const { success, payload, errorMessage } = response.data;
     if (success) {
-      if (payload.token) {
-        return payload.token; // return token
+      if (payload) {
+        if (payload.errorPropertyName) {
+          const invalids = [{ field: payload.errorPropertyName, errorMessage: payload.errorMessage }];
+          this.setState({ invalids });
+          return false;
+        }
       }
 
-      const invalids = [{ field: payload.errorPropertyName, errorMessage: payload.errorMessage }];
-      this.setState({ invalids });
-      return null;
+      return true;
     }
 
     window.store.dispatch({
@@ -99,18 +101,30 @@ class Login extends Component {
       alert: errorMessage
     });
 
-    return null;
+    return false;
+  };
+
+  checkTaC = async () => {
+    const response = await axios.get(TAC.checkTaCUrl);
+    const { success, payload, errorMessage } = response.data;
+    if (success) return payload.show;
+
+    window.store.dispatch({
+      type: FAILURE,
+      alert: errorMessage
+    });
+
+    return false;
   };
 
   handleSubmit = async () => {
-    this.setState(prevState => ({ isLoading: !prevState.isLoading }));
-    // validation
-    const isValid = this.isValid();
-    if (isValid) {
-      // get token
-      const token = await this.getToken();
-      if (token) {
-        // define redirectUrl to redirect
+    this.setState({ isLoading: true });
+    if (this.isValid()) {
+      const formIsValid = await this.sendLogin();
+
+      if (formIsValid) {
+        const show = await this.checkTaC();
+
         let returnurl;
         const query = getSearchObj();
         if (query.returnurl) {
@@ -119,18 +133,18 @@ class Login extends Component {
           returnurl = '/';
         }
 
-        // checkTaC
-        // redirect
-        this.props.checkTaC({
-          url: TAC.checkTaCUrl,
-          token,
-          redirect: true,
-          returnurl
-        });
+        if (show) {
+          this.props.openTaC({
+            redirect: true,
+            returnurl
+          });
+        } else {
+          location.assign(returnurl);
+        }
       }
     }
 
-    this.setState(prevState => ({ isLoading: !prevState.isLoading }));
+    this.setState({ isLoading: false });
   };
 
   componentDidMount() {
@@ -216,5 +230,5 @@ class Login extends Component {
 }
 
 export default connect(null, {
-  checkTaC
+  openTaC
 })(Login);

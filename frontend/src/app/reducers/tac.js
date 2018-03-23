@@ -1,5 +1,4 @@
 import {
-  TAC_CHECK,
   TAC_OPEN,
   TAC_CLOSE
 } from 'app.consts';
@@ -7,30 +6,19 @@ import {
 const defaultState = {
   show: false,
   redirect: false,
-  returnurl: '',
-  isChecked: false,
-  token: ''
+  returnurl: ''
 };
 
 export default function login(state = defaultState, action = {}) {
   const { type, payload } = action;
 
   switch (type) {
-  case TAC_CHECK: {
-    return {
-      ...state,
-      show: payload.show,
-      redirect: payload.redirect,
-      returnurl: payload.returnurl,
-      token: payload.token,
-      isChecked: true
-    };
-  }
-
   case TAC_OPEN: {
     return {
       ...state,
-      show: true
+      show: true,
+      redirect: payload.redirect,
+      returnurl: payload.returnurl
     };
   }
 

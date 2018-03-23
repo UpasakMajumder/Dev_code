@@ -68,7 +68,7 @@
 {% include './config.nunj' %}
 
 <script>
-  config.localization.tac.token = null; //turn off TAC
+  config.localization.tac.accepted = true; //turn off TAC
 </script>
 
 {% if _dev %}
