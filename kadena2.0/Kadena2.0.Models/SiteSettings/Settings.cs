@@ -1616,5 +1616,14 @@ namespace Kadena.Models.SiteSettings
         [DefaultValueAttribute(null)]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkFsbG93ZWQgYXVkaWVuY2UgVVJJIiwiS2V5TmFtZSI6IktEQV9BbGxvd2VkQXVkaWVuY2VVcmkiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjpudWxsLCJLZXlEZXNjcmlwdGlvbiI6IkF1ZGllbmNlIFVSSSBmb3Igd2hpY2ggU0FNTCBvYmplY3QgYWxsb3dlZCB0by4iLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiU2luZ2xlIHNpbmctb24iLCJOYW1lIjoiS0RBU1NPIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiS2FkZW5hIn0sIkRpc3BsYXlOYW1lIjoiU0FNTCAyLjAifX0=")]
         public const string KDA_AllowedAudienceUri = "KDA_AllowedAudienceUri";
+
+        /// <summary>
+        /// Default LowRes settings guid for newly created templated products
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Templating")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkRlZmF1bHQgbG93cmVzIHNldHRpbmdzIGlkIiwiS2V5TmFtZSI6IktEQV9EZWZhdWx0TG93UmVzU2V0dGluZ3NJZCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJUZW1wbGF0aW5nIn19")]
+        public const string KDA_DefaultLowResSettingsId = "KDA_DefaultLowResSettingsId";
     }
 }

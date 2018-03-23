@@ -314,6 +314,9 @@
       </field>
       <field allowempty="true" column="ProductChiliLowResSettingId" columntype="guid" guid="3c45a29f-970b-45c7-b54c-a7d4d585b131" publicfield="false" visible="true">
         <properties>
+          <defaultvalue ismacro="true">
+            <![CDATA[{% Settings.KDA_DefaultLowResSettingsId |(user)michal.machacek@actum.cz|(hash)5081d116d2fda43df1ae87654b32b430e041333d2bc930ed3c6c16e4d055b728%}]]>
+          </defaultvalue>
           <fieldcaption>Low resolution setting Id</fieldcaption>
           <fielddescription>
             <![CDATA[Id of setting in Chili to generate low resolution PDF file]]>
