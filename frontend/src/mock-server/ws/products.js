@@ -4,7 +4,37 @@ module.exports.all = {
     "categories": [
       {
         "id": 21,
-        "imageUrl": "http://satyr.io/300x200?1",
+        "imageUrl": "http://satyr.io/350x200?1",
+        "title": "Product category 2",
+        "url": "/Products/Product-category-1/Product-category-2",
+        "border": {
+          "exists": true,
+          "value": "2px solid black"
+        }
+      },
+      {
+        "id": 23,
+        "imageUrl": "http://satyr.io/350x250?1",
+        "title": "Product category 2",
+        "url": "/Products/Product-category-1/Product-category-2",
+        "border": {
+          "exists": true,
+          "value": "2px solid black"
+        }
+      },
+      {
+        "id": 22,
+        "imageUrl": "http://satyr.io/300x100?1",
+        "title": "Product category 2",
+        "url": "/Products/Product-category-1/Product-category-2",
+        "border": {
+          "exists": true,
+          "value": "2px solid black"
+        }
+      },
+      {
+        "id": 25,
+        "imageUrl": "http://satyr.io/450x200?1",
         "title": "Product category 2",
         "url": "/Products/Product-category-1/Product-category-2",
         "border": {
@@ -16,7 +46,7 @@ module.exports.all = {
     "products": [
       {
         "id": 59,
-        "imageUrl": "http://satyr.io/300x200?2",
+        "imageUrl": "http://satyr.io/500x400?2",
         "title": "Chilli product",
         "url": "/Products/Product-category-1/Chilli-product",
         "isFavourite": false,
@@ -27,7 +57,7 @@ module.exports.all = {
       },
       {
         "id": 83,
-        "imageUrl": "http://satyr.io/300x200?3",
+        "imageUrl": "http://satyr.io/500x350?3",
         "title": "Static product",
         "url": "/Products/Product-category-1/Static-product",
         "isFavourite": false,
@@ -38,7 +68,7 @@ module.exports.all = {
       },
       {
         "id": 84,
-        "imageUrl": "http://satyr.io/300x200?4",
+        "imageUrl": "http://satyr.io/300x800?4",
         "title": "POD static product",
         "url": "/Products/Product-category-1/POD-static-product",
         "isFavourite": true,
