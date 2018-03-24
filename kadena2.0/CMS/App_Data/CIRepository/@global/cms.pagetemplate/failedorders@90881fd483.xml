@@ -54,28 +54,7 @@
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
-          <property name="contentafter">
-<![CDATA[
-<div class="dialog" id="autoSave_Dialog">
-  <div class="dialog__shadow"></div>
-  <div class="dialog__block">
-    <div class="dialog__content">
-      <p class="response_Success">
-        {$KDA.Cart.Update.Success$}
-      </p>
-      <p class="response_failure">
-        {$KDA.Cart.Update.Failure$}
-      </p>
-    </div>
-    <div class="dialog__footer">
-      <div class="btn-group btn-group--right">
-        <button type="button" class="btn-action btn-action--secondary js-CloseMesaage">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-]]>
-          </property>
+          <property name="contentafter"></property>
           <property name="contentbefore"></property>
           <property name="controlid">rptCartDistributors</property>
           <property name="customtimezone"></property>
@@ -141,6 +120,85 @@ AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN {%ToInt(Q
 </div>
 ]]>
           </property>
+        </webpart>
+        <webpart controlid="Javascript" guid="bd9052d8-92bf-4cc5-87f4-2e9abee270a7" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">Javascript</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+<script type="text/javascript" >
+  $(".js-CloseMesaage").on("click",function(){
+    $(this).closest(".dialog").removeClass("active");
+  })
+    $(document).ready(function () {
+      $(".js-ItemQuantity").focusout(function(){
+        var cID=parseInt($(this).siblings().first().val());
+        var cID=parseInt($(this).siblings().first().val());
+        var qtyValue=$(this).val();
+        if (! /^\d*$/.test(qtyValue) || qtyValue==='' ){
+          errorMessage="{$KDA.Cart.Update.InvalidQuantityError$}";
+          toastr.error(errorMessage);
+          isError=true;
+          return;
+        }
+        var iQTY=parseInt($(this).val());
+        if(cID!=undefined && iQTY!=undefined && cID!=0){
+          UpdateItem(cID,iQTY,this);
+        }
+      });
+      function UpdateItem(id,qty,box){
+        var request= {CartItemId: id,ItemQuantity:qty,UserID:{%CurrentUser.UserID|(user)cvoqa2@gmail.com|(hash)151ea260d45cbb40b6b460c3d41821d9e9dbc03b916f839032f8f77203b978ef%},InventoryType:2}
+            $.ajax({
+              type: "POST",
+              data :JSON.stringify(request),
+              url: "/api/distributor/update",
+              contentType: "application/json",
+              success: function (data) {
+                $('#autoSave_Dialog').addClass('active');
+                if(data.success)
+                {
+                  toastr.success(data.payload);
+                  setTimeout(function(){ $(box).parentsUntil('.show-table-bottom').find('.js-BusinessUnit').trigger('change')}, 1000);
+                }
+                else
+                {
+                  toastr.error(data.errorMessage);
+                }
+              },
+              error:function (xhr, ajaxOptions, thrownError) {
+                $('.response_Success').hide();
+                $('.response_failure').show();
+              }
+            });
+      }
+    }); 
+  function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+</script>
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Startup</property>
+          <property name="instanceguid">bd9052d8-92bf-4cc5-87f4-2e9abee270a7</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="positionleft"></property>
+          <property name="positiontop"></property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
         </webpart>
       </webpartzone>
       <webpartzone id="ZoneCheckout" v="1">

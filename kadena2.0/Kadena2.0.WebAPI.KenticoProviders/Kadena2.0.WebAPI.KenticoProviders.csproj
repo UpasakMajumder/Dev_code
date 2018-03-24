@@ -101,7 +101,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -123,6 +123,7 @@
     <Compile Include="Contracts\IKenticoRoleProvider.cs" />
     <Compile Include="Contracts\IKenticoSettingsProvider.cs" />
     <Compile Include="Contracts\IkenticoUserBudgetProvider.cs" />
+    <Compile Include="Contracts\IShoppingCartItemsProvider.cs" />
     <Compile Include="Contracts\KadenaSettings\IShippingEstimationSettings.cs" />
     <Compile Include="Contracts\KadenaSettings\IKadenaSettings.cs" />
     <Compile Include="Contracts\IKenticoLocalizationProvider.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="Providers\KenticoSettingsProvider.cs" />
     <Compile Include="Providers\KenticoSiteProvider.cs" />
     <Compile Include="Providers\KenticoUserBudgetProvider.cs" />
+    <Compile Include="Providers\ShoppingCartItemsProvider.cs" />
     <Compile Include="Providers\ShoppingCartProvider.cs" />
     <Compile Include="Providers\KenticoUserProvider.cs" />
     <Compile Include="Providers\KenticoResourceService.cs" />

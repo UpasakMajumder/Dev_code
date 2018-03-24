@@ -7,6 +7,7 @@ using Kadena.Old_App_Code.Kadena.Imports;
 using CMS.EventLog;
 using System.IO;
 using CMS.Helpers;
+using Kadena.Models.Common;
 
 public partial class CMSWebParts_Kadena_POS_POSBulkImport : CMSAbstractWebPart
 {
@@ -128,7 +129,7 @@ public partial class CMSWebParts_Kadena_POS_POSBulkImport : CMSAbstractWebPart
     private void WriteFileToResponse(string filename, byte[] data)
     {
         Response.Clear();
-        Response.ContentType = "application/octet-stream";
+        Response.ContentType = ContentTypes.Binary;
         Response.AddHeader("Content-Disposition", "attachment; filename=" + filename);
 
         Response.OutputStream.Write(data, 0, data.Length);

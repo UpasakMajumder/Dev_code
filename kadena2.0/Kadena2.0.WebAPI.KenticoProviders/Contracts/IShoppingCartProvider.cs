@@ -38,14 +38,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         DeliveryOption GetShippingOption(int id);
 
-        CartItem[] GetShoppingCartItems(bool showPrices = true);
-
-        void RemoveCartItem(int id);
-
-        int GetShoppingCartItemsCount();
-
-        void SetCartItemQuantity(int id, int quantity);
-
         int GetShoppingCartId(int userId, int siteId);
 
         void RemoveCurrentItemsFromStock(int shoppingCartId = 0);
@@ -54,11 +46,9 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         double GetCurrentCartTotalItemsPrice();
 
-        double GetCurrentCartShippingCost();        
+        double GetCurrentCartShippingCost();
 
         string GetShippingProviderIcon(string title);
-
-        CartItem AddCartItem(NewCartItem item, MailingList mailingList = null);
 
         string UpdateCartQuantity(Distributor data);
 
@@ -99,5 +89,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void DeleteDistributorCartItem(int cartID, int SKUID);
 
         int GetDistributorCartCount(int userID, int campaignID, int inventoryType = 1);
+
+        int GetStockQuantity(int skuId);
     }
 }

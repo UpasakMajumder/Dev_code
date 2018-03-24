@@ -123,7 +123,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                                 orderDetails.Add("name", customerData.FirstName);
                                 orderDetails.Add("totalprice", recentoder.TotalPrice);
                                 orderDetails.Add("shippingdate", recentoder.ShippingDate);
-                                orderDetails.Add("campaignid", recentoder.campaign.ID);
+                                orderDetails.Add("campaignid", recentoder.Campaign.ID);
                                 SendEmailNotification(templateName, customerData.Email, cartItems,"orderitems", orderDetails);
                             });
                         }

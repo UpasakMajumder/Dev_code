@@ -39,7 +39,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -63,6 +63,7 @@
     <Compile Include="CreditCard\Responses\CreditCardPaymentDoneDto.cs" />
     <Compile Include="CustomerData\UserBudgetDto.cs" />
     <Compile Include="Logon\Requests\SamlAuthenticationDto.cs" />
+    <Compile Include="Order\OrderListFilter.cs" />
     <Compile Include="Payment\CreditCard\MicroserviceRequests\UpdateCustomerContainerRequestDto.cs" />
     <Compile Include="Product\BorderDto.cs" />
     <Compile Include="Product\PriceDto.cs" />
@@ -156,7 +157,6 @@
     <Compile Include="RecentOrders\OrderHeadDto.cs" />
     <Compile Include="RecentOrders\OrderItemDto.cs" />
     <Compile Include="RecentOrders\OrderRowDto.cs" />
-    <Compile Include="RecentOrders\PaginationDto.cs" />
     <Compile Include="MailingList\MicroserviceResponses\MailingListDataDTO.cs" />
     <Compile Include="Settings\AddressDialogDto.cs" />
     <Compile Include="Settings\AddressListDto.cs" />
@@ -229,6 +229,9 @@
     <Compile Include="ViewOrder\Responses\TitleValuePairDto.cs" />
     <Compile Include="ViewOrder\Responses\TrackingDTO.cs" />
     <Compile Include="_Attributes\StringListValidationAttribute.cs" />
+    <Compile Include="_Common\PaginationDto.cs" />
+    <Compile Include="_Common\TableViewDto.cs" />
+    <Compile Include="_Common\TableRowDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="SubmitOrder\MicroserviceResponses\" />

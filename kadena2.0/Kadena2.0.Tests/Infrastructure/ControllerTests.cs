@@ -23,14 +23,6 @@ namespace Kadena.Tests.Infrastructure
             // Act
             foreach (var controller in controllers)
             {
-                if (controller.Name == "DashboardController" ||
-                       controller.Name == "OrdersController" )
-                {
-                       continue; // TODO : For some reason, it crashes because of 
-                                 // System.InvalidOperationException : Object type 'cms.culture' not found.
-                                 // (maybe reference kentico dlls from test project)
-                }
-
                 try
                 {
                     var instance = container.Resolve(controller);

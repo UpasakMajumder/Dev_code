@@ -10,6 +10,11 @@
 <%@ Register Src="~/CMSWebParts/Kadena/Cart/FailedOrdersCart.ascx" TagName="FailedOrdersCart" TagPrefix="cms" %>
 <div class="content-block mb30">
   <div class="prebuy__distdata">
+    <div class="text-right">
+      <div class="add__btn" style="margin-right: 5px;">
+        <a id="lnkEdit" class="btn-action" href="/My-Address-Book/Address?id=<%# Eval("AddressID")%>&refer=<%# Request.QueryString["campid"] %>">Edit Address</a>
+      </div>
+    </div>
     <div class="general__left">
       <div class="details__sec">
         <div class="input__label">
@@ -31,8 +36,8 @@
           </label>
         </div>
       </div>
-      </div>
-      <div class="general__right">
+    </div>
+    <div class="general__right">
       <cms:FailedOrdersCart runat="server" ID="rptDistributorCartDetails" CartID='<%# Eval("ShoppingCartID")%>' InventoryType='<%# Eval("ShoppingCartInventoryType")%>' ShoppingCartDistributorID='<%# Eval("ShoppingCartDistributorID")%>'/>  
     </div>
 ]]>
