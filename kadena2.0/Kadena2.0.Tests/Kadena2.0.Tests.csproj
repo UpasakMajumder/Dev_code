@@ -483,6 +483,7 @@
     <Compile Include="Infrastructure\BusinessLogicResolvingTest.cs" />
     <Compile Include="Infrastructure\ControllerTests.cs" />
     <Compile Include="Infrastructure\NotRegisteredService.cs" />
+    <Compile Include="KadenaUnitTest.cs" />
     <Compile Include="MicroserviceClients\FileModuleTests.cs" />
     <Compile Include="MicroserviceClients\TemplateClientTest.cs" />
     <Compile Include="Models\ProductValidatorTests.cs" />
