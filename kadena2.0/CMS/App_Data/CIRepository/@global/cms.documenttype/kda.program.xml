@@ -93,10 +93,14 @@
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
-      <field allowempty="true" column="GlobalAdminNotified" columntype="boolean" guid="9fc167bf-3eb6-497f-bf7c-b525c10ac1e5" publicfield="false">
+      <field allowempty="true" column="GlobalAdminNotified" columntype="boolean" guid="9fc167bf-3eb6-497f-bf7c-b525c10ac1e5" publicfield="false" visible="true">
         <properties>
           <defaultvalue>false</defaultvalue>
+          <fieldcaption>Global Admin Notified</fieldcaption>
         </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
       </field>
     </form>
   </ClassFormDefinition>

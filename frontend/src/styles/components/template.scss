@@ -5,7 +5,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  height: $height;
+  // height: $height;
 
   & > *:not(:last-child, :first-child) {
     @include rem(margin-bottom, 10px);
@@ -61,7 +61,7 @@
     position: absolute;
     cursor: pointer;
     margin: 0;
-    left: 0;
+    left: -11px;
     top: -11px;
     height: 22px;
 
