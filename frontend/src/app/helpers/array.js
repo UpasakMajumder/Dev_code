@@ -31,3 +31,29 @@ export const compareArrays = (func, list1, list2) => {
   });
   return array;
 };
+
+export const sortObjs = (array, name, sortOrderAsc, level) => {
+  return [...array].sort((obj1, obj2) => {
+    const prop1 = level ? obj1[level][name] : obj1[name];
+    const prop2 = level ? obj2[level][name] : obj2[name];
+
+
+    if (prop1 === null) {
+      return Number.NEGATIVE_INFINITY;
+    }
+    if (prop2 === null) {
+      return Number.POSITIVE_INFINITY;
+    }
+
+    const name1 = prop1.toUpperCase();
+    const name2 = prop2.toUpperCase();
+
+    if (sortOrderAsc) {
+      if (name1 < name2) return 1;
+      return -1;
+    }
+
+    if (name1 > name2) return 1;
+    return -1;
+  });
+};

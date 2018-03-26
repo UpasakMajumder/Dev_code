@@ -6,6 +6,12 @@
   border-spacing: 0;
   border: 1px solid $brand-grey;
 
+  &--pointer {
+    tr td {
+      cursor: pointer;
+    }
+  }
+
   &--hide-rows {
     tr:not(:first-child) {
       display: none;
@@ -22,6 +28,7 @@
     background-color: rgba($brand-white, 1);
     border-top: 1px solid $brand-grey;
     border-bottom: 1px solid $brand-grey;
+    white-space: nowrap;
 
     &:last-child {
       border-right: 1px solid $brand-grey;

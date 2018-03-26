@@ -68,7 +68,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public string GetLogonPageUrl()
         {
-            return AuthenticationHelper.GetSecuredAreasLogonPage(new SiteInfoIdentifier(SiteContext.CurrentSiteID));
+            return URLHelper.ResolveUrl(AuthenticationHelper.GetSecuredAreasLogonPage(new SiteInfoIdentifier(SiteContext.CurrentSiteID)));
         }
     }
 }

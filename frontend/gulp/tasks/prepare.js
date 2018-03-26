@@ -8,7 +8,7 @@ const runSequence = require('run-sequence');
 const codeTasks = ['images', 'svg', 'styles'];
 if (!DEVELOPMENT) codeTasks.push('js');
 
-const devSequence = ['clean', codeTasks, 'tpl', 'styleguide', 'copySgAssets'];
+const devSequence = ['clean', codeTasks, 'tpl', 'copySgAssets'];
 if (config.environment.isApi) {
   devSequence.push('api');
 }

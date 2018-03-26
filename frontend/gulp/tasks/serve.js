@@ -55,7 +55,7 @@ gulp.task('serve', ['prepare'], () => {
   const watch = (glob, tasks) => gwatch(glob, () => runSequence(...tasks));
 
   if (DEVELOPMENT) {
-    watch(config.CSS_ALL, ['styles', 'styleguide', 'copySgAssets']);
+    watch(config.CSS_ALL, ['styles', 'copySgAssets']);
     watch(config.IMAGES_ALL, ['images', 'tpl']);
     watch(config.SVG_SPRITE_ALL, ['svg', 'tpl']);
     watch(config.TEMPLATE_ALL, ['tpl']);

@@ -6,6 +6,7 @@ using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.SiteProvider;
+using Kadena.Models.Common;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using System;
@@ -63,7 +64,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                 string fileName = $"{SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_cartPDFFileName}") }.pdf";
                 HttpContext.Current.Response.Clear();
                 MemoryStream ms = new MemoryStream(pdfBytes);
-                HttpContext.Current.Response.ContentType = "application/pdf";
+                HttpContext.Current.Response.ContentType = ContentTypes.Pdf;
                 HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
                 HttpContext.Current.Response.Buffer = true;
                 ms.WriteTo(HttpContext.Current.Response.OutputStream);

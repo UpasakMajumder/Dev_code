@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.allowedchildclass>
+  <Parent>
+    <CodeName>KDA.OrdersReportModule</CodeName>
+    <GUID>8aa86b53-84c5-4d84-8506-d8cbd99ab08b</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </Parent>
+  <Bindings>
+    <Binding id="cms.documenttype_CMS.Root">
+      <ParentClassID>
+        <CodeName>CMS.Root</CodeName>
+        <GUID>a585aea3-10b5-4b74-9aad-747fcce72493</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_CMS.MenuItem">
+      <ParentClassID>
+        <CodeName>CMS.MenuItem</CodeName>
+        <GUID>60787c08-18f1-40df-ab59-49b0415800b5</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_KDA.GenericModule">
+      <ParentClassID>
+        <CodeName>KDA.GenericModule</CodeName>
+        <GUID>b4129f2e-d3a9-4ffd-a23a-015a7db273bd</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+  </Bindings>
+</cms.allowedchildclass>
