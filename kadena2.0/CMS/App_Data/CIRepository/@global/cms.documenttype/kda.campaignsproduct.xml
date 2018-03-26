@@ -94,10 +94,30 @@
           <fieldcaption>State</fieldcaption>
         </properties>
         <settings>
-          <controlname>CustomTableItemSelector</controlname>
-          <CustomTable>KDA.StatesGroup</CustomTable>
+          <AddGlobalObjectNamePrefix>False</AddGlobalObjectNamePrefix>
+          <AddGlobalObjectSuffix>False</AddGlobalObjectSuffix>
+          <AllowAll>False</AllowAll>
+          <AllowDefault>False</AllowDefault>
+          <AllowEditTextBox>False</AllowEditTextBox>
+          <AllowEmpty>True</AllowEmpty>
+          <controlname>Uni_selector</controlname>
+          <DialogWindowName>SelectionDialog</DialogWindowName>
           <DisplayNameFormat>{%States%}</DisplayNameFormat>
+          <EditDialogWindowHeight>700</EditDialogWindowHeight>
+          <EditDialogWindowWidth>1000</EditDialogWindowWidth>
+          <EditWindowName>EditWindow</EditWindowName>
+          <EncodeOutput>True</EncodeOutput>
+          <GlobalObjectSuffix ismacro="true">{$general.global$}</GlobalObjectSuffix>
+          <ItemsPerPage>25</ItemsPerPage>
+          <LocalizeItems>True</LocalizeItems>
+          <MaxDisplayedItems>25</MaxDisplayedItems>
+          <MaxDisplayedTotalItems>50</MaxDisplayedTotalItems>
+          <ObjectType>CustomTableItem.KDA.StatesGroup</ObjectType>
+          <RemoveMultipleCommas>False</RemoveMultipleCommas>
           <ReturnColumnName>ItemID</ReturnColumnName>
+          <ReturnColumnType>id</ReturnColumnType>
+          <SelectionMode>1</SelectionMode>
+          <ValuesSeparator>;</ValuesSeparator>
         </settings>
       </field>
       <field allowempty="true" column="CategoryID" columntype="integer" guid="270a446b-6cdd-4881-8eae-9d9cf9e9cdb5" publicfield="false" visible="true">
@@ -149,10 +169,30 @@
           <fieldcaption>Item Specs</fieldcaption>
         </properties>
         <settings>
-          <controlname>CustomTableItemSelector</controlname>
-          <CustomTable>KDA.ProductItemSpecs</CustomTable>
+          <AddGlobalObjectNamePrefix>False</AddGlobalObjectNamePrefix>
+          <AddGlobalObjectSuffix>False</AddGlobalObjectSuffix>
+          <AllowAll>False</AllowAll>
+          <AllowDefault>False</AllowDefault>
+          <AllowEditTextBox>False</AllowEditTextBox>
+          <AllowEmpty>True</AllowEmpty>
+          <controlname>Uni_selector</controlname>
+          <DialogWindowName>SelectionDialog</DialogWindowName>
           <DisplayNameFormat>{%ItemSpec%}</DisplayNameFormat>
+          <EditDialogWindowHeight>700</EditDialogWindowHeight>
+          <EditDialogWindowWidth>1000</EditDialogWindowWidth>
+          <EditWindowName>EditWindow</EditWindowName>
+          <EncodeOutput>True</EncodeOutput>
+          <GlobalObjectSuffix ismacro="true">{$general.global$}</GlobalObjectSuffix>
+          <ItemsPerPage>25</ItemsPerPage>
+          <LocalizeItems>True</LocalizeItems>
+          <MaxDisplayedItems>25</MaxDisplayedItems>
+          <MaxDisplayedTotalItems>50</MaxDisplayedTotalItems>
+          <ObjectType>CustomTableItem.KDA.ProductItemSpecs</ObjectType>
+          <RemoveMultipleCommas>False</RemoveMultipleCommas>
           <ReturnColumnName>ItemID</ReturnColumnName>
+          <ReturnColumnType>id</ReturnColumnType>
+          <SelectionMode>1</SelectionMode>
+          <ValuesSeparator>;</ValuesSeparator>
         </settings>
       </field>
       <field allowempty="true" column="Cancelled" columntype="boolean" guid="83d8267d-cf59-47a9-945f-2faa84e0924e" publicfield="false" visible="true">
@@ -163,7 +203,7 @@
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
-      <field allowempty="true" column="CVOProductID" columnsize="200" columntype="text" guid="7cae9d9d-ec5e-49e1-99cd-edc821efc2d1" publicfield="false" visible="true">
+      <field allowempty="true" column="CVOProductID" columnsize="200" columntype="text" guid="7cae9d9d-ec5e-49e1-99cd-edc821efc2d1" publicfield="false">
         <properties>
           <fieldcaption>CVO ProductID</fieldcaption>
         </properties>
@@ -176,7 +216,7 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field allowempty="true" column="StoreFrontProductID" columntype="integer" guid="e30fe81a-c07f-4a21-b498-e2873a2e011c" publicfield="false" visible="true">
+      <field allowempty="true" column="StoreFrontProductID" columntype="integer" guid="e30fe81a-c07f-4a21-b498-e2873a2e011c" publicfield="false">
         <properties>
           <fieldcaption>Store Front ProductID</fieldcaption>
         </properties>
