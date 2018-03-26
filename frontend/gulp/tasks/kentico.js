@@ -17,13 +17,7 @@ gulp.task('replace-kentico', () => {
 });
 
 gulp.task('kentico', (done) => {
-  runSequence('clean', ['images', 'svg', 'styles', 'js'], 'tpl', 'styleguide', 'copySgAssets', 'replace-kentico', () => {
-    done();
-  })
-});
-
-gulp.task('kentico:deploy', (done) => {
-  runSequence('clean', ['images', 'svg', 'styles', 'js'], 'tpl', 'styleguide', 'copySgAssets', 'replace-kentico', () => {
+  runSequence('clean', ['images', 'svg', 'styles', 'js'], 'tpl', 'copySgAssets', 'replace-kentico', () => {
     done();
   })
 });

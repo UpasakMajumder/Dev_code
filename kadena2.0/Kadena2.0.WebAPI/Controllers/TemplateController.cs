@@ -17,17 +17,8 @@ namespace Kadena.WebAPI.Controllers
 
         public TemplateController(ITemplateService templateService, IMapper mapper)
         {
-            if (templateService == null)
-            {
-                throw new ArgumentNullException(nameof(templateService));
-            }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-
-            _templateService = templateService;
-            _mapper = mapper;
+            _templateService = templateService ?? throw new ArgumentNullException(nameof(templateService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpPost]

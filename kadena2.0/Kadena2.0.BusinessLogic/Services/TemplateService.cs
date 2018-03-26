@@ -26,37 +26,12 @@ namespace Kadena.BusinessLogic.Services
         public TemplateService(IKenticoResourceService resources, IKenticoLogger logger, ITemplatedClient templateClient,
             IKenticoUserProvider users, IKenticoDocumentProvider documents, IKenticoProductsProvider products)
         {
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-            if (templateClient == null)
-            {
-                throw new ArgumentNullException(nameof(templateClient));
-            }
-            if (users == null)
-            {
-                throw new ArgumentNullException(nameof(users));
-            }
-            if (documents == null)
-            {
-                throw new ArgumentNullException(nameof(documents));
-            }
-            if (products == null)
-            {
-                throw new ArgumentNullException(nameof(products));
-            }
-
-            this._resources = resources;
-            this._logger = logger;
-            this._templateClient = templateClient;
-            this._users = users;
-            this._documents = documents;
-            this._products = products;
+            this._resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this._templateClient = templateClient ?? throw new ArgumentNullException(nameof(templateClient));
+            this._users = users ?? throw new ArgumentNullException(nameof(users));
+            this._documents = documents ?? throw new ArgumentNullException(nameof(documents));
+            this._products = products ?? throw new ArgumentNullException(nameof(products));
         }
 
         public async Task<bool> UpdateTemplate(Guid templateId, string name, int quantity)
@@ -163,7 +138,7 @@ namespace Kadena.BusinessLogic.Services
                             CreatedDate = t.Created,
                             UpdatedDate = t.Updated,
                             ProductName = t.Name,
-                            Image = t.PreviewUrls?.FirstOrDefault()
+                            Image = t.ThumbnailUrls?.FirstOrDefault()
                         };
                     })
                     .OrderByDescending(t => t.UpdatedDate)

@@ -111,7 +111,7 @@ namespace Kadena.BusinessLogic.Services
             if (addressFrom != null)
             {
                 taxRequest.ShipFromCity = addressFrom.City ?? string.Empty;
-                taxRequest.ShipFromState = addressFrom.State ?? string.Empty;
+                taxRequest.ShipFromState = addressFrom.State?.StateCode ?? string.Empty;
                 taxRequest.ShipFromZip = addressFrom.Zip ?? string.Empty;
             }
 

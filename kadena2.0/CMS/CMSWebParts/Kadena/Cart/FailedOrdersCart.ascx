@@ -16,7 +16,7 @@
             <td><%# Eval("SKUNumber") %></td>
             <td><%# Eval("SKUName") %> </td>
             <td>
-                <asp:TextBox runat="server" TextMode="Number" ID="txtUnits" min="1" CssClass="input__text js-ItemQuantity" onkeypress="return isNumber(event)" Text='<%# Eval("SKUUnits") %>' />
+                <asp:TextBox runat="server" ID="txtUnits" min="1" CssClass="input__text js-ItemQuantity" onkeypress="return isNumber(event)" Text='<%# Eval("SKUUnits") %>' />
                 <asp:HiddenField runat="server" ID="hdnCartItemID" Value='<%# Eval("CartItemID") %>' />
             </td>
             <td>
@@ -53,6 +53,12 @@
         <td colspan="3"><%= SubTotal %></td>
         <td>
             <asp:Label ID="lblTotalPrice" runat="server" />
+        </td>
+    </tr>
+    <tr>
+        <td><b>Error</b></td>
+        <td colspan="4">
+            <asp:Label ID="lblCartErrorMSG" runat="server" />
         </td>
     </tr>
     </tbody>

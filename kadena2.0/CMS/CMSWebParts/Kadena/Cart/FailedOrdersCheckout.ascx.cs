@@ -69,7 +69,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     int CampaignID = QueryHelper.GetInteger("campid", 0);
                     if (CampaignID > 0 && _failedOrders.GetCampaignOrderStatus(CampaignID))
                     {
-                        ShoppingCartHelper.ProcessOrders(CampaignID);
+                        ShoppingCartHelper.ProcessOrders(CampaignID, CurrentUser.UserID);
                         Response.Redirect(Request.RawUrl);
                     }
                     else

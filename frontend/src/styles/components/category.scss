@@ -9,8 +9,13 @@
   }
 
   &__picture {
-    @extend .inline-bg;
-    height: 150px;
+    @extend %flex--center--center;
+    height: 222px;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
   }
 
   &__title {

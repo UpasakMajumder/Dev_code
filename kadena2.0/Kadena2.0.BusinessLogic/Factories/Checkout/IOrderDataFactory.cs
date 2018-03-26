@@ -6,8 +6,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
 {
     public interface IOrderDataFactory
     {
-        AddressDTO CreateBillingAddress(BillingAddress billingAddress, string billingStateDisplayName);
-        AddressDTO CreateShippingAddress(DeliveryAddress shippingAddress, Customer customer);
+        AddressDTO CreateBillingAddress(BillingAddress billingAddress);
         CustomerDTO CreateCustomer(Customer customer);
         PaymentOptionDTO CreatePaymentOption(Models.PaymentMethod paymentMethod, SubmitOrderRequest request);
     }
