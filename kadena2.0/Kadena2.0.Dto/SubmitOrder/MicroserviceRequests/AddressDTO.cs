@@ -21,6 +21,7 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
         [Required(AllowEmptyStrings = false, ErrorMessage = "Zip Code is a mandatory field")]
         public string Zip { get; set; }
         public string Phone { get; set; }
+        public string Email { get; set; }
         public int KenticoCountryID { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Country is a mandatory field")]
