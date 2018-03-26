@@ -14,14 +14,12 @@ namespace Kadena.WebAPI.Controllers
         private readonly ILoginService loginService;
         private readonly IMapper mapper;
         private readonly IIdentityService identityService;
-        private readonly IUserService userService;
 
-        public LoginController(ILoginService loginService, IMapper mapper, IIdentityService identityService, IUserService userService)
+        public LoginController(ILoginService loginService, IMapper mapper, IIdentityService identityService)
         {
             this.loginService = loginService ?? throw new ArgumentNullException(nameof(loginService));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         [HttpPost]
