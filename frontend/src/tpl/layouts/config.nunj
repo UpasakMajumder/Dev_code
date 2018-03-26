@@ -113,7 +113,7 @@
         loginUrl: PATH + 'login'
       },
       tac: {
-        accepted: false,
+        show: true,
         title: 'Title',
         submitText: 'Accept',
         acceptTaCUrl: PATH + 'accepttac',

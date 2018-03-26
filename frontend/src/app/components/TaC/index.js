@@ -22,7 +22,7 @@ class TaCDialog extends Component {
   };
 
   componentDidMount() {
-    if (TAC.accepted === false) { // can be undefined
+    if (TAC.show === true) { // can be undefined
       this.props.openTaC({
         redirect: false,
         returnurl: ''
