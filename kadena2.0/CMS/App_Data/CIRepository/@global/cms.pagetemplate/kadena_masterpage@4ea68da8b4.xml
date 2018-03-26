@@ -203,6 +203,14 @@
     cartContainsInvalidProducts: '{% GetResourceString("KDA.Cart.CartContainsInvalidProducts") |(user)cvoqa2@gmail.com|(hash)7812e266e1c24f684a8ad645a108b8914db9e2fe44d09e2b1de0f968feb6db32%}',
     invalidProduct: '{% GetResourceString("KDA.Cart.InvalidProduct") |(user)cvoqa2@gmail.com|(hash)9be270fcd983926b5c96a291cbee62db9f479e48c5219938a17a8d7de645536e%}'
   };
+  config.localization.tac= {
+    show: {% KadenaNamespace.ShowTaC().ToString().ToLower() |(user)rostyslav.diachenko@actum.cz|(hash)fb0482780c975722b630d1be8cde8b4d788ca6b5fdd539bb6ca22bb46bb0109e%},
+    title: '{$Kadena.TermsAndConditions.Title$}',
+    submitText: '{$Kadena.TermsAndConditions.Accept$}',
+    acceptTaCUrl: 'api/user/accepttac',
+    checkTaCUrl: 'api/user/checktac',
+    iframeUrl: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_TermsAndConditionPage) |(user)rostyslav.diachenko@actum.cz|(hash)d3da338f27c0ef291ffe93fda5fd5fd555a0650fdb5e673861e4f4284f570b7d%}'
+  };
 </script>
 
 <script src="/js/common.min.js"></script>
