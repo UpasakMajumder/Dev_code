@@ -37,4 +37,14 @@ a:focus {
       flex-shrink: 0;
     }
   }
+
+  &--no-blue {
+    color: $brand-dark;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: $brand-dark;
+    }
+  }
 }

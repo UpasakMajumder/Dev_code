@@ -1,0 +1,24 @@
+.icons-sort {
+  @extend .mr-2;
+  display: inline-block;
+
+  & > * {
+    opacity: .2;
+
+    &:last-child {
+      transform: rotate(180deg);
+    }
+  }
+
+  &--asc {
+    & > *:last-child {
+      opacity: 1;
+    }
+  }
+
+  &--desc {
+    & > *:first-child {
+      opacity: 1;
+    }
+  }
+}
