@@ -5,13 +5,18 @@ using System.Linq.Expressions;
 
 namespace Kadena.Tests
 {
-    public abstract class KadenaUnitTest<T> where T : class
+    public abstract class KadenaUnitTest<TSut> where TSut : class
     {
         private readonly AutoMocker autoMocker = new AutoMocker();
 
-        protected T Sut => autoMocker.CreateInstance<T>();
+        protected TSut Sut => autoMocker.CreateInstance<TSut>();
 
         protected void Setup<TService, TResult>(Expression<Func<TService, TResult>> setupAction, TResult result) where TService : class
+        {
+            autoMocker.Setup(setupAction).Returns(result);
+        }
+
+        protected void Setup<TService, T, TResult>(Expression<Func<TService, TResult>> setupAction, Func<T, TResult> result) where TService : class
         {
             autoMocker.Setup(setupAction).Returns(result);
         }
