@@ -19,18 +19,6 @@ namespace Kadena.Tests.WebApi
         private readonly int newQuantity = 5;
         private readonly Guid templateId = Guid.Empty;
 
-        private TemplateService Create(Mock<ITemplatedClient> templateClient)
-        {
-            return new TemplateService(
-                Mock.Of<IKenticoResourceService>(),
-                Mock.Of<IKenticoLogger>(),
-                templateClient.Object,
-                Mock.Of<IKenticoUserProvider>(),
-                Mock.Of<IKenticoDocumentProvider>(),
-                Mock.Of<IKenticoProductsProvider>()
-                );
-        }
-
         [Fact(DisplayName = "TemplateService.UpdateTemplate() | Success")]
         public async Task TemplateUpdateSucceed()
         {
