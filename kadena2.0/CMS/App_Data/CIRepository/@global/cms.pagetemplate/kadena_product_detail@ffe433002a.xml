@@ -617,7 +617,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% KadenaNamespace.CanDisplayAddToCartButton(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),DocumentContext.CurrentDocument.GetValue("SKUAvailableItems"),DocumentContext.CurrentDocument.GetValue("SellOnlyAvailable"))&&(ECommerceContext.CurrentCustomer != null)|(user)michal.machacek@actum.cz|(hash)349eace36befac13e9d831ccad5b624f8413a18fa1b1821cd07d806374e01580%}]]>
+            <![CDATA[{% KadenaNamespace.CanDisplayAddToCartButton(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),DocumentContext.CurrentDocument.GetValue("SKUAvailableItems"),ECommerceContext.CurrentProduct.SKUSellOnlyAvailable)&&(ECommerceContext.CurrentCustomer != null)|(user)michal.machacek@actum.cz|(hash)2a93d7bb9f20e67af33ab462a0a192e3b08593121bce85c7439fd0966853fa19%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">AddToCartButton</property>

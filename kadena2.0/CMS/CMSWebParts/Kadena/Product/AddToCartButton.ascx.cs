@@ -27,11 +27,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
             SetupDocument();
             SetupQuantity();
-            
-            if (IsProductInventoryType() && IsStockEmpty())
-            {
-                this.Visible = false;
-            }
 
             if (IsProductTemplatedType())
             {
@@ -83,22 +78,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     return stringWriter.ToString();
                 }
             }
-        }
-
-        private bool IsStockEmpty()
-        {
-            if (_productDocument.GetValue("SKUAvailableItems") != null)
-            {
-                return (int)_productDocument.GetValue("SKUAvailableItems") == 0;
-            }
-
-            return true;
-        }
-
-        private bool IsProductInventoryType()
-        {
-            var productType = _productDocument.GetStringValue("ProductType", string.Empty);
-            return ProductTypes.IsOfType(ProductTypes.InventoryProduct, productType);
         }
 
         private bool IsProductMailingType()
