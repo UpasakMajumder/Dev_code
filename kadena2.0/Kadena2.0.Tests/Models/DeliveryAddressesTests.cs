@@ -9,77 +9,81 @@ using Xunit;
 
 namespace Kadena.Tests.Models
 {
-    public class DeliveryAddressesTests
+    public class DeliveryAddressesTests : KadenaUnitTest<DeliveryAddresses>
     {
-        [Fact]
+        [Fact(DisplayName = "DeliveryAddresses.GetDefaultAddressId() | Empty")]
         public void GetDefaultAddressId_ShouldReturnZero_WhenNoAddresses()
         {
             var expected = 0;
-            var addresses = new DeliveryAddresses();
 
-            var actual = addresses.GetDefaultAddressId();
+            var actual = Sut.GetDefaultAddressId();
 
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
+        [Fact(DisplayName = "DeliveryAddresses.GetDefaultAddressId() | Non empty")]
         public void GetDefaultAddressId_ShouldReturnFirstAddressId()
         {
             var addresses = GetAddresses();
-            var expected = addresses.items.First().Id;
+            var expected = addresses.First().Id;
+            var sut = Sut;
+            sut.items = addresses;
 
-            var defaultAddressId = addresses.GetDefaultAddressId();
+            var defaultAddressId = sut.GetDefaultAddressId();
 
             Assert.Equal(expected, defaultAddressId);
         }
 
-        [Fact]
+        [Fact(DisplayName = "DeliveryAddresses.CheckAddress() | Checks only one")]
         public void CheckAddress_ShouldCheckOnlyOneAddress_WhenAddressIsValid()
         {
             var addresses = GetAddresses();
-            var ids = addresses.items.Select(a => a.Id).ToList();
+            var ids = addresses.Select(a => a.Id).ToList();
+            var sut = Sut;
+            sut.items = addresses;
 
             foreach (var item in ids)
             {
-                addresses.CheckAddress(item);
+                sut.CheckAddress(item);
             }
-            var checkedCount = addresses.items.Count(a => a.Checked);
+            var checkedCount = sut.items.Count(a => a.Checked);
 
             Assert.Equal(1, checkedCount);
         }
 
-        [Fact]
+        [Fact(DisplayName = "DeliveryAddresses.CheckAddress() | Check non existing")]
         public void CheckAddress_ShouldCheckNoAddress_WhenAddressIsInvalid()
         {
             var addresses = GetAddresses();
             var invalidId = -10;
+            var sut = Sut;
+            sut.items = addresses;
 
-            addresses.CheckAddress(invalidId);
-            var checkedCount = addresses.items.Count(a => a.Checked);
+            sut.CheckAddress(invalidId);
+            var checkedCount = sut.items.Count(a => a.Checked);
 
             Assert.Equal(0, checkedCount);
         }
 
-        [Fact]
+        [Fact(DisplayName = "DeliveryAddresses.CheckAddress() | Check existing")]
         public void CheckAddress_ShouldMoveCheckedAddressToFirstPlace()
         {
             var addresses = GetAddresses();
-            var validId = addresses.items.Last().Id;
+            var validId = addresses.Last().Id;
+            var sut = Sut;
+            sut.items = addresses;
 
-            addresses.CheckAddress(validId);
+            sut.CheckAddress(validId);
 
-            Assert.True(addresses.items.First().Checked);
+            Assert.True(sut.items.First().Checked);
         }
 
-        private DeliveryAddresses GetAddresses()
+        private List<DeliveryAddress> GetAddresses()
         {
-            return new DeliveryAddresses
+            return new List<DeliveryAddress>
             {
-                items = new List<Kadena.Models.DeliveryAddress>
-                {
-                    new DeliveryAddress { Id = 22 },
-                    new DeliveryAddress { Id = 33 }
-                }
+                new DeliveryAddress { Id = 22 },
+                new DeliveryAddress { Id = 33 }
             };
         }
     }

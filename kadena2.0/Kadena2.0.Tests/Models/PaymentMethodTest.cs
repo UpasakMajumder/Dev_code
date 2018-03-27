@@ -1,7 +1,7 @@
 ﻿using Kadena.Models;
 using Xunit;
 
-namespace Kadena.Tests.CreditCard
+namespace Kadena.Tests.Models
 {
     public class PaymentMethodTest : KadenaUnitTest<PaymentMethod>
     {
