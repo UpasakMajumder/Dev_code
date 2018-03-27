@@ -21,6 +21,15 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="ProductImage" columnsize="400" columntype="text" guid="32de393b-6ca4-47ff-ad7e-57270c2c9705" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Product Image</fieldcaption>
+          <fielddescription>Assigned to product page (per language version)</fielddescription>
+        </properties>
+        <settings>
+          <controlname>MediaSelectionControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="EstimatedPrice" columntype="double" guid="a478b9bb-1cf9-4319-a3fc-5606159ff4ae" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Estimated Price</fieldcaption>
@@ -253,16 +262,6 @@
           <MediaDialogConfiguration>True</MediaDialogConfiguration>
           <ShowAddStampButton>False</ShowAddStampButton>
           <WidthUnitType>PX</WidthUnitType>
-        </settings>
-      </field>
-      <field allowempty="true" column="ProductThumbnail" columntype="file" guid="6cc6abc0-7d57-4046-b6ae-5a85f56ec2ac" publicfield="false" visible="true">
-        <properties>
-          <fieldcaption>Thumbnail</fieldcaption>
-        </properties>
-        <settings>
-          <Allowed_Extensions>jpg;jpeg;png;</Allowed_Extensions>
-          <controlname>DirectUploadControl</controlname>
-          <Extensions>custom</Extensions>
         </settings>
       </field>
     </form>

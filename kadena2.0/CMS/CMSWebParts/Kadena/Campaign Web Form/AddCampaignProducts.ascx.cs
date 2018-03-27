@@ -520,7 +520,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                                 txtProductName.Text = skuDetails.SKUName;
                                 txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
                                 ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
-                                imgProduct.ImageUrl = ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty);
+                                imgProduct.ImageUrl = ValidationHelper.GetString(product.ProductImage, string.Empty);
                                 imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
                                 if (skuDetails.SKUValidUntil != DateTime.MinValue)
                                 {
@@ -762,6 +762,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         {
                             string libraryFolderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
                             imagePath = UploadImage.UploadImageToMeadiaLibrary(productImage, libraryFolderName);
+                            products.ProductImage = imagePath;
                         }
                         SKUInfo newProduct = new SKUInfo()
                         {
@@ -770,7 +771,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             SKUShortDescription = ValidationHelper.GetString(txtProductName.Text, string.Empty),
                             SKUDescription = ValidationHelper.GetString(txtLongDescription.Text, string.Empty),
                             SKUEnabled = ValidationHelper.GetString(ddlStatus.SelectedValue, "1") == "1" ? true : false,
-                            SKUImagePath = imagePath,
                             SKUSiteID = CurrentSite.SiteID,
                             SKUProductType = SKUProductTypeEnum.EProduct,
                             SKUPrice = 0
@@ -827,18 +827,18 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                     product.CustomItemSpecs = ValidationHelper.GetString(customItemSpecs, string.Empty);
                     product.EstimatedPrice = ValidationHelper.GetDouble(txtEstimatedprice.Text, default(double));
                     product.ProductName = ValidationHelper.GetString(txtProductName.Text, string.Empty);
+                    if (productImage.HasFile)
+                    {
+                        string libraryFolderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
+                        if (product.ProductImage != string.Empty)
+                        {
+                            UploadImage.DeleteImage(product.ProductImage, libraryFolderName);
+                        }
+                        product.ProductImage = UploadImage.UploadImageToMeadiaLibrary(productImage, libraryFolderName);
+                    }
                     SKUInfo updateProduct = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", product.NodeSKUID).FirstObject;
                     if (updateProduct != null)
                     {
-                        if (productImage.HasFile)
-                        {
-                            string libraryFolderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
-                            if (updateProduct.SKUImagePath != string.Empty)
-                            {
-                                UploadImage.DeleteImage(updateProduct.SKUImagePath, libraryFolderName);
-                            }
-                            updateProduct.SKUImagePath = UploadImage.UploadImageToMeadiaLibrary(productImage, libraryFolderName);
-                        }
                         updateProduct.SKUName = ValidationHelper.GetString(txtProductName.Text, string.Empty);
                         updateProduct.SKUShortDescription = ValidationHelper.GetString(txtProductName.Text, string.Empty);
                         updateProduct.SKUDescription = ValidationHelper.GetString(txtLongDescription.Text, string.Empty);
