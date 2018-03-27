@@ -2,14 +2,13 @@
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Moq;
-using Moq.AutoMock;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
 namespace Kadena.Tests.BusinessLogic
 {
-    public class ProductsServiceTest
+    public class ProductsServiceTest : KadenaUnitTest<ProductsService>
     {
         public static IEnumerable<object[]> GetEmptyOptions()
         {
@@ -44,13 +43,9 @@ namespace Kadena.Tests.BusinessLogic
         [MemberData(nameof(GetOptions))]
         public void GetPrice(Dictionary<string, int> options)
         {
-            var autoMocker = new AutoMocker();
-            var service = autoMocker.CreateInstance<ProductsService>();
-            var productsService = autoMocker.GetMock<IKenticoProductsProvider>();
-            productsService.Setup(p => p.GetVariant(It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
-                .Returns(new Sku());
+            Setup<IKenticoProductsProvider, Sku>(p => p.GetVariant(It.IsAny<int>(), It.IsAny<IEnumerable<int>>()), new Sku());
 
-            var result = service.GetPrice(0, options);
+            var result = Sut.GetPrice(0, options);
 
             Assert.Null(result);
         }
@@ -59,10 +54,7 @@ namespace Kadena.Tests.BusinessLogic
         [MemberData(nameof(GetOptions))]
         public void GetPrice_NonExistingVariant(Dictionary<string, int> options)
         {
-            var autoMocker = new AutoMocker();
-            var service = autoMocker.CreateInstance<ProductsService>();
-
-            Assert.Throws<ArgumentException>(() => service.GetPrice(0, options));
+            Assert.Throws<ArgumentException>(() => Sut.GetPrice(0, options));
         }
     }
 }

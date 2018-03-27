@@ -1,15 +1,13 @@
 ﻿using Xunit;
-using Moq;
 using System;
 using Kadena.BusinessLogic.Services;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.Models.Site;
 
 namespace Kadena.Tests.BusinessLogic
 {
-    public class DateTimeFormatterTest
+    public class DateTimeFormatterTest : KadenaUnitTest<DateTimeFormatter>
     {
-        [Theory]
+        [Theory(DisplayName = "DateTimeFormatter.Format()")]
         [InlineData("Jan 30 2017", "en-US", "Jan 30, 2017")]
         [InlineData("Jan 09 2017", "en-US", "Jan 09, 2017")]
         [InlineData("Jan 30 2017", "ja-JP", "1月 30, 2017")]
@@ -17,14 +15,10 @@ namespace Kadena.Tests.BusinessLogic
         public void FormatterTest(string date, string culture, string expectedOutput)
         {
             // Arrange
-            var datetime = DateTime.Parse(date);
-            var localization = new Mock<IKenticoLocalizationProvider>();
-            localization.Setup(m => m.GetContextCultureCode())
-                .Returns(culture);
-            var dateFormatter = new DateTimeFormatter(localization.Object);
+            Setup<IKenticoLocalizationProvider, string>(m => m.GetContextCultureCode(), culture);
 
             // Act
-            var outputDate = dateFormatter.Format(datetime);
+            var outputDate = Sut.Format(DateTime.Parse(date));
 
             // Assert
             Assert.Equal(expectedOutput, outputDate);

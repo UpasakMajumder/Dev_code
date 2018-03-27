@@ -6,7 +6,6 @@ using Kadena.Models;
 using Kadena.Models.Site;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Moq;
-using Moq.AutoMock;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,20 +13,15 @@ using Xunit;
 
 namespace Kadena.Tests.BusinessLogic
 {
-    public class IdentityServiceTest
+    public class IdentityServiceTest : KadenaUnitTest<IdentityService>
     {
         [Fact(DisplayName = "IdentityService.TryAuthenticate() | Fail")]
         public void TryAuthenticateNullAttributes()
         {
             var expectedResult = new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
-            var autoMock = new AutoMocker();
-            autoMock
-                .GetMock<IKenticoResourceService>()
-                .Setup(s => s.GetLogonPageUrl())
-                .Returns(expectedResult.AbsoluteUri);
-            var sut = autoMock.CreateInstance<IdentityService>();
+            Setup<IKenticoResourceService, string>(s => s.GetLogonPageUrl(), expectedResult.AbsoluteUri);
 
-            var actualResult = sut.TryAuthenticate(string.Empty);
+            var actualResult = Sut.TryAuthenticate(string.Empty);
 
             Assert.NotNull(actualResult);
             Assert.Equal(expectedResult, actualResult);
@@ -37,31 +31,15 @@ namespace Kadena.Tests.BusinessLogic
         public void TryAuthenticateNonNullAttributes()
         {
             var expectedResult = new Uri("/", UriKind.Relative);
-            var autoMock = new AutoMocker();
-            autoMock
-                .GetMock<ISaml2Service>()
-                .Setup(s => s.GetAttributes(It.IsAny<string>()))
-                .Returns(new Dictionary<string, IEnumerable<string>>());
-            autoMock
-                .GetMock<IKenticoSiteProvider>()
-                .Setup(s => s.GetKenticoSite())
-                .Returns(new KenticoSite { Id = 1 });
-            autoMock
-                .GetMock<IKenticoLoginProvider>()
-                .Setup(s => s.SSOLogin(It.IsAny<string>(), It.IsAny<bool>()))
-                .Returns(true);
-            autoMock
-                .GetMock<IKenticoAddressBookProvider>()
-                .Setup(s => s.GetAddressesList(It.IsAny<int>()))
-                .Returns(Enumerable.Empty<AddressData>().ToList());
-            var mapper = autoMock.GetMock<IMapper>();
-            mapper.Setup(s => s.Map<User>(It.IsAny<UserDto>())).Returns(new User());
-            mapper.Setup(s => s.Map<UserDto>(It.IsAny<Dictionary<string, IEnumerable<string>>>())).Returns(new UserDto());
-            mapper.Setup(s => s.Map<Customer>(It.IsAny<CustomerDto>())).Returns(new Customer());
+            Setup<ISaml2Service, Dictionary<string, IEnumerable<string>>>(s => s.GetAttributes(It.IsAny<string>()), new Dictionary<string, IEnumerable<string>>());
+            Setup<IKenticoSiteProvider, KenticoSite>(s => s.GetKenticoSite(), new KenticoSite { Id = 1 });
+            Setup<IKenticoLoginProvider, bool>(s => s.SSOLogin(It.IsAny<string>(), It.IsAny<bool>()), true);
+            Setup<IKenticoAddressBookProvider, List<AddressData>>(s => s.GetAddressesList(It.IsAny<int>()), Enumerable.Empty<AddressData>().ToList());
+            Setup<IMapper, User>(s => s.Map<User>(It.IsAny<UserDto>()), new User());
+            Setup<IMapper, UserDto>(s => s.Map<UserDto>(It.IsAny<Dictionary<string, IEnumerable<string>>>()), new UserDto());
+            Setup<IMapper, Customer>(s => s.Map<Customer>(It.IsAny<CustomerDto>()), new Customer());
 
-            var sut = autoMock.CreateInstance<IdentityService>();
-
-            var actualResult = sut.TryAuthenticate(string.Empty);
+            var actualResult = Sut.TryAuthenticate(string.Empty);
 
             Assert.NotNull(actualResult);
             Assert.Equal(expectedResult, actualResult);
@@ -71,23 +49,11 @@ namespace Kadena.Tests.BusinessLogic
         public void TryAuthenticateNullUserDto()
         {
             var expectedResult = new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
-            var autoMock = new AutoMocker();
-            autoMock
-                .GetMock<IKenticoResourceService>()
-                .Setup(s => s.GetLogonPageUrl())
-                .Returns(expectedResult.AbsoluteUri);
-            autoMock
-                .GetMock<ISaml2Service>()
-                .Setup(s => s.GetAttributes(It.IsAny<string>()))
-                .Returns(new Dictionary<string, IEnumerable<string>>());
-            autoMock
-                .GetMock<IKenticoSiteProvider>()
-                .Setup(s => s.GetKenticoSite())
-                .Returns(new KenticoSite { Id = 1 });
+            Setup<IKenticoResourceService, string>(s => s.GetLogonPageUrl(), expectedResult.AbsoluteUri);
+            Setup<ISaml2Service, Dictionary<string, IEnumerable<string>>>(s => s.GetAttributes(It.IsAny<string>()), new Dictionary<string, IEnumerable<string>>());
+            Setup<IKenticoSiteProvider, KenticoSite>(s => s.GetKenticoSite(), new KenticoSite { Id = 1 });
 
-            var sut = autoMock.CreateInstance<IdentityService>();
-
-            var actualResult = sut.TryAuthenticate(string.Empty);
+            var actualResult = Sut.TryAuthenticate(string.Empty);
 
             Assert.NotNull(actualResult);
             Assert.Equal(expectedResult, actualResult);
@@ -97,30 +63,14 @@ namespace Kadena.Tests.BusinessLogic
         public void TryAuthenticateUserExists()
         {
             var expectedResult = new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
-            var autoMock = new AutoMocker();
-            autoMock
-                .GetMock<IKenticoResourceService>()
-                .Setup(s => s.GetLogonPageUrl())
-                .Returns(expectedResult.AbsoluteUri);
-            autoMock
-                .GetMock<ISaml2Service>()
-                .Setup(s => s.GetAttributes(It.IsAny<string>()))
-                .Returns(new Dictionary<string, IEnumerable<string>>());
-            autoMock
-                .GetMock<IKenticoSiteProvider>()
-                .Setup(s => s.GetKenticoSite())
-                .Returns(new KenticoSite { Id = 1 });
-            autoMock
-                .GetMock<IKenticoUserProvider>()
-                .Setup(s => s.GetUser(It.IsAny<string>()))
-                .Returns(new User());
-            var mapper = autoMock.GetMock<IMapper>();
-            mapper.Setup(s => s.Map<User>(It.IsAny<UserDto>())).Returns(new User());
-            mapper.Setup(s => s.Map<UserDto>(It.IsAny<Dictionary<string, IEnumerable<string>>>())).Returns(new UserDto());
+            Setup<IKenticoResourceService, string>(s => s.GetLogonPageUrl(), expectedResult.AbsoluteUri);
+            Setup<ISaml2Service, Dictionary<string, IEnumerable<string>>>(s => s.GetAttributes(It.IsAny<string>()), new Dictionary<string, IEnumerable<string>>());
+            Setup<IKenticoSiteProvider, KenticoSite>(s => s.GetKenticoSite(), new KenticoSite { Id = 1 });
+            Setup<IKenticoUserProvider, User>(s => s.GetUser(It.IsAny<string>()), new User());
+            Setup<IMapper, User>(s => s.Map<User>(It.IsAny<UserDto>()), new User());
+            Setup<IMapper, UserDto>(s => s.Map<UserDto>(It.IsAny<Dictionary<string, IEnumerable<string>>>()), new UserDto());
 
-            var sut = autoMock.CreateInstance<IdentityService>();
-
-            var actualResult = sut.TryAuthenticate(string.Empty);
+            var actualResult = Sut.TryAuthenticate(string.Empty);
 
             Assert.NotNull(actualResult);
             Assert.Equal(expectedResult, actualResult);
@@ -130,35 +80,16 @@ namespace Kadena.Tests.BusinessLogic
         public void TryAuthenticateCustomerExists()
         {
             var expectedResult = new Uri("https://en.wikipedia.org/wiki/HTTP_403", UriKind.Absolute);
-            var autoMock = new AutoMocker();
-            autoMock
-                .GetMock<IKenticoResourceService>()
-                .Setup(s => s.GetLogonPageUrl())
-                .Returns(expectedResult.AbsoluteUri);
-            autoMock
-                .GetMock<ISaml2Service>()
-                .Setup(s => s.GetAttributes(It.IsAny<string>()))
-                .Returns(new Dictionary<string, IEnumerable<string>>());
-            autoMock
-                .GetMock<IKenticoSiteProvider>()
-                .Setup(s => s.GetKenticoSite())
-                .Returns(new KenticoSite { Id = 1 });
-            autoMock
-                .GetMock<IKenticoAddressBookProvider>()
-                .Setup(s => s.GetAddressesList(It.IsAny<int>()))
-                .Returns(Enumerable.Empty<AddressData>().ToList());
-            autoMock
-                .GetMock<IKenticoUserProvider>()
-                .Setup(s => s.GetCustomer(It.IsAny<int>()))
-                .Returns(new Customer());
-            var mapper = autoMock.GetMock<IMapper>();
-            mapper.Setup(s => s.Map<User>(It.IsAny<UserDto>())).Returns(new User());
-            mapper.Setup(s => s.Map<UserDto>(It.IsAny<Dictionary<string, IEnumerable<string>>>())).Returns(new UserDto());
-            mapper.Setup(s => s.Map<Customer>(It.IsAny<CustomerDto>())).Returns(new Customer());
+            Setup<IKenticoResourceService, string>(s => s.GetLogonPageUrl(), expectedResult.AbsoluteUri);
+            Setup<ISaml2Service, Dictionary<string, IEnumerable<string>>>(s => s.GetAttributes(It.IsAny<string>()), new Dictionary<string, IEnumerable<string>>());
+            Setup<IKenticoSiteProvider, KenticoSite>(s => s.GetKenticoSite(), new KenticoSite { Id = 1 });
+            Setup<IKenticoAddressBookProvider, List<AddressData>>(s => s.GetAddressesList(It.IsAny<int>()), Enumerable.Empty<AddressData>().ToList());
+            Setup<IKenticoUserProvider, Customer>(s => s.GetCustomer(It.IsAny<int>()), new Customer());
+            Setup<IMapper, User>(s => s.Map<User>(It.IsAny<UserDto>()), new User());
+            Setup<IMapper, UserDto>(s => s.Map<UserDto>(It.IsAny<Dictionary<string, IEnumerable<string>>>()), new UserDto());
+            Setup<IMapper, Customer>(s => s.Map<Customer>(It.IsAny<CustomerDto>()), new Customer());
 
-            var sut = autoMock.CreateInstance<IdentityService>();
-
-            var actualResult = sut.TryAuthenticate(string.Empty);
+            var actualResult = Sut.TryAuthenticate(string.Empty);
 
             Assert.NotNull(actualResult);
             Assert.Equal(expectedResult, actualResult);
