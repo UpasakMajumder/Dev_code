@@ -9,7 +9,7 @@
 <![CDATA[
 <tr>
   <td>
-    {% SKUNumber%}
+    {% PosNumber%}
   </td>
   <td>
     {% Name %}
