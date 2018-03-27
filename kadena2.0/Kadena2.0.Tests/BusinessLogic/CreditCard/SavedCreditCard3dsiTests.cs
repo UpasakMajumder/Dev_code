@@ -9,7 +9,7 @@ using Kadena.BusinessLogic.Factories;
 using Kadena2.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 
-namespace Kadena.Tests._3dsiCreditCard
+namespace Kadena.Tests.CreditCard
 {
     public class SavedCreditCard3dsiTests
     {

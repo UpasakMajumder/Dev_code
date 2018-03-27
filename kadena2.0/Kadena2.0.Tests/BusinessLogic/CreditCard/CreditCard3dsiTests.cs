@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Xunit;
 using System;
 
-namespace Kadena.Tests._3dsiCreditCard
+namespace Kadena.Tests.CreditCard
 {
     public class CreditCard3dsiTests
     {
