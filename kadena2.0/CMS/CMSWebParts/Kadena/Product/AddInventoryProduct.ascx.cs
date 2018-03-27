@@ -758,14 +758,12 @@ namespace Kadena.CMSWebParts.Kadena.Product
             {
                 string selectedPos = ddlPosNo.SelectedValue;
                 BindData();
-                SKUInfo skuDetails = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", selectedPos).FirstObject;
+                SKUInfo skuDetails = SKUInfoProvider.GetSKUs().WhereEquals("SKUProductCustomerReferenceNumber", selectedPos).FirstObject;
                 if (skuDetails != null)
                 {
                     string folderName = libraryFolderName;
                     folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
                     txtLongDes.Text = skuDetails.SKUDescription;
-                    txtEstPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
-                    ddlPosNo.SelectedValue = ValidationHelper.GetString(skuDetails.SKUNumber, string.Empty);
                     txtShortDes.Text = skuDetails.SKUName;
                     txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
                     ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
@@ -782,6 +780,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         ddlState.SelectedValue = ValidationHelper.GetString(product.State, string.Empty);
                         ddlProdCategory.SelectedValue = ValidationHelper.GetString(product.CategoryID, string.Empty);
                         BindEditProduct(ValidationHelper.GetInteger(product.CampaignsProductID, 0));
+                        txtEstPrice.Text = ValidationHelper.GetString(product.EstimatedPrice, string.Empty);
                         ViewState["ProductId"] = product.CampaignsProductID;
                     }
                 }
