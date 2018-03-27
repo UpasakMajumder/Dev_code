@@ -30,5 +30,10 @@ namespace Kadena.Tests
         {
             autoMocker.GetMock<TService>().VerifyNoOtherCalls();
         }
+
+        protected void Use<TService>(TService service) where TService : class
+        {
+            autoMocker.Use(service);
+        }
     }
 }
