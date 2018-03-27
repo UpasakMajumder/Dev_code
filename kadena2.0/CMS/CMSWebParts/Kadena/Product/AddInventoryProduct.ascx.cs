@@ -364,7 +364,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     State = ValidationHelper.GetInteger(ddlState.SelectedValue, default(int)),
                     CategoryID = ValidationHelper.GetInteger(ddlProdCategory.SelectedValue, default(int)),
                     ProductName = ValidationHelper.GetString(txtShortDes.Text, string.Empty),
-                    ProductImage = ValidationHelper.GetString(imagePath, string.Empty),
+                    ProductImage = ValidationHelper.GetString(imagePath, string.Empty)
                 };
                 if (productImage.HasFile)
                 {
