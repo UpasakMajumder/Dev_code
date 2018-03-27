@@ -11,6 +11,11 @@ namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoResourceService : IKenticoResourceService
     {
+        public string GetResourceString(string name, string cultureCode)
+        {
+            return ResHelper.GetString(name, culture: cultureCode);
+        }
+
         public string GetResourceString(string name)
         {
             return ResHelper.GetString(name, LocalizationContext.CurrentCulture.CultureCode);

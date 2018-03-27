@@ -3,7 +3,6 @@ using Moq;
 using System;
 using Kadena.BusinessLogic.Services;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.Models.Site;
 
 namespace Kadena.Tests.BusinessLogic
 {

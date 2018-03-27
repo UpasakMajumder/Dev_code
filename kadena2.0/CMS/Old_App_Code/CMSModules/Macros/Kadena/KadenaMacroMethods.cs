@@ -154,9 +154,9 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 
         [MacroMethod(typeof(string), "Validates whether product is an invertory product type.", 1)]
         [MacroMethodParam(0, "productType", typeof(string), "Current product type")]
-        [MacroMethodParam(1, "numberOfAvailableProducts", typeof(object), "NumberOfAvailableProducts")]
+        [MacroMethodParam(1, "numberOfAvailableProducts", typeof(int), "NumberOfAvailableProducts")]
         [MacroMethodParam(2, "cultureCode", typeof(string), "Current culture code")]
-        [MacroMethodParam(3, "numberOfAvailableProductsHelper", typeof(object), "NumberOfAvailableProducts of ECommerce")]
+        [MacroMethodParam(3, "numberOfAvailableProductsHelper", typeof(int), "NumberOfAvailableProducts of ECommerce")]
         public static object GetAvailableProductsString(EvaluationContext context, params object[] parameters)
         {
             if (parameters.Length != 4)
@@ -164,31 +164,12 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 throw new NotSupportedException();
             }
 
-            if (!ValidationHelper.GetString(parameters[0], "").Contains(ProductTypes.InventoryProduct))
-            {
-                return string.Empty;
-            }
-            else
-            {
-                string formattedValue = string.Empty;
+            var productType = (string)parameters[0] ;
+            var numberOfAvailableProducts = (int?)parameters[1];
+            var cultureCode = (string)parameters[2];
+            var numberOfStockProducts = (int)parameters[3];
 
-                if (parameters[1] == null)
-                {
-                    formattedValue = ResHelper.GetString("Kadena.Product.Unavailable", ValidationHelper.GetString(parameters[2], ""));
-                }
-                else if ((int)parameters[3] == 0)
-                {
-                    formattedValue = ResHelper.GetString("Kadena.Product.OutOfStock", ValidationHelper.GetString(parameters[2], ""));
-                }
-                else
-                {
-                    formattedValue = string.Format(
-                    ResHelper.GetString("Kadena.Product.NumberOfAvailableProducts", ValidationHelper.GetString(parameters[3], "")),
-                    ValidationHelper.GetString(parameters[3], ""));
-                }
-
-                return formattedValue;
-            }
+            return DIContainer.Resolve<IProductsService>().GetAvailableProductsString(productType, numberOfAvailableProducts, cultureCode, numberOfStockProducts);
         }
 
         [MacroMethod(typeof(string), "Gets appropriate css class for label that holds amount of products in stock", 1)]

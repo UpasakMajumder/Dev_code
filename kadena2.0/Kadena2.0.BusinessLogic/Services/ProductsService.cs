@@ -15,22 +15,9 @@ namespace Kadena.BusinessLogic.Services
 
         public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources)
         {
-            if (products == null)
-            {
-                throw new ArgumentNullException(nameof(products));
-            }
-            if (favorites == null)
-            {
-                throw new ArgumentNullException(nameof(favorites));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-
-            this.products = products;
-            this.favorites = favorites;
-            this.resources = resources;
+            this.products = products ?? throw new ArgumentNullException(nameof(products));
+            this.favorites = favorites ?? throw new ArgumentNullException(nameof(favorites));
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
         }
 
         public Price GetPrice(int skuId, Dictionary<string, int> skuOptions = null)
@@ -68,6 +55,32 @@ namespace Kadena.BusinessLogic.Services
             productsPage.Products.ForEach(p => p.SetBorderInfo(bordersEnabledOnSite, borderEnabledOnParentCategory, borderStyle));
 
             return productsPage;
+        }
+
+        public string GetAvailableProductsString(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts)
+        {
+            string formattedValue = string.Empty;
+
+            if (!ProductTypes.IsOfType(productType, ProductTypes.InventoryProduct))
+            {
+                return formattedValue;
+            }
+
+            if (!numberOfAvailableProducts.HasValue)
+            {
+                formattedValue = resources.GetResourceString("Kadena.Product.Unavailable", cultureCode);
+            }
+            else if (numberOfStockProducts == 0)
+            {
+                formattedValue = resources.GetResourceString("Kadena.Product.OutOfStock", cultureCode);
+            }
+            else
+            {
+                var baseString = resources.GetResourceString("Kadena.Product.NumberOfAvailableProducts", cultureCode);
+                formattedValue = string.Format(baseString, numberOfStockProducts);
+            }
+
+            return formattedValue;
         }
     }
 }
