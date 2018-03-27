@@ -9,21 +9,19 @@ using Xunit;
 
 namespace Kadena.Tests.EventHandlers
 {
-    public class ProductEventHandlerTests
+    public class ProductEventHandlerTests : KadenaUnitTest<ProductEventHandler>
     {
-        [Fact]
+        [Fact(DisplayName = "ProductEventHandler.CopyProductSKUFieldsToSKU_EventHandler()")]
         public void CopyProductSKUFieldsToSKU_ShouldDoNothing_WhenNodeIsNotProduct()
         {
-            var productProviderMock = new Mock<IKenticoProductsProvider>();
-            var sut = new ProductEventHandler();
-            sut.ProductsProvider = productProviderMock.Object;
+            var sut = Sut;
 
             sut.CopyProductSKUFieldsToSKU_EventHandler(sut, new DocumentEventArgs());
 
-            productProviderMock.Verify(p => p.UpdateSku(It.IsAny<Sku>()), Times.Never());
+            Verify<IKenticoProductsProvider>(p => p.UpdateSku(It.IsAny<Sku>()), Times.Never);
         }
 
-        [Fact]
+        [Fact(DisplayName = "ProductEventHandlerFake.CopyProductSKUFieldsToSKU_EventHandler()")]
         public void CopyProductSKUFieldsToSKU_ShouldCopyValues_WhenNodeIsProduct()
         {
             var product = new ProductClass
@@ -44,7 +42,7 @@ namespace Kadena.Tests.EventHandlers
                     && s.Weight == product.SKUWeight)));
         }
 
-        [Fact]
+        [Fact(DisplayName = "ProductEventHandlerFake.CopyProductSKUFieldsToSKU_EventHandler()")]
         public void CopyProductSKUFieldsToSKU_ShouldLogException_WhenProductProviderFails()
         {
             var sut = new ProductEventHandlerFake() { Product = new ProductClass() };
