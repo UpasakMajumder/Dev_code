@@ -20,5 +20,10 @@ namespace Kadena.Tests
         {
             autoMocker.Verify(verifyAction, times);
         }
+
+        protected void VerifyNoOtherCalls<TService>() where TService : class
+        {
+            autoMocker.GetMock<TService>().VerifyNoOtherCalls();
+        }
     }
 }
