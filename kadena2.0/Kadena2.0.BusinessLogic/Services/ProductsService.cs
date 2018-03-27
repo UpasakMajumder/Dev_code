@@ -82,5 +82,53 @@ namespace Kadena.BusinessLogic.Services
 
             return formattedValue;
         }
+
+        public string GetInventoryProductAvailability(string productType, int? numberOfAvailableProducts, int numberOfStockProducts)
+        {
+            if (ProductTypes.IsOfType(productType, ProductTypes.InventoryProduct))
+            {
+                if (!numberOfAvailableProducts.HasValue)
+                {
+                    return ProductAvailability.Unavailable;
+                }
+
+                if (numberOfStockProducts == 0)
+                {
+                    return ProductAvailability.OutOfStock;
+                }
+
+                return ProductAvailability.Available;
+            }
+
+            return string.Empty;
+        }
+
+        public bool CanDisplayAddToCartButton(string productType, int? numberOfAvailableProducts, bool sellOnlyIfAvailable)
+        {
+            var isStatic = ProductTypes.IsOfType(productType, ProductTypes.StaticProduct);
+            var isPod = ProductTypes.IsOfType(productType, ProductTypes.POD);
+            var isWithAddons = ProductTypes.IsOfType(productType, ProductTypes.ProductWithAddOns);
+            var isTemplated = ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct);
+            var isInventory = ProductTypes.IsOfType(productType, ProductTypes.InventoryProduct);
+
+            if ( (isStatic || isPod || isWithAddons) && !isTemplated )
+            {
+                return true;
+            }
+
+            if (isInventory)
+            {
+                if (sellOnlyIfAvailable)
+                {
+                    return numberOfAvailableProducts.HasValue && numberOfAvailableProducts.Value > 0;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

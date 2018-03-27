@@ -152,6 +152,24 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return true;
         }
 
+        [MacroMethod(typeof(string), "Validates whether Add to cart button can be displayed.", 1)]
+        [MacroMethodParam(0, "productType", typeof(string), "Current product type")]
+        [MacroMethodParam(1, "numberOfAvailableProducts", typeof(int), "NumberOfAvailableProducts")]
+        [MacroMethodParam(2, "sellOnlyAvailable", typeof(string), "Sell only if available in stock")]
+        public static object CanDisplayAddToCartButton(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 3)
+            {
+                throw new NotSupportedException();
+            }
+
+            var productType = (string)parameters[0];
+            var numberOfAvailableProducts = (int?)parameters[1];
+            var sellOnlyIfAvailable = ValidationHelper.GetBoolean(parameters[2], false);
+
+            return DIContainer.Resolve<IProductsService>().CanDisplayAddToCartButton(productType, numberOfAvailableProducts, sellOnlyIfAvailable);
+        }
+
         [MacroMethod(typeof(string), "Validates whether product is an invertory product type.", 1)]
         [MacroMethodParam(0, "productType", typeof(string), "Current product type")]
         [MacroMethodParam(1, "numberOfAvailableProducts", typeof(int), "NumberOfAvailableProducts")]
@@ -164,7 +182,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 throw new NotSupportedException();
             }
 
-            var productType = (string)parameters[0] ;
+            var productType = (string)parameters[0];
             var numberOfAvailableProducts = (int?)parameters[1];
             var cultureCode = (string)parameters[2];
             var numberOfStockProducts = (int)parameters[3];
@@ -183,19 +201,22 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 throw new NotSupportedException();
             }
 
-            if (ValidationHelper.GetString(parameters[1], "").Contains(ProductTypes.InventoryProduct))
+            var numberOfAvailableProducts = (int?)parameters[0];
+            var productType = (string)parameters[1];
+            var numberOfStockProducts = (int)parameters[2];
+
+            var availability = DIContainer.Resolve<IProductsService>().GetInventoryProductAvailability(productType, numberOfAvailableProducts, numberOfStockProducts);
+
+            var mappingCssDictionary = new Dictionary<string, string>()
             {
-                if (parameters[0] == null)
-                {
-                    return "stock stock--unavailable";
-                }
+                { ProductAvailability.Unavailable, "stock stock--unavailable" },
+                { ProductAvailability.Available, "stock stock--available" },
+                { ProductAvailability.OutOfStock, "stock stock--out" },
+            };
 
-                if ((int)parameters[2] == 0)
-                {
-                    return "stock stock--out";
-                }
-
-                return "stock stock--available";
+            if (mappingCssDictionary.TryGetValue(availability, out string cssClass))
+            {
+                return cssClass;
             }
 
             return string.Empty;

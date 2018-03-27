@@ -68,6 +68,7 @@
     <Compile Include="Product\Price.cs" />
     <Compile Include="Checkout\ItemOption.cs" />
     <Compile Include="Product\OptionCategory.cs" />
+    <Compile Include="Product\ProductAvailability.cs" />
     <Compile Include="Program\CampaignProgram.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDailogLabel.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDialog.cs" />
