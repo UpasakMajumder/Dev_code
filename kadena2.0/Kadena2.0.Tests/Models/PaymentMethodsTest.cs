@@ -3,7 +3,7 @@ using Kadena.Models.Checkout;
 using System.Linq;
 using Xunit;
 
-namespace Kadena.Tests.WebApi
+namespace Kadena.Tests.Models
 {
     public class PaymentMethodsTest : KadenaUnitTest<PaymentMethods>
     {

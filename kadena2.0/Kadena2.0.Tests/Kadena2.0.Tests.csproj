@@ -501,7 +501,7 @@
     <Compile Include="BusinessLogic\OrderReportServiceTests.cs" />
     <Compile Include="WebApi\ProductTests.cs" />
     <Compile Include="WebApi\OrderDetailServiceTests.cs" />
-    <Compile Include="WebApi\PaymentMethods.cs" />
+    <Compile Include="Models\PaymentMethodsTest.cs" />
     <Compile Include="WebApi\SubmitOrderServiceTests.cs" />
     <Compile Include="WebApi\TemplateContollerTest.cs" />
     <Compile Include="BusinessLogic\TemplateServiceTest.cs" />
