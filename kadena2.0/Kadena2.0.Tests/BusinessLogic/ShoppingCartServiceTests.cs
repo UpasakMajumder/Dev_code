@@ -1,9 +1,11 @@
 ﻿using Kadena.BusinessLogic.Contracts;
+using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.BusinessLogic.Services;
 using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Moq;
 using System;
 using System.Threading.Tasks;
@@ -11,7 +13,7 @@ using Xunit;
 
 namespace Kadena.Tests.BusinessLogic
 {
-    public class AddToCartTests : KadenaUnitTest<ShoppingCartService>
+    public class ShoppingCartServiceTests : KadenaUnitTest<ShoppingCartService>
     {
         string Name => "default name";
         string CustomName => "custom name";
@@ -24,6 +26,75 @@ namespace Kadena.Tests.BusinessLogic
                 DocumentId = 1123,
                 CustomProductName = customName
             };
+        }
+
+        private DeliveryAddress CreateDeliveryAddress()
+        {
+            return new DeliveryAddress()
+            {
+                City = "Prague"
+            };
+        }
+
+        private DeliveryCarrier CreateDeliveryCarrier()
+        {
+            return new DeliveryCarrier()
+            {
+                Title = "CeskaPosta"
+            };
+        }
+
+        private PaymentMethod CreatePaymentMethod()
+        {
+            return new PaymentMethod()
+            {
+                Title = "Card",
+                ClassName = "PurchaseOrder"
+            };
+        }
+
+        private CartItem CreateCartitem(int id)
+        {
+            return new CartItem()
+            {
+                Id = id,
+                CartItemText = $"Item{id}",
+                ProductType = ProductTypes.StaticProduct,
+                TotalPrice = 10,
+                UnitPrice = 2,
+                Quantity = 5,
+                PriceText = "10"
+            };
+        }
+
+        private ShoppingCartTotals GetShoppingCartTotals(decimal totalItemsPrice)
+        {
+            return new ShoppingCartTotals()
+            {
+                TotalItemsPrice = totalItemsPrice,
+                TotalShipping = 19.99m,
+                TotalTax = 0.2m * totalItemsPrice
+            };
+        }
+
+        private void SetupBase()
+        {
+            Setup<IKenticoUserProvider, Customer>(p => p.GetCurrentCustomer(), new Customer { DefaultShippingAddressId = 1, Id = 1 });
+            Setup<IKenticoUserProvider, User>(p => p.GetCurrentUser(), new User { UserId = 1 });
+
+            Setup<IKenticoAddressBookProvider, DeliveryAddress[]>(p => p.GetCustomerAddresses(AddressType.Shipping), new[] { CreateDeliveryAddress() });
+
+            Setup<IShoppingCartProvider, DeliveryCarrier[]>(p => p.GetShippingCarriers(), new[] { CreateDeliveryCarrier() });
+            Setup<IShoppingCartProvider, PaymentMethod[]>(p => p.GetPaymentMethods(), new[] { CreatePaymentMethod() });
+            Setup<IShoppingCartProvider, ShoppingCartTotals>(p => p.GetShoppingCartTotals(), GetShoppingCartTotals(100));
+
+            Setup<IShoppingCartItemsProvider, CartItem[]>(p => p.GetShoppingCartItems(It.IsAny<bool>()), new[] { CreateCartitem(1) });
+
+            Setup<IKenticoResourceService, string>(m => m.GetResourceString("Kadena.Checkout.CountOfItems"), "You have {0} {1} in cart");
+            Setup<IKenticoResourceService, string>(m => m.GetResourceString("Kadena.Checkout.ItemSingular"), "item");
+            Setup<IKenticoResourceService, string>(m => m.GetSettingsKey("KDA_AddressDefaultCountry"), "0");
+
+            Use<ICheckoutPageFactory, CheckoutPageFactory>();
         }
 
         [Theory(DisplayName = "ShoppingCartService.AddToCart() | Less than 1 item")]
@@ -200,6 +271,113 @@ namespace Kadena.Tests.BusinessLogic
                     e => e.CartItemText == Name &&
                          e.SKUUnits == quantity)
                 ), Times.Once);
+        }
+
+        [Fact(DisplayName = "ShoppingCartService.GetCheckoutPage()")]
+        public async Task GetCheckoutPageTest()
+        {
+            // Arrange
+            SetupBase();
+
+            // Act
+            var result = await Sut.GetCheckoutPage();
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.NotNull(result.DeliveryAddresses);
+            Assert.NotNull(result.EmailConfirmation);
+            Assert.NotNull(result.PaymentMethods);
+            Assert.NotNull(result.Submit);
+            Assert.Matches("You have 1 item in cart", result.Products.Number);
+            Assert.Single(result.Products.Items);
+            Assert.Equal(10, result.Products.Items[0].TotalPrice);
+        }
+
+        [Fact(DisplayName = "ShoppingCartService.ChangeItemQuantity()")]
+        public void ChangeItemQuantityTest()
+        {
+            // Arrange
+            SetupBase();
+            var cartItems = new[] { CreateCartitem(1), CreateCartitem(2) };
+            Setup<IShoppingCartProvider, ShoppingCartTotals>(m => m.GetShoppingCartTotals()
+                , new ShoppingCartTotals() { TotalItemsPrice = 1, TotalShipping = 2, TotalTax = 3 });
+
+            // Act
+            var result = Sut.ChangeItemQuantity(1, 100);
+
+            // Assert
+            Assert.NotNull(result);
+            Verify<IShoppingCartItemsProvider>(m => m.SetCartItemQuantity(1, 100), Times.Once);
+        }
+
+
+        [Theory(DisplayName = "ShoppingCartService.GetCartItems()")]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        public void SeePricesPermissions_Items(bool userHasPermissions, bool priceShouldBeEmpty)
+        {
+            // Arrange
+            SetupBase();
+            Setup<IKenticoPermissionsProvider, bool>(p => p.UserCanSeePrices(), userHasPermissions);
+
+            // Act
+            var result = Sut.GetCartItems();
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Single(result.Items);
+            Assert.Equal(string.IsNullOrEmpty(result.Items[0].PriceText), priceShouldBeEmpty);
+            Assert.Equal(string.IsNullOrEmpty(result.SummaryPrice.Price), priceShouldBeEmpty);
+        }
+
+        [Fact(DisplayName = "ShoppingCartService.GetDeliveryAndTotals() | User can see prices")]
+        public async Task CanSeePrices_DeliveryAndTotals()
+        {
+            // Arrange
+            SetupBase();
+            Setup<IKenticoPermissionsProvider, bool>(p => p.UserCanSeePrices(), true);
+
+            // Act
+            var result = await Sut.GetDeliveryAndTotals();
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.NotNull(result.DeliveryMethods);
+            Assert.NotNull(result.Totals);
+            Assert.True(result.Totals.Items.TrueForAll(i => !string.IsNullOrEmpty(i.Value)));
+        }
+
+        [Fact(DisplayName = "ShoppingCartService.GetDeliveryAndTotals() | User can't see prices")]
+        public async Task CannotSeePrices_DeliveryAndTotals()
+        {
+            // Arrange
+            SetupBase();
+            Setup<IKenticoPermissionsProvider, bool>(p => p.UserCanSeePrices(), false);
+
+            // Act
+            var result = await Sut.GetDeliveryAndTotals();
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.NotNull(result.DeliveryMethods);
+            Assert.NotNull(result.Totals);
+            Assert.Null(result.Totals.Items);
+        }
+
+
+        [Fact(DisplayName = "ShoppingCartService.ItemsPreview()")]
+        public void ItemPreview()
+        {
+            // Arrange
+            SetupBase();
+
+            // Act
+            var result = Sut.ItemsPreview();
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.NotNull(result.Items);
+            Assert.Single(result.Items);
         }
     }
 }

@@ -500,7 +500,6 @@
     <Compile Include="WebApi\ProductsControllerTest.cs" />
     <Compile Include="BusinessLogic\OrderReportServiceTests.cs" />
     <Compile Include="WebApi\ProductTests.cs" />
-    <Compile Include="WebApi\ShoppingCartService.cs" />
     <Compile Include="WebApi\OrderDetailServiceTests.cs" />
     <Compile Include="WebApi\PaymentMethods.cs" />
     <Compile Include="WebApi\SubmitOrderServiceTests.cs" />
