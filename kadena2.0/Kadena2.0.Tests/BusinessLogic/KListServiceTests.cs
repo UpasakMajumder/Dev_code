@@ -11,7 +11,7 @@ using Kadena.Dto.General;
 using Kadena.Models.Site;
 using Kadena.Container.Default;
 
-namespace Kadena.Tests.WebApi
+namespace Kadena.Tests.BusinessLogic
 {
     public class KListServiceTests : KadenaUnitTest<KListService>
     {

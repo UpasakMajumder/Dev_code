@@ -4,9 +4,9 @@ using Xunit;
 using System.Collections.Generic;
 using Kadena.Models.Product;
 
-namespace Kadena.Tests.WebApi
+namespace Kadena.Tests.BusinessLogic
 {
-    public class ProductTests : KadenaUnitTest<ProductsService>
+    public class ProductsServiceTests : KadenaUnitTest<ProductsService>
     {
         const string borderStyleValue = "1px";
 

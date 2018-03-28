@@ -495,14 +495,14 @@
     <Compile Include="ScheduledTasks\DeleteExpiredMailingListsServiceTests.cs" />
     <Compile Include="UserHierarchyTest.cs" />
     <Compile Include="BusinessLogic\ShoppingCartServiceTests.cs" />
-    <Compile Include="WebApi\KListServiceTests.cs" />
+    <Compile Include="BusinessLogic\KListServiceTests.cs" />
     <Compile Include="WebApi\LoginControllerTest.cs" />
     <Compile Include="WebApi\ProductsControllerTest.cs" />
     <Compile Include="BusinessLogic\OrderReportServiceTests.cs" />
-    <Compile Include="WebApi\ProductTests.cs" />
-    <Compile Include="WebApi\OrderDetailServiceTests.cs" />
+    <Compile Include="BusinessLogic\ProductsServiceTests.cs" />
+    <Compile Include="BusinessLogic\OrderDetailServiceTests.cs" />
     <Compile Include="Models\PaymentMethodsTest.cs" />
-    <Compile Include="WebApi\SubmitOrderServiceTests.cs" />
+    <Compile Include="BusinessLogic\SubmitOrderServiceTests.cs" />
     <Compile Include="WebApi\TemplateContollerTest.cs" />
     <Compile Include="BusinessLogic\TemplateServiceTest.cs" />
   </ItemGroup>

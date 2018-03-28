@@ -15,7 +15,7 @@ using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.Container.Default;
 using Kadena.BusinessLogic.Services.Orders;
 
-namespace Kadena.Tests.WebApi
+namespace Kadena.Tests.BusinessLogic
 {
     public class OrderDetailServiceTests : KadenaUnitTest<OrderDetailService>
     {

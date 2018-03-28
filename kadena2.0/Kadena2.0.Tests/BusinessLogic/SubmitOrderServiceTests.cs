@@ -3,12 +3,11 @@ using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
 using Moq;
-using Moq.AutoMock;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Kadena.Tests.WebApi
+namespace Kadena.Tests.BusinessLogic
 {
     public class SubmitOrderServiceTests : KadenaUnitTest<SubmitOrderService>
     {
