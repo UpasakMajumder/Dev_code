@@ -1,5 +1,4 @@
-﻿using Moq;
-using Xunit;
+﻿using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +13,7 @@ using Kadena.Container.Default;
 
 namespace Kadena.Tests.WebApi
 {
-    public class KListServiceTests
+    public class KListServiceTests : KadenaUnitTest<KListService>
     {
         private readonly Guid _containerId;
         private readonly List<MailingAddressDto> _addresses;
@@ -41,18 +40,10 @@ namespace Kadena.Tests.WebApi
             }
         }
 
-        private KListService Create(Mock<IMailingListClient> mailingClient = null, Mock<IAddressValidationClient> validationClient = null)
+        private void SetupBase()
         {
-            var mapper = MapperBuilder.MapperInstance;
-
-            var site = new Mock<IKenticoSiteProvider>();
-            site.Setup(p => p.GetKenticoSite())
-                .Returns(new KenticoSite());
-
-            return new KListService(mailingClient?.Object ?? new Mock<IMailingListClient>().Object,
-                site.Object,
-                validationClient?.Object ?? new Mock<IAddressValidationClient>().Object,
-                mapper);
+            Use(MapperBuilder.MapperInstance);
+            Setup<IKenticoSiteProvider, KenticoSite>(p => p.GetKenticoSite(), new KenticoSite());
         }
 
         private BaseResponseDto<IEnumerable<MailingAddressDto>> GetAddresses()
@@ -102,104 +93,85 @@ namespace Kadena.Tests.WebApi
             };
         }
 
-        [Fact(DisplayName = "UseOnlyCorrectTestSuccess")]
+        [Fact(DisplayName = "KListService.UseOnlyCorrectAddresses() | Success")]
         public async Task UseOnlyCorrectTestSuccess()
         {
-            var mailingClient = new Mock<IMailingListClient>();
-            var validationClient = new Mock<IAddressValidationClient>();
-            mailingClient
-                .Setup(c => c.GetAddresses(_containerId))
-                .Returns(Task.FromResult(GetAddresses()));
-            validationClient
-                .Setup(c => c.Validate(_containerId))
-                .Returns(Task.FromResult(ValidateSuccess()));
-            var srvs = Create(mailingClient, validationClient);
-            var result = await srvs.UseOnlyCorrectAddresses(_containerId);
+            Setup<IMailingListClient, Task<BaseResponseDto<IEnumerable<MailingAddressDto>>>>(c => c.GetAddresses(_containerId), Task.FromResult(GetAddresses()));
+            Setup<IAddressValidationClient, Task<BaseResponseDto<string>>>(c => c.Validate(_containerId), Task.FromResult(ValidateSuccess()));
+            SetupBase();
 
-            Assert.True(result);
+            var actualResult = await Sut.UseOnlyCorrectAddresses(_containerId);
+
+            Assert.True(actualResult);
         }
 
-        [Fact(DisplayName = "UseOnlyCorrectTestValidationFailed")]
+        [Fact(DisplayName = "KListService.UseOnlyCorrectAddresses() | Address validation ailed")]
         public async Task UseOnlyCorrectTestValidationFailed()
         {
-            var mailingClient = new Mock<IMailingListClient>();
-            var validationClient = new Mock<IAddressValidationClient>();
-            mailingClient
-                .Setup(c => c.GetAddresses(_containerId))
-                .Returns(Task.FromResult(GetAddresses()));
-            validationClient
-                .Setup(c => c.Validate(_containerId))
-                .Returns(Task.FromResult(ValidateFailed()));
-            var srvs = Create(mailingClient, validationClient);
-            var result = await srvs.UseOnlyCorrectAddresses(_containerId);
+            Setup<IMailingListClient, Task<BaseResponseDto<IEnumerable<MailingAddressDto>>>>(c => c.GetAddresses(_containerId), Task.FromResult(GetAddresses()));
+            Setup<IAddressValidationClient, Task<BaseResponseDto<string>>>(c => c.Validate(_containerId), Task.FromResult(ValidateFailed()));
+            SetupBase();
 
-            Assert.False(result);
+            var actualResult = await Sut.UseOnlyCorrectAddresses(_containerId);
+
+            Assert.False(actualResult);
         }
 
-        [Fact(DisplayName = "UseOnlyCorrectTestEmptyAddresses")]
+        [Fact(DisplayName = "KListService.UseOnlyCorrectAddresses() | Zero addresses in container")]
         public void UseOnlyCorrectTestEmptyAddresses()
         {
-            var mailingClient = new Mock<IMailingListClient>();
-            mailingClient
-                .Setup(c => c.GetAddresses(_containerId))
-                .Returns(Task.FromResult((BaseResponseDto<IEnumerable<MailingAddressDto>>)null));
-            var srvs = Create(mailingClient);
-            Assert.ThrowsAsync<NullReferenceException>(() => srvs.UseOnlyCorrectAddresses(_containerId));
+            Setup<IMailingListClient, Task<BaseResponseDto<IEnumerable<MailingAddressDto>>>>(c => c.GetAddresses(_containerId)
+                , Task.FromResult((BaseResponseDto<IEnumerable<MailingAddressDto>>)null));
+            SetupBase();
 
+            Task action() => Sut.UseOnlyCorrectAddresses(_containerId);
+
+            Assert.ThrowsAsync<NullReferenceException>(action);
         }
 
-        [Fact(DisplayName = "UpdateTestSuccess")]
+        [Fact(DisplayName = "KListService.UpdateAddresses() | Success")]
         public async Task UpdateTestSuccess()
         {
-            var mailingClient = new Mock<IMailingListClient>();
-            var validationClient = new Mock<IAddressValidationClient>();
-            mailingClient
-                .Setup(c => c.UpdateAddresses(_containerId, null))
-                .Returns(Task.FromResult(UpdateSuccess()));
-            validationClient
-                .Setup(c => c.Validate(_containerId))
-                .Returns(Task.FromResult(ValidateSuccess()));
-            var srvs = Create(mailingClient, validationClient);
-            var result = await srvs.UpdateAddresses(_containerId, null);
+            Setup<IMailingListClient, Task<BaseResponseDto<IEnumerable<string>>>>(c => c.UpdateAddresses(_containerId, null), Task.FromResult(UpdateSuccess()));
+            Setup<IAddressValidationClient, Task<BaseResponseDto<string>>>(c => c.Validate(_containerId), Task.FromResult(ValidateSuccess()));
+            SetupBase();
 
-            Assert.True(result);
+            var actualResult = await Sut.UpdateAddresses(_containerId, null);
+
+            Assert.True(actualResult);
         }
 
-        [Fact(DisplayName = "UpdateTestValidationFailed")]
+        [Fact(DisplayName = "KListService.UpdateAddresses() | Address validation failed")]
         public async Task UpdateTestValidationFailed()
         {
-            var mailingClient = new Mock<IMailingListClient>();
-            var validationClient = new Mock<IAddressValidationClient>();
-            mailingClient
-                .Setup(c => c.UpdateAddresses(_containerId, null))
-                .Returns(Task.FromResult(UpdateSuccess()));
-            validationClient
-                .Setup(c => c.Validate(_containerId))
-                .Returns(Task.FromResult(ValidateFailed()));
-            var srvs = Create(mailingClient, validationClient);
-            var result = await srvs.UpdateAddresses(_containerId, null);
+            Setup<IMailingListClient, Task<BaseResponseDto<IEnumerable<string>>>>(c => c.UpdateAddresses(_containerId, null), Task.FromResult(UpdateSuccess()));
+            Setup<IAddressValidationClient, Task<BaseResponseDto<string>>>(c => c.Validate(_containerId), Task.FromResult(ValidateFailed()));
+            SetupBase();
 
-            Assert.False(result);
+            var actualResult = await Sut.UpdateAddresses(_containerId, null);
+
+            Assert.False(actualResult);
         }
 
-        [Fact(DisplayName = "UpdateTestUpdateFailed")]
+        [Fact(DisplayName = "KListService.UpdateAddresses() | Update failed")]
         public async Task UpdateTestUpdateFailed()
         {
-            var mailingClient = new Mock<IMailingListClient>();
-            mailingClient
-                .Setup(c => c.UpdateAddresses(_containerId, null))
-                .Returns(Task.FromResult(UpdateFailed()));
-            var srvs = Create(mailingClient);
-            var result = await srvs.UpdateAddresses(_containerId, null);
+            Setup<IMailingListClient, Task<BaseResponseDto<IEnumerable<string>>>>(c => c.UpdateAddresses(_containerId, null), Task.FromResult(UpdateFailed()));
+            SetupBase();
 
-            Assert.False(result);
+            var actualResult = await Sut.UpdateAddresses(_containerId, null);
+
+            Assert.False(actualResult);
         }
 
-        [Fact(DisplayName = "UpdateTestEmptyChanges")]
+        [Fact(DisplayName = "KListService.UpdateAddresses() | Empty changes")]
         public void UpdateTestEmptyChanges()
         {
-            var srvs = Create();
-            Assert.ThrowsAsync<NullReferenceException>(() => srvs.UpdateAddresses(_containerId, null));
+            SetupBase();
+
+            Task action() => Sut.UpdateAddresses(_containerId, null);
+
+            Assert.ThrowsAsync<NullReferenceException>(action);
         }
     }
 }
