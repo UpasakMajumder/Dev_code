@@ -36,7 +36,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public Dictionary<int, string> GetAddressNames()
         {
-            return AddressInfoProvider.GetAddresses().ToDictionary(x => x.AddressID, x => x.AddressName);
+            return AddressInfoProvider.GetAddresses().ToDictionary(x => x.AddressID, x => x.AddressPersonalName);
         }
 
         public List<DeliveryAddress> GetAddressesByAddressIds(List<int> addressIds)
