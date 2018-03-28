@@ -5,22 +5,19 @@ using Xunit;
 
 namespace Kadena.Tests.WebApi
 {
-    public class PaymentMethodsTest
+    public class PaymentMethodsTest : KadenaUnitTest<PaymentMethods>
     {
-        [Fact]
+        [Fact(DisplayName = "PaymentMethods.CheckDefault()")]
         public void PaymentMethodsTest_CheckDefault()
         {
             // Arrange
-            var sut = new PaymentMethods()
-            {
-                Items = new System.Collections.Generic.List<PaymentMethod>()
+            var sut = Sut;
+            sut.Items = new System.Collections.Generic.List<PaymentMethod>()
                 {
-
                     { new PaymentMethod() { Title = "pm1", Disabled = true, Checked = true} },
                     { new PaymentMethod() { Title = "pm2", Disabled = false, Checked = false} },
                     { new PaymentMethod() { Title = "pm3", Disabled = false, Checked = false} }
-                }
-            };
+                };
 
             // Act
             sut.CheckDefault();
