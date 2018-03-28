@@ -14,12 +14,10 @@ using Xunit;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.Container.Default;
 using Kadena.BusinessLogic.Services.Orders;
-using Moq.AutoMock;
-using AutoMapper;
 
 namespace Kadena.Tests.WebApi
 {
-    public class OrderDetailServiceTests
+    public class OrderDetailServiceTests : KadenaUnitTest<OrderDetailService>
     {
         private BaseResponseDto<GetOrderByOrderIdResponseDTO> CreateOrderDetailDtoOK(OrderItemDTO[] items = null)
         {
@@ -47,150 +45,123 @@ namespace Kadena.Tests.WebApi
             };
         }
 
-        private AutoMocker CreateOrderDetailServiceAutomocker()
+        private void SetupBase()
         {
-            var autoMocker = new AutoMocker();
-            autoMocker.Use<IMapper>(MapperBuilder.MapperInstance);
-            
-            autoMocker.GetMock<IKenticoPermissionsProvider>().Setup(p => p.UserCanSeeAllOrders())
-                .Returns(false);
-            autoMocker.GetMock<IKenticoUserProvider>().Setup(p => p.GetCurrentCustomer())
-               .Returns(new Customer() { Id = 10, UserID = 16 });
-            autoMocker.GetMock<IKenticoSiteProvider>().Setup(p => p.GetKenticoSite())
-                .Returns(new KenticoSite());
+            Use(MapperBuilder.MapperInstance);
 
-            return autoMocker;
+            Setup<IKenticoPermissionsProvider, bool>(p => p.UserCanSeeAllOrders(), false);
+            Setup<IKenticoUserProvider, Customer>(p => p.GetCurrentCustomer(), new Customer() { Id = 10, UserID = 16 });
+            Setup<IKenticoSiteProvider, KenticoSite>(p => p.GetKenticoSite(), new KenticoSite());
         }
 
-        [Fact]
+        [Fact(DisplayName = "OrderDetailService.GetOrderDetail() | User has permission to view order")]
         public async Task OrderServiceTest_UserCanSee()
         {
             // Arrange
-            var autoMocker = CreateOrderDetailServiceAutomocker();
-            var orderViewClient = autoMocker.GetMock<IOrderViewClient>();
-            orderViewClient.Setup(o => o.GetOrderByOrderId("0010-0016-17-00006"))
-                .Returns(Task.FromResult(CreateOrderDetailDtoOK()));
-            var sut = autoMocker.CreateInstance<OrderDetailService>();
+            SetupBase();
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId("0010-0016-17-00006")
+                , Task.FromResult(CreateOrderDetailDtoOK()));
 
             // Act
-            var result = await sut.GetOrderDetail("0010-0016-17-00006");
+            var actualResult = await Sut.GetOrderDetail("0010-0016-17-00006");
 
             //Assert
-            Assert.NotNull(result);
+            Assert.NotNull(actualResult);
         }
-        
-        [Fact]
+
+        [Fact(DisplayName = "OrderDetailService.GetOrderDetail() | User hasn't permission to view order")]
         public async Task OrderServiceTest_UserCannotSee()
         {
             // Arrange
-            var autoMocker = CreateOrderDetailServiceAutomocker();
-            var orderViewClient = autoMocker.GetMock<IOrderViewClient>();
-            orderViewClient.Setup(o => o.GetOrderByOrderId("0099-0099-17-00006"))
-                .Returns(Task.FromResult(CreateOrderDetailDtoERROR()));
-            var sut = autoMocker.CreateInstance<OrderDetailService>();
+            SetupBase();
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId("0099-0099-17-00006")
+                , Task.FromResult(CreateOrderDetailDtoERROR()));
 
             // Act
-            var result = sut.GetOrderDetail("0099-0099-17-00006");
+            Task action() => Sut.GetOrderDetail("0099-0099-17-00006");
 
             // Assert
-            await Assert.ThrowsAsync<SecurityException>(async () => await result);
+            await Assert.ThrowsAsync<SecurityException>(action);
         }
 
-        [Fact]
+        [Fact(DisplayName = "OrderDetailService.GetOrderDetail() | Microservice request error")]
         public async Task OrderServiceTest_MicroserviceErrorLogged()
         {
             // Arrange
-            var autoMocker = CreateOrderDetailServiceAutomocker();
-            var orderViewClient = autoMocker.GetMock<IOrderViewClient>();
-            orderViewClient.Setup(o => o.GetOrderByOrderId("0010-0016-66-00006"))
-                .Returns(Task.FromResult(CreateOrderDetailDtoERROR()));
-            var sut = autoMocker.CreateInstance<OrderDetailService>();
+            SetupBase();
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId("0010-0016-66-00006")
+                , Task.FromResult(CreateOrderDetailDtoERROR()));
 
             // Act
-            var result = await sut.GetOrderDetail("0010-0016-66-00006");
+            var actualResult = await Sut.GetOrderDetail("0010-0016-66-00006");
 
             // Assert
-            Assert.Null(result);
-            autoMocker.GetMock<IKenticoLogger>().Verify(l => l.LogError("GetOrderDetail", ""), Times.Exactly(1));
+            Assert.Null(actualResult);
+            Verify<IKenticoLogger>(l => l.LogError("GetOrderDetail", ""), Times.Exactly(1));
         }
 
-        [Theory]
+        [Theory(DisplayName = "OrderDetailService.GetOrderDetail() | Bad format of order id")]
         [InlineData("123")]
         [InlineData("asdgfdsrfgsdfg")]
         public async Task OrderServiceTest_BadFormatOrderId(string orderId)
         {
-            // Arrange
-            var sut = new AutoMocker().CreateInstance<OrderDetailService>();
-
             // Act
-            var result = sut.GetOrderDetail(orderId);
+            Task action() => Sut.GetOrderDetail(orderId);
 
             // Assert
-            var exception = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => await result);
+            var exception = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(action);
             Assert.Contains("Bad format of customer ID", exception.Message);
         }
 
-        [Theory]
+        [Theory(DisplayName = "OrderDetailService.GetOrderDetail() | Empty order id")]
         [InlineData(null)]
         [InlineData("")]
         public async Task OrderServiceTest_EmptyOrderId(string orderId)
         {
-            // Arrange
-            var sut = new AutoMocker().CreateInstance<OrderDetailService>();
-
             // Act
-            var result = sut.GetOrderDetail(orderId);
+            Task action() => Sut.GetOrderDetail(orderId);
 
             // Assert
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => await result);
-            Assert.Equal("orderId", exception.ParamName);
+            await Assert.ThrowsAsync<ArgumentNullException>("orderId", action);
         }
 
-        [Fact]
+        [Fact(DisplayName = "OrderDetailService.GetOrderDetail() | Empty shipping address with only mailing products")]
         public async Task OrderServiceTest_EmptyShippingAddressWhenMailingOnly()
         {
             // Arrange
-            var autoMocker = CreateOrderDetailServiceAutomocker();
+            SetupBase();
             var orderId = "0010-0016-17-00006";
-            var orderViewClient = autoMocker.GetMock<IOrderViewClient>();
-            var orderResponse = CreateOrderDetailDtoOK(new[] 
-            {
-                new OrderItemDTO { Type = Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString() }
-            });
-            orderViewClient.Setup(o => o.GetOrderByOrderId(orderId))
-                .Returns(Task.FromResult(orderResponse));
-            var sut = autoMocker.CreateInstance<OrderDetailService>();
-
-            // Act
-            var result = await sut.GetOrderDetail(orderId);
-
-            // Assert
-            Assert.Null(result.ShippingInfo.Address);
-        }
-
-
-        [Fact]
-        public async Task NullDatetimeTests()
-        {
-            // Arrange
-            var autoMocker = CreateOrderDetailServiceAutomocker();
-            var orderId = "0010-0016-17-00006";
-            var orderViewClient = autoMocker.GetMock<IOrderViewClient>();
             var orderResponse = CreateOrderDetailDtoOK(new[]
             {
                 new OrderItemDTO { Type = Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString() }
             });
-            orderViewClient.Setup(o => o.GetOrderByOrderId(orderId))
-                .Returns(Task.FromResult(orderResponse));
-            var sut = autoMocker.CreateInstance<OrderDetailService>();
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId(orderId), Task.FromResult(orderResponse));
 
             // Act
-            var result = await sut.GetOrderDetail(orderId).ConfigureAwait(false);
+            var actualResult = await Sut.GetOrderDetail(orderId);
 
             // Assert
-            Assert.NotEqual(result.CommonInfo.OrderDate.Value, DateTime.MinValue);
-            Assert.Null(result.CommonInfo.ShippingDate.Value);
+            Assert.Null(actualResult.ShippingInfo.Address);
         }
- 
+
+        [Fact(DisplayName = "OrderDetailService.GetOrderDetail() | Null dates")]
+        public async Task NullDatetimeTests()
+        {
+            // Arrange
+            SetupBase();
+            var orderId = "0010-0016-17-00006";
+            var orderResponse = CreateOrderDetailDtoOK(new[]
+            {
+                new OrderItemDTO { Type = Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString() }
+            });
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId(orderId), Task.FromResult(orderResponse));
+
+            // Act
+            var actualResult = await Sut.GetOrderDetail(orderId).ConfigureAwait(false);
+
+            // Assert
+            Assert.NotEqual(actualResult.CommonInfo.OrderDate.Value, DateTime.MinValue);
+            Assert.Null(actualResult.CommonInfo.ShippingDate.Value);
+        }
     }
 }
