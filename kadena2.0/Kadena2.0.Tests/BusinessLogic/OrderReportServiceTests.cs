@@ -102,34 +102,34 @@ namespace Kadena.Tests.BusinessLogic
         }
 
         [Fact(DisplayName = "OrderReportService.GetOrdersForSite() | Invalid page number")]
-        public void GetOrdersForSite_ShouldValidateArgumentsAndThrow_WhenInvalidPage()
+        public async Task GetOrdersForSite_ShouldValidateArgumentsAndThrow_WhenInvalidPage()
         {
             var invalidPageNumber = OrderReportService.FirstPageNumber - 1;
 
             Task action() => Sut.GetOrdersForSite("test_site", invalidPageNumber, new OrderFilter());
 
-            Assert.ThrowsAsync<ArgumentException>("page", action);
+            await Assert.ThrowsAsync<ArgumentException>("page", action);
         }
 
         [Fact(DisplayName = "OrderReportService.GetOrdersForSite() | Invalid filter's dates")]
-        public void GetOrdersForSite_ShouldValidateFilter()
+        public async Task GetOrdersForSite_ShouldValidateFilter()
         {
             Task action() => Sut.GetOrdersForSite("test_site", OrderReportService.FirstPageNumber
                 , new OrderFilter { FromDate = DateTime.Today.AddDays(1), ToDate = DateTime.Today });
 
-            Assert.ThrowsAsync<ArgumentException>("filter", action);
+            await Assert.ThrowsAsync<ArgumentException>("filter", action);
         }
 
         [Theory(DisplayName = "OrderReportService.GetOrders() | Invalid filter's order expression")]
         [InlineData("wrong-sort-expression")]
         [InlineData("not_supported_property-ASC")]
-        public void ValidateFilter_ShouldThrow_WhenFilterHasInvalidOrderByExpression(string orderBy)
+        public async Task ValidateFilter_ShouldThrow_WhenFilterHasInvalidOrderByExpression(string orderBy)
         {
             var filterWithInvalidSort = new OrderFilter { OrderByExpression = orderBy };
 
             Task<PagedData<OrderReport>> action() => Sut.GetOrders(1, filterWithInvalidSort);
 
-            Assert.ThrowsAsync<ArgumentException>("filter", action);
+            await Assert.ThrowsAsync<ArgumentException>("filter", action);
         }
 
         [Fact(DisplayName = "OrderReportService.GetOrdersForSite() | Filter valid")]
@@ -168,7 +168,7 @@ namespace Kadena.Tests.BusinessLogic
         }
 
         [Fact(DisplayName = "OrderReportService.GetOrders() | Invalid filter's dates")]
-        public void ValidateFilter_ShouldThrow_WhenFilterHasInvalidDateRange()
+        public async Task ValidateFilter_ShouldThrow_WhenFilterHasInvalidDateRange()
         {
             var pastDate = new DateTime(2010, 1, 1);
             var futureDate = new DateTime(2010, 2, 1);
@@ -181,7 +181,7 @@ namespace Kadena.Tests.BusinessLogic
 
             Task action() => Sut.GetOrders(1, filterWithInvalidDateRange);
 
-            Assert.ThrowsAsync<ArgumentException>("filter", action);
+            await Assert.ThrowsAsync<ArgumentException>("filter", action);
         }
 
         [Fact(DisplayName = "OrderReportService.GetOrdersExport() | Site valid")]
@@ -204,11 +204,11 @@ namespace Kadena.Tests.BusinessLogic
         }
 
         [Fact(DisplayName = "OrderReportService.GetOrdersExportForSite() | Invalid filter's dates")]
-        public void GetOrdersExportForSite_ShouldValidateFilter()
+        public async Task GetOrdersExportForSite_ShouldValidateFilter()
         {
             Task action() => Sut.GetOrdersExportForSite("test_site", new OrderFilter { FromDate = DateTime.Today.AddDays(1), ToDate = DateTime.Today });
 
-            Assert.ThrowsAsync<ArgumentException>("filter", action);
+            await Assert.ThrowsAsync<ArgumentException>("filter", action);
         }
 
         [Fact(DisplayName = "OrderReportService.GetOrdersExportForSite() | Valid export file")]

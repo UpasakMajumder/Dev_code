@@ -100,13 +100,13 @@ namespace Kadena.Tests.BusinessLogic
         [Theory(DisplayName = "ShoppingCartService.AddToCart() | Less than 1 item")]
         [InlineData(-1)]
         [InlineData(0)]
-        public void AddToCart_CannotAddZero(int quantity)
+        public async Task AddToCart_CannotAddZero(int quantity)
         {
             // Act
             Task action() => Sut.AddToCart(new NewCartItem { Quantity = quantity });
 
             // Assert
-            Assert.ThrowsAsync<ArgumentException>(action);
+            await Assert.ThrowsAsync<ArgumentException>(action);
         }
 
         [Fact(DisplayName = "ShoppingCartService.AddToCart() | Dynamic price")]
@@ -218,7 +218,7 @@ namespace Kadena.Tests.BusinessLogic
         }
 
         [Fact(DisplayName = "ShoppingCartService.AddToCart() | Inventory product out of stock")]
-        public void AddToCart_InventoryProduct_OutOfStock()
+        public async Task AddToCart_InventoryProduct_OutOfStock()
         {
             // Arrange 
             var newCartItem = CreateNewCartItem();
@@ -237,7 +237,7 @@ namespace Kadena.Tests.BusinessLogic
             Task action() => Sut.AddToCart(newCartItem);
 
             // Assert
-            Assert.ThrowsAsync<ArgumentException>(action);
+            await Assert.ThrowsAsync<ArgumentException>(action);
         }
 
         [Fact(DisplayName = "ShoppingCartService.AddToCart() | Mailing product")]

@@ -118,7 +118,7 @@ namespace Kadena.Tests.BusinessLogic
         }
 
         [Fact(DisplayName = "KListService.UseOnlyCorrectAddresses() | Zero addresses in container")]
-        public void UseOnlyCorrectTestEmptyAddresses()
+        public async Task UseOnlyCorrectTestEmptyAddresses()
         {
             Setup<IMailingListClient, Task<BaseResponseDto<IEnumerable<MailingAddressDto>>>>(c => c.GetAddresses(_containerId)
                 , Task.FromResult((BaseResponseDto<IEnumerable<MailingAddressDto>>)null));
@@ -126,7 +126,7 @@ namespace Kadena.Tests.BusinessLogic
 
             Task action() => Sut.UseOnlyCorrectAddresses(_containerId);
 
-            Assert.ThrowsAsync<NullReferenceException>(action);
+            await Assert.ThrowsAsync<NullReferenceException>(action);
         }
 
         [Fact(DisplayName = "KListService.UpdateAddresses() | Success")]
@@ -165,13 +165,13 @@ namespace Kadena.Tests.BusinessLogic
         }
 
         [Fact(DisplayName = "KListService.UpdateAddresses() | Empty changes")]
-        public void UpdateTestEmptyChanges()
+        public async Task UpdateTestEmptyChanges()
         {
             SetupBase();
 
             Task action() => Sut.UpdateAddresses(_containerId, null);
 
-            Assert.ThrowsAsync<NullReferenceException>(action);
+            await Assert.ThrowsAsync<NullReferenceException>(action);
         }
     }
 }
