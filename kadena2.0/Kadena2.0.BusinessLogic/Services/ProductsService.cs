@@ -118,9 +118,14 @@ namespace Kadena.BusinessLogic.Services
 
             if (isInventory)
             {
+                if (!numberOfAvailableProducts.HasValue)
+                {
+                    return false;
+                }
+
                 if (sellOnlyIfAvailable)
                 {
-                    return numberOfAvailableProducts.HasValue && numberOfAvailableProducts.Value > 0;
+                    return numberOfAvailableProducts.Value > 0;
                 }
                 else
                 {
