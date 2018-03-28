@@ -50,7 +50,7 @@ class Orders extends Component {
         let cell = <td key={j}>{item.value}</td>;
 
         if (item.type === 'link') {
-          cell = <td key={j} className="show-table__will-appear"><a href={item.url} className="btn-action">{item.value}</a></td>;
+          cell = <td key={j} className="show-table__will-appear"><a href={item.url} target="_blank" className="btn-action">{item.value}</a></td>;
         } else if (item.type === 'button') {
           cell = (
             <td key={j} className="show-table__will-appear">
