@@ -14,6 +14,8 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
+using System.Text;
+using Kadena.Models.CustomCatalog;
 
 public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPart
 {
@@ -1040,4 +1042,158 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     }
 
     #endregion "Methods"
+
+    protected void llbExportFull_Click(object sender, EventArgs e)
+    {
+        List<CampaignsProduct> products = new List<CampaignsProduct>();
+        if (TypeOfProduct == (int)ProductsType.PreBuy)
+        {
+            List<PrebuyProduct> exportList = new List<PrebuyProduct>();
+            products = CampaignsProductProvider.GetCampaignsProducts().WhereNotEquals("ProgramID", null).WhereEquals("NodeSiteID", CurrentSite.SiteID).WhereIn("ProgramID", GetProgramIDs(OpenCampaign.CampaignID)).ToList();
+            if (!DataHelper.DataSourceIsEmpty(products))
+            {
+                products.ForEach(p =>
+            {
+                exportList.Add(new PrebuyProduct()
+                {
+                    ProductId = p.CampaignsProductID,
+                    ProductName = p.ProductName,
+                    ShortDescription = p.DocumentSKUShortDescription,
+                    BundleQuantity = p.QtyPerPack,
+                    ProductCost = p.SKU.SKUPrice,
+                    ProgramName = GetProgramFormId(p.ProgramID),
+                    BrandName = GetBrandName(p.BrandID),
+                    PosNumber = GetPosNumber(p.SKU.SKUID),
+                    States = GetStateInfo(p.State)
+                });
+            });
+                DownloadExcel(exportList);
+            }
+
+        }
+        else if (TypeOfProduct == (int)ProductsType.GeneralInventory)
+        {
+            List<PrebuyProduct> exportList = new List<PrebuyProduct>();
+            products = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                            .Where(new WhereCondition().WhereEquals("ProgramID", null).Or().WhereEquals("ProgramID", 0)).ToList();
+            if (!DataHelper.DataSourceIsEmpty(products))
+            {
+                products.ForEach(p =>
+            {
+                exportList.Add(new PrebuyProduct()
+                {
+                    ProductId = p.CampaignsProductID,
+                    ProductName = p.ProductName,
+                    ShortDescription = p.DocumentSKUShortDescription,
+                    BundleQuantity = p.QtyPerPack,
+                    ProductCost = p.SKU.SKUPrice,
+                    BrandName = GetBrandName(p.BrandID),
+                    PosNumber = GetPosNumber(p.SKU.SKUID),
+                    States = GetStateInfo(p.State)
+                });
+            });
+                DownloadExcel(exportList);
+            }
+        }
+    }
+
+
+    public void DownloadExcel<T>(List<T> exportList)
+    {
+        DataGrid dg = new DataGrid();
+        dg.AllowPaging = false;
+        dg.DataSource = exportList;
+        dg.DataBind();
+        System.Web.HttpContext.Current.Response.Clear();
+        System.Web.HttpContext.Current.Response.Buffer = true;
+        System.Web.HttpContext.Current.Response.ContentEncoding = Encoding.UTF8;
+        System.Web.HttpContext.Current.Response.Charset = "";
+        System.Web.HttpContext.Current.Response.AddHeader("Content-Disposition",
+          "attachment; filename=" + ResHelper.GetString("Kadena.Catalog.ExportFileName") + ".xls");
+        System.Web.HttpContext.Current.Response.ContentType =
+          "application/vnd.ms-excel";
+        System.IO.StringWriter stringWriter = new System.IO.StringWriter();
+        System.Web.UI.HtmlTextWriter htmlTextWriter =
+          new System.Web.UI.HtmlTextWriter(stringWriter);
+        dg.RenderControl(htmlTextWriter);
+        System.Web.HttpContext.Current.Response.Write(stringWriter.ToString());
+        System.Web.HttpContext.Current.Response.End();
+    }
+
+    public string GetProgramFormId(int programId)
+    {
+        if (programId > 0)
+        {
+            var programData = ProgramProvider.GetPrograms().WhereEquals("ProgramID", programId).FirstOrDefault();
+            if (!DataHelper.DataSourceIsEmpty(programData)) return programData.ProgramName;
+            return string.Empty;
+        }
+        return string.Empty;
+    }
+
+    public string GetPosNumber(int skuId)
+    {
+        if (skuId > 0)
+        {
+            var skuData = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", skuId).FirstOrDefault();
+            if (!DataHelper.DataSourceIsEmpty(skuData)) return skuData.GetValue("SKUProductCustomerReferenceNumber", string.Empty);
+        }
+        return string.Empty;
+    }
+
+    public string GetStateInfo(int stateId)
+    {
+        var stateData = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereEquals("ItemID", stateId).FirstOrDefault();
+        return stateData?.States.Replace(",", ", ") ?? string.Empty;
+    }
+
+    protected void llbExportSelection_Click(object sender, EventArgs e)
+    {
+
+        List<string> selectedProducts = hdncheckedValues.Value.Split(',').ToList();
+        List<PrebuyProduct> exportList = new List<PrebuyProduct>();
+        var skuDetails = SKUInfoProvider.GetSKUs().WhereIn("SKUID", selectedProducts).ToList();
+        if (TypeOfProduct == (int)ProductsType.GeneralInventory)
+        {
+            skuDetails.ForEach(p =>
+        {
+            var productData = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", p.SKUID).FirstOrDefault();
+            exportList.Add(new PrebuyProduct()
+            {
+                ProductId = productData.CampaignsProductID,
+                ProductName = productData.ProductName,
+                ShortDescription = p.SKUShortDescription,
+                BundleQuantity = productData.QtyPerPack,
+                ProductCost = p.SKUPrice,
+                BrandName = GetBrandName(productData.BrandID),
+                PosNumber = GetPosNumber(productData.SKU.SKUID),
+                States = GetStateInfo(productData.State)
+            });
+        });
+        }
+        if (TypeOfProduct == (int)ProductsType.PreBuy)
+        {
+            skuDetails.ForEach(p =>
+            {
+                var productData = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", p.SKUID).FirstOrDefault();
+                exportList.Add(new PrebuyProduct()
+                {
+                    ProductId = productData.CampaignsProductID,
+                    ProductName = productData.ProductName,
+                    ShortDescription = p.SKUShortDescription,
+                    BundleQuantity = productData.QtyPerPack,
+                    ProductCost = p.SKUPrice,
+                    BrandName = GetBrandName(productData.BrandID),
+                    PosNumber = GetPosNumber(productData.SKU.SKUID),
+                    States = GetStateInfo(productData.State),
+                    ProgramName = GetProgramFormId(productData.ProgramID)
+
+                });
+            });
+        }
+        DownloadExcel(exportList);
+    }
 }
+
+
+

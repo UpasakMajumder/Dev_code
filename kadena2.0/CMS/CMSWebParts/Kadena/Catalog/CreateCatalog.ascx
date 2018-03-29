@@ -21,6 +21,8 @@
         <cms:LocalizedLinkButton runat="server" ID="llbSaveSelection" CssClass="saveSelection btn-action login__login-button btn--no-shadow" ResourceString="KDA.CustomCatalog.Filters.SaveSelection" OnClick="llbSaveSelection_Click"></cms:LocalizedLinkButton>
         <cms:LocalizedLinkButton runat="server" ID="llbSaveFull" CssClass="btn-action login__login-button btn--no-shadow saveAllCatalog" ResourceString="KDA.CustomCatalog.Filters.SaveFull" OnClick="llbSaveFull_Click"></cms:LocalizedLinkButton>
         <cms:LocalizedLabel runat="server" ID="lblNoProducts" CssClass="input__label" ResourceString="KDA.CustomCatalog.SelectProducts" Visible="false"></cms:LocalizedLabel>
+        <cms:LocalizedLinkButton runat="server" ID="llbExportFull" CssClass="btn-action login__login-button btn--no-shadow" ResourceString="KDA.CustomCatalog.ExportFull" OnClick="llbExportFull_Click"></cms:LocalizedLinkButton>
+        <cms:LocalizedLinkButton runat="server" ID="llbExportSelection" CssClass="btn-action login__login-button btn--no-shadow" ResourceString="KDA.CustomCatalog.ExportSelection" OnClick="llbExportSelection_Click"></cms:LocalizedLinkButton>
     </div>
 </div>
 <div id="noData" runat="server" visible="false">
@@ -65,6 +67,7 @@
 </div>
 <asp:HiddenField ID="hdncheckedValues" runat="server" ClientIDMode="Static" />
 <asp:HiddenField ID="hdnSaveFullCatalog" runat="server" ClientIDMode="Static" />
+<cms:CMSRepeater Visible="false" runat="server" ID="hdnrptExport"></cms:CMSRepeater>
 <%--Zoom EffectPopup--%>
 <div class="dialog" id="ImageZoomPopup">
     <div class="dialog__shadow"></div>
