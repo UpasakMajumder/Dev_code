@@ -1,10 +1,6 @@
 using System;
-using System.Data;
-using System.Collections;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
 using CMS.PortalEngine.Web.UI;
 using CMS.Helpers;
 using CMS.DataEngine;
@@ -215,6 +211,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
                 var catId = Request.QueryString["ID"];
                 var categoryData = ProductCategoryProvider.GetProductCategories()
                     .WhereEquals("ProductCategoryTitle", txtName.Text.Trim())
+                    .WhereEquals("NodeSiteID",CurrentSite.SiteID)
                     .And()
                     .WhereNotEquals("ProductCategoryID", catId)
                     .Columns("ProductCategoryTitle")
@@ -225,6 +222,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
             {
                 var categoryData = ProductCategoryProvider.GetProductCategories()
                                                     .WhereEquals("ProductCategoryTitle", txtName.Text.Trim())
+                                                    .WhereEquals("NodeSiteID", CurrentSite.SiteID)
                                                     .Columns("ProductCategoryTitle")
                                                     .FirstOrDefault();
                 args.IsValid = DataHelper.DataSourceIsEmpty(categoryData);
