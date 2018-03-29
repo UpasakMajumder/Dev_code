@@ -12,6 +12,8 @@ using CMS.DocumentEngine;
 using CMS.Membership;
 using CMS.EventLog;
 using Kadena.Old_App_Code.Kadena.Constants;
+using CMS.DocumentEngine.Types.KDA;
+using System.Linq;
 
 public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
 {
@@ -61,7 +63,8 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
             rfvUserNameRequired.ErrorMessage = ResHelper.GetString("Kadena.Categoryform.NameValidation");
             revDescription.ErrorMessage = ResHelper.GetString("Kadena.Categoryform.DesValidation");
             revName.ErrorMessage = ResHelper.GetString("Kadena.Categoryform.NameRangeValidation");
-            folderpath = SettingsKeyInfoProvider.GetValue("KDA_CategoryFolderPath",CurrentSiteName);
+            cvCatName.ErrorMessage = ResHelper.GetString("Kadena.Categoryform.NameUniqueValidation");
+            folderpath = SettingsKeyInfoProvider.GetValue("KDA_CategoryFolderPath", CurrentSiteName);
         }
     }
     /// <summary>
@@ -76,7 +79,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
         string categroyDes = txtDescription.Text;
         try
         {
-            if (!string.IsNullOrEmpty(categoryName))
+            if (!string.IsNullOrEmpty(categoryName) && Page.IsValid)
             {
                 TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
                 CMS.DocumentEngine.TreeNode parentPage = tree.SelectNodes().Path(folderpath).OnCurrentSite().Culture(DocumentContext.CurrentDocument.DocumentCulture).FirstObject;
@@ -87,7 +90,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
                     newPage.DocumentCulture = DocumentContext.CurrentDocument.DocumentCulture;
                     newPage.SetValue("ProductCategoryTitle", categoryName);
                     newPage.SetValue("ProductCategoryDescription", categroyDes);
-                    newPage.SetValue("Status", ValidationHelper.GetBoolean(ddlStatus.SelectedValue,false));
+                    newPage.SetValue("Status", ValidationHelper.GetBoolean(ddlStatus.SelectedValue, false));
                     newPage.Insert(parentPage);
                     lblSuccessMsg.Visible = true;
                     lblFailureText.Visible = false;
@@ -122,7 +125,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
         string categroyDes = txtDescription.Text;
         try
         {
-            if (!string.IsNullOrEmpty(categoryName))
+            if (!string.IsNullOrEmpty(categoryName) && Page.IsValid)
             {
                 TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
                 CMS.DocumentEngine.TreeNode editPage = tree.SelectNodes("KDA.ProductCategory").OnCurrentSite().Where("ProductCategoryID", QueryOperator.Equals, categoyId);
@@ -195,6 +198,38 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
         base.ReloadData();
 
         SetupControl();
+    }
+
+
+    protected void CatName_ServerValidate(object source, System.Web.UI.WebControls.ServerValidateEventArgs args)
+    {
+        try
+        {
+
+            if (Request.QueryString["ID"] != null)
+            {
+                var catId = Request.QueryString["ID"];
+                var categoryData = ProductCategoryProvider.GetProductCategories()
+                    .WhereEquals("ProductCategoryTitle", txtName.Text.Trim())
+                    .And()
+                    .WhereNotEquals("ProductCategoryID", catId)
+                    .Columns("ProductCategoryTitle")
+                    .FirstOrDefault();
+                args.IsValid = DataHelper.DataSourceIsEmpty(categoryData);
+            }
+            else
+            {
+                var categoryData = ProductCategoryProvider.GetProductCategories()
+                                                    .WhereEquals("ProductCategoryTitle", txtName.Text.Trim())
+                                                    .Columns("ProductCategoryTitle")
+                                                    .FirstOrDefault();
+                args.IsValid = DataHelper.DataSourceIsEmpty(categoryData);
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("BusinessUnit.ascx.cs", "cvBUNumber_ServerValidate()", ex);
+        }
     }
 
     #endregion
