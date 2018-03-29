@@ -14,6 +14,7 @@
   <td><%# Eval("ProgramName")%></td>
   <td><%# Eval("ProductCategoryTitle")%></td>
   <td><%#FormatDateTime(Eval("SKUValidUntil"), "MM/dd/yyyy")%></td>
+  <td><%# $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("EstimatedPrice"), CurrentSite.SiteID,true)}"%></td>
   <td class="webform_view">
     <uc1:ProductEditButton runat="server" id="ProductEditButton" />
   </td>
@@ -23,6 +24,7 @@
     {
       base.OnDataBinding(e);
       ProductEditButton.ProductID = Eval<int>("CampaignsProductID");
+      ProductEditButton.ProgramID = Eval<int>("ProgramID");
       ProductEditButton.ReloadData();
     }
 </script>

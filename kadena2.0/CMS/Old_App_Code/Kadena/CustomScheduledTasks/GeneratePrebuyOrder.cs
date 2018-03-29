@@ -82,6 +82,8 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                         else
                         {
                             unprocessedDistributorIDs.Add(new Tuple<int, string>(Cart.GetIntegerValue("ShoppingCartDistributorID", default(int)), response.ErrorMessages));
+                            Cart.ShoppingCartCustomData["FailedReason"] = response.ErrorMessages;
+                            ShoppingCartInfoProvider.SetShoppingCartInfo(Cart);
                         }
                     });
                 });

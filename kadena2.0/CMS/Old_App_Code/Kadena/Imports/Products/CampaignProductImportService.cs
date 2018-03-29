@@ -18,6 +18,7 @@ using static Kadena.Helpers.SerializerConfig;
 using CMS.CustomTables.Types.KDA;
 using CMS.CustomTables;
 using System.Net.Http;
+using CMS.MediaLibrary;
 
 namespace Kadena.Old_App_Code.Kadena.Imports.Products
 {
@@ -198,114 +199,27 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 throw new Exception($"No product assigned to SKU with SKUNumber {image.SKU}");
             }
 
-            GetAndSaveProductImages(product, image.ImageURL, image.ThumbnailURL);
+            AssignImage(product, image.ImageMediaLibraryName, image.ImagePath);
 
             product.Update();
         }
 
-        // ready for potential use in Product upload
-        private static void GetAndSaveProductImages(SKUTreeNode product, string imageUrl, string thumbnailUrl)
+        private static void AssignImage(SKUTreeNode product, string mediaLibraryName, string imagePath)
         {
-            var library = new MediaLibrary
+            var library = MediaLibraryInfoProvider.GetMediaLibraryInfo(mediaLibraryName, SiteContext.CurrentSiteName);
+            if (library == null)
             {
-                SiteId = product.NodeSiteID,
-                LibraryName = "ProductImages",
-                LibraryFolder = "Products",
-                LibraryDescription = "Media library for storing product images"
-            };
-            var libraryImageUrl = library.DownloadImageToMedialibrary(imageUrl, $"Image{product.SKU.SKUNumber}", $"Product image for SKU {product.SKU.SKUNumber}");
+                throw new KeyNotFoundException($"Unable to assign image to SKU '{product.SKU.SKUNumber}'. Media library '{mediaLibraryName}' not found.");
+            }
+
+            var image = MediaFileInfoProvider.GetMediaFileInfo(library.LibraryID, imagePath);
+            if (image == null)
+            {
+                throw new KeyNotFoundException($"Unable to assign image to SKU '{product.SKU.SKUNumber}'. File '{imagePath}' not found.");
+            }
 
             product.RemoveImage();
-            product.SetImage(libraryImageUrl);
-            RemoveTumbnail(product);
-            AttachThumbnail(product, thumbnailUrl);
-        }
-
-        private static void RemoveProductImages(SKUTreeNode product)
-        {
-            product.RemoveImage();
-            RemoveTumbnail(product);
-        }
-
-        private static void AttachThumbnail(SKUTreeNode product, string fromUrl)
-        {
-            var newAttachment = DownloadAttachmentThumbnail(product, fromUrl);
-            if (newAttachment != null)
-            {
-                product.SetValue("ProductThumbnail", newAttachment.AttachmentGUID);
-            }
-
-        }
-
-        private static AttachmentInfo DownloadAttachmentThumbnail(SKUTreeNode product, string fromUrl)
-        {
-            if (product.SKU == null)
-            {
-                throw new ArgumentNullException(nameof(product.SKU));
-            }
-
-            using (var client = new HttpClient())
-            {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, fromUrl))
-                {
-                    using (var response = client.SendAsync(request).Result)
-                    {
-                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                        {
-                            var mimetype = response.Content?.Headers?.ContentType?.MediaType ?? string.Empty;
-
-                            if (!mimetype.StartsWith("image/"))
-                            {
-                                throw new Exception("Thumbnail is not of image MIME type");
-                            }
-
-                            var stream = response.Content.ReadAsStreamAsync().Result;
-
-                            var extension = Path.GetExtension(fromUrl);
-
-                            if (string.IsNullOrEmpty(extension) && mimetype.StartsWith("image/"))
-                            {
-                                extension = mimetype.Split('/')[1];
-                            }
-
-                            // attach file as page attachment and set it's GUID as ProductThumbnail (of type guid) property of  Product
-                            var newAttachment = new AttachmentInfo()
-                            {
-                                InputStream = stream,
-                                AttachmentSiteID = product.NodeSiteID,
-                                AttachmentDocumentID = product.DocumentID,
-                                AttachmentExtension = extension,
-                                AttachmentName = $"Thumbnail{product.SKU.GetStringValue("SKUProductCustomerReferenceNumber", product.SKU.SKUNumber)}.{extension}",
-                                AttachmentLastModified = DateTime.Now,
-                                AttachmentMimeType = mimetype,
-                                AttachmentSize = (int)stream.Length
-                            };
-
-                            AttachmentInfoProvider.SetAttachmentInfo(newAttachment);
-
-                            return newAttachment;
-                        }
-                        else
-                        {
-                            throw new Exception("Failed to download thumbnail image");
-                        }
-                    }
-                }
-            }
-        }
-
-        private static void RemoveTumbnail(SKUTreeNode product)
-        {
-            var oldAttachmentGuid = product.GetGuidValue("ProductThumbnail", Guid.Empty);
-            var siteName = (product.Site ?? SiteInfoProvider.GetSiteInfo(product.NodeSiteID)).SiteName;
-            if (oldAttachmentGuid != Guid.Empty)
-            {
-                var oldAttachment = AttachmentInfoProvider.GetAttachmentInfo(oldAttachmentGuid, siteName);
-                if (oldAttachment != null)
-                {
-                    AttachmentInfoProvider.DeleteAttachmentInfo(oldAttachment);
-                }
-            }
+            product.SetImage(image);
         }
 
         private SKUTreeNode AppendProduct(TreeNode parent, CampaignProductDto product, SKUInfo sku, int siteId)
@@ -355,13 +269,9 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 newProduct.Insert(parent);
             }
 
-            if (!string.IsNullOrEmpty(product.ImageURL) && !string.IsNullOrEmpty(product.ThumbnailURL))
+            if (!string.IsNullOrEmpty(product.ImageMediaLibraryName) && !string.IsNullOrEmpty(product.ImagePath))
             {
-                GetAndSaveProductImages(newProduct, product.ImageURL, product.ThumbnailURL);
-            }
-            else
-            {
-                RemoveProductImages(newProduct);
+                AssignImage(newProduct, product.ImageMediaLibraryName, product.ImagePath);
             }
 
             newProduct.Update();

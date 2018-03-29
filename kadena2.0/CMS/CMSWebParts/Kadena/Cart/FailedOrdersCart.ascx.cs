@@ -337,6 +337,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 BindShipping();
                 ShippingCost = EstimateSubTotal();
                 lblTotalPrice.Text = CurrencyInfoProvider.GetFormattedPrice(ShippingCost, CurrentSite.SiteID);
+                lblCartErrorMSG.Text = ValidationHelper.GetString(Cart.ShoppingCartCustomData["FailedReason"], string.Empty);
                 var businessUnitID = Cart.GetValue("BusinessUnitIDForDistributor", default(string));
                 ddlBusinessUnits.SelectedValue = businessUnitID;
             }
@@ -396,7 +397,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 {
                     BusinessUnits = CustomTableItemProvider.GetItems<BusinessUnitItem>()
                                   .Source(sourceItem => sourceItem.Join<UserBusinessUnitsItem>("ItemID", "BusinessUnitID"))
-                                  .WhereEquals("UserID", CurrentUser.UserID).WhereEquals("SiteID", CurrentSite.SiteID)
+                                  .WhereEquals("UserID", Cart.ShoppingCartUserID).WhereEquals("SiteID", CurrentSite.SiteID)
                                   .WhereTrue("Status").Columns("BusinessUnitNumber,BusinessUnitName").ToList();
                 }
             }

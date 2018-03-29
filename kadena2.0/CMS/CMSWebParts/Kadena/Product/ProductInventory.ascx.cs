@@ -262,7 +262,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 }
                 else if (ProductType == (int)ProductsType.PreBuy)
                 {
-                    ddlProgram.Visible = true;
+                    ddlBrand.Visible = true;
                     ddlCategory.Visible = true;
                     List<int> programIds = GetProgramIDs();
                     if (!DataHelper.DataSourceIsEmpty(programIds))
@@ -273,10 +273,10 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                                           .ToList();
                         if (!DataHelper.DataSourceIsEmpty(productsDetails))
                         {
-                            if (programID != default(int))
+                            if (brandID != default(int))
                             {
                                 productsDetails = productsDetails
-                                    .Where(x => x.ProgramID == programID)
+                                    .Where(x => x.BrandID == brandID)
                                     .ToList();
                             }
                             if (categoryID != default(int))
@@ -338,7 +338,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                                .WhereIn("SKUID", skuIds)
                                .And()
                                .WhereEquals("SKUEnabled", true)
-                               .Columns("SKUProductCustomerReferenceNumber,SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUImagePath,SKUAvailableItems,SKUID,SKUDescription")
+                               .Columns("SKUProductCustomerReferenceNumber,SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUAvailableItems,SKUID,SKUDescription")
                                .ToList();
             }
         }
@@ -374,7 +374,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
                 {
                     var productAndSKUDetails = productsDetails
-                          .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.QtyPerPack, x.EstimatedPrice, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUImagePath, y.SKUAvailableItems, y.SKUID, y.SKUDescription })
+                          .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.QtyPerPack, x.EstimatedPrice, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, x.ProductImage, y.SKUAvailableItems, y.SKUID, y.SKUDescription })
                            .OrderBy(p => p.SKUName)
                           .ToList();
                     rptProductLists.DataSource = productAndSKUDetails;

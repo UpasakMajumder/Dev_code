@@ -3,6 +3,7 @@ using CMS.Ecommerce;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.WebAPI.KenticoProviders.Providers;
+using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,18 +16,14 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private readonly IMapper mapper;
         private readonly IShoppingCartProvider shoppingCartProvider;
-        public KenticoAddressBookProvider(IMapper mapper, IShoppingCartProvider shoppingCartProvider)
+        private readonly IKadenaSettings kadenaSettings;
+        private readonly IKenticoLocalizationProvider localizationProvider;
+        public KenticoAddressBookProvider(IMapper mapper, IShoppingCartProvider shoppingCartProvider, IKadenaSettings kadenaSettings, IKenticoLocalizationProvider localizationProvider)
         {
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            if (shoppingCartProvider == null)
-            {
-                throw new ArgumentNullException(nameof(shoppingCartProvider));
-            }
-            this.mapper = mapper;
-            this.shoppingCartProvider = shoppingCartProvider;
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.shoppingCartProvider = shoppingCartProvider ?? throw new ArgumentNullException(nameof(shoppingCartProvider));
+            this.kadenaSettings = kadenaSettings ?? throw new ArgumentNullException(nameof(kadenaSettings));
+            this.localizationProvider = localizationProvider ?? throw new ArgumentNullException(nameof(localizationProvider));
         }
         public void DeleteAddress(int addressID)
         {
@@ -39,8 +36,9 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public Dictionary<int, string> GetAddressNames()
         {
-            return AddressInfoProvider.GetAddresses().ToDictionary(x => x.AddressID, x => x.AddressName);
+            return AddressInfoProvider.GetAddresses().ToDictionary(x => x.AddressID, x => x.AddressPersonalName);
         }
+
         public List<DeliveryAddress> GetAddressesByAddressIds(List<int> addressIds)
         {
             var addresses = AddressInfoProvider.GetAddresses().WhereIn("AddressID", addressIds).ToList();
@@ -49,7 +47,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public List<AddressData> GetAddressesList(int customerID)
         {
-            var addressesList =  AddressInfoProvider.GetAddresses(customerID).Columns("AddressID", "AddressPersonalName").WhereEquals("Status", true).ToList();
+            var addressesList = AddressInfoProvider.GetAddresses(customerID).Columns("AddressID", "AddressPersonalName").WhereEquals("Status", true).ToList();
             return mapper.Map<List<AddressData>>(addressesList);
         }
 
@@ -96,30 +94,55 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public void SaveShippingAddress(DeliveryAddress address, int customerId = 0)
         {
-            CustomerInfo customer = customerId > 0
-                ? CustomerInfoProvider.GetCustomerInfo(customerId)
-                : ECommerceContext.CurrentCustomer;
-
-            var info = new AddressInfo
+            if (address != null)
             {
-                AddressID = address.Id,
-                AddressLine1 = address.Address1,
-                AddressLine2 = address.Address2,
-                AddressCity = address.City,
-                AddressStateID = address.State.Id,
-                AddressCountryID = address.Country.Id,
-                AddressZip = address.Zip,
-                AddressCustomerID = customer.CustomerID,
-                AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}",
-                AddressPhone = address.Phone
-            };
-            info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
-            info.SetValue("AddressType", AddressType.Shipping.Code);
-            info.SetValue("CompanyName", address.CustomerName);
-            info.SetValue("Email", address.Email);
+                if (address.State != null && address.State.Id == 0)
+                {
+                    address.State = localizationProvider.GetStates().FirstOrDefault(c => c.StateCode == address.State.StateCode);
+                }
 
-            AddressInfoProvider.SetAddressInfo(info);
-            address.Id = info.AddressID;
+                if (address.Country != null && address.Country.Id == 0)
+                {
+                    address.Country = localizationProvider.GetCountries().FirstOrDefault(c => c.Code == address.Country.Code);
+                }
+
+                if (address.Country != null)
+                {
+                    var info = mapper.Map<AddressInfo>(address);
+
+                    CustomerInfo customer = customerId > 0
+                        ? CustomerInfoProvider.GetCustomerInfo(customerId)
+                        : ECommerceContext.CurrentCustomer;
+
+
+                    if (string.IsNullOrWhiteSpace(info.AddressPersonalName))
+                    {
+                        info.AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}";
+                        if (string.IsNullOrWhiteSpace(info.GetStringValue("CompanyName", string.Empty)))
+                        {
+                            if (customer.CustomerHasCompanyInfo)
+                            {
+                                info.SetValue("CompanyName", customer.CustomerCompany);
+                            }
+                            else
+                            {
+                                info.SetValue("CompanyName", kadenaSettings.DefaultCustomerCompanyName);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        info.SetValue("CompanyName", address.CompanyName);
+                    }
+
+                    info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
+                    info.SetValue("AddressType", AddressType.Shipping.Code);
+                    info.SetValue("Email", address.Email);
+                    info.AddressCustomerID = customer.CustomerID;
+                    AddressInfoProvider.SetAddressInfo(info);
+                    address.Id = info.AddressID;
+                }
+            }
         }
 
         public List<AddressData> GetAddressesListByUserID(int userID, int inventoryType = 1, int campaignID = 0)
