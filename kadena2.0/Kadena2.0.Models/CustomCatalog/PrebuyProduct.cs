@@ -10,7 +10,7 @@
         public string States { get; set; }
         public int BundleQuantity { get; set; }
         public string ProgramName { get; set; }
-        public double ProductCost { get; set; }
+        public string ProductCost { get; set; }
         public string BrandName { get; set; }
 
     }
