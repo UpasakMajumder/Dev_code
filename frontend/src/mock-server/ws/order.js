@@ -551,6 +551,11 @@ module.exports.detail =  {
             "exists": true,
             "text": "Preview",
             "url": "#"
+          },
+          "emailProof": {
+            "exists": true,
+            "text": "Email",
+            "url": "2"
           }
         },
         {
@@ -581,6 +586,11 @@ module.exports.detail =  {
             "exists": false,
             "text": "Preview",
             "url": "#"
+          },
+          "emailProof": {
+            "exists": true,
+            "text": "Email",
+            "url": "2"
           }
         }
       ]
