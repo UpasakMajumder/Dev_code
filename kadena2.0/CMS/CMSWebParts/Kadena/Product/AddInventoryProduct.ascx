@@ -148,7 +148,7 @@
                 <div class="input__inner">
                     <asp:FileUpload ID="productImage" runat="server" CssClass="input__file" />
                     <div class="product-img">
-                        <asp:Image ID="imgProduct" runat="server" Height="100" Width="100" Visible="false" />
+                        <asp:Image ID="imgProduct" runat="server" Height="100" Visible="false" />
                     </div>
                 </div>
             </div>

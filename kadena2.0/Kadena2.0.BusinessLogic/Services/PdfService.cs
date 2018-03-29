@@ -17,32 +17,11 @@ namespace Kadena.BusinessLogic.Services
 
         public PdfService(IOrderViewClient orderViewClient, IFileClient fileClient, IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoLogger logger)
         {
-            if (orderViewClient == null)
-            {
-                throw new ArgumentNullException(nameof(orderViewClient));
-            }
-            if (fileClient == null)
-            {
-                throw new ArgumentNullException(nameof(fileClient));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (documents == null)
-            {
-                throw new ArgumentNullException(nameof(documents));
-            }
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
-            this.orderViewClient = orderViewClient;
-            this.fileClient = fileClient;
-            this.resources = resources;
-            this.documents = documents;
-            this.logger = logger;
+            this.orderViewClient = orderViewClient ?? throw new ArgumentNullException(nameof(orderViewClient));
+            this.fileClient = fileClient ?? throw new ArgumentNullException(nameof(fileClient));
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<string> GetHiresPdfLink(string orderId, int line)
