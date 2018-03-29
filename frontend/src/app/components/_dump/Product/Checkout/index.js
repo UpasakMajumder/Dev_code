@@ -36,7 +36,9 @@ class CheckoutProduct extends Component {
     }).isRequired,
     productionTime: PropTypes.string,
     shipTime: PropTypes.string,
-    options: PropTypes.arrayOf(PropTypes.object).isRequired
+    options: PropTypes.arrayOf(PropTypes.object).isRequired,
+    toggleEmailProof: PropTypes.func.isRequired,
+    emailProof: PropTypes.shape.isRequired
   };
 
   componentWillReceiveProps(nextProps) {
@@ -146,6 +148,24 @@ class CheckoutProduct extends Component {
     );
   };
 
+  getMailProofButton = () => {
+    const { emailProof, toggleEmailProof } = this.props;
+    if (!emailProof) return null;
+    if (!emailProof.exists) return null;
+    return (
+      <button
+        onClick={() => { toggleEmailProof(true, emailProof.url); }}
+        type="button"
+        className="cart-product__btn"
+      >
+        <div>
+          <SVG name="envelope"/>
+        </div>
+        {emailProof.text}
+      </button>
+    );
+  };
+
   render() {
     const {
       delivery,
@@ -249,6 +269,7 @@ class CheckoutProduct extends Component {
             <div className="cart-product__action">
               {this.defineEditButton()}
               {this.getPreviewButton()}
+              {this.getMailProofButton()}
               {removeButton}
             </div>
           </div>
