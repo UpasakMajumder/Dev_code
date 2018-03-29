@@ -150,7 +150,7 @@
                     <div class="input__inner">
                         <asp:FileUpload ID="productImage" runat="server" class="input__file" EnableViewState="true" />
                         <div class="product-img">
-                            <asp:Image ID="imgProduct" runat="server" Visible="false" />
+                            <asp:Image ID="imgProduct" runat="server" Height="100" Visible="false" />
                         </div>
                     </div>
                 </div>
