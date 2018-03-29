@@ -27,7 +27,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         int GetSkuAvailableQty(int skuid);
         int GetCampaignProductIDBySKUID(int skuid);
         bool ProductHasValidSKUNumber(int skuid);
-
         CampaignsProduct GetCampaignProduct(int skuid);
+        string GetProductImagePath(int productPageId);
     }
 }
