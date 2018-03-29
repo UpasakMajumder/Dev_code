@@ -108,9 +108,9 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var sku = GetSku(skuid);
             var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
-            var skuurl = sku?.SKUImagePath ?? string.Empty;
+            var imgurl = document?.GetStringValue("ProductImage", string.Empty) ?? string.Empty;
 
-            return URLHelper.GetAbsoluteUrl(skuurl);
+            return URLHelper.GetAbsoluteUrl(imgurl);
         }
 
         public void SetSkuAvailableQty(string skunumber, int availableItems)
