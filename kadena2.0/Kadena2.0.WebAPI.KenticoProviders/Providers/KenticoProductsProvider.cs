@@ -99,6 +99,7 @@ namespace Kadena.WebAPI.KenticoProviders
                             .Published();
         }
 
+        [Obsolete("SKUImage is not used anymore, now ir is page's ProductImage")]
         public string GetSkuImageUrl(int skuid)
         {
             if (skuid <= 0)
@@ -111,6 +112,19 @@ namespace Kadena.WebAPI.KenticoProviders
             var skuurl = sku?.SKUImagePath ?? string.Empty;
 
             return URLHelper.GetAbsoluteUrl(skuurl);
+        }
+
+        public string GetProductImagePath(int productPageId)
+        {
+            var productPage = DocumentHelper.GetDocuments("KDA.Product")
+                .Where(d => d.DocumentNodeID == productPageId).FirstOrDefault();
+
+            if (productPage == null)
+                return string.Empty;
+
+            var imagePath = productPage.GetValue("ProductImage", string.Empty);
+
+            return URLHelper.GetAbsoluteUrl(imagePath);
         }
 
         public void SetSkuAvailableQty(string skunumber, int availableItems)
