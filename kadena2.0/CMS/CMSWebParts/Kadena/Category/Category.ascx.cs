@@ -200,7 +200,11 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
         SetupControl();
     }
 
-
+    /// <summary>
+    /// Validates the category name is unique or not
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="args"></param>
     protected void CatName_ServerValidate(object source, System.Web.UI.WebControls.ServerValidateEventArgs args)
     {
         try
@@ -228,7 +232,7 @@ public partial class CMSWebParts_Kadena_Category : CMSAbstractWebPart
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogException("BusinessUnit.ascx.cs", "cvBUNumber_ServerValidate()", ex);
+            EventLogProvider.LogException("Category.ascx.cs", "CatName_ServerValidate()", ex);
         }
     }
 
