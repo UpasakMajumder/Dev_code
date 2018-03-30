@@ -5,6 +5,7 @@ using CMS.DocumentEngine.Types.KDA;
 using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
+using CMS.MediaLibrary;
 using CMS.SiteProvider;
 using Kadena.Models.Common;
 using Kadena.Old_App_Code.Kadena.Constants;
@@ -157,7 +158,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                                            .Replace("{SKUUNITS}", ValidationHelper.GetString(row["SKUUnits"], "&nbsp"))
                                            .Replace("{BUNDLECOST}", inventoryType == Convert.ToInt32(ProductType.GeneralInventory) ? ($"{CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(row["SKUPrice"], default(double)), SiteContext.CurrentSiteID, true)}"): ($"{CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(product.EstimatedPrice, default(double)), SiteContext.CurrentSiteID, true)}"))
                                            .Replace("{BUNDLEQUANTITY}", ValidationHelper.GetString(product.QtyPerPack, "&nbsp"))
-                                           .Replace("{IMAGEURL}", GetProductImage(ValidationHelper.GetString(row["SKUImagePath"], default(string))))
+                                           .Replace("{IMAGEURL}", GetProductThumbnailImage(product.ProductImage))
                                            .Replace("{VALIDSTATES}", ValidationHelper.GetString(states?.States, "&nbsp"))
                                            .Replace("{EXPIREDATE}", skuValidity != default(DateTime) ? skuValidity.ToString("MMM dd, yyyy") : "&nbsp")
                                            .Replace("{PROGRAMNAME}", ValidationHelper.GetString(programName?.ProgramName, "&nbsp") );
@@ -194,27 +195,52 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                 return string.Empty;
             }
         }
-        /// <summary>
-        /// Get product Image by Image path
-        /// </summary>
-        /// <param name="imagepath"></param>
-        /// <returns></returns>
-        public static string GetProductImage(string imagepath)
+
+        public static string GetProductThumbnailImage(string url)
         {
-            string returnValue = imagepath;
-            try
+            string thumbnailurl = string.Empty;
+            if (!string.IsNullOrEmpty(url))
             {
-                if (!string.IsNullOrWhiteSpace(imagepath) && !imagepath.Contains(SiteContext.CurrentSite.DomainName))
+                if (url.StartsWith("~/getmedia/"))
                 {
                     string strPathAndQuery = HttpContext.Current.Request.Url.PathAndQuery;
-                    returnValue = HttpContext.Current.Request.Url.AbsoluteUri.Replace(strPathAndQuery, "") + imagepath.Trim('~');
+                    thumbnailurl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(strPathAndQuery, "") + url.Trim('~');
+                }
+                else
+                {
+                    thumbnailurl = GetS3ImageMediaFileURL(url);
                 }
             }
-            catch (Exception ex)
+            return string.IsNullOrEmpty(thumbnailurl) ? SettingsKeyInfoProvider.GetValue($@"{SiteContext.CurrentSiteName}.KDA_ProductsPlaceHolderImage") : thumbnailurl + "?MaxSideSize=100";
+        }
+
+        private static string GetS3ImageMediaFileURL(string url)
+        {
+            string s3ImageMediaURL = string.Empty;
+            Uri imgS3URL = null;
+            if (Uri.TryCreate(url, UriKind.Absolute, out imgS3URL))
             {
-                EventLogProvider.LogException("Get Product Image", "GetProductImage", ex, SiteContext.CurrentSiteID, ex.Message);
+                string path = HttpUtility.ParseQueryString(imgS3URL.Query).Get("path");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    string imgPath = path.Replace(SiteContext.CurrentSiteName.ToLower() + "/media/", "");
+                    if (!string.IsNullOrEmpty(imgPath))
+                    {
+                        string[] param = imgPath.Split('/');
+                        if (param.Length > 1)
+                        {
+                            string libraryFolder = param[0];
+                            string mediaFilePath = imgPath.Replace(libraryFolder + "/", "");
+                            MediaFileInfo mediaFile = MediaFileInfoProvider.GetMediaFileInfo(SiteContext.CurrentSiteName, mediaFilePath, libraryFolder);
+                            if (mediaFile != null)
+                            {
+                                s3ImageMediaURL = MediaFileInfoProvider.GetMediaFileAbsoluteUrl(mediaFile.FileGUID, mediaFile.FileName);
+                            }
+                        }
+                    }
+                }
             }
-            return string.IsNullOrEmpty(returnValue) ? SettingsKeyInfoProvider.GetValue($@"{SiteContext.CurrentSiteName}.KDA_ProductsPlaceHolderImage") : returnValue;
+            return s3ImageMediaURL;
         }
         #endregion Methods
     }

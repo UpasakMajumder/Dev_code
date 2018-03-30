@@ -16,6 +16,7 @@ using System.Web;
 using System.Web.UI.WebControls;
 using System.Text;
 using Kadena.Models.CustomCatalog;
+using Kadena.Old_App_Code.Kadena.PDFHelpers;
 
 public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPart
 {
@@ -613,7 +614,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                             {
                                 var stateInfo = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereEquals("ItemID", product.State).FirstOrDefault();
                                 string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PDFInnerHTML");
-                                pdfProductContent = pdfProductContent.Replace("IMAGEGUID", GetProductThumbnailImage(product.ProductImage));
+                                pdfProductContent = pdfProductContent.Replace("IMAGEGUID", CartPDFHelper.GetProductThumbnailImage(product.ProductImage));
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTPARTNUMBER", product?.SKUProductCustomerReferenceNumber ?? string.Empty);
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTBRANDNAME", GetBrandName(product.BrandID));
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTSHORTDESCRIPTION", product?.ProductName ?? string.Empty);
@@ -777,53 +778,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         }
     }
 
-    public string GetProductThumbnailImage(string url)
-    {
-        string thumbnailurl = string.Empty;
-        if (!string.IsNullOrEmpty(url))
-        {
-            if (url.StartsWith("~/getmedia/"))
-            {
-                string strPathAndQuery = HttpContext.Current.Request.Url.PathAndQuery;
-                thumbnailurl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(strPathAndQuery, "") + url.Trim('~');
-            }
-            else
-            {
-                thumbnailurl = GetS3ImageMediaFileURL(url);
-            }
-        }
-        return string.IsNullOrEmpty(thumbnailurl) ? SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage") : thumbnailurl + "?MaxSideSize=100";
-    }
-
-    private string GetS3ImageMediaFileURL(string url)
-    {
-        string s3ImageMediaURL = string.Empty;
-        Uri imgS3URL = null;
-        if (Uri.TryCreate(url, UriKind.Absolute, out imgS3URL))
-        {
-            string path = HttpUtility.ParseQueryString(imgS3URL.Query).Get("path");
-            if (!string.IsNullOrEmpty(path))
-            {
-                string imgPath = path.Replace(CurrentSiteName.ToLower() + "/media/", "");
-                if (!string.IsNullOrEmpty(imgPath))
-                {
-                    string[] param = imgPath.Split('/');
-                    if (param.Length > 1)
-                    {
-                        string libraryFolder = param[0];
-                        string mediaFilePath = imgPath.Replace(libraryFolder + "/", "");
-                        MediaFileInfo mediaFile = MediaFileInfoProvider.GetMediaFileInfo(CurrentSite.SiteName, mediaFilePath, libraryFolder);
-                        if (mediaFile != null)
-                        {
-                            s3ImageMediaURL = MediaFileInfoProvider.GetMediaFileAbsoluteUrl(mediaFile.FileGUID, mediaFile.FileName);
-                        }
-                    }
-                }
-            }
-        }
-        return s3ImageMediaURL;
-    }
-
     /// <summary>
     /// getting brand name based on programID
     /// </summary>
@@ -917,7 +871,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     {
                         var stateInfo = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereEquals("ItemID", product.State).FirstOrDefault();
                         string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PDFInnerHTML");
-                        pdfProductContent = pdfProductContent.Replace("IMAGEGUID", GetProductThumbnailImage(product.ProductImage));
+                        pdfProductContent = pdfProductContent.Replace("IMAGEGUID", CartPDFHelper.GetProductThumbnailImage(product.ProductImage));
                         pdfProductContent = pdfProductContent.Replace("PRODUCTPARTNUMBER", product?.SKUProductCustomerReferenceNumber ?? string.Empty);
                         pdfProductContent = pdfProductContent.Replace("PRODUCTBRANDNAME", GetBrandName(product.BrandID));
                         pdfProductContent = pdfProductContent.Replace("PRODUCTSHORTDESCRIPTION", product?.ProductName ?? string.Empty);
@@ -1001,7 +955,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                         {
                             var stateInfo = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereEquals("ItemID", product.State).FirstOrDefault();
                             string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PDFInnerHTML");
-                            pdfProductContent = pdfProductContent.Replace("IMAGEGUID", GetProductThumbnailImage(product.ProductImage));
+                            pdfProductContent = pdfProductContent.Replace("IMAGEGUID", CartPDFHelper.GetProductThumbnailImage(product.ProductImage));
                             pdfProductContent = pdfProductContent.Replace("PRODUCTPARTNUMBER", product?.SKUProductCustomerReferenceNumber ?? string.Empty);
                             pdfProductContent = pdfProductContent.Replace("PRODUCTBRANDNAME", GetBrandName(product.BrandID));
                             pdfProductContent = pdfProductContent.Replace("PRODUCTSHORTDESCRIPTION", product?.ProductName ?? string.Empty);
