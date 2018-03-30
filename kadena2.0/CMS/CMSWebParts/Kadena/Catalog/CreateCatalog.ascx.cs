@@ -1102,6 +1102,12 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
 
     protected void llbExportSelection_Click(object sender, EventArgs e)
     {
+        if(string.IsNullOrEmpty(hdncheckedValues.Value))
+        {
+            Bindproducts();
+            noProductSelected.Visible = true;
+            return;
+        }
         string fileName = "Kadena.Catalog.ExcelExportPrebuy";
         List<string> selectedProducts = hdncheckedValues.Value.Split(',').ToList();
         List<PrebuyProduct> exportList = new List<PrebuyProduct>();

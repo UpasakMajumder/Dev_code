@@ -143,7 +143,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                 StringBuilder sb = new StringBuilder();
                 var skuIds = distributorCartData.AsEnumerable().Select(x => x.Field<int>("SkUID")).ToList();
                 var products = CampaignsProductProvider.GetCampaignsProducts()
-                    .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).WhereIn("NodeSKUID", skuIds).Columns("NodeSKUID,State,ProgramID,QtyPerPack,EstimatedPrice").ToList();
+                    .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).WhereIn("NodeSKUID", skuIds).Columns("NodeSKUID,State,ProgramID,QtyPerPack,EstimatedPrice,ProductImage").ToList();
                 var programs = ProgramProvider.GetPrograms().WhereIn("ProgramID", products.Select(x => x.ProgramID).ToList()).Columns("ProgramID,ProgramName").ToList();
                 var stateGroups = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereIn("ItemID", products.Select(x => x.State).ToList()).Columns("ItemID,States").ToList();
                 distributorCartData.ForEach(row =>
