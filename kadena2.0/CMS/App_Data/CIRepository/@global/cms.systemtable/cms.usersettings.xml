@@ -602,13 +602,14 @@ userchoice;User can choose
 SELECT '-1' AS UserID,'(none)' AS UserName
 UNION
 SELECT 
-UserID,UserName
+UserID,
+CASE WHEN ((FirstName+' '+LastName)=' ') THEN UserName ELSE (FirstName+' '+LastName) END
 FROM 
 CMS_User
 WHERE
 UserID IN 
 (
-SELECT UserID FROM CMS_UserRole WHERE RoleID=(SELECT TOP 1 RoleID FROM CMS_Role WHERE RoleName='KDA.TradeMarketingManager' AND SiteID={%CurrentSite.ID|(user)twe_admin|(hash)ae86ecbf2a2fd90fe8aeeec2587029ad98deb7f3773ce10cf7f9d049c6b5df36%})
+SELECT UserID FROM CMS_UserRole WHERE RoleID=(SELECT TOP 1 RoleID FROM CMS_Role WHERE RoleName='KDA.TradeMarketingManager' AND SiteID={%CurrentSite.ID|(user)twe_admin|(hash)ae86ecbf2a2fd90fe8aeeec2587029ad98deb7f3773ce10cf7f9d049c6b5df36%}) AND UserID IN (Select UserID From CMS_UserSite Where SiteID={%CurrentSite.ID|(user)twe_admin|(hash)ae86ecbf2a2fd90fe8aeeec2587029ad98deb7f3773ce10cf7f9d049c6b5df36%})
 )
 AND
 UserEnabled=1
