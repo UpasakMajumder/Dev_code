@@ -74,7 +74,7 @@
           </rule>
         </rules>
       </field>
-      <field column="StartDate" columntype="date" guid="c9d56f67-d972-4630-b3ac-30f841116701" publicfield="false" visible="true">
+      <field column="StartDate" columnprecision="7" columntype="datetime" guid="c9d56f67-d972-4630-b3ac-30f841116701" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Start Date</fieldcaption>
           <validationerrormessage>{$Kadena.CampaignForm.StartDateRequired$}</validationerrormessage>
@@ -87,7 +87,7 @@
           <TimeZoneType>inherit</TimeZoneType>
         </settings>
       </field>
-      <field column="EndDate" columntype="date" guid="8923f367-0b3c-48dd-93d7-54470becd906" publicfield="false" visible="true">
+      <field column="EndDate" columnprecision="7" columntype="datetime" guid="8923f367-0b3c-48dd-93d7-54470becd906" publicfield="false" visible="true">
         <properties>
           <fieldcaption>End Date</fieldcaption>
           <validationerrormessage>{$Kadena.CampaignForm.EndDateRequired$}</validationerrormessage>
