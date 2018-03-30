@@ -515,7 +515,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                                 string folderName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_ImagesFolderName");
                                 folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
                                 txtLongDescription.Text = skuDetails.SKUDescription;
-                                ddlPos.SelectedValue = ValidationHelper.GetString(skuDetails.GetValue("SKUProductCustomerReferenceNumber", string.Empty),string.Empty);
+                                ddlPos.SelectedValue = ValidationHelper.GetString(skuDetails.GetValue("SKUProductCustomerReferenceNumber", string.Empty), string.Empty);
                                 ddlPos.Enabled = false;
                                 txtProductName.Text = skuDetails.SKUName;
                                 txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
@@ -524,7 +524,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                                 imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
                                 if (skuDetails.SKUValidUntil != DateTime.MinValue)
                                 {
-                                 txtExpireDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToShortDateString(), string.Empty);
+                                    txtExpireDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToShortDateString(), string.Empty);
                                 }
                             }
                             ddlProgram.SelectedValue = ValidationHelper.GetString(product.ProgramID, string.Empty);
@@ -582,17 +582,27 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                 if (!DataHelper.DataSourceIsEmpty(campaign))
                 {
                     int campaignID = campaign.GetIntegerValue("CampaignID", default(int));
+                    string globalAdminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
+                    string adminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_AdminRoleName");
                     if (campaignID != default(int))
                     {
-                        var programs = ProgramProvider.GetPrograms()
+                        var programs = CurrentUser.IsInRole(globalAdminRoleName, CurrentSiteName) ?
+                            ProgramProvider.GetPrograms()
                             .WhereEquals("NodeSiteID", CurrentSite.SiteID)
                             .WhereEquals("CampaignID", campaignID)
-                            .WhereEquals("Status",true)
+                            .WhereEquals("Status", true)
+                            .Columns("ProgramName,ProgramID")
+                            .Select(x => new Program { ProgramID = x.ProgramID, ProgramName = x.ProgramName })
+                            .ToList():
+                             ProgramProvider.GetPrograms()
+                            .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                            .WhereEquals("CampaignID", campaignID)
+                            .WhereEquals("Status", true)
                             .WhereEqualsOrNull("GlobalAdminNotified", false)
                             .Columns("ProgramName,ProgramID")
                             .Select(x => new Program { ProgramID = x.ProgramID, ProgramName = x.ProgramName })
                             .ToList();
-                        if(programs.Count>0)
+                        if (programs.Count > 0)
                         {
                             if (!DataHelper.DataSourceIsEmpty(programs))
                             {
@@ -609,7 +619,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             AddProductdiv.Visible = false;
                             Emptydata.Visible = true;
                         }
-                       
+
                     }
                 }
             }
@@ -629,7 +639,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
         {
             var categories = ProductCategoryProvider.GetProductCategories()
                 .WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                .WhereEquals("Status",1)
+                .WhereEquals("Status", 1)
                 .Columns("ProductCategoryID,ProductCategoryTitle")
                 .Select(x => new ProductCategory { ProductCategoryID = x.ProductCategoryID, ProductCategoryTitle = x.ProductCategoryTitle })
                 .ToList();
