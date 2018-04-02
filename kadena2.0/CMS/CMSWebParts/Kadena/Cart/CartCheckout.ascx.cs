@@ -17,7 +17,6 @@ using CMS.DocumentEngine.Types.KDA;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using CMS.SiteProvider;
-using System.Threading.Tasks;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -100,7 +99,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 var userInfo = DIContainer.Resolve<IKenticoUserProvider>();
                 var salesPerson = userInfo.GetUserByUserId(CurrentUser.UserID);
-                Parallel.ForEach(loggedInUserCartIDs, (distributorCart) =>
+                loggedInUserCartIDs.ForEach(distributorCart =>
                 {
                     Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(distributorCart);
                     decimal shippingCost = default(decimal);
