@@ -16,8 +16,8 @@ using Kadena.BusinessLogic.Contracts;
 using CMS.DocumentEngine.Types.KDA;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using CMS.SiteProvider;
+using System.Threading.Tasks;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -100,7 +100,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 var userInfo = DIContainer.Resolve<IKenticoUserProvider>();
                 var salesPerson = userInfo.GetUserByUserId(CurrentUser.UserID);
-                loggedInUserCartIDs.ForEach(distributorCart =>
+                Parallel.ForEach(loggedInUserCartIDs, (distributorCart) =>
                 {
                     Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(distributorCart);
                     decimal shippingCost = default(decimal);
@@ -135,7 +135,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         UpdateAllocatedProductQuantity(Cart, salesPerson.UserId);
                         ProductEmailNotifications.SendMail(salesPerson, ordersDTO, orderTemplateSettingKey);
                         ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
-                        ShoppingCartHelper.UpdateRemainingBudget(ordersDTO, CurrentUser.UserID);
+                        UpdateRemainingBudget(ordersDTO, CurrentUser.UserID);
                     }
                     else
                     {
