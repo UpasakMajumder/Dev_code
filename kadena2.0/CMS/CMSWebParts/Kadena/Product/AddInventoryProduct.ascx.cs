@@ -491,7 +491,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "InventoryProducts";
                             txtLongDes.Text = skuDetails.SKUDescription;
                             txtEstPrice.Text = ValidationHelper.GetString(product.EstimatedPrice, string.Empty);
-                            ddlPosNo.Items.Add(new ListItem(ValidationHelper.GetString(skuDetails.GetValue("SKUProductCustomerReferenceNumber", string.Empty), string.Empty), ValidationHelper.GetString(skuDetails.GetValue("SKUProductCustomerReferenceNumber", string.Empty), string.Empty)));
+                            ddlPosNo.SelectedValue = skuDetails.GetValue("SKUProductCustomerReferenceNumber", string.Empty) ?? "0";
+                            ddlPosCategory.SelectedValue = GetPosCategory(ddlPosNo.SelectedValue);
+                            ddlPosCategory.Enabled = false;
                             ddlPosNo.Enabled = false;
                             txtShortDes.Text = skuDetails.SKUName;
                             txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
@@ -507,6 +509,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         }
                         txtBundleQnt.Text = ValidationHelper.GetString(product.QtyPerPack, string.Empty);
                         ddlBrand.SelectedValue = ValidationHelper.GetString(product.BrandID, string.Empty);
+                        ddlBrand.Enabled = false;
                         ddlState.SelectedValue = ValidationHelper.GetString(product.State, string.Empty);
                         ddlProdCategory.SelectedValue = ValidationHelper.GetString(product.CategoryID, string.Empty);
                         BindEditProduct(ValidationHelper.GetInteger(product.CampaignsProductID, 0));
@@ -646,7 +649,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 BindCategories();
                 GetStateGroup();
                 BindPosCategory();
-                GetPos(ddlBrand.SelectedValue,ddlPosCategory.SelectedValue);
+                GetPos(ddlBrand.SelectedValue, ddlPosCategory.SelectedValue);
             }
             catch (Exception ex)
             {
@@ -804,7 +807,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     //    }
                     //}
                 }
-
                 ddlPosNo.SelectedValue = selectedPos;
             }
             catch (Exception ex)
@@ -815,78 +817,124 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         public void BindPosCategory()
         {
-            var posCategories = CustomTableItemProvider.GetItems<POSCategoryItem>()
-                .Columns("PosCategoryName,ItemID")
-                .ToList();
-            if (posCategories != null)
+            try
             {
-                ddlPosCategory.DataSource = posCategories;
-                ddlPosCategory.DataTextField = "PosCategoryName";
-                ddlPosCategory.DataValueField = "ItemID";
-                ddlPosCategory.DataBind();
-                ddlPosCategory.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.SelectPosCategory"), "0"));
+                var posCategories = CustomTableItemProvider.GetItems<POSCategoryItem>()
+                    .Columns("PosCategoryName,ItemID")
+                    .ToList();
+                if (posCategories != null)
+                {
+                    ddlPosCategory.DataSource = posCategories;
+                    ddlPosCategory.DataTextField = "PosCategoryName";
+                    ddlPosCategory.DataValueField = "ItemID";
+                    ddlPosCategory.DataBind();
+                    ddlPosCategory.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.SelectPosCategory"), "0"));
+                }
             }
-
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("AddInventoryProducts.ascx.cs", "BindPosCategory()", ex, CurrentSite.SiteID, ex.Message);
+            }
         }
 
         protected void ddlPosCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GetPos(ddlBrand.SelectedValue, ddlPosCategory.SelectedValue);
+            try
+            {
+                GetPos(ddlBrand.SelectedValue, ddlPosCategory.SelectedValue);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("AddInventoryProducts.ascx.cs", "ddlPosCategory_SelectedIndexChanged()", ex, CurrentSite.SiteID, ex.Message);
+            }
         }
 
         protected void ddlBrand_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GetPos(ddlBrand.SelectedValue,ddlPosCategory.SelectedValue);
+            try
+            {
+
+                GetPos(ddlBrand.SelectedValue, ddlPosCategory.SelectedValue);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("AddInventoryProducts.ascx.cs", "ddlBrand_SelectedIndexChanged()", ex, CurrentSite.SiteID, ex.Message);
+            }
+
         }
 
         public void GetPos(string brandId, string PosCatId)
         {
-            var posData = new List<POSNumberItem>();
-            var brandCode = brandId != "0" ? CustomTableItemProvider.GetItems<BrandItem>()
-                .WhereEquals("ItemID", brandId)
-                .Columns("BrandCode")
-                .FirstOrDefault().BrandCode.ToString() : "0";
-            if (brandCode != "0" && PosCatId !="0")
+            try
             {
-                posData = CustomTableItemProvider.GetItems<POSNumberItem>()
-                    .WhereEquals("BrandID", brandCode)
-                    .WhereEquals("POSCategoryID", PosCatId)
-                    .WhereEqualsOrNull("Enable", true)
-                    .Columns("POSNumber")
-                    .ToList();
-            }
-            else if (brandCode != "0" && PosCatId == "0")
-            {
-                posData = CustomTableItemProvider.GetItems<POSNumberItem>()
+                var posData = new List<POSNumberItem>();
+                var brandCode = brandId != "0" ? CustomTableItemProvider.GetItems<BrandItem>()
+                    .WhereEquals("ItemID", brandId)
+                    .Columns("BrandCode")
+                    .FirstOrDefault().BrandCode.ToString() : "0";
+                if (brandCode != "0" && PosCatId != "0")
+                {
+                    posData = CustomTableItemProvider.GetItems<POSNumberItem>()
                         .WhereEquals("BrandID", brandCode)
-                        .WhereEqualsOrNull("Enable", true)
-                        .Columns("POSNumber")
-                        .ToList();
-            }
-            else if (PosCatId != "0" && brandCode == "0")
-            {
-                posData = CustomTableItemProvider.GetItems<POSNumberItem>()
                         .WhereEquals("POSCategoryID", PosCatId)
                         .WhereEqualsOrNull("Enable", true)
                         .Columns("POSNumber")
                         .ToList();
+                }
+                else if (brandCode != "0" && PosCatId == "0")
+                {
+                    posData = CustomTableItemProvider.GetItems<POSNumberItem>()
+                            .WhereEquals("BrandID", brandCode)
+                            .WhereEqualsOrNull("Enable", true)
+                            .Columns("POSNumber")
+                            .ToList();
+                }
+                else if (PosCatId != "0" && brandCode == "0")
+                {
+                    posData = CustomTableItemProvider.GetItems<POSNumberItem>()
+                            .WhereEquals("POSCategoryID", PosCatId)
+                            .WhereEqualsOrNull("Enable", true)
+                            .Columns("POSNumber")
+                            .ToList();
+                }
+                else
+                {
+                    posData = CustomTableItemProvider.GetItems<POSNumberItem>()
+                            .WhereEqualsOrNull("Enable", true)
+                            .Columns("POSNumber")
+                            .ToList();
+                }
+                if (posData != null)
+                {
+                    ddlPosNo.DataSource = posData;
+                    ddlPosNo.DataTextField = "POSNumber";
+                    ddlPosNo.DataValueField = "POSNumber";
+                    ddlPosNo.DataBind();
+                    ddlPosNo.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.SelectPosNO"), "0"));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                posData = CustomTableItemProvider.GetItems<POSNumberItem>()
-                        .WhereEqualsOrNull("Enable", true)
-                        .Columns("POSNumber")
-                        .ToList();
-            }
-            if (posData != null)
-            {
-                ddlPosNo.DataSource = posData;
-                ddlPosNo.DataTextField = "POSNumber";
-                ddlPosNo.DataValueField= "POSNumber";
-                ddlPosNo.DataBind();
-                ddlPosNo.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.SelectPosNO"), "0"));
+                EventLogProvider.LogException("AddInventoryProducts.ascx.cs", "GetPos()", ex, CurrentSite.SiteID, ex.Message);
             }
         }
+
+        public string GetPosCategory(string posNo)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(posNo))
+                    return string.Empty;
+                var posCatName = CustomTableItemProvider.GetItems<POSNumberItem>().WhereEquals("POSNumber", posNo).Columns("POSCategoryID").FirstOrDefault().POSCategoryID;
+                return posCatName.ToString();
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("AddInventoryProducts.ascx.cs", "ddlPosCategory_SelectedIndexChanged()", ex, CurrentSite.SiteID, ex.Message);
+            }
+            return string.Empty;
+        }
+
     }
 
     #region class
