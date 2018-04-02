@@ -1,9 +1,9 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Catalog_CreateCatalog" CodeBehind="~/CMSWebParts/Kadena/Catalog/CreateCatalog.ascx.cs" %>
 <div class="custom__block" runat="server" id="catalogControls">
     <div class="custom__select clearfix">
-        <asp:DropDownList ID="ddlPrograms" runat="server" OnSelectedIndexChanged="ddlPrograms_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
-        <asp:DropDownList ID="ddlBrands" runat="server" OnSelectedIndexChanged="ddlBrands_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
-        <asp:DropDownList ID="ddlProductTypes" runat="server" OnSelectedIndexChanged="ddlProductTypes_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+        <asp:DropDownList ID="ddlPrograms" runat="server" OnSelectedIndexChanged="ddlPrograms_SelectedIndexChanged" AutoPostBack="true" style="max-width:200px;"></asp:DropDownList>
+        <asp:DropDownList ID="ddlBrands" runat="server" OnSelectedIndexChanged="ddlBrands_SelectedIndexChanged" AutoPostBack="true" style="max-width:200px;"></asp:DropDownList>
+        <asp:DropDownList ID="ddlProductTypes" runat="server" OnSelectedIndexChanged="ddlProductTypes_SelectedIndexChanged" AutoPostBack="true" style="max-width:200px;"></asp:DropDownList>
         <label id="errorLabel"></label>
     </div>
     <div class="search__block" id="searchDiv" runat="server">
@@ -50,7 +50,7 @@
                 <div class="img__block">
                     <input type="checkbox" id="zoomCheck_<%# Eval("NodeSKUID")%>" />
                     <label for="zoomCheck_<%# Eval("NodeSKUID")%>">
-                        <img src='<%#GetProductThumbnailImage(Eval<string>("ProductImage"))%>' />
+                        <img src='<%#Kadena.Old_App_Code.Kadena.PDFHelpers.CartPDFHelper.GetProductThumbnailImage(Eval<string>("ProductImage"))%>' />
                     </label>
                 </div>
                  <div class="zoom__in"><a href="javascript:void(0);" onclick="ShowZoomEffect(this)"><svg class="icon"> <use xlink:href="/gfx/svg/sprites/icons.svg#search" xmlns:xlink="http://www.w3.org/1999/xlink"></use> </svg></a></div>

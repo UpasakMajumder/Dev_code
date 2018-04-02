@@ -47,7 +47,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 .Where(cartItem => !cartItem.IsProductOption)
                 .Select(cartItem => MapCartItem(cartItem, showPrices, displayProductionAndShipping))
                 .ToArray();
-        }
+        }        
 
         private CartItem MapCartItem(ShoppingCartItemInfo i, bool showPrices, bool displayProductionAndShipping)
         {
@@ -64,7 +64,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 TotalTax = 0.0m,
                 UnitPrice = showPrices ? (decimal)i.UnitPrice : 0.0m,
                 UnitOfMeasure = "EA",
-                Image = URLHelper.GetAbsoluteUrl(i.SKU.SKUImagePath),
+                Image = productProvider.GetProductImagePath(i.GetIntegerValue("ProductPageID", 0)),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
                 TotalPrice = showPrices ? (decimal)i.UnitPrice * i.CartItemUnits : 0.0m,

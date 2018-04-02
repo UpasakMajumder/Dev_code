@@ -63,12 +63,12 @@ class Orders extends Component {
               </button>
             </td>
           );
-        } else if (!isNaN(Date.parse(item.value)) && isNaN(Date.UTC(item.value))) {
-          cell = <td key={j}>{timeFormat(item.value)}</td>;
         } else if (item.type === 'longtext') {
-          cell = <td key={j} className="show-table__text-appear">{timeFormat(item.value)}</td>;
+          cell = <td key={j} className="show-table__text-appear">{item.value}</td>;
         } else if (item.type === 'hover-hide') {
-          cell = <td key={j} className="show-table__will-hide">{timeFormat(item.value)}</td>;
+          cell = <td key={j} className="show-table__will-hide">{item.value}</td>;
+        } else if (!isNaN(Date.parse(item.value)) && isNaN(Date.UTC(item.value) && Date.parseInvariant(item.value) != null)) {
+          cell = <td key={j}>{timeFormat(item.value)}</td>;
         }
 
         return cell;

@@ -492,7 +492,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                     BindPrograms();
                     BindCategories();
                     BindResorceStrings();
-                    //BindPOS();
                     GetStateGroup();
                     GetBrandName();
                     BindItemSpecsDropdown();
@@ -585,9 +584,19 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                 if (!DataHelper.DataSourceIsEmpty(campaign))
                 {
                     int campaignID = campaign.GetIntegerValue("CampaignID", default(int));
+                    string globalAdminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
+                    string adminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_AdminRoleName");
                     if (campaignID != default(int))
                     {
-                        var programs = ProgramProvider.GetPrograms()
+                        var programs = CurrentUser.IsInRole(globalAdminRoleName, CurrentSiteName) ?
+                            ProgramProvider.GetPrograms()
+                            .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                            .WhereEquals("CampaignID", campaignID)
+                            .WhereEquals("Status", true)
+                            .Columns("ProgramName,ProgramID")
+                            .Select(x => new Program { ProgramID = x.ProgramID, ProgramName = x.ProgramName })
+                            .ToList() :
+                             ProgramProvider.GetPrograms()
                             .WhereEquals("NodeSiteID", CurrentSite.SiteID)
                             .WhereEquals("CampaignID", campaignID)
                             .WhereEquals("Status", true)
@@ -939,23 +948,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                        .WhereEquals("ItemID", brandItemID)
                        .Columns("ItemID,BrandCode").FirstOrDefault();
                         GetPos(ddlBrand.SelectedValue, ddlPosCategory.SelectedValue);
-                        //if (brand != null)
-                        //{
-                        //    var pos = ConnectionHelper.ExecuteQuery("KDA.CampaignsProduct.GetCampaignPos", null, "CTE.POSNumber is null and KDA_POSNumber.BrandId=" + ValidationHelper.GetInteger(brand.GetValue("BrandCode"), 0));
-                        //    if (!DataHelper.DataSourceIsEmpty(pos))
-                        //    {
-                        //        ddlPos.DataSource = pos;
-                        //        ddlPos.DataTextField = "POSNumber";
-                        //        ddlPos.DataValueField = "POSNumber";
-                        //        ddlPos.DataBind();
-                        //        string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectPOSText"), string.Empty);
-                        //        ddlPos.Items.Insert(0, new ListItem(selectText, "0"));
-                        //    }
-                        //    else
-                        //    {
-                        //        ddlPos.Items.Clear();
-                        //    }
-                        //}
                     }
                 }
             }

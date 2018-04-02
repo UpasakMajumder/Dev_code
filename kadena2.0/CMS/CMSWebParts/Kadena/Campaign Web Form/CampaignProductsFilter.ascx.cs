@@ -216,13 +216,20 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
     {
         try
         {
-            if (program != null && gAdminNotified)
+            if (program == null)
+            {
+                btnNewProduct.Visible = true;
+                btnNewProduct.Enabled = true;
+                btnAllowUpates.Visible = true;
+                btnAllowUpates.Enabled = false;
+                btnAllowUpates.CssClass = "disable btn-action";
+            }
+            else if (program != null && gAdminNotified)
             {
                 btnAllowUpates.Visible = true;
                 btnAllowUpates.Enabled = true;
                 btnNewProduct.Visible = true;
-                btnNewProduct.Enabled = false;
-                btnNewProduct.CssClass = "disable btn-action";
+                btnNewProduct.Enabled = true;
             }
             else if (program != null && !gAdminNotified)
             {
