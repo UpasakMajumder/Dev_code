@@ -763,7 +763,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
             try
             {
                 string selectedPos = ddlPosNo.SelectedValue;
-                //BindData();
                 SKUInfo skuDetails = SKUInfoProvider.GetSKUs().WhereEquals("SKUProductCustomerReferenceNumber", selectedPos).FirstObject;
                 if (skuDetails != null)
                 {
@@ -792,20 +791,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 else
                 {
                     ViewState["ProductId"] = null;
-                    //EmptyFields(false);
-                    //var pos = CustomTableItemProvider.GetItems(POSNumberItem.CLASS_NAME)
-                    //    .WhereEquals("POSNumber", selectedPos)
-                    //     .FirstOrDefault();
-                    //if (pos != null && pos.GetValue("BrandID") != null)
-                    //{
-                    //    var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
-                    //   .WhereEquals("BrandCode", pos.GetValue("BrandID"))
-                    //   .FirstOrDefault();
-                    //    if (brand != null)
-                    //    {
-                    //        ddlBrand.SelectedValue = brand.GetValue("ItemId").ToString();
-                    //    }
-                    //}
                 }
                 ddlPosNo.SelectedValue = selectedPos;
             }
@@ -872,38 +857,28 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     .WhereEquals("ItemID", brandId)
                     .Columns("BrandCode")
                     .FirstOrDefault().BrandCode.ToString() : "0";
+                string where = null;
                 if (brandCode != "0" && PosCatId != "0")
                 {
-                    posData = CustomTableItemProvider.GetItems<POSNumberItem>()
-                        .WhereEquals("BrandID", brandCode)
-                        .WhereEquals("POSCategoryID", PosCatId)
-                        .WhereEqualsOrNull("Enable", true)
-                        .Columns("POSNumber")
-                        .ToList();
+                    where += "BrandID=" + brandCode + "AND POSCategoryID=" + PosCatId;
                 }
                 else if (brandCode != "0" && PosCatId == "0")
                 {
-                    posData = CustomTableItemProvider.GetItems<POSNumberItem>()
-                            .WhereEquals("BrandID", brandCode)
-                            .WhereEqualsOrNull("Enable", true)
-                            .Columns("POSNumber")
-                            .ToList();
+                    where += "BrandID=" + brandCode;
                 }
                 else if (PosCatId != "0" && brandCode == "0")
                 {
-                    posData = CustomTableItemProvider.GetItems<POSNumberItem>()
-                            .WhereEquals("POSCategoryID", PosCatId)
-                            .WhereEqualsOrNull("Enable", true)
-                            .Columns("POSNumber")
-                            .ToList();
+                    where += "POSCategoryID=" + PosCatId;
                 }
                 else
                 {
-                    posData = CustomTableItemProvider.GetItems<POSNumberItem>()
+                    where = string.Empty;
+                }
+                posData = CustomTableItemProvider.GetItems<POSNumberItem>()
                             .WhereEqualsOrNull("Enable", true)
+                            .Where(where)
                             .Columns("POSNumber")
                             .ToList();
-                }
                 if (posData != null)
                 {
                     ddlPosNo.DataSource = posData;

@@ -1092,38 +1092,28 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                 .WhereEquals("ItemID", brandId)
                 .Columns("BrandCode")
                 .FirstOrDefault().BrandCode.ToString() : "0";
+            string where = null;
             if (brandCode != "0" && PosCatId != "0")
             {
-                posData = CustomTableItemProvider.GetItems<POSNumberItem>()
-                    .WhereEquals("BrandID", brandCode)
-                    .WhereEquals("POSCategoryID", PosCatId)
-                    .WhereEqualsOrNull("Enable", true)
-                    .Columns("POSNumber")
-                    .ToList();
+                where += "BrandID=" + brandCode + "AND POSCategoryID=" + PosCatId;
             }
             else if (brandCode != "0" && PosCatId == "0")
             {
-                posData = CustomTableItemProvider.GetItems<POSNumberItem>()
-                        .WhereEquals("BrandID", brandCode)
-                        .WhereEqualsOrNull("Enable", true)
-                        .Columns("POSNumber")
-                        .ToList();
+                where += "BrandID=" + brandCode;
             }
             else if (PosCatId != "0" && brandCode == "0")
             {
-                posData = CustomTableItemProvider.GetItems<POSNumberItem>()
-                        .WhereEquals("POSCategoryID", PosCatId)
-                        .WhereEqualsOrNull("Enable", true)
-                        .Columns("POSNumber")
-                        .ToList();
+                where += "POSCategoryID=" + PosCatId;
             }
             else
             {
-                posData = CustomTableItemProvider.GetItems<POSNumberItem>()
+                where = string.Empty;
+            }
+            posData = CustomTableItemProvider.GetItems<POSNumberItem>()
                         .WhereEqualsOrNull("Enable", true)
+                        .Where(where)
                         .Columns("POSNumber")
                         .ToList();
-            }
             if (posData != null)
             {
                 ddlPos.DataSource = posData;
