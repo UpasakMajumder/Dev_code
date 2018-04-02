@@ -76,7 +76,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Net.Http" />
@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\OrderReportController.cs" />
     <Compile Include="Controllers\ProgramsController.cs" />
     <Compile Include="Controllers\AddressBookController.cs" />
     <Compile Include="Controllers\BusinessUnitsController.cs" />
@@ -130,7 +131,7 @@
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
-    <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\RecentOrdersController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\SiteDataController.cs" />
     <Compile Include="Controllers\TemplateController.cs" />
@@ -152,10 +153,12 @@
     <Compile Include="Infrastructure\Filters\Helpers\FilterHelper.cs" />
     <Compile Include="Infrastructure\Filters\ModelStateValidationFilter.cs" />
     <Compile Include="App_Start\WebApiInitModule.cs" />
+    <Compile Include="Infrastructure\Routes.Order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <Compile Include="Infrastructure\Routes.OrderReport.cs" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

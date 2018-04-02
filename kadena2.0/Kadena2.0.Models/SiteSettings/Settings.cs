@@ -14,6 +14,15 @@ namespace Kadena.Models.SiteSettings
         public const string KDA_AddressDefaultCountry = "KDA_AddressDefaultCountry";
 
         /// <summary>
+        /// Orders report module toggle
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Module access")]
+        [DefaultValueAttribute(@"enabled")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6Ik9yZGVycyBSZXBvcnQgTW9kdWxlIEVuYWJsZWQiLCJLZXlOYW1lIjoiS0RBX09yZGVyc1JlcG9ydE1vZHVsZUVuYWJsZWQiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjoiZW5hYmxlZCIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjoiUmFkaW9CdXR0b25zQ29udHJvbCIsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOiI8c2V0dGluZ3M+PE9wdGlvbnM+ZW5hYmxlZDtFbmFibGVkXHJcbmRpc2FibGVkO0Rpc2FibGVkXHJcbmhpZGRlbjtIaWRkZW48L09wdGlvbnM+PFJlcGVhdERpcmVjdGlvbj5ob3Jpem9udGFsPC9SZXBlYXREaXJlY3Rpb24+PFJlcGVhdExheW91dD5GbG93PC9SZXBlYXRMYXlvdXQ+PFNvcnRJdGVtcz5GYWxzZTwvU29ydEl0ZW1zPjwvc2V0dGluZ3M+IiwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiTW9kdWxlIGFjY2VzcyJ9fQ==")]
+        public const string KDA_OrdersReportModuleEnabled = "KDA_OrdersReportModuleEnabled";
+
+        /// <summary>
         /// 
         /// </summary>
         [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
@@ -1607,5 +1616,14 @@ namespace Kadena.Models.SiteSettings
         [DefaultValueAttribute(null)]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkFsbG93ZWQgYXVkaWVuY2UgVVJJIiwiS2V5TmFtZSI6IktEQV9BbGxvd2VkQXVkaWVuY2VVcmkiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjpudWxsLCJLZXlEZXNjcmlwdGlvbiI6IkF1ZGllbmNlIFVSSSBmb3Igd2hpY2ggU0FNTCBvYmplY3QgYWxsb3dlZCB0by4iLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiU2luZ2xlIHNpbmctb24iLCJOYW1lIjoiS0RBU1NPIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiS2FkZW5hIn0sIkRpc3BsYXlOYW1lIjoiU0FNTCAyLjAifX0=")]
         public const string KDA_AllowedAudienceUri = "KDA_AllowedAudienceUri";
+
+        /// <summary>
+        /// Default LowRes settings guid for newly created templated products
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Templating")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkRlZmF1bHQgbG93cmVzIHNldHRpbmdzIGlkIiwiS2V5TmFtZSI6IktEQV9EZWZhdWx0TG93UmVzU2V0dGluZ3NJZCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJUZW1wbGF0aW5nIn19")]
+        public const string KDA_DefaultLowResSettingsId = "KDA_DefaultLowResSettingsId";
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DryIoc;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Factories;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.BusinessLogic.Services;
@@ -27,7 +28,9 @@ using Kadena2.WebAPI.KenticoProviders.Providers;
 using Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings;
 using Kadena.BusinessLogic.Contracts.SSO;
 using Kadena.BusinessLogic.Services.SSO;
+using Kadena.Infrastructure.FileConversion;
 using System.IdentityModel.Tokens;
+using Kadena.Infrastructure.Contracts;
 
 namespace Kadena.Container.Default
 {
@@ -63,6 +66,7 @@ namespace Kadena.Container.Default
             container.Register<ITaxEstimationService, TaxEstimationService>();
             container.Register<ISubmitOrderService, SubmitOrderService>();
             container.Register<IOrderDetailService, OrderDetailService>();
+            container.Register<IOrderReportService, OrderReportService>();
             container.Register<IKListService, KListService>();
             container.Register<ITemplateService, TemplateService>();
             container.Register<IMailTemplateService, MailTemplateService>();
@@ -170,6 +174,7 @@ namespace Kadena.Container.Default
             container.Register<ICheckoutPageFactory, CheckoutPageFactory>();
             container.Register<IOrderDataFactory, OrderDataFactory>();
             container.Register<IOrderResultPageUrlFactory, OrderResultPageUrlFactory>();
+            container.Register<IOrderReportFactory, OrderReportFactory>();
             return container;
         }
 
@@ -177,6 +182,7 @@ namespace Kadena.Container.Default
         {
             container.RegisterInstance(typeof(IMapper), MapperBuilder.MapperInstance);
             container.Register<ICache>(Reuse.Singleton, Made.Of(() => new InMemoryCache()));
+            container.Register<IExcelConvert, ExcelConvert>();
             return container;
         }
     }

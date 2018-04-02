@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using CMS.Ecommerce;
 
 namespace Kadena.Old_App_Code.Kadena.EmailNotifications
 {
@@ -60,7 +61,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         /// <param name="campaignName"></param>
         /// <param name="reciepientEmail"></param>
         /// <param name="templateName"></param>
-        public static void SendEmailNotification<T>(string templateName, string recipientEmail, IEnumerable<T> emailDataSource,string dataSourceName, Dictionary<string, object> macroData = null)
+        public static void SendEmailNotification<T>(string templateName, string recipientEmail, IEnumerable<T> emailDataSource, string dataSourceName, Dictionary<string, object> macroData = null)
         {
             try
             {
@@ -123,8 +124,8 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                                 orderDetails.Add("name", customerData.FirstName);
                                 orderDetails.Add("totalprice", recentoder.TotalPrice);
                                 orderDetails.Add("shippingdate", recentoder.ShippingDate);
-                                orderDetails.Add("campaignid", recentoder.campaign.ID);
-                                SendEmailNotification(templateName, customerData.Email, cartItems,"orderitems", orderDetails);
+                                orderDetails.Add("campaignid", recentoder.Campaign.ID);
+                                SendEmailNotification(templateName, customerData.Email, cartItems, "orderitems", orderDetails);
                             });
                         }
                     });
@@ -149,7 +150,8 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                         SKUNumber = item.SKU.SKUNumber,
                         Name = item.SKU.Name,
                         Quantity = item.UnitCount,
-                        Price = item.TotalPrice
+                        Price = item.TotalPrice,
+                        PosNumber = GetPosNum(item.SKU.KenticoSKUID)
                     };
                 }).ToList();
                 Dictionary<string, object> orderDetails = new Dictionary<string, object>();
@@ -157,7 +159,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                 orderDetails.Add("totalprice", ordersDTO.TotalPrice);
                 orderDetails.Add("totalshipping", ordersDTO.TotalShipping);
                 orderDetails.Add("campaignid", ordersDTO.TotalShipping);
-                SendEmailNotification(orderTemplateSettingKey, user.Email, cartItems,"orderitems", orderDetails);
+                SendEmailNotification(orderTemplateSettingKey, user.Email, cartItems, "orderitems", orderDetails);
             }
         }
         public static DataTable ConvertToDataTable<T>(List<T> items)
@@ -180,6 +182,16 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
             }
             return dataTable;
         }
+
+        public static string GetPosNum(int SkuId)
+        {
+            var skuData = SKUInfoProvider.GetSKUs()
+                .WhereEquals("SKUID", SkuId)
+                .Columns("SKUProductCustomerReferenceNumber")
+                .FirstOrDefault();
+            return skuData != null ? skuData.GetValue("SKUProductCustomerReferenceNumber", string.Empty) : string.Empty;
+        }
+
 
     }
 }

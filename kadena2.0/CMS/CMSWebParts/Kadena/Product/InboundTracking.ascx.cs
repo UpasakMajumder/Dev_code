@@ -9,6 +9,7 @@ using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.Models.Common;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -994,7 +995,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             GetProducts();
             Response.Clear();
             Response.AddHeader("content-disposition", "attachment;filename=InboudTracking.xls");
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.ContentType = ContentTypes.Xlsx;
             StringWriter stringWrite = new StringWriter();
             HtmlTextWriter htmlWrite = new HtmlTextWriter(stringWrite);
             System.Web.UI.HtmlControls.HtmlForm form = new System.Web.UI.HtmlControls.HtmlForm();

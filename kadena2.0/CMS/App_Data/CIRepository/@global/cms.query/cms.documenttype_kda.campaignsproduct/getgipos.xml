@@ -14,10 +14,10 @@
   <QueryRequiresTransaction>False</QueryRequiresTransaction>
   <QueryText>
 <![CDATA[
-WITH GI_CTE(POSNumber,ProgramID,Status)
+WITH GI_CTE(POSNumber,ProgramID,CloseCampaign)
 As
 (
-select s.SKUProductCustomerReferenceNumber as POSNumber,Program.ProgramID,C.Status
+select s.SKUProductCustomerReferenceNumber as POSNumber,Program.ProgramID,C.CloseCampaign
 from KDA_CampaignsProduct p left join View_CMS_Tree_joined t on p.CampaignsProductID=t.DocumentForeignKeyValue
 left join COM_SKU s  on s.SKUID=t.NodeSKUID
 left join KDA_Program Program on p.ProgramID=Program.ProgramID
@@ -25,7 +25,7 @@ left join KDA_Campaign C  on C.CampaignID= Program.CampaignID
 )
 
 select KDA_POSNumber.POSNumber from KDA_POSNumber left join GI_CTE CTE on CTE.POSNumber=CAST(KDA_POSNumber.POSNumber as nvarchar(100)) 
-where CTE.POSNumber is null or CTE.Status=0 order by POSNumber
+where CTE.POSNumber is null or CTE.CloseCampaign=1 order by POSNumber
 ]]>
   </QueryText>
   <QueryTypeID>0</QueryTypeID>

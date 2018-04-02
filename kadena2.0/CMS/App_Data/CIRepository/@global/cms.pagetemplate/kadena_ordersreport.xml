@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.pagetemplate>
+  <PageTemplateAllowInheritHeader>False</PageTemplateAllowInheritHeader>
+  <PageTemplateCategoryID>
+    <CodeName>Kadena_Content</CodeName>
+    <GUID>bc866ad9-edd3-4fef-8661-dc36de54fc3d</GUID>
+    <ObjectType>cms.pagetemplatecategory</ObjectType>
+  </PageTemplateCategoryID>
+  <PageTemplateCloneAsAdHoc>False</PageTemplateCloneAsAdHoc>
+  <PageTemplateCodeName>Kadena_OrdersReport</PageTemplateCodeName>
+  <PageTemplateDisplayName>Orders Report</PageTemplateDisplayName>
+  <PageTemplateFile />
+  <PageTemplateForAllPages>True</PageTemplateForAllPages>
+  <PageTemplateGUID>3d1d1445-adf1-456a-890d-2cc2c15be344</PageTemplateGUID>
+  <PageTemplateInheritPageLevels>\</PageTemplateInheritPageLevels>
+  <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
+  <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
+  <PageTemplateIsLayout>False</PageTemplateIsLayout>
+  <PageTemplateIsReusable>True</PageTemplateIsReusable>
+  <PageTemplateLayout>
+<![CDATA[
+<div class="content-header">
+  {^WebPartZone|(id)zoneHeader^}
+</div>
+<div class="content-block">
+  <div>
+    {^WebPartZone|(id)zoneContentMarketingMessage^}
+  </div>  
+  <div class="orders-reports">
+    {^WebPartZone|(id)zoneContent^}
+  </div>
+</div>
+]]>
+  </PageTemplateLayout>
+  <PageTemplateLayoutType>html</PageTemplateLayoutType>
+  <PageTemplateShowAsMasterTemplate>False</PageTemplateShowAsMasterTemplate>
+  <PageTemplateType>portal</PageTemplateType>
+  <PageTemplateWebParts>
+    <page>
+      <webpartzone id="zoneHeader" v="1">
+        <webpart controlid="Header" guid="13fd6473-3c1c-44cc-8da2-78ebbbbbd1b0" type="statictext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container">KadenaHeaderPageName</property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">Header</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">13fd6473-3c1c-44cc-8da2-78ebbbbbd1b0</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="tag"></property>
+          <property name="text">{%DocumentName%}</property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">statictext</property>
+        </webpart>
+        <webpart controlid="Breadcrumbs" guid="af4fccd4-6cc7-44f3-befc-d1c485c1c780" type="statictext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container">KadenaBreadcrumbs</property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">Breadcrumbs</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">af4fccd4-6cc7-44f3-befc-d1c485c1c780</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="tag"></property>
+          <property name="text">
+<![CDATA[
+{%
+result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+iteratedDocument = CurrentDocument.Parent;
+while (iteratedDocument.Parent != null) {
+if (!iteratedDocument.DocumentMenuItemHideInNavigation) {
+result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+}
+iteratedDocument = iteratedDocument.Parent;
+};
+result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}", RootDocument.AbsoluteURL, result);
+
+"<div class='breadcrumbs'>" + result + "</div>"
+|(user)tomas.rucki@actum.cz|(hash)eab0b60086cd47a7057b6ccfba711424d509f8b8d0e8bd033a20e164d9c53222%}
+]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">statictext</property>
+        </webpart>
+      </webpartzone>
+      <webpartzone id="zoneContent" v="1">
+        <webpart controlid="Javascript" guid="6d303cd7-b902-46b8-9092-67ff6caa60d9" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">Javascript</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+config.localization.ordersReports = {
+    headings: [
+        {
+            id: 'Site',
+            label: '{$ Kadena.OrdersReport.Table.Site $}',
+            sort: false,
+            isDate: false
+        },
+        {
+            id: 'Number',
+            label: '{$ Kadena.OrdersReport.Table.Number $}',
+            sort: false,
+            isDate: false
+        },				
+        {
+            id: 'CreateDate',
+            label: '{$ Kadena.OrdersReport.Table.OrderDate $}',
+            sort: true,
+            isDate: true
+        },
+        {
+            id: 'User',
+            label: '{$ Kadena.OrdersReport.Table.User $}',
+            sort: false,
+            isDate: false
+        },				
+        {
+            id: 'Name',
+            label: '{$ Kadena.OrdersReport.Table.Name $}',
+            sort: false,
+            isDate: false
+        },				
+        {
+            id: 'SKU',
+            label: '{$ Kadena.OrdersReport.Table.SKU $}',
+            sort: false,
+            isDate: false
+        },				
+        {
+            id: 'Quantity',
+            label: '{$ Kadena.OrdersReport.Table.Quantity $}',
+            sort: false,
+            isDate: false
+        },
+        {
+            id: 'Price',
+            label: '{$ Kadena.OrdersReport.Table.Price $}',
+            sort: false,
+            isDate: false
+        },
+        {
+            id: 'Status',
+            label: '{$ Kadena.OrdersReport.Table.Status $}',
+            sort: false,
+            isDate: false
+        },
+        {
+            id: 'ShippingDate',
+            label: '{$ Kadena.OrdersReport.Table.ShippingDate $}',
+            sort: false,
+            isDate: true
+        },				
+        {
+            id: 'TrackingNumber',
+            label: '{$ Kadena.OrdersReport.Table.TrackingNumber $}',
+            sort: false,
+            isDate: false
+        }				
+    ],
+    pageInfo: {
+        filter: {
+            orderDate: {
+                show: true,
+                title: '{$ Kadena.OrdersReport.Filter.Title $}',
+                labelNow: '{$ Kadena.OrdersReport.Filter.Now $}',
+                labelApply: '{$ Kadena.OrdersReport.Filter.Apply $}'
+            }
+        },
+        export: {
+            label: '{$ Kadena.OrdersReport.Export.Button $}',
+            url: '/api/order/report/export'
+        },
+        noOrdersMessage: '{$ Kadena.OrdersReport.Table.NoOrdersFound $}',
+        getRowsUrl: '/api/order/report'
+    }
+  };
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Header</property>
+          <property name="instanceguid">6d303cd7-b902-46b8-9092-67ff6caa60d9</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
+        <webpart controlid="OrdersReportsComponent" guid="9b10ba06-5a2c-4286-91b8-a5fb14712955" type="statictext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">OrdersReportsComponent</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">9b10ba06-5a2c-4286-91b8-a5fb14712955</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="tag"></property>
+          <property name="text">
+            <![CDATA[<div class="r-orders-reports"></div>]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">statictext</property>
+        </webpart>
+      </webpartzone>
+    </page>
+  </PageTemplateWebParts>
+</cms.pagetemplate>
