@@ -1092,7 +1092,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                 .Columns("BrandCode")
                 .FirstOrDefault().BrandCode.ToString() : "0";
             string where = null;
-            var pos = ConnectionHelper.ExecuteQuery("KDA.CampaignsProduct.GetGIPos", null);
+            var pos = ConnectionHelper.ExecuteQuery("KDA.CampaignsProduct.GetCampaignPos", null, "CTE.POSNumber is null");
             if (brandCode != "0" && PosCatId != "0")
             {
                 where += "BrandID=" + brandCode + "AND POSCategoryID=" + PosCatId;
