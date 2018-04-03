@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
-using System.Linq;
 using System.Data;
 
 namespace Kadena.CMSWebParts.Kadena.Product
