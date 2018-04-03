@@ -15,6 +15,7 @@ using Kadena.Container.Default;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Old_App_Code.Kadena.InBoundForm;
+using System.Threading.Tasks;
 
 namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
 {
@@ -60,14 +61,24 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 var failedOrderTemplateSettingKey = kenticoResourceService.GetSettingsKey("KDA_FailedOrdersEmailTemplate");
                 var failedOrdersUrl = kenticoResourceService.GetSettingsKey("KDA_FailedOrdersPageUrl");
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
-                usersWithShoppingCartItems.ForEach(shoppingCartUser =>
+                Parallel.ForEach(usersWithShoppingCartItems, (shoppingCartUser) =>
                 {
                     var salesPerson = userInfo.GetUserByUserId(shoppingCartUser);
                     var loggedInUserCartIDs = ShoppingCartHelper.GetCartsByUserID(shoppingCartUser, ProductType.PreBuy,openCampaignID);
-                    loggedInUserCartIDs.ForEach(cart =>
+                    Parallel.ForEach(loggedInUserCartIDs, (cart) =>
                     {
                         var shippingCost = default(decimal);
                         Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cart);
+                        ShippingOptionInfo shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(Cart.ShoppingCartShippingOptionID);
+                        if (shippingOption == null)
+                        {
+                            shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(kenticoResourceService.GetSettingsKey(SiteContext.CurrentSiteID, "KDA_DefaultShipppingOption"), SiteContext.CurrentSiteName);
+                            if (shippingOption == null)
+                            {
+                                Cart.ShoppingCartShippingOptionID = shippingOption.ShippingOptionID;
+                                ShoppingCartInfoProvider.SetShoppingCartInfo(Cart);
+                            }
+                        }
                         OrderDTO ordersDTO = ShoppingCartHelper.CreateOrdersDTO(Cart, Cart.ShoppingCartUserID, OrderType.prebuy, shippingCost);
                         var response = ShoppingCartHelper.ProcessOrder(Cart, Cart.ShoppingCartUserID, OrderType.prebuy, ordersDTO, shippingCost);
                         if (response != null && response.Success)
