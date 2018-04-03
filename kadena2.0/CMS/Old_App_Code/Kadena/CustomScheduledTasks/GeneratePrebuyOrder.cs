@@ -15,7 +15,6 @@ using Kadena.Container.Default;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Old_App_Code.Kadena.InBoundForm;
-using System.Threading.Tasks;
 
 namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
 {
@@ -61,11 +60,11 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 var failedOrderTemplateSettingKey = kenticoResourceService.GetSettingsKey("KDA_FailedOrdersEmailTemplate");
                 var failedOrdersUrl = kenticoResourceService.GetSettingsKey("KDA_FailedOrdersPageUrl");
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
-                Parallel.ForEach(usersWithShoppingCartItems, (shoppingCartUser) =>
+                usersWithShoppingCartItems.ForEach(shoppingCartUser =>
                 {
                     var salesPerson = userInfo.GetUserByUserId(shoppingCartUser);
                     var loggedInUserCartIDs = ShoppingCartHelper.GetCartsByUserID(shoppingCartUser, ProductType.PreBuy,openCampaignID);
-                    Parallel.ForEach(loggedInUserCartIDs, (cart) =>
+                    loggedInUserCartIDs.ForEach(cart =>
                     {
                         var shippingCost = default(decimal);
                         Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cart);
