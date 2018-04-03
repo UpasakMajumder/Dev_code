@@ -29,7 +29,7 @@
         <GridActions Width="100px">
             <%-- FailedOrders.ActionResubmit --%>
             <ug:Action Name="resubmitOrder" CommandArgument="Id" Caption="Resubmit order"
-                FontIconClass="icon-rotate-right" FontIconStyle="Allow" />
+                FontIconClass="icon-rotate-right" FontIconStyle="Allow" ExternalSourceName="resubmitOrder" />
         </GridActions>
 
         <GridColumns>

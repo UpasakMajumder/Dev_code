@@ -1,10 +1,14 @@
-﻿using CMS.UIControls;
+﻿using CMS.Base.Web.UI;
+using CMS.Helpers;
+using CMS.UIControls;
+using Kadena.BusinessLogic.Contracts.Orders;
+using Kadena.BusinessLogic.Services.Orders;
 using Kadena.Container.Default;
 using Kadena.Helpers.Data;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Data;
-using System.Linq;
+using System.Web.UI.WebControls;
 
 namespace Kadena.CMSModules.Kadena.Pages.Orders
 {
@@ -12,7 +16,10 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
     {
         protected const string ActionResubmit = "resubmitOrder";
 
-        public IKenticoLogger Logger { get; set; } = DIContainer.Resolve<IKenticoLogger>();
+        public IKenticoLogger Logger { get; set; } 
+            = DIContainer.Resolve<IKenticoLogger>();
+        public IOrderResubmissionService ResubmissionService { get; set; } 
+            = DIContainer.Resolve<IOrderResubmissionService>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -25,6 +32,25 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
         {
             grdOrders.OnDataReload += GrdOrders_OnDataReload;
             grdOrders.OnAction += GrdOrders_OnAction;
+            grdOrders.OnExternalDataBound += GrdOrders_OnExternalDataBound;
+        }
+
+        private object GrdOrders_OnExternalDataBound(object sender, string sourceName, object parameter)
+        {
+            switch (sourceName)
+            {
+                case ActionResubmit:
+                    var statusCellvalue = ((DataRowView)((GridViewRow)parameter).DataItem).Row["OrderStatus"];
+                    var status = ValidationHelper.GetString(statusCellvalue, "");
+                    if (status != OrderResubmissionService.OrderFailureStatus)
+                    {
+                        var button = (CMSGridActionButton)sender;
+                        button.Enabled = false;
+                    }
+                    break;
+            }
+
+            return parameter;
         }
 
         private void GrdOrders_OnAction(string actionName, object actionArgument)
@@ -58,28 +84,26 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
 
         private void ResubmitOrder(string orderId)
         {
-            // TODO
+            try
+            {
+                ResubmissionService.ResubmitOrder(orderId).Wait();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(nameof(FailedOrders), ex);
+                ShowMessage(ex.Message);
+            }
         }
 
-        private System.Data.DataSet GrdOrders_OnDataReload(string completeWhere, string currentOrder, int currentTopN,
+        private DataSet GrdOrders_OnDataReload(
+            string completeWhere, string currentOrder, int currentTopN,
             string columns, int currentOffset, int currentPageSize, ref int totalRecords)
         {
-            totalRecords = 1000;
+            var page = (currentOffset / currentPageSize) + 1;
+            var orders = ResubmissionService.GetFailedOrders(page, currentPageSize).Result;
 
-            var items = Enumerable.Range(1, totalRecords)
-                .Skip(currentOffset)
-                .Take(currentPageSize)
-                .Select(num => new
-                {
-                    Id = num,
-                    SiteName = "",
-                    OrderDate = DateTime.Now,
-                    TotalPrice = 0m,
-                    SubmissionAttemptsCount = num % 3,
-                    OrderStatus = ""
-                });
-
-            var dataset = items.ToDataSet();
+            totalRecords = orders.Pagination.RowsCount;
+            var dataset = orders.Data.ToDataSet();
             return dataset;
         }
     }
