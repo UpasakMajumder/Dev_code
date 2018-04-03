@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
+using System.Data;
 
 namespace Kadena.CMSWebParts.Kadena.Product
 {
@@ -852,7 +853,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
         {
             try
             {
-                var posData = new List<POSNumberItem>();
+                var pos = ConnectionHelper.ExecuteQuery("KDA.CampaignsProduct.GetGIPos", null);
                 var brandCode = brandId != "0" ? CustomTableItemProvider.GetItems<BrandItem>()
                     .WhereEquals("ItemID", brandId)
                     .Columns("BrandCode")
@@ -874,18 +875,22 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 {
                     where = string.Empty;
                 }
-                posData = CustomTableItemProvider.GetItems<POSNumberItem>()
-                            .WhereEqualsOrNull("Enable", true)
-                            .Where(where)
-                            .Columns("POSNumber")
-                            .ToList();
-                if (posData != null)
+                if (!DataHelper.DataSourceIsEmpty(pos))
                 {
-                    ddlPosNo.DataSource = posData;
-                    ddlPosNo.DataTextField = "POSNumber";
-                    ddlPosNo.DataValueField = "POSNumber";
-                    ddlPosNo.DataBind();
-                    ddlPosNo.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.SelectPosNO"), "0"));
+                    var posData = pos.Tables[0].Select(where);
+                    if (posData.Length > 0)
+                    {
+                        ddlPosNo.DataSource = posData.CopyToDataTable();
+                        ddlPosNo.DataTextField = "POSNumber";
+                        ddlPosNo.DataValueField = "POSNumber";
+                        ddlPosNo.DataBind();
+                        ddlPosNo.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.SelectPosNO"), "0"));
+                    }
+                    else
+                    {
+                        ddlPosNo.Items.Clear();
+                        ddlPosNo.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.SelectPosNO"), "0"));
+                    }
                 }
             }
             catch (Exception ex)
