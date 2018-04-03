@@ -21,5 +21,7 @@ namespace Kadena.Models.Product
         {
             return ProductTypes.IsOfType(ProductType, productType);
         }
+
+        public bool IsTemplateLowResSettingMissing => HasProductTypeFlag(ProductTypes.TemplatedProduct) && TemplateLowResSettingId == Guid.Empty;
     }
 }
