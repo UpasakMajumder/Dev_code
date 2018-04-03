@@ -176,7 +176,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             if (product.IsTemplateLowResSettingMissing)
             {
-                var defaultId = SettingsKeyInfoProvider.GetValue("KDA_DefaultLowResSettingsId");
+                var defaultId = SettingsKeyInfoProvider.GetValue("KDA_DefaultLowResSettingsId", new SiteInfoIdentifier(SiteContext.CurrentSiteID));
                 product.TemplateLowResSettingId = Guid.Parse(defaultId);
             }
 
