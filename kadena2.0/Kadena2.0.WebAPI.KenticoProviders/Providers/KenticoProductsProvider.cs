@@ -49,7 +49,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             if (border?.Exists ?? false)
             {
-                border.Value = SettingsKeyInfoProvider.GetValue("KDA_ProductThumbnailBorderStyle");
+                border.Value = SettingsKeyInfoProvider.GetValue("KDA_ProductThumbnailBorderStyle", new SiteInfoIdentifier(SiteContext.CurrentSiteID));
             }
         }
 
