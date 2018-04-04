@@ -25,7 +25,7 @@ namespace Kadena.Tests._3dsiCreditCard
             var autoMocker = new AutoMocker();
             var sut = autoMocker.CreateInstance<CreditCard3dsi>();
             var resources = autoMocker.GetMock<IKenticoResourceService>();
-            resources.Setup(r => r.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL"))
+            resources.Setup(r => r.GetSiteSettingsKey("KDA_CreditCard_InsertCardDetailsURL"))
                 .Returns(serviceUrl);
 
             var documents = autoMocker.GetMock<IKenticoDocumentProvider>()

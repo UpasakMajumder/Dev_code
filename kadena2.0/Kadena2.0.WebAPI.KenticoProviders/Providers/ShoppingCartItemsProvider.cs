@@ -41,7 +41,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public CartItem[] GetShoppingCartItems(bool showPrices = true)
         {
-            var displayProductionAndShipping = resources.GetSettingsKey("KDA_Checkout_ShowProductionAndShipping").ToLower() == "true";
+            var displayProductionAndShipping = resources.GetSiteSettingsKey<bool>("KDA_Checkout_ShowProductionAndShipping");
 
             return ECommerceContext.CurrentShoppingCart.CartItems
                 .Where(cartItem => !cartItem.IsProductOption)
@@ -94,7 +94,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 cartItem.Preview.Url = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, product.TemplateLowResSettingId);
                 cartItem.Preview.Exists = true;
 
-                var editorUrl = documents.GetDocumentUrl(URLHelper.ResolveUrl(resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")));
+                var editorUrl = documents.GetDocumentUrl(URLHelper.ResolveUrl(resources.GetSiteSettingsKey("KDA_Templating_ProductEditorUrl")));
                 editorUrl = URLHelper.AddParameterToUrl(editorUrl, "nodeId", cartItem.ProductPageId.ToString());
                 editorUrl = URLHelper.AddParameterToUrl(editorUrl, "templateId", cartItem.ChiliProcess.TemplateId.ToString());
                 editorUrl = URLHelper.AddParameterToUrl(editorUrl, "workspaceid", cartItem.ProductChiliWorkspaceId.ToString());

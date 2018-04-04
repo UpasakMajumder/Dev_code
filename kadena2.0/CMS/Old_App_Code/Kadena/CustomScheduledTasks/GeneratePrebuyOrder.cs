@@ -56,9 +56,9 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 var userInfo = DIContainer.Resolve<IKenticoUserProvider>();
                 var kenticoResourceService = DIContainer.Resolve<IKenticoResourceService>();
                 var usersWithShoppingCartItems = shoppingCartInfo.GetUserIDsWithShoppingCart(openCampaignID,Convert.ToInt32(ProductsType.PreBuy));
-                var orderTemplateSettingKey= kenticoResourceService.GetSettingsKey("KDA_OrderReservationEmailTemplate");
-                var failedOrderTemplateSettingKey = kenticoResourceService.GetSettingsKey("KDA_FailedOrdersEmailTemplate");
-                var failedOrdersUrl = kenticoResourceService.GetSettingsKey("KDA_FailedOrdersPageUrl");
+                var orderTemplateSettingKey= kenticoResourceService.GetSiteSettingsKey("KDA_OrderReservationEmailTemplate");
+                var failedOrderTemplateSettingKey = kenticoResourceService.GetSiteSettingsKey("KDA_FailedOrdersEmailTemplate");
+                var failedOrdersUrl = kenticoResourceService.GetSiteSettingsKey("KDA_FailedOrdersPageUrl");
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 usersWithShoppingCartItems.ForEach(shoppingCartUser =>
                 {
@@ -71,7 +71,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                         ShippingOptionInfo shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(Cart.ShoppingCartShippingOptionID);
                         if (shippingOption == null)
                         {
-                            shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(kenticoResourceService.GetSettingsKey(SiteContext.CurrentSiteID, "KDA_DefaultShipppingOption"), SiteContext.CurrentSiteName);
+                            shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(kenticoResourceService.GetSiteSettingsKey("KDA_DefaultShipppingOption"), SiteContext.CurrentSiteName);
                             if (shippingOption == null)
                             {
                                 Cart.ShoppingCartShippingOptionID = shippingOption.ShippingOptionID;

@@ -74,7 +74,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var searchResultPages = SearchPages(phrase, results);
             var searchResultProducts = SearchProducts(phrase, results);
-            var serpUrl = documents.GetDocumentUrl(resources.GetSettingsKey("KDA_SerpPageUrl"));
+            var serpUrl = documents.GetDocumentUrl(resources.GetSiteSettingsKey("KDA_SerpPageUrl"));
 
             var result = new AutocompleteResponse()
             {
@@ -134,7 +134,7 @@ namespace Kadena.BusinessLogic.Services
             var site = siteProvider.GetKenticoSite();
             var searchResultProducts = new List<ResultItemProduct>();
             var indexName = $"KDA_ProductsIndex.{site.Name}";
-            var productsPath = resources.GetSettingsKey("KDA_ProductsPageUrl")?.TrimEnd('/');
+            var productsPath = resources.GetSiteSettingsKey("KDA_ProductsPageUrl")?.TrimEnd('/');
             var datarowsResults = kenticoSearch.Search(phrase, indexName, productsPath + "/%", results, true);
 
             foreach (DataRow dr in datarowsResults)

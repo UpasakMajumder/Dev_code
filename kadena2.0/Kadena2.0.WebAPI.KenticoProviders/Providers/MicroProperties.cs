@@ -31,7 +31,7 @@ namespace Kadena.Helpers
 
         public string GetServiceUrl(string urlLocationName)
         {
-            return _kentico.GetSettingsKey(urlLocationName).TrimEnd('/');
+            return _kentico.GetSiteSettingsKey(urlLocationName).TrimEnd('/');
         }
     }
 }

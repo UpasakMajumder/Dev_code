@@ -33,7 +33,7 @@ namespace Kadena.BusinessLogic.Services
             if (site == null)
                 throw new ArgumentOutOfRangeException(nameof(siteId));
 
-            bool enabled = _settings.FTPArtworkEnabled(site.Name);
+            bool enabled = _settings.FTPArtworkEnabled(site.Id);
 
             var result = new ArtworkFtpSettings()
             {
@@ -44,9 +44,9 @@ namespace Kadena.BusinessLogic.Services
             {
                 result.Ftp = new FtpCredentials()
                 {
-                    Url = _settings.FTPArtworkUrl(site.Name),
-                    Login = _settings.FTPArtworkUsername(site.Name),
-                    Password = _settings.FTPArtworkPassword(site.Name)
+                    Url = _settings.FTPArtworkUrl(site.Id),
+                    Login = _settings.FTPArtworkUsername(site.Id),
+                    Password = _settings.FTPArtworkPassword(site.Id)
                 };
             }
 
