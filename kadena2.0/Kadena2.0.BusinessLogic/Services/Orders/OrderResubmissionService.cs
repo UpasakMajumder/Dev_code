@@ -1,6 +1,7 @@
 ﻿using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.Order;
 using Kadena.Models.Common;
+using Kadena.Models.Orders;
 using Kadena.Models.Orders.Failed;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
@@ -43,9 +44,9 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var filter = new OrderListFilter
             {
-                PageNumber = page - 1,
+                PageNumber = page,
                 ItemsPerPage = itemsPerPage,
-                // TODO: status filter
+                StatusHistoryContains = (int)OrderStatus.SentToTibcoError
             };
             var dto = await orderViewClient.GetOrders(filter).ConfigureAwait(false);
             if (dto?.Success == true && dto.Payload != null)
@@ -87,7 +88,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 OrderDate = dto.CreateDate,
                 OrderStatus = kenticoOrderProvider.MapOrderStatus(dto.Status),
                 SiteName = dto.SiteName,
-                SubmissionAttemptsCount = dto.SubmissionAttemptCount,
+                SubmissionAttemptsCount = dto.StatusAmounts[(int)OrderStatus.SentToTibcoError],
                 TotalPrice = dto.TotalPrice
             };
 

@@ -2,13 +2,13 @@
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
 using Kadena.Models.Common;
+using Kadena.Models.Orders;
 using Kadena.Models.Orders.Failed;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -68,14 +68,13 @@ namespace Kadena.Tests.OrderResubmission
         public async Task GetFailedOrders_ShouldPassArgumentsToMicroserviceClient()
         {
             var page = 5;
-            var pageMicroservice = 4;
             var itemsPerPage = 12;
-            var status = OrderResubmissionService.OrderFailureStatus;
+            var status = (int)OrderStatus.SentToTibcoError;
             var expectedFilter = new OrderListFilter
             {
-                PageNumber = pageMicroservice,
+                PageNumber = page,
                 ItemsPerPage = itemsPerPage,
-                // TODO: status filter
+                StatusHistoryContains = status
             };
 
             var orderClient = new Mock<IOrderViewClient>();
@@ -119,7 +118,10 @@ namespace Kadena.Tests.OrderResubmission
                         CreateDate = new DateTime(2018, 3, 21),
                         Status = orderStatus,
                         SiteName = "order_site",
-                        SubmissionAttemptCount = 2,
+                        StatusAmounts = new Dictionary<int, int>
+                        {
+                            { (int)OrderStatus.SentToTibcoError, 2 }
+                        },
                         TotalPrice = 3.5m
                     }
                 }

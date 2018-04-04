@@ -46,8 +46,9 @@ namespace Kadena2.MicroserviceClients.Clients
                 filter.DateFrom != null ? $"dateFrom={filter.DateFrom.Value.ToString(DateArgumentFormat)}" : string.Empty,
                 filter.DateTo != null ? $"dateTo={filter.DateTo.Value.ToString(DateArgumentFormat)}" : string.Empty,
                 !string.IsNullOrWhiteSpace(filter.SiteName) ? $"siteName={filter.SiteName}" : string.Empty,
-                filter.PageNumber >= 0 ? $"pageNumber={filter.PageNumber}" : string.Empty,
-                filter.ItemsPerPage > 0 ? $"quantity={filter.ItemsPerPage}" : string.Empty
+                filter.PageNumber > 0 ? $"pageNumber={filter.PageNumber}" : string.Empty,
+                filter.ItemsPerPage > 0 ? $"quantity={filter.ItemsPerPage}" : string.Empty,
+                filter.StatusHistoryContains != null ? $"containsStatus={filter.StatusHistoryContains.Value}" : string.Empty
             }.Where(p => p != string.Empty));
 
             var parameterizedUrl = $"{BaseUrl}/api/Order?{args}";
