@@ -201,7 +201,12 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
             string thumbnailurl = string.Empty;
             if (!string.IsNullOrEmpty(url))
             {
-                if (url.StartsWith("~/getmedia/"))
+                Uri imgURL = null;
+                if (Uri.TryCreate(url, UriKind.Absolute, out imgURL) && url.Contains("/getmedia/"))
+                {
+                    thumbnailurl = url;
+                }
+                else if (url.Trim().StartsWith("/getmedia/"))
                 {
                     string strPathAndQuery = HttpContext.Current.Request.Url.PathAndQuery;
                     thumbnailurl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(strPathAndQuery, "") + url.Trim('~');
