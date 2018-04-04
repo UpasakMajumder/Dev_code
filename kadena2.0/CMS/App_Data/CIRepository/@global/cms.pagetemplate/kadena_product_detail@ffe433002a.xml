@@ -232,7 +232,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<img src='{% ProductImage %}'>]]>
+            <![CDATA[<img style='border:{% (Settings.KDA_ProductThumbnailBorderEnabled && !ProductThumbnailBorderDisabled) ? Settings.KDA_ProductThumbnailBorderStyle : ""|(user)michal.machacek@actum.cz|(hash)babce78fae2ef9e22019ce8193ed9fc4263439add052534e6997be4156185e0e%}' src='{% ProductImage %}'>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
