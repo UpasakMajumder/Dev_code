@@ -10,40 +10,35 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings
 
         public KadenaSettings(IKenticoResourceService resources)
         {
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-
-            this.resources = resources;
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
         }
 
-        public string DefaultSiteCompanyName => resources.GetSettingsKey("KDA_CustomerFullName");
-        public string DefaultSitePersonalName => resources.GetSettingsKey("KDA_CustomerPersonalName");
-        public string DefaultCustomerCompanyName => resources.GetSettingsKey("KDA_ShippingAddress_DefaultCompanyName");
-        public string TermsAndConditionsPage => resources.GetSettingsKey("KDA_TermsAndConditionPage");
-        public string CheckoutPageUrl => resources.GetSettingsKey("KDA_CheckoutPageUrl");
-        public string ErpCustomerId => resources.GetSettingsKey("KDA_ErpCustomerId");
-        public string OrderNotificationEmail => resources.GetSettingsKey("KDA_OrderNotificationEmail");
+        public string DefaultSiteCompanyName => resources.GetSiteSettingsKey("KDA_CustomerFullName");
+        public string DefaultSitePersonalName => resources.GetSiteSettingsKey("KDA_CustomerPersonalName");
+        public string DefaultCustomerCompanyName => resources.GetSiteSettingsKey("KDA_ShippingAddress_DefaultCompanyName");
+        public string TermsAndConditionsPage => resources.GetSiteSettingsKey("KDA_TermsAndConditionPage");
+        public string CheckoutPageUrl => resources.GetSiteSettingsKey("KDA_CheckoutPageUrl");
+        public string ErpCustomerId => resources.GetSiteSettingsKey("KDA_ErpCustomerId");
+        public string OrderNotificationEmail => resources.GetSiteSettingsKey("KDA_OrderNotificationEmail");
 
-        public bool FTPArtworkEnabled(string siteName)
+        public bool FTPArtworkEnabled(int siteId)
         {
-            return resources.GetSettingsKey(siteName, "KDA_FTPAW_Enabled").ToLower() == "true";
+            return resources.GetSettingsKey<bool>("KDA_FTPAW_Enabled", siteId);
         }
 
-        public string FTPArtworkUrl(string siteName)
+        public string FTPArtworkUrl(int siteId)
         {
-            return resources.GetSettingsKey(siteName, "KDA_FTPAW_Url");
+            return resources.GetSettingsKey<string>("KDA_FTPAW_Url", siteId);
         }
 
-        public string FTPArtworkUsername(string siteName)
+        public string FTPArtworkUsername(int siteId)
         {
-            return resources.GetSettingsKey(siteName, "KDA_FTPAW_Username");
+            return resources.GetSettingsKey<string>("KDA_FTPAW_Username", siteId);
         }
 
-        public string FTPArtworkPassword(string siteName)
+        public string FTPArtworkPassword(int siteId)
         {
-            return resources.GetSettingsKey(siteName, "KDA_FTPAW_Password");
+            return resources.GetSettingsKey<string>("KDA_FTPAW_Password", siteId);
         }
     }
 }
