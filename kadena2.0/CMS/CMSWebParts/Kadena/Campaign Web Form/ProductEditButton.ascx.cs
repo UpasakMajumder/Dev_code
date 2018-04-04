@@ -5,6 +5,9 @@ using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.Container.Default;
+using Kadena.Models.Program;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Web.UI.WebControls;
 
@@ -24,6 +27,18 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_ProductEditButton : CM
         set
         {
             SetValue("ProductID", value);
+        }
+    }
+
+    public int ProgramID
+    {
+        get
+        {
+            return ValidationHelper.GetInteger(GetValue("ProgramID"), 0);
+        }
+        set
+        {
+            SetValue("ProgramID", value);
         }
     }
 
@@ -58,9 +73,14 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_ProductEditButton : CM
             Campaign campaign = CampaignProvider.GetCampaign(CurrentDocument.NodeGUID, CurrentDocument.DocumentCulture, CurrentSiteName);
             if (campaign != null)
             {
+                CampaignProgram program = DIContainer.Resolve<IKenticoProgramsProvider>().GetProgram(ProgramID);
+                if (program == null)
+                {
+                    return;
+                }
                 bool initiated = campaign.GetBooleanValue("CampaignInitiate", false);
                 bool openCampaign = campaign.GetBooleanValue("OpenCampaign", false);
-                bool isGlobalAdminNotified = campaign.GetBooleanValue("GlobalAdminNotified", false);
+                bool isGlobalAdminNotified = program.GlobalAdminNotified;
                 bool closeCampaign = campaign.GetBooleanValue("CloseCampaign", false);
 
                 string globalAdminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
@@ -70,6 +90,12 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_ProductEditButton : CM
                 if (CurrentUser.IsInRole(globalAdminRoleName, CurrentSiteName))
                 {
                     if (!openCampaign && !closeCampaign)
+                    {
+                        lnkEdit.Visible = true;
+                        lnkEdit.Enabled = true;
+                        BindEditURL();
+                    }
+                    else if (openCampaign && !closeCampaign)
                     {
                         lnkEdit.Visible = true;
                         lnkEdit.Enabled = true;

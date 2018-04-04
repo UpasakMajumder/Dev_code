@@ -381,7 +381,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var settingKeyValue = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_SoldToGeneralInventory");
+                var settingKeyValue = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey("KDA_SoldToGeneralInventory");
                 var distributorID = Cart.GetIntegerValue("ShoppingCartDistributorID", default(int));
                 var distributorAddress = AddressInfoProvider.GetAddresses().WhereEquals("AddressID", distributorID).FirstOrDefault();
                 var customer = CustomerInfoProvider.GetCustomerInfo(distributorAddress.AddressCustomerID);
@@ -409,7 +409,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// <returns></returns>
         private static SiteDTO GetSite()
         {
-            var settingKeyValue = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_ErpCustomerId");
+            var settingKeyValue = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey("KDA_ErpCustomerId");
             return new SiteDTO
             {
                 KenticoSiteID = SiteContext.CurrentSiteID,
@@ -543,7 +543,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public static void ProcessOrders(int campaignID)
+        public static void ProcessOrders(int campaignID, int userID)
         {
             try
             {
@@ -560,7 +560,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     {
                         runTask.TaskRunInSeparateThread = true;
                         runTask.TaskEnabled = true;
-                        runTask.TaskData = $"{campaign.CampaignID}|{SiteContext.CurrentSiteID}";
+                        runTask.TaskData = $"{campaign.CampaignID}|{userID}";
                         SchedulingExecutor.ExecuteTask(runTask);
                     }
                     var users = UserInfoProvider.GetUsers();

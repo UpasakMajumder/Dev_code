@@ -6,6 +6,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
     {        
         Customer GetCurrentCustomer();
         Customer GetCustomer(int customerId);                
+        Customer GetCustomerByUser(int userId);                
         User GetCurrentUser();
         User GetUser(string mail);
         bool SaveLocalization(string code);        

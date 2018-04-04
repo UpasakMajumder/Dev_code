@@ -36,27 +36,26 @@ namespace Kadena.WebAPI.KenticoProviders
             return ResHelper.GetString(name, LocalizationContext.CurrentCulture.CultureCode);
         }
 
-        public string GetSettingsKey(string key)
+        public string GetSiteSettingsKey(string key)
         {
-            return GetSettingsKey(SiteContext.CurrentSiteName, key);
+            return GetSettingsKey<string>(key, SiteContext.CurrentSiteID);
         }
 
-        public string GetSettingsKey(string siteName, string key)
+        public T GetSiteSettingsKey<T>(string key) where T : IConvertible
         {
-            string resourceKey = $"{siteName}.{key}";
-            return SettingsKeyInfoProvider.GetValue(resourceKey);
-        }
-
-        public string GetSettingsKey(int siteId, string key)
-        {
-            return SettingsKeyInfoProvider.GetValue(key, new SiteInfoIdentifier(siteId));
-        }
-
+            return GetSettingsKey<T>(key, SiteContext.CurrentSiteID);
+        }        
+        
         public T GetSettingsKey<T>(string key, int siteId = 0) where T : IConvertible
         {
             var value = (siteId > 0)
                 ? SettingsKeyInfoProvider.GetValue(key, new SiteInfoIdentifier(siteId))
                 : SettingsKeyInfoProvider.GetValue(key);
+
+            if (value == null)
+            {
+                return default(T);
+            }
 
             return (T)Convert.ChangeType(value, typeof(T));
         }
@@ -68,7 +67,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public string GetLogonPageUrl()
         {
-            return AuthenticationHelper.GetSecuredAreasLogonPage(new SiteInfoIdentifier(SiteContext.CurrentSiteID));
+            return URLHelper.ResolveUrl(AuthenticationHelper.GetSecuredAreasLogonPage(new SiteInfoIdentifier(SiteContext.CurrentSiteID)));
         }
     }
 }

@@ -31,8 +31,8 @@
         <div class="input__con">
           <label> 
             <%# IfEmpty(Eval("AddressName"), "",Eval("AddressName")) %>
-            <%# IfEmpty(Eval("StateDisplayName"), "",","+Eval("StateDisplayName")) %>
-            <%# IfEmpty(Eval("AddressZip"), "",","+Eval("AddressZip")) %>
+            <%# IfEmpty(Eval("StateDisplayName"), "",", "+Eval("StateDisplayName")) %>
+            <%# IfEmpty(Eval("AddressZip"), "",", "+Eval("AddressZip")) %>
           </label>
         </div>
       </div>

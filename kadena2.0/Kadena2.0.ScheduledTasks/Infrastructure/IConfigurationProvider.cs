@@ -4,6 +4,6 @@
 
     public interface IConfigurationProvider
     {
-        T Get<T>(string siteName) where T : IConfigurationSection, new();
+        T Get<T>(int siteId) where T : IConfigurationSection, new();
     }
 }

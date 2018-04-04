@@ -58,6 +58,7 @@
     <Compile Include="Checkout\ChiliProcess.cs" />
     <Compile Include="CreditCard\SaveCardData.cs" />
     <Compile Include="CreditCard\StoredCard.cs" />
+    <Compile Include="CustomCatalog\PrebuyProduct.cs" />
     <Compile Include="FyBudget\FyBudget.cs" />
     <Compile Include="IBTF\IBTF.cs" />
     <Compile Include="IBTF\IBTFAdjustment.cs" />

@@ -19,7 +19,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IShoppingCartProvider shoppingCart;
         private readonly ICache cache;
 
-        public string ServiceEndpoint => resources.GetSettingsKey("KDA_TaxEstimationServiceEndpoint");
+        public string ServiceEndpoint => resources.GetSiteSettingsKey("KDA_TaxEstimationServiceEndpoint");
 
         public TaxEstimationService(IKenticoLocalizationProvider kenticoLocalization,
                                    IKenticoResourceService resources,                                    
@@ -111,7 +111,7 @@ namespace Kadena.BusinessLogic.Services
             if (addressFrom != null)
             {
                 taxRequest.ShipFromCity = addressFrom.City ?? string.Empty;
-                taxRequest.ShipFromState = addressFrom.State ?? string.Empty;
+                taxRequest.ShipFromState = addressFrom.State?.StateCode ?? string.Empty;
                 taxRequest.ShipFromZip = addressFrom.Zip ?? string.Empty;
             }
 

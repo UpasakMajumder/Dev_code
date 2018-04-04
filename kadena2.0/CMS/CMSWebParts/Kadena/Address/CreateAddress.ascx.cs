@@ -412,7 +412,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
                 int referrer = ValidationHelper.GetInteger(Request.QueryString["refer"], 0);
                 if (referrer >0)
                 {
-                    var failedOrdersUrl = kenticoResourceService.GetSettingsKey("KDA_FailedOrdersPageUrl");
+                    var failedOrdersUrl = kenticoResourceService.GetSiteSettingsKey("KDA_FailedOrdersPageUrl");
                     URLHelper.Redirect($"{failedOrdersUrl}?campid={referrer}");
                 }
                 URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);
