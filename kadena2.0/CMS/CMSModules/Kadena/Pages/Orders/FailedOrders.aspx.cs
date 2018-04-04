@@ -61,7 +61,6 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
                 {
                     case ActionResubmit:
                         ResubmitOrder((string)actionArgument);
-                        ShowMessage($"Order #{actionArgument} resubmitted");
                         break;
                     default:
                         break;
@@ -84,14 +83,14 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
 
         private void ResubmitOrder(string orderId)
         {
-            try
+            var result = ResubmissionService.ResubmitOrder(orderId).Result;
+            if (result.Success)
             {
-                ResubmissionService.ResubmitOrder(orderId).Wait();
+                ShowMessage($"Order #{orderId} resubmitted");
             }
-            catch (Exception ex)
+            else
             {
-                Logger.LogException(nameof(FailedOrders), ex);
-                ShowMessage(ex.Message);
+                ShowMessage($"Failure. Error '{result.ErrorMessage}'");
             }
         }
 

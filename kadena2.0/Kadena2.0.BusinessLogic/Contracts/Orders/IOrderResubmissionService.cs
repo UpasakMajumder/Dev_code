@@ -6,7 +6,7 @@ namespace Kadena.BusinessLogic.Contracts.Orders
 {
     public interface IOrderResubmissionService
     {
-        Task ResubmitOrder(string orderId);
+        Task<OperationResult> ResubmitOrder(string orderId);
         Task<PagedData<FailedOrder>> GetFailedOrders(int page, int itemsPerPage);
     }
 }

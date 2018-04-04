@@ -1,10 +1,13 @@
 ﻿using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.Order;
+using Kadena.Dto.Order.Failed;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
 using Kadena.Models.Orders.Failed;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +19,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IOrderResubmitClient orderResubmitClient;
         private readonly IOrderViewClient orderViewClient;
         private readonly IKenticoOrderProvider kenticoOrderProvider;
+        private readonly IKenticoLogger logger;
         public const int FirstPageNumber = 1;
 
         public const string OrderFailureStatus = "Error sending to Tibco";
@@ -23,11 +27,13 @@ namespace Kadena.BusinessLogic.Services.Orders
         public OrderResubmissionService(
             IOrderResubmitClient orderResubmitClient,
             IOrderViewClient orderViewClient,
-            IKenticoOrderProvider kenticoOrderProvider)
+            IKenticoOrderProvider kenticoOrderProvider,
+            IKenticoLogger logger)
         {
             this.orderResubmitClient = orderResubmitClient ?? throw new ArgumentNullException(nameof(orderResubmitClient));
             this.orderViewClient = orderViewClient ?? throw new ArgumentNullException(nameof(orderViewClient));
             this.kenticoOrderProvider = kenticoOrderProvider ?? throw new ArgumentNullException(nameof(kenticoOrderProvider));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<PagedData<FailedOrder>> GetFailedOrders(int page, int itemsPerPage)
@@ -92,9 +98,21 @@ namespace Kadena.BusinessLogic.Services.Orders
                 TotalPrice = dto.TotalPrice
             };
 
-        public Task ResubmitOrder(string orderId)
+        public async Task<OperationResult> ResubmitOrder(string orderId)
         {
-            return orderResubmitClient.Resubmit(orderId);
+            var response = await orderResubmitClient
+                .Resubmit(new ResubmitOrderRequestDto { OrderId = orderId })
+                .ConfigureAwait(false);
+            logger.LogInfo(
+                source: nameof(OrderResubmissionService),
+                eventCode: nameof(OrderResubmissionService.ResubmitOrder),
+                info: JsonConvert.SerializeObject(response));
+
+            return new OperationResult
+            {
+                Success = response?.Success ?? false,
+                ErrorMessage = response?.Error?.Message
+            };
         }
     }
 }

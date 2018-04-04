@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using Kadena.Dto.General;
+using Kadena.Dto.Order.Failed;
+using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface IOrderResubmitClient
     {
-        Task Resubmit(string orderId);
+        Task<BaseResponseDto<ResubmitOrderResponseDto>> Resubmit(ResubmitOrderRequestDto requestDto);
     }
 }

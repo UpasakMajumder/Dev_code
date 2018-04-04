@@ -1,9 +1,11 @@
 ﻿using Kadena.BusinessLogic.Services.Orders;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
+using Kadena.Dto.Order.Failed;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
 using Kadena.Models.Orders.Failed;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Moq;
@@ -19,7 +21,7 @@ namespace Kadena.Tests.OrderResubmission
         [Fact]
         public void ServiceConstructor_ShouldThrow_WhenArgumentsNull()
         {
-            Action action = () => new OrderResubmissionService(null, null, null);
+            Action action = () => new OrderResubmissionService(null, null, null, null);
 
             Assert.Throws<ArgumentNullException>(action);
         }
@@ -27,7 +29,17 @@ namespace Kadena.Tests.OrderResubmission
         [Fact]
         public async Task ResubmitOrder_ShouldCallClient_WithGivenOrderId()
         {
+            var actualArgs = new ResubmitOrderRequestDto();
             var resubmitClient = new Mock<IOrderResubmitClient>();
+            resubmitClient
+                .Setup(rc => rc.Resubmit(It.IsAny<ResubmitOrderRequestDto>()))
+                .Returns<ResubmitOrderRequestDto>((req) => 
+                {
+                    actualArgs = req;
+                    return Task.FromResult(new BaseResponseDto<ResubmitOrderResponseDto>());
+                });
+
+
             var sut = new OrderResubmissionServiceBuilder()
                 .WithOrderResubmitClient(resubmitClient.Object)
                 .Build();
@@ -35,7 +47,52 @@ namespace Kadena.Tests.OrderResubmission
 
             await sut.ResubmitOrder(orderId);
 
-            resubmitClient.Verify(client => client.Resubmit(orderId), Times.Once());
+            Assert.Equal(orderId, actualArgs.OrderId);
+        }
+
+        [Fact]
+        public async Task ResubmitOrder_ShouldLogResponse()
+        {
+            var logger = new Mock<IKenticoLogger>();
+
+            var sut = new OrderResubmissionServiceBuilder()
+                .WithLogger(logger.Object)
+                .Build();
+
+            await sut.ResubmitOrder("123");
+
+            logger.Verify(log => log.LogInfo(
+                nameof(OrderResubmissionService),
+                nameof(OrderResubmissionService.ResubmitOrder),
+                It.IsAny<string>()
+                ));
+        }
+
+        [Fact]
+        public async Task ResubmitOrder_ShouldReturnFailure_WhenCallFails()
+        {
+            var failureResult = Task.FromResult(new BaseResponseDto<ResubmitOrderResponseDto>
+            {
+                Success = false,
+                Error = new BaseErrorDto { Message = "oh noes" },
+            });
+            var resubmitClient = new Mock<IOrderResubmitClient>();
+            resubmitClient
+                .Setup(rc => rc.Resubmit(It.IsAny<ResubmitOrderRequestDto>()))
+                .Returns(failureResult);
+            var sut = new OrderResubmissionServiceBuilder()
+                .WithOrderResubmitClient(resubmitClient.Object)
+                .Build();
+
+            var expected = new OperationResult
+            {
+                Success = false,
+                ErrorMessage = "oh noes"
+            };
+
+            var result = await sut.ResubmitOrder("123");
+
+            Assert.Equal(expected, result);
         }
 
         [Fact]
@@ -221,6 +278,8 @@ namespace Kadena.Tests.OrderResubmission
             IOrderResubmitClient orderResubmitClient = Mock.Of<IOrderResubmitClient>();
             IOrderViewClient orderViewClient = Mock.Of<IOrderViewClient>();
             IKenticoOrderProvider kenticoOrderProvider = Mock.Of<IKenticoOrderProvider>();
+            IKenticoLogger kenticoLogger = Mock.Of<IKenticoLogger>();
+
             public OrderResubmissionServiceBuilder WithOrderResubmitClient(IOrderResubmitClient client)
             {
                 orderResubmitClient = client;
@@ -239,11 +298,18 @@ namespace Kadena.Tests.OrderResubmission
                 return this;
             }
 
+            public OrderResubmissionServiceBuilder WithLogger(IKenticoLogger logger)
+            {
+                kenticoLogger = logger;
+                return this;
+            }
+
             public OrderResubmissionService Build()
                 => new OrderResubmissionService(
                     orderResubmitClient,
                     orderViewClient,
-                    kenticoOrderProvider
+                    kenticoOrderProvider,
+                    kenticoLogger
                 );
         }
     }
