@@ -16,7 +16,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public OrderResubmitClient(IMicroProperties properties)
         {
-            _properties = properties;
+            _properties = properties ?? throw new ArgumentNullException(nameof(properties));
         }
 
         public async Task<BaseResponseDto<ResubmitOrderResponseDto>> Resubmit(ResubmitOrderRequestDto requestDto)
