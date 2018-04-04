@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Kadena.Models.Product;
 using Kadena.BusinessLogic.Contracts;
 using Moq.AutoMock;
+using Kadena.Models.Site;
 
 namespace Kadena.Tests.WebApi
 {
@@ -30,12 +31,16 @@ namespace Kadena.Tests.WebApi
                 .Returns(new ProductCategoryLink { Id = 10, ProductBordersEnabled = borderOnCategory });
 
             var resources = new Mock<IKenticoResourceService>();
-            resources.Setup(r => r.GetSettingsKey("KDA_ProductThumbnailBorderEnabled"))
+            resources.Setup(r => r.GetSettingsKey(1,"KDA_ProductThumbnailBorderEnabled"))
                 .Returns(borderOnSite.ToString());
-            resources.Setup(r => r.GetSettingsKey("KDA_ProductThumbnailBorderStyle"))
+            resources.Setup(r => r.GetSettingsKey(1,"KDA_ProductThumbnailBorderStyle"))
                 .Returns(borderStyleValue);
 
-            return new ProductsService(products.Object, favorites.Object, resources.Object);
+            var siteMock = new Mock<IKenticoSiteProvider>();
+            siteMock.Setup(sm => sm.GetKenticoSite())
+                .Returns(new KenticoSite { Id = 1 });
+
+            return new ProductsService(products.Object, favorites.Object, resources.Object, siteMock.Object);
         }
 
         [Fact]
@@ -128,7 +133,11 @@ namespace Kadena.Tests.WebApi
                     new ProductCategoryLink { Order = 1, Title = "c1" },
                     new ProductCategoryLink { Order = 2, Title = "c2" },
                 });
+
             var sut = autoMocker.CreateInstance<ProductsService>();
+            var siteMock = autoMocker.GetMock<IKenticoSiteProvider>();
+            siteMock.Setup(sm => sm.GetKenticoSite())
+                .Returns(new KenticoSite { Id = 1 });
 
             // Act
             var result = sut.GetProducts("/");
