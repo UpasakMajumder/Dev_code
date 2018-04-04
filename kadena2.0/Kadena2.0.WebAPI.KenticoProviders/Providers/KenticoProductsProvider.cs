@@ -155,12 +155,12 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private static Product GetProduct(TreeNode doc)
         {
-            var sku = GetSku(doc.NodeSKUID);
-
             if (doc == null)
             {
                 return null;
             }
+
+            var sku = GetSku(doc.NodeSKUID);
 
             var product = new Product()
             {
@@ -173,6 +173,12 @@ namespace Kadena.WebAPI.KenticoProviders
                 ProductChiliWorkgroupID = doc.GetValue<Guid>("ProductChiliWorkgroupID", Guid.Empty),
                 TemplateLowResSettingId = doc.GetValue("ProductChiliLowResSettingId", Guid.Empty)
             };
+
+            if (product.IsTemplateLowResSettingMissing)
+            {
+                var defaultId = SettingsKeyInfoProvider.GetValue("KDA_DefaultLowResSettingsId", new SiteInfoIdentifier(SiteContext.CurrentSiteID));
+                product.TemplateLowResSettingId = Guid.Parse(defaultId);
+            }
 
             if (sku != null)
             {

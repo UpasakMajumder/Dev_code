@@ -24,7 +24,7 @@ left join KDA_Program Program on p.ProgramID=Program.ProgramID
 left join KDA_Campaign C  on C.CampaignID= Program.CampaignID 
 )
 
-select KDA_POSNumber.POSNumber from KDA_POSNumber left join GI_CTE CTE on CTE.POSNumber=CAST(KDA_POSNumber.POSNumber as nvarchar(100)) 
+select KDA_POSNumber.POSNumber,KDA_POSNumber.BrandID,KDA_POSNumber.POSCategoryID from KDA_POSNumber left join GI_CTE CTE on CTE.POSNumber=CAST(KDA_POSNumber.POSNumber as nvarchar(100)) 
 where CTE.POSNumber is null or CTE.CloseCampaign=1 order by POSNumber
 ]]>
   </QueryText>
