@@ -16,10 +16,11 @@ namespace Kadena2.MicroserviceClients.Clients
         public const string DefaultOrderByField = "CreateDate";
         public const bool DefaultOrderByDescending = true;
 
-        private const string _serviceUrlSettingKey = "KDA_OrderViewServiceUrl";
+        private const string _baseServiceUrlSettingKey = "KDA_MicroservicesBaseAddress";
+        private const string _serviceEndpoint = "/api/order";
         private readonly IMicroProperties _properties;
 
-        public string BaseUrl => _properties.GetServiceUrl(_serviceUrlSettingKey);
+        public string BaseUrl => _properties.GetServiceUrl(_baseServiceUrlSettingKey);
 
         public OrderViewClient(IMicroProperties properties)
         {
@@ -28,7 +29,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string orderId)
         {
-            var url = $"{BaseUrl}/api/order/{orderId}";
+            var url = $"{BaseUrl}{_serviceEndpoint}/{orderId}";
             return await Get<GetOrderByOrderIdResponseDTO>(url).ConfigureAwait(false);
         }
 
@@ -51,7 +52,7 @@ namespace Kadena2.MicroserviceClients.Clients
                 filter.StatusHistoryContains != null ? $"containsStatus={filter.StatusHistoryContains.Value}" : string.Empty
             }.Where(p => p != string.Empty));
 
-            var parameterizedUrl = $"{BaseUrl}/api/Order?{args}";
+            var parameterizedUrl = $"{BaseUrl}{_serviceEndpoint}?{args}";
 
             return await Get<OrderListDto>(parameterizedUrl).ConfigureAwait(false);
         }
