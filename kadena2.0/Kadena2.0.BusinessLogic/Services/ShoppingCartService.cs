@@ -100,7 +100,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var creditCardMethod = methods.Items.FirstOrDefault(pm => pm.ClassName == "KDA.PaymentMethods.CreditCard");
 
-            if (creditCardMethod != null && resources.GetSettingsKey("KDA_CreditCard_EnableSaveCard").ToLower() == "true")
+            if (creditCardMethod != null && resources.GetSiteSettingsKey<bool>("KDA_CreditCard_EnableSaveCard"))
             {
                 var storedCardsResult = await userDataClient.GetValidCardTokens(userId);
 
@@ -476,7 +476,7 @@ namespace Kadena.BusinessLogic.Services
 
         private bool GetOtherAddressSettingsValue()
         {
-            var settingsKey = resources.GetSettingsKey("KDA_AllowCustomShippingAddress");
+            var settingsKey = resources.GetSiteSettingsKey("KDA_AllowCustomShippingAddress");
             bool otherAddressAvailable = false;
             bool.TryParse(settingsKey, out otherAddressAvailable);
             return otherAddressAvailable;

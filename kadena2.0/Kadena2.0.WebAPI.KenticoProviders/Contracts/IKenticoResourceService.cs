@@ -7,11 +7,16 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetResourceString(string name, string cultureCode);
         string GetResourceString(string name);
         string GetPerSiteResourceString(string name, string site = "");
-        string GetSettingsKey(string key);
-        string GetSettingsKey(string siteName, string key);        
-        string GetSettingsKey(int siteId, string key);        
-        string ResolveMacroString(string macroString);
+        string GetSiteSettingsKey(string key);
+        T GetSiteSettingsKey<T>(string key) where T : IConvertible;
+
+        /// <summary>
+        /// Gets Settings key
+        /// </summary>
+        /// <param name="key">Name of key</param>
+        /// <param name="siteId">Id of site. 0 means global key</param>
         T GetSettingsKey<T>(string key, int siteId = 0) where T : IConvertible;
+        string ResolveMacroString(string macroString);
         string GetLogonPageUrl();
     }
 }

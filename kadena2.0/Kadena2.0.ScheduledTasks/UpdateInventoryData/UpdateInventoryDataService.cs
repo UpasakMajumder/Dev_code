@@ -57,7 +57,7 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
 
             foreach (var site in sites)
             {
-                var configuration = configurationProvider.Get<UpdateInventoryConfiguration>(site.Name);
+                var configuration = configurationProvider.Get<UpdateInventoryConfiguration>(site.Id);
                 var erpId = configuration.ErpClientId;
                 var task = UpdateSiteProducts(erpId);
                 tasks.Add(task);

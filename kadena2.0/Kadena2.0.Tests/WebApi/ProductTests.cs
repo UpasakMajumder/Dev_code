@@ -30,9 +30,9 @@ namespace Kadena.Tests.WebApi
                 .Returns(new ProductCategoryLink { Id = 10, ProductBordersEnabled = borderOnCategory });
 
             var resources = new Mock<IKenticoResourceService>();
-            resources.Setup(r => r.GetSettingsKey("KDA_ProductThumbnailBorderEnabled"))
-                .Returns(borderOnSite.ToString());
-            resources.Setup(r => r.GetSettingsKey("KDA_ProductThumbnailBorderStyle"))
+            resources.Setup(r => r.GetSiteSettingsKey<bool>("KDA_ProductThumbnailBorderEnabled"))
+                .Returns(borderOnSite);
+            resources.Setup(r => r.GetSiteSettingsKey("KDA_ProductThumbnailBorderStyle"))
                 .Returns(borderStyleValue);
 
             return new ProductsService(products.Object, favorites.Object, resources.Object);

@@ -93,7 +93,7 @@ namespace Kadena.BusinessLogic.Services
             var requestResult = await _templateClient
                 .GetTemplates(_users.GetCurrentUser().UserId, product.ProductMasterTemplateID);
 
-            var productEditorUrl = _resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~');
+            var productEditorUrl = _resources.GetSiteSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~');
             if (string.IsNullOrWhiteSpace(productEditorUrl))
             {
                 _logger.LogError("GET TEMPLATE LIST", "Product editor URL is not configured");

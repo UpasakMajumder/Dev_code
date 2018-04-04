@@ -19,7 +19,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IShoppingCartProvider shoppingCart;
         private readonly ICache cache;
 
-        public string ServiceEndpoint => resources.GetSettingsKey("KDA_TaxEstimationServiceEndpoint");
+        public string ServiceEndpoint => resources.GetSiteSettingsKey("KDA_TaxEstimationServiceEndpoint");
 
         public TaxEstimationService(IKenticoLocalizationProvider kenticoLocalization,
                                    IKenticoResourceService resources,                                    

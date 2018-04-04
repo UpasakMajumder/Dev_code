@@ -7,6 +7,8 @@
                 <cms:CMSTextBox ID="txtName" runat="server" MaxLength="100" CssClass="input__text" />
                 <cms:CMSRequiredFieldValidator ID="rfvUserNameRequired" runat="server" ControlToValidate="txtName" CssClass="EditingFormErrorLabel"  ValidationGroup="feildvalidation" />
                 <asp:RegularExpressionValidator  ControlToValidate="txtName" ID="revName" CssClass="EditingFormErrorLabel" ValidationExpression="^[\s\S]{0,50}$" runat="server" ValidationGroup="feildvalidation"></asp:RegularExpressionValidator>
+                <asp:CustomValidator ControlToValidate="txtName" runat="server" ID="cvCatName" CssClass="EditingFormErrorLabel" Enabled="true" OnServerValidate="CatName_ServerValidate" ValidationGroup="feildvalidation"></asp:CustomValidator>
+                
             </div>
         </div>
         <div class="mb-2">

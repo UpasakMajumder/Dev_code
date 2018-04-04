@@ -21,6 +21,15 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="ProductImage" columnsize="400" columntype="text" guid="32de393b-6ca4-47ff-ad7e-57270c2c9705" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Product Image</fieldcaption>
+          <fielddescription>Assigned to product page (per language version)</fielddescription>
+        </properties>
+        <settings>
+          <controlname>MediaSelectionControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="EstimatedPrice" columntype="double" guid="a478b9bb-1cf9-4319-a3fc-5606159ff4ae" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Estimated Price</fieldcaption>
@@ -94,10 +103,30 @@
           <fieldcaption>State</fieldcaption>
         </properties>
         <settings>
-          <controlname>CustomTableItemSelector</controlname>
-          <CustomTable>KDA.StatesGroup</CustomTable>
+          <AddGlobalObjectNamePrefix>False</AddGlobalObjectNamePrefix>
+          <AddGlobalObjectSuffix>False</AddGlobalObjectSuffix>
+          <AllowAll>False</AllowAll>
+          <AllowDefault>False</AllowDefault>
+          <AllowEditTextBox>False</AllowEditTextBox>
+          <AllowEmpty>True</AllowEmpty>
+          <controlname>Uni_selector</controlname>
+          <DialogWindowName>SelectionDialog</DialogWindowName>
           <DisplayNameFormat>{%States%}</DisplayNameFormat>
+          <EditDialogWindowHeight>700</EditDialogWindowHeight>
+          <EditDialogWindowWidth>1000</EditDialogWindowWidth>
+          <EditWindowName>EditWindow</EditWindowName>
+          <EncodeOutput>True</EncodeOutput>
+          <GlobalObjectSuffix ismacro="true">{$general.global$}</GlobalObjectSuffix>
+          <ItemsPerPage>25</ItemsPerPage>
+          <LocalizeItems>True</LocalizeItems>
+          <MaxDisplayedItems>25</MaxDisplayedItems>
+          <MaxDisplayedTotalItems>50</MaxDisplayedTotalItems>
+          <ObjectType>CustomTableItem.KDA.StatesGroup</ObjectType>
+          <RemoveMultipleCommas>False</RemoveMultipleCommas>
           <ReturnColumnName>ItemID</ReturnColumnName>
+          <ReturnColumnType>id</ReturnColumnType>
+          <SelectionMode>1</SelectionMode>
+          <ValuesSeparator>;</ValuesSeparator>
         </settings>
       </field>
       <field allowempty="true" column="CategoryID" columntype="integer" guid="270a446b-6cdd-4881-8eae-9d9cf9e9cdb5" publicfield="false" visible="true">
@@ -149,10 +178,30 @@
           <fieldcaption>Item Specs</fieldcaption>
         </properties>
         <settings>
-          <controlname>CustomTableItemSelector</controlname>
-          <CustomTable>KDA.ProductItemSpecs</CustomTable>
+          <AddGlobalObjectNamePrefix>False</AddGlobalObjectNamePrefix>
+          <AddGlobalObjectSuffix>False</AddGlobalObjectSuffix>
+          <AllowAll>False</AllowAll>
+          <AllowDefault>False</AllowDefault>
+          <AllowEditTextBox>False</AllowEditTextBox>
+          <AllowEmpty>True</AllowEmpty>
+          <controlname>Uni_selector</controlname>
+          <DialogWindowName>SelectionDialog</DialogWindowName>
           <DisplayNameFormat>{%ItemSpec%}</DisplayNameFormat>
+          <EditDialogWindowHeight>700</EditDialogWindowHeight>
+          <EditDialogWindowWidth>1000</EditDialogWindowWidth>
+          <EditWindowName>EditWindow</EditWindowName>
+          <EncodeOutput>True</EncodeOutput>
+          <GlobalObjectSuffix ismacro="true">{$general.global$}</GlobalObjectSuffix>
+          <ItemsPerPage>25</ItemsPerPage>
+          <LocalizeItems>True</LocalizeItems>
+          <MaxDisplayedItems>25</MaxDisplayedItems>
+          <MaxDisplayedTotalItems>50</MaxDisplayedTotalItems>
+          <ObjectType>CustomTableItem.KDA.ProductItemSpecs</ObjectType>
+          <RemoveMultipleCommas>False</RemoveMultipleCommas>
           <ReturnColumnName>ItemID</ReturnColumnName>
+          <ReturnColumnType>id</ReturnColumnType>
+          <SelectionMode>1</SelectionMode>
+          <ValuesSeparator>;</ValuesSeparator>
         </settings>
       </field>
       <field allowempty="true" column="Cancelled" columntype="boolean" guid="83d8267d-cf59-47a9-945f-2faa84e0924e" publicfield="false" visible="true">
@@ -163,7 +212,7 @@
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
-      <field allowempty="true" column="CVOProductID" columnsize="200" columntype="text" guid="7cae9d9d-ec5e-49e1-99cd-edc821efc2d1" publicfield="false" visible="true">
+      <field allowempty="true" column="CVOProductID" columnsize="200" columntype="text" guid="7cae9d9d-ec5e-49e1-99cd-edc821efc2d1" publicfield="false">
         <properties>
           <fieldcaption>CVO ProductID</fieldcaption>
         </properties>
@@ -176,7 +225,7 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field allowempty="true" column="StoreFrontProductID" columntype="integer" guid="e30fe81a-c07f-4a21-b498-e2873a2e011c" publicfield="false" visible="true">
+      <field allowempty="true" column="StoreFrontProductID" columntype="integer" guid="e30fe81a-c07f-4a21-b498-e2873a2e011c" publicfield="false">
         <properties>
           <fieldcaption>Store Front ProductID</fieldcaption>
         </properties>
@@ -213,16 +262,6 @@
           <MediaDialogConfiguration>True</MediaDialogConfiguration>
           <ShowAddStampButton>False</ShowAddStampButton>
           <WidthUnitType>PX</WidthUnitType>
-        </settings>
-      </field>
-      <field allowempty="true" column="ProductThumbnail" columntype="file" guid="6cc6abc0-7d57-4046-b6ae-5a85f56ec2ac" publicfield="false" visible="true">
-        <properties>
-          <fieldcaption>Thumbnail</fieldcaption>
-        </properties>
-        <settings>
-          <Allowed_Extensions>jpg;jpeg;png;</Allowed_Extensions>
-          <controlname>DirectUploadControl</controlname>
-          <Extensions>custom</Extensions>
         </settings>
       </field>
     </form>

@@ -77,12 +77,12 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
         [Header(17, "Custom Item Specs")]
         public string CustomItemSpecs { get; set; }
 
-        [Header(18, "Image URL")]
+        [Header(18, "Media Library Name")]
         [MaxLength(400)]
-        public string ImageURL { get; set; }
+        public string ImageMediaLibraryName { get; set; }
 
-        [Header(19, "Thumbnail URL")]
+        [Header(19, "Image Path")]
         [MaxLength(400)]
-        public string ThumbnailURL { get; set; }
+        public string ImagePath { get; set; }
     }
 }

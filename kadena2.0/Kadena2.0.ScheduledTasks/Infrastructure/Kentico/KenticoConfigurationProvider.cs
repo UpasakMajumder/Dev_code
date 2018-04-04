@@ -11,10 +11,10 @@ namespace Kadena.ScheduledTasks.Infrastructure.Kentico
             this.kenticoResources = kenticoResources;
         }
 
-        public T Get<T>(string siteName) where T : IConfigurationSection, new()
+        public T Get<T>(int siteId) where T : IConfigurationSection, new()
         {
             dynamic section = new T();
-            LoadSection(section, siteName);
+            LoadSection(section, siteId);
             return section;
         }
 
@@ -29,16 +29,16 @@ namespace Kadena.ScheduledTasks.Infrastructure.Kentico
             return null;
         }
 
-        private void LoadSection(MailingListConfiguration section, string siteName)
+        private void LoadSection(MailingListConfiguration section, int siteId)
         {
-            section.MailingServiceUrl = kenticoResources.GetSettingsKey(siteName, "KDA_MailingServiceUrl");
-            section.DeleteMailingListsPeriod = StringToInt(kenticoResources.GetSettingsKey(siteName, "KDA_MailingList_DeleteExpiredAfter"));
+            section.MailingServiceUrl = kenticoResources.GetSettingsKey<string>("KDA_MailingServiceUrl", siteId);
+            section.DeleteMailingListsPeriod = StringToInt(kenticoResources.GetSettingsKey<string>("KDA_MailingList_DeleteExpiredAfter", siteId));
         }
 
-        private void LoadSection(UpdateInventoryConfiguration section, string siteName)
+        private void LoadSection(UpdateInventoryConfiguration section, int siteId)
         {
-            section.ErpClientId = kenticoResources.GetSettingsKey(siteName, "KDA_ErpCustomerId");
-            section.InventoryUpdateServiceEndpoint = kenticoResources.GetSettingsKey("KDA_InventoryUpdateServiceEndpoint");
+            section.ErpClientId = kenticoResources.GetSettingsKey<string>("KDA_ErpCustomerId", siteId);
+            section.InventoryUpdateServiceEndpoint = kenticoResources.GetSiteSettingsKey("KDA_InventoryUpdateServiceEndpoint");
         }
     }
 }

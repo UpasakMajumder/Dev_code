@@ -41,9 +41,9 @@ namespace Kadena.BusinessLogic.Services
             var products = this.products.GetProducts(path).OrderBy(p => p.Order).ToList();
             var favoriteIds = favorites.CheckFavoriteProductIds(products.Select(p => p.Id).ToList());
             var pathCategory = this.products.GetCategory(path);
-            var bordersEnabledOnSite = resources.GetSettingsKey("KDA_ProductThumbnailBorderEnabled")?.ToLower() == "true";
+            var bordersEnabledOnSite = resources.GetSiteSettingsKey<bool>("KDA_ProductThumbnailBorderEnabled");
             var borderEnabledOnParentCategory = pathCategory?.ProductBordersEnabled ?? true; // true to handle product in the root, without parent category
-            var borderStyle = resources.GetSettingsKey("KDA_ProductThumbnailBorderStyle");
+            var borderStyle = resources.GetSiteSettingsKey("KDA_ProductThumbnailBorderStyle");
 
             var productsPage = new ProductsPage
             {
