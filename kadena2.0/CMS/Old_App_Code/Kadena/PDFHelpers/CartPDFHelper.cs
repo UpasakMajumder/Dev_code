@@ -206,7 +206,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                 {
                     thumbnailurl = url;
                 }
-                else if (url.Trim().StartsWith("/getmedia/"))
+                else if (url.Trim('~').StartsWith("/getmedia/"))
                 {
                     string strPathAndQuery = HttpContext.Current.Request.Url.PathAndQuery;
                     thumbnailurl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(strPathAndQuery, "") + url.Trim('~');
