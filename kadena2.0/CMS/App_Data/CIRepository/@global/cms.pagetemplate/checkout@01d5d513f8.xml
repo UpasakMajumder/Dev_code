@@ -83,9 +83,6 @@ config.localization.emailProof = {
     dialog: {
         title:'{$ Kadena.EmailProof.Title $}',
         recepientEmailLabel: '{$ Kadena.EmailProof.Email $}',
-        recepientEmailTooltipAdd: '{$ Kadena.EmailProof.ToolTipAdd $}',
-        recepientEmailTooltipRemove: '{$ Kadena.EmailProof.ToolTipRemove $}',
-        senderEmailLabel:'{$ Kadena.EmailProof.Sender $}',
         subjectLabel: '{$ Kadena.EmailProof.Subject $}',
         messageLabel: '{$ Kadena.EmailProof.Message $}',
         proofLabel: '{$ Kadena.EmailProof.Proof $}',
