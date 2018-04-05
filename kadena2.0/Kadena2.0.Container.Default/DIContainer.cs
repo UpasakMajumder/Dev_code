@@ -100,6 +100,7 @@ namespace Kadena.Container.Default
 			container.Register<Saml2SecurityTokenHandler, KadenaSaml2SecurityTokenHandler>();
 			container.Register<ISaml2RecipientValidator, Saml2RecipientValidator>();
             container.Register<IRoleService, RoleService>();
+            container.Register<IMailService, MailService>();
             return container;
         }
 

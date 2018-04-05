@@ -181,6 +181,7 @@
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateMetaData.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentMailingList.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentResponse.cs" />
+    <Compile Include="TemplatedProduct\Requests\EmailProofRequestDto.cs" />
     <Compile Include="TemplatedProduct\Responses\ProductTemplateDTO.cs" />
     <Compile Include="TemplatedProduct\Responses\ProductTemplatesHeaderDTO.cs" />
     <Compile Include="TemplatedProduct\Responses\ProductTemplatesDTO.cs" />
