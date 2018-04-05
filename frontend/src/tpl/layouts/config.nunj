@@ -98,9 +98,6 @@
         dialog: {
           title: 'Email Proof',
           recepientEmailLabel: 'Enter Email Address',
-          recepientEmailTooltipAdd: 'Add more email',
-          recepientEmailTooltipRemove: 'Remove email',
-          senderEmailLabel: 'Your Email Address',
           subjectLabel: 'Subject',
           messageLabel: 'Message',
           proofLabel: 'Click Here to View the Proof',
