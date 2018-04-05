@@ -35,24 +35,24 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
 
         public async Task<string> Delete()
         {
-            var customers = kenticoSiteProvider.GetSites();
+            var customerSites = kenticoSiteProvider.GetSites();
             var now = GetCurrentTime();
             
             var tasks = new List<Task<BaseResponseDto<object>>>();
-            foreach (var customer in customers)
+            foreach (var customerSite in customerSites)
             {
-                var config = configurationProvider.Get<MailingListConfiguration>(customer.Name);
+                var config = configurationProvider.Get<MailingListConfiguration>(customerSite.Id);
                 if (config.DeleteMailingListsPeriod != null)
                 {
                     var deleteOlderThan = now.AddDays(-config.DeleteMailingListsPeriod.Value);
-                    tasks.Add(new MailingListClient(new StaticMicroProperties(customer.Name)).RemoveMailingList(deleteOlderThan));
+                    tasks.Add(new MailingListClient(new StaticMicroProperties(customerSite.Name)).RemoveMailingList(deleteOlderThan));
                 }
             }
 
             var results = await Task.WhenAll(tasks).ConfigureAwait(false);
             if (results.Any(r => !r.Success))
             {
-                return CreateErrorMessageFromResponses(results, customers);
+                return CreateErrorMessageFromResponses(results, customerSites);
             }
 
             return "Done";

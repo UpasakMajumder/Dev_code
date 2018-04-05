@@ -70,7 +70,7 @@ namespace Kadena.BusinessLogic.Services
             var states = _localization.GetStates();
             var countries = _localization.GetCountries();
             var canEdit = _permissions.UserCanModifyShippingAddress();
-            var maxShippingAddressesSetting = _resources.GetSettingsKey("KDA_ShippingAddressMaxLimit");
+            var maxShippingAddressesSetting = _resources.GetSiteSettingsKey("KDA_ShippingAddressMaxLimit");
 
             var userNotification = string.Empty;
             var userNotificationLocalizationKey = _site.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage";

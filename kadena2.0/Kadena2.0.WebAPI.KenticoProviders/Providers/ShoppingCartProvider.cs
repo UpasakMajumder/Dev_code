@@ -489,10 +489,10 @@ namespace Kadena.WebAPI.KenticoProviders
                                                 .Sum(x => x.CartItemUnits);
         }
 
-        public int GetStockQuantity(int skuId)
+        public Sku GetSKU(int skuId)
         {
-            var sku = SKUInfoProvider.GetSKUInfo(skuId);
-            return sku?.SKUAvailableItems ?? 0;
+            var skuInfo = SKUInfoProvider.GetSKUInfo(skuId);
+            return mapper.Map<Sku>(skuInfo);
         }
 
         public void RemoveCurrentItemsFromStock(int shoppingCartId = 0)
@@ -515,7 +515,7 @@ namespace Kadena.WebAPI.KenticoProviders
         }
         public int CreateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int userID, int inventoryType = 1)
         {
-            ShippingOptionInfo shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(resources.GetSettingsKey(SiteContext.CurrentSiteID, "KDA_DefaultShipppingOption"), SiteContext.CurrentSiteName);
+            ShippingOptionInfo shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(resources.GetSiteSettingsKey("KDA_DefaultShipppingOption"), SiteContext.CurrentSiteName);
             var customerAddress = AddressInfoProvider.GetAddressInfo(distributorCartItem.DistributorID);
             ShoppingCartInfo cart = new ShoppingCartInfo()
             {

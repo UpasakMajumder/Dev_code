@@ -194,7 +194,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 {
                     Id = i.SkuId,
                     Image = products.GetSkuImageUrl(i.SkuId),
-                    DownloadPdfURL = $"/api/pdf/hires/{orderId}/{i.LineNumber}",
+                    // TODO uncomment for v2.17 : DownloadPdfURL = $"/api/pdf/hires/{orderId}/{i.LineNumber}",
                     MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                     Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                     Quantity = i.Quantity,

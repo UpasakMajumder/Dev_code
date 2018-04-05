@@ -85,10 +85,12 @@ namespace Kadena.WebAPI.KenticoProviders
             if (product == null)
                 return null;
 
+            var productImage = URLHelper.GetAbsoluteUrl(product.GetStringValue("ProductImage", string.Empty));
+
             return new ProductLink
             {
                 Id = documentId,
-                ImageUrl = product.GetValue("SKUImagePath", string.Empty),
+                ImageUrl = productImage,
                 Title = product.DocumentName,
                 Url = product.DocumentUrlPath
             };
