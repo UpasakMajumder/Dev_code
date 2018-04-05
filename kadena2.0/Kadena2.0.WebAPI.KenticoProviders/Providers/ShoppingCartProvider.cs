@@ -489,10 +489,10 @@ namespace Kadena.WebAPI.KenticoProviders
                                                 .Sum(x => x.CartItemUnits);
         }
 
-        public int GetStockQuantity(int skuId)
+        public Sku GetSKU(int skuId)
         {
-            var sku = SKUInfoProvider.GetSKUInfo(skuId);
-            return sku?.SKUAvailableItems ?? 0;
+            var skuInfo = SKUInfoProvider.GetSKUInfo(skuId);
+            return mapper.Map<Sku>(skuInfo);
         }
 
         public void RemoveCurrentItemsFromStock(int shoppingCartId = 0)

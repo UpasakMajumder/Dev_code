@@ -143,5 +143,130 @@ namespace Kadena.Tests.WebApi
             Assert.Equal("c2", result.Categories[1].Title);
             Assert.Equal("c3", result.Categories[2].Title);
         }
+
+        [Theory]
+        [InlineData("KDA.MailingProduct")]
+        [InlineData("KDA.TemplatedProduct")]
+        [InlineData("KDA.ProductWithAddOns")]
+        [InlineData("KDA.StaticProduct")]
+        [InlineData("KDA.POD")]
+        public void GetAvailableProductStringTest_NonInventory(string productType)
+        {
+            // Arrange
+            var autoMocker = new AutoMocker();
+            var resourceMock = autoMocker.GetMock<IKenticoResourceService>();
+            resourceMock.Setup(r => r.GetResourceString(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns("value");
+            var sut = autoMocker.CreateInstance<ProductsService>();
+
+            // Act
+            var result = sut.GetAvailableProductsString(productType, 10, "cz",10);
+
+            // Assert
+            Assert.Equal(string.Empty, result);
+        }
+
+
+        [Theory]
+        [InlineData(null, 0, "Kadena.Product.Unavailable")]
+        [InlineData(0,  0, "Kadena.Product.OutOfStock")]
+        [InlineData(5, 10, "10 pcs in stock")]
+        public void GetAvailableProductStringTest_Inventory(int? numberOfAvailableProducts, int numberOfStockProducts, string expectedResult)
+        {
+            // Arrange
+            const string culture = "cz-CZ";
+            var autoMocker = new AutoMocker();
+            var resourceMock = autoMocker.GetMock<IKenticoResourceService>();
+            resourceMock.Setup(r => r.GetResourceString(It.IsAny<string>(), culture))
+                .Returns((string a, string b) => a);
+            resourceMock.Setup(r => r.GetResourceString("Kadena.Product.NumberOfAvailableProducts", culture))
+                .Returns("{0} pcs in stock");
+            var sut = autoMocker.CreateInstance<ProductsService>();
+
+            // Act
+            var result = sut.GetAvailableProductsString("KDA.InventoryProduct", numberOfAvailableProducts, culture, numberOfStockProducts);
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
+
+
+        [Theory]
+        [InlineData("KDA.MailingProduct")]
+        [InlineData("KDA.TemplatedProduct")]
+        [InlineData("KDA.ProductWithAddOns")]
+        [InlineData("KDA.StaticProduct")]
+        [InlineData("KDA.POD")]
+        public void GetInventoryProductAvailablity_NonInventory(string productType)
+        {
+            // Arrange
+            var autoMocker = new AutoMocker();
+            var sut = autoMocker.CreateInstance<ProductsService>();
+
+            // Act
+            var result = sut.GetInventoryProductAvailability(productType, 10, 10);
+
+            // Assert
+            Assert.Equal(string.Empty, result);
+        }
+
+        [Theory]
+        [InlineData(0,0, "OutOfStock")]
+        [InlineData(null,0, "Unavailable")]
+        [InlineData(1,1, "Available")]
+        public void GetInventoryProductAvailablity(int? numberOfAvailableProducts, int numberOfStockProducts, string expectedResult)
+        {
+            // Arrange
+            var autoMocker = new AutoMocker();
+            var sut = autoMocker.CreateInstance<ProductsService>();
+
+            // Act
+            var result = sut.GetInventoryProductAvailability("KDA.InventoryProduct", numberOfAvailableProducts, numberOfStockProducts);
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
+
+      
+        [Theory]
+        [InlineData("KDA.MailingProduct", false)]
+        [InlineData("KDA.TemplatedProduct", false)]
+        [InlineData("KDA.ProductWithAddOns", true)]
+        [InlineData("KDA.StaticProduct", true)]
+        [InlineData("KDA.POD", true)]
+        public void CanDisplayAddToCart_NonInventory(string productType, bool expectedResult)
+        {
+            // Arrange
+            var autoMocker = new AutoMocker();
+            var sut = autoMocker.CreateInstance<ProductsService>();
+
+            // Act
+            var result = sut.CanDisplayAddToCartButton(productType, 0, false);
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Theory]
+        [InlineData(null, true, false)]
+        [InlineData(null, false, false)]
+        [InlineData(0, true, false)]
+        [InlineData(0, false, true)]
+        [InlineData(1, true, true)]
+        [InlineData(1, false, true)]
+        public void CanDisplayAddToCart_Inventory(int? numberOfAvailableProducts, bool sellOnlyAvailable, bool expectedResult)
+        {
+            // Arrange
+            var autoMocker = new AutoMocker();
+            var sut = autoMocker.CreateInstance<ProductsService>();
+
+            // Act
+            var result = sut.CanDisplayAddToCartButton("KDA.InventoryProduct", numberOfAvailableProducts, sellOnlyAvailable);
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
+
+
     }
 }
