@@ -62,8 +62,10 @@
     <Compile Include="FyBudget\FyBudget.cs" />
     <Compile Include="IBTF\IBTF.cs" />
     <Compile Include="IBTF\IBTFAdjustment.cs" />
+    <Compile Include="Orders\Failed\FailedOrder.cs" />
     <Compile Include="Orders\OrderFilter.cs" />
     <Compile Include="Orders\OrderReport.cs" />
+    <Compile Include="Orders\OrderStatus.cs" />
     <Compile Include="Product\Border.cs" />
     <Compile Include="Product\CampaignsProduct.cs" />
     <Compile Include="Product\Price.cs" />
@@ -188,6 +190,7 @@
     <Compile Include="Settings\SettingsAddresses.cs" />
     <Compile Include="Site\LanguageSelectorItem.cs" />
     <Compile Include="Site\Site.cs" />
+    <Compile Include="_Common\OperationResult.cs" />
     <Compile Include="_Common\PagedData.cs" />
     <Compile Include="_Common\Pagination.cs" />
     <Compile Include="_Common\State.cs" />

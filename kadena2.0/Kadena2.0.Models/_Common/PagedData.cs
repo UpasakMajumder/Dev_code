@@ -6,6 +6,7 @@ namespace Kadena.Models.Common
     {
         public Pagination Pagination { get; set; }
         public List<T> Data { get; set; }
+
         public static PagedData<T> Empty()
             => new PagedData<T>
             {
