@@ -60,6 +60,7 @@
     <Compile Include="Clients\CreditCardManagerClient.cs" />
     <Compile Include="Clients\ExportClient.cs" />
     <Compile Include="Clients\FileClient.cs" />
+    <Compile Include="Clients\NotificationClient.cs" />
     <Compile Include="Clients\UserDataServiceClient.cs" />
     <Compile Include="Clients\PaymentServiceClient.cs" />
     <Compile Include="Clients\MailingListClient.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Contracts\ICloudEventConfiguratorClient.cs" />
     <Compile Include="Contracts\ICreditCardManagerClient.cs" />
     <Compile Include="Contracts\IExportClient.cs" />
+    <Compile Include="Contracts\INotificationClient.cs" />
     <Compile Include="Contracts\IPaymentServiceClient.cs" />
     <Compile Include="Contracts\IUserDataServiceClient.cs" />
     <Compile Include="Contracts\IFileClient.cs" />

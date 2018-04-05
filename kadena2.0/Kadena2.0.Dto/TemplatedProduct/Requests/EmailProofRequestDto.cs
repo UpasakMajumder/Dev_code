@@ -10,8 +10,6 @@ namespace Kadena.Dto.TemplatedProduct.Requests
         [Required]
         public string RecepientEmail { get; set; }
         [Required]
-        public string SenderEmail { get; set; }
-        [Required]
         public string Subject { get; set; }
     }
 }

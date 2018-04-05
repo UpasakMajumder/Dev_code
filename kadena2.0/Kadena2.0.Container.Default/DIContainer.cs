@@ -166,6 +166,7 @@ namespace Kadena.Container.Default
             container.Register<IParsingClient, ParsingClient>();
             container.Register<IStatisticsClient, StatisticsClient>();
             container.Register<IExportClient, ExportClient>();
+            container.Register<INotificationClient, NotificationClient>();
             return container;
         }
 
