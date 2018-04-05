@@ -171,6 +171,32 @@ iteratedDocument = iteratedDocument.Parent;
 config.localization.orderDetail = {
 	orderDetailUrl: "/api/orderdetail"
 }
+
+
+config.localization.emailProof = {
+    submitUrl: '/api/mail/proof',
+    notificationSuccess: {
+        title: '{$ Kadena.EmailProof.NotificationSuccess $}',
+        text: '{$ Kadena.EmailProof.NotificationSuccessText $}'
+    },
+    dialog: {
+        title:'{$ Kadena.EmailProof.Title $}',
+        recepientEmailLabel: '{$ Kadena.EmailProof.Email $}',
+        recepientEmailTooltipAdd: '{$ Kadena.EmailProof.ToolTipAdd $}',
+        recepientEmailTooltipRemove: '{$ Kadena.EmailProof.ToolTipRemove $}',
+        senderEmailLabel:'{$ Kadena.EmailProof.Sender $}',
+        subjectLabel: '{$ Kadena.EmailProof.Subject $}',
+        messageLabel: '{$ Kadena.EmailProof.Message $}',
+        proofLabel: '{$ Kadena.EmailProof.Proof $}',
+        submitButtonLabel: '{$ Kadena.EmailProof.Submitbutton $}',
+        cancelButtonLabel: '{$ Kadena.EmailProof.CancelButton $}',
+        note: '{$ Kadena.EmailProof.Note $}',
+        validationMessages: {
+            required: '{$ Kadena.EmailProof.FieldRequired $}',
+            email: '{$ Kadena.EmailProof.MailRequired $}'
+        }
+    }
+}
 ]]>
           </property>
           <property name="inlinescriptpagelocation">Header</property>
