@@ -10,6 +10,7 @@ using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -110,20 +111,23 @@ namespace Kadena.BusinessLogic.Services.Orders
         public virtual async Task<FileResult> GetOrdersExportForSite(string site, OrderFilter filter)
         {
             var orderFilter = CreateOrderListFilter(filter, site);
-            var orders = await orderViewClient.GetOrders(orderFilter);
-            var ordersReport = orders.Payload.Orders.ToList()
+            var ordersDto = await orderViewClient.GetOrders(orderFilter);
+
+            var orders = ordersDto.Payload?.Orders ?? new List<RecentOrderDto>();
+
+            var ordersReport = orders
                 .Select(o => orderReportFactory.Create(o));
             var tableView = orderReportFactory.CreateTableView(ordersReport);
 
             var fileDataTable = mapper.Map<Table>(tableView);
-            var fileData = excelConvert.Convert(fileDataTable);
-
-            return new FileResult
+            var fileResult = new FileResult
             {
-                Data = fileData,
+                Data = excelConvert.Convert(fileDataTable),
                 Name = "export.xlsx",
                 Mime = ContentTypes.Xlsx
             };
+
+            return fileResult;
         }
 
         private OrderListFilter CreateOrderListFilter(OrderFilter filter, string site, int page)

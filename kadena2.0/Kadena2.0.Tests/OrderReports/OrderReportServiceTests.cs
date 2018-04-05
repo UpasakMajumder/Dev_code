@@ -332,6 +332,27 @@ namespace Kadena.Tests.WebApi
         }
 
         [Fact]
+        public async Task GetOrdersExportForSite_ShouldReturnEmptyResult_WhenMicroserviceReturnsNull()
+        {
+            var emptyFileLength = 3;
+            var orders = new BaseResponseDto<OrderListDto>()
+            {
+                Payload = null
+            };
+            var orderViewClient = CreateOrderViewClientReturning(orders);
+            var convert = Mock.Of<IExcelConvert>(ec =>
+                ec.Convert(It.IsAny<Table>()) == new byte[emptyFileLength]);
+            var sut = new OrderReportServiceBuilder()
+                .WithOrderViewClient(orderViewClient)
+                .WithExcelConvert(convert)
+                .Build();
+
+            var result = await sut.GetOrdersExportForSite("test_site", new OrderFilter());
+
+            Assert.Equal(emptyFileLength, result.Data.Length);
+        }
+
+        [Fact]
         public async Task GetOrdersExportForSite_ShouldCreateTableForConversion()
         {
             // expected values to be passed to excelconvert
