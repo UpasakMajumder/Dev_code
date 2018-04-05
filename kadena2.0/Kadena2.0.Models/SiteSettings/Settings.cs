@@ -113,6 +113,15 @@ namespace Kadena.Models.SiteSettings
         public const string KDA_BidRecipientEmailAddress = "KDA_BidRecipientEmailAddress";
 
         /// <summary>
+        /// Base address of microservices. Expected format is https://services.kadena???.com
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("General Site Settings")]
+        [DefaultValueAttribute(@"https://services.kadenastage.com")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6Ik1pY3Jvc2VydmljZXMgYmFzZSBhZGRyZXNzIiwiS2V5TmFtZSI6IktEQV9NaWNyb3NlcnZpY2VzQmFzZUFkZHJlc3MiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjoiaHR0cHM6Ly9zZXJ2aWNlcy5rYWRlbmFzdGFnZS5jb20iLCJLZXlEZXNjcmlwdGlvbiI6IkJhc2UgYWRkcmVzcyBvZiBtaWNyb3NlcnZpY2VzLiBFeHBlY3RlZCBmb3JtYXQgaXMgaHR0cHM6Ly9zZXJ2aWNlcy5rYWRlbmE/Pz8uY29tIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJHZW5lcmFsIFNpdGUgU2V0dGluZ3MifX0=")]
+        public const string KDA_MicroservicesBaseAddress = "KDA_MicroservicesBaseAddress";
+
+        /// <summary>
         /// 
         /// </summary>
         [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]

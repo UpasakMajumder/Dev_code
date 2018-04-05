@@ -24,7 +24,7 @@ namespace Kadena.Dto.Order
         public string TrackingNumber { get; set; }
 
         [DataMember(Name = "totalCost")]
-        public double TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; }
 
         [DataMember(Name = "clientId")]
         public int CustomerId { get; set; }
@@ -34,6 +34,9 @@ namespace Kadena.Dto.Order
 
         [DataMember(Name = "items")]
         public IEnumerable<OrderItemDto> Items { get; set; }
+
+        [DataMember(Name = "statusAmounts")]
+        public Dictionary<int, int> StatusAmounts { get; set; }
 
         [DataMember(Name = "campaign")]
         public CampaignDTO Campaign { get; set; }
