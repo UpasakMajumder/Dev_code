@@ -11,6 +11,7 @@ import { emailRegExp } from 'app.helpers/regexp';
 /* ac */
 import toggleModal from 'app.ac/emailProof';
 /* components */
+import Alert from 'app.dump/Alert';
 import Dialog from 'app.dump/Dialog';
 import TextInput from 'app.dump/Form/TextInput';
 import Textarea from 'app.dump/Form/Textarea';
@@ -18,65 +19,41 @@ import Button from 'app.dump/Button';
 import EmailConfirmation from '../Checkout/EmailConfirmation';
 
 class EmailProof extends Component {
-  constructor() {
-    super();
-    const defaultId = +new Date();
-    this.state = {
-      form: {
-        senderEmail: '',
-        subject: '',
-        message: ''
-      },
-      recipientEmails: {
-        items: [
-          {
-            id: defaultId
-          }
-        ],
-        fields: {
-          [defaultId]: ''
-        }
-      },
-      invalids: [], // { field, message }
-      isPending: false
-    };
+  state = {
+    form: {
+      recepientEmail: '',
+      senderEmail: '',
+      subject: '',
+      message: ''
+    },
+    invalids: [], // { field, message }
+    isPending: false
   }
 
   getInvalids = () => {
     const { required, email } = this.props.dialog.validationMessages;
-    const { senderEmail, subject } = this.state.form;
+    const { recepientEmail, senderEmail, subject } = this.state.form;
 
     const invalids = [];
 
+    // required
     if (!senderEmail) invalids.push({ field: 'senderEmail', message: required });
     if (!subject) invalids.push({ field: 'subject', message: required });
-    if (!senderEmail.match(emailRegExp)) invalids.push({ field: 'senderEmail', message: email });
+    if (!recepientEmail) invalids.push({ field: 'recepientEmail', message: required });
 
-    /* recipientEmails */
-    const values = Object.values(this.state.recipientEmails.fields);
-    const keys = Object.keys(this.state.recipientEmails.fields);
-    const notEmptyFields = values.filter(value => value);
-    // required
-    if (!notEmptyFields.length) invalids.push({ field: keys[0], message: required });
     // email
-    notEmptyFields.forEach((field, index) => {
-      if (!field.match(emailRegExp)) {
-        invalids.push({ field: keys[index], message: email });
-      }
-    });
+    const isRecepientEmailInvalid = recepientEmail.split(',').find(item => !item.trim().match(emailRegExp));
+    if (isRecepientEmailInvalid) invalids.push({ field: 'recepientEmail', message: email });
+
+    const isSenderEmailInvalid = senderEmail.split(',').find(item => !item.trim().match(emailRegExp));
+    if (isSenderEmailInvalid) invalids.push({ field: 'senderEmail', message: email });
 
     this.setState({ invalids });
     return invalids;
   };
 
   getErrorMessage = (field, nestingLevel) => {
-    let invalid = null;
-    if (typeof nestingLevel !== 'undefined') {
-      invalid = this.state.invalids.find(invalid => invalid.field === `${field}-${nestingLevel}`);
-    } else {
-      invalid = this.state.invalids.find(invalid => invalid.field === field);
-    }
-
+    const invalid = this.state.invalids.find(invalid => invalid.field === field);
     if (invalid) return invalid.message;
     return '';
   };
@@ -90,8 +67,7 @@ class EmailProof extends Component {
 
     const body = {
       ...this.state.form,
-      emailProofUrl: this.props.store.emailProofUrl,
-      recipientEmails: Object.values(this.state.recipientEmails.fields).filter(value => value)
+      emailProofUrl: this.props.store.emailProofUrl
     };
 
     try {
@@ -140,57 +116,25 @@ class EmailProof extends Component {
     });
   };
 
-  handleChangeRecipientEmails = action => (id, value) => {
-    let fields = null;
-    let items = null;
-    const newId = +new Date();
-
-    switch (action) {
-    case 'change':
-      fields = { ...this.state.recipientEmails.fields, [id]: value };
-      items = [...this.state.recipientEmails.items];
-      break;
-    case 'add':
-      fields = { ...this.state.recipientEmails.fields, [newId]: '' };
-      items = [...this.state.recipientEmails.items, { id: newId }];
-      break;
-    case 'remove':
-      fields = { ...this.state.recipientEmails.fields };
-      delete fields[id];
-      items = this.state.recipientEmails.items.filter(item => item.id !== id);
-      break;
-    default:
-      fields = { ...this.state.recipientEmails.fields };
-      items = [...this.state.recipientEmails.items];
-      break;
-    }
-
-    this.setState({
-      recipientEmails: {
-        fields,
-        items
-      }
-    });
-  };
-
   render () {
     const { dialog } = this.props;
     const { form } = this.state;
 
     const body = (
-      <div>
-        <EmailConfirmation
-          tooltipText={{ add: dialog.recepientEmailTooltipAdd, remove: dialog.recepientEmailTooltipRemove }}
-          maxItems={Infinity}
-          items={this.state.recipientEmails.items}
-          fields={this.state.recipientEmails.fields}
-          addInput={this.handleChangeRecipientEmails('add')}
-          removeInput={this.handleChangeRecipientEmails('remove')}
-          changeInput={this.handleChangeRecipientEmails('change')}
-          label={dialog.recepientEmailLabel}
-          invalids={this.state.invalids}
-          clearInvalid={this.clearInvalid}
+      <div className="email-proof">
+        <Alert
+          type="info"
+          text={dialog.note}
         />
+
+        <div className="mb-4">
+          <TextInput
+            label={dialog.recepientEmailLabel}
+            error={this.getErrorMessage('recepientEmail')}
+            value={form.recepientEmail}
+            onChange={e => this.handleChange('recepientEmail', e.target.value)}
+          />
+        </div>
 
         <div className="mb-4">
           <TextInput
@@ -210,14 +154,16 @@ class EmailProof extends Component {
           />
         </div>
 
-        <Textarea
-          label={dialog.messageLabel}
-          error={this.getErrorMessage('message')}
-          value={form.message}
-          onChange={e => this.handleChange('message', e.target.value)}
-          rows={4}
-          isOptional={true}
-        />
+        <div className="mb-2">
+          <Textarea
+            label={dialog.messageLabel}
+            error={this.getErrorMessage('message')}
+            value={form.message}
+            onChange={e => this.handleChange('message', e.target.value)}
+            rows={4}
+            isOptional={true}
+          />
+        </div>
 
         <a href={this.props.store.emailProofUrl} target="_blank" className="link">{dialog.proofLabel}</a>
       </div>
@@ -226,21 +172,21 @@ class EmailProof extends Component {
 
     const footer = (
       <div className="btn-group btn-group--right">
-          <Button
-            text={dialog.cancelButtonLabel}
-            type="action"
-            onClick={this.closeDialog}
-            disabled={this.state.isPending}
-          />
+        <Button
+          text={dialog.cancelButtonLabel}
+          type="action"
+          onClick={this.closeDialog}
+          disabled={this.state.isPending}
+        />
 
-          <Button
-            text={dialog.submitButtonLabel}
-            type="action"
-            btnClass="btn-action--secondary"
-            onClick={this.handleSubmit}
-            isLoading={this.state.isPending}
-          />
-        </div>
+        <Button
+          text={dialog.submitButtonLabel}
+          type="action"
+          btnClass="btn-action--secondary"
+          onClick={this.handleSubmit}
+          isLoading={this.state.isPending}
+        />
+      </div>
     );
 
     return (
@@ -276,6 +222,7 @@ class EmailProof extends Component {
       proofLabel: PropTypes.string.isRequired,
       submitButtonLabel: PropTypes.string.isRequired,
       cancelButtonLabel: PropTypes.string.isRequired,
+      note: PropTypes.string.isRequired,
       validationMessages: PropTypes.shape({
         required: PropTypes.string.isRequired,
         email: PropTypes.string.isRequired

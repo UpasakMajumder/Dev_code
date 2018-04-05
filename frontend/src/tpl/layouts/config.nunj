@@ -106,6 +106,7 @@
           proofLabel: 'Click Here to View the Proof',
           submitButtonLabel: 'Submit',
           cancelButtonLabel: 'Cancel',
+          note: 'This is note',
           validationMessages: {
             required: 'Required',
             email: 'Not Email'
