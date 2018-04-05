@@ -22,7 +22,6 @@ class EmailProof extends Component {
   state = {
     form: {
       recepientEmail: '',
-      senderEmail: '',
       subject: '',
       message: ''
     },
@@ -32,12 +31,11 @@ class EmailProof extends Component {
 
   getInvalids = () => {
     const { required, email } = this.props.dialog.validationMessages;
-    const { recepientEmail, senderEmail, subject } = this.state.form;
+    const { recepientEmail, subject } = this.state.form;
 
     const invalids = [];
 
     // required
-    if (!senderEmail) invalids.push({ field: 'senderEmail', message: required });
     if (!subject) invalids.push({ field: 'subject', message: required });
     if (!recepientEmail) invalids.push({ field: 'recepientEmail', message: required });
 
@@ -45,8 +43,6 @@ class EmailProof extends Component {
     const isRecepientEmailInvalid = recepientEmail.split(',').find(item => !item.trim().match(emailRegExp));
     if (isRecepientEmailInvalid) invalids.push({ field: 'recepientEmail', message: email });
 
-    const isSenderEmailInvalid = senderEmail.split(',').find(item => !item.trim().match(emailRegExp));
-    if (isSenderEmailInvalid) invalids.push({ field: 'senderEmail', message: email });
 
     this.setState({ invalids });
     return invalids;
@@ -140,16 +136,6 @@ class EmailProof extends Component {
         <div className="mb-4">
           <TextInput
             maxLength={Infinity}
-            label={dialog.senderEmailLabel}
-            error={this.getErrorMessage('senderEmail')}
-            value={form.senderEmail}
-            onChange={e => this.handleChange('senderEmail', e.target.value)}
-          />
-        </div>
-
-        <div className="mb-4">
-          <TextInput
-            maxLength={Infinity}
             label={dialog.subjectLabel}
             error={this.getErrorMessage('subject')}
             value={form.subject}
@@ -217,9 +203,6 @@ class EmailProof extends Component {
     dialog: PropTypes.shape({
       title: PropTypes.string.isRequired,
       recepientEmailLabel: PropTypes.string.isRequired,
-      recepientEmailTooltipAdd: PropTypes.string.isRequired,
-      recepientEmailTooltipRemove: PropTypes.string.isRequired,
-      senderEmailLabel: PropTypes.string.isRequired,
       subjectLabel: PropTypes.string.isRequired,
       messageLabel: PropTypes.string.isRequired,
       proofLabel: PropTypes.string.isRequired,
