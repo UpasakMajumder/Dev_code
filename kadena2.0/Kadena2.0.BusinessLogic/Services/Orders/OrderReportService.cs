@@ -68,6 +68,12 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             var orderFilter = CreateOrderListFilter(filter, site, page);
             var orders = await orderViewClient.GetOrders(orderFilter);
+
+            if (orders.Payload == null)
+            {
+                return PagedData<OrderReport>.Empty();
+            }
+
             var pagesCount = orders.Payload.TotalCount / OrdersPerPage;
             if (orders.Payload.TotalCount % OrdersPerPage > 0)
             {

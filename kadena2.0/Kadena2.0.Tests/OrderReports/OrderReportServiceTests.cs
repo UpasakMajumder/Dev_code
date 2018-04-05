@@ -157,6 +157,25 @@ namespace Kadena.Tests.WebApi
         }
 
         [Fact]
+        public async Task GetOrdersForSite_ShouldReturnEmptyResult_WhenMicroserviceReturnsNullData()
+        {
+            var orderViewClient = new Mock<IOrderViewClient>();
+            orderViewClient
+                .Setup(ovc => ovc.GetOrders(It.IsAny<OrderListFilter>()))
+                .ReturnsAsync(new BaseResponseDto<OrderListDto>
+                {
+                    Payload = null
+                });
+            var sut = new OrderReportServiceBuilder()
+                .WithOrderViewClient(orderViewClient.Object)
+                .Build();
+
+            var result = await sut.GetOrders(1, new OrderFilter());
+
+            Assert.Empty(result.Data);
+        }
+
+        [Fact]
         public void GetOrdersForSite_ShouldValidateArgumentsAndThrow_WhenInvalidPage()
         {
             var sut = new OrderReportServiceBuilder()
