@@ -50,7 +50,7 @@ namespace Kadena2.MicroserviceClients.Clients
                 filter.ItemsPerPage > 0 ? $"quantity={filter.ItemsPerPage}" : string.Empty
             }.Where(p => p != string.Empty));
 
-            var parameterizedUrl = $"{BaseUrl}/api/Order?{args}";
+            var parameterizedUrl = $"{BaseUrl}/api/order?{args}";
 
             return await Get<OrderListDto>(parameterizedUrl).ConfigureAwait(false);
         }
