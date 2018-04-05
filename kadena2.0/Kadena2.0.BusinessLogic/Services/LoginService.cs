@@ -46,7 +46,7 @@ namespace Kadena.BusinessLogic.Services
                 return CheckTaCResult.GetFailedResult("loginEmail", resources.GetResourceString("Kadena.Logon.LogonFailed"));
             }
 
-            var tacEnabled = resources.GetSettingsKey("KDA_TermsAndConditionsLogin").ToLower() == "true";
+            var tacEnabled = resources.GetSiteSettingsKey<bool>("KDA_TermsAndConditionsLogin");
 
             var showTaC = false;
 
@@ -94,7 +94,7 @@ namespace Kadena.BusinessLogic.Services
                 return GetFailedLoginResult("loginEmail", resources.GetResourceString("Kadena.Logon.LogonFailed"));
             }
 
-            var tacEnabled = resources.GetSettingsKey("KDA_TermsAndConditionsLogin").ToLower() == "true";
+            var tacEnabled = resources.GetSiteSettingsKey<bool>("KDA_TermsAndConditionsLogin");
             if (tacEnabled && !UserHasAcceptedTac(user))
             {
                 return GetFailedLoginResult("loginEmail", resources.GetResourceString("Kadena.Logon.LogonFailed"));
@@ -105,7 +105,7 @@ namespace Kadena.BusinessLogic.Services
 
         private string GetTacPageUrl()
         {
-            var tacAliasPath = resources.GetSettingsKey("KDA_TermsAndConditionPage");
+            var tacAliasPath = resources.GetSiteSettingsKey("KDA_TermsAndConditionPage");
             return documents.GetDocumentUrl(tacAliasPath);
         }
 

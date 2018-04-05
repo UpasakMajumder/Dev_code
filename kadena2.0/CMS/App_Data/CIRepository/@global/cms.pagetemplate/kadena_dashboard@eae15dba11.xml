@@ -215,7 +215,7 @@ config.localization.products = {
           <property name="checkpermissions">True</property>
           <property name="classnames">KDA.Product</property>
           <property name="columns">
-            <![CDATA[DocumentName, NodeAliasPath, DocumentUrlPath, SKUImagePath]]>
+            <![CDATA[DocumentName, NodeAliasPath, DocumentUrlPath, SKUImagePath, ProductImage]]>
           </property>
           <property name="combinewithdefaultculture"></property>
           <property name="container"></property>

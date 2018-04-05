@@ -3,6 +3,7 @@ using CMS.Ecommerce;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.WebAPI.KenticoProviders.Providers;
+using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +16,15 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private readonly IMapper mapper;
         private readonly IShoppingCartProvider shoppingCartProvider;
+        private readonly IKadenaSettings kadenaSettings;
         private readonly IKenticoLocalizationProvider localizationProvider;
-        public KenticoAddressBookProvider(IMapper mapper, IShoppingCartProvider shoppingCartProvider, IKenticoLocalizationProvider localizationProvider)
+        public KenticoAddressBookProvider(IMapper mapper, IShoppingCartProvider shoppingCartProvider, IKadenaSettings kadenaSettings, IKenticoLocalizationProvider localizationProvider)
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.shoppingCartProvider = shoppingCartProvider ?? throw new ArgumentNullException(nameof(shoppingCartProvider));
+            this.kadenaSettings = kadenaSettings ?? throw new ArgumentNullException(nameof(kadenaSettings));
             this.localizationProvider = localizationProvider ?? throw new ArgumentNullException(nameof(localizationProvider));
         }
-
         public void DeleteAddress(int addressID)
         {
             var address = AddressInfoProvider.GetAddressInfo(addressID);
@@ -34,7 +36,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public Dictionary<int, string> GetAddressNames()
         {
-            return AddressInfoProvider.GetAddresses().ToDictionary(x => x.AddressID, x => x.AddressName);
+            return AddressInfoProvider.GetAddresses().ToDictionary(x => x.AddressID, x => x.AddressPersonalName);
         }
 
         public List<DeliveryAddress> GetAddressesByAddressIds(List<int> addressIds)
@@ -112,13 +114,31 @@ namespace Kadena.WebAPI.KenticoProviders
                         ? CustomerInfoProvider.GetCustomerInfo(customerId)
                         : ECommerceContext.CurrentCustomer;
 
-                    info.AddressCustomerID = customer.CustomerID;
-                    info.AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}";
+
+                    if (string.IsNullOrWhiteSpace(info.AddressPersonalName))
+                    {
+                        info.AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}";
+                        if (string.IsNullOrWhiteSpace(info.GetStringValue("CompanyName", string.Empty)))
+                        {
+                            if (customer.CustomerHasCompanyInfo)
+                            {
+                                info.SetValue("CompanyName", customer.CustomerCompany);
+                            }
+                            else
+                            {
+                                info.SetValue("CompanyName", kadenaSettings.DefaultCustomerCompanyName);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        info.SetValue("CompanyName", address.CompanyName);
+                    }
+
                     info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
                     info.SetValue("AddressType", AddressType.Shipping.Code);
-                    info.SetValue("CompanyName", address.CustomerName);
                     info.SetValue("Email", address.Email);
-
+                    info.AddressCustomerID = customer.CustomerID;
                     AddressInfoProvider.SetAddressInfo(info);
                     address.Id = info.AddressID;
                 }

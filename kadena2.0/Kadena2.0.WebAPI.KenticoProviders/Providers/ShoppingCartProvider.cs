@@ -27,22 +27,31 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly IMapper mapper;
         private readonly IShippingEstimationSettings estimationSettings;
         private readonly IKenticoProductsProvider productProvider;
+        private readonly IKenticoLocalizationProvider localization;
 
         private readonly string campaignClassName = "KDA.CampaignsProduct";
         private readonly string CustomTableName = "KDA.UserAllocatedProducts";
 
-        public ShoppingCartProvider(IKenticoResourceService resources, IMapper mapper, IShippingEstimationSettings estimationSettings, IKenticoProductsProvider productProvider)
+        public ShoppingCartProvider(IKenticoResourceService resources, IMapper mapper, IShippingEstimationSettings estimationSettings, IKenticoProductsProvider productProvider
+           , IKenticoLocalizationProvider localization)
         {
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.estimationSettings = estimationSettings ?? throw new ArgumentNullException(nameof(estimationSettings));
             this.productProvider = productProvider ?? throw new ArgumentNullException(nameof(productProvider));
+            this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
         }
 
         public DeliveryAddress GetCurrentCartShippingAddress()
         {
             var address = ECommerceContext.CurrentShoppingCart.ShoppingCartShippingAddress;
-            return mapper.Map<DeliveryAddress>(address);
+            var shippingAddress = mapper.Map<DeliveryAddress>(address);
+            if (shippingAddress != null)
+            {
+                shippingAddress.Country = localization.GetCountries().FirstOrDefault(c => c.Id == shippingAddress.Country.Id);
+                shippingAddress.State = localization.GetStates().FirstOrDefault(c => c.Id == shippingAddress.State.Id);
+            }
+            return shippingAddress;
         }
 
         public DeliveryAddress GetAddress(int addressId)
@@ -62,7 +71,7 @@ namespace Kadena.WebAPI.KenticoProviders
             string countryName = estimationSettings.SenderCountry;
             string stateName = estimationSettings.SenderState;
             int countryId = CountryInfoProvider.GetCountryInfoByCode(countryName).CountryID;
-            int stateId = StateInfoProvider.GetStateInfoByCode(stateName).StateID;
+            var state = localization.GetStates().FirstOrDefault(c => c.StateCode == stateName);
 
             return new BillingAddress()
             {
@@ -71,8 +80,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 Country = countryName,
                 CountryId = countryId,
                 Zip = estimationSettings.SenderPostal,
-                State = stateName,
-                StateId = stateId
+                State = state
             };
         }
 
@@ -228,8 +236,6 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var info = mapper.Map<AddressInfo>(address);
             info.AddressName = "TemporaryAddress";
-            info.AddressPersonalName = "TemporaryAddress";
-            info.AddressID = 0;
             info.AddressCustomerID = customerId;
 
             info.Insert();
@@ -254,7 +260,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return ECommerceContext.CurrentShoppingCart.ShoppingCartShippingOptionID;
         }
 
-      
+
 
         public int GetShoppingCartId(int userId, int siteId)
         {
@@ -290,7 +296,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return ECommerceContext.CurrentShoppingCart.Shipping;
         }
-    
+
         public string UpdateCartQuantity(Distributor distributorData)
         {
             if (distributorData.ItemQuantity < 1)
@@ -445,7 +451,6 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var addresses = AddressInfoProvider.GetAddresses(customerId)
                 .WhereEquals("AddressName", tempName)
-                .WhereEquals("AddressPersonalName", tempName)
                 .ToList();
 
             addresses.ForEach(a => AddressInfoProvider.DeleteAddressInfo(a));
@@ -484,10 +489,10 @@ namespace Kadena.WebAPI.KenticoProviders
                                                 .Sum(x => x.CartItemUnits);
         }
 
-        public int GetStockQuantity(int skuId)
+        public Sku GetSKU(int skuId)
         {
-            var sku = SKUInfoProvider.GetSKUInfo(skuId);
-            return sku?.SKUAvailableItems ?? 0;
+            var skuInfo = SKUInfoProvider.GetSKUInfo(skuId);
+            return mapper.Map<Sku>(skuInfo);
         }
 
         public void RemoveCurrentItemsFromStock(int shoppingCartId = 0)
@@ -510,7 +515,7 @@ namespace Kadena.WebAPI.KenticoProviders
         }
         public int CreateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int userID, int inventoryType = 1)
         {
-            ShippingOptionInfo shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(resources.GetSettingsKey(SiteContext.CurrentSiteID, "KDA_DefaultShipppingOption"), SiteContext.CurrentSiteName);
+            ShippingOptionInfo shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(resources.GetSiteSettingsKey("KDA_DefaultShipppingOption"), SiteContext.CurrentSiteName);
             var customerAddress = AddressInfoProvider.GetAddressInfo(distributorCartItem.DistributorID);
             ShoppingCartInfo cart = new ShoppingCartInfo()
             {

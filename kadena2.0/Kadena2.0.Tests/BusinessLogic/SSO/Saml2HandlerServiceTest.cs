@@ -15,7 +15,7 @@ namespace Kadena.Tests.BusinessLogic.SSO
             var sut = autoMock.CreateInstance<Saml2HandlerService>();
             autoMock
                 .GetMock<IKenticoResourceService>()
-                .Setup(s => s.GetSettingsKey(It.IsAny<string>()))
+                .Setup(s => s.GetSiteSettingsKey(It.IsAny<string>()))
                 .Returns("SettingKeyValue");
 
             var actualResult = sut.GetTokenHandler();

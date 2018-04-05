@@ -23,8 +23,8 @@
           <rule errormsg="Brand Name should be at least 1 character">
             <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
           </rule>
-          <rule errormsg="Brand Name should not be more than 20 character">
-            <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)2a2f4705cdec2abbbe1cb46f9a1b25ee25f87cf5beb950f79eedfab3d39719de%}]]>
+          <rule errormsg="{$Kadena.Brand.BrandNameMax50Error$}">
+            <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)twe_admin|(hash)aa1c47be6b3b102cfcfc7f2030088b8ec4ce41821d64f9001bbde9bc64e2bd2a%}]]>
           </rule>
         </rules>
       </field>

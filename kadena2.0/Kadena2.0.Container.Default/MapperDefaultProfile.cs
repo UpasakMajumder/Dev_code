@@ -15,6 +15,7 @@ using Kadena.Dto.MailingList;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Dto.MailTemplate.Responses;
 using Kadena.Dto.Order;
+using Kadena.Dto.Order.Failed;
 using Kadena.Dto.Product;
 using Kadena.Dto.Product.Responses;
 using Kadena.Dto.RecentOrders;
@@ -39,6 +40,7 @@ using Kadena.Models.CustomerData;
 using Kadena.Models.Login;
 using Kadena.Models.Membership;
 using Kadena.Models.OrderDetail;
+using Kadena.Models.Orders.Failed;
 using Kadena.Models.Product;
 using Kadena.Models.RecentOrders;
 using Kadena.Models.Search;
@@ -67,7 +69,8 @@ namespace Kadena.Container.Default
             CreateMap<CartItem, OrderItemDTO>()
                 .ForMember(dest => dest.SKU, opt => opt.MapFrom(src => src))
                 .ForMember(dest => dest.UnitCount, opt => opt.MapFrom(src => src.Quantity))
-                .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src => src.Options.ToDictionary(i => i.Name, i => i.Value)));
+                .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src => src.Options.ToDictionary(i => i.Name, i => i.Value)))
+                .ForMember(dest => dest.DesignFileKey, opt => opt.MapFrom(src => src.Artwork));
 
             CreateMap<CustomerData, CustomerDataDTO>();
             CreateMap<CustomerAddress, CustomerAddressDTO>();
@@ -92,6 +95,7 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id));
 
             CreateMap<DeliveryAddressDTO, DeliveryAddress>()
+                .ForMember(dest => dest.AddressPersonalName, opt => opt.MapFrom(src => src.CustomerName))
                 .ForMember(dest => dest.Country, opt =>
                 {
                     opt.MapFrom(src => src);
@@ -118,6 +122,7 @@ namespace Kadena.Container.Default
             CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
             CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
             CreateMap<DeliveryAddress, Dto.Settings.AddressDto>()
+                .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.AddressPersonalName))
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Id));
             CreateMap<Dto.Settings.AddressDto, Country>()
@@ -125,6 +130,7 @@ namespace Kadena.Container.Default
             CreateMap<Dto.Settings.AddressDto, State>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.State));
             CreateMap<Dto.Settings.AddressDto, DeliveryAddress>()
+                .ForMember(dest => dest.AddressPersonalName, opt => opt.MapFrom(src => src.CustomerName))
                 .ForMember(dest => dest.State, opt =>
                 {
                     opt.MapFrom(src => src);
@@ -168,7 +174,7 @@ namespace Kadena.Container.Default
             CreateMap<ResultItemPage, AutocompletePage>();
             CreateMap<Pagination, PaginationDto>();
             CreateMap<OrderHead, OrderHeadDto>();
-            CreateMap<Kadena.Dto.Order.OrderItemDto, CartItem>()
+            CreateMap<Dto.Order.OrderItemDto, CartItem>()
                 .ProjectUsing(s => new CartItem { SKUName = s.Name, Quantity = s.Quantity });
             CreateMap<RecentOrderDto, Order>();
             CreateMap<OrderListDto, OrderList>();
@@ -234,7 +240,30 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.AddressLine1))
                 .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.AddressLine2))
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src))
-                .ForMember(dest => dest.Country, opt => opt.Ignore());
+                .ForMember(dest => dest.Country, opt => opt.Ignore())
+                .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.AddressCompanyName));
+            CreateMap<DeliveryAddress, AddressDTO>()
+                .ForMember(dest => dest.AddressLine1, opt => opt.MapFrom(src => src.Address1))
+                .ForMember(dest => dest.AddressLine2, opt => opt.MapFrom(src => src.Address2))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
+                .ForMember(dest => dest.KenticoCountryID, opt => opt.MapFrom(src => src.Country.Id))
+                .ForMember(dest => dest.isoCountryCode, opt => opt.MapFrom(src => src.Country.Code))
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name))
+                .ForMember(dest => dest.AddressCompanyName, opt => opt.MapFrom(src => src.CompanyName))
+                .ForMember(dest => dest.KenticoAddressID, opt => opt.MapFrom(src => src.Id))
+                .AfterMap((src, dest) =>
+                {
+                    if (src.State != null)
+                    {
+                        dest.State = !string.IsNullOrEmpty(src.State.StateCode) ? src.State.StateCode : src.Country.Name;
+                        dest.StateDisplayName = src.State.StateDisplayName;
+                        dest.KenticoStateID = src.State.Id;
+                    }
+                    else
+                    {
+                        dest.State = src.Country.Name;
+                    }
+                });
             CreateMap<DeliveryAddress, Dto.ViewOrder.Responses.AddressDto>()
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.StateDisplayName))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name));
@@ -255,6 +284,9 @@ namespace Kadena.Container.Default
             CreateMap<OrderDialogTable, OrderDialogTableDto>();
             CreateMap<OrderTableCell, OrderTableCellDto>();
             CreateMap<OrderDialogTableCell, OrderDialogTableCellDto>();
+
+            CreateMap<FailedOrder, FailedOrderDto>();
+
             CreateMap<DistributorDTO, Distributor>();
             CreateMap<string, CreditCardPaymentDoneDto>()
                 .ForMember(dest => dest.RedirectionURL, opt => opt.MapFrom(src => src));

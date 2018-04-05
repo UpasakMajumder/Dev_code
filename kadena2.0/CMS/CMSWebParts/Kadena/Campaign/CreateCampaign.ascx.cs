@@ -63,7 +63,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             rqFiscalYear.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.FiscalYearErrorMessage");
             ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
             ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
-            folderpath = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_CampaignFolderPath");  
+            folderpath = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey("KDA_CampaignFolderPath");  
             if (Request.QueryString["ID"] != null)
             {
                 btnSave.Click += btnSave_Edit;
@@ -188,7 +188,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
         try
         {
             var editPage = DIContainer.Resolve<IKenticoCampaignsProvider>().GetCampaign(_campaignId);
-            string gAdminRoleName = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey(CurrentSite.SiteID, "KDA_GlobalAminRoleName");
+            string gAdminRoleName = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey("KDA_GlobalAminRoleName");
             if (editPage != null)
             {
                 Name.Text = editPage.GetValue("Name").ToString();
@@ -244,7 +244,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
     {
         try
         {
-            string templteName = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey("KDA_CampaignProductsTemplateName");
+            string templteName = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey("KDA_CampaignProductsTemplateName");
             var pageTemplateInfo = PageTemplateInfoProvider.GetPageTemplateInfo(templteName);
             if (!DataHelper.DataSourceIsEmpty(pageTemplateInfo))
                 return pageTemplateInfo.PageTemplateId;

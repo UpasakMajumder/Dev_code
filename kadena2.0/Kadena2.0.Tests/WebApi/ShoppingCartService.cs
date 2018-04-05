@@ -95,7 +95,7 @@ namespace Kadena.Tests.WebApi
                 .Returns("You have {0} {1} in cart");
             kenticoResource.Setup(m => m.GetResourceString("Kadena.Checkout.ItemSingular"))
                 .Returns("item");
-            kenticoResource.Setup(m => m.GetSettingsKey("KDA_AddressDefaultCountry"))
+            kenticoResource.Setup(m => m.GetSiteSettingsKey("KDA_AddressDefaultCountry"))
                 .Returns("0");
 
             var checkoutFactory = autoMocker.CreateInstance<CheckoutPageFactory>();

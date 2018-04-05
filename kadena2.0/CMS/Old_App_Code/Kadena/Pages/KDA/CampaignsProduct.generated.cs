@@ -71,6 +71,23 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
         /// <summary>
+        /// Assigned to product page (per language version).
+        /// </summary>
+        [DatabaseField]
+        public string ProductImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("ProductImage"), "");
+            }
+            set
+            {
+                SetValue("ProductImage", value);
+            }
+        }
+
+
+        /// <summary>
         /// Estimated Price.
         /// </summary>
         [DatabaseField]
@@ -292,23 +309,6 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
         /// <summary>
-        /// Thumbnail.
-        /// </summary>
-        [DatabaseField]
-        public Guid ProductThumbnail
-        {
-            get
-            {
-                return ValidationHelper.GetGuid(GetValue("ProductThumbnail"), Guid.Empty);
-            }
-            set
-            {
-                SetValue("ProductThumbnail", value);
-            }
-        }
-
-
-        /// <summary>
         /// Gets an object that provides extended API for working with CampaignsProduct fields.
         /// </summary>
         [RegisterProperty]
@@ -367,6 +367,22 @@ namespace CMS.DocumentEngine.Types.KDA
                 set
                 {
                     mInstance.CampaignsProductID = value;
+                }
+            }
+
+
+            /// <summary>
+            /// Assigned to product page (per language version).
+            /// </summary>
+            public string ProductImage
+            {
+                get
+                {
+                    return mInstance.ProductImage;
+                }
+                set
+                {
+                    mInstance.ProductImage = value;
                 }
             }
 
@@ -577,18 +593,6 @@ namespace CMS.DocumentEngine.Types.KDA
                     mInstance.CustomItemSpecs = value;
                 }
             }
-
-
-            /// <summary>
-            /// Thumbnail.
-            /// </summary>
-            public Attachment ProductThumbnail
-            {
-                get
-                {
-                    return mInstance.GetFieldAttachment("ProductThumbnail");
-                }
-            }
         }
 
 
@@ -685,6 +689,8 @@ namespace CMS.DocumentEngine.Types.KDA
                     }
                 }
             }
+
+
             /// <summary>
             /// Allows you to specify the POS number. You can use this as a Product customer reference number
             /// </summary>
@@ -692,7 +698,7 @@ namespace CMS.DocumentEngine.Types.KDA
             {
                 get
                 {
-                    return (SKU != null) ? SKU.GetValue("SKUProductCustomerReferenceNumber", string.Empty) :"";
+                    return (SKU != null) ? SKU.GetValue("SKUProductCustomerReferenceNumber", string.Empty) : "";
                 }
                 set
                 {
@@ -702,6 +708,7 @@ namespace CMS.DocumentEngine.Types.KDA
                     }
                 }
             }
+
 
             /// <summary>
             /// Package weight.
@@ -919,6 +926,30 @@ namespace CMS.DocumentEngine.Types.KDA
                 set
                 {
                     mInstance.DocumentSKUShortDescription = value;
+                }
+            }
+
+
+            /// <summary>
+            /// Customer reference number.
+            /// </summary>
+            public string ProductCustomerReferenceNumber
+            {
+                get
+                {
+                    if (SKU == null)
+                    {
+                        return "";
+                    }
+
+                    return ValidationHelper.GetString(SKU.GetValue("SKUProductCustomerReferenceNumber"), "");
+                }
+                set
+                {
+                    if (SKU != null)
+                    {
+                        SKU.SetValue("SKUProductCustomerReferenceNumber", value);
+                    }
                 }
             }
         }

@@ -32,7 +32,7 @@ namespace Kadena.BusinessLogic.Factories
             {
                 if (string.IsNullOrWhiteSpace(_orderDetailUrl))
                 {
-                    var defaultUrl = kenticoResources.GetSettingsKey(Settings.KDA_OrderDetailUrl);
+                    var defaultUrl = kenticoResources.GetSiteSettingsKey(Settings.KDA_OrderDetailUrl);
                     _orderDetailUrl = kenticoDocumentProvider.GetDocumentUrl(defaultUrl);
                 }
                 return _orderDetailUrl;

@@ -1,21 +1,16 @@
 ﻿using CMS.DocumentEngine;
-using CMS.Ecommerce;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
-using Kadena.Models;
 using Kadena.Models.Product;
 using System.IO;
 using System.Web.UI;
-using System;
 
 namespace Kadena.CMSWebParts.Kadena.Product
 {
     public partial class AddToCartButton : CMSAbstractWebPart
     {
         private TreeNode _productDocument;
-
-        #region Public methods
 
         public override void OnContentLoaded()
         {
@@ -32,11 +27,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
             SetupDocument();
             SetupQuantity();
-            
-            if (IsProductInventoryType() && IsStockEmpty())
-            {
-                this.Visible = false;
-            }
 
             if (IsProductTemplatedType())
             {
@@ -73,10 +63,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
             }
         }
 
-        #endregion
-
-        #region Private methods
-
         private static string GetHiddenInput(string name, string value)
         {
             using (var stringWriter = new StringWriter())
@@ -94,44 +80,16 @@ namespace Kadena.CMSWebParts.Kadena.Product
             }
         }
 
-        private bool IsStockEmpty()
-        {
-            if (_productDocument.GetValue("SKUAvailableItems") != null)
-            {
-                return (int)_productDocument.GetValue("SKUAvailableItems") == 0;
-            }
-
-            return true;
-        }
-
-        private bool IsProductInventoryType()
-        {
-            if (_productDocument.GetValue("ProductType") != null)
-            {
-                return _productDocument.GetStringValue("ProductType", string.Empty).Contains(ProductTypes.InventoryProduct);
-            }
-
-            return false;
-        }
-
         private bool IsProductMailingType()
         {
-            if (_productDocument.GetValue("ProductType") != null)
-            {
-                return _productDocument.GetStringValue("ProductType", string.Empty).Contains(ProductTypes.MailingProduct);
-            }
-
-            return false;
+            var productType = _productDocument.GetStringValue("ProductType", string.Empty);
+            return ProductTypes.IsOfType(ProductTypes.MailingProduct, productType);
         }
 
         private bool IsProductTemplatedType()
         {
-            if (_productDocument.GetValue("ProductType") != null)
-            {
-                return _productDocument.GetStringValue("ProductType", string.Empty).Contains(ProductTypes.TemplatedProduct);
-            }
-
-            return false;
+            var productType = _productDocument.GetStringValue("ProductType", string.Empty);
+            return ProductTypes.IsOfType(ProductTypes.TemplatedProduct, productType);
         }
 
         private void SetupDocument()
@@ -147,6 +105,5 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     new TreeProvider(MembershipContext.AuthenticatedUser));
             }
         }
-        #endregion
     }
 }

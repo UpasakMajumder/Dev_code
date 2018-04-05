@@ -135,7 +135,7 @@ namespace Kadena.Tests.OrderReports
         {
             var detailUrlBase = "test.com/product";
             var resources = Mock.Of<IKenticoResourceService>(res
-                => res.GetSettingsKey(Settings.KDA_OrderDetailUrl) == detailUrlBase);
+                => res.GetSiteSettingsKey(Settings.KDA_OrderDetailUrl) == detailUrlBase);
             var documents = Mock.Of<IKenticoDocumentProvider>(doc
                 => doc.GetDocumentUrl(It.IsAny<string>(), It.IsAny<bool>()) == detailUrlBase);
 
