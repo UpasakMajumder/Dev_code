@@ -478,7 +478,7 @@
     <Compile Include="BusinessLogic\RoleServiceTests.cs" />
     <Compile Include="Deployment\AutomatedXunitTests.cs" />
     <Compile Include="EventHandlers\ProductEventHandlerTests.cs" />
-    <Compile Include="Infrastructure\AutomockMapperRegistrationTest.cs" />
+    <Compile Include="Infrastructure\MapperResolvingTest.cs" />
     <Compile Include="Infrastructure\KenticoProvidersResolvingTest.cs" />
     <Compile Include="Infrastructure\MicroserviceClientsResolvingTest.cs" />
     <Compile Include="Infrastructure\BusinessLogicResolvingTest.cs" />
