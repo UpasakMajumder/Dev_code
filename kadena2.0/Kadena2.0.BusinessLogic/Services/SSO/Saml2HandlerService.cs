@@ -28,8 +28,8 @@ namespace Kadena.BusinessLogic.Services.SSO
 
         public Saml2SecurityTokenHandler GetTokenHandler()
         {
-            var thumbprint = kenticoResource.GetSettingsKey(Settings.KDA_TrustedCertificateThumbprint);
-            var allowedAudienceUri = kenticoResource.GetSettingsKey(Settings.KDA_AllowedAudienceUri);
+            var thumbprint = kenticoResource.GetSiteSettingsKey(Settings.KDA_TrustedCertificateThumbprint);
+            var allowedAudienceUri = kenticoResource.GetSiteSettingsKey(Settings.KDA_AllowedAudienceUri);
 
             var issuer = new ConfigurationBasedIssuerNameRegistry();
             issuer.AddTrustedIssuer(thumbprint, "IdPIssuer");

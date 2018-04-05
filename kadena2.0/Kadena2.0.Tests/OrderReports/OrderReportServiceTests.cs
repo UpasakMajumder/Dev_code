@@ -63,7 +63,7 @@ namespace Kadena.Tests.WebApi
         public void Service_ShouldLoadPagingSettings_WhenConfigured()
         {
             var resources = Mock.Of<IKenticoResourceService>(
-                res => res.GetSettingsKey(Settings.KDA_RecentOrdersPageCapacity) == "15"
+                res => res.GetSiteSettingsKey(Settings.KDA_RecentOrdersPageCapacity) == "15"
             );
             var sut = new OrderReportServiceBuilder()
                 .WithResources(resources)

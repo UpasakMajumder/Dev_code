@@ -160,9 +160,9 @@ namespace Kadena.Tests.WebApi
             itemsProvider.Setup(ip => ip.GetOrCreateCartItem(newCartItem))
                 .Returns(originalCartItemEntity);
             var cartProvider = autoMocker.GetMock<IShoppingCartProvider>();
-            cartProvider.Setup(cp => cp.GetStockQuantity(originalCartItemEntity.SKUID))
-                .Returns(100);
-
+            cartProvider.Setup(cp => cp.GetSKU(originalCartItemEntity.SKUID))
+                .Returns(new Sku { AvailableItems = 100 });
+            
             var sut = autoMocker.CreateInstance<ShoppingCartService>();
 
             // Act
@@ -197,8 +197,8 @@ namespace Kadena.Tests.WebApi
             itemsProvider.Setup(ip => ip.GetOrCreateCartItem(newCartItem))
                 .Returns(originalCartItemEntity);
             var cartProvider = autoMocker.GetMock<IShoppingCartProvider>();
-            cartProvider.Setup(cp => cp.GetStockQuantity(originalCartItemEntity.SKUID))
-                .Returns(1);
+            cartProvider.Setup(cp => cp.GetSKU(originalCartItemEntity.SKUID))
+                .Returns(new Sku { AvailableItems = 1, SellOnlyIfAvailable = true});
 
             var sut = autoMocker.CreateInstance<ShoppingCartService>();
 
@@ -207,6 +207,36 @@ namespace Kadena.Tests.WebApi
 
             // Assert
             await Assert.ThrowsAsync<ArgumentException>(async () => await result);
+        }
+
+        [Fact]
+        public async Task AddToCart_InventoryProduct_OutOfStock_DontCheckForAvailability()
+        {
+            // Arrange 
+            var newCartItem = CreateNewCartItem();
+
+            var originalCartItemEntity = new CartItemEntity
+            {
+                CartItemText = Name,
+                ProductType = ProductTypes.InventoryProduct,
+                SKUUnits = 3
+            };
+
+            var autoMocker = new AutoMocker();
+            var itemsProvider = autoMocker.GetMock<IShoppingCartItemsProvider>();
+            itemsProvider.Setup(ip => ip.GetOrCreateCartItem(newCartItem))
+                .Returns(originalCartItemEntity);
+            var cartProvider = autoMocker.GetMock<IShoppingCartProvider>();
+            cartProvider.Setup(cp => cp.GetSKU(originalCartItemEntity.SKUID))
+                .Returns(new Sku { AvailableItems = 1, SellOnlyIfAvailable = false });
+
+            var sut = autoMocker.CreateInstance<ShoppingCartService>();
+
+            // Act
+            var result = await sut.AddToCart(newCartItem);
+
+            // Assert
+            Assert.NotNull(result);
         }
 
         [Fact]

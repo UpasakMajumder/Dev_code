@@ -27,7 +27,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
         public SubmitOrderResult PayByCard3dsi()
         {
-            var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
+            var insertCardUrl = resources.GetSiteSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
 
             return new SubmitOrderResult
             {

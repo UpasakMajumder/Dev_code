@@ -37,7 +37,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 if (string.IsNullOrWhiteSpace(_orderDetailUrl))
                 {
-                    var defaultUrl = _kenticoResources.GetSettingsKey(Settings.KDA_OrderDetailUrl);
+                    var defaultUrl = _kenticoResources.GetSiteSettingsKey(Settings.KDA_OrderDetailUrl);
                     _orderDetailUrl = _documents.GetDocumentUrl(defaultUrl);
                 }
                 return _orderDetailUrl;
@@ -58,7 +58,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             set
             {
                 _pageCapacityKey = value;
-                string settingValue = _kenticoResources?.GetSettingsKey(_pageCapacityKey);
+                string settingValue = _kenticoResources?.GetSiteSettingsKey(_pageCapacityKey);
                 _pageCapacity = int.Parse(string.IsNullOrWhiteSpace(settingValue) ? "5" : settingValue);
             }
         }

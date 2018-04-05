@@ -100,7 +100,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var creditCardMethod = methods.Items.FirstOrDefault(pm => pm.ClassName == "KDA.PaymentMethods.CreditCard");
 
-            if (creditCardMethod != null && resources.GetSettingsKey("KDA_CreditCard_EnableSaveCard").ToLower() == "true")
+            if (creditCardMethod != null && resources.GetSiteSettingsKey<bool>("KDA_CreditCard_EnableSaveCard"))
             {
                 var storedCardsResult = await userDataClient.GetValidCardTokens(userId);
 
@@ -447,26 +447,36 @@ namespace Kadena.BusinessLogic.Services
 
         private void EnsureInventoryAmount(CartItemEntity item, int addedQuantity, int resultedQuantity)
         {
-            var availableQuantity = shoppingCart.GetStockQuantity(item.SKUID);
+            var sku = shoppingCart.GetSKU(item.SKUID);
 
-            if (addedQuantity > availableQuantity)
+            if (sku == null)
             {
-                throw new ArgumentException(resources.GetResourceString("Kadena.Product.LowerNumberOfAvailableProducts"));
+                throw new ArgumentException($"Unable to find SKU {item.SKUID}");
             }
-            
-            if (resultedQuantity > availableQuantity)
-            {
-                var errorText = string.Format(resources.GetResourceString("Kadena.Product.ItemsInCartExceeded"),
-                                              resultedQuantity - addedQuantity,
-                                              availableQuantity - resultedQuantity + addedQuantity);
 
-                throw new ArgumentException(errorText);
+            if (sku.SellOnlyIfAvailable)
+            {
+                var availableQuantity = sku.AvailableItems;
+
+                if (addedQuantity > availableQuantity)
+                {
+                    throw new ArgumentException(resources.GetResourceString("Kadena.Product.LowerNumberOfAvailableProducts"));
+                }
+
+                if (resultedQuantity > availableQuantity)
+                {
+                    var errorText = string.Format(resources.GetResourceString("Kadena.Product.ItemsInCartExceeded"),
+                                                  resultedQuantity - addedQuantity,
+                                                  availableQuantity - resultedQuantity + addedQuantity);
+
+                    throw new ArgumentException(errorText);
+                }
             }
         }
 
         private bool GetOtherAddressSettingsValue()
         {
-            var settingsKey = resources.GetSettingsKey("KDA_AllowCustomShippingAddress");
+            var settingsKey = resources.GetSiteSettingsKey("KDA_AllowCustomShippingAddress");
             bool otherAddressAvailable = false;
             bool.TryParse(settingsKey, out otherAddressAvailable);
             return otherAddressAvailable;

@@ -9,9 +9,9 @@
         string CheckoutPageUrl { get; }
         string ErpCustomerId { get; }
         string OrderNotificationEmail { get; }
-        bool FTPArtworkEnabled(string siteName);
-        string FTPArtworkUrl(string siteName);
-        string FTPArtworkUsername(string siteName);
-        string FTPArtworkPassword(string siteName);
+        bool FTPArtworkEnabled(int siteId);
+        string FTPArtworkUrl(int siteId);
+        string FTPArtworkUsername(int siteId);
+        string FTPArtworkPassword(int siteId);
     }
 }

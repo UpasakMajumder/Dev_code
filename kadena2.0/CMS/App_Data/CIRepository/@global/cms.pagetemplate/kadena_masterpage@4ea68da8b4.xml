@@ -1609,7 +1609,7 @@ config.localization.languages = {
           <property name="text">
 <![CDATA[
 <div class="product-view__preview js-product-preview js-collapse">
-  <img src="" data-src="{% SKUImagePath %}" alt="{% DocumentName %}" class="js-product-preview-image">
+  <img src="" data-src="{% ProductImage %}" alt="{% DocumentName %}" class="js-product-preview-image">
   <div class="product-view__preview-wrapper js-toggle"></div>
 </div>
 ]]>
@@ -1617,7 +1617,7 @@ config.localization.languages = {
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% !String.IsNullOrWhiteSpace(SKUImagePath) |(user)tomas.rucki@actum.cz|(hash)82858d5aaf9e1aba69bc8bd39d33c97dae440db45e26dd1ca6f045f656a19e02%}]]>
+            <![CDATA[{% !String.IsNullOrWhiteSpace(ProductImage) |(user)rostyslav.diachenko@actum.cz|(hash)515c926b7c4efa6fc67410b245417088853f12bd746e9ee77435c2a8fb4ec9cc%}]]>
           </property>
           <property name="webparttitle">Product large image</property>
           <property name="webparttype">statictext</property>

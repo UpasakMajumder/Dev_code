@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
+using System.Data;
 
 namespace Kadena.CMSWebParts.Kadena.Product
 {
@@ -114,6 +115,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             folderpath = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductFolderPath", CurrentSiteName);
             libraryFolderName = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductImageFolderName", CurrentSiteName);
             compareDate.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ExpiryDaterangeMessage");
+            rfvPosCategory.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ProductCategoryErrorMessage");
         }
         #endregion WebpartSetupMethods
 
@@ -368,6 +370,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 if (productImage.HasFile)
                 {
                     imagePath = UploadImage.UploadImageToMeadiaLibrary(productImage, libraryFolderName);
+                    products.ProductImage = ValidationHelper.GetString(imagePath, string.Empty);
                 }
                 SKUInfo newSkuProduct = new SKUInfo()
                 {
@@ -377,7 +380,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     SKUPrice = ValidationHelper.GetDouble(txtActualPrice.Text, default(double)),
                     SKUEnabled = ValidationHelper.GetBoolean(ddlStatus.SelectedValue, false),
                     SKUAvailableItems = ValidationHelper.GetInteger(txtQuantity.Text, 0),
-                    SKUImagePath = ValidationHelper.GetString(imagePath, string.Empty),
                     SKUSiteID = CurrentSite.SiteID,
                     SKUProductType = SKUProductTypeEnum.EProduct,
                     SKUWeight = ValidationHelper.GetDouble(txtWeight.Text, default(double))
@@ -427,17 +429,17 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 product.EstimatedPrice = ValidationHelper.GetInteger(txtEstPrice.Text, default(int));
                 product.ProductName = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
                 product.State = ValidationHelper.GetInteger(ddlState.SelectedValue, default(int));
-                SKUInfo updateProduct = SKUInfoProvider.GetSKUs().WhereEquals("SKUID", product.NodeSKUID).FirstObject;
+                if (productImage.HasFile)
+                {
+                    if (product.ProductImage != string.Empty)
+                    {
+                        UploadImage.DeleteImage(product.ProductImage, libraryFolderName);
+                    }
+                    product.ProductImage = UploadImage.UploadImageToMeadiaLibrary(productImage, libraryFolderName);
+                }
+                SKUInfo updateProduct = SKUInfoProvider.GetSKUInfo(product.NodeSKUID);
                 if (updateProduct != null)
                 {
-                    if (productImage.HasFile)
-                    {
-                        if (updateProduct.SKUImagePath != string.Empty)
-                        {
-                            UploadImage.DeleteImage(updateProduct.SKUImagePath, libraryFolderName);
-                        }
-                        updateProduct.SKUImagePath = UploadImage.UploadImageToMeadiaLibrary(productImage, libraryFolderName);
-                    }
                     updateProduct.SKUName = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
                     updateProduct.SKUShortDescription = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
                     updateProduct.SKUDescription = ValidationHelper.GetString(txtLongDes.Text, string.Empty);
@@ -490,22 +492,25 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "InventoryProducts";
                             txtLongDes.Text = skuDetails.SKUDescription;
                             txtEstPrice.Text = ValidationHelper.GetString(product.EstimatedPrice, string.Empty);
-                            ddlPosNo.Items.Add(new ListItem(ValidationHelper.GetString(skuDetails.GetValue("SKUProductCustomerReferenceNumber", string.Empty), string.Empty), ValidationHelper.GetString(skuDetails.GetValue("SKUProductCustomerReferenceNumber", string.Empty), string.Empty)));
+                            ddlPosNo.SelectedValue = skuDetails.GetValue("SKUProductCustomerReferenceNumber", string.Empty) ?? "0";
+                            ddlPosCategory.SelectedValue = GetPosCategory(ddlPosNo.SelectedValue);
+                            ddlPosCategory.Enabled = false;
                             ddlPosNo.Enabled = false;
                             txtShortDes.Text = skuDetails.SKUName;
                             txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
                             ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
-                            imgProduct.ImageUrl = ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty);
+                            imgProduct.ImageUrl = ValidationHelper.GetString(product.ProductImage, string.Empty);
                             imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
-                            if(skuDetails.SKUValidUntil!=DateTime.MinValue)
+                            if (skuDetails.SKUValidUntil != DateTime.MinValue)
                             {
-                              txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToShortDateString(), string.Empty);
+                                txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil.ToShortDateString(), string.Empty);
                             }
                             txtQuantity.Text = ValidationHelper.GetString(skuDetails.SKUAvailableItems, string.Empty);
                             txtWeight.Text = ValidationHelper.GetString(skuDetails.SKUWeight, string.Empty);
                         }
                         txtBundleQnt.Text = ValidationHelper.GetString(product.QtyPerPack, string.Empty);
                         ddlBrand.SelectedValue = ValidationHelper.GetString(product.BrandID, string.Empty);
+                        ddlBrand.Enabled = false;
                         ddlState.SelectedValue = ValidationHelper.GetString(product.State, string.Empty);
                         ddlProdCategory.SelectedValue = ValidationHelper.GetString(product.CategoryID, string.Empty);
                         BindEditProduct(ValidationHelper.GetInteger(product.CampaignsProductID, 0));
@@ -644,6 +649,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 GetBrandName();
                 BindCategories();
                 GetStateGroup();
+                BindPosCategory();
+                GetPos(ddlBrand.SelectedValue, ddlPosCategory.SelectedValue);
             }
             catch (Exception ex)
             {
@@ -757,53 +764,35 @@ namespace Kadena.CMSWebParts.Kadena.Product
             try
             {
                 string selectedPos = ddlPosNo.SelectedValue;
-                BindData();
-                SKUInfo skuDetails = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", selectedPos).FirstObject;
+                SKUInfo skuDetails = SKUInfoProvider.GetSKUs().WhereEquals("SKUProductCustomerReferenceNumber", selectedPos).FirstObject;
                 if (skuDetails != null)
                 {
                     string folderName = libraryFolderName;
                     folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
                     txtLongDes.Text = skuDetails.SKUDescription;
-                    txtEstPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
-                    ddlPosNo.SelectedValue = ValidationHelper.GetString(skuDetails.SKUNumber, string.Empty);
                     txtShortDes.Text = skuDetails.SKUName;
                     txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
                     ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
-                    imgProduct.ImageUrl = ValidationHelper.GetString(skuDetails.SKUImagePath, string.Empty);
                     imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
-                    txtExpDate.Text = ValidationHelper.GetString(skuDetails.SKUValidUntil, string.Empty);
                     txtQuantity.Text = ValidationHelper.GetString(skuDetails.SKUAvailableItems, string.Empty);
                     txtWeight.Text = ValidationHelper.GetString(skuDetails.SKUWeight, string.Empty);
                     CampaignsProduct product = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", skuDetails.SKUID).FirstObject;
                     if (product != null)
                     {
+                        imgProduct.ImageUrl = ValidationHelper.GetString(product.ProductImage, string.Empty);
                         txtBundleQnt.Text = ValidationHelper.GetString(product.QtyPerPack, string.Empty);
                         ddlBrand.SelectedValue = ValidationHelper.GetString(product.BrandID, string.Empty);
                         ddlState.SelectedValue = ValidationHelper.GetString(product.State, string.Empty);
                         ddlProdCategory.SelectedValue = ValidationHelper.GetString(product.CategoryID, string.Empty);
                         BindEditProduct(ValidationHelper.GetInteger(product.CampaignsProductID, 0));
-                        ViewState["ProductId"] = product.CampaignsProductID;
+                        txtEstPrice.Text = ValidationHelper.GetString(product.EstimatedPrice, string.Empty);
+                        ViewState["ProductId"] = null;
                     }
                 }
                 else
                 {
                     ViewState["ProductId"] = null;
-                    EmptyFields(false);
-                    var pos = CustomTableItemProvider.GetItems(POSNumberItem.CLASS_NAME)
-                        .WhereEquals("POSNumber", selectedPos)
-                         .FirstOrDefault();
-                    if (pos != null && pos.GetValue("BrandID") != null)
-                    {
-                        var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
-                       .WhereEquals("BrandCode", pos.GetValue("BrandID"))
-                       .FirstOrDefault();
-                        if (brand != null)
-                        {
-                            ddlBrand.SelectedValue = brand.GetValue("ItemId").ToString();
-                        }
-                    }
                 }
-
                 ddlPosNo.SelectedValue = selectedPos;
             }
             catch (Exception ex)
@@ -811,6 +800,121 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 EventLogProvider.LogException("CMSWebParts_Kadena_Inventory_porduct_POSchanged", "BindCategories", ex, CurrentSite.SiteID, ex.Message);
             }
         }
+
+        public void BindPosCategory()
+        {
+            try
+            {
+                var posCategories = CustomTableItemProvider.GetItems<POSCategoryItem>()
+                    .Columns("PosCategoryName,ItemID")
+                    .ToList();
+                if (posCategories != null)
+                {
+                    ddlPosCategory.DataSource = posCategories;
+                    ddlPosCategory.DataTextField = "PosCategoryName";
+                    ddlPosCategory.DataValueField = "ItemID";
+                    ddlPosCategory.DataBind();
+                    ddlPosCategory.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.SelectPosCategory"), "0"));
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("AddInventoryProducts.ascx.cs", "BindPosCategory()", ex, CurrentSite.SiteID, ex.Message);
+            }
+        }
+
+        protected void ddlPosCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                GetPos(ddlBrand.SelectedValue, ddlPosCategory.SelectedValue);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("AddInventoryProducts.ascx.cs", "ddlPosCategory_SelectedIndexChanged()", ex, CurrentSite.SiteID, ex.Message);
+            }
+        }
+
+        protected void ddlBrand_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+
+                GetPos(ddlBrand.SelectedValue, ddlPosCategory.SelectedValue);
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("AddInventoryProducts.ascx.cs", "ddlBrand_SelectedIndexChanged()", ex, CurrentSite.SiteID, ex.Message);
+            }
+
+        }
+
+        public void GetPos(string brandId, string PosCatId)
+        {
+            try
+            {
+                var pos = ConnectionHelper.ExecuteQuery("KDA.CampaignsProduct.GetGIPos", null);
+                var brandCode = brandId != "0" ? CustomTableItemProvider.GetItems<BrandItem>()
+                    .WhereEquals("ItemID", brandId)
+                    .Columns("BrandCode")
+                    .FirstOrDefault().BrandCode.ToString() : "0";
+                string where = null;
+                if (brandCode != "0" && PosCatId != "0")
+                {
+                    where += "BrandID=" + brandCode + "AND POSCategoryID=" + PosCatId;
+                }
+                else if (brandCode != "0" && PosCatId == "0")
+                {
+                    where += "BrandID=" + brandCode;
+                }
+                else if (PosCatId != "0" && brandCode == "0")
+                {
+                    where += "POSCategoryID=" + PosCatId;
+                }
+                else
+                {
+                    where = string.Empty;
+                }
+                if (!DataHelper.DataSourceIsEmpty(pos))
+                {
+                    var posData = pos.Tables[0].Select(where);
+                    if (posData.Length > 0)
+                    {
+                        ddlPosNo.DataSource = posData.CopyToDataTable();
+                        ddlPosNo.DataTextField = "POSNumber";
+                        ddlPosNo.DataValueField = "POSNumber";
+                        ddlPosNo.DataBind();
+                        ddlPosNo.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.SelectPosNO"), "0"));
+                    }
+                    else
+                    {
+                        ddlPosNo.Items.Clear();
+                        ddlPosNo.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.SelectPosNO"), "0"));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("AddInventoryProducts.ascx.cs", "GetPos()", ex, CurrentSite.SiteID, ex.Message);
+            }
+        }
+
+        public string GetPosCategory(string posNo)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(posNo))
+                    return string.Empty;
+                var posCatName = CustomTableItemProvider.GetItems<POSNumberItem>().WhereEquals("POSNumber", posNo).Columns("POSCategoryID").FirstOrDefault().POSCategoryID;
+                return posCatName.ToString();
+            }
+            catch (Exception ex)
+            {
+                EventLogProvider.LogException("AddInventoryProducts.ascx.cs", "ddlPosCategory_SelectedIndexChanged()", ex, CurrentSite.SiteID, ex.Message);
+            }
+            return string.Empty;
+        }
+
     }
 
     #region class

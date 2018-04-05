@@ -7,8 +7,8 @@
     <ProjectGuid>{6B1835F6-5564-40D8-8AB8-63B6ADC56976}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kadena2._0.Helpers</RootNamespace>
-    <AssemblyName>Kadena2.0.Helpers</AssemblyName>
+    <RootNamespace>Kadena.Helpers</RootNamespace>
+    <AssemblyName>Kadena.Helpers</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,9 +34,11 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\DatasetHelpers.cs" />
     <Compile Include="UrlHelper.cs" />
     <Compile Include="MailValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

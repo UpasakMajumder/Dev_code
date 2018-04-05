@@ -16,7 +16,6 @@ using Kadena.BusinessLogic.Contracts;
 using CMS.DocumentEngine.Types.KDA;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using CMS.SiteProvider;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
@@ -96,7 +95,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     return;
                 }
                 var loggedInUserCartIDs = GetCartsByUserID(CurrentUser.UserID, ProductType.GeneralInventory, OpenCampaign?.CampaignID); settingKeys = DIContainer.Resolve<IKenticoResourceService>();
-                var orderTemplateSettingKey = settingKeys.GetSettingsKey("KDA_OrderReservationEmailTemplateGI");
+                var orderTemplateSettingKey = settingKeys.GetSiteSettingsKey("KDA_OrderReservationEmailTemplateGI");
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 var userInfo = DIContainer.Resolve<IKenticoUserProvider>();
                 var salesPerson = userInfo.GetUserByUserId(CurrentUser.UserID);
@@ -107,7 +106,8 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     ShippingOptionInfo shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(Cart.ShoppingCartShippingOptionID);
                     if (shippingOption == null)
                     {
-                        shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(settingKeys.GetSettingsKey(SiteContext.CurrentSiteID, "KDA_DefaultShipppingOption"), SiteContext.CurrentSiteName);
+                        var defaultShippingOption = settingKeys.GetSiteSettingsKey("KDA_DefaultShipppingOption");
+                        shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(defaultShippingOption, SiteContext.CurrentSiteName);
                         if (shippingOption == null)
                         {
                             Cart.ShoppingCartShippingOptionID = shippingOption.ShippingOptionID;
@@ -135,7 +135,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                         UpdateAllocatedProductQuantity(Cart, salesPerson.UserId);
                         ProductEmailNotifications.SendMail(salesPerson, ordersDTO, orderTemplateSettingKey);
                         ShoppingCartInfoProvider.DeleteShoppingCartInfo(Cart);
-                        ShoppingCartHelper.UpdateRemainingBudget(ordersDTO, CurrentUser.UserID);
+                        UpdateRemainingBudget(ordersDTO, CurrentUser.UserID);
                     }
                     else
                     {
@@ -207,7 +207,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     Dictionary<string, object> orderDetails = new Dictionary<string, object>();
                     orderDetails.Add("name", userInfo.FirstName);
                     orderDetails.Add("failedordercount", unprocessedOrders.Count);
-                    ProductEmailNotifications.SendEmailNotification(settingKeys.GetSettingsKey("KDA_FailedOrdersEmailTemplateGI"), CurrentUser?.Email, unprocessedOrders,"failedOrders", orderDetails);
+                    ProductEmailNotifications.SendEmailNotification(settingKeys.GetSiteSettingsKey("KDA_FailedOrdersEmailTemplateGI"), CurrentUser?.Email, unprocessedOrders,"failedOrders", orderDetails);
                 }
                 rptErrors.DataSource = unprocessedOrders;
                 rptErrors.DataBind();

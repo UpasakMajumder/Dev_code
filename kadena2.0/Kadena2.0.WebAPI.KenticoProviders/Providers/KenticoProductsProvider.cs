@@ -99,6 +99,7 @@ namespace Kadena.WebAPI.KenticoProviders
                             .Published();
         }
 
+        [Obsolete("SKUImage is not used anymore, now ir is page's ProductImage")]
         public string GetSkuImageUrl(int skuid)
         {
             if (skuid <= 0)
@@ -108,9 +109,22 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var sku = GetSku(skuid);
             var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
-            var skuurl = sku?.SKUImagePath ?? string.Empty;
+            var imgurl = document?.GetStringValue("ProductImage", string.Empty) ?? string.Empty;
 
-            return URLHelper.GetAbsoluteUrl(skuurl);
+            return URLHelper.GetAbsoluteUrl(imgurl);
+        }
+
+        public string GetProductImagePath(int productPageId)
+        {
+            var productPage = DocumentHelper.GetDocuments("KDA.Product")
+                .Where(d => d.DocumentNodeID == productPageId).FirstOrDefault();
+
+            if (productPage == null)
+                return string.Empty;
+
+            var imagePath = productPage.GetValue("ProductImage", string.Empty);
+
+            return URLHelper.GetAbsoluteUrl(imagePath);
         }
 
         public void SetSkuAvailableQty(string skunumber, int availableItems)
@@ -141,12 +155,12 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private static Product GetProduct(TreeNode doc)
         {
-            var sku = GetSku(doc.NodeSKUID);
-
             if (doc == null)
             {
                 return null;
             }
+
+            var sku = GetSku(doc.NodeSKUID);
 
             var product = new Product()
             {
@@ -159,6 +173,12 @@ namespace Kadena.WebAPI.KenticoProviders
                 ProductChiliWorkgroupID = doc.GetValue<Guid>("ProductChiliWorkgroupID", Guid.Empty),
                 TemplateLowResSettingId = doc.GetValue("ProductChiliLowResSettingId", Guid.Empty)
             };
+
+            if (product.IsTemplateLowResSettingMissing)
+            {
+                var defaultId = SettingsKeyInfoProvider.GetValue("KDA_DefaultLowResSettingsId");
+                product.TemplateLowResSettingId = Guid.Parse(defaultId);
+            }
 
             if (sku != null)
             {
