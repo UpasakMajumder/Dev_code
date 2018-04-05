@@ -129,6 +129,7 @@ class EmailProof extends Component {
 
         <div className="mb-4">
           <TextInput
+            maxLength={Infinity}
             label={dialog.recepientEmailLabel}
             error={this.getErrorMessage('recepientEmail')}
             value={form.recepientEmail}
@@ -138,6 +139,7 @@ class EmailProof extends Component {
 
         <div className="mb-4">
           <TextInput
+            maxLength={Infinity}
             label={dialog.senderEmailLabel}
             error={this.getErrorMessage('senderEmail')}
             value={form.senderEmail}
@@ -147,6 +149,7 @@ class EmailProof extends Component {
 
         <div className="mb-4">
           <TextInput
+            maxLength={Infinity}
             label={dialog.subjectLabel}
             error={this.getErrorMessage('subject')}
             value={form.subject}
@@ -175,6 +178,7 @@ class EmailProof extends Component {
         <Button
           text={dialog.cancelButtonLabel}
           type="action"
+          btnClass="btn-action--secondary"
           onClick={this.closeDialog}
           disabled={this.state.isPending}
         />
@@ -182,7 +186,6 @@ class EmailProof extends Component {
         <Button
           text={dialog.submitButtonLabel}
           type="action"
-          btnClass="btn-action--secondary"
           onClick={this.handleSubmit}
           isLoading={this.state.isPending}
         />
