@@ -18,7 +18,7 @@ class NewAddressDialog extends Component {
     const defaultCountry = fields.find(field => field.id === 'country').values.find(country => country.isDefault);
 
     this.state = {
-      saveAddress: false,
+      saveAddress: true,
       invalids: [],
       address: {
         customerName: '',
