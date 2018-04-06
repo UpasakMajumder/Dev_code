@@ -110,7 +110,7 @@ class NewAddressDialog extends Component {
     const bodyData = this.getBodyData();
 
     bodyData.forEach((data, i) => {
-      let element = <TextInput {...data} />;
+      let element = <TextInput maximumLength={data.id} {...data} />;
 
       if (data.isSelect) {
         if (data.options.length) {

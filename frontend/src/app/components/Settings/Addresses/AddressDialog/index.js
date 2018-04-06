@@ -175,7 +175,9 @@ class AddressDialog extends Component {
 
       if (type === 'text') {
         input = (
-          <TextInput label={label}
+          <TextInput
+            label={label}
+            maximumLength={id}
             error={this.getErrorMessage(id)}
             value={fieldValues[id]}
             isOptional={isOptional}
@@ -186,7 +188,8 @@ class AddressDialog extends Component {
         );
       } else if (values.length) {
         input = (
-          <Select label={label}
+          <Select
+            label={label}
             error={this.getErrorMessage(id)}
             options={values}
             value={fieldValues[id] || label}
