@@ -38,6 +38,7 @@ using Kadena.Models.Common;
 using Kadena.Models.CreditCard;
 using Kadena.Models.CustomerData;
 using Kadena.Models.Login;
+using Kadena.Models.Membership;
 using Kadena.Models.OrderDetail;
 using Kadena.Models.Orders.Failed;
 using Kadena.Models.Product;
@@ -268,8 +269,6 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name));
             CreateMap<LogonUserRequestDTO, LoginRequest>();
             CreateMap<LoginResult, LogonUserResultDTO>();
-            CreateMap<CheckTaCRequestDTO, LoginRequest>();
-            CreateMap<AcceptTaCRequestDTO, LoginRequest>();
             CreateMap<CheckTaCResult, CheckTaCResultDTO>();
             CreateMap<BusinessUnit, BusinessUnitDto>();
             CreateMap<Brand, BrandDto>();
@@ -302,6 +301,7 @@ namespace Kadena.Container.Default
             CreateMap<DistributorCartItemDto, DistributorCartItem>();
 
             CreateMap<UserDto, User>();
+            CreateMap<UserDto, UserSettings>();
             CreateMap<CustomerDto, Customer>();
             CreateMap<Dto.SSO.AddressDto, DeliveryAddress>()
                 .ForMember(dest => dest.Country, opt => opt.ResolveUsing(src => new Country { Code = src.Country }))

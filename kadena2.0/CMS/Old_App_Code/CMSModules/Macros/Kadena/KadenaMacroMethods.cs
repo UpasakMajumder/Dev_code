@@ -360,6 +360,13 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return DIContainer.Resolve<IDateTimeFormatter>().GetFormatString();
         }
 
+        [MacroMethod(typeof(bool), "Determines whether to show T&C confirmation popup or not.", 0)]
+        public static object ShowTaC(EvaluationContext context, params object[] parameters)
+        {
+            return DIContainer.Resolve<IUserService>().CheckTaC().Show;
+        }
+
+
         private static string GetMainNavigationWhereConditionInternal(bool isForEnabledItems)
         {
             var result = string.Empty;

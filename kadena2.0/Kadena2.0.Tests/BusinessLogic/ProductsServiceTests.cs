@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Kadena.Models.Product;
 using Moq;
 using System;
+using Kadena.Models.Site;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -123,6 +124,7 @@ namespace Kadena.Tests.BusinessLogic
                     new ProductCategoryLink { Order = 1, Title = "c1" },
                     new ProductCategoryLink { Order = 2, Title = "c2" },
                 });
+            Setup<IKenticoSiteProvider, KenticoSite>(sm => sm.GetKenticoSite(), new KenticoSite { Id = 1 });
 
             // Act
             var actualResult = Sut.GetProducts("/");

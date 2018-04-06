@@ -49,13 +49,15 @@
         passwordValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.PasswordValidationMessage"))|(user)administrator|(hash)238eee9be35d8230ca1b17a4d5d744c314aa7909388ef4a0d381f700de5aee5a%}',
         keepMeLoggedIn: '{%JSEscape(GetResourceString("Kadena.Login.KeepMeLoggedIn"))|(user)administrator|(hash)5debfee01e321a82ee23fe41ddd2256b7ee2a27781a8f9f9f2dd031035d648ac%}',
         login: '{%JSEscape(GetResourceString("Kadena.Login.LoginButtonText"))|(user)administrator|(hash)ac38af960eb42388514afac07e26dc4d6265db216f70385204de0f27861e86f4%}',
-        checkTaCUrl:'api/login/checktac',
-        acceptTaCUrl:'api/login/accepttac',
         loginUrl:'api/login'
       },
       tac: {
+        show: undefined,
         title: '{$Kadena.TermsAndConditions.Title$}',
-        submitTexT: '{$Kadena.TermsAndConditions.Accept$}'        
+        submitText: '{$Kadena.TermsAndConditions.Accept$}',
+        acceptTaCUrl: 'api/user/accepttac',
+        checkTaCUrl: 'api/user/checktac',
+        iframeUrl: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_TermsAndConditionPage) |(user)rostyslav.diachenko@actum.cz|(hash)d3da338f27c0ef291ffe93fda5fd5fd555a0650fdb5e673861e4f4284f570b7d%}'
       }
     }
 };

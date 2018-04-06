@@ -94,13 +94,14 @@ namespace Kadena.Container.Default
             container.Register<ISettingsSynchronizationService, SettingsSynchronizationService>();
             container.Register<IUserBudgetService, UserBudgetService>();
             container.Register<ISavedCreditCard3dsi, SavedCreditCard3dsi>();
-			container.Register<IIBTFService, IBTFService>();
-			container.Register<IIdentityService, IdentityService>();
-			container.Register<ISaml2Service, Saml2Service>();
-			container.Register<ISaml2HandlerService, Saml2HandlerService>();
-			container.Register<Saml2SecurityTokenHandler, KadenaSaml2SecurityTokenHandler>();
-			container.Register<ISaml2RecipientValidator, Saml2RecipientValidator>();
+            container.Register<IIBTFService, IBTFService>();
+            container.Register<IIdentityService, IdentityService>();
+            container.Register<ISaml2Service, Saml2Service>();
+            container.Register<ISaml2HandlerService, Saml2HandlerService>();
+            container.Register<Saml2SecurityTokenHandler, KadenaSaml2SecurityTokenHandler>();
+            container.Register<ISaml2RecipientValidator, Saml2RecipientValidator>();
             container.Register<IRoleService, RoleService>();
+            container.Register<IUserService, UserService>();
             return container;
         }
 
@@ -132,7 +133,7 @@ namespace Kadena.Container.Default
             container.Register<IKenticoCustomerProvider, KenticoCustomerProvider>();
             container.Register<IKenticoSettingsProvider, KenticoSettingsProvider>();
             container.Register<IDynamicPriceRangeProvider, DynamicPriceRangeProvider>();
-			container.Register<IkenticoUserBudgetProvider, KenticoUserBudgetProvider>();
+            container.Register<IkenticoUserBudgetProvider, KenticoUserBudgetProvider>();
             container.Register<IFailedOrderStatusProvider, FailedOrderStatusProvider>();
             container.Register<IKenticoIBTFProvider, KenticoIBTFProvider>();
             container.Register<IKenticoRoleProvider, KenticoRoleProvider>();

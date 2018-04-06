@@ -3,6 +3,7 @@ using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.BusinessLogic.Services;
 using Kadena.Models;
 using Kadena.Models.Checkout;
+using Kadena.Models.Membership;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;

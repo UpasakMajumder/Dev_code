@@ -6,10 +6,10 @@ using Moq;
 using Xunit;
 using System.Threading.Tasks;
 using System;
-using Kadena.Models;
 using Kadena.Models.Product;
 using System.Collections.Generic;
 using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
+using Kadena.Models.Membership;
 
 namespace Kadena.Tests.WebApi
 {
