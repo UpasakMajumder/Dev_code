@@ -96,11 +96,17 @@ namespace Kadena.WebAPI.KenticoProviders
             return businessUnit;
         }
 
-        public string GetBusinessUnitName(string businessUnitNumber)
+        public string GetBusinessUnitName(long businessUnitNumber)
         {
-            if (string.IsNullOrEmpty(businessUnitNumber)) return string.Empty;
-            CustomTableItem businessUnitItem = CustomTableItemProvider.GetItems(BusinessUnitsCustomTableName, "BusinessUnitNumber=" + businessUnitNumber).FirstOrDefault();
-            return businessUnitItem != null ? businessUnitItem.GetStringValue("BusinessUnitName", string.Empty) : string.Empty;
+            if (businessUnitNumber == 0) return string.Empty;
+
+            var businessUnitItem = CustomTableItemProvider
+                .GetItems(BusinessUnitsCustomTableName)
+                .WhereEquals("BusinessUnitNumber", businessUnitNumber)
+                .FirstOrDefault();
+            return businessUnitItem != null 
+                ? businessUnitItem.GetStringValue("BusinessUnitName", string.Empty)
+                : string.Empty;
         }
     }
 }
