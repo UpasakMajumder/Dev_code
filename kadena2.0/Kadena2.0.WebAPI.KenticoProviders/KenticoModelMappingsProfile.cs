@@ -169,6 +169,12 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.CustomerUserID, opt => opt.MapFrom(src => src.UserID))
                 .ForMember(dest => dest.CustomerCompany, opt => opt.MapFrom(src => src.Company))
                 .ForMember(dest => dest.CustomerSiteID, opt => opt.MapFrom(src => src.SiteId));
+            CreateMap<SKUInfo, Sku>()
+                .ForMember(dest => dest.SkuId, opt => opt.MapFrom(src => src.SKUID))
+                .ForMember(dest => dest.NeedsShipping, opt => opt.MapFrom(src => src.SKUNeedsShipping))
+                .ForMember(dest => dest.SellOnlyIfAvailable, opt => opt.MapFrom(src => src.SKUSellOnlyAvailable))
+                .ForMember(dest => dest.AvailableItems, opt => opt.MapFrom(src => src.SKUAvailableItems))
+                .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.SKUWeight));
         }
     }
 }

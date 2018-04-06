@@ -24,7 +24,7 @@ namespace Kadena.Tests.BusinessLogic
         [Fact(DisplayName = "OrderReportService.OrdersPerPage | Setting value is set")]
         public void Service_ShouldLoadPagingSettings_WhenConfigured()
         {
-            Setup<IKenticoResourceService, string>(res => res.GetSettingsKey(Settings.KDA_RecentOrdersPageCapacity), "15");
+            Setup<IKenticoResourceService, string>(res => res.GetSiteSettingsKey(Settings.KDA_RecentOrdersPageCapacity), "15");
 
             var actual = Sut.OrdersPerPage;
 

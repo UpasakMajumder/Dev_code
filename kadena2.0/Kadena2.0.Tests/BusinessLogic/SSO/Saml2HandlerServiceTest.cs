@@ -10,7 +10,7 @@ namespace Kadena.Tests.BusinessLogic.SSO
         [Fact(DisplayName = "Saml2HandlerService.GetTokenHandler()")]
         public void GetHandler()
         {
-            Setup<IKenticoResourceService, string>(s => s.GetSettingsKey(It.IsAny<string>()), "SettingKeyValue");
+            Setup<IKenticoResourceService, string>(s => s.GetSiteSettingsKey(It.IsAny<string>()), "SettingKeyValue");
 
             var actualResult = Sut.GetTokenHandler();
 

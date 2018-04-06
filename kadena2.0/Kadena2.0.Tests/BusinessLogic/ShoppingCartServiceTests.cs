@@ -92,7 +92,7 @@ namespace Kadena.Tests.BusinessLogic
 
             Setup<IKenticoResourceService, string>(m => m.GetResourceString("Kadena.Checkout.CountOfItems"), "You have {0} {1} in cart");
             Setup<IKenticoResourceService, string>(m => m.GetResourceString("Kadena.Checkout.ItemSingular"), "item");
-            Setup<IKenticoResourceService, string>(m => m.GetSettingsKey("KDA_AddressDefaultCountry"), "0");
+            Setup<IKenticoResourceService, string>(m => m.GetSiteSettingsKey("KDA_AddressDefaultCountry"), "0");
 
             Use<ICheckoutPageFactory, CheckoutPageFactory>();
         }
@@ -201,7 +201,7 @@ namespace Kadena.Tests.BusinessLogic
             };
 
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
-            Setup<IShoppingCartProvider, int>(cp => cp.GetStockQuantity(originalCartItemEntity.SKUID), 100);
+            Setup<IShoppingCartProvider, Sku>(cp => cp.GetSKU(originalCartItemEntity.SKUID), new Sku { AvailableItems = 100 });
 
             // Act
             var result = await Sut.AddToCart(newCartItem);
@@ -231,7 +231,7 @@ namespace Kadena.Tests.BusinessLogic
             };
 
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
-            Setup<IShoppingCartProvider, int>(cp => cp.GetStockQuantity(originalCartItemEntity.SKUID), 1);
+            Setup<IShoppingCartProvider, Sku>(cp => cp.GetSKU(originalCartItemEntity.SKUID), new Sku { AvailableItems = 1, SellOnlyIfAvailable = true });
 
             // Act
             Task action() => Sut.AddToCart(newCartItem);
@@ -378,6 +378,28 @@ namespace Kadena.Tests.BusinessLogic
             Assert.NotNull(result);
             Assert.NotNull(result.Items);
             Assert.Single(result.Items);
+        }
+
+        [Fact(DisplayName = "ShoppingCartService.AddToCart() | Inventory product out of stock without verifying availability")]
+        public async Task AddToCart_InventoryProduct_OutOfStock_DontCheckForAvailability()
+        {
+            // Arrange 
+            var newCartItem = CreateNewCartItem();
+            var originalCartItemEntity = new CartItemEntity
+            {
+                CartItemText = Name,
+                ProductType = ProductTypes.InventoryProduct,
+                SKUUnits = 3
+            };
+
+            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
+            Setup<IShoppingCartProvider, Sku>(cp => cp.GetSKU(originalCartItemEntity.SKUID), new Sku { AvailableItems = 1, SellOnlyIfAvailable = false });
+
+            // Act
+            var result = await Sut.AddToCart(newCartItem);
+
+            // Assert
+            Assert.NotNull(result);
         }
     }
 }

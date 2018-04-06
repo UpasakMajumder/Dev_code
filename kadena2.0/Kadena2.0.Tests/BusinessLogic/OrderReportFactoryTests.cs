@@ -59,7 +59,7 @@ namespace Kadena.Tests.BusinessLogic
         public void FormatDetailUrl_ShouldGenerateUrl()
         {
             var detailUrlBase = "test.com/product";
-            Setup<IKenticoResourceService, string>(res => res.GetSettingsKey(Settings.KDA_OrderDetailUrl), detailUrlBase);
+            Setup<IKenticoResourceService, string>(res => res.GetSiteSettingsKey(Settings.KDA_OrderDetailUrl), detailUrlBase);
             Setup<IKenticoDocumentProvider, string>(doc => doc.GetDocumentUrl(It.IsAny<string>(), It.IsAny<bool>()), detailUrlBase);
             var order = new RecentOrderDto
             {

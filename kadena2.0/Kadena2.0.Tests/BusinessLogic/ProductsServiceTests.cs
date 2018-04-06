@@ -3,6 +3,7 @@ using Kadena.BusinessLogic.Services;
 using Xunit;
 using System.Collections.Generic;
 using Kadena.Models.Product;
+using Moq;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -29,8 +30,8 @@ namespace Kadena.Tests.BusinessLogic
             Setup<IKenticoProductsProvider, ProductCategoryLink>(p => p.GetCategory("/")
                 , new ProductCategoryLink { Id = 10, ProductBordersEnabled = borderOnCategory });
 
-            Setup<IKenticoResourceService, string>(r => r.GetSettingsKey("KDA_ProductThumbnailBorderEnabled"), borderOnSite.ToString());
-            Setup<IKenticoResourceService, string>(r => r.GetSettingsKey("KDA_ProductThumbnailBorderStyle"), borderStyleValue);
+            Setup<IKenticoResourceService, bool>(r => r.GetSiteSettingsKey<bool>("KDA_ProductThumbnailBorderEnabled"), borderOnSite);
+            Setup<IKenticoResourceService, string>(r => r.GetSiteSettingsKey("KDA_ProductThumbnailBorderStyle"), borderStyleValue);
         }
 
         [Fact(DisplayName = "ProductsService.GetProducts() | All borders turned on")]
@@ -134,6 +135,104 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal("c1", actualResult.Categories[0].Title);
             Assert.Equal("c2", actualResult.Categories[1].Title);
             Assert.Equal("c3", actualResult.Categories[2].Title);
+        }
+
+        [Theory(DisplayName = "ProductsService.GetAvailableProductsString() | Non inventory type")]
+        [InlineData("KDA.MailingProduct")]
+        [InlineData("KDA.TemplatedProduct")]
+        [InlineData("KDA.ProductWithAddOns")]
+        [InlineData("KDA.StaticProduct")]
+        [InlineData("KDA.POD")]
+        public void GetAvailableProductStringTest_NonInventory(string productType)
+        {
+            // Arrange
+            Setup<IKenticoResourceService, string>(r => r.GetResourceString(It.IsAny<string>(), It.IsAny<string>()), "value");
+
+            // Act
+            var result = Sut.GetAvailableProductsString(productType, 10, "cz", 10);
+
+            // Assert
+            Assert.Equal(string.Empty, result);
+        }
+
+
+        [Theory(DisplayName = "ProductsService.GetAvailableProductsString() | Inventory type")]
+        [InlineData(null, 0, "Kadena.Product.Unavailable")]
+        [InlineData(0, 0, "Kadena.Product.OutOfStock")]
+        [InlineData(5, 10, "10 pcs in stock")]
+        public void GetAvailableProductStringTest_Inventory(int? numberOfAvailableProducts, int numberOfStockProducts, string expectedResult)
+        {
+            // Arrange
+            const string culture = "cz-CZ";
+            Setup<IKenticoResourceService, string, string, string>(r => r.GetResourceString(It.IsAny<string>(), culture), (a, b) => a);
+            Setup<IKenticoResourceService, string>(r => r.GetResourceString("Kadena.Product.NumberOfAvailableProducts", culture), "{0} pcs in stock");
+
+            // Act
+            var result = Sut.GetAvailableProductsString("KDA.InventoryProduct", numberOfAvailableProducts, culture, numberOfStockProducts);
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
+
+
+        [Theory(DisplayName = "ProductsService.GetInventoryProductAvailability() | Non inventory type")]
+        [InlineData("KDA.MailingProduct")]
+        [InlineData("KDA.TemplatedProduct")]
+        [InlineData("KDA.ProductWithAddOns")]
+        [InlineData("KDA.StaticProduct")]
+        [InlineData("KDA.POD")]
+        public void GetInventoryProductAvailablity_NonInventory(string productType)
+        {
+            // Act
+            var result = Sut.GetInventoryProductAvailability(productType, 10, 10);
+
+            // Assert
+            Assert.Equal(string.Empty, result);
+        }
+
+        [Theory(DisplayName = "ProductsService.GetInventoryProductAvailability() | Inventory type")]
+        [InlineData(0, 0, "OutOfStock")]
+        [InlineData(null, 0, "Unavailable")]
+        [InlineData(1, 1, "Available")]
+        public void GetInventoryProductAvailablity(int? numberOfAvailableProducts, int numberOfStockProducts, string expectedResult)
+        {
+            // Act
+            var result = Sut.GetInventoryProductAvailability("KDA.InventoryProduct", numberOfAvailableProducts, numberOfStockProducts);
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
+
+
+        [Theory(DisplayName = "ProductsService.CanDisplayAddToCartButton() | Non inventory type")]
+        [InlineData("KDA.MailingProduct", false)]
+        [InlineData("KDA.TemplatedProduct", false)]
+        [InlineData("KDA.ProductWithAddOns", true)]
+        [InlineData("KDA.StaticProduct", true)]
+        [InlineData("KDA.POD", true)]
+        public void CanDisplayAddToCart_NonInventory(string productType, bool expectedResult)
+        {
+            // Act
+            var result = Sut.CanDisplayAddToCartButton(productType, 0, false);
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Theory(DisplayName = "ProductsService.CanDisplayAddToCartButton() | Inventory type")]
+        [InlineData(null, true, false)]
+        [InlineData(null, false, false)]
+        [InlineData(0, true, false)]
+        [InlineData(0, false, true)]
+        [InlineData(1, true, true)]
+        [InlineData(1, false, true)]
+        public void CanDisplayAddToCart_Inventory(int? numberOfAvailableProducts, bool sellOnlyAvailable, bool expectedResult)
+        {
+            // Act
+            var result = Sut.CanDisplayAddToCartButton("KDA.InventoryProduct", numberOfAvailableProducts, sellOnlyAvailable);
+
+            // Assert
+            Assert.Equal(expectedResult, result);
         }
     }
 }

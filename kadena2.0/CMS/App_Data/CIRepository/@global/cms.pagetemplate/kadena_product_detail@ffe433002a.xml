@@ -232,7 +232,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<img src='{% ProductImage %}'>]]>
+            <![CDATA[<img style='border:{% (Settings.KDA_ProductThumbnailBorderEnabled && !ProductThumbnailBorderDisabled) ? Settings.KDA_ProductThumbnailBorderStyle : ""|(user)michal.machacek@actum.cz|(hash)babce78fae2ef9e22019ce8193ed9fc4263439add052534e6997be4156185e0e%}' src='{% ProductImage %}'>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -617,7 +617,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% (ProductType.Contains("KDA.StaticProduct") || ProductType.Contains("KDA.InventoryProduct") || ProductType.Contains("KDA.POD") || ProductType.Contains("KDA.ProductWithAddOns")) && !ProductType.Contains("KDA.TemplatedProduct") && (ECommerceContext.CurrentCustomer != null) |(user)administrator|(hash)2cb9ba220ab5cfb7b6e6e24ef42c737ff23b0a8d1aabf439c25d8df6024f6f6a%}]]>
+            <![CDATA[{% KadenaNamespace.CanDisplayAddToCartButton(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),DocumentContext.CurrentDocument.GetValue("SKUAvailableItems"),ECommerceContext.CurrentProduct.SKUSellOnlyAvailable)&&(ECommerceContext.CurrentCustomer != null)|(user)michal.machacek@actum.cz|(hash)2a93d7bb9f20e67af33ab462a0a192e3b08593121bce85c7439fd0966853fa19%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">AddToCartButton</property>
@@ -770,7 +770,7 @@ config.localization.manageProducts = {
           <property name="checkpermissions">True</property>
           <property name="classnames">KDA.Product</property>
           <property name="columns">
-            <![CDATA[DocumentName, NodeAliasPath, DocumentUrlPath, SKUImagePath]]>
+            <![CDATA[DocumentName, NodeAliasPath, DocumentUrlPath, ProductImage]]>
           </property>
           <property name="container"></property>
           <property name="containercssclass"></property>
@@ -1096,7 +1096,7 @@ config.localization.manageProducts = {
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% !String.IsNullOrWhiteSpace(SKUImagePath) |(user)tomas.rucki@actum.cz|(hash)82858d5aaf9e1aba69bc8bd39d33c97dae440db45e26dd1ca6f045f656a19e02%}]]>
+            <![CDATA[{% !String.IsNullOrWhiteSpace(ProductImage) |(user)rostyslav.diachenko@actum.cz|(hash)515c926b7c4efa6fc67410b245417088853f12bd746e9ee77435c2a8fb4ec9cc%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>
