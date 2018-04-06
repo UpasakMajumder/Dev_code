@@ -1,5 +1,5 @@
 ﻿using Kadena.BusinessLogic.Contracts;
-using Kadena.Models;
+using Kadena.Models.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;

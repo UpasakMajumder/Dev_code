@@ -471,6 +471,7 @@
     <Compile Include="3dsiCreditCard\PaymentMethodTest.cs" />
     <Compile Include="BusinessLogic\DateTimeFormatterTest.cs" />
     <Compile Include="BusinessLogic\IdentityServiceTest.cs" />
+    <Compile Include="BusinessLogic\LoginServiceTest.cs" />
     <Compile Include="BusinessLogic\ProductsServiceTest.cs" />
     <Compile Include="BusinessLogic\SSO\Saml2RecipientValidatorTest.cs" />
     <Compile Include="BusinessLogic\SSO\Saml2HandlerServiceTest.cs" />

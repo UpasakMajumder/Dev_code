@@ -1,10 +1,10 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.Logon.Requests;
 using Kadena.WebAPI.Controllers;
+using Kadena.WebAPI.Infrastructure.Communication;
 using Moq;
 using Moq.AutoMock;
 using System;
-using System.Threading.Tasks;
 using System.Web.Http.Results;
 using Xunit;
 
@@ -40,6 +40,24 @@ namespace Kadena.Tests.WebApi
             Assert.IsType<RedirectResult>(actualResult);
             Assert.NotNull(actualResult);
             Assert.Equal(expectedResult, (actualResult as RedirectResult).Location);
+        }
+
+        [Fact(DisplayName = "LoginController.Logout()")]
+        public void Logout()
+        {
+            var expectedResult = "http://example.com";
+            var autoMock = new AutoMocker();
+            autoMock
+                .GetMock<ILoginService>()
+                .Setup(i => i.Logout())
+                .Returns(expectedResult);
+            var sut = autoMock.CreateInstance<LoginController>();
+
+            var actualResult = sut.Logout() as JsonResult<BaseResponse<string>>;
+
+            Assert.NotNull(actualResult);
+            Assert.True(actualResult.Content.Success);
+            Assert.Equal(expectedResult, actualResult.Content.Payload);
         }
     }
 }

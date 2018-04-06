@@ -1,5 +1,5 @@
 ﻿using Kadena.BusinessLogic.Services;
-using Kadena.Models;
+using Kadena.Models.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Moq;
 using Moq.AutoMock;

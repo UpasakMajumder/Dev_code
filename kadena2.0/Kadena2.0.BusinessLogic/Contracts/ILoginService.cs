@@ -1,5 +1,5 @@
-﻿using Kadena.Models;
-using Kadena.Models.Login;
+﻿using Kadena.Models.Login;
+using Kadena.Models.Membership;
 
 namespace Kadena.BusinessLogic.Contracts
 {

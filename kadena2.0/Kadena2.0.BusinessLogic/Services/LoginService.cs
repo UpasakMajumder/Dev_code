@@ -3,7 +3,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Login;
 using System;
 using System.Security;
-using Kadena.Models;
+using Kadena.Models.Membership;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -121,9 +121,10 @@ namespace Kadena.BusinessLogic.Services
 
         public string Logout()
         {
+            var user = kenticoUsers.GetCurrentUser();
+            var userSettings = kenticoUsers.GetUserSettings(user.UserId);
             login.Logout();
-            string redirectUrl = "/"; // TODO get SAML value here somehow, make parameter for it
-            return redirectUrl;
+            return string.IsNullOrWhiteSpace(userSettings?.CallBackUrl) ? "/" : userSettings.CallBackUrl;
         }
     }
 }
