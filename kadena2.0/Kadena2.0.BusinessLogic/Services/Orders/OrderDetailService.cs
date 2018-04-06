@@ -31,6 +31,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoLocalizationProvider localization;
         private readonly IKenticoPermissionsProvider permissions;
         private readonly IKenticoBusinessUnitsProvider businessUnits;
+        private readonly IKenticoSiteProvider site;
 
 
         public OrderDetailService(IMapper mapper,
@@ -44,7 +45,8 @@ namespace Kadena.BusinessLogic.Services.Orders
             IKenticoLogger kenticoLog,
             IKenticoLocalizationProvider localization,
             IKenticoPermissionsProvider permissions,
-            IKenticoBusinessUnitsProvider businessUnits
+            IKenticoBusinessUnitsProvider businessUnits,
+            IKenticoSiteProvider site
             )
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -59,6 +61,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
             this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             this.businessUnits = businessUnits ?? throw new ArgumentNullException(nameof(businessUnits));
+            this.site = site ?? throw new ArgumentNullException(nameof(site));
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
@@ -190,6 +193,9 @@ namespace Kadena.BusinessLogic.Services.Orders
             var orderedItems = items.Select(i =>
             {
                 var templatedProduct = i.TemplateId != Guid.Empty ? products.GetProductBySkuId(i.SkuId) : null;
+                var previewUrl = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, templatedProduct?.TemplateLowResSettingId ?? Guid.Empty);
+                var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
+
                 return new OrderedItem()
                 {
                     Id = i.SkuId,
@@ -220,7 +226,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     {
                         Exists = templatedProduct != null,
                         Text = resources.GetResourceString("Kadena.EmailProof.ButtonLabel"),
-                        Url = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, templatedProduct?.TemplateLowResSettingId ?? Guid.Empty)
+                        Url = previewAbsoluteUrl
                     },
 
                     Options = i.Attributes?.Select(a => new ItemOption { Name = products.GetOptionCategory(a.Key)?.DisplayName ?? a.Key, Value = a.Value }) ?? Enumerable.Empty<ItemOption>()

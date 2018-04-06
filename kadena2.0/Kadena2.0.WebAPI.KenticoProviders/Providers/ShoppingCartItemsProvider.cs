@@ -24,14 +24,16 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly IMapper mapper;
         private readonly IDynamicPriceRangeProvider dynamicPrices;
         private readonly IKenticoProductsProvider productProvider;
+        private readonly IKenticoSiteProvider site;
 
-        public ShoppingCartItemsProvider(IKenticoResourceService resources, IKenticoDocumentProvider documents, IMapper mapper, IDynamicPriceRangeProvider dynamicPrices, IKenticoProductsProvider productProvider)
+        public ShoppingCartItemsProvider(IKenticoResourceService resources, IKenticoDocumentProvider documents, IMapper mapper, IDynamicPriceRangeProvider dynamicPrices, IKenticoProductsProvider productProvider, IKenticoSiteProvider site)
         {
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.dynamicPrices = dynamicPrices ?? throw new ArgumentNullException(nameof(dynamicPrices));
             this.productProvider = productProvider ?? throw new ArgumentNullException(nameof(productProvider));
+            this.site = site ?? throw new ArgumentNullException(nameof(site));
         }
 
         public int GetShoppingCartItemsCount()
@@ -103,11 +105,14 @@ namespace Kadena.WebAPI.KenticoProviders
                 editorUrl = URLHelper.AddParameterToUrl(editorUrl, "customName", URLHelper.URLEncode(cartItem.CartItemText));
                 cartItem.EditorURL = editorUrl;
 
+                var previewUrl = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, product.TemplateLowResSettingId);
+                var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
+
                 cartItem.EmailProof = new Button()
                 {
                     Exists = true,
                     Text = resources.GetResourceString("Kadena.EmailProof.ButtonLabel"),
-                    Url = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, product.TemplateLowResSettingId)
+                    Url = previewAbsoluteUrl
             };
             }
 
