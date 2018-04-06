@@ -4,6 +4,7 @@ using Xunit;
 using System.Collections.Generic;
 using Kadena.Models.Product;
 using Moq;
+using System;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -233,6 +234,53 @@ namespace Kadena.Tests.BusinessLogic
 
             // Assert
             Assert.Equal(expectedResult, result);
+        }
+
+        public static IEnumerable<object[]> GetEmptyOptions()
+        {
+            yield return new object[]
+            {
+                new Dictionary<string, int> ()
+            };
+            yield return new object[]
+            {
+                new Dictionary<string, int> {
+                    { "Option", 0 }
+                }
+            };
+            yield return new object[]
+            {
+                null
+            };
+        }
+
+        public static IEnumerable<object[]> GetOptions()
+        {
+            yield return new object[]
+            {
+                new Dictionary<string, int> {
+                    { "Option", 0 }
+                }
+            };
+        }
+
+        [Theory(DisplayName = "ProductsService.GetPrice()")]
+        [MemberData(nameof(GetEmptyOptions))]
+        [MemberData(nameof(GetOptions))]
+        public void GetPrice(Dictionary<string, int> options)
+        {
+            Setup<IKenticoProductsProvider, Sku>(p => p.GetVariant(It.IsAny<int>(), It.IsAny<IEnumerable<int>>()), new Sku());
+
+            var result = Sut.GetPrice(0, options);
+
+            Assert.Null(result);
+        }
+
+        [Theory(DisplayName = "ProductsService.GetPrice() | Variant not found")]
+        [MemberData(nameof(GetOptions))]
+        public void GetPrice_NonExistingVariant(Dictionary<string, int> options)
+        {
+            Assert.Throws<ArgumentException>(() => Sut.GetPrice(0, options));
         }
     }
 }
