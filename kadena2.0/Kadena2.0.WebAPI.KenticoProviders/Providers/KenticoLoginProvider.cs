@@ -16,29 +16,10 @@ namespace Kadena.WebAPI.KenticoProviders
     public class KenticoLoginProvider : IKenticoLoginProvider
     {
         private readonly IKenticoLogger logger;
-        private readonly IKadenaSettings kadenaSettings;
 
-        public KenticoLoginProvider(IKenticoLogger logger, IKadenaSettings kadenaSettings)
+        public KenticoLoginProvider(IKenticoLogger logger)
         {
-            this.logger = logger;
-            this.kadenaSettings = kadenaSettings;
-        }
-
-        public DateTime GetTaCValidFrom()
-        {
-            var tacNodeAliasPath = kadenaSettings.TermsAndConditionsPage;
-            var tacDocument = DocumentHelper.GetDocuments("KDA.TermsAndConditions")
-                .OnCurrentSite()
-                .Path(tacNodeAliasPath)
-                .Culture(LocalizationContext.CurrentUICulture.CultureCode)
-                .FirstObject;
-
-            if (tacDocument == null)
-            {
-                throw new Exception("Unable to find Terms and condition page");
-            }
-
-            return tacDocument.GetDateTimeValue("ValidFrom", DateTime.MinValue);
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public bool CheckPassword(string mail, string password)
@@ -52,13 +33,6 @@ namespace Kadena.WebAPI.KenticoProviders
 
             return !UserInfoProvider.IsUserPasswordDifferent(user, password);
        }
-
-        public void AcceptTaC(string mail)
-        {
-            var user = UserInfoProvider.GetUserInfo(mail);
-            user.SetValue("TermsConditionsAccepted", DateTime.Now);
-            user.Update();
-        }
 
         public LoginResult Login(LoginRequest loginRequest)
         {

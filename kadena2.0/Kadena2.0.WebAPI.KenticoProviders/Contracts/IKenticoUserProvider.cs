@@ -1,4 +1,5 @@
 ﻿using Kadena.Models;
+using Kadena.Models.Membership;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -14,8 +15,10 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         User GetUserByUserId(int userId);
         int CreateCustomer(Customer customer);
         void UpdateCustomer(Customer customer);
-        void CreateUser(User user, int siteId);
-        void UpdateUser(User user);
+        void CreateUser(User user, int siteId, UserSettings userSettings = null);
+        void UpdateUser(User user, UserSettings userSettings = null);
         void LinkCustomerToUser(int customerId, int userId);
+        UserSettings GetUserSettings(int userId);
+        void AcceptTaC();
     }
 }

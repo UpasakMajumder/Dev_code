@@ -110,13 +110,15 @@
         passwordValidationMessage: 'Please enter password.',
         keepMeLoggedIn: 'Keep me logged in',
         login: 'Log in',
-        loginUrl: PATH + 'login',
-        acceptTaCUrl: PATH + 'accepttac',
-        checkTaCUrl: PATH + 'checktac'
+        loginUrl: PATH + 'login'
       },
       tac: {
+        show: true,
         title: 'Title',
-        submitTexT: 'Accept'
+        submitText: 'Accept',
+        acceptTaCUrl: PATH + 'accepttac',
+        checkTaCUrl: PATH + 'checktac',
+        iframeUrl: 'http://localhost:5002/terms-conditions.html'
       },
       checkout: {
         initRenderUIURL: PATH + 'checkout/ui',

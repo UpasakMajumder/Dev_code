@@ -49,7 +49,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             if (border?.Exists ?? false)
             {
-                border.Value = SettingsKeyInfoProvider.GetValue("KDA_ProductThumbnailBorderStyle");
+                border.Value = SettingsKeyInfoProvider.GetValue("KDA_ProductThumbnailBorderStyle", new SiteInfoIdentifier(SiteContext.CurrentSiteID));
             }
         }
 
@@ -176,7 +176,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             if (product.IsTemplateLowResSettingMissing)
             {
-                var defaultId = SettingsKeyInfoProvider.GetValue("KDA_DefaultLowResSettingsId");
+                var defaultId = SettingsKeyInfoProvider.GetValue("KDA_DefaultLowResSettingsId", new SiteInfoIdentifier(SiteContext.CurrentSiteID));
                 product.TemplateLowResSettingId = Guid.Parse(defaultId);
             }
 
