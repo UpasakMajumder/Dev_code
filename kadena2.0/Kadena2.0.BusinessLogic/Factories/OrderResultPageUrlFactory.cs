@@ -26,13 +26,13 @@ namespace Kadena.BusinessLogic.Factories
 
         public string GetOrderResultPageUrl(SubmitOrderResult orderResult)
         {
-            var redirectUrlBase = resources.GetSettingsKey("KDA_OrderSubmittedUrl");
+            var redirectUrlBase = resources.GetSiteSettingsKey("KDA_OrderSubmittedUrl");
             return GetResultPageUrl(redirectUrlBase, orderResult.Success, orderResult.OrderId);
         }
 
         public string GetCardPaymentResultPageUrl(bool orderSuccess, string orderId, string submissionId = "", string error = "")
         {
-            var redirectUrlBase = resources.GetSettingsKey("KDA_CreditCard_PaymentResultPage");
+            var redirectUrlBase = resources.GetSiteSettingsKey("KDA_CreditCard_PaymentResultPage");
             return GetResultPageUrl(redirectUrlBase, orderSuccess, orderId, submissionId, error);
         }
 

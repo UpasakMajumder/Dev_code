@@ -31,7 +31,7 @@ namespace Kadena.BusinessLogic.Services
             if (!order.Success || order.Payload == null)
             {
                 logger.LogError("GetHiresPdfLink", $"Failed to call OrderView microservice. {order.ErrorMessages}");
-                return documents.GetDocumentAbsoluteUrl(resources.GetSettingsKey("KDA_HiresPdfLinkFail"));
+                return documents.GetDocumentAbsoluteUrl(resources.GetSiteSettingsKey("KDA_HiresPdfLinkFail"));
             }
 
             var fileKey = order.Payload.Items?.FirstOrDefault(i => i.LineNumber == line)?.FileKey;
@@ -55,7 +55,7 @@ namespace Kadena.BusinessLogic.Services
 
         private string GetCustomizedFailUrl(int siteId)
         {
-            return documents.GetDocumentAbsoluteUrl(resources.GetSettingsKey(siteId, "KDA_HiresPdfLinkFail"));
+            return documents.GetDocumentAbsoluteUrl(resources.GetSettingsKey<string>("KDA_HiresPdfLinkFail", siteId));
         }
     }
 }

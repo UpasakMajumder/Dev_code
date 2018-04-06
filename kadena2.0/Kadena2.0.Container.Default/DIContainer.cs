@@ -67,6 +67,7 @@ namespace Kadena.Container.Default
             container.Register<ISubmitOrderService, SubmitOrderService>();
             container.Register<IOrderDetailService, OrderDetailService>();
             container.Register<IOrderReportService, OrderReportService>();
+            container.Register<IOrderResubmissionService, OrderResubmissionService>();
             container.Register<IKListService, KListService>();
             container.Register<ITemplateService, TemplateService>();
             container.Register<IMailTemplateService, MailTemplateService>();
@@ -155,6 +156,7 @@ namespace Kadena.Container.Default
             container.Register<IAddressValidationClient, AddressValidationClient>();
             container.Register<ISuppliantDomainClient, SuppliantDomain>();
             container.Register<IFileClient, FileClient>();
+            container.Register<IOrderResubmitClient, OrderResubmitClient>();
             container.Register<IMicroProperties, MicroProperties>();
             container.Register<IInventoryUpdateClient, InventoryUpdateClient>();
             container.Register<IBidClient, BidClient>();

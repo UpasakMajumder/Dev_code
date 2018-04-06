@@ -12,14 +12,12 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoProductsProvider products;
         private readonly IKenticoFavoritesProvider favorites;
         private readonly IKenticoResourceService resources;
-        private readonly IKenticoSiteProvider site;
 
-        public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources, IKenticoSiteProvider site)
+        public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources)
         {
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.favorites = favorites ?? throw new ArgumentNullException(nameof(favorites));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
-            this.site = site ?? throw new ArgumentNullException(nameof(site));
         }
 
         public Price GetPrice(int skuId, Dictionary<string, int> skuOptions = null)
@@ -39,14 +37,13 @@ namespace Kadena.BusinessLogic.Services
 
         public ProductsPage GetProducts(string path)
         {
-            var siteId = site.GetKenticoSite().Id;
             var categories = this.products.GetCategories(path).OrderBy(c => c.Order).ToList();
             var products = this.products.GetProducts(path).OrderBy(p => p.Order).ToList();
             var favoriteIds = favorites.CheckFavoriteProductIds(products.Select(p => p.Id).ToList());
             var pathCategory = this.products.GetCategory(path);
-            var bordersEnabledOnSite = resources.GetSettingsKey(siteId, "KDA_ProductThumbnailBorderEnabled")?.ToLower() == "true";
+            var bordersEnabledOnSite = resources.GetSiteSettingsKey<bool>("KDA_ProductThumbnailBorderEnabled");
             var borderEnabledOnParentCategory = pathCategory?.ProductBordersEnabled ?? true; // true to handle product in the root, without parent category
-            var borderStyle = resources.GetSettingsKey(siteId, "KDA_ProductThumbnailBorderStyle");
+            var borderStyle = resources.GetSiteSettingsKey("KDA_ProductThumbnailBorderStyle");
 
             var productsPage = new ProductsPage
             {
@@ -58,6 +55,85 @@ namespace Kadena.BusinessLogic.Services
             productsPage.Products.ForEach(p => p.SetBorderInfo(bordersEnabledOnSite, borderEnabledOnParentCategory, borderStyle));
 
             return productsPage;
+        }
+
+        public string GetAvailableProductsString(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts)
+        {
+            string formattedValue = string.Empty;
+
+            if (!ProductTypes.IsOfType(productType, ProductTypes.InventoryProduct))
+            {
+                return formattedValue;
+            }
+
+            if (!numberOfAvailableProducts.HasValue)
+            {
+                formattedValue = resources.GetResourceString("Kadena.Product.Unavailable", cultureCode);
+            }
+            else if (numberOfStockProducts == 0)
+            {
+                formattedValue = resources.GetResourceString("Kadena.Product.OutOfStock", cultureCode);
+            }
+            else
+            {
+                var baseString = resources.GetResourceString("Kadena.Product.NumberOfAvailableProducts", cultureCode);
+                formattedValue = string.Format(baseString, numberOfStockProducts);
+            }
+
+            return formattedValue;
+        }
+
+        public string GetInventoryProductAvailability(string productType, int? numberOfAvailableProducts, int numberOfStockProducts)
+        {
+            if (ProductTypes.IsOfType(productType, ProductTypes.InventoryProduct))
+            {
+                if (!numberOfAvailableProducts.HasValue)
+                {
+                    return ProductAvailability.Unavailable;
+                }
+
+                if (numberOfStockProducts == 0)
+                {
+                    return ProductAvailability.OutOfStock;
+                }
+
+                return ProductAvailability.Available;
+            }
+
+            return string.Empty;
+        }
+
+        public bool CanDisplayAddToCartButton(string productType, int? numberOfAvailableProducts, bool sellOnlyIfAvailable)
+        {
+            var isStatic = ProductTypes.IsOfType(productType, ProductTypes.StaticProduct);
+            var isPod = ProductTypes.IsOfType(productType, ProductTypes.POD);
+            var isWithAddons = ProductTypes.IsOfType(productType, ProductTypes.ProductWithAddOns);
+            var isTemplated = ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct);
+            var isInventory = ProductTypes.IsOfType(productType, ProductTypes.InventoryProduct);
+
+            if ( (isStatic || isPod || isWithAddons) && !isTemplated )
+            {
+                return true;
+            }
+
+            if (isInventory)
+            {
+                if (!numberOfAvailableProducts.HasValue)
+                {
+                    return false;
+                }
+
+                if (sellOnlyIfAvailable)
+                {
+                    return numberOfAvailableProducts.Value > 0;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             get
             {
-                int.TryParse(kenticoResources.GetSettingsKey(Settings.KDA_RecentOrdersPageCapacity), out _ordersPerPage);
+                int.TryParse(kenticoResources.GetSiteSettingsKey(Settings.KDA_RecentOrdersPageCapacity), out _ordersPerPage);
                 if (_ordersPerPage == 0)
                 {
                     return DefaultCountOfOrdersPerPage;

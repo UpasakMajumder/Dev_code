@@ -622,7 +622,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
         try
         {
             var nodeGuid = CurrentDocument.NodeGUID;
-            var emailTemplate = DIContainer.Resolve<IKenticoResourceService>().GetSettingsKey(SiteContext.CurrentSiteID, "KDA_CampaignProductAddedTemplate");
+            var emailTemplate = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey("KDA_CampaignProductAddedTemplate");
             Campaign campaign = CampaignProvider.GetCampaign(nodeGuid, CurrentDocument.DocumentCulture, CurrentSite.SiteName);
             var program = ProgramProvider.GetPrograms()
                 .WhereEquals("ProgramId", ddlPrograms.SelectedValue)

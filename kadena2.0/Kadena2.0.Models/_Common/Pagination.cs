@@ -1,6 +1,6 @@
 ﻿namespace Kadena.Models.Common
 {
-    public class Pagination
+    public struct Pagination
     {
         /// <summary>
         /// Total number of items
