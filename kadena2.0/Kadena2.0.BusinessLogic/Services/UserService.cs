@@ -1,6 +1,7 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.Models;
 using Kadena.Models.Login;
+using Kadena.Models.Membership;
 using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;

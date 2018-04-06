@@ -36,8 +36,8 @@ namespace Kadena.WebAPI.Controllers
         [Route("api/logout")]
         public IHttpActionResult Logout()
         {
-            var rerirecturl = loginService.Logout();
-            return ResponseJson(rerirecturl);
+            var redirectUrl = loginService.Logout();
+            return ResponseJson(redirectUrl);
         }
 
         [HttpPost]

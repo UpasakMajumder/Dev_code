@@ -9,6 +9,7 @@ using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.Models.Product;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Moq.AutoMock;
+using Kadena.Models.Membership;
 using System;
 using Kadena2.MicroserviceClients.Contracts;
 
