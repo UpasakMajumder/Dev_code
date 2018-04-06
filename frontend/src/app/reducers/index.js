@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import { reducer as toastr } from 'react-redux-toastr';
-import login from './login';
+import tac from './tac';
 import checkout from './checkout';
 import isLoading from './isLoading';
 import settingsAddresses from './settingsAddresses';
@@ -21,7 +21,7 @@ import languageSelector from './languageSelector';
 import filteredRecentOrders from './filteredRecentOrders';
 
 const rootReducer = combineReducers({
-  login,
+  tac,
   checkout,
   isLoading,
   settingsAddresses,

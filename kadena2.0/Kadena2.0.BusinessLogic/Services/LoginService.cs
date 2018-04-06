@@ -2,8 +2,6 @@
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Login;
 using System;
-using System.Security;
-using Kadena.Models.Membership;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -11,73 +9,13 @@ namespace Kadena.BusinessLogic.Services
     {
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoResourceService resources;
-        private readonly IKenticoDocumentProvider documents;
         private readonly IKenticoLoginProvider login;
 
-        public LoginService(IKenticoUserProvider kenticoUsers, IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoLoginProvider login)
+        public LoginService(IKenticoUserProvider kenticoUsers, IKenticoResourceService resources, IKenticoLoginProvider login)
         {
-            if (kenticoUsers == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoUsers));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (documents == null)
-            {
-                throw new ArgumentNullException(nameof(documents));
-            }
-            if (login == null)
-            {
-                throw new ArgumentNullException(nameof(login));
-            }
-
-            this.kenticoUsers = kenticoUsers;
-            this.resources = resources;
-            this.documents = documents;
-            this.login = login;
-        }
-
-        public CheckTaCResult CheckTaC(LoginRequest request)
-        {
-            if (!login.CheckPassword(request.LoginEmail, request.Password))
-            {
-                return CheckTaCResult.GetFailedResult("loginEmail", resources.GetResourceString("Kadena.Logon.LogonFailed"));
-            }
-
-            var tacEnabled = resources.GetSiteSettingsKey<bool>("KDA_TermsAndConditionsLogin");
-
-            var showTaC = false;
-
-            if (tacEnabled)
-            {
-                var user = kenticoUsers.GetUser(request.LoginEmail);
-                showTaC = !UserHasAcceptedTac(user);
-            }
-
-            return new CheckTaCResult
-            {
-                LogonSuccess = true,
-                ShowTaC = showTaC,
-                Url = showTaC ? GetTacPageUrl() : string.Empty
-            };
-        }
-
-        public bool UserHasAcceptedTac(User user)
-        {
-            var tacValidFrom = login.GetTaCValidFrom();
-            return user.TermsConditionsAccepted > tacValidFrom;
-        }
-
-        public void AcceptTaC(LoginRequest request)
-        {
-            if (!login.CheckPassword(request.LoginEmail, request.Password))
-            {
-                throw new SecurityException("Invalid username or password");
-            }
-
-            login.AcceptTaC(request.LoginEmail);
+            this.kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.login = login ?? throw new ArgumentNullException(nameof(login));
         }
 
         public LoginResult Login(LoginRequest request)
@@ -94,19 +32,7 @@ namespace Kadena.BusinessLogic.Services
                 return GetFailedLoginResult("loginEmail", resources.GetResourceString("Kadena.Logon.LogonFailed"));
             }
 
-            var tacEnabled = resources.GetSiteSettingsKey<bool>("KDA_TermsAndConditionsLogin");
-            if (tacEnabled && !UserHasAcceptedTac(user))
-            {
-                return GetFailedLoginResult("loginEmail", resources.GetResourceString("Kadena.Logon.LogonFailed"));
-            }
-
             return login.Login(request);
-        }
-
-        private string GetTacPageUrl()
-        {
-            var tacAliasPath = resources.GetSiteSettingsKey("KDA_TermsAndConditionPage");
-            return documents.GetDocumentUrl(tacAliasPath);
         }
 
         private LoginResult GetFailedLoginResult(string property, string error)

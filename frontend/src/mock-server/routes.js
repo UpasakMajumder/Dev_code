@@ -21,8 +21,8 @@ apiRouter.get('/order/recent/filtered/campaigns/:selectedOrderType', Orders.rece
 apiRouter.get('/order/recent/filtered/orders/:selectedOrderType/:selectedCampaign*?', Orders.recent.filtered.orders);
 
 apiRouter.post('/login', Login);
-apiRouter.post('/accepttac', AcceptTaC);
-apiRouter.post('/checktac', CheckTaC);
+apiRouter.get('/accepttac', AcceptTaC);
+apiRouter.get('/checktac', CheckTaC);
 
 apiRouter.get('/cartPreview', CartPreview);
 
