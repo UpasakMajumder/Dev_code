@@ -16,7 +16,7 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProgramName"></span>
                     <div class="input__inner">
-                        <asp:DropDownList ID="ddlProgram" runat="server" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true" CssClass="input__select">
+                        <asp:DropDownList ID="ddlProgram" runat="server" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true">
                         </asp:DropDownList>
                         <asp:RequiredFieldValidator ID="rqProgram" runat="server" CssClass="EditingFormErrorLabel" ControlToValidate="ddlProgram" InitialValue="0"></asp:RequiredFieldValidator>
                     </div>
@@ -28,7 +28,7 @@
                         <cms:LocalizedLabel ID="lblPosCategory" runat="server" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblPosCategory" />
                     </span>
                     <div class="input__inner">
-                        <cms:CMSDropDownList ID="ddlPosCategory" runat="server" AutoPostBack="true" EnableViewState="True" CssClass="input__select" OnSelectedIndexChanged="ddlPosCategory_SelectedIndexChanged"></cms:CMSDropDownList>
+                        <cms:CMSDropDownList ID="ddlPosCategory" runat="server" AutoPostBack="true" EnableViewState="True" OnSelectedIndexChanged="ddlPosCategory_SelectedIndexChanged"></cms:CMSDropDownList>
                         <asp:RequiredFieldValidator ID="rfvPosCategory"
                             runat="server" CssClass="EditingFormErrorLabel" InitialValue="0" ControlToValidate="ddlPosCategory">
                         </asp:RequiredFieldValidator>
@@ -40,6 +40,7 @@
                     <span class="input__label" runat="server" id="lblPosNumber"></span>
                     <div class="input__inner">
                         <asp:DropDownList runat="server" ID="ddlPos" CssClass="input__select"></asp:DropDownList>
+                        <asp:TextBox runat="server" ID="txtPOSNumber" Visible="false" Enabled="false" CssClass="input__text form-control"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rqPOS" runat="server" CssClass="EditingFormErrorLabel" ControlToValidate="ddlPos" InitialValue="0"></asp:RequiredFieldValidator>
                     </div>
                 </div>

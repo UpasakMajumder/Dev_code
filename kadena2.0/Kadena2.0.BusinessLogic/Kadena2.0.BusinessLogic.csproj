@@ -58,6 +58,7 @@
     <Compile Include="Contracts\IIdentityService.cs" />
     <Compile Include="Contracts\IMailService.cs" />
     <Compile Include="Contracts\Orders\IOrderReportService.cs" />
+    <Compile Include="Contracts\Orders\IOrderResubmissionService.cs" />
     <Compile Include="Contracts\SSO\ISaml2RecipientValidator.cs" />
     <Compile Include="Contracts\SSO\ISaml2HandlerService.cs" />
     <Compile Include="Contracts\SSO\ISaml2Service.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Services\IBTFService.cs" />
     <Compile Include="Services\Orders\GetOrderDataService.cs" />
     <Compile Include="Services\Orders\OrderReportService.cs" />
+    <Compile Include="Services\Orders\OrderResubmissionService.cs" />
     <Compile Include="Services\Orders\SendSubmitOrder.cs" />
     <Compile Include="Services\SSO\KadenaSaml2SecurityTokenHandler.cs" />
     <Compile Include="Services\SSO\Saml2RecipientValidator.cs" />

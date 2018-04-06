@@ -20,7 +20,7 @@
                 <cms:LocalizedLabel ID="lblPosCategory" runat="server" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblPosCategory" />
             </span>
             <div class="input__inner">
-                <cms:CMSDropDownList ID="ddlPosCategory" runat="server" AutoPostBack="true" EnableViewState="True" OnSelectedIndexChanged="ddlPosCategory_SelectedIndexChanged" CssClass="input__select"></cms:CMSDropDownList>
+                <cms:CMSDropDownList ID="ddlPosCategory" runat="server" AutoPostBack="true" EnableViewState="True" OnSelectedIndexChanged="ddlPosCategory_SelectedIndexChanged"></cms:CMSDropDownList>
                 <asp:RequiredFieldValidator ID="rfvPosCategory"
                     runat="server" CssClass="EditingFormErrorLabel" InitialValue="0" ControlToValidate="ddlPosCategory">
                 </asp:RequiredFieldValidator>
@@ -36,6 +36,7 @@
                 </span>
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlPosNo" runat="server" AutoPostBack="true" EnableViewState="True" OnSelectedIndexChanged="ddlPosNo_SelectedIndexChanged" CssClass="input__select"></cms:CMSDropDownList>
+                    <asp:TextBox runat="server" ID="txtPOSNumber" Visible="false" Enabled="false" CssClass="input__text form-control"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="rfvPosNo"
                         runat="server" CssClass="EditingFormErrorLabel" InitialValue="0" ControlToValidate="ddlPosNo">
                     </asp:RequiredFieldValidator>

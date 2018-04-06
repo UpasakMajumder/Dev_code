@@ -16,5 +16,6 @@ namespace Kadena.Dto.Order
         public int? ProgramId { get; set; }
         public int? DistributorId { get; set; }
         public string OrderType { get; set; }
+        public int? StatusHistoryContains { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Kadena.Models.Product;
 using Kadena.BusinessLogic.Contracts;
 using Moq.AutoMock;
+using Kadena.Models.Site;
 
 namespace Kadena.Tests.WebApi
 {
@@ -128,7 +129,11 @@ namespace Kadena.Tests.WebApi
                     new ProductCategoryLink { Order = 1, Title = "c1" },
                     new ProductCategoryLink { Order = 2, Title = "c2" },
                 });
+
             var sut = autoMocker.CreateInstance<ProductsService>();
+            var siteMock = autoMocker.GetMock<IKenticoSiteProvider>();
+            siteMock.Setup(sm => sm.GetKenticoSite())
+                .Returns(new KenticoSite { Id = 1 });
 
             // Act
             var result = sut.GetProducts("/");

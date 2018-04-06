@@ -60,6 +60,8 @@ export const submitCard = (fields, cardType, submissionId) => {
       }
 
       const data = {
+        CreditCardTransactionCreditCard_CardSecurityCode: cvc,
+        CreditCardTransactionCreditCard_CardSecurityCodeIndicator: CreditCard_CSCIndicator,
         CreditCard_CSCValue: cvc,
         CreditCard_ExpirationMonth: expiry.substr(0, 2),
         CreditCard_ExpirationYear: expiry.substr(3), // bcz of slash `/`

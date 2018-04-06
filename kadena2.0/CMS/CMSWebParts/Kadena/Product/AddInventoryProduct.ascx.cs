@@ -488,14 +488,18 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             .FirstObject;
                         if (skuDetails != null)
                         {
+                            string posNumber = skuDetails.GetValue("SKUProductCustomerReferenceNumber", string.Empty);
+                            ddlBrand.SelectedValue = ValidationHelper.GetString(product.BrandID, string.Empty);
+                            ddlBrand.Enabled = false;
+                            ddlPosCategory.SelectedValue = GetPosCategory(posNumber);
+                            ddlPosCategory.Enabled = false;
+                            ddlPosNo.Visible = false;
+                            txtPOSNumber.Text = posNumber;
+                            txtPOSNumber.Visible = true;
                             string folderName = libraryFolderName;
                             folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "InventoryProducts";
                             txtLongDes.Text = skuDetails.SKUDescription;
                             txtEstPrice.Text = ValidationHelper.GetString(product.EstimatedPrice, string.Empty);
-                            ddlPosNo.SelectedValue = skuDetails.GetValue("SKUProductCustomerReferenceNumber", string.Empty) ?? "0";
-                            ddlPosCategory.SelectedValue = GetPosCategory(ddlPosNo.SelectedValue);
-                            ddlPosCategory.Enabled = false;
-                            ddlPosNo.Enabled = false;
                             txtShortDes.Text = skuDetails.SKUName;
                             txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
                             ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
@@ -509,8 +513,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             txtWeight.Text = ValidationHelper.GetString(skuDetails.SKUWeight, string.Empty);
                         }
                         txtBundleQnt.Text = ValidationHelper.GetString(product.QtyPerPack, string.Empty);
-                        ddlBrand.SelectedValue = ValidationHelper.GetString(product.BrandID, string.Empty);
-                        ddlBrand.Enabled = false;
                         ddlState.SelectedValue = ValidationHelper.GetString(product.State, string.Empty);
                         ddlProdCategory.SelectedValue = ValidationHelper.GetString(product.CategoryID, string.Empty);
                         BindEditProduct(ValidationHelper.GetInteger(product.CampaignsProductID, 0));
