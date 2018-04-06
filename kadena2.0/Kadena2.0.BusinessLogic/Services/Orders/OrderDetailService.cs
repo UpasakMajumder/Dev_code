@@ -195,7 +195,9 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             var orderedItems = items.Select(i =>
             {
-                var product = i.TemplateId != Guid.Empty ? products.GetProductBySkuId(i.SkuId) : null;
+                var product = i.TemplateId != Guid.Empty 
+                    ? products.GetProductBySkuId(i.SkuId) 
+                    : null;
                 return new OrderedItem()
                 {
                     Id = i.SkuId,

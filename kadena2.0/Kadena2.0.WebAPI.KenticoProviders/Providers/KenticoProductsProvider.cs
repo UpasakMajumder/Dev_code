@@ -299,7 +299,12 @@ namespace Kadena.WebAPI.KenticoProviders
                 .SelectSingleNode(
                     new NodeSelectionParameters { Where = $"{nameof(TreeNode.NodeSKUID)}={skuId}" }
                 );
-            return GetProductByNodeId(node.NodeID);
+            if (node != null)
+            {
+                return GetProductByNodeId(node.NodeID);
+            }
+
+            return null;
         }
 
         public int GetSkuAvailableQty(int skuid)
