@@ -57,7 +57,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 ? SettingsKeyInfoProvider.GetValue(key, new SiteInfoIdentifier(siteId))
                 : SettingsKeyInfoProvider.GetValue(key);
 
-            if (value == null)
+            if (string.IsNullOrEmpty(value))
             {
                 return default(T);
             }
