@@ -761,6 +761,13 @@
     <Compile Include="CMSModules\Kadena\Pages\Payment\Create3dsiContainer.aspx.designer.cs">
       <DependentUpon>Create3dsiContainer.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Products\CampaignProductsMigration.aspx.cs">
+      <DependentUpon>CampaignProductsMigration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Products\CampaignProductsMigration.aspx.designer.cs">
+      <DependentUpon>CampaignProductsMigration.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Products\ProductImagesImport.aspx.cs">
       <DependentUpon>ProductImagesImport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1419,6 +1426,7 @@
     <Content Include="CMSFormControls\Kadena\MediaMultiSelector.ascx" />
     <Content Include="CMSModules\Kadena\Pages\Orders\FailedOrders.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Payment\Create3dsiContainer.aspx" />
+    <Content Include="CMSModules\Kadena\Pages\Products\CampaignProductsMigration.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Products\ProductImagesImport.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Products\CampaignProductsImport.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Products\ProductsImport.aspx" />

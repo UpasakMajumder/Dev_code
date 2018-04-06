@@ -30,9 +30,10 @@ class ProductsFavorites extends Component {
           <div key={product.id} className="col-lg-4 col-xl-3">
             <div className="template">
               <a href={product.url} className="category">
-                <div
-                  className="category__picture"
-                  style={{ backgroundImage: `url(${product.imageUrl})` }}>
+                <div className="category__picture">
+                  <img
+                    src={product.imageUrl}
+                  />
                 </div>
                 <div className="category__title">
                   <h2>{product.title}</h2>
