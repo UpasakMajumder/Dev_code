@@ -83,7 +83,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 ProductionTime = displayProductionAndShipping ? i.GetValue("ProductProductionTime", string.Empty) : null,
                 ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null,
                 Preview = new Button { Exists = false, Text = resources.GetResourceString("Kadena.Checkout.PreviewButton") },
-                SendPriceToErp = i.GetBooleanValue("SendPriceToErp", false)
+                SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true)
             };
 
             if (cartItem.IsTemplated)
