@@ -19,6 +19,7 @@ import dialogAlert from './dialogAlert';
 import cardPayment from './card-payment';
 import languageSelector from './languageSelector';
 import filteredRecentOrders from './filteredRecentOrders';
+import emailProof from './emailProof';
 
 const rootReducer = combineReducers({
   tac,
@@ -39,7 +40,8 @@ const rootReducer = combineReducers({
   cardPayment,
   languageSelector,
   filteredRecentOrders,
-  recentOrders
+  recentOrders,
+  emailProof
 });
 
 export default rootReducer;

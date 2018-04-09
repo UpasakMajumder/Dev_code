@@ -25,6 +25,7 @@ namespace Kadena.Models.OrderDetail
         public string ProductStatusPrefix { get; set; }
         public string ProductStatus { get; set; }
         public Button Preview { get; set; }
+        public Button EmailProof { get; set; }
         public IEnumerable<ItemOption> Options { get; set; }
     }
 }

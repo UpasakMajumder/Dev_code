@@ -26,6 +26,7 @@ using Kadena.Dto.SSO;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Dto.SubmitOrder.Requests;
 using Kadena.Dto.SubmitOrder.Responses;
+using Kadena.Dto.TemplatedProduct.Requests;
 using Kadena.Dto.TemplatedProduct.Responses;
 using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Infrastructure.FileConversion;
@@ -306,7 +307,7 @@ namespace Kadena.Container.Default
             CreateMap<Dto.SSO.AddressDto, DeliveryAddress>()
                 .ForMember(dest => dest.Country, opt => opt.ResolveUsing(src => new Country { Code = src.Country }))
                 .ForMember(dest => dest.State, opt => opt.ResolveUsing(src => new State { StateCode = src.State }));
-
+            CreateMap<EmailProofRequestDto, EmailProofRequest>();
         }
     }
 }

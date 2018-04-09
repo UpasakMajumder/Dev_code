@@ -15,6 +15,22 @@ const getPreviewLink = (preview) => {
   );
 };
 
+const getEmailProofLink = (emailProof, toogleEmailProof) => {
+  if (!emailProof) return null;
+  if (!emailProof.exists) return null;
+
+  const onClick = (e) => {
+    e.preventDefault();
+    toogleEmailProof(true, emailProof.url);
+  };
+
+  return (
+    <div className="cart-product__file">
+      <a onClick={onClick} className="link" href="#">{emailProof.text}</a>
+    </div>
+  );
+};
+
 const Order = ({
   image,
   template,
@@ -34,7 +50,10 @@ const Order = ({
   productStatusPrefix,
   productStatus,
   options,
-  preview
+  preview,
+  // emailProof
+  emailProof,
+  toogleEmailProof
 }) => {
   const downloadPdfLink = downloadPdfURL
     ? <div className="cart-product__file">
@@ -121,6 +140,7 @@ const Order = ({
           {quantityElement}
           {downloadPdfLink}
           {getPreviewLink(preview)}
+          {getEmailProofLink(emailProof, toogleEmailProof)}
         </div>
       </div>
     </div>
@@ -143,7 +163,9 @@ Order.propTypes = {
   templatePrefix: PropTypes.string.isRequired,
   productStatusPrefix: PropTypes.string.isRequired,
   productStatus: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.object).isRequired
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  emailProof: PropTypes.object.isRequired,
+  toogleEmailProof: PropTypes.func.isRequired
 };
 
 export default Order;
