@@ -11,17 +11,8 @@ namespace Kadena.Helpers
 
         public MicroProperties(IKenticoResourceService kentico, IKenticoSiteProvider site)
         {
-            if (kentico == null)
-            {
-                throw new ArgumentNullException(nameof(kentico));
-            }
-            if (site == null)
-            {
-                throw new ArgumentNullException(nameof(site));
-            }
-
-            _kentico = kentico;
-            _site = site;
+            _kentico = kentico ?? throw new ArgumentNullException(nameof(kentico));
+            _site = site ?? throw new ArgumentNullException(nameof(site));
         }
 
         public string GetCustomerName()

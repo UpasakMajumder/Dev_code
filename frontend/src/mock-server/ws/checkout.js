@@ -42,6 +42,11 @@ const products = {
       "isQuantityEditable": true,
       "productionTime": "Now",
       "shipTime": "Tomorrow",
+      "emailProof": {
+        "exists": true,
+        "text": "Email",
+        "url": "1"
+      },
       "preview": {
         "exists": true,
         "text": "Preview",
@@ -69,6 +74,11 @@ const products = {
       "isQuantityEditable": true,
       "productionTime": "",
       "shipTime": "Tomorrow",
+      "emailProof": {
+        "exists": true,
+        "text": "Email",
+        "url": "2"
+      },
       "preview": {
         "exists": false,
         "text": "Preview",
