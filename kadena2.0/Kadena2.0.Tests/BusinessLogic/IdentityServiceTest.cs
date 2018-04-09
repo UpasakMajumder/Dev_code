@@ -3,6 +3,7 @@ using Kadena.BusinessLogic.Contracts.SSO;
 using Kadena.BusinessLogic.Services;
 using Kadena.Dto.SSO;
 using Kadena.Models;
+using Kadena.Models.Membership;
 using Kadena.Models.Site;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Moq;

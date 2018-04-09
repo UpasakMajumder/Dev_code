@@ -1,4 +1,4 @@
-﻿using Kadena.Models;
+﻿using Kadena.Models.Membership;
 using System.Collections.Generic;
 
 namespace Kadena.BusinessLogic.Contracts

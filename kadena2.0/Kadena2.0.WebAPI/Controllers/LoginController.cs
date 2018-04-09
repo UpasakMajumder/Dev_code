@@ -17,21 +17,9 @@ namespace Kadena.WebAPI.Controllers
 
         public LoginController(ILoginService loginService, IMapper mapper, IIdentityService identityService)
         {
-            if (loginService == null)
-            {
-                throw new ArgumentNullException(nameof(loginService));
-            }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            if (identityService == null)
-            {
-                throw new ArgumentNullException(nameof(identityService));
-            }
-            this.loginService = loginService;
-            this.mapper = mapper;
-            this.identityService = identityService;
+            this.loginService = loginService ?? throw new ArgumentNullException(nameof(loginService));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         }
 
         [HttpPost]
@@ -45,31 +33,11 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("api/login/checktac")]
-        public IHttpActionResult CheckTaC([FromBody] CheckTaCRequestDTO request)
-        {
-            var loginRequestModel = mapper.Map<LoginRequest>(request);
-            var serviceResult = loginService.CheckTaC(loginRequestModel);
-            var result = mapper.Map<CheckTaCResultDTO>(serviceResult);
-            return ResponseJson(result);
-        }
-
-
-        [HttpPost]
-        [Route("api/login/accepttac")]
-        public IHttpActionResult AcceptTaC([FromBody] AcceptTaCRequestDTO request)
-        {
-            var loginRequestModel = mapper.Map<LoginRequest>(request);
-            loginService.AcceptTaC(loginRequestModel);
-            return SuccessJson();
-        }
-
-        [HttpPost]
         [Route("api/logout")]
         public IHttpActionResult Logout()
         {
-            var rerirecturl = loginService.Logout();
-            return ResponseJson(rerirecturl);
+            var redirectUrl = loginService.Logout();
+            return ResponseJson(redirectUrl);
         }
 
         [HttpPost]

@@ -66,6 +66,7 @@
     <Compile Include="Orders\OrderFilter.cs" />
     <Compile Include="Orders\OrderReport.cs" />
     <Compile Include="Orders\OrderStatus.cs" />
+    <Compile Include="Membership\UserSettings.cs" />
     <Compile Include="Product\Border.cs" />
     <Compile Include="Product\CampaignsProduct.cs" />
     <Compile Include="Product\Price.cs" />
@@ -129,7 +130,7 @@
     <Compile Include="OrderDetail\TitleValuePair.cs" />
     <Compile Include="Dashboard\OrderStatisticsData.cs" />
     <Compile Include="Product\ProductValidator.cs" />
-    <Compile Include="Role.cs" />
+    <Compile Include="Membership\Role.cs" />
     <Compile Include="Settings\DefaultAddress.cs" />
     <Compile Include="Product\Sku.cs" />
     <Compile Include="SiteSettings\Attributes\CategoryAttribute.cs" />
@@ -204,7 +205,7 @@
     <Compile Include="TemplatedProduct\SortingType.cs" />
     <Compile Include="_Common\TableRow.cs" />
     <Compile Include="_Common\TableView.cs" />
-    <Compile Include="_Common\User.cs" />
+    <Compile Include="Membership\User.cs" />
     <Compile Include="UserBudget\UserBudgetItem.cs" />
     <Compile Include="_Common\ValidationFieldResult.cs" />
   </ItemGroup>
