@@ -87,6 +87,7 @@ namespace Kadena.Models.Checkout
         public Guid ProductChiliWorkspaceId { get; set; }
 
         public Button Preview { get; set; }
+        public Button EmailProof { get; set; }
 
         public bool IsEditable
         {

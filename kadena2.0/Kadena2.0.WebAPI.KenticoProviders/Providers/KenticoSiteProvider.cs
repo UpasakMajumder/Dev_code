@@ -18,17 +18,8 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public KenticoSiteProvider(IMapper mapper, IKadenaSettings kadenaSettings)
         {
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            if (kadenaSettings == null)
-            {
-                throw new ArgumentNullException(nameof(kadenaSettings));
-            }
-
-            this.mapper = mapper;
-            this.kadenaSettings = kadenaSettings;
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.kadenaSettings = kadenaSettings ?? throw new ArgumentNullException(nameof(kadenaSettings));
         }
 
         public Site[] GetSites()
@@ -93,6 +84,11 @@ namespace Kadena.WebAPI.KenticoProviders
         public string GetFullUrl()
         {
             return URLHelper.GetFullApplicationUrl();
+        }
+
+        public string GetAbsoluteUrl(string url)
+        {
+            return URLHelper.GetAbsoluteUrl(url);
         }
     }
 }

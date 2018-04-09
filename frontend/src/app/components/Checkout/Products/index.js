@@ -3,8 +3,13 @@ import PropTypes from 'prop-types';
 /* components */
 import Product from 'app.dump/Product/Checkout';
 
-const Products = (props) => {
-  const { ui, removeProduct, changeProductQuantity, disableInteractivity } = props;
+const Products = ({
+  ui,
+  removeProduct,
+  changeProductQuantity,
+  disableInteractivity,
+  toggleEmailProof
+}) => {
   const { number, items, buttonLabels, productionTimeLabel, shipTimeLabel } = ui;
 
   const products = items.map((item) => {
@@ -18,6 +23,7 @@ const Products = (props) => {
         disableInteractivity={disableInteractivity}
         buttonLabels={buttonLabels}
         changeProductQuantity={changeProductQuantity}
+        toggleEmailProof={toggleEmailProof}
       />
     );
   });
@@ -40,7 +46,8 @@ Products.propTypes = {
   }).isRequired,
   removeProduct: PropTypes.func.isRequired,
   changeProductQuantity: PropTypes.func.isRequired,
-  disableInteractivity: PropTypes.bool.isRequired
+  disableInteractivity: PropTypes.bool.isRequired,
+  toggleEmailProof: PropTypes.func.isRequired
 };
 
 export default Products;

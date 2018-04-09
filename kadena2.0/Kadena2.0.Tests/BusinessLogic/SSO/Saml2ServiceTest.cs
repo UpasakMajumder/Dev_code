@@ -1,5 +1,4 @@
 ﻿using Xunit;
-using Moq.AutoMock;
 using Kadena.BusinessLogic.Services.SSO;
 using Kadena.BusinessLogic.Contracts.SSO;
 using System.IdentityModel.Tokens;
@@ -10,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Kadena.Tests.BusinessLogic.SSO
 {
-    public class Saml2ServiceTest
+    public class Saml2ServiceTest : KadenaUnitTest<Saml2Service>
     {
         private class TestSaml2SecurityTokenHandler : Saml2SecurityTokenHandler
         {
@@ -67,10 +66,7 @@ namespace Kadena.Tests.BusinessLogic.SSO
         [Fact(DisplayName = "Saml2Service.GetAttributes() | Token read exception")]
         public void GetAttributesTokenReadExeption()
         {
-            var autoMock = new AutoMocker();
-            var sut = autoMock.CreateInstance<Saml2Service>();
-
-            var actualResult = sut.GetAttributes(string.Empty);
+            var actualResult = Sut.GetAttributes(string.Empty);
 
             Assert.Null(actualResult);
         }
@@ -78,14 +74,9 @@ namespace Kadena.Tests.BusinessLogic.SSO
         [Fact(DisplayName = "Saml2Service.GetAttributes() | Null attribute statement")]
         public void GetAttributesNull()
         {
-            var autoMock = new AutoMocker();
-            var sut = autoMock.CreateInstance<Saml2Service>();
-            autoMock
-                .GetMock<ISaml2HandlerService>()
-                .Setup(s => s.GetTokenHandler())
-                .Returns(new TestSaml2SecurityTokenHandler(null));
+            Setup<ISaml2HandlerService, Saml2SecurityTokenHandler>(s => s.GetTokenHandler(), new TestSaml2SecurityTokenHandler(null));
 
-            var actualResult = sut.GetAttributes(string.Empty);
+            var actualResult = Sut.GetAttributes(string.Empty);
 
             Assert.Null(actualResult);
         }
@@ -94,14 +85,9 @@ namespace Kadena.Tests.BusinessLogic.SSO
         [MemberData(nameof(GetAttributes))]
         public void GetAttributesNoNull(Dictionary<string, IEnumerable<string>> expectedResult)
         {
-            var autoMock = new AutoMocker();
-            var sut = autoMock.CreateInstance<Saml2Service>();
-            autoMock
-                .GetMock<ISaml2HandlerService>()
-                .Setup(s => s.GetTokenHandler())
-                .Returns(new TestSaml2SecurityTokenHandler(expectedResult));
+            Setup<ISaml2HandlerService, Saml2SecurityTokenHandler>(s => s.GetTokenHandler(), new TestSaml2SecurityTokenHandler(expectedResult));
 
-            var actualResult = sut.GetAttributes(string.Empty);
+            var actualResult = Sut.GetAttributes(string.Empty);
 
             Assert.NotNull(actualResult);
             Assert.Equal(expectedResult.Count, actualResult.Count);
