@@ -147,7 +147,8 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.ProductShipTime, opt => opt.MapFrom(src => src.GetValue("ProductShipTime", string.Empty)))
                 .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.GetValue("ProductType", string.Empty)))
                 .ForMember(dest => dest.CartItemPrice, opt => opt.MapFrom(src => (decimal)src.GetDoubleValue("CartItemPrice", 0.0d)))
-                .ForMember(dest => dest.SKUUnits, opt => opt.MapFrom(src => src.GetIntegerValue("SKUUnits", 0)));
+                .ForMember(dest => dest.SKUUnits, opt => opt.MapFrom(src => src.GetIntegerValue("SKUUnits", 0)))
+                .ForMember(dest => dest.SendPriceToErp, opt => opt.MapFrom(src => src.GetBooleanValue("SendPriceToErp", true)));
 
             CreateMap<CartItemEntity, ShoppingCartItemInfo>()
                 .AfterMap((src, dest) => dest.SetValue("ArtworkLocation", src.ArtworkLocation))
@@ -162,7 +163,8 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .AfterMap((src, dest) => dest.SetValue("ProductShipTime", src.ProductShipTime))
                 .AfterMap((src, dest) => dest.SetValue("ProductType", src.ProductType))
                 .AfterMap((src, dest) => dest.SetValue("CartItemPrice", src.CartItemPrice))
-                .AfterMap((src, dest) => dest.SetValue("SKUUnits", src.SKUUnits));
+                .AfterMap((src, dest) => dest.SetValue("SKUUnits", src.SKUUnits))
+                .AfterMap((src, dest) => dest.SetValue("SendPriceToErp", src.SendPriceToErp));
             CreateMap<Customer, CustomerInfo>()
                 .ForMember(dest => dest.CustomerID, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.CustomerFirstName, opt => opt.MapFrom(src => src.FirstName))
