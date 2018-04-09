@@ -25,6 +25,7 @@ namespace Kadena.Dto.ViewOrder.Responses
         public string ProductStatusPrefix { get; set; }
         public string ProductStatus { get; set; }
         public ButtonDto Preview { get; set; }
+        public ButtonDto EmailProof { get; set; }
         public IEnumerable<ItemOptionDto> Options { get; set; }
     }
 }

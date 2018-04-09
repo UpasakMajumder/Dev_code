@@ -8,6 +8,7 @@ const MailingList = require('./controllers/mailingList');
 const Login = require('./controllers/login');
 const CheckTaC = require('./controllers/checkTaC');
 const AcceptTaC = require('./controllers/acceptTaC');
+const EmailProof = require('./controllers/emailProof');
 
 const apiRouter = require('express').Router();
 
@@ -59,5 +60,7 @@ apiRouter.get('/order/detail', Orders.detail);
 
 apiRouter.post('/mailing-list/use-correct/:containerId', MailingList.useCorrect);
 apiRouter.post('/mailing-list/reprocess/:containerId', MailingList.reprocess);
+
+apiRouter.post('/email-proof', EmailProof);
 
 module.exports = apiRouter;

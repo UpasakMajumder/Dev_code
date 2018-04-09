@@ -106,7 +106,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
         {
             var countries = kenticoLocalization.GetCountries();
             var states = kenticoLocalization.GetStates();
-            var defaultCountryId = int.Parse(resources.GetSiteSettingsKey("KDA_AddressDefaultCountry"));
+            var defaultCountryId = resources.GetSiteSettingsKey<int>("KDA_AddressDefaultCountry");
             return new Models.Checkout.AddressDialog
             {
                 Title = resources.GetResourceString("Kadena.Checkout.NewAddress"),

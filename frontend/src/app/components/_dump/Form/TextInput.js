@@ -6,7 +6,7 @@ import { removeProps } from 'app.helpers/object';
 import { STATIC_FIELDS } from 'app.globals';
 
 const TextInput = (props) => {
-  const { label, error, disabled, isOptional, className } = props;
+  const { label, error, disabled, isOptional, className, maxLength } = props;
 
   const inputProps = removeProps(props, ['label', 'error', 'isOptional', 'isSelect', 'options', 'className']);
 
@@ -24,7 +24,7 @@ const TextInput = (props) => {
       <input
         type="text"
         className={inputSelector}
-        maxLength="50"
+        maxLength={maxLength}
         {...inputProps}
       />
       {errorElement}
@@ -32,12 +32,17 @@ const TextInput = (props) => {
   );
 };
 
+TextInput.defaultProps = {
+  maxLength: 50
+};
+
 TextInput.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   error: PropTypes.string,
   disabled: PropTypes.bool,
-  isOptional: PropTypes.bool
+  isOptional: PropTypes.bool,
+  maxLength: PropTypes.number
 };
 
 export default TextInput;

@@ -16,8 +16,24 @@ const EmailConfirmation = ({
   removeInput,
   changeInput,
   title,
-  description
+  description,
+  label,
+  invalids,
+  clearInvalid
 }) => {
+  const getError = (field) => {
+    let message = '';
+
+    if (!invalids) return message;
+
+    const invalid = invalids.find(invalid => invalid.field === field.toString());
+    if (invalid) {
+      message = invalid.message;
+    }
+
+    return message;
+  };
+
   const getInputs = () => {
     return items.map((item, i) => {
       const addButton = i === items.length - 1 && i !== maxItems - 1
@@ -58,12 +74,19 @@ const EmailConfirmation = ({
           </Tooltip>
         ) : null;
 
+      const onChange = (field, value) => {
+        changeInput(field, value);
+        clearInvalid && clearInvalid(field);
+      };
+
       return (
         <div className="email-confirmation__block" key={item.id}>
           <div className="email-confirmation__input">
             <TextInput
+              error={getError(item.id)}
+              label={label}
               value={fields[item.id]}
-              onChange={(e) => { changeInput(item.id, e.target.value); }}
+              onChange={(e) => { onChange(item.id, e.target.value); }}
             />
           </div>
           {addButton}
@@ -94,15 +117,21 @@ EmailConfirmation.propTypes = {
     add: PropTypes.string.isRequired,
     remove: PropTypes.string.isRequired
   }).isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   description: PropTypes.string,
   items: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired
   })).isRequired,
   fields: PropTypes.object.isRequired,
+  label: PropTypes.string,
   addInput: PropTypes.func.isRequired,
   removeInput: PropTypes.func.isRequired,
-  changeInput: PropTypes.func.isRequired
+  changeInput: PropTypes.func.isRequired,
+  invalids: PropTypes.arrayOf(PropTypes.shape({
+    field: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired
+  })),
+  clearInvalid: PropTypes.func
 };
 
 export default EmailConfirmation;

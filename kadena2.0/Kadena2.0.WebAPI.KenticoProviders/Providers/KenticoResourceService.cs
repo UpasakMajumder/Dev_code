@@ -30,7 +30,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var fullname = $"{site}.{name}";
 
-            
+
             var perSiteStringInfo = ResourceStringInfoProvider.GetResourceStringInfo(fullname, LocalizationContext.CurrentCulture.CultureCode);
 
             if (perSiteStringInfo != null && perSiteStringInfo.StringID > 0)
@@ -49,20 +49,45 @@ namespace Kadena.WebAPI.KenticoProviders
         public T GetSiteSettingsKey<T>(string key) where T : IConvertible
         {
             return GetSettingsKey<T>(key, SiteContext.CurrentSiteID);
-        }        
-        
+        }
+
         public T GetSettingsKey<T>(string key, int siteId = 0) where T : IConvertible
         {
-            var value = (siteId > 0)
-                ? SettingsKeyInfoProvider.GetValue(key, new SiteInfoIdentifier(siteId))
-                : SettingsKeyInfoProvider.GetValue(key);
+            SettingsKeyInfo settingsKey = null;
+
+            if (siteId > 0)
+            {
+                settingsKey = SettingsKeyInfoProvider.GetSettingsKeyInfo(key, new SiteInfoIdentifier(siteId));
+            }
+
+            // If setting key on some site is just inherited from global,
+            // SettingsKeyInfoProvider(name, siteIdentifier) will not find correct value.
+            // So if KeyID == 0, try to take global value
+            if (siteId == 0 || ((settingsKey?.KeyID ?? 0) == 0))
+            {
+                settingsKey = SettingsKeyInfoProvider.GetSettingsKeyInfo(key);
+            }
+
+            if (settingsKey == null || settingsKey.KeyID == 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(key), $"Settings key not found : {key}");
+            }
+
+            var value = settingsKey.KeyValue;
 
             if (value == null)
             {
                 return default(T);
             }
 
-            return (T)Convert.ChangeType(value, typeof(T));
+            try
+            {
+                return (T)Convert.ChangeType(value, typeof(T));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to convert key '{key}' = '{value}' to type '{typeof(T).Name}'", ex);
+            }
         }
 
         public string ResolveMacroString(string macroString)
