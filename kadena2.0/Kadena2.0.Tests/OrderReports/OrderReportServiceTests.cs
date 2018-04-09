@@ -227,7 +227,7 @@ namespace Kadena.Tests.WebApi
                 ItemsPerPage = sut.OrdersPerPage,
                 PageNumber = page,
                 DateFrom = filter.FromDate,
-                DateTo = filter.ToDate,
+                DateTo = filter.ToDate.Value.AddDays(1),
                 OrderBy = OrderReportService.SortableByOrderDate,
                 OrderByDescending = true
             };
@@ -324,6 +324,40 @@ namespace Kadena.Tests.WebApi
             }
 
             Assert.True(sut.ValidateFilterCalled);
+        }
+
+        [Fact]
+        public async Task GetOrdersForSite_ShouldConfigureDateFilterAsInclusive()
+        {
+            var inputDateFrom = new DateTime(2017, 3, 21);
+            var inputDateTo = new DateTime(2017, 4, 25);
+            var expectedDateFrom = new DateTime(2017, 3, 21);
+            var expectedDateTo = new DateTime(2017, 4, 26);
+            var inputFilter = new OrderFilter
+            {
+                FromDate = inputDateFrom,
+                ToDate = inputDateTo
+            };
+
+            var actualFilter = new OrderListFilter();
+
+            var orderViewClient = new Mock<IOrderViewClient>();
+            orderViewClient
+                .Setup(ovc => ovc.GetOrders(It.IsAny<OrderListFilter>()))
+                .Returns<OrderListFilter>((filt) => 
+                {
+                    actualFilter = filt;
+                    return Task.FromResult(new BaseResponseDto<OrderListDto>());
+                });
+
+            var sut = new OrderReportServiceBuilder()
+                .WithOrderViewClient(orderViewClient.Object)
+                .Build();
+
+            await sut.GetOrdersExportForSite("test_site", inputFilter);
+
+            Assert.Equal(expectedDateFrom, actualFilter.DateFrom);
+            Assert.Equal(expectedDateTo, actualFilter.DateTo);
         }
 
         [Fact]
@@ -436,7 +470,7 @@ namespace Kadena.Tests.WebApi
             {
                 SiteName = currentSite,
                 DateFrom = filterSpecified.FromDate,
-                DateTo = filterSpecified.ToDate,
+                DateTo = filterSpecified.ToDate.Value.AddDays(1),
                 OrderBy = OrderReportService.SortableByOrderDate,
                 OrderByDescending = true
             };

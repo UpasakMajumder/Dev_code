@@ -157,6 +157,12 @@ namespace Kadena.BusinessLogic.Services.Orders
                 DateFrom = filter.FromDate,
                 DateTo = filter.ToDate
             };
+
+            if (orderFilter.DateTo != null)
+            {
+                orderFilter.DateTo = orderFilter.DateTo.Value.AddDays(1);
+            }
+
             OrderFilter.OrderByFields sort;
             if (filter.TryParseOrderByExpression(out sort))
             {
