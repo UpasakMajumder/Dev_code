@@ -58,43 +58,43 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public virtual Task<PagedData<OrderReport>> GetOrders(int page, OrderFilter filter)
+        public Task<PagedData<OrderReport>> GetOrders(int page, OrderFilter filter)
         {
             var currentSite = kenticoSiteProvider.GetCurrentSiteCodeName();
             return GetOrdersForSite(currentSite, page, filter);
         }
 
-        public virtual async Task<PagedData<OrderReport>> GetOrdersForSite(string site, int page, OrderFilter filter)
+        public async Task<PagedData<OrderReport>> GetOrdersForSite(string site, int page, OrderFilter filter)
         {
             var orderFilter = CreateOrderListFilter(filter, site, page);
-            var orders = await orderViewClient.GetOrders(orderFilter);
+            var ordersDto = await orderViewClient.GetOrders(orderFilter);
+            var orders = ordersDto.Payload?.Orders ?? new List<RecentOrderDto>();
 
-            if (orders.Payload == null)
+            if (orders.Count() > 0)
             {
-                return PagedData<OrderReport>.Empty();
-            }
-
-            var pagesCount = orders.Payload.TotalCount / OrdersPerPage;
-            if (orders.Payload.TotalCount % OrdersPerPage > 0)
-            {
-                pagesCount++;
-            }
-
-            return new PagedData<OrderReport>
-            {
-                Pagination = new Pagination
+                var pagesCount = ordersDto.Payload.TotalCount / OrdersPerPage;
+                if (ordersDto.Payload.TotalCount % OrdersPerPage > 0)
                 {
-                    CurrentPage = page,
-                    RowsCount = orders.Payload.TotalCount,
-                    RowsOnPage = OrdersPerPage,
-                    PagesCount = pagesCount
-                },
-                Data = orders.Payload.Orders
-                    .Select(o => orderReportFactory.Create(o))
-                    .ToList()
-            };
+                    pagesCount++;
+                }
+
+                return new PagedData<OrderReport>
+                {
+                    Pagination = new Pagination
+                    {
+                        CurrentPage = page,
+                        RowsCount = ordersDto.Payload.TotalCount,
+                        RowsOnPage = OrdersPerPage,
+                        PagesCount = pagesCount
+                    },
+                    Data = orders
+                        .Select(o => orderReportFactory.Create(o))
+                        .ToList()
+                };
+            }
+            return new PagedData<OrderReport>();
         }
-        
+
         public TableView ConvertOrdersToView(PagedData<OrderReport> orders)
         {
             if (orders == null)
@@ -108,21 +108,20 @@ namespace Kadena.BusinessLogic.Services.Orders
             return view;
         }
 
-        public virtual Task<FileResult> GetOrdersExport(OrderFilter filter)
+        public Task<FileResult> GetOrdersExport(OrderFilter filter)
         {
             var currentSite = kenticoSiteProvider.GetCurrentSiteCodeName();
             return GetOrdersExportForSite(currentSite, filter);
         }
 
-        public virtual async Task<FileResult> GetOrdersExportForSite(string site, OrderFilter filter)
+        public async Task<FileResult> GetOrdersExportForSite(string site, OrderFilter filter)
         {
             var orderFilter = CreateOrderListFilter(filter, site);
             var ordersDto = await orderViewClient.GetOrders(orderFilter);
-
             var orders = ordersDto.Payload?.Orders ?? new List<RecentOrderDto>();
 
             var ordersReport = orders
-                .Select(o => orderReportFactory.Create(o));
+                    .Select(o => orderReportFactory.Create(o));
             var tableView = orderReportFactory.CreateTableView(ordersReport);
 
             var fileDataTable = mapper.Map<Table>(tableView);
@@ -180,7 +179,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
         }
 
-        public virtual void ValidateFilter(OrderFilter filter)
+        private void ValidateFilter(OrderFilter filter)
         {
             if (!string.IsNullOrWhiteSpace(filter.OrderByExpression))
             {
