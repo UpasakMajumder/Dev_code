@@ -30,7 +30,7 @@ export const getRows = (url, args = {}) => {
         dispatch({
           type: ORDERS_REPORTS_GET_ROWS + SUCCESS,
           payload: {
-            rows: payload.rows,
+            rows: payload.rows || [],
             pagination,
             sortOrderAsc: args.sortOrderAsc,
             sortBy: args.sortBy

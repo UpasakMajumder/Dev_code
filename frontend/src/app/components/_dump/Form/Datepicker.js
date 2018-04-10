@@ -25,7 +25,8 @@ const Datepicker = ({
   dateFormat,
   label,
   placeholder,
-  inputClass
+  inputClass,
+  readOnly
 }) => {
   return (
     <div className="input__wrapper input__wrapper--with-icon">
@@ -40,6 +41,7 @@ const Datepicker = ({
         endDate={endDate}
         onChange={onChange} // argument is momentum object date
         dateFormat={dateFormat}
+        readOnly={readOnly}
       />
       <SVG
         name="calendar_1"
@@ -57,7 +59,8 @@ Datepicker.defaultProps = {
   dateFormat,
   label: '',
   placeholder: '',
-  inputClass: ''
+  inputClass: '',
+  readOnly: false
 };
 
 Datepicker.propTypes = {
@@ -70,7 +73,8 @@ Datepicker.propTypes = {
   dateFormat: PropTypes.string,
   label: PropTypes.string,
   placeholder: PropTypes.string,
-  inputClass: PropTypes.string
+  inputClass: PropTypes.string,
+  readOnly: PropTypes.bool
 };
 
 export default Datepicker;
