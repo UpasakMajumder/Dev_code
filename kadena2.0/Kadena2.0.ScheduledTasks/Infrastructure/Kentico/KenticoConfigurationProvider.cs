@@ -1,4 +1,5 @@
-﻿using Kadena.WebAPI.KenticoProviders.Contracts;
+﻿using Kadena.Models.SiteSettings;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.ScheduledTasks.Infrastructure.Kentico
 {
@@ -31,14 +32,14 @@ namespace Kadena.ScheduledTasks.Infrastructure.Kentico
 
         private void LoadSection(MailingListConfiguration section, int siteId)
         {
-            section.MailingServiceUrl = kenticoResources.GetSettingsKey<string>("KDA_MailingServiceUrl", siteId);
-            section.DeleteMailingListsPeriod = StringToInt(kenticoResources.GetSettingsKey<string>("KDA_MailingList_DeleteExpiredAfter", siteId));
+            section.MailingServiceUrl = kenticoResources.GetSettingsKey<string>(Settings.KDA_MailingServiceUrl, siteId);
+            section.DeleteMailingListsPeriod = StringToInt(kenticoResources.GetSettingsKey<string>(Settings.KDA_MailingList_DeleteExpiredAfter, siteId));
         }
 
         private void LoadSection(UpdateInventoryConfiguration section, int siteId)
         {
-            section.ErpClientId = kenticoResources.GetSettingsKey<string>("KDA_ErpCustomerId", siteId);
-            section.InventoryUpdateServiceEndpoint = kenticoResources.GetSiteSettingsKey("KDA_InventoryUpdateServiceEndpoint");
+            section.ErpClientId = kenticoResources.GetSettingsKey<string>(Settings.KDA_ErpCustomerId, siteId);
+            section.InventoryUpdateServiceEndpoint = kenticoResources.GetSiteSettingsKey(Settings.KDA_InventoryUpdateServiceEndpoint);
         }
     }
 }

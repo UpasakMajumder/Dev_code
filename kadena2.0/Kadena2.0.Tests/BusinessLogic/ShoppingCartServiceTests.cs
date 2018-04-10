@@ -5,6 +5,7 @@ using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Membership;
 using Kadena.Models.Product;
+using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Moq;
@@ -93,7 +94,7 @@ namespace Kadena.Tests.BusinessLogic
 
             Setup<IKenticoResourceService, string>(m => m.GetResourceString("Kadena.Checkout.CountOfItems"), "You have {0} {1} in cart");
             Setup<IKenticoResourceService, string>(m => m.GetResourceString("Kadena.Checkout.ItemSingular"), "item");
-            Setup<IKenticoResourceService, string>(m => m.GetSiteSettingsKey("KDA_AddressDefaultCountry"), "0");
+            Setup<IKenticoResourceService, string>(m => m.GetSiteSettingsKey(Settings.KDA_AddressDefaultCountry), "0");
 
             Use<ICheckoutPageFactory, CheckoutPageFactory>();
         }

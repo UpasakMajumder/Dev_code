@@ -12,6 +12,7 @@ using Kadena.Models.CreditCard;
 using Kadena2.MicroserviceClients.Contracts;
 using System.Collections.Generic;
 using Kadena.Models.AddToCart;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -76,7 +77,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var addresses = kenticoAddresses.GetCustomerAddresses(AddressType.Shipping);
             var paymentMethods = shoppingCart.GetPaymentMethods();
-            var emailConfirmationEnabled = resources.GetSettingsKey<bool>("KDA_UseNotificationEmailsOnCheckout");
+            var emailConfirmationEnabled = resources.GetSettingsKey<bool>(Settings.KDA_UseNotificationEmailsOnCheckout);
             var currentUserId = kenticoUsers.GetCurrentUser().UserId;
 
             var checkoutPage = new CheckoutPage()
@@ -100,7 +101,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var creditCardMethod = methods.Items.FirstOrDefault(pm => pm.ClassName == "KDA.PaymentMethods.CreditCard");
 
-            if (creditCardMethod != null && resources.GetSiteSettingsKey<bool>("KDA_CreditCard_EnableSaveCard"))
+            if (creditCardMethod != null && resources.GetSiteSettingsKey<bool>(Settings.KDA_CreditCard_EnableSaveCard))
             {
                 var storedCardsResult = await userDataClient.GetValidCardTokens(userId);
 
@@ -476,7 +477,7 @@ namespace Kadena.BusinessLogic.Services
 
         private bool GetOtherAddressSettingsValue()
         {
-            var settingsKey = resources.GetSiteSettingsKey("KDA_AllowCustomShippingAddress");
+            var settingsKey = resources.GetSiteSettingsKey(Settings.KDA_AllowCustomShippingAddress);
             bool otherAddressAvailable = false;
             bool.TryParse(settingsKey, out otherAddressAvailable);
             return otherAddressAvailable;

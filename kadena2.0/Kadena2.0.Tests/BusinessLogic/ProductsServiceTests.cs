@@ -6,6 +6,7 @@ using Kadena.Models.Product;
 using Moq;
 using System;
 using Kadena.Models.Site;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -32,8 +33,8 @@ namespace Kadena.Tests.BusinessLogic
             Setup<IKenticoProductsProvider, ProductCategoryLink>(p => p.GetCategory("/")
                 , new ProductCategoryLink { Id = 10, ProductBordersEnabled = borderOnCategory });
 
-            Setup<IKenticoResourceService, bool>(r => r.GetSiteSettingsKey<bool>("KDA_ProductThumbnailBorderEnabled"), borderOnSite);
-            Setup<IKenticoResourceService, string>(r => r.GetSiteSettingsKey("KDA_ProductThumbnailBorderStyle"), borderStyleValue);
+            Setup<IKenticoResourceService, bool>(r => r.GetSiteSettingsKey<bool>(Settings.KDA_ProductThumbnailBorderEnabled), borderOnSite);
+            Setup<IKenticoResourceService, string>(r => r.GetSiteSettingsKey(Settings.KDA_ProductThumbnailBorderStyle), borderStyleValue);
         }
 
         [Fact(DisplayName = "ProductsService.GetProducts() | All borders turned on")]

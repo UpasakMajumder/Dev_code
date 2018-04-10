@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.Old_App_Code.Kadena.Shoppingcart
 {
@@ -381,7 +382,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var settingKeyValue = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey("KDA_SoldToGeneralInventory");
+                var settingKeyValue = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey(Settings.KDA_SoldToGeneralInventory);
                 var distributorID = Cart.GetIntegerValue("ShoppingCartDistributorID", default(int));
                 var distributorAddress = AddressInfoProvider.GetAddresses().WhereEquals("AddressID", distributorID).FirstOrDefault();
                 var customer = CustomerInfoProvider.GetCustomerInfo(distributorAddress.AddressCustomerID);
@@ -409,7 +410,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// <returns></returns>
         private static SiteDTO GetSite()
         {
-            var settingKeyValue = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey("KDA_ErpCustomerId");
+            var settingKeyValue = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey(Settings.KDA_ErpCustomerId);
             return new SiteDTO
             {
                 KenticoSiteID = SiteContext.CurrentSiteID,

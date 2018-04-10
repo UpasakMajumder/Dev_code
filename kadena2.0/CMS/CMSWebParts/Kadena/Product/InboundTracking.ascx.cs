@@ -20,6 +20,7 @@ using System.IO;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Kadena.Models.SiteSettings;
 
 public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWebPart
 {
@@ -1069,7 +1070,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             int campaignID = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, default(int));
             var client = DIContainer.Resolve<IKenticoCampaignsProvider>();
             bool result = client.CloseCampaignIBTF(campaignID);
-            var emailNotificationTemplate = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey("KDA_IBTFFinalizeEmailTemplate");
+            var emailNotificationTemplate = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey(Settings.KDA_IBTFFinalizeEmailTemplate);
             if (result)
             {
                 DIContainer.Resolve<IIBTFService>().UpdateRemainingBudget(campaignID);

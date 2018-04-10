@@ -12,6 +12,7 @@ using CMS.SiteProvider;
 using AutoMapper;
 using CMS.DataEngine;
 using CMS.CustomTables;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -49,7 +50,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             if (border?.Exists ?? false)
             {
-                border.Value = SettingsKeyInfoProvider.GetValue("KDA_ProductThumbnailBorderStyle", new SiteInfoIdentifier(SiteContext.CurrentSiteID));
+                border.Value = SettingsKeyInfoProvider.GetValue(Settings.KDA_ProductThumbnailBorderStyle, new SiteInfoIdentifier(SiteContext.CurrentSiteID));
             }
         }
 

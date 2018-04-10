@@ -1,4 +1,5 @@
-﻿using Kadena.Models.SubmitOrder;
+﻿using Kadena.Models.SiteSettings;
+using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 
@@ -26,13 +27,13 @@ namespace Kadena.BusinessLogic.Factories
 
         public string GetOrderResultPageUrl(SubmitOrderResult orderResult)
         {
-            var redirectUrlBase = resources.GetSiteSettingsKey("KDA_OrderSubmittedUrl");
+            var redirectUrlBase = resources.GetSiteSettingsKey(Settings.KDA_OrderSubmittedUrl);
             return GetResultPageUrl(redirectUrlBase, orderResult.Success, orderResult.OrderId);
         }
 
         public string GetCardPaymentResultPageUrl(bool orderSuccess, string orderId, string submissionId = "", string error = "")
         {
-            var redirectUrlBase = resources.GetSiteSettingsKey("KDA_CreditCard_PaymentResultPage");
+            var redirectUrlBase = resources.GetSiteSettingsKey(Settings.KDA_CreditCard_PaymentResultPage);
             return GetResultPageUrl(redirectUrlBase, orderSuccess, orderId, submissionId, error);
         }
 
