@@ -92,7 +92,8 @@ namespace Kadena.BusinessLogic.Services.Orders
                         .ToList()
                 };
             }
-            return new PagedData<OrderReport>();
+
+            return PagedData<OrderReport>.Empty();
         }
 
         public TableView ConvertOrdersToView(PagedData<OrderReport> orders)

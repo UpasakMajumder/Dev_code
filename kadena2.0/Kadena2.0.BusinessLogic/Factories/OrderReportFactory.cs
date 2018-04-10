@@ -60,14 +60,14 @@ namespace Kadena.BusinessLogic.Factories
                     Name = it.Name,
                     Price = it.UnitPrice,
                     Quantity = it.Quantity,
-                    SKU = it.SKUNumber
+                    SKU = it.SKUNumber,
+                    TrackingNumber = it.TrackingNumber,
                 }).ToList(),
                 Number = orderDto.Id,
                 OrderingDate = orderDto.CreateDate,
                 ShippingDate = orderDto.ShippingDate,
                 Site = orderDto.SiteName,
                 Status = FormatOrderStatus(orderDto.Status),
-                TrackingNumber = orderDto.TrackingNumber,
                 Url = FormatDetailUrl(orderDto),
                 User = FormatCustomer(kenticoUserProvider.GetCustomer(orderDto.CustomerId))
             };
@@ -90,7 +90,7 @@ namespace Kadena.BusinessLogic.Factories
                     it.Price,
                     o.Status,
                     o.ShippingDate.HasValue ? dateTimeFormatter.Format(o.ShippingDate.Value) : string.Empty,
-                    o.TrackingNumber
+                    it.TrackingNumber
                 }
             })).ToArray();
             return new TableView
