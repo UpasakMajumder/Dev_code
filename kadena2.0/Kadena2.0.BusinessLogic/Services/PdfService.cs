@@ -1,4 +1,5 @@
 ﻿using Kadena.BusinessLogic.Contracts;
+using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
@@ -31,7 +32,7 @@ namespace Kadena.BusinessLogic.Services
             if (!order.Success || order.Payload == null)
             {
                 logger.LogError("GetHiresPdfLink", $"Failed to call OrderView microservice. {order.ErrorMessages}");
-                return documents.GetDocumentAbsoluteUrl(resources.GetSiteSettingsKey("KDA_HiresPdfLinkFail"));
+                return documents.GetDocumentAbsoluteUrl(resources.GetSiteSettingsKey(Settings.KDA_HiresPdfLinkFail));
             }
 
             var fileKey = order.Payload.Items?.FirstOrDefault(i => i.LineNumber == line)?.FileKey;
@@ -55,7 +56,7 @@ namespace Kadena.BusinessLogic.Services
 
         private string GetCustomizedFailUrl(int siteId)
         {
-            return documents.GetDocumentAbsoluteUrl(resources.GetSettingsKey<string>("KDA_HiresPdfLinkFail", siteId));
+            return documents.GetDocumentAbsoluteUrl(resources.GetSettingsKey<string>(Settings.KDA_HiresPdfLinkFail, siteId));
         }
     }
 }

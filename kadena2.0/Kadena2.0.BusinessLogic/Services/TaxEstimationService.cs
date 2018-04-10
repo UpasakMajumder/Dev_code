@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using Kadena2.Infrastructure.Contracts;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -19,7 +20,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IShoppingCartProvider shoppingCart;
         private readonly ICache cache;
 
-        public string ServiceEndpoint => resources.GetSiteSettingsKey("KDA_TaxEstimationServiceEndpoint");
+        public string ServiceEndpoint => resources.GetSiteSettingsKey(Settings.KDA_TaxEstimationServiceEndpoint);
 
         public TaxEstimationService(IKenticoLocalizationProvider kenticoLocalization,
                                    IKenticoResourceService resources,                                    

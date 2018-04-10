@@ -1,5 +1,6 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.Models.Product;
+using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
@@ -41,9 +42,9 @@ namespace Kadena.BusinessLogic.Services
             var products = this.products.GetProducts(path).OrderBy(p => p.Order).ToList();
             var favoriteIds = favorites.CheckFavoriteProductIds(products.Select(p => p.Id).ToList());
             var pathCategory = this.products.GetCategory(path);
-            var bordersEnabledOnSite = resources.GetSiteSettingsKey<bool>("KDA_ProductThumbnailBorderEnabled");
+            var bordersEnabledOnSite = resources.GetSiteSettingsKey<bool>(Settings.KDA_ProductThumbnailBorderEnabled);
             var borderEnabledOnParentCategory = pathCategory?.ProductBordersEnabled ?? true; // true to handle product in the root, without parent category
-            var borderStyle = resources.GetSiteSettingsKey("KDA_ProductThumbnailBorderStyle");
+            var borderStyle = resources.GetSiteSettingsKey(Settings.KDA_ProductThumbnailBorderStyle);
 
             var productsPage = new ProductsPage
             {

@@ -14,6 +14,7 @@ using System;
 using System.Linq;
 using Kadena.Helpers;
 using Kadena.Models.Common;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -43,7 +44,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public CartItem[] GetShoppingCartItems(bool showPrices = true)
         {
-            var displayProductionAndShipping = resources.GetSiteSettingsKey<bool>("KDA_Checkout_ShowProductionAndShipping");
+            var displayProductionAndShipping = resources.GetSiteSettingsKey<bool>(Settings.KDA_Checkout_ShowProductionAndShipping);
 
             return ECommerceContext.CurrentShoppingCart.CartItems
                 .Where(cartItem => !cartItem.IsProductOption)
