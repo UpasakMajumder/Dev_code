@@ -3,20 +3,18 @@ using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using Kadena2.MicroserviceClients.MicroserviceRequests;
+using System;
 using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public sealed class TaxEstimationServiceClient : SignedClientBase, ITaxEstimationServiceClient
     {
-        private const string _serviceUrlSettingKey = "KDA_TaxEstimationServiceEndpoint";
-        private readonly IMicroProperties _properties;
-
         public TaxEstimationServiceClient(IMicroProperties properties)
         {
-            _properties = properties;
+            _serviceUrlSettingKey = "KDA_TaxEstimationServiceEndpoint";
+            _properties = properties ?? throw new ArgumentNullException(nameof(properties));
         }
-
 
         public async Task<BaseResponseDto<decimal>> CalculateTax(TaxCalculatorRequestDto request)
         {

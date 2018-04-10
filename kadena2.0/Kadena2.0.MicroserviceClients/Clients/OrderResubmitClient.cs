@@ -10,18 +10,17 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class OrderResubmitClient : SignedClientBase, IOrderResubmitClient
     {
-        private const string _baseServiceUrlSettingKey = "KDA_MicroservicesBaseAddress";
         private const string _serviceEndpoint = "/api/esbretry";
-        private readonly IMicroProperties _properties;
 
         public OrderResubmitClient(IMicroProperties properties)
         {
+            _serviceUrlSettingKey = "KDA_MicroservicesBaseAddress";
             _properties = properties ?? throw new ArgumentNullException(nameof(properties));
         }
 
         public async Task<BaseResponseDto<ResubmitOrderResponseDto>> Resubmit(ResubmitOrderRequestDto requestDto)
         {
-            var url = $"{_properties.GetServiceUrl(_baseServiceUrlSettingKey)}{_serviceEndpoint}";
+            var url = $"{_properties.GetServiceUrl(_serviceUrlSettingKey)}{_serviceEndpoint}";
             return await Post<ResubmitOrderResponseDto>(url, requestDto).ConfigureAwait(false);
         }
     }

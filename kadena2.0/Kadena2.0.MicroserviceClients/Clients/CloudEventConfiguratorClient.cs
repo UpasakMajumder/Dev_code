@@ -4,6 +4,7 @@ using Kadena.Dto.General;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using Kadena.Dto.KSource;
+using System;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -17,18 +18,15 @@ namespace Kadena2.MicroserviceClients.Clients
             Noosh = 12
         }
 
-        private const string _serviceUrlSettingKey = "KDA_CloudEventConfiguratorUrl";
-        private readonly IMicroProperties _properties;
-
         public CloudEventConfiguratorClient(IMicroProperties properties)
         {
-            _properties = properties;
+            _serviceUrlSettingKey = "KDA_CloudEventConfiguratorUrl";
+            _properties = properties ?? throw new ArgumentNullException(nameof(properties));
         }
 
         public async Task<BaseResponseDto<string>> UpdateNooshRule(RuleDto rule, NooshDto noosh)
         {
-            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url}/cloudwatch";
+            var url = $"{BaseUrl}/cloudwatch";
             var body = new
             {
                 RuleName = rule.RuleName,

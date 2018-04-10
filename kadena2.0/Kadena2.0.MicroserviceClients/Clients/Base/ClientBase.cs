@@ -12,10 +12,15 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 {
     public abstract class ClientBase
     {
+        protected IMicroProperties _properties;
         private readonly ISuppliantDomainClient _suppliantDomain;
+        private readonly string _baseServiceUrlSettingKey = "KDA_MicroservicesBaseAddress";
+        protected string _serviceUrlSettingKey;
+        protected string _serviceVersionSettingKey;
 
         public ClientBase()
         {
+
         }
 
         protected ClientBase(ISuppliantDomainClient suppliantDomain) : this()
@@ -24,6 +29,18 @@ namespace Kadena2.MicroserviceClients.Clients.Base
         }
 
         private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
+
+        public string BaseUrl => _properties.GetServiceUrl(_serviceUrlSettingKey);
+
+        public string NewBaseUrl
+        {
+            get
+            {
+                var url = _properties.GetServiceUrl(_baseServiceUrlSettingKey);
+                var version = _properties.GetServiceUrl(_serviceVersionSettingKey);
+                return $"{url}/v{version}";
+            }
+        }
 
         protected async Task<BaseResponseDto<TResult>> Get<TResult>(string url)
         {

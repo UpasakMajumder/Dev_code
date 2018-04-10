@@ -4,18 +4,17 @@ using Kadena.Dto.General;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
+using System;
 using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public sealed class ShippingCostServiceClient : SignedClientBase, IShippingCostServiceClient
     {
-        private const string _serviceUrlSettingKey = "KDA_ShippingCostServiceUrl";
-        private readonly IMicroProperties _properties;
-
         public ShippingCostServiceClient(IMicroProperties properties)
         {
-            _properties = properties;
+            _serviceUrlSettingKey = "KDA_ShippingCostServiceUrl";
+            _properties = properties ?? throw new ArgumentNullException(nameof(properties));
         }
 
         public string GetRequestString(EstimateDeliveryPriceRequestDto request)
