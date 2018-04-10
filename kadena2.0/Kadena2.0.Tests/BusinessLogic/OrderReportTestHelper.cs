@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Kadena.Tests.OrderReports
+namespace Kadena.Tests.BusinessLogic
 {
-    public class OrderReportTestHelper
+    class OrderReportTestHelper
     {
         static Random random = new Random();
 

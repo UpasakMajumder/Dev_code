@@ -123,6 +123,10 @@
 
 {% include './config.nunj' %}
 
+<script>
+  config.localization.tac.show = false; //turn off TAC
+</script>
+
 {% if _dev %}
   <script src="js/common.js"></script>
   <script src="js/app.js"></script>

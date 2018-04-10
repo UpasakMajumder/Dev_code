@@ -2,13 +2,12 @@
 using Kadena.Models.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Moq;
-using Moq.AutoMock;
 using System.Collections.Generic;
 using Xunit;
 
 namespace Kadena.Tests.BusinessLogic
 {
-    public class RoleServiceTests
+    public class RoleServiceTests : KadenaUnitTest<RoleService>
     {
         private const int userId = 123;
         private const int siteId = 5113;
@@ -36,18 +35,13 @@ namespace Kadena.Tests.BusinessLogic
             };
         }
 
-        private AutoMocker GetRoleServiceAutomocker()
+        private void SetupRoleService()
         {
-            var automocker = new AutoMocker();
-            var rolesMock = automocker.GetMock<IKenticoRoleProvider>();
-            rolesMock.Setup(r => r.GetUserRoles(userId))
-                .Returns(GetUserRoles());
-            rolesMock.Setup(r => r.GetRoles(siteId))
-                .Returns(GetAllKenticoRoles());
-            return automocker;
+            Setup<IKenticoRoleProvider, IEnumerable<Role>>(r => r.GetUserRoles(userId), GetUserRoles());
+            Setup<IKenticoRoleProvider, IEnumerable<Role>>(r => r.GetRoles(siteId), GetAllKenticoRoles());
         }
 
-        [Fact]
+        [Fact(DisplayName = "RoleService.AssignSSORoles() | All assigned")]
         public void RoleServiceTest_AllOk()
         {
             // Arrange            
@@ -55,24 +49,20 @@ namespace Kadena.Tests.BusinessLogic
                 "King",
                 "Peasant"
             };
-
-            var automocker = GetRoleServiceAutomocker();
-            var loggerMock = automocker.GetMock<IKenticoLogger>();
             var user = new User { UserId = userId, UserName = userName };
-            var rolesMock = automocker.GetMock<IKenticoRoleProvider>();
-            var sut = automocker.CreateInstance<RoleService>();
+            SetupRoleService();
 
             // Act
-            sut.AssignSSORoles( user, siteId, ssoRoles );
+            Sut.AssignSSORoles( user, siteId, ssoRoles );
 
             //Assert
-            loggerMock.VerifyNoOtherCalls();
-            rolesMock.Verify(m => m.AssignUserRoles(userName, siteId, new[] { "King" }), Times.Once);
-            rolesMock.Verify(m => m.RemoveUserRoles(userName, siteId, new[] { "OtherKenticoRole", "ManuallyCreatedRole" }), Times.Once);
+            VerifyNoOtherCalls<IKenticoLogger>();
+            Verify<IKenticoRoleProvider>(m => m.AssignUserRoles(userName, siteId, new[] { "King" }), Times.Once);
+            Verify<IKenticoRoleProvider>(m => m.RemoveUserRoles(userName, siteId, new[] { "OtherKenticoRole", "ManuallyCreatedRole" }), Times.Once);
         }
 
 
-        [Fact]
+        [Fact(DisplayName = "RoleService.AssignSSORoles() | Unknown role")]
         public void RoleServiceTest_UnknownRole()
         {
             // Arrange
@@ -82,22 +72,17 @@ namespace Kadena.Tests.BusinessLogic
                 "Archer",
                 "RoleUnknownInKentico"
             };
-
-            var automocker = GetRoleServiceAutomocker();
-            var loggerMock = automocker.GetMock<IKenticoLogger>();
             var user = new User { UserId = userId, UserName = userName };
-            var rolesMock = automocker.GetMock<IKenticoRoleProvider>();
-            var sut = automocker.CreateInstance<RoleService>();
+            SetupRoleService();
 
             // Act
-            sut.AssignSSORoles(user, siteId, ssoRoles);
+            Sut.AssignSSORoles(user, siteId, ssoRoles);
 
             //Assert
-            loggerMock.Verify(l => l.LogError("SSO Update Roles",
-                                              It.Is<string>(s => s.Contains("RoleUnknownInKentico"))), Times.Once);
-            loggerMock.VerifyNoOtherCalls();
-            rolesMock.Verify(m => m.AssignUserRoles(userName, siteId, new[] { "King", "Archer" }), Times.Once);
-            rolesMock.Verify(m => m.RemoveUserRoles(userName, siteId, new[] { "OtherKenticoRole", "ManuallyCreatedRole" }), Times.Once);
+            Verify<IKenticoLogger>(l => l.LogError("SSO Update Roles", It.Is<string>(s => s.Contains("RoleUnknownInKentico"))), Times.Once);
+            VerifyNoOtherCalls<IKenticoLogger>();
+            Verify<IKenticoRoleProvider>(m => m.AssignUserRoles(userName, siteId, new[] { "King", "Archer" }), Times.Once);
+            Verify<IKenticoRoleProvider>(m => m.RemoveUserRoles(userName, siteId, new[] { "OtherKenticoRole", "ManuallyCreatedRole" }), Times.Once);
         }
     }
 }
