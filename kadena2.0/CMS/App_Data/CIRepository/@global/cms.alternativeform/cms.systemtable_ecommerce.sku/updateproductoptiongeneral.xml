@@ -196,6 +196,7 @@
       </field>
       <field column="SKUParentSKUID" guid="cfda202f-ccbf-47b8-9b24-d6feae3a470c" />
       <field column="SKUCustomerReferenceNumber" guid="14d28984-7cc2-45a4-8640-042aa85eaf46" order="56" />
+      <field column="SKUDontSendPriceToERP" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Option (Products) - General properties</FormDisplayName>
