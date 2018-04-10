@@ -71,7 +71,8 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.SKU, opt => opt.MapFrom(src => src))
                 .ForMember(dest => dest.UnitCount, opt => opt.MapFrom(src => src.Quantity))
                 .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src => src.Options.ToDictionary(i => i.Name, i => i.Value)))
-                .ForMember(dest => dest.DesignFileKey, opt => opt.MapFrom(src => src.Artwork));
+                .ForMember(dest => dest.DesignFileKey, opt => opt.MapFrom(src => src.Artwork))
+                .ForMember(dest => dest.SendPriceToErp, opt => opt.MapFrom(src => src.SendPriceToErp));
 
             CreateMap<CustomerData, CustomerDataDTO>();
             CreateMap<CustomerAddress, CustomerAddressDTO>();

@@ -132,5 +132,7 @@ namespace Kadena.Models.Checkout
         public string Artwork { get; set; }
 
         public string CustomName { get; set; }
+
+        public bool SendPriceToErp { get; set; }
     }
 }

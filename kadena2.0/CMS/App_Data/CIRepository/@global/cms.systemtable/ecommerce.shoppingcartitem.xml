@@ -17,6 +17,15 @@
           <controlname>labelcontrol</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="SendPriceToErp" columntype="boolean" guid="95ab4766-89ad-4e71-b087-8c8a86aa6685" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>true</defaultvalue>
+          <fieldcaption>Send price to Erp</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="ProductPageID" columntype="integer" guid="9da75be6-6c38-4f9e-8016-5c744b05b992" publicfield="false">
         <settings>
           <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
