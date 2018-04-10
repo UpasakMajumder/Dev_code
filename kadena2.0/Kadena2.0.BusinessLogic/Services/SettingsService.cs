@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -70,7 +71,7 @@ namespace Kadena.BusinessLogic.Services
             var states = _localization.GetStates();
             var countries = _localization.GetCountries();
             var canEdit = _permissions.UserCanModifyShippingAddress();
-            var maxShippingAddressesSetting = _resources.GetSiteSettingsKey("KDA_ShippingAddressMaxLimit");
+            var maxShippingAddressesSetting = _resources.GetSiteSettingsKey(Settings.KDA_ShippingAddressMaxLimit);
 
             var userNotification = string.Empty;
             var userNotificationLocalizationKey = _site.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage";

@@ -14,6 +14,7 @@ using Kadena.BusinessLogic.Contracts;
 using Kadena2.Helpers;
 using Kadena.BusinessLogic.Factories;
 using System.Globalization;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena2.BusinessLogic.Services.OrderPayment
 {
@@ -108,7 +109,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
         private string GetInsertCardDetailsUrl(string submissionId)
         {
-            var insertCardUrl = resources.GetSiteSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
+            var insertCardUrl = resources.GetSiteSettingsKey(Settings.KDA_CreditCard_InsertCardDetailsURL);
             var redirectUrl = documents.GetDocumentUrl(insertCardUrl, absoluteUrl: true);
             var uri = new Uri(redirectUrl, UriKind.Absolute).AddParameter("submissionId", submissionId);
             return uri.ToString();
@@ -158,7 +159,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             var orderData = JsonConvert.DeserializeObject<OrderDTO>(submission.OrderJson, SerializerConfig.CamelCaseSerializer);
             orderData.PaymentOption.TokenId = tokenId;
-            orderData.PaymentOption.PaymentGatewayCustomerCode = resources.GetSiteSettingsKey("KDA_CreditCard_Code");
+            orderData.PaymentOption.PaymentGatewayCustomerCode = resources.GetSiteSettingsKey(Settings.KDA_CreditCard_Code);
 
             var sendOrderResult = await sendOrder.SubmitOrderData(orderData);
 
