@@ -17,23 +17,9 @@ namespace Kadena.BusinessLogic.Factories.Checkout
 
         public CheckoutPageFactory(IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoLocalizationProvider kenticoLocalization)
         {
-            if(resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (documents == null)
-            {
-                throw new ArgumentNullException(nameof(documents));
-            }
-            if (kenticoLocalization == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoLocalization));
-            }
-
-
-            this.resources = resources;
-            this.documents = documents;
-            this.kenticoLocalization = kenticoLocalization;
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
+            this.kenticoLocalization = kenticoLocalization ?? throw new ArgumentNullException(nameof(kenticoLocalization));
         }
 
         public CartEmptyInfo CreateCartEmptyInfo()
@@ -48,9 +34,9 @@ namespace Kadena.BusinessLogic.Factories.Checkout
             };
         }
 
-        public CartItems CreateProducts(CartItem[] cartItems, ShoppingCartTotals cartItemsTotals, string countOfItemsString)
+        public CartItems CreateProducts(List<CartItem> cartItems, ShoppingCartTotals cartItemsTotals, string countOfItemsString)
         {
-            var count = cartItems?.Length ?? 0;
+            var count = cartItems?.Count ?? 0;
 
             return new CartItems()
             {
