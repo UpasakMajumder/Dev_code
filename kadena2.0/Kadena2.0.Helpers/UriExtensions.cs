@@ -14,6 +14,11 @@ namespace Kadena.Helpers
 
             return uriBuilder.Uri;
         }
-        
+
+        public static string GetParameter(this Uri uri, string parameterName)
+        {
+            var query = HttpUtility.ParseQueryString(uri.Query);
+            return query[parameterName];
+        }
     }
 }
