@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Kadena.AmazonFileSystemProvider;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Helpers;
@@ -53,11 +52,11 @@ namespace Kadena.BusinessLogic.Services
             var libraryFolderName = fileLibraryLink.Split('/')[0];
             var fileLibraryRelativeLink = fileLibraryLink.Remove(fileLibraryLink.IndexOf(libraryFolderName, 0), libraryFolderName.Length).TrimStart('/');
 
-            var thumbnailRelativePath = _mediaProvider.GetThumbnailPath(libraryFolderName, fileLibraryRelativeLink, 200).TrimStart('/');
+            var thumbnailLibraryLink = _mediaProvider.GetThumbnailPath(libraryFolderName, fileLibraryRelativeLink, 200).TrimStart('/');
 
-            var originalFileFolder = Path.GetDirectoryName(originalFileRelativeLink);
-            var originalFileFolderUri = new Uri(hostUri, $"{originalFileFolder}/");
-            var thumbnailUri = new Uri(originalFileFolderUri, thumbnailRelativePath);
+            var mediaLibraryLink = _mediaProvider.GetMediaLibraryPath(libraryFolderName);
+            var originalFileFolderUri = new Uri(hostUri, $"{mediaLibraryLink}/");
+            var thumbnailUri = new Uri(originalFileFolderUri, thumbnailLibraryLink);
 
             if (s3FileUri.IsBaseOf(originalImageUri))
             {
