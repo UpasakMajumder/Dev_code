@@ -646,9 +646,9 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                         var Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
                         if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
                         {
-                            EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
+                            var estimationdto = new[] { ShoppingCartHelper.GetEstimationDTO(Cart) };
                             var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
-                            cartTotal += ValidationHelper.GetDecimal(estimation?.Payload?.Cost, default(decimal));
+                            cartTotal += ValidationHelper.GetDecimal(estimation?.Payload?[0]?.Cost, default(decimal));
                         }
                     });
                     return ValidationHelper.GetDecimal(cartTotal, default(decimal));

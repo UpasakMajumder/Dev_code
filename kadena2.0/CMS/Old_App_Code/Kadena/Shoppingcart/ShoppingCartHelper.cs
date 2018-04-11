@@ -31,8 +31,6 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
     public class ShoppingCartHelper
     {
         private static ShoppingCartInfo Cart { get; set; }
-        private const string _serviceUrlShippingSettingKey = "KDA_ShippingCostServiceUrl";
-        private const string _serviceUrlOrderSettingKey = "KDA_OrderServiceEndpoint";
 
         /// <summary>
         /// creating estimation DTO
@@ -95,10 +93,14 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     NotificationsData = GetNotification(),
                     Items = GetCartItems(),
                     OrderDate = DateTime.Now,
-                    TotalPrice = GetOrderTotal(orderType),
-                    TotalShipping = shippingCost,
+                    Totals = new TotalsDto
+                    {
+                        Price = GetOrderTotal(orderType),
+                        Shipping = shippingCost,
+                        Tax = 0,
+                        PricedItemsTax = 0
+                    },
                     OrderCurrency = GetCurrencyDTO(Cart.Currency),
-                    TotalTax = 0
                 };
             }
             catch (Exception ex)
@@ -130,7 +132,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// </summary>
         /// <param name="requestBody"></param>
         /// <returns></returns>
-        public static BaseResponseDto<EstimateDeliveryPricePayloadDto> CallEstimationService(EstimateDeliveryPriceRequestDto requestBody)
+        public static BaseResponseDto<EstimateDeliveryPricePayloadDto[]> CallEstimationService(EstimateDeliveryPriceRequestDto[] requestBody)
         {
             try
             {
@@ -139,7 +141,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
 
                 if (!response.Success || response.Payload == null)
                 {
-                    EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from '{Cart.ShippingOption.ShippingOptionName}' provider to service URL '{SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_serviceUrlShippingSettingKey}")}' resulted with error {response.Error?.Message ?? string.Empty}");
+                    EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from '{Cart.ShippingOption.ShippingOptionName}' provider resulted with error {response.Error?.Message ?? string.Empty}");
                 }
                 return response;
             }
@@ -164,7 +166,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
 
                 if (!response.Success || response.Payload == null)
                 {
-                    EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from to service URL '{SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{_serviceUrlOrderSettingKey}")}' resulted with error {response.Error?.Message ?? string.Empty}");
+                    EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from to service resulted with error {response.Error?.Message ?? string.Empty}");
                 }
                 return response;
             }
@@ -526,11 +528,11 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// </summary>
         /// <param name="inventoryType"></param>
         /// <returns></returns>
-        public static BaseResponseDto<EstimateDeliveryPricePayloadDto> GetOrderShippingTotal(ShoppingCartInfo cart)
+        public static BaseResponseDto<EstimateDeliveryPricePayloadDto[]> GetOrderShippingTotal(ShoppingCartInfo cart)
         {
             try
             {
-                EstimateDeliveryPriceRequestDto estimationdto = GetEstimationDTO(cart);
+                var estimationdto = new[] { GetEstimationDTO(cart) };
                 return CallEstimationService(estimationdto);
             }
             catch (Exception ex)
@@ -654,7 +656,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             try
             {
                 var campaignFiscalYear = DIContainer.Resolve<IKenticoCampaignsProvider>().GetCampaignFiscalYear(orderDetails.Campaign.ID);
-                var totalToBeDeducted = orderDetails.TotalPrice + orderDetails.TotalShipping;
+                var totalToBeDeducted = orderDetails.Totals.Price + orderDetails.Totals.Shipping;
                 var fiscalYear = orderDetails.Type == OrderType.generalInventory ?
                                  ValidationHelper.GetString(orderDetails.OrderDate.Year, string.Empty) :
                                  orderDetails.Type == OrderType.prebuy ? campaignFiscalYear : string.Empty;

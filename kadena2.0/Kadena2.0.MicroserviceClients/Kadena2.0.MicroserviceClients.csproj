@@ -109,6 +109,10 @@
       <Project>{6b1835f6-5564-40d8-8ab8-63b6adc56976}</Project>
       <Name>Kadena2.0.Helpers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Models\Kadena2.0.Models.csproj">
+      <Project>{918EBDFB-D345-4BE2-97A2-9D71513E0617}</Project>
+      <Name>Kadena2.0.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
