@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Kadena.AmazonFileSystemProvider;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Helpers;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -61,7 +62,7 @@ namespace Kadena.BusinessLogic.Services
             if (s3FileUri.IsBaseOf(originalImageUri))
             {
                 return s3FileUri
-                    .AddParameter("path", thumbnailUri.LocalPath.TrimStart('/'))
+                    .AddParameter("path", PathHelper.GetObjectKeyFromPath(thumbnailUri.LocalPath))
                     .PathAndQuery;
             }
             return thumbnailUri.LocalPath;
