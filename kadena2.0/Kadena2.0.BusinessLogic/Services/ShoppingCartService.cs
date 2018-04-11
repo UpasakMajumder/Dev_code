@@ -422,10 +422,6 @@ namespace Kadena.BusinessLogic.Services
             {
                 cartItem.CartItemPrice = price;
             }
-            else
-            {
-                cartItem.CartItemPrice = null;
-            }
         }
 
         private async Task SetMailingList(CartItemEntity cartItem, Guid containerId, int addedAmount)
