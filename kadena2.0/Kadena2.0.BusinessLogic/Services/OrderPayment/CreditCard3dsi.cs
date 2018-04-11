@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using Kadena.Helpers;
 using Newtonsoft.Json;
 using Kadena.BusinessLogic.Contracts;
-using Kadena2.Helpers;
 using Kadena.BusinessLogic.Factories;
 using System.Globalization;
 

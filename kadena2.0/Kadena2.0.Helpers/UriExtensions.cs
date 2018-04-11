@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 
-namespace Kadena2.Helpers
+namespace Kadena.Helpers
 {
     public static class UriExtensions
     {
