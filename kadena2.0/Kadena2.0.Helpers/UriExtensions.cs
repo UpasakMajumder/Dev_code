@@ -10,7 +10,7 @@ namespace Kadena.Helpers
             var uriBuilder = new UriBuilder(url);
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
             query[paramName] = paramValue;
-            uriBuilder.Query = query.ToString();
+            uriBuilder.Query = HttpUtility.UrlDecode(query.ToString());
 
             return uriBuilder.Uri;
         }
