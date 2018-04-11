@@ -296,7 +296,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             cartItemInfo.CartItemText = cartItemInfo.SKU.SKUName;
             cartItemInfo.SetValue("ProductType", productDocument.GetStringValue("ProductType", string.Empty));
-            cartItemInfo.SetValue("ProductPageID", productDocument.NodeID);
+            cartItemInfo.SetValue("ProductPageID", productDocument.DocumentID);
             cartItemInfo.SetValue("ProductProductionTime", productDocument.GetStringValue("ProductProductionTime", string.Empty));
             cartItemInfo.SetValue("ProductShipTime", productDocument.GetStringValue("ProductShipTime", string.Empty));
             cartItemInfo.SetValue("ChilliEditorTemplateID", newItem.TemplateId);
