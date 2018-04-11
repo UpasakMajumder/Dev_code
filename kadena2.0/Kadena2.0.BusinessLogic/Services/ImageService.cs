@@ -59,7 +59,7 @@ namespace Kadena.BusinessLogic.Services
             if (s3FileUri.IsBaseOf(originalImageUri))
             {
                 return s3FileUri
-                    .AddParameter("path", PathHelper.GetObjectKeyFromPath(thumbnailUri.LocalPath))
+                    .AddParameter("path", PathHelper.GetObjectKeyFromPathNonEnvironment(thumbnailUri.LocalPath))
                     .PathAndQuery;
             }
             return thumbnailUri.LocalPath;
