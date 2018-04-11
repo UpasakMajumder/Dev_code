@@ -103,6 +103,7 @@ namespace Kadena.Container.Default
             container.Register<IRoleService, RoleService>();
             container.Register<IUserService, UserService>();
             container.Register<IMailService, MailService>();
+            container.Register<IImageService, ImageService>();
             return container;
         }
 
