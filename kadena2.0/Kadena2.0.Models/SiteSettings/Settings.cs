@@ -1035,15 +1035,6 @@ namespace Kadena.Models.SiteSettings
         /// 
         /// </summary>
         [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
-        [GroupAttribute("Orders")]
-        [DefaultValueAttribute(@"https://y3uowsvcw5.execute-api.us-east-1.amazonaws.com/Qa")]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6Ik9yZGVyIFNlcnZpY2UgRW5kcG9pbnQiLCJLZXlOYW1lIjoiS0RBX09yZGVyU2VydmljZUVuZHBvaW50IiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6Imh0dHBzOi8veTN1b3dzdmN3NS5leGVjdXRlLWFwaS51cy1lYXN0LTEuYW1hem9uYXdzLmNvbS9RYSIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJPcmRlcnMifX0=")]
-        public const string KDA_OrderServiceEndpoint = "KDA_OrderServiceEndpoint";
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
         [GroupAttribute("Module Access")]
         [DefaultValueAttribute(@"enabled")]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6Ik9yZGVycyBNb2R1bGUgRW5hYmxlZCIsIktleU5hbWUiOiJLREFfT3JkZXJzTW9kdWxlRW5hYmxlZCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOiJlbmFibGVkIiwiS2V5RGVzY3JpcHRpb24iOiIiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOiJSYWRpb0J1dHRvbnNDb250cm9sIiwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6IjxzZXR0aW5ncz48T3B0aW9ucz5lbmFibGVkO0VuYWJsZWRcbmRpc2FibGVkO0Rpc2FibGVkXG5oaWRkZW47SGlkZGVuPC9PcHRpb25zPjxSZXBlYXREaXJlY3Rpb24+aG9yaXpvbnRhbDwvUmVwZWF0RGlyZWN0aW9uPjxSZXBlYXRMYXlvdXQ+RmxvdzwvUmVwZWF0TGF5b3V0PjxTb3J0SXRlbXM+RmFsc2U8L1NvcnRJdGVtcz48L3NldHRpbmdzPiIsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiS2FkZW5hIiwiTmFtZSI6IkthZGVuYSIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkNNUy5TZXR0aW5ncyJ9LCJEaXNwbGF5TmFtZSI6Ik1vZHVsZSBBY2Nlc3MifX0=")]
@@ -1066,15 +1057,6 @@ namespace Kadena.Models.SiteSettings
         [DefaultValueAttribute(@"/Order-submitted")]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6Ik9yZGVyIHN1Ym1pdHRlZCB1cmwiLCJLZXlOYW1lIjoiS0RBX09yZGVyU3VibWl0dGVkVXJsIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6Ii9PcmRlci1zdWJtaXR0ZWQiLCJLZXlEZXNjcmlwdGlvbiI6IlVybCBvZiBvcmRlciBzdWJtaXR0ZWQgcGFnZSIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6InNlbGVjdHNpbmdsZXBhdGgiLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjoiPHNldHRpbmdzPjxBbGxvd1NldFBlcm1pc3Npb25zPkZhbHNlPC9BbGxvd1NldFBlcm1pc3Npb25zPjxTZWxlY3RhYmxlUGFnZVR5cGVzPjA8L1NlbGVjdGFibGVQYWdlVHlwZXM+PC9zZXR0aW5ncz4iLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJPcmRlcnMifX0=")]
         public const string KDA_OrderSubmittedUrl = "KDA_OrderSubmittedUrl";
-
-        /// <summary>
-        /// KDA OrderViewServiceUrl
-        /// </summary>
-        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
-        [GroupAttribute("General Site Settings")]
-        [DefaultValueAttribute(@"https://59hpqnso24.execute-api.us-east-1.amazonaws.com/Qa")]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQSBPcmRlclZpZXdTZXJ2aWNlVXJsIiwiS2V5TmFtZSI6IktEQV9PcmRlclZpZXdTZXJ2aWNlVXJsIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6Imh0dHBzOi8vNTlocHFuc28yNC5leGVjdXRlLWFwaS51cy1lYXN0LTEuYW1hem9uYXdzLmNvbS9RYSIsIktleURlc2NyaXB0aW9uIjoiS0RBIE9yZGVyVmlld1NlcnZpY2VVcmwiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiS2FkZW5hIiwiTmFtZSI6IkthZGVuYSIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkNNUy5TZXR0aW5ncyJ9LCJEaXNwbGF5TmFtZSI6IkdlbmVyYWwgU2l0ZSBTZXR0aW5ncyJ9fQ==")]
-        public const string KDA_OrderViewServiceUrl = "KDA_OrderViewServiceUrl";
 
         /// <summary>
         /// KDA ParsingServiceUrl

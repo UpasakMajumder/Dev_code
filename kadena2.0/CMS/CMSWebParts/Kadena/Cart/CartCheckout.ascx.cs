@@ -23,7 +23,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
 {
     public partial class CartCheckout : CMSAbstractWebPart
     {
-        private const string _serviceUrlSettingKey = "KDA_OrderServiceEndpoint";
         private IKenticoResourceService settingKeys;
         #region properties
         private ShoppingCartInfo Cart { get; set; }
