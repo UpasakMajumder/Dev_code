@@ -18,15 +18,15 @@ namespace Kadena2.MicroserviceClients.Clients
             _serviceVersionSettingKey = Settings.KDA_ShippingCostServiceVersion;
         }
 
-        public string GetRequestString(EstimateDeliveryPriceRequestDto request)
+        public string GetRequestString(EstimateDeliveryPriceRequestDto[] request)
         {
             return SerializeRequestContent(request);
         }
 
-        public async Task<BaseResponseDto<EstimateDeliveryPricePayloadDto>> EstimateShippingCost(EstimateDeliveryPriceRequestDto requestBody)
+        public async Task<BaseResponseDto<EstimateDeliveryPricePayloadDto[]>> EstimateShippingCost(EstimateDeliveryPriceRequestDto[] requestBody)
         {
-            var url = $"{BaseUrl}/shippingcosts";
-            return await Post<EstimateDeliveryPricePayloadDto>(url, requestBody).ConfigureAwait(false);
+            var url = $"{BaseUrl}/shippingcost";
+            return await Post<EstimateDeliveryPricePayloadDto[]>(url, requestBody).ConfigureAwait(false);
         }
     }
 }

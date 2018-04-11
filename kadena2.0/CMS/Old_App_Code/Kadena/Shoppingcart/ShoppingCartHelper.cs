@@ -130,7 +130,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// </summary>
         /// <param name="requestBody"></param>
         /// <returns></returns>
-        public static BaseResponseDto<EstimateDeliveryPricePayloadDto> CallEstimationService(EstimateDeliveryPriceRequestDto requestBody)
+        public static BaseResponseDto<EstimateDeliveryPricePayloadDto[]> CallEstimationService(EstimateDeliveryPriceRequestDto[] requestBody)
         {
             try
             {
@@ -526,11 +526,11 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// </summary>
         /// <param name="inventoryType"></param>
         /// <returns></returns>
-        public static BaseResponseDto<EstimateDeliveryPricePayloadDto> GetOrderShippingTotal(ShoppingCartInfo cart)
+        public static BaseResponseDto<EstimateDeliveryPricePayloadDto[]> GetOrderShippingTotal(ShoppingCartInfo cart)
         {
             try
             {
-                EstimateDeliveryPriceRequestDto estimationdto = GetEstimationDTO(cart);
+                var estimationdto = new[] { GetEstimationDTO(cart) };
                 return CallEstimationService(estimationdto);
             }
             catch (Exception ex)

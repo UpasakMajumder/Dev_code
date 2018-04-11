@@ -118,9 +118,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     if (shippingOption != null && shippingOption.ShippingOptionName.ToLower() != ShippingOption.Ground)
                     {
                         var shippingResponse = GetOrderShippingTotal(Cart);
-                        if (shippingResponse != null && shippingResponse.Success)
+                        if (shippingResponse != null && shippingResponse.Success && shippingResponse.Payload?[0] != null)
                         {
-                            shippingCost = ValidationHelper.GetDecimal(shippingResponse?.Payload?.Cost, default(decimal));
+                            shippingCost = ValidationHelper.GetDecimal(shippingResponse.Payload[0].Cost, default(decimal));
                         }
                         else
                         {
