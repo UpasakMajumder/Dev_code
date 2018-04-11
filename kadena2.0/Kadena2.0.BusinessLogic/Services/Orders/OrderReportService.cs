@@ -10,6 +10,7 @@ using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -66,11 +67,13 @@ namespace Kadena.BusinessLogic.Services.Orders
         public async Task<PagedData<OrderReport>> GetOrdersForSite(string site, int page, OrderFilter filter)
         {
             var orderFilter = CreateOrderListFilter(filter, site, page);
-            var orders = await orderViewClient.GetOrders(orderFilter);
-            if (orders.Success)
+            var ordersDto = await orderViewClient.GetOrders(orderFilter);
+            var orders = ordersDto.Payload?.Orders ?? new List<RecentOrderDto>();
+
+            if (orders.Count() > 0)
             {
-                var pagesCount = orders.Payload.TotalCount / OrdersPerPage;
-                if (orders.Payload.TotalCount % OrdersPerPage > 0)
+                var pagesCount = ordersDto.Payload.TotalCount / OrdersPerPage;
+                if (ordersDto.Payload.TotalCount % OrdersPerPage > 0)
                 {
                     pagesCount++;
                 }
@@ -80,18 +83,19 @@ namespace Kadena.BusinessLogic.Services.Orders
                     Pagination = new Pagination
                     {
                         CurrentPage = page,
-                        RowsCount = orders.Payload.TotalCount,
+                        RowsCount = ordersDto.Payload.TotalCount,
                         RowsOnPage = OrdersPerPage,
                         PagesCount = pagesCount
                     },
-                    Data = orders.Payload.Orders
+                    Data = orders
                         .Select(o => orderReportFactory.Create(o))
                         .ToList()
                 };
             }
-            return new PagedData<OrderReport>();
+
+            return PagedData<OrderReport>.Empty();
         }
-        
+
         public TableView ConvertOrdersToView(PagedData<OrderReport> orders)
         {
             if (orders == null)
@@ -114,24 +118,22 @@ namespace Kadena.BusinessLogic.Services.Orders
         public async Task<FileResult> GetOrdersExportForSite(string site, OrderFilter filter)
         {
             var orderFilter = CreateOrderListFilter(filter, site);
-            var orders = await orderViewClient.GetOrders(orderFilter);
-            if (orders.Success)
-            {
-                var ordersReport = orders.Payload.Orders.ToList()
+            var ordersDto = await orderViewClient.GetOrders(orderFilter);
+            var orders = ordersDto.Payload?.Orders ?? new List<RecentOrderDto>();
+
+            var ordersReport = orders
                     .Select(o => orderReportFactory.Create(o));
-                var tableView = orderReportFactory.CreateTableView(ordersReport);
+            var tableView = orderReportFactory.CreateTableView(ordersReport);
 
-                var fileDataTable = mapper.Map<Table>(tableView);
-                var fileData = excelConvert.Convert(fileDataTable);
+            var fileDataTable = mapper.Map<Table>(tableView);
+            var fileResult = new FileResult
+            {
+                Data = excelConvert.Convert(fileDataTable),
+                Name = "export.xlsx",
+                Mime = ContentTypes.Xlsx
+            };
 
-                return new FileResult
-                {
-                    Data = fileData,
-                    Name = "export.xlsx",
-                    Mime = ContentTypes.Xlsx
-                };
-            }
-            return new FileResult();
+            return fileResult;
         }
 
         private OrderListFilter CreateOrderListFilter(OrderFilter filter, string site, int page)
@@ -155,6 +157,12 @@ namespace Kadena.BusinessLogic.Services.Orders
                 DateFrom = filter.FromDate,
                 DateTo = filter.ToDate
             };
+
+            if (orderFilter.DateTo != null)
+            {
+                orderFilter.DateTo = orderFilter.DateTo.Value.AddDays(1);
+            }
+
             OrderFilter.OrderByFields sort;
             if (filter.TryParseOrderByExpression(out sort))
             {

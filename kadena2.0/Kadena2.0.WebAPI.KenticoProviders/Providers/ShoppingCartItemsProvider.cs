@@ -14,6 +14,7 @@ using System;
 using System.Linq;
 using Kadena.Helpers;
 using Kadena.Models.Common;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -43,7 +44,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public CartItem[] GetShoppingCartItems(bool showPrices = true)
         {
-            var displayProductionAndShipping = resources.GetSiteSettingsKey<bool>("KDA_Checkout_ShowProductionAndShipping");
+            var displayProductionAndShipping = resources.GetSiteSettingsKey<bool>(Settings.KDA_Checkout_ShowProductionAndShipping);
 
             return ECommerceContext.CurrentShoppingCart.CartItems
                 .Where(cartItem => !cartItem.IsProductOption)
@@ -82,7 +83,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplateLabel"),
                 ProductionTime = displayProductionAndShipping ? i.GetValue("ProductProductionTime", string.Empty) : null,
                 ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null,
-                Preview = new Button { Exists = false, Text = resources.GetResourceString("Kadena.Checkout.PreviewButton") }
+                Preview = new Button { Exists = false, Text = resources.GetResourceString("Kadena.Checkout.PreviewButton") },
+                SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true)
             };
 
             if (cartItem.IsTemplated)
@@ -219,7 +221,8 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItemInfo.SetValue("ProductChiliPdfGeneratorSettingsId", item.ProductChiliPdfGeneratorSettingsId);
             cartItemInfo.SetValue("ProductChiliWorkspaceId", item.ProductChiliWorkspaceId);
             cartItemInfo.SetValue("ArtworkLocation", item.ArtworkLocation);
-            
+            cartItemInfo.SetValue("SendPriceToErp", item.SendPriceToErp);
+
             ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItemInfo);
 
             foreach (ShoppingCartItemInfo option in cartItemInfo.ProductOptions)
@@ -300,6 +303,7 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItemInfo.SetValue("ChiliTemplateID", productDocument.GetGuidValue("ProductChiliTemplateID", Guid.Empty));
             cartItemInfo.SetValue("ProductChiliPdfGeneratorSettingsId", productDocument.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));
             cartItemInfo.SetValue("ProductChiliWorkspaceId", productDocument.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
+            cartItemInfo.SetValue("SendPriceToErp", !cartItemInfo.SKU.GetBooleanValue("SKUDontSendPriceToERP", false));
 
             return mapper.Map<CartItemEntity>(cartItemInfo);
         }

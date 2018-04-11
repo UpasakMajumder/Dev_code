@@ -1,6 +1,7 @@
 ﻿using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Settings;
+using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
@@ -41,9 +42,9 @@ namespace Kadena.BusinessLogic.Factories.Checkout
             {
                 Text = resources.GetResourceString("Kadena.Checkout.CartIsEmpty"),
                 DashboardButtonText = resources.GetResourceString("Kadena.Checkout.ButtonDashboard"),
-                DashboardButtonUrl = documents.GetDocumentUrl(resources.GetSiteSettingsKey("KDA_EmptyCart_DashboardUrl")),
+                DashboardButtonUrl = documents.GetDocumentUrl(resources.GetSiteSettingsKey(Settings.KDA_EmptyCart_DashboardUrl)),
                 ProductsButtonText = resources.GetResourceString("Kadena.Checkout.ButtonProducts"),
-                ProductsButtonUrl = documents.GetDocumentUrl(resources.GetSiteSettingsKey("KDA_EmptyCart_ProductsUrl"))
+                ProductsButtonUrl = documents.GetDocumentUrl(resources.GetSiteSettingsKey(Settings.KDA_EmptyCart_ProductsUrl))
             };
         }
 
@@ -86,7 +87,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
                 NewAddress = new NewAddressButton()
                 {
                     Label = resources.GetResourceString("Kadena.Checkout.NewAddress"),
-                    Url = documents.GetDocumentUrl(resources.GetSiteSettingsKey("KDA_SettingsPageUrl")) + "?tab=t4"
+                    Url = documents.GetDocumentUrl(resources.GetSiteSettingsKey(Settings.KDA_SettingsPageUrl)) + "?tab=t4"
                 },
                 Title = resources.GetResourceString("Kadena.Checkout.DeliveryAddress.Title"),
                 Description = resources.GetResourceString("Kadena.Checkout.DeliveryDescription"),
@@ -106,7 +107,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
         {
             var countries = kenticoLocalization.GetCountries();
             var states = kenticoLocalization.GetStates();
-            var defaultCountryId = resources.GetSiteSettingsKey<int>("KDA_AddressDefaultCountry");
+            var defaultCountryId = resources.GetSiteSettingsKey<int>(Settings.KDA_AddressDefaultCountry);
             return new Models.Checkout.AddressDialog
             {
                 Title = resources.GetResourceString("Kadena.Checkout.NewAddress"),
@@ -225,7 +226,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
         public NotificationEmail CreateNotificationEmail(bool emailConfirmationEnabled)
         {
             int maxitems = 0;
-            int.TryParse(resources.GetSiteSettingsKey("KDA_MaximumNotificationEmailsOnCheckout"), out maxitems);
+            int.TryParse(resources.GetSiteSettingsKey(Settings.KDA_MaximumNotificationEmailsOnCheckout), out maxitems);
 
             return new NotificationEmail
             {

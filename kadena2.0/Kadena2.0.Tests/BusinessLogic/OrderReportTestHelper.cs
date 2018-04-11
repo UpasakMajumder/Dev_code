@@ -32,7 +32,6 @@ namespace Kadena.Tests.BusinessLogic
                 ShippingDate = GetRandomDateTime(),
                 Site = "test_site",
                 Status = "test_status",
-                TrackingNumber = random.Next(1, 1000000).ToString(),
                 User = "test_user",
                 Url = "http://test.com/this/is/test/url/",
                 Items = Enumerable.Range(1, itemsCount)
@@ -49,7 +48,8 @@ namespace Kadena.Tests.BusinessLogic
                 Name = "Product" + itemNumber,
                 SKU = "SKU" + itemNumber,
                 Quantity = random.Next(),
-                Price = random.Next() / 10
+                Price = random.Next() / 10,
+                TrackingNumber = random.Next(1, 1000000).ToString(),
             };
         }
 

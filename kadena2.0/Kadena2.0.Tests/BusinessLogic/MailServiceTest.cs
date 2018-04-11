@@ -2,6 +2,7 @@
 using Kadena.Dto.General;
 using Kadena.Dto.Notification.MicroserviceRequests;
 using Kadena.Models.TemplatedProduct;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Moq;
 using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace Kadena.Tests.BusinessLogic
                 RecepientEmail = "mail1@d.cz, mail2@d.cz"
             };
 
-            var sut = new MailService(notificationMock.Object);
+            var sut = new MailService(notificationMock.Object, Mock.Of<IKenticoLogger>());
 
             // Act 
             await sut.SendProofMail(request);

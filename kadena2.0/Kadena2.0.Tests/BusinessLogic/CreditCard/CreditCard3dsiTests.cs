@@ -8,6 +8,7 @@ using Xunit;
 using System;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena.Dto.CreditCard.MicroserviceRequests;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.Tests.CreditCard
 {
@@ -21,7 +22,7 @@ namespace Kadena.Tests.CreditCard
         {
             const string guid = "7c9e6679-7425-40de-944b-e07fc1f90ae7";
 
-            Setup<IKenticoResourceService, string>(r => r.GetSiteSettingsKey("KDA_CreditCard_InsertCardDetailsURL"), serviceUrl);
+            Setup<IKenticoResourceService, string>(r => r.GetSiteSettingsKey(Settings.KDA_CreditCard_InsertCardDetailsURL), serviceUrl);
             Setup<IKenticoDocumentProvider, string>(d => d.GetDocumentUrl(serviceUrl, true), serviceUrl);
             Setup<ISubmissionService, Submission>(s => s.GenerateNewSubmission(It.IsAny<string>()), new Submission() { SubmissionId = Guid.Parse(guid) });
 

@@ -79,6 +79,12 @@ namespace Kadena.BusinessLogic.Services.Orders
             var data = microserviceResponse.Payload;
             var genericStatus = kenticoOrder.MapOrderStatus(data.Status);
 
+            var businessUnitName = "";
+            if (long.TryParse(data.campaign?.BusinessUnitNumber, out var bun))
+            {
+                businessUnitName = businessUnits.GetBusinessUnitName(bun);
+            }
+
             var orderDetail = new OrderDetail()
             {
                 DateTimeNAString = resources.GetResourceString("Kadena.Order.ItemShippingDateNA"),
@@ -115,7 +121,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     Title = resources.GetResourceString("Kadena.Order.PaymentSection"),
                     DatePrefix = resources.GetResourceString("Kadena.Order.PaymentDatePrefix"),
                     BUnitLabel = resources.GetResourceString("Kadena.Order.BusinessUnitLabel"),
-                    BUnitName = businessUnits.GetBusinessUnitName(data.campaign != null ? data.campaign.BusinessUnitNumber : string.Empty)
+                    BUnitName = businessUnitName
                 },
                 PricingInfo = new PricingInfo()
                 {

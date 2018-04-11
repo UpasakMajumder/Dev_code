@@ -12,9 +12,10 @@ namespace Kadena.BusinessLogic.Services
         private readonly INotificationClient notificationClient;
         private readonly IKenticoLogger log;
 
-        public MailService(INotificationClient notificationClient)
+        public MailService(INotificationClient notificationClient, IKenticoLogger log)
         {
             this.notificationClient = notificationClient ?? throw new System.ArgumentNullException(nameof(notificationClient));
+            this.log = log ?? throw new System.ArgumentNullException(nameof(log));
         }
 
         public async Task SendProofMail(EmailProofRequest request)

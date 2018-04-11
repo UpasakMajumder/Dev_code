@@ -105,7 +105,7 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(expected.Items[0].Price, actual.Items[7]);
             Assert.Equal(expected.Status, actual.Items[8]);
             Assert.Equal(format(expected.ShippingDate.Value), actual.Items[9]);
-            Assert.Equal(expected.TrackingNumber, actual.Items[10]);
+            Assert.Equal(expected.Items[0].TrackingNumber, actual.Items[10]);
         }
 
         [Fact(DisplayName = "OrderReportFactory.CreateTableView() | Formatting empty date")]
@@ -141,7 +141,6 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(orderDto.ShippingDate, orderReport.ShippingDate);
             Assert.Equal(orderDto.SiteName, orderReport.Site);
             Assert.Equal(sut.FormatOrderStatus(orderDto.Status), orderReport.Status);
-            Assert.Equal(orderDto.TrackingNumber, orderReport.TrackingNumber);
             Assert.Equal(sut.FormatDetailUrl(orderDto), orderReport.Url);
             Assert.Equal(sut.FormatCustomer(customer), orderReport.User);
 
@@ -152,6 +151,7 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(firstItem.Quantity, orderReport.Items[0].Quantity);
             Assert.Equal(firstItem.UnitPrice, orderReport.Items[0].Price);
             Assert.Equal(firstItem.SKUNumber, orderReport.Items[0].SKU);
+            Assert.Equal(firstItem.TrackingNumber, orderReport.Items[0].TrackingNumber);
         }
     }
 }

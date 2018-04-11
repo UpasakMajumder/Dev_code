@@ -12,6 +12,7 @@ using CMS.SiteProvider;
 using AutoMapper;
 using CMS.DataEngine;
 using CMS.CustomTables;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -49,7 +50,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             if (border?.Exists ?? false)
             {
-                border.Value = SettingsKeyInfoProvider.GetValue("KDA_ProductThumbnailBorderStyle", new SiteInfoIdentifier(SiteContext.CurrentSiteID));
+                border.Value = SettingsKeyInfoProvider.GetValue(Settings.KDA_ProductThumbnailBorderStyle, new SiteInfoIdentifier(SiteContext.CurrentSiteID));
             }
         }
 
@@ -299,7 +300,12 @@ namespace Kadena.WebAPI.KenticoProviders
                 .SelectSingleNode(
                     new NodeSelectionParameters { Where = $"{nameof(TreeNode.NodeSKUID)}={skuId}" }
                 );
-            return GetProductByNodeId(node.NodeID);
+            if (node != null)
+            {
+                return GetProductByNodeId(node.NodeID);
+            }
+
+            return null;
         }
 
         public int GetSkuAvailableQty(int skuid)
