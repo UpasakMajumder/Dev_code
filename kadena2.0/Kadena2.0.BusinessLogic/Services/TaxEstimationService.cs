@@ -36,13 +36,26 @@ namespace Kadena.BusinessLogic.Services
 
         public async Task<decimal> EstimateTotalTax(DeliveryAddress deliveryAddress)
         {
-            var taxRequest = CreateTaxEstimationRequest(deliveryAddress);
+            double totalItemsPrice = shoppingCart.GetCurrentCartTotalItemsPrice();
+            double shippingCosts = shoppingCart.GetCurrentCartShippingCost();
 
-            var estimate = await EstimateTotalTax(taxRequest);
+            var taxRequest = CreateTaxEstimationRequest(deliveryAddress, totalItemsPrice, shippingCosts);
+
+            var estimate = await EstimateTotalTaxCachedCall(taxRequest);
             return estimate;
         }
 
-        private async Task<decimal> EstimateTotalTax(TaxCalculatorRequestDto taxRequest)
+        public async Task<decimal> EstimatePricedItemsTax(DeliveryAddress deliveryAddress, double pricedItemsPrice)
+        {
+            double shippingCosts = shoppingCart.GetCurrentCartShippingCost();
+
+            var taxRequest = CreateTaxEstimationRequest(deliveryAddress, pricedItemsPrice, shippingCosts);
+
+            var estimate = await EstimateTotalTaxCachedCall(taxRequest);
+            return estimate;
+        }
+
+        private async Task<decimal> EstimateTotalTaxCachedCall(TaxCalculatorRequestDto taxRequest)
         {
             if (taxRequest.TotalBasePrice == 0.0d && taxRequest.ShipCost == 0.0d)
             {
@@ -71,8 +84,11 @@ namespace Kadena.BusinessLogic.Services
             }
         }
 
-        private TaxCalculatorRequestDto CreateTaxEstimationRequest(double totalItemsPrice, double shippingCosts, BillingAddress addressFrom, DeliveryAddress addressTo)
-        {
+        private TaxCalculatorRequestDto CreateTaxEstimationRequest(DeliveryAddress deliveryAddress, double totalItemsPrice, double shippingCosts)
+        {        
+            var addressTo = deliveryAddress ?? shoppingCart.GetCurrentCartShippingAddress();
+            var addressFrom = shoppingCart.GetDefaultBillingAddress();
+
             var taxRequest = new TaxCalculatorRequestDto()
             {
                 TotalBasePrice = totalItemsPrice,
@@ -96,17 +112,6 @@ namespace Kadena.BusinessLogic.Services
             }
 
             return taxRequest;
-        }
-
-        private TaxCalculatorRequestDto CreateTaxEstimationRequest(DeliveryAddress deliveryAddress)
-        {
-            double totalItemsPrice = shoppingCart.GetCurrentCartTotalItemsPrice();
-            double shippingCosts = shoppingCart.GetCurrentCartShippingCost();
-
-            var addressTo = deliveryAddress ?? shoppingCart.GetCurrentCartShippingAddress();
-            var addressFrom = shoppingCart.GetDefaultBillingAddress();
-
-            return CreateTaxEstimationRequest(totalItemsPrice, shippingCosts, addressFrom, addressTo);
         }
     }
 }

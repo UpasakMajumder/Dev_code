@@ -68,6 +68,16 @@ namespace Kadena2.BusinessLogic.Services.Orders
             var totals = shoppingCart.GetShoppingCartTotals();
             totals.TotalTax = await taxService.EstimateTotalTax(shippingAddress);
 
+            var pricedItemsTax = totals.TotalTax;
+            if (cartItems.Any(c => !c.SendPriceToErp))
+            {
+                var pricedItemsPrice = cartItems
+                    .Where(c => c.SendPriceToErp)
+                    .Sum(c => c.TotalPrice);
+
+                pricedItemsTax = await taxService.EstimatePricedItemsTax(shippingAddress, (double)pricedItemsPrice);
+            }
+
             if (string.IsNullOrWhiteSpace(customer.Company))
             {
                 customer.Company = settings.DefaultCustomerCompanyName;
@@ -96,9 +106,13 @@ namespace Kadena2.BusinessLogic.Services.Orders
                     KenticoOrderStatusID = kenticoOrder.GetOrderStatusId("Pending"),
                     OrderStatusName = "PENDING"
                 },
-                TotalPrice = totals.TotalItemsPrice,
-                TotalShipping = totals.TotalShipping,
-                TotalTax = totals.TotalTax,
+                Totals = new TotalsDto
+                {
+                    Price = totals.TotalItemsPrice,
+                    Shipping = totals.TotalShipping,
+                    Tax = totals.TotalTax,
+                    PricedItemsTax = pricedItemsTax
+                },
                 Items = cartItems.Select(item => MapCartItemTypeToOrderItemType(item)),
                 NotificationsData = notificationEmails.Select(e => new NotificationInfoDto
                 {

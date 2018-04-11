@@ -95,10 +95,14 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     NotificationsData = GetNotification(),
                     Items = GetCartItems(),
                     OrderDate = DateTime.Now,
-                    TotalPrice = GetOrderTotal(orderType),
-                    TotalShipping = shippingCost,
+                    Totals = new TotalsDto
+                    {
+                        Price = GetOrderTotal(orderType),
+                        Shipping = shippingCost,
+                        Tax = 0,
+                        PricedItemsTax = 0
+                    },
                     OrderCurrency = GetCurrencyDTO(Cart.Currency),
-                    TotalTax = 0
                 };
             }
             catch (Exception ex)
@@ -654,7 +658,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             try
             {
                 var campaignFiscalYear = DIContainer.Resolve<IKenticoCampaignsProvider>().GetCampaignFiscalYear(orderDetails.Campaign.ID);
-                var totalToBeDeducted = orderDetails.TotalPrice + orderDetails.TotalShipping;
+                var totalToBeDeducted = orderDetails.Totals.Price + orderDetails.Totals.Shipping;
                 var fiscalYear = orderDetails.Type == OrderType.generalInventory ?
                                  ValidationHelper.GetString(orderDetails.OrderDate.Year, string.Empty) :
                                  orderDetails.Type == OrderType.prebuy ? campaignFiscalYear : string.Empty;
