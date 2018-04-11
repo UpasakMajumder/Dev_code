@@ -42,7 +42,7 @@ namespace Kadena.Tests.BusinessLogic
             var expectedResult = @"/api/file/get?path=kda/media/images/thumbnails/thumbnail.jpg";
 
             Setup<IKenticoSiteProvider, string>(s => s.GetFullUrl(), @"http://example.com");
-            Setup<IKenticoResourceService, string>(s => s.GetMediaLibrariesLocation(), mediaLibrariesLink);
+            Setup<IKenticoMediaProvider, string>(s => s.GetMediaLibrariesLocation(), mediaLibrariesLink);
             Setup<IKenticoMediaProvider, string>(s => s.GetThumbnailPath(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), thumbnailLink);
             Setup<IKenticoMediaProvider, string, string>(s => s.GetMediaLibraryPath(It.IsAny<string>()), (s) => $"{mediaLibrariesLink}/{s}");
 
@@ -63,7 +63,7 @@ namespace Kadena.Tests.BusinessLogic
             var expectedResult = @"/kda/media/images/thumbnails/thumbnail.jpg";
 
             Setup<IKenticoSiteProvider, string>(s => s.GetFullUrl(), baseLink);
-            Setup<IKenticoResourceService, string>(s => s.GetMediaLibrariesLocation(), mediaLibrariesLink);
+            Setup<IKenticoMediaProvider, string>(s => s.GetMediaLibrariesLocation(), mediaLibrariesLink);
             Setup<IKenticoMediaProvider, string>(s => s.GetThumbnailPath(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), thumbnailLink);
             Setup<IKenticoMediaProvider, string, string>(s => s.GetMediaLibraryPath(It.IsAny<string>()), (s) => $"{mediaLibrariesLink}/{s}");
 
@@ -82,7 +82,7 @@ namespace Kadena.Tests.BusinessLogic
             var expectedResult = originalImageLink;
 
             Setup<IKenticoSiteProvider, string>(s => s.GetFullUrl(), baseLink);
-            Setup<IKenticoResourceService, string>(s => s.GetMediaLibrariesLocation(), mediaLibrariesLink);
+            Setup<IKenticoMediaProvider, string>(s => s.GetMediaLibrariesLocation(), mediaLibrariesLink);
 
             var actualResult = Sut.GetThumbnailLink(originalImageLink);
 
@@ -96,7 +96,7 @@ namespace Kadena.Tests.BusinessLogic
             var expectedResult = @"/kda/media/images/subfolder/thumbnails/thumbnail.jpg";
 
             Setup<IKenticoSiteProvider, string>(s => s.GetFullUrl(), baseLink);
-            Setup<IKenticoResourceService, string>(s => s.GetMediaLibrariesLocation(), mediaLibrariesLink);
+            Setup<IKenticoMediaProvider, string>(s => s.GetMediaLibrariesLocation(), mediaLibrariesLink);
             Setup<IKenticoMediaProvider, string>(s => s.GetThumbnailPath(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), thumbnailLink);
             Setup<IKenticoMediaProvider, string, string>(s => s.GetMediaLibraryPath(It.IsAny<string>()), (s) => $"{mediaLibrariesLink}/{s}");
 

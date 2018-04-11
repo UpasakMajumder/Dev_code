@@ -5,5 +5,7 @@
         string GetThumbnailPath(string mediaLibraryFolder, string mediaFilePath, int maxSideSize);
 
         string GetMediaLibraryPath(string mediaLibraryFolder);
+
+        string GetMediaLibrariesLocation();
     }
 }

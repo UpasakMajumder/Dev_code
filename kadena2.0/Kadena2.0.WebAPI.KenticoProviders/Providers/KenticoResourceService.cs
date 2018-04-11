@@ -6,8 +6,6 @@ using CMS.Localization;
 using CMS.MacroEngine;
 using System;
 using CMS.Membership;
-using CMS.IO;
-using CMS.MediaLibrary;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -100,11 +98,6 @@ namespace Kadena.WebAPI.KenticoProviders
         public string GetLogonPageUrl()
         {
             return URLHelper.ResolveUrl(AuthenticationHelper.GetSecuredAreasLogonPage(new SiteInfoIdentifier(SiteContext.CurrentSiteID)));
-        }
-
-        public string GetMediaLibrariesLocation()
-        {
-            return Path.EnsureSlashes(MediaLibraryHelper.GetMediaRootFolderPath(SiteContext.CurrentSiteName, @"\"));
         }
     }
 }

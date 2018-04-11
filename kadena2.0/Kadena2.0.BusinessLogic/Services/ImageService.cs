@@ -10,13 +10,11 @@ namespace Kadena.BusinessLogic.Services
     {
         private readonly IKenticoMediaProvider _mediaProvider;
         private readonly IKenticoSiteProvider _siteProvider;
-        private readonly IKenticoResourceService _resources;
 
-        public ImageService(IKenticoMediaProvider mediaProvider, IKenticoSiteProvider siteProvider, IKenticoResourceService resources)
+        public ImageService(IKenticoMediaProvider mediaProvider, IKenticoSiteProvider siteProvider)
         {
             _mediaProvider = mediaProvider ?? throw new ArgumentNullException(nameof(mediaProvider));
             _siteProvider = siteProvider ?? throw new ArgumentNullException(nameof(siteProvider));
-            _resources = resources ?? throw new ArgumentNullException(nameof(resources));
         }
 
         public string GetThumbnailLink(string originalImageLink)
@@ -42,7 +40,7 @@ namespace Kadena.BusinessLogic.Services
                 originalFileRelativeLink = originalImageUri.GetParameter("path").TrimStart('/').ToLower();
             }
 
-            var mediaLibrariesLocation = _resources.GetMediaLibrariesLocation().TrimStart('/').ToLower();
+            var mediaLibrariesLocation = _mediaProvider.GetMediaLibrariesLocation().TrimStart('/').ToLower();
             if (originalFileRelativeLink.IndexOf(mediaLibrariesLocation, 0) != 0)
             {
                 return originalImageLink;
