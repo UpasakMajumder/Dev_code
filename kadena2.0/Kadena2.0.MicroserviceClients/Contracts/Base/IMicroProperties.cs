@@ -5,5 +5,7 @@
         string GetServiceUrl(string urlLocationName);
 
         string GetCustomerName();
+
+        int GetApiVersion(string apiVersionKeyName);
     }
 }

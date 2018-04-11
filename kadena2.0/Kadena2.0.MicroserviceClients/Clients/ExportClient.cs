@@ -11,18 +11,15 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public sealed class ExportClient : SignedClientBase, IExportClient
     {
-        private const string _serviceUrlSettingKey = "KDA_ExportServiceUrl";
-        private readonly IMicroProperties _properties;
-
         public ExportClient(IMicroProperties properties)
         {
-            _properties = properties;
+            _serviceUrlSettingKey = "KDA_ExportServiceUrl";
+            _properties = properties ?? throw new ArgumentNullException(nameof(properties));
         }
 
         public async Task<BaseResponseDto<Stream>> ExportMailingList(Guid containerId, string siteName)
         {
-            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url}/api/MailingListExport/GetFileReport?ContainerId={containerId}&SiteName={siteName}&ReportType=processedMails&OutputType=csv";
+            var url = $"{BaseUrlOld}/api/MailingListExport/GetFileReport?ContainerId={containerId}&SiteName={siteName}&ReportType=processedMails&OutputType=csv";
             return await Get<Stream>(url).ConfigureAwait(false);
         }
 

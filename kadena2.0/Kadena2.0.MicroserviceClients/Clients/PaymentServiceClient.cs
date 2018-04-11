@@ -11,22 +11,15 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public sealed class PaymentServiceClient : SignedClientBase, IPaymentServiceClient
     {
-        private const string _serviceUrlSettingKey = "KDA_PaymentServiceUrl";
-        private readonly IMicroProperties _properties;
-
         public PaymentServiceClient(IMicroProperties properties)
         {
-            if (properties == null)
-            {
-                throw new ArgumentNullException(nameof(properties));
-            }
-
-            this._properties = properties;
+            _serviceUrlSettingKey = "KDA_PaymentServiceUrl";
+            _properties = properties ?? throw new ArgumentNullException(nameof(properties));
         }
 
         public async Task<BaseResponseDto<AuthorizeAmountResponseDto>> AuthorizeAmount(AuthorizeAmountRequestDto request)
         {
-            var url = $"{_properties.GetServiceUrl(_serviceUrlSettingKey)}/api/Payment/PutHold";
+            var url = $"{BaseUrlOld}/api/Payment/PutHold";
             return await Post<AuthorizeAmountResponseDto>(url, request).ConfigureAwait(false);
         }
     }

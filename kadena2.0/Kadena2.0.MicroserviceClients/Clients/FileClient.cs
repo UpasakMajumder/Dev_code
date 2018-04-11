@@ -12,9 +12,6 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public sealed class FileClient : SignedClientBase, IFileClient
     {
-        private const string _serviceUrlSettingKey = "KDA_FileServiceUrl";
-        private readonly IMicroProperties _properties;
-
         private string _siteName;
         private FileFolder _fileFolder;
         private FileModule _moduleName;
@@ -23,13 +20,13 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public FileClient(IMicroProperties properties)
         {
+            _serviceUrlSettingKey = "KDA_FileServiceUrl";
             _properties = properties ?? throw new ArgumentNullException(nameof(properties));
         }
 
         public string GetFileUrl(string fileName, FileModule moduleName)
         {
-            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            return $"{url}/api/File/GetFileStreamBy?key={HttpUtility.UrlEncode(fileName)}&module={moduleName}";
+            return $"{BaseUrlOld}/api/File/GetFileStreamBy?key={HttpUtility.UrlEncode(fileName)}&module={moduleName}";
         }
 
         public async Task<BaseResponseDto<string>> UploadToS3(string siteName, FileFolder folderName,
@@ -41,8 +38,7 @@ namespace Kadena2.MicroserviceClients.Clients
             _fileStream = fileStream;
             _fileName = fileName;
 
-            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url}/api/File";
+            var url = $"{BaseUrlOld}/api/File";
             return await Post<string>(url, null).ConfigureAwait(false);
         }
 
@@ -64,8 +60,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<string>> GetShortliveSecureLink(string key)
         {
-            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url}/api/File?key={key}";
+            var url = $"{BaseUrlOld}/api/File?key={key}";
             return await Get<string>(url);
         }
     }

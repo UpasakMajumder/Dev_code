@@ -9,18 +9,15 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public sealed class AddressValidationClient : SignedClientBase, IAddressValidationClient
     {
-        private const string _serviceUrlSettingKey = "KDA_ValidateAddressUrl";
-        private readonly IMicroProperties _properties;
-
-        public AddressValidationClient(IMicroProperties properties)
+        public AddressValidationClient(IMicroProperties properties) 
         {
-            _properties = properties;
+            _serviceUrlSettingKey = "KDA_ValidateAddressUrl";
+            _properties = properties ?? throw new ArgumentNullException(nameof(properties));
         }
 
         public async Task<BaseResponseDto<string>> Validate(Guid containerId)
         {
-            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url}/api/AddressValidator/";
+            var url = $"{BaseUrlOld}/api/AddressValidator/";
             return await Post<string>(url, new
             {
                 ContainerId = containerId,

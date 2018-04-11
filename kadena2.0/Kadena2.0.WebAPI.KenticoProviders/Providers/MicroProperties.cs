@@ -6,15 +6,14 @@ namespace Kadena.Helpers
 {
     public class MicroProperties : IMicroProperties
     {
-        private readonly IKenticoResourceService _kentico;
+        private readonly IKenticoResourceService _resources;
         private readonly IKenticoSiteProvider _site;
 
-        public MicroProperties(IKenticoResourceService kentico, IKenticoSiteProvider site)
+        public MicroProperties(IKenticoResourceService resources, IKenticoSiteProvider site)
         {
-            _kentico = kentico ?? throw new ArgumentNullException(nameof(kentico));
+            _resources = resources ?? throw new ArgumentNullException(nameof(resources));
             _site = site ?? throw new ArgumentNullException(nameof(site));
-        }
-
+        }       
         public string GetCustomerName()
         {
             return _site.GetKenticoSite()?.Name;
@@ -22,7 +21,12 @@ namespace Kadena.Helpers
 
         public string GetServiceUrl(string urlLocationName)
         {
-            return _kentico.GetSiteSettingsKey(urlLocationName).TrimEnd('/');
+            return _resources.GetSiteSettingsKey(urlLocationName).TrimEnd('/');
+        }
+
+        public int GetApiVersion(string apiVersionKeyName)
+        {
+            return _resources.GetSiteSettingsKey<int>(apiVersionKeyName);
         }
     }
 }
