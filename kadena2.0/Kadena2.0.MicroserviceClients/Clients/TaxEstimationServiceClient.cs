@@ -1,4 +1,5 @@
 ﻿using Kadena.Dto.General;
+using Kadena.Models.SiteSettings;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
@@ -12,14 +13,13 @@ namespace Kadena2.MicroserviceClients.Clients
     {
         public TaxEstimationServiceClient(IMicroProperties properties)
         {
-            _serviceUrlSettingKey = "KDA_TaxEstimationServiceEndpoint";
             _properties = properties ?? throw new ArgumentNullException(nameof(properties));
+            _serviceVersionSettingKey = Settings.KDA_TaxEstimationServiceVersion;
         }
 
         public async Task<BaseResponseDto<decimal>> CalculateTax(TaxCalculatorRequestDto request)
         {
-            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            url = $"{url}/api/taxcalculator";
+            var url = $"{BaseUrl}/taxcalculator";
             return await Post<decimal>(url, request).ConfigureAwait(false);
         }
     }

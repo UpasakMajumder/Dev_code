@@ -26,8 +26,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public string GetFileUrl(string fileName, FileModule moduleName)
         {
-            var url = _properties.GetServiceUrl(_serviceUrlSettingKey);
-            return $"{url}/api/File/GetFileStreamBy?key={HttpUtility.UrlEncode(fileName)}&module={moduleName}";
+            return $"{BaseUrlOld}/api/File/GetFileStreamBy?key={HttpUtility.UrlEncode(fileName)}&module={moduleName}";
         }
 
         public async Task<BaseResponseDto<string>> UploadToS3(string siteName, FileFolder folderName,
@@ -39,7 +38,7 @@ namespace Kadena2.MicroserviceClients.Clients
             _fileStream = fileStream;
             _fileName = fileName;
 
-            var url = $"{BaseUrl}/api/File";
+            var url = $"{BaseUrlOld}/api/File";
             return await Post<string>(url, null).ConfigureAwait(false);
         }
 
@@ -61,7 +60,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<string>> GetShortliveSecureLink(string key)
         {
-            var url = $"{BaseUrl}/api/File?key={key}";
+            var url = $"{BaseUrlOld}/api/File?key={key}";
             return await Get<string>(url);
         }
     }

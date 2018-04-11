@@ -17,7 +17,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<string>> Validate(Guid containerId)
         {
-            var url = $"{BaseUrl}/api/AddressValidator/";
+            var url = $"{BaseUrlOld}/api/AddressValidator/";
             return await Post<string>(url, new
             {
                 ContainerId = containerId,

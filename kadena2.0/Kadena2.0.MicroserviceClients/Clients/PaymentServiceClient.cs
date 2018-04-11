@@ -19,7 +19,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<AuthorizeAmountResponseDto>> AuthorizeAmount(AuthorizeAmountRequestDto request)
         {
-            var url = $"{BaseUrl}/api/Payment/PutHold";
+            var url = $"{BaseUrlOld}/api/Payment/PutHold";
             return await Post<AuthorizeAmountResponseDto>(url, request).ConfigureAwait(false);
         }
     }

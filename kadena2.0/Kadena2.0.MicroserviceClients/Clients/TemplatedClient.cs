@@ -20,13 +20,13 @@ namespace Kadena.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<GeneratePdfTaskStatusResponseDto>> GetGeneratePdfTaskStatus(string templateId, string taskId)
         {
-            var url = $"{BaseUrl}/api/template/{templateId}/pdftask/{taskId}";
+            var url = $"{BaseUrlOld}/api/template/{templateId}/pdftask/{taskId}";
             return await Get<GeneratePdfTaskStatusResponseDto>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<bool?>> UpdateTemplate(Guid templateId, string name, Dictionary<string, object> metaData)
         {
-            var url = $"{BaseUrl}/api/template";
+            var url = $"{BaseUrlOld}/api/template";
             var body = new
             {
                 templateId,
@@ -39,25 +39,25 @@ namespace Kadena.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<List<TemplateServiceDocumentResponse>>> GetTemplates(int userId, Guid masterTemplateId)
         {
-            var url = $"{BaseUrl}/api/template/{masterTemplateId}/users/{userId}";
+            var url = $"{BaseUrlOld}/api/template/{masterTemplateId}/users/{userId}";
             return await Get<List<TemplateServiceDocumentResponse>>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<string>> GetEditorUrl(Guid templateId, Guid workSpaceId, bool useHtml, bool use3d)
         {
-            var url = $"{BaseUrl}/api/template/{templateId}/workspace/{workSpaceId}?useHtml={useHtml.ToString().ToLower()}&use3D={use3d.ToString().ToLower()}";
+            var url = $"{BaseUrlOld}/api/template/{templateId}/workspace/{workSpaceId}?useHtml={useHtml.ToString().ToLower()}&use3D={use3d.ToString().ToLower()}";
             return await Get<string>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<string>> CreateNewTemplate(NewTemplateRequestDto request)
         {
-            var url = $"{BaseUrl}/api/template";
+            var url = $"{BaseUrlOld}/api/template";
             return await Post<string>(url, request).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<string>> SetMailingList(string containerId, string templateId, string workSpaceId, bool use3d)
         {
-            var requestUrl = $"{BaseUrl}/api/template/datasource";
+            var requestUrl = $"{BaseUrlOld}/api/template/datasource";
             return await Post<string>(requestUrl, new
             {
                 containerId,
@@ -69,7 +69,7 @@ namespace Kadena.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<string>> GetPreview(Guid templateId, Guid settingId)
         {
-            var url = $"{BaseUrl}/api/template/{templateId}/preview/{settingId}";
+            var url = $"{BaseUrlOld}/api/template/{templateId}/preview/{settingId}";
             return await Get<string>(url).ConfigureAwait(false);
         }
     }

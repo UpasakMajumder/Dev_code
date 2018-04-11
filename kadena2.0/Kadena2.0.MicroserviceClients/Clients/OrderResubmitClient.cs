@@ -1,5 +1,6 @@
 ﻿using Kadena.Dto.General;
 using Kadena.Dto.Order.Failed;
+using Kadena.Models.SiteSettings;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
@@ -10,17 +11,17 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public class OrderResubmitClient : SignedClientBase, IOrderResubmitClient
     {
-        private const string _serviceEndpoint = "/api/esbretry";
+        private const string _serviceEndpoint = "/esbretry";
 
         public OrderResubmitClient(IMicroProperties properties)
         {
-            _serviceUrlSettingKey = "KDA_MicroservicesBaseAddress";
             _properties = properties ?? throw new ArgumentNullException(nameof(properties));
+            _serviceVersionSettingKey = Settings.KDA_OrderResubmitServiceVersion;
         }
 
         public async Task<BaseResponseDto<ResubmitOrderResponseDto>> Resubmit(ResubmitOrderRequestDto requestDto)
         {
-            var url = $"{_properties.GetServiceUrl(_serviceUrlSettingKey)}{_serviceEndpoint}";
+            var url = $"{BaseUrl}{_serviceEndpoint}";
             return await Post<ResubmitOrderResponseDto>(url, requestDto).ConfigureAwait(false);
         }
     }

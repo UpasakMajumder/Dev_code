@@ -18,7 +18,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<object>> SendCustomNotification(SendCustomNotificationRequestDto request)
         {
-            var url = $"{BaseUrl}/api/notification/sendmails";
+            var url = $"{BaseUrlOld}/api/notification/sendmails";
             return await Post<object>(url, request).ConfigureAwait(false);
         }
     }

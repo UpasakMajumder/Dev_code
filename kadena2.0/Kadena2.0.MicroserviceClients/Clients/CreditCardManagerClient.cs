@@ -18,13 +18,13 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<object>> CreateCustomerContainer(CreateCustomerContainerRequestDto request)
         {
-            var url = $"{BaseUrl}/api/Customer/";
+            var url = $"{BaseUrlOld}/api/Customer/";
             return await Post<object>(url, request).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<object>> UpdateCustomerContainer(UpdateCustomerContainerRequestDto request)
         {
-            var url = $"{BaseUrl}/api/Customer/";
+            var url = $"{BaseUrlOld}/api/Customer/";
             return await Patch<object>(url, request).ConfigureAwait(false);
         }
     }

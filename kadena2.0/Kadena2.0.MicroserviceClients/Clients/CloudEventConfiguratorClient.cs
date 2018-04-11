@@ -26,7 +26,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<string>> UpdateNooshRule(RuleDto rule, NooshDto noosh)
         {
-            var url = $"{BaseUrl}/cloudwatch";
+            var url = $"{BaseUrlOld}/cloudwatch";
             var body = new
             {
                 RuleName = rule.RuleName,

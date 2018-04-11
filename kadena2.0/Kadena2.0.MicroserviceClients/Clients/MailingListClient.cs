@@ -23,34 +23,34 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<IEnumerable<MailingAddressDto>>> GetAddresses(Guid containerId)
         {
-            var url = $"{BaseUrl}/api/DeliveryAddress/ByContainer/{containerId}";
+            var url = $"{BaseUrlOld}/api/DeliveryAddress/ByContainer/{containerId}";
             return await Get<IEnumerable<MailingAddressDto>>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<MailingListDataDTO>> GetMailingList(Guid containerId)
         {
             var encodedCustomerName = HttpUtility.UrlEncode(_properties.GetCustomerName());
-            var url = $"{BaseUrl}/api/Mailing/ByCustomerAndId/{encodedCustomerName}/{containerId}";
+            var url = $"{BaseUrlOld}/api/Mailing/ByCustomerAndId/{encodedCustomerName}/{containerId}";
             return await Get<MailingListDataDTO>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<MailingListDataDTO[]>> GetMailingListsForCustomer()
         {
             var encodedCustomerName = HttpUtility.UrlEncode(_properties.GetCustomerName());
-            var url = $"{BaseUrl}/api/Mailing/AllForCustomer/{encodedCustomerName}";
+            var url = $"{BaseUrlOld}/api/Mailing/AllForCustomer/{encodedCustomerName}";
             return await Get<MailingListDataDTO[]>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<object>> RemoveMailingList(Guid mailingListId)
         {
             var encodedCustomerName = HttpUtility.UrlEncode(_properties.GetCustomerName());
-            var url = $"{BaseUrl}/api/Mailing/ByCustomerAndId/{encodedCustomerName}/{mailingListId}";
+            var url = $"{BaseUrlOld}/api/Mailing/ByCustomerAndId/{encodedCustomerName}/{mailingListId}";
             return await Delete<object>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<object>> RemoveMailingList(DateTime olderThan)
         {
-            var url = $"{BaseUrl}/api/Mailing/ByFilter";
+            var url = $"{BaseUrlOld}/api/Mailing/ByFilter";
             var body = new
             {
                 customerName = _properties.GetCustomerName(),
@@ -62,7 +62,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<object>> RemoveAddresses(Guid containerId, IEnumerable<Guid> addressIds = null)
         {
-            var url = $"{BaseUrl}/api/DeliveryAddress/BulkDelete";
+            var url = $"{BaseUrlOld}/api/DeliveryAddress/BulkDelete";
             var body = new
             {
                 ContainerId = containerId,
@@ -75,7 +75,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<IEnumerable<string>>> UpdateAddresses(Guid containerId, IEnumerable<MailingAddressDto> addresses)
         {
-            var url = $"{BaseUrl}/api/DeliveryAddress/ManualBulkUpdate";
+            var url = $"{BaseUrlOld}/api/DeliveryAddress/ManualBulkUpdate";
             var requestBody = new
             {
                 CustomerName = _properties.GetCustomerName(),
@@ -99,7 +99,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<Guid>> CreateMailingContainer(string name, string mailType, string product, int validityDays, string customerId)
         {
-            var createContainerUrl = $"{BaseUrl}/api/Mailing";
+            var createContainerUrl = $"{BaseUrlOld}/api/Mailing";
             return await Post<Guid>(createContainerUrl, new
             {
                 name = name,
@@ -113,7 +113,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<object>> UploadMapping(string fileId, Guid containerId, Dictionary<string, int> mapping)
         {
-            var uploadMappingUrl = $"{BaseUrl}/api/DeliveryAddress";
+            var uploadMappingUrl = $"{BaseUrlOld}/api/DeliveryAddress";
             string jsonMapping = string.Empty;
             using (var sw = new StringWriter())
             {

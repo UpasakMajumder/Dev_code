@@ -1,6 +1,7 @@
 ﻿using Kadena.Dto.General;
 using Kadena.Dto.Order;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
+using Kadena.Models.SiteSettings;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
@@ -15,11 +16,12 @@ namespace Kadena2.MicroserviceClients.Clients
         public const string DateArgumentFormat = "yyyy-MM-dd";
         public const string DefaultOrderByField = "CreateDate";
         public const bool DefaultOrderByDescending = true;
-        private const string _serviceEndpoint = "/api/order";
+        private const string _serviceEndpoint = "/order";
 
         public OrderViewClient(IMicroProperties properties)
         {
             _properties = properties ?? throw new ArgumentNullException(nameof(properties));
+            _serviceVersionSettingKey = Settings.KDA_OrderViewServiceVersion;
         }
 
         public async Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string orderId)

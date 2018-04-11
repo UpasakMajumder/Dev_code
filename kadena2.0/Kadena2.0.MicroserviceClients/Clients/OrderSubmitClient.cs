@@ -5,6 +5,7 @@ using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
 using System.Threading.Tasks;
 using Kadena2.MicroserviceClients.Contracts.Base;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -12,13 +13,13 @@ namespace Kadena2.MicroserviceClients.Clients
     {
         public OrderSubmitClient(IMicroProperties properties)
         {
-            _serviceUrlSettingKey = "KDA_OrderServiceEndpoint";
             _properties = properties ?? throw new ArgumentNullException(nameof(properties));
+            _serviceVersionSettingKey = Settings.KDA_OrderServiceVersion;
         }
 
         public async Task<BaseResponseDto<string>> SubmitOrder(OrderDTO orderData)
         {
-            var url = $"{BaseUrl}/api/order";
+            var url = $"{BaseUrl}/order";
             return await Post<string>(url, orderData).ConfigureAwait(false);
         }
     }

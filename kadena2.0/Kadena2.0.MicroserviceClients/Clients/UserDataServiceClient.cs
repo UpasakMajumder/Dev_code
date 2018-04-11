@@ -20,13 +20,13 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<string>> SaveCardToken(SaveCardTokenRequestDto request)
         {
-            var url = $"{BaseUrl}/api/CardToken";
+            var url = $"{BaseUrlOld}/api/CardToken";
             return await Post<string>(url, request).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<IEnumerable<UserStoredCardDto>>> GetValidCardTokens(int userId)
         {
-            var url = $"{BaseUrl}/api/CardToken/valid/{userId}";
+            var url = $"{BaseUrlOld}/api/CardToken/valid/{userId}";
             return await Get<IEnumerable<UserStoredCardDto>>(url).ConfigureAwait(false);
         }
     }

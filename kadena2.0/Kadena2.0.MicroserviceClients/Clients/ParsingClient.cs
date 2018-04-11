@@ -18,7 +18,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<IEnumerable<string>>> GetHeaders(string fileId)
         {
-            var url = $"{BaseUrl}/api/CsvParser/GetHeaders?FileId={fileId}&Module={FileModule.KList}";
+            var url = $"{BaseUrlOld}/api/CsvParser/GetHeaders?FileId={fileId}&Module={FileModule.KList}";
             return await Get<IEnumerable<string>>(url).ConfigureAwait(false);
         }
     }

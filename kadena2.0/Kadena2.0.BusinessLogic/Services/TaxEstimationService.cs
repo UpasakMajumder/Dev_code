@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using Kadena2.Infrastructure.Contracts;
-using Kadena.Models.SiteSettings;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -20,8 +19,6 @@ namespace Kadena.BusinessLogic.Services
         private readonly IShoppingCartProvider shoppingCart;
         private readonly ICache cache;
 
-        public string ServiceEndpoint => resources.GetSiteSettingsKey(Settings.KDA_TaxEstimationServiceEndpoint);
-
         public TaxEstimationService(IKenticoLocalizationProvider kenticoLocalization,
                                    IKenticoResourceService resources,                                    
                                    ITaxEstimationServiceClient taxCalculator,
@@ -29,48 +26,23 @@ namespace Kadena.BusinessLogic.Services
                                    IShoppingCartProvider shoppingCart,
                                    ICache cache)
         {
-            if (kenticoLocalization == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoLocalization));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (taxCalculator == null)
-            {
-                throw new ArgumentNullException(nameof(taxCalculator));
-            }
-            if (kenticoLog == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoLog));
-            }
-            if (shoppingCart == null)
-            {
-                throw new ArgumentNullException(nameof(shoppingCart));
-            }
-            if (cache == null)
-            {
-                throw new ArgumentNullException(nameof(cache));
-            }
-
-            this.kenticoLocalization = kenticoLocalization;
-            this.resources = resources;            
-            this.taxCalculator = taxCalculator;            
-            this.kenticoLog = kenticoLog;
-            this.shoppingCart = shoppingCart;
-            this.cache = cache;
+            this.kenticoLocalization = kenticoLocalization ?? throw new ArgumentNullException(nameof(kenticoLocalization));
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));            
+            this.taxCalculator = taxCalculator ?? throw new ArgumentNullException(nameof(taxCalculator));            
+            this.kenticoLog = kenticoLog ?? throw new ArgumentNullException(nameof(kenticoLog));
+            this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
+            this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
 
         public async Task<decimal> EstimateTotalTax(DeliveryAddress deliveryAddress)
         {
             var taxRequest = CreateTaxEstimationRequest(deliveryAddress);
 
-            var estimate = await EstimateTotalTax(ServiceEndpoint, taxRequest);
+            var estimate = await EstimateTotalTax(taxRequest);
             return estimate;
         }
 
-        private async Task<decimal> EstimateTotalTax(string serviceEndpoint, TaxCalculatorRequestDto taxRequest)
+        private async Task<decimal> EstimateTotalTax(TaxCalculatorRequestDto taxRequest)
         {
             if (taxRequest.TotalBasePrice == 0.0d && taxRequest.ShipCost == 0.0d)
             {
@@ -78,7 +50,7 @@ namespace Kadena.BusinessLogic.Services
                 return 0.0m;
             }
 
-            var cacheKey = $"DeliveryPriceEstimationClient|{serviceEndpoint}|{Newtonsoft.Json.JsonConvert.SerializeObject(taxRequest)}";
+            var cacheKey = $"TaxEstimationClient|{Newtonsoft.Json.JsonConvert.SerializeObject(taxRequest)}";
             var cachedResult = cache.Get(cacheKey);
             if (cachedResult != null)
             {
@@ -94,7 +66,7 @@ namespace Kadena.BusinessLogic.Services
             }
             else
             {
-                kenticoLog.LogError("TaxCalculatorClient", $"Call for tax estimation to service URL '{serviceEndpoint}' resulted with error {response.Error?.Message ?? string.Empty}");
+                kenticoLog.LogError("TaxCalculatorClient", $"Call for tax estimation resulted with error {response.Error?.Message ?? string.Empty}");
                 return 0.0m;
             }
         }

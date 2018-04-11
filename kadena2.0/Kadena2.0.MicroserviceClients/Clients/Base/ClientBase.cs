@@ -15,8 +15,10 @@ namespace Kadena2.MicroserviceClients.Clients.Base
         protected IMicroProperties _properties;
         private readonly ISuppliantDomainClient _suppliantDomain;
         private readonly string _baseServiceUrlSettingKey = "KDA_MicroservicesBaseAddress";
-        protected string _serviceUrlSettingKey;
         protected string _serviceVersionSettingKey;
+
+        [Obsolete("Remove after all microservices will use base url")]
+        protected string _serviceUrlSettingKey;
 
         public ClientBase()
         {
@@ -30,15 +32,16 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 
         private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
 
-        public string BaseUrl => _properties.GetServiceUrl(_serviceUrlSettingKey);
+        [Obsolete("Remove after all microservices will use base url")]
+        public string BaseUrlOld => _properties.GetServiceUrl(_serviceUrlSettingKey);
 
-        public string NewBaseUrl
+        public string BaseUrl
         {
             get
             {
                 var url = _properties.GetServiceUrl(_baseServiceUrlSettingKey);
                 var version = _properties.GetServiceUrl(_serviceVersionSettingKey);
-                return $"{url}/v{version}";
+                return $"{url}/api/v{version}";
             }
         }
 
