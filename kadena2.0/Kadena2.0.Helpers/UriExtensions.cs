@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 
-namespace Kadena2.Helpers
+namespace Kadena.Helpers
 {
     public static class UriExtensions
     {
@@ -10,10 +10,15 @@ namespace Kadena2.Helpers
             var uriBuilder = new UriBuilder(url);
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
             query[paramName] = paramValue;
-            uriBuilder.Query = query.ToString();
+            uriBuilder.Query = HttpUtility.UrlDecode(query.ToString());
 
             return uriBuilder.Uri;
         }
-        
+
+        public static string GetParameter(this Uri uri, string parameterName)
+        {
+            var query = HttpUtility.ParseQueryString(uri.Query);
+            return query[parameterName];
+        }
     }
 }
