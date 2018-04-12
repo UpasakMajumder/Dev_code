@@ -32,6 +32,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoPermissionsProvider permissions;
         private readonly IKenticoBusinessUnitsProvider businessUnits;
         private readonly IKenticoSiteProvider site;
+        private readonly IImageService imageService;
 
 
         public OrderDetailService(IMapper mapper,
@@ -46,7 +47,8 @@ namespace Kadena.BusinessLogic.Services.Orders
             IKenticoLocalizationProvider localization,
             IKenticoPermissionsProvider permissions,
             IKenticoBusinessUnitsProvider businessUnits,
-            IKenticoSiteProvider site
+            IKenticoSiteProvider site,
+            IImageService imageService
             )
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -62,6 +64,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             this.businessUnits = businessUnits ?? throw new ArgumentNullException(nameof(businessUnits));
             this.site = site ?? throw new ArgumentNullException(nameof(site));
+            this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
@@ -205,7 +208,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 return new OrderedItem()
                 {
                     Id = i.SkuId,
-                    Image = products.GetSkuImageUrl(i.SkuId),
+                    Image = imageService.GetThumbnailLink(products.GetSkuImageUrl(i.SkuId)),
                     DownloadPdfURL = $"/api/pdf/hires/{orderId}/{i.LineNumber}",
                     MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                     Price = String.Format("$ {0:#,0.00}", i.TotalPrice),

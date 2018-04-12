@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DatasetHelpers.cs" />
+    <Compile Include="Routes\File.cs" />
     <Compile Include="UrlHelper.cs" />
     <Compile Include="MailValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
