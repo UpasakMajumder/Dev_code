@@ -13,12 +13,14 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoProductsProvider products;
         private readonly IKenticoFavoritesProvider favorites;
         private readonly IKenticoResourceService resources;
+        private readonly IKenticoUnitOfMeasureProvider units;
 
-        public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources)
+        public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources, IKenticoUnitOfMeasureProvider units)
         {
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.favorites = favorites ?? throw new ArgumentNullException(nameof(favorites));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.units = units ?? throw new ArgumentNullException(nameof(units));
         }
 
         public Price GetPrice(int skuId, Dictionary<string, int> skuOptions = null)
@@ -58,7 +60,7 @@ namespace Kadena.BusinessLogic.Services
             return productsPage;
         }
 
-        public string GetAvailableProductsString(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts)
+        public string GetAvailableProductsString(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasure)
         {
             string formattedValue = string.Empty;
 
@@ -78,7 +80,7 @@ namespace Kadena.BusinessLogic.Services
             else
             {
                 var baseString = resources.GetResourceString("Kadena.Product.NumberOfAvailableProducts", cultureCode);
-                formattedValue = string.Format(baseString, numberOfStockProducts);
+                formattedValue = string.Format(baseString, numberOfStockProducts, unitOfMeasure);
             }
 
             return formattedValue;
@@ -112,7 +114,7 @@ namespace Kadena.BusinessLogic.Services
             var isTemplated = ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct);
             var isInventory = ProductTypes.IsOfType(productType, ProductTypes.InventoryProduct);
 
-            if ( (isStatic || isPod || isWithAddons) && !isTemplated )
+            if ((isStatic || isPod || isWithAddons) && !isTemplated)
             {
                 return true;
             }
@@ -135,6 +137,28 @@ namespace Kadena.BusinessLogic.Services
             }
 
             return false;
+        }
+
+        public string GetPackagingString(int numberOfItemsInPackage, string unitOfMeasure, string cultureCode )
+        {
+            var defaultUnit = units.GetDefaultUnitOfMeasure().Name;
+
+            if (numberOfItemsInPackage <= 0 || string.IsNullOrEmpty(unitOfMeasure) || unitOfMeasure == defaultUnit)
+            {
+                return string.Empty;
+            }
+
+            var unit = units.GetUnitOfMeasure(unitOfMeasure);
+
+            if (unit == null)
+            {
+                return string.Empty;
+            }
+
+            var localizedUnit = resources.GetResourceString(unit.LocalizationString, cultureCode);
+            var stringBase = resources.GetResourceString("Kadena.Product.NumberOfItemsInPackagesFormatString", cultureCode);
+
+            return string.Format(stringBase, localizedUnit, numberOfItemsInPackage);
         }
     }
 }

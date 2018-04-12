@@ -188,6 +188,10 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.UserURLReferrer, opt => opt.MapFrom(src => src.CallBackUrl))
                 .ForMember(dest => dest.UserSettingsUserID, opt => opt.MapFrom(src => src.UserId));
 
+            CreateMap<CustomTableItem, UnitOfMeasure>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.GetStringValue("Name", string.Empty)))
+                .ForMember(dest => dest.ErpCode, opt => opt.MapFrom(src => src.GetStringValue("ErpCode", string.Empty)))
+                .ForMember(dest => dest.LocalizationString, opt => opt.MapFrom(src => src.GetStringValue("LocalizationString", string.Empty)));
         }
     }
 }
