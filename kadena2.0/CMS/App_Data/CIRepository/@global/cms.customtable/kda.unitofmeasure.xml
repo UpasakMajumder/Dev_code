@@ -58,6 +58,18 @@
           <Trim>False</Trim>
         </settings>
       </field>
+      <field column="IsDefault" columntype="boolean" guid="d36c6902-f69f-4009-b87e-c5b9b7cd41f3" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>False</defaultvalue>
+          <fieldcaption>IsDefault</fieldcaption>
+          <fielddescription>
+            <![CDATA[Indicates which unit is default, typically it is 'Each']]>
+          </fielddescription>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="ItemCreatedBy" columnprecision="0" columntype="integer" guid="1c9b0746-d55d-49fa-97af-e9c2c34a57b7" publicfield="false" system="true">
         <properties>
           <fieldcaption>Created by</fieldcaption>
