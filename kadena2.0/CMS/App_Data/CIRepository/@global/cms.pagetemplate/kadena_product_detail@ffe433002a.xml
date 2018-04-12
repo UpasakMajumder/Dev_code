@@ -482,7 +482,7 @@ iteratedDocument = iteratedDocument.Parent;
         </webpart>
       </webpartzone>
       <webpartzone id="zonePackagingGeneralInformation" v="1">
-        <webpart controlid="PackagingGeneralInformation" guid="98eb5924-a3f2-488c-8285-4b04096d0802" type="statictext" v="1">
+        <webpart controlid="AvailabilityInfo" guid="98eb5924-a3f2-488c-8285-4b04096d0802" type="statictext" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter">False</property>
           <property name="cat_open_performance">False</property>
@@ -495,7 +495,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="containertitle"></property>
           <property name="contentafter"></property>
           <property name="contentbefore"></property>
-          <property name="controlid">PackagingGeneralInformation</property>
+          <property name="controlid">AvailabilityInfo</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">True</property>
@@ -535,15 +535,73 @@ iteratedDocument = iteratedDocument.Parent;
   <svg class="icon icon-stock icon-stock--out">
     <use xlink:href="/gfx/svg/sprites/icons.svg#stock--out"></use>
   </svg>
-  {% }|(user)jiri.draska@actum.cz|(hash)955a660e4d4d95180062fa22a7ff1c75063feb8a0926a20596067a7e78984324%} 
+  {% }|(user)michal.machacek@actum.cz|(hash)1453b9ca594d1544c1e49d8d53b8ece0c39e14dbbf8243bd1b515ac3ef1832dd%} 
 
 
-{%KadenaNamespace.GetAvailableProductsString(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),DocumentContext.CurrentDocument.GetValue("SKUAvailableItems") , LocalizationContext.CurrentCulture.CultureCode, ECommerceContext.CurrentProduct.SKUAvailableItems)|(user)jiri.draska@actum.cz|(hash)5273b32e096525cc74e73501ba2de53ecf216fe09208adba7686ce4e6642ef07%} 
+{%KadenaNamespace.GetAvailableProductsString(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),
+  DocumentContext.CurrentDocument.GetValue("SKUAvailableItems") , 
+  LocalizationContext.CurrentCulture.CultureCode, 
+  ECommerceContext.CurrentProduct.SKUAvailableItems,
+  ProductUnitOfMeasure)|(user)michal.machacek@actum.cz|(hash)b294d8988a11721ab8d1dc23f4a2da2fd9e47aadc441808ca1c7eb9a230c06a9%} 
 </div>
-<span class="add-to-cart__info" {% (ProductNumberOfItemsInPackage == "" || ProductNumberOfItemsInPackage == "1") ? "style=display:none;" : "" %}>
-    {% GetResourceString("Kadena.Product.NumberOfItemsInPackagesFormatString").Format(ProductNumberOfItemsInPackage) |(user)administrator|(hash)8f8af0dd23f84505edcc0031d96c0fb13ca621b026961842bbbd58965363b68a%}
-</span>
 
+]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">statictext</property>
+        </webpart>
+        <webpart controlid="PackagingInfo" guid="5c1396fd-ee9b-46a6-8021-2aef2939b022" type="statictext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">PackagingInfo</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">5c1396fd-ee9b-46a6-8021-2aef2939b022</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="tag"></property>
+          <property name="text">
+<![CDATA[
+<span class="add-to-cart__info" {% (ProductNumberOfItemsInPackage == "" || ProductNumberOfItemsInPackage == "1") ? "style=display:none;" : "" %}>
+  {% KadenaNamespace.GetPackagingString(
+    ProductNumberOfItemsInPackage,
+    ProductUnitOfMeasure,
+    LocalizationContext.CurrentCulture.CultureCode) 
+  |(user)michal.machacek@actum.cz|(hash)1fef1459daa989bdb1db2d8c977b3648d72324aaee4cbfc2ad78b26c4e8ab36d%}
+</span>
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
