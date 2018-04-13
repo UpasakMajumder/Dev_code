@@ -179,7 +179,7 @@ namespace Kadena.AmazonFileSystemProvider
             return $"{_specialFolder}{GetObjectKeyFromPathNonEnvironment(path, lower)}";
         }
 
-        internal static string GetObjectKeyFromPathNonEnvironment(string path, bool lower = true)
+        public static string GetObjectKeyFromPathNonEnvironment(string path, bool lower = true)
         {
             if (path == null)
             {

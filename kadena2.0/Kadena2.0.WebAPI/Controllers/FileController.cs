@@ -12,15 +12,11 @@ namespace Kadena.WebAPI.Controllers
 
         public FileController(IFileService fileService)
         {
-            if (fileService == null)
-            {
-                throw new ArgumentNullException(nameof(fileService));
-            }
-            _fileService = fileService;
+            _fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
         }
 
         [HttpGet]
-        [Route("api/file/get")]
+        [Route(Helpers.Routes.File.Get)]
         public async Task<IHttpActionResult> GetFile(string path)
         {
             var link = await _fileService.GetUrlFromS3(path);

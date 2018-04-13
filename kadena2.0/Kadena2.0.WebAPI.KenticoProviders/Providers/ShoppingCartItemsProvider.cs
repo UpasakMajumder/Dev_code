@@ -188,14 +188,11 @@ namespace Kadena.WebAPI.KenticoProviders
                 throw new Exception(ResHelper.GetString("Kadena.Product.QuantityForTypeError", LocalizationContext.CurrentCulture.CultureCode));
             }
 
-            if (productType.Contains(ProductTypes.InventoryProduct) && quantity > item.SKU.SKUAvailableItems)
+            if (productType.Contains(ProductTypes.InventoryProduct) && item.SKU.SKUSellOnlyAvailable && quantity > item.SKU.SKUAvailableItems)
             {
-                throw new ArgumentOutOfRangeException(string.Format(
+                throw new Exception(string.Format(
                     ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemID));
             }
-
-
-            ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
 
             var documentId = item.GetIntegerValue("ProductPageID", 0);
             var price = dynamicPrices.GetDynamicPrice(quantity, documentId);
@@ -204,6 +201,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 item.CartItemPrice = (double)price;
             }
 
+            ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
             cart.InvalidateCalculations();
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
         }
@@ -214,6 +212,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             cartItemInfo.CartItemText = item.CartItemText;
             cartItemInfo.CartItemUnits = item.SKUUnits;
+            cartItemInfo.CartItemPrice = item.CartItemPrice.HasValue ? (double)item.CartItemPrice.Value : double.NaN;
             cartItemInfo.SetValue("ProductType", item.ProductType);
             cartItemInfo.SetValue("ProductPageID", item.ProductPageID);
             cartItemInfo.SetValue("ProductProductionTime", item.ProductProductionTime);
@@ -298,8 +297,9 @@ namespace Kadena.WebAPI.KenticoProviders
             var cartItemInfo = cart.SetShoppingCartItem(parameters);
 
             cartItemInfo.CartItemText = cartItemInfo.SKU.SKUName;
+            cartItemInfo.CartItemPrice = cartItemInfo.SKU.SKUPrice;
             cartItemInfo.SetValue("ProductType", productDocument.GetStringValue("ProductType", string.Empty));
-            cartItemInfo.SetValue("ProductPageID", productDocument.NodeID);
+            cartItemInfo.SetValue("ProductPageID", productDocument.DocumentID);
             cartItemInfo.SetValue("ProductProductionTime", productDocument.GetStringValue("ProductProductionTime", string.Empty));
             cartItemInfo.SetValue("ProductShipTime", productDocument.GetStringValue("ProductShipTime", string.Empty));
             cartItemInfo.SetValue("ChilliEditorTemplateID", newItem.TemplateId);

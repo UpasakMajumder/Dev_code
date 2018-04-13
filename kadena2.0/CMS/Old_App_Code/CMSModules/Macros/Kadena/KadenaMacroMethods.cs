@@ -389,6 +389,13 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return DIContainer.Resolve<IUserService>().CheckTaC().Show;
         }
 
+        [MacroMethod(typeof(bool), "Gets link for thumbnail by specified link to media file", 0)]
+        [MacroMethodParam(0, "string", typeof(string), "Link to original media file")]
+        public static object GetThumbnailLink(EvaluationContext context, params object[] parameters)
+        {
+            var originalFile = ValidationHelper.GetString(parameters[0], string.Empty);
+            return DIContainer.Resolve<IImageService>().GetThumbnailLink(originalFile);
+        }
 
         private static string GetMainNavigationWhereConditionInternal(bool isForEnabledItems)
         {

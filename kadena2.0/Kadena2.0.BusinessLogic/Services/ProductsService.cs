@@ -14,12 +14,14 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoFavoritesProvider favorites;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoUnitOfMeasureProvider units;
+        private readonly IImageService imageService;
 
-        public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources, IKenticoUnitOfMeasureProvider units)
+        public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources, IKenticoUnitOfMeasureProvider units, IImageService imageService)
         {
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.favorites = favorites ?? throw new ArgumentNullException(nameof(favorites));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
             this.units = units ?? throw new ArgumentNullException(nameof(units));
         }
 
@@ -47,6 +49,9 @@ namespace Kadena.BusinessLogic.Services
             var bordersEnabledOnSite = resources.GetSiteSettingsKey<bool>(Settings.KDA_ProductThumbnailBorderEnabled);
             var borderEnabledOnParentCategory = pathCategory?.ProductBordersEnabled ?? true; // true to handle product in the root, without parent category
             var borderStyle = resources.GetSiteSettingsKey(Settings.KDA_ProductThumbnailBorderStyle);
+
+            products.ForEach(p => p.ImageUrl = imageService.GetThumbnailLink(p.ImageUrl));
+            categories.ForEach(c => c.ImageUrl = imageService.GetThumbnailLink(c.ImageUrl));
 
             var productsPage = new ProductsPage
             {

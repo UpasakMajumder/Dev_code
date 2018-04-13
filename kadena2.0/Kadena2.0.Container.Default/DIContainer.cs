@@ -103,6 +103,7 @@ namespace Kadena.Container.Default
             container.Register<IRoleService, RoleService>();
             container.Register<IUserService, UserService>();
             container.Register<IMailService, MailService>();
+            container.Register<IImageService, ImageService>();
             return container;
         }
 
@@ -139,6 +140,7 @@ namespace Kadena.Container.Default
             container.Register<IKenticoIBTFProvider, KenticoIBTFProvider>();
             container.Register<IKenticoRoleProvider, KenticoRoleProvider>();
             container.Register<IKenticoUnitOfMeasureProvider, KenticoUnitOfMeasureProvider>();
+            container.Register<IKenticoMediaProvider, KenticoMediaProvider>();
             return container;
         }
 
