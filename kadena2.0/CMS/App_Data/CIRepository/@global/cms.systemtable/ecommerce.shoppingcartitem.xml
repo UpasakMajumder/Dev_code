@@ -26,6 +26,19 @@
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="UnitOfMeasure" columnsize="40" columntype="text" guid="98a7cea2-1ee6-480a-82fe-caf663b176fa" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Unit of measure</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
       <field allowempty="true" column="ProductPageID" columntype="integer" guid="9da75be6-6c38-4f9e-8016-5c744b05b992" publicfield="false">
         <settings>
           <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>

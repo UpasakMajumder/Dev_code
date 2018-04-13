@@ -26,8 +26,9 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly IDynamicPriceRangeProvider dynamicPrices;
         private readonly IKenticoProductsProvider productProvider;
         private readonly IKenticoSiteProvider site;
+        private readonly IKenticoUnitOfMeasureProvider units;
 
-        public ShoppingCartItemsProvider(IKenticoResourceService resources, IKenticoDocumentProvider documents, IMapper mapper, IDynamicPriceRangeProvider dynamicPrices, IKenticoProductsProvider productProvider, IKenticoSiteProvider site)
+        public ShoppingCartItemsProvider(IKenticoResourceService resources, IKenticoDocumentProvider documents, IMapper mapper, IDynamicPriceRangeProvider dynamicPrices, IKenticoProductsProvider productProvider, IKenticoSiteProvider site, IKenticoUnitOfMeasureProvider units)
         {
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
@@ -35,6 +36,7 @@ namespace Kadena.WebAPI.KenticoProviders
             this.dynamicPrices = dynamicPrices ?? throw new ArgumentNullException(nameof(dynamicPrices));
             this.productProvider = productProvider ?? throw new ArgumentNullException(nameof(productProvider));
             this.site = site ?? throw new ArgumentNullException(nameof(site));
+            this.units = units ?? throw new ArgumentNullException(nameof(units));
         }
 
         public int GetShoppingCartItemsCount()
@@ -66,7 +68,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 SKUNumber = i.SKU?.SKUNumber,
                 TotalTax = 0.0m,
                 UnitPrice = showPrices ? (decimal)i.UnitPrice : 0.0m,
-                UnitOfMeasure = "EA",
+                UnitOfMeasure = units.GetUnitOfMeasure(i.GetStringValue("UnitOfMeasure", string.Empty)).ErpCode,
                 Image = productProvider.GetProductImagePath(i.GetIntegerValue("ProductPageID", 0)),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
@@ -115,7 +117,7 @@ namespace Kadena.WebAPI.KenticoProviders
                     Exists = true,
                     Text = resources.GetResourceString("Kadena.EmailProof.ButtonLabel"),
                     Url = previewAbsoluteUrl
-            };
+                };
             }
 
             if (i.VariantParent != null)
@@ -222,6 +224,7 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItemInfo.SetValue("ProductChiliWorkspaceId", item.ProductChiliWorkspaceId);
             cartItemInfo.SetValue("ArtworkLocation", item.ArtworkLocation);
             cartItemInfo.SetValue("SendPriceToErp", item.SendPriceToErp);
+            cartItemInfo.SetValue("UnitOfMeasure", item.UnitOfMeasure);
 
             ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItemInfo);
 
@@ -304,6 +307,7 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItemInfo.SetValue("ProductChiliPdfGeneratorSettingsId", productDocument.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));
             cartItemInfo.SetValue("ProductChiliWorkspaceId", productDocument.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
             cartItemInfo.SetValue("SendPriceToErp", !cartItemInfo.SKU.GetBooleanValue("SKUDontSendPriceToERP", false));
+            cartItemInfo.SetValue("UnitOfMeasure", productDocument.GetStringValue("ProductUnitOfMeasure", string.Empty));
 
             return mapper.Map<CartItemEntity>(cartItemInfo);
         }

@@ -23,5 +23,6 @@ namespace Kadena.Models.Checkout
         public string ProductShipTime { get; set; }
         public string ProductProductionTime { get; set; }
         public bool SendPriceToErp { get; set; }
+        public string UnitOfMeasure { get; set; }
     }
 }
