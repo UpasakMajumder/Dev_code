@@ -184,14 +184,12 @@ namespace Kadena.Tests.BusinessLogic
         public void GetPackagingStringTest_DefaultUnit()
         {
             // Arrange
-            const string culture = "cz-CZ";
             const string localizationString = "loc.key";
             const string unitOfMeasure = "Each";
 
             Setup<IKenticoUnitOfMeasureProvider, UnitOfMeasure>(p => p.GetUnitOfMeasure(unitOfMeasure), 
                                                                 new UnitOfMeasure { LocalizationString = localizationString, IsDefault = true });
-            //Setup<IKenticoResourceService, string>(r => r.GetResourceString("Kadena.Product.NumberOfItemsInPackagesFormatString", culture), "This comes in {0} of {1}");
-            //Setup<IKenticoResourceService, string>(r => r.GetResourceString(localizationString, culture), "RoleCZ");
+            
             // Act
             var result = Sut.GetPackagingString(10, unitOfMeasure, "cz-CZ");
 
@@ -211,6 +209,7 @@ namespace Kadena.Tests.BusinessLogic
                                                                 new UnitOfMeasure { LocalizationString = localizationString });
             Setup<IKenticoResourceService, string>(r => r.GetResourceString("Kadena.Product.NumberOfItemsInPackagesFormatString", culture), "This comes in {0} of {1}");
             Setup<IKenticoResourceService, string>(r => r.GetResourceString(localizationString, culture), "RoleCZ");
+            
             // Act
             var result = Sut.GetPackagingString(10, unitOfMeasure, "cz-CZ");
 
