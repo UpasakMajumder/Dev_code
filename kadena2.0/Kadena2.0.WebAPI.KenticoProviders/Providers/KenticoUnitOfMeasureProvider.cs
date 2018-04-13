@@ -21,7 +21,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var unit = CustomTableItemProvider.GetItems(CustomTableName)
                                           .WhereEquals("Name", name)
-                                          .Columns("Name", "ErpCode", "LocalizationString")
+                                          .Columns("Name", "ErpCode", "LocalizationString", "IsDefault")
                                           .FirstOrDefault();
 
             return mapper.Map<UnitOfMeasure>(unit);
@@ -31,7 +31,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var unit = CustomTableItemProvider.GetItems(CustomTableName)
                                           .WhereEquals("IsDefault", true)
-                                          .Columns("Name", "ErpCode", "LocalizationString")
+                                          .Columns("Name", "ErpCode", "LocalizationString", "IsDefault")
                                           .FirstOrDefault();
 
             return mapper.Map<UnitOfMeasure>(unit);

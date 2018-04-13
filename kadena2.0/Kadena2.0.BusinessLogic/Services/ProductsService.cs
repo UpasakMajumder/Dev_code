@@ -139,18 +139,16 @@ namespace Kadena.BusinessLogic.Services
             return false;
         }
 
-        public string GetPackagingString(int numberOfItemsInPackage, string unitOfMeasure, string cultureCode )
+        public string GetPackagingString(int numberOfItemsInPackage, string unitOfMeasure, string cultureCode)
         {
-            var defaultUnit = units.GetDefaultUnitOfMeasure().Name;
-
-            if (numberOfItemsInPackage <= 0 || string.IsNullOrEmpty(unitOfMeasure) || unitOfMeasure == defaultUnit)
+            if (numberOfItemsInPackage <= 0 || string.IsNullOrEmpty(unitOfMeasure))
             {
                 return string.Empty;
             }
 
             var unit = units.GetUnitOfMeasure(unitOfMeasure);
 
-            if (unit == null)
+            if (unit == null || unit.IsDefault)
             {
                 return string.Empty;
             }
@@ -159,6 +157,18 @@ namespace Kadena.BusinessLogic.Services
             var stringBase = resources.GetResourceString("Kadena.Product.NumberOfItemsInPackagesFormatString", cultureCode);
 
             return string.Format(stringBase, localizedUnit, numberOfItemsInPackage);
+        }
+
+        public string GetUnitOfMeasure(string unitOfMeasure, string cultureCode)
+        {
+            var unit = units.GetUnitOfMeasure(unitOfMeasure);
+
+            if (unit == null || unit.IsDefault)
+            {
+                return string.Empty;
+            }
+
+            return resources.GetResourceString(unit.LocalizationString, cultureCode);
         }
     }
 }

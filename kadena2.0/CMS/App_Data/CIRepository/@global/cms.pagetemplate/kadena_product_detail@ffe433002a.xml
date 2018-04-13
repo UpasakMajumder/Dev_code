@@ -595,7 +595,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<span class="add-to-cart__info" {% (ProductNumberOfItemsInPackage == "" || ProductNumberOfItemsInPackage == "1") ? "style=display:none;" : "" %}>
+<span class="add-to-cart__info" {% (ProductNumberOfItemsInPackage == "0" || ProductNumberOfItemsInPackage == "1") ? "style=display:none;" : "" %}>
   {% KadenaNamespace.GetPackagingString(
     ProductNumberOfItemsInPackage,
     ProductUnitOfMeasure,

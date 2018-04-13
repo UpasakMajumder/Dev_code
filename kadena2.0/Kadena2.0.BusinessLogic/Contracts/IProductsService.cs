@@ -11,5 +11,6 @@ namespace Kadena.BusinessLogic.Contracts
         string GetInventoryProductAvailability(string productType, int? numberOfAvailableProducts, int numberOfStockProducts);
         bool CanDisplayAddToCartButton(string productType, int? numberOfAvailableProducts, bool sellOnlyIfAvailable);
         string GetPackagingString(int numberOfItemsInPackage, string unitOfMeasure, string cultureCode);
+        string GetUnitOfMeasure(string unitOfMeasure, string cultureCode);
     }
 }
