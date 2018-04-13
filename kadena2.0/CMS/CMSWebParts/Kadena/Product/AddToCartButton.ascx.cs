@@ -1,5 +1,4 @@
 ﻿using CMS.DocumentEngine;
-using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using Kadena.Models.Product;
@@ -94,15 +93,14 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         private void SetupDocument()
         {
-            var nodeId = Request.QueryString["nodeId"];
-            if (string.IsNullOrWhiteSpace(nodeId))
+            var documentId = Request.QueryString["documentId"];
+            if (string.IsNullOrWhiteSpace(documentId))
             {
                 _productDocument = DocumentContext.CurrentDocument;
             }
             else
             {
-                _productDocument = DocumentHelper.GetDocument(int.Parse(nodeId), LocalizationContext.CurrentCulture.CultureCode,
-                    new TreeProvider(MembershipContext.AuthenticatedUser));
+                _productDocument = DocumentHelper.GetDocument(int.Parse(documentId), new TreeProvider(MembershipContext.AuthenticatedUser));
             }
         }
     }

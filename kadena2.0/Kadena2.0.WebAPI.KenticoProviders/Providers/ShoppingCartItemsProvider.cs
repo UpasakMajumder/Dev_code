@@ -94,12 +94,12 @@ namespace Kadena.WebAPI.KenticoProviders
                     TemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
                     PdfSettings = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
                 };
-                var product = productProvider.GetProductByNodeId(cartItem.ProductPageId);
+                var product = productProvider.GetProductByDocumentId(cartItem.ProductPageId);
                 cartItem.Preview.Url = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, product.TemplateLowResSettingId);
                 cartItem.Preview.Exists = true;
 
                 var editorUrl = documents.GetDocumentUrl(URLHelper.ResolveUrl(resources.GetSiteSettingsKey("KDA_Templating_ProductEditorUrl")));
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "nodeId", cartItem.ProductPageId.ToString());
+                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "documentId", cartItem.ProductPageId.ToString());
                 editorUrl = URLHelper.AddParameterToUrl(editorUrl, "templateId", cartItem.ChiliProcess.TemplateId.ToString());
                 editorUrl = URLHelper.AddParameterToUrl(editorUrl, "workspaceid", cartItem.ProductChiliWorkspaceId.ToString());
                 editorUrl = URLHelper.AddParameterToUrl(editorUrl, "containerId", cartItem.MailingListGuid.ToString());
