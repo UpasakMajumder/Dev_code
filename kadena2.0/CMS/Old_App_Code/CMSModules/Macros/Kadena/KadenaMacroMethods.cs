@@ -366,6 +366,13 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return DIContainer.Resolve<IUserService>().CheckTaC().Show;
         }
 
+        [MacroMethod(typeof(bool), "Gets link for thumbnail by specified link to media file", 0)]
+        [MacroMethodParam(0, "string", typeof(string), "Link to original media file")]
+        public static object GetThumbnailLink(EvaluationContext context, params object[] parameters)
+        {
+            var originalFile = ValidationHelper.GetString(parameters[0], string.Empty);
+            return DIContainer.Resolve<IImageService>().GetThumbnailLink(originalFile);
+        }
 
         private static string GetMainNavigationWhereConditionInternal(bool isForEnabledItems)
         {
@@ -639,9 +646,9 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                         var Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
                         if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
                         {
-                            EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
+                            var estimationdto = new[] { ShoppingCartHelper.GetEstimationDTO(Cart) };
                             var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
-                            cartTotal += ValidationHelper.GetDecimal(estimation?.Payload?.Cost, default(decimal));
+                            cartTotal += ValidationHelper.GetDecimal(estimation?.Payload?[0]?.Cost, default(decimal));
                         }
                     });
                     return ValidationHelper.GetDecimal(cartTotal, default(decimal));

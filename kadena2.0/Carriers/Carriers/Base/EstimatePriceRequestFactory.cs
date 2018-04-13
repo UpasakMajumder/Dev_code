@@ -9,15 +9,17 @@ namespace Kadena2.Carriers
 {
     class EstimatePriceRequestFactory
     {
-        public EstimateDeliveryPriceRequestDto Create(Delivery delivery, string provider, string service)
+        public EstimateDeliveryPriceRequestDto[] Create(Delivery delivery, string provider, string service)
         {
-            return new EstimateDeliveryPriceRequestDto()
-            {
-                Provider = provider,
-                ProviderService = service.Replace("#", ""), // hack to solve non-unique service keys
-                SourceAddress = GetSourceAddressFromConfig(),
-                TargetAddress = GetAddress(delivery.DeliveryAddress),
-                Weight = new WeightDto() { Unit = "Lb", Value = (double)delivery.Weight }
+            return new[]{
+                new EstimateDeliveryPriceRequestDto()
+                {
+                    Provider = provider,
+                    ProviderService = service.Replace("#", ""), // hack to solve non-unique service keys
+                    SourceAddress = GetSourceAddressFromConfig(),
+                    TargetAddress = GetAddress(delivery.DeliveryAddress),
+                    Weight = new WeightDto() { Unit = "Lb", Value = (double)delivery.Weight }
+                }
             };
         }
 

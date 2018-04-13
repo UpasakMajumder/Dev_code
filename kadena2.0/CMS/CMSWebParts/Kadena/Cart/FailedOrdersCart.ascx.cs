@@ -25,7 +25,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
 {
     public partial class FailedOrdersCart : CMSCheckoutWebPart
     {
-        private const string _serviceUrlSettingKey = "KDA_ShippingCostServiceUrl";
         private IShoppingCartProvider _shoppingCart;
         private IKenticoBusinessUnitsProvider _businessUnit;
         #region "Private Properties"

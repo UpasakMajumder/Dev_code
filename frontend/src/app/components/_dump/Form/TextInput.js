@@ -44,6 +44,10 @@ const TextInput = (props) => {
   );
 };
 
+TextInput.defaultProps = {
+  maximumLength: 50
+};
+
 TextInput.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,

@@ -23,6 +23,11 @@ namespace Kadena.Tests.Infrastructure
             // Act
             foreach (var controller in controllers)
             {
+                if (controller.Name == "DashboardController" || controller.Name == "RecentOrdersController")
+                {
+                    continue; // because setter of 'public string PageCapacityKey' in 'OrderListService' is looking for setting key into Kentico
+                }
+
                 try
                 {
                     var instance = container.Resolve(controller);

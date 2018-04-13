@@ -14,6 +14,7 @@ using System;
 using System.Linq;
 using Kadena.Helpers;
 using Kadena.Models.Common;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -24,14 +25,16 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly IMapper mapper;
         private readonly IDynamicPriceRangeProvider dynamicPrices;
         private readonly IKenticoProductsProvider productProvider;
+        private readonly IKenticoSiteProvider site;
 
-        public ShoppingCartItemsProvider(IKenticoResourceService resources, IKenticoDocumentProvider documents, IMapper mapper, IDynamicPriceRangeProvider dynamicPrices, IKenticoProductsProvider productProvider)
+        public ShoppingCartItemsProvider(IKenticoResourceService resources, IKenticoDocumentProvider documents, IMapper mapper, IDynamicPriceRangeProvider dynamicPrices, IKenticoProductsProvider productProvider, IKenticoSiteProvider site)
         {
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.dynamicPrices = dynamicPrices ?? throw new ArgumentNullException(nameof(dynamicPrices));
             this.productProvider = productProvider ?? throw new ArgumentNullException(nameof(productProvider));
+            this.site = site ?? throw new ArgumentNullException(nameof(site));
         }
 
         public int GetShoppingCartItemsCount()
@@ -41,7 +44,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public CartItem[] GetShoppingCartItems(bool showPrices = true)
         {
-            var displayProductionAndShipping = resources.GetSiteSettingsKey<bool>("KDA_Checkout_ShowProductionAndShipping");
+            var displayProductionAndShipping = resources.GetSiteSettingsKey<bool>(Settings.KDA_Checkout_ShowProductionAndShipping);
 
             return ECommerceContext.CurrentShoppingCart.CartItems
                 .Where(cartItem => !cartItem.IsProductOption)
@@ -80,7 +83,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplateLabel"),
                 ProductionTime = displayProductionAndShipping ? i.GetValue("ProductProductionTime", string.Empty) : null,
                 ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null,
-                Preview = new Button { Exists = false, Text = resources.GetResourceString("Kadena.Checkout.PreviewButton") }
+                Preview = new Button { Exists = false, Text = resources.GetResourceString("Kadena.Checkout.PreviewButton") },
+                SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true)
             };
 
             if (cartItem.IsTemplated)
@@ -102,6 +106,16 @@ namespace Kadena.WebAPI.KenticoProviders
                 editorUrl = URLHelper.AddParameterToUrl(editorUrl, "quantity", cartItem.Quantity.ToString());
                 editorUrl = URLHelper.AddParameterToUrl(editorUrl, "customName", URLHelper.URLEncode(cartItem.CartItemText));
                 cartItem.EditorURL = editorUrl;
+
+                var previewUrl = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, product.TemplateLowResSettingId);
+                var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
+
+                cartItem.EmailProof = new Button()
+                {
+                    Exists = true,
+                    Text = resources.GetResourceString("Kadena.EmailProof.ButtonLabel"),
+                    Url = previewAbsoluteUrl
+            };
             }
 
             if (i.VariantParent != null)
@@ -172,14 +186,11 @@ namespace Kadena.WebAPI.KenticoProviders
                 throw new Exception(ResHelper.GetString("Kadena.Product.QuantityForTypeError", LocalizationContext.CurrentCulture.CultureCode));
             }
 
-            if (productType.Contains(ProductTypes.InventoryProduct) && quantity > item.SKU.SKUAvailableItems)
+            if (productType.Contains(ProductTypes.InventoryProduct) && item.SKU.SKUSellOnlyAvailable && quantity > item.SKU.SKUAvailableItems)
             {
-                throw new ArgumentOutOfRangeException(string.Format(
+                throw new Exception(string.Format(
                     ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemID));
             }
-
-
-            ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
 
             var documentId = item.GetIntegerValue("ProductPageID", 0);
             var price = dynamicPrices.GetDynamicPrice(quantity, documentId);
@@ -188,6 +199,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 item.CartItemPrice = (double)price;
             }
 
+            ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(item, quantity);
             cart.InvalidateCalculations();
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
         }
@@ -198,6 +210,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             cartItemInfo.CartItemText = item.CartItemText;
             cartItemInfo.CartItemUnits = item.SKUUnits;
+            cartItemInfo.CartItemPrice = item.CartItemPrice.HasValue ? (double)item.CartItemPrice.Value : double.NaN;
             cartItemInfo.SetValue("ProductType", item.ProductType);
             cartItemInfo.SetValue("ProductPageID", item.ProductPageID);
             cartItemInfo.SetValue("ProductProductionTime", item.ProductProductionTime);
@@ -207,7 +220,8 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItemInfo.SetValue("ProductChiliPdfGeneratorSettingsId", item.ProductChiliPdfGeneratorSettingsId);
             cartItemInfo.SetValue("ProductChiliWorkspaceId", item.ProductChiliWorkspaceId);
             cartItemInfo.SetValue("ArtworkLocation", item.ArtworkLocation);
-            
+            cartItemInfo.SetValue("SendPriceToErp", item.SendPriceToErp);
+
             ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItemInfo);
 
             foreach (ShoppingCartItemInfo option in cartItemInfo.ProductOptions)
@@ -280,14 +294,16 @@ namespace Kadena.WebAPI.KenticoProviders
             var cartItemInfo = cart.SetShoppingCartItem(parameters);
 
             cartItemInfo.CartItemText = cartItemInfo.SKU.SKUName;
+            cartItemInfo.CartItemPrice = cartItemInfo.SKU.SKUPrice;
             cartItemInfo.SetValue("ProductType", productDocument.GetStringValue("ProductType", string.Empty));
-            cartItemInfo.SetValue("ProductPageID", productDocument.NodeID);
+            cartItemInfo.SetValue("ProductPageID", productDocument.DocumentID);
             cartItemInfo.SetValue("ProductProductionTime", productDocument.GetStringValue("ProductProductionTime", string.Empty));
             cartItemInfo.SetValue("ProductShipTime", productDocument.GetStringValue("ProductShipTime", string.Empty));
             cartItemInfo.SetValue("ChilliEditorTemplateID", newItem.TemplateId);
             cartItemInfo.SetValue("ChiliTemplateID", productDocument.GetGuidValue("ProductChiliTemplateID", Guid.Empty));
             cartItemInfo.SetValue("ProductChiliPdfGeneratorSettingsId", productDocument.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));
             cartItemInfo.SetValue("ProductChiliWorkspaceId", productDocument.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
+            cartItemInfo.SetValue("SendPriceToErp", !cartItemInfo.SKU.GetBooleanValue("SKUDontSendPriceToERP", false));
 
             return mapper.Map<CartItemEntity>(cartItemInfo);
         }

@@ -1,21 +1,16 @@
-﻿using Kadena.Dto.General;
-using Kadena.MicroserviceClients.Clients;
-using Moq.AutoMock;
+﻿using Kadena.MicroserviceClients.Clients;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Kadena.Tests.MicroserviceClients
 {
-    public class TemplateClientTest
+    public class TemplateClientTest : KadenaUnitTest<TemplatedClient>
     {
         [Fact(DisplayName = "TemplateClient.GetPreview()")]
         public async Task GetPreview()
         {
-            var autoMock = new AutoMocker();
-            var sut = autoMock.CreateInstance<TemplatedClient>();
-
-            var actualResult = await sut.GetPreview(Guid.Empty, Guid.Empty);
+            var actualResult = await Sut.GetPreview(Guid.Empty, Guid.Empty);
 
             Assert.NotNull(actualResult);
         }

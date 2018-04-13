@@ -31,6 +31,8 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoLocalizationProvider localization;
         private readonly IKenticoPermissionsProvider permissions;
         private readonly IKenticoBusinessUnitsProvider businessUnits;
+        private readonly IKenticoSiteProvider site;
+        private readonly IImageService imageService;
 
 
         public OrderDetailService(IMapper mapper,
@@ -44,7 +46,9 @@ namespace Kadena.BusinessLogic.Services.Orders
             IKenticoLogger kenticoLog,
             IKenticoLocalizationProvider localization,
             IKenticoPermissionsProvider permissions,
-            IKenticoBusinessUnitsProvider businessUnits
+            IKenticoBusinessUnitsProvider businessUnits,
+            IKenticoSiteProvider site,
+            IImageService imageService
             )
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -59,6 +63,8 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
             this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             this.businessUnits = businessUnits ?? throw new ArgumentNullException(nameof(businessUnits));
+            this.site = site ?? throw new ArgumentNullException(nameof(site));
+            this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
@@ -75,6 +81,12 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var data = microserviceResponse.Payload;
             var genericStatus = kenticoOrder.MapOrderStatus(data.Status);
+
+            var businessUnitName = "";
+            if (long.TryParse(data.campaign?.BusinessUnitNumber, out var bun))
+            {
+                businessUnitName = businessUnits.GetBusinessUnitName(bun);
+            }
 
             var orderDetail = new OrderDetail()
             {
@@ -112,7 +124,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     Title = resources.GetResourceString("Kadena.Order.PaymentSection"),
                     DatePrefix = resources.GetResourceString("Kadena.Order.PaymentDatePrefix"),
                     BUnitLabel = resources.GetResourceString("Kadena.Order.BusinessUnitLabel"),
-                    BUnitName = businessUnits.GetBusinessUnitName(data.campaign != null ? data.campaign.BusinessUnitNumber : string.Empty)
+                    BUnitName = businessUnitName
                 },
                 PricingInfo = new PricingInfo()
                 {
@@ -189,12 +201,15 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             var orderedItems = items.Select(i =>
             {
-                var product = i.TemplateId != Guid.Empty ? products.GetProductBySkuId(i.SkuId) : null;
+                var templatedProduct = i.TemplateId != Guid.Empty ? products.GetProductBySkuId(i.SkuId) : null;
+                var previewUrl = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, templatedProduct?.TemplateLowResSettingId ?? Guid.Empty);
+                var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
+
                 return new OrderedItem()
                 {
                     Id = i.SkuId,
-                    Image = products.GetSkuImageUrl(i.SkuId),
-                    // TODO uncomment for v2.17 : DownloadPdfURL = $"/api/pdf/hires/{orderId}/{i.LineNumber}",
+                    Image = imageService.GetThumbnailLink(products.GetSkuImageUrl(i.SkuId)),
+                    DownloadPdfURL = $"/api/pdf/hires/{orderId}/{i.LineNumber}",
                     MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                     Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                     Quantity = i.Quantity,
@@ -212,10 +227,17 @@ namespace Kadena.BusinessLogic.Services.Orders
                     ProductStatus = products.GetProductStatus(i.SkuId),
                     Preview = new Button
                     {
-                        Exists = product != null,
+                        Exists = templatedProduct != null,
                         Text = resources.GetResourceString("Kadena.Checkout.PreviewButton"),
-                        Url = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, product?.TemplateLowResSettingId ?? Guid.Empty)
+                        Url = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, templatedProduct?.TemplateLowResSettingId ?? Guid.Empty)
                     },
+                    EmailProof = new Button
+                    {
+                        Exists = templatedProduct != null,
+                        Text = resources.GetResourceString("Kadena.EmailProof.ButtonLabel"),
+                        Url = previewAbsoluteUrl
+                    },
+
                     Options = i.Attributes?.Select(a => new ItemOption { Name = products.GetOptionCategory(a.Key)?.DisplayName ?? a.Key, Value = a.Value }) ?? Enumerable.Empty<ItemOption>()
                 };
             }).ToList();

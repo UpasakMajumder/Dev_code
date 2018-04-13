@@ -233,6 +233,17 @@
           <controlname>producttypeselector</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="SKUDontSendPriceToERP" columntype="boolean" guid="31844ee0-afd5-4800-ba3a-748cea0aa8aa" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>false</defaultvalue>
+          <fieldcaption>
+            <![CDATA[Don't send price to ERP]]>
+          </fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="SKUCustomData" columntype="longtext" guid="29e8c9c5-d3c7-4846-a18f-057d5cd0a352" publicfield="false" system="true">
         <properties>
           <fieldcaption>SKUCustomData</fieldcaption>

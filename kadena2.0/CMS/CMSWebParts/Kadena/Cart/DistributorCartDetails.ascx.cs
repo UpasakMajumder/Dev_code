@@ -25,8 +25,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
 {
     public partial class DistributorCartDetails : CMSCheckoutWebPart
     {
-        private const string _serviceUrlSettingKey = "KDA_ShippingCostServiceUrl";
-
         #region "Private Properties"
 
         private List<BusinessUnitItem> BusinessUnits { get; set; }
@@ -285,7 +283,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                BaseResponseDto<EstimateDeliveryPricePayloadDto> estimation = null;
+                BaseResponseDto<EstimateDeliveryPricePayloadDto[]> estimation = null;
                 var estimatedPrice = default(double);
                 if (ValidCart)
                 {
@@ -307,9 +305,9 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     {
                         estimation = GetShippingResponse();
                     }
-                    if (estimation != null && estimation.Success)
+                    if (estimation != null && estimation.Success && estimation.Payload?[0] != null)
                     {
-                        estimatedPrice = ValidationHelper.GetDouble(estimation?.Payload?.Cost, default(double));
+                        estimatedPrice = ValidationHelper.GetDouble(estimation.Payload[0].Cost, default(double));
                     }
                 }
                 BindShippingDropdown(inventoryType, estimatedPrice);
@@ -428,11 +426,11 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         /// gets Shipping cost response
         /// </summary>
         /// <returns></returns>
-        private BaseResponseDto<EstimateDeliveryPricePayloadDto> GetShippingResponse()
+        private BaseResponseDto<EstimateDeliveryPricePayloadDto[]> GetShippingResponse()
         {
             try
             {
-                EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
+                var estimationdto = new[] { ShoppingCartHelper.GetEstimationDTO(Cart) };
                 return ShoppingCartHelper.CallEstimationService(estimationdto);
             }
             catch (Exception ex)

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Spinner from 'app.dump/Spinner';
 /* ac */
 import getUI from 'app.ac/orderDetail';
+import toogleEmailProof from 'app.ac/emailProof';
 /* utilities */
 import { getSearchObj } from 'app.helpers/location';
 /* local components */
@@ -13,6 +14,7 @@ import ShippingInfo from './ShippingInfo';
 import PaymentInfo from './PaymentInfo';
 import PricingInfo from './PricingInfo';
 import OrderedItems from './OrderedItems';
+import EmailProof from '../EmailProof';
 
 class OrderDetail extends Component {
   static propTypes = {
@@ -24,7 +26,9 @@ class OrderDetail extends Component {
       paymentInfo: PropTypes.object,
       pricingInfo: PropTypes.object,
       shippingInfo: PropTypes.object
-    }).isRequired
+    }).isRequired,
+    emailProof: PropTypes.object.isRequired,
+    toogleEmailProof: PropTypes.func.isRequired
   };
 
   componentDidMount() {
@@ -35,7 +39,7 @@ class OrderDetail extends Component {
   }
 
   render() {
-    const { ui } = this.props;
+    const { ui, emailProof, toogleEmailProof } = this.props;
     if (!Object.keys(ui).length) return <Spinner />;
 
     const { commonInfo, shippingInfo, paymentInfo, pricingInfo, orderedItems, dateTimeNAString } = ui;
@@ -46,6 +50,7 @@ class OrderDetail extends Component {
 
     return (
       <div>
+        {emailProof.show && <EmailProof />}
         <CommonInfo
           ui={commonInfo}
           dateTimeNAString={dateTimeNAString}
@@ -59,15 +64,16 @@ class OrderDetail extends Component {
           </div>
         </div>
 
-        <OrderedItems ui={orderedItems}/>
+        <OrderedItems toogleEmailProof={toogleEmailProof} ui={orderedItems}/>
       </div>
     );
   }
 }
 
-export default connect(({ orderDetail }) => {
+export default connect(({ orderDetail, emailProof }) => {
   const { ui } = orderDetail;
-  return { ui };
+  return { ui, emailProof };
 }, {
-  getUI
+  getUI,
+  toogleEmailProof
 })(OrderDetail);

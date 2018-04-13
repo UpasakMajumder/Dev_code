@@ -16,59 +16,52 @@ using Xunit;
 
 namespace Kadena.Tests.OrderResubmission
 {
-    public class OrderResubmissionServiceTests
+    public class OrderResubmissionServiceTests : KadenaUnitTest<OrderResubmissionService>
     {
-        [Fact]
+        [Fact(DisplayName = "OrderResubmissionService()")]
         public void ServiceConstructor_ShouldThrow_WhenArgumentsNull()
         {
-            Action action = () => new OrderResubmissionService(null, null, null, null);
+            Use<IOrderResubmitClient>(null);
+            Use<IOrderViewClient>(null);
+            Use<IKenticoOrderProvider>(null);
+            Use<IKenticoLogger>(null);
+
+            Action action = () => { var sut = Sut; };
 
             Assert.Throws<ArgumentNullException>(action);
         }
 
-        [Fact]
+        [Fact(DisplayName = "OrderResubmissionService.ResubmitOrder() | Microservice call")]
         public async Task ResubmitOrder_ShouldCallClient_WithGivenOrderId()
         {
             var actualArgs = new ResubmitOrderRequestDto();
-            var resubmitClient = new Mock<IOrderResubmitClient>();
-            resubmitClient
-                .Setup(rc => rc.Resubmit(It.IsAny<ResubmitOrderRequestDto>()))
-                .Returns<ResubmitOrderRequestDto>((req) => 
+            Setup<IOrderResubmitClient, ResubmitOrderRequestDto, Task<BaseResponseDto<ResubmitOrderResponseDto>>>(rc => rc.Resubmit(It.IsAny<ResubmitOrderRequestDto>())
+                , (req) =>
                 {
                     actualArgs = req;
                     return Task.FromResult(new BaseResponseDto<ResubmitOrderResponseDto>());
                 });
-
-
-            var sut = new OrderResubmissionServiceBuilder()
-                .WithOrderResubmitClient(resubmitClient.Object)
-                .Build();
             var orderId = "123";
 
-            await sut.ResubmitOrder(orderId);
+            await Sut.ResubmitOrder(orderId);
 
             Assert.Equal(orderId, actualArgs.OrderId);
         }
 
-        [Fact]
+        [Fact(DisplayName = "OrderResubmissionService.ResubmitOrder() | Logger call")]
         public async Task ResubmitOrder_ShouldLogResponse()
         {
-            var logger = new Mock<IKenticoLogger>();
+            await Sut.ResubmitOrder("123");
 
-            var sut = new OrderResubmissionServiceBuilder()
-                .WithLogger(logger.Object)
-                .Build();
-
-            await sut.ResubmitOrder("123");
-
-            logger.Verify(log => log.LogInfo(
+            Verify<IKenticoLogger>(log => log.LogInfo(
                 nameof(OrderResubmissionService),
                 nameof(OrderResubmissionService.ResubmitOrder),
                 It.IsAny<string>()
-                ));
+                )
+                , Times.Once);
         }
 
-        [Fact]
+        [Fact(DisplayName = "OrderResubmissionService.ResubmitOrder() | Failed")]
         public async Task ResubmitOrder_ShouldReturnFailure_WhenCallFails()
         {
             var failureResult = Task.FromResult(new BaseResponseDto<ResubmitOrderResponseDto>
@@ -76,52 +69,42 @@ namespace Kadena.Tests.OrderResubmission
                 Success = false,
                 Error = new BaseErrorDto { Message = "oh noes" },
             });
-            var resubmitClient = new Mock<IOrderResubmitClient>();
-            resubmitClient
-                .Setup(rc => rc.Resubmit(It.IsAny<ResubmitOrderRequestDto>()))
-                .Returns(failureResult);
-            var sut = new OrderResubmissionServiceBuilder()
-                .WithOrderResubmitClient(resubmitClient.Object)
-                .Build();
-
+            Setup<IOrderResubmitClient, Task<BaseResponseDto<ResubmitOrderResponseDto>>>(rc => rc.Resubmit(It.IsAny<ResubmitOrderRequestDto>()), failureResult);
             var expected = new OperationResult
             {
                 Success = false,
                 ErrorMessage = "oh noes"
             };
 
-            var result = await sut.ResubmitOrder("123");
+            var result = await Sut.ResubmitOrder("123");
 
             Assert.Equal(expected, result);
         }
 
-        [Fact]
+        [Fact(DisplayName = "OrderResubmissionService.GetFailedOrders() | Invalid page number")]
         public async Task GetFailedOrders_ShouldThrow_WhenPageNumberInvalid()
         {
             var invalidPageNumber = 0;
             var validNumberOfItemsPerPage = 100;
-            var sut = new OrderResubmissionServiceBuilder()
-                .Build();
 
-            Func<Task> action = () => sut.GetFailedOrders(invalidPageNumber, validNumberOfItemsPerPage);
+            Task action() => Sut.GetFailedOrders(invalidPageNumber, validNumberOfItemsPerPage);
 
             await Assert.ThrowsAsync<ArgumentException>("page", action);
         }
 
-        [Fact]
+        [Fact(DisplayName = "OrderResubmissionService.GetFailedOrders() | Invalid items per page")]
         public async Task GetFailedOrders_ShouldThrow_WhenItemsPerPageInvalid()
         {
             var validPageNumber = 1;
             var invalidNumberOfItemsPerPage = 0;
-            var sut = new OrderResubmissionServiceBuilder()
-                .Build();
 
-            Func<Task> action = () => sut.GetFailedOrders(validPageNumber, invalidNumberOfItemsPerPage);
+
+            Task action() => Sut.GetFailedOrders(validPageNumber, invalidNumberOfItemsPerPage);
 
             await Assert.ThrowsAsync<ArgumentException>("itemsPerPage", action);
         }
 
-        [Fact]
+        [Fact(DisplayName = "OrderResubmissionService.GetFailedOrders() | Microservice call")]
         public async Task GetFailedOrders_ShouldPassArgumentsToMicroserviceClient()
         {
             var page = 5;
@@ -134,21 +117,14 @@ namespace Kadena.Tests.OrderResubmission
                 StatusHistoryContains = status
             };
 
-            var orderClient = new Mock<IOrderViewClient>();
+            await Sut.GetFailedOrders(page, itemsPerPage);
 
-            var sut = new OrderResubmissionServiceBuilder()
-                .WithOrderViewClient(orderClient.Object)
-                .Build();
-
-            await sut.GetFailedOrders(page, itemsPerPage);
-
-            orderClient.Verify(oc => oc.GetOrders(expectedFilter), Times.Once());
+            Verify<IOrderViewClient>(oc => oc.GetOrders(expectedFilter), Times.Once());
         }
 
-        [Fact]
+        [Fact(DisplayName = "OrderResubmissionService.GetFailedOrders() | Microservice call")]
         public async Task GetFailedOrders_ShouldMapDataFromMicroserviceResponse()
         {
-            var orderStatusMapped = "order_status_mapped";
             var expectedResult = new PagedData<FailedOrder>
             {
                 Data = new List<FailedOrder>
@@ -157,14 +133,13 @@ namespace Kadena.Tests.OrderResubmission
                     {
                         Id = "order_id",
                         OrderDate = new DateTime(2018, 3, 21),
-                        OrderStatus = orderStatusMapped,
+                        OrderStatus = "order_status",
                         SiteName = "order_site",
                         SubmissionAttemptsCount = 2,
                         TotalPrice = 3.5m
                     }
                 }
             };
-            var orderStatus = "order_status";
             var orders = new OrderListDto
             {
                 Orders = new[]
@@ -173,7 +148,7 @@ namespace Kadena.Tests.OrderResubmission
                     {
                         Id = "order_id",
                         CreateDate = new DateTime(2018, 3, 21),
-                        Status = orderStatus,
+                        Status = "order_status",
                         SiteName = "order_site",
                         StatusAmounts = new Dictionary<int, int>
                         {
@@ -183,29 +158,16 @@ namespace Kadena.Tests.OrderResubmission
                     }
                 }
             };
+            Setup<IOrderViewClient, Task<BaseResponseDto<OrderListDto>>>(oc => oc.GetOrders(It.IsAny<OrderListFilter>())
+                , Task.FromResult(new BaseResponseDto<OrderListDto> { Success = true, Payload = orders }));
 
-            var orderClient = new Mock<IOrderViewClient>();
-            orderClient
-                .Setup(oc => oc.GetOrders(It.IsAny<OrderListFilter>()))
-                .Returns(Task.FromResult(new BaseResponseDto<OrderListDto> { Success = true, Payload = orders }));
-
-            var orderProvider = new Mock<IKenticoOrderProvider>();
-            orderProvider
-                .Setup(kop => kop.MapOrderStatus(orderStatus))
-                .Returns(orderStatusMapped);
-
-            var sut = new OrderResubmissionServiceBuilder()
-                .WithOrderViewClient(orderClient.Object)
-                .WithOrderProvider(orderProvider.Object)
-                .Build();
-
-            var result = await sut.GetFailedOrders(1, 1);
+            var result = await Sut.GetFailedOrders(1, 1);
 
             Assert.True(expectedResult.Data.Count == result.Data.Count);
             Assert.True(AreEqual(expectedResult.Data[0], result.Data[0]));
         }
 
-        [Fact]
+        [Fact(DisplayName = "OrderResubmissionService.GetFailedOrders() | Pagination mapping")]
         public async Task GetFailedOrders_ShouldMapPaginationFromMicroserviceResponse()
         {
             var totalItems = 7;
@@ -230,20 +192,15 @@ namespace Kadena.Tests.OrderResubmission
             };
 
             var orderClient = new Mock<IOrderViewClient>();
-            orderClient
-                .Setup(oc => oc.GetOrders(It.IsAny<OrderListFilter>()))
-                .Returns(Task.FromResult(new BaseResponseDto<OrderListDto> { Success = true, Payload = orders }));
+            Setup<IOrderViewClient, Task<BaseResponseDto<OrderListDto>>>(oc => oc.GetOrders(It.IsAny<OrderListFilter>())
+                , Task.FromResult(new BaseResponseDto<OrderListDto> { Success = true, Payload = orders }));
 
-            var sut = new OrderResubmissionServiceBuilder()
-                .WithOrderViewClient(orderClient.Object)
-                .Build();
-
-            var result = await sut.GetFailedOrders(page, itemsPerPage);
+            var result = await Sut.GetFailedOrders(page, itemsPerPage);
 
             Assert.Equal(expectedResult.Pagination, result.Pagination);
         }
 
-        [Fact]
+        [Fact(DisplayName = "OrderResubmissionService.GetFailedOrders() | Microservice call failed")]
         public async Task GetFailedOrders_ShouldReturnEmptyResult_WhenMicroserviceFails()
         {
             var itemsPerPage = 2;
@@ -251,15 +208,10 @@ namespace Kadena.Tests.OrderResubmission
             var expectedResult = PagedData<FailedOrder>.Empty();
 
             var orderClient = new Mock<IOrderViewClient>();
-            orderClient
-                .Setup(oc => oc.GetOrders(It.IsAny<OrderListFilter>()))
-                .Returns(Task.FromResult(new BaseResponseDto<OrderListDto> { Success = false }));
+            Setup<IOrderViewClient, Task<BaseResponseDto<OrderListDto>>>(oc => oc.GetOrders(It.IsAny<OrderListFilter>())
+                , Task.FromResult(new BaseResponseDto<OrderListDto> { Success = false }));
 
-            var sut = new OrderResubmissionServiceBuilder()
-                .WithOrderViewClient(orderClient.Object)
-                .Build();
-
-            var result = await sut.GetFailedOrders(page, itemsPerPage);
+            var result = await Sut.GetFailedOrders(page, itemsPerPage);
 
             Assert.Equal(expectedResult.Data.Count, result.Data.Count);
             Assert.Equal(expectedResult.Pagination, result.Pagination);
@@ -272,45 +224,5 @@ namespace Kadena.Tests.OrderResubmission
                 && expected.SiteName == actual.SiteName
                 && expected.SubmissionAttemptsCount == actual.SubmissionAttemptsCount
                 && expected.TotalPrice == actual.TotalPrice;
-
-        private class OrderResubmissionServiceBuilder
-        {
-            IOrderResubmitClient orderResubmitClient = Mock.Of<IOrderResubmitClient>();
-            IOrderViewClient orderViewClient = Mock.Of<IOrderViewClient>();
-            IKenticoOrderProvider kenticoOrderProvider = Mock.Of<IKenticoOrderProvider>();
-            IKenticoLogger kenticoLogger = Mock.Of<IKenticoLogger>();
-
-            public OrderResubmissionServiceBuilder WithOrderResubmitClient(IOrderResubmitClient client)
-            {
-                orderResubmitClient = client;
-                return this;
-            }
-
-            public OrderResubmissionServiceBuilder WithOrderViewClient(IOrderViewClient client)
-            {
-                orderViewClient = client;
-                return this;
-            }
-
-            public OrderResubmissionServiceBuilder WithOrderProvider(IKenticoOrderProvider provider)
-            {
-                kenticoOrderProvider = provider;
-                return this;
-            }
-
-            public OrderResubmissionServiceBuilder WithLogger(IKenticoLogger logger)
-            {
-                kenticoLogger = logger;
-                return this;
-            }
-
-            public OrderResubmissionService Build()
-                => new OrderResubmissionService(
-                    orderResubmitClient,
-                    orderViewClient,
-                    kenticoOrderProvider,
-                    kenticoLogger
-                );
-        }
     }
 }

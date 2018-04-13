@@ -81,6 +81,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.MacroEngine.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.MediaLibrary">
+      <HintPath>..\Lib\CMS.MediaLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.Membership">
       <HintPath>..\Lib\CMS.Membership.dll</HintPath>
     </Reference>
@@ -120,6 +123,7 @@
     <Compile Include="Contracts\IFailedOrderStatusProvider.cs" />
     <Compile Include="Contracts\IKenticoCustomerProvider.cs" />
     <Compile Include="Contracts\IKenticoIBTFProvider.cs" />
+    <Compile Include="Contracts\IKenticoMediaProvider.cs" />
     <Compile Include="Contracts\IKenticoRoleProvider.cs" />
     <Compile Include="Contracts\IKenticoSettingsProvider.cs" />
     <Compile Include="Contracts\IkenticoUserBudgetProvider.cs" />
@@ -157,6 +161,7 @@
     <Compile Include="Providers\KenticoIBTFProvider.cs" />
     <Compile Include="Providers\KenticoCustomerProvider.cs" />
     <Compile Include="Providers\KenticoLocalizationProvider.cs" />
+    <Compile Include="Providers\KenticoMediaProvider.cs" />
     <Compile Include="Providers\KenticoRoleProvider.cs" />
     <Compile Include="Providers\KenticoPermissionsProvider.cs" />
     <Compile Include="Providers\KenticoProgramsProvider.cs" />

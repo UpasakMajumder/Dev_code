@@ -156,9 +156,9 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                 }).ToList();
                 Dictionary<string, object> orderDetails = new Dictionary<string, object>();
                 orderDetails.Add("name", user.FirstName);
-                orderDetails.Add("totalprice", ordersDTO.TotalPrice);
-                orderDetails.Add("totalshipping", ordersDTO.TotalShipping);
-                orderDetails.Add("campaignid", ordersDTO.TotalShipping);
+                orderDetails.Add("totalprice", ordersDTO.Totals.Price);
+                orderDetails.Add("totalshipping", ordersDTO.Totals.Shipping);
+                orderDetails.Add("campaignid", ordersDTO.Totals.Shipping);
                 SendEmailNotification(orderTemplateSettingKey, user.Email, cartItems, "orderitems", orderDetails);
             }
         }

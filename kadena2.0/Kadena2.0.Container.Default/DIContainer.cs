@@ -102,6 +102,8 @@ namespace Kadena.Container.Default
             container.Register<ISaml2RecipientValidator, Saml2RecipientValidator>();
             container.Register<IRoleService, RoleService>();
             container.Register<IUserService, UserService>();
+            container.Register<IMailService, MailService>();
+            container.Register<IImageService, ImageService>();
             return container;
         }
 
@@ -137,6 +139,7 @@ namespace Kadena.Container.Default
             container.Register<IFailedOrderStatusProvider, FailedOrderStatusProvider>();
             container.Register<IKenticoIBTFProvider, KenticoIBTFProvider>();
             container.Register<IKenticoRoleProvider, KenticoRoleProvider>();
+            container.Register<IKenticoMediaProvider, KenticoMediaProvider>();
             return container;
         }
 
@@ -168,6 +171,7 @@ namespace Kadena.Container.Default
             container.Register<IParsingClient, ParsingClient>();
             container.Register<IStatisticsClient, StatisticsClient>();
             container.Register<IExportClient, ExportClient>();
+            container.Register<INotificationClient, NotificationClient>();
             return container;
         }
 

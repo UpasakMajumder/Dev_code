@@ -28,5 +28,6 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
         public string DesignFileKey { get; set; }
         public Dictionary<string, string> Attributes { get; set; }
         public ChiliProcessDto ChiliProcess { get; set; }
-  }
+        public bool SendPriceToErp { get; set; }
+    }
 }

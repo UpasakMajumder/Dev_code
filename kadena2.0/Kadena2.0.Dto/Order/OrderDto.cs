@@ -20,9 +20,6 @@ namespace Kadena.Dto.Order
         [DataMember(Name = "shippingDate")]
         public DateTime? ShippingDate { get; set; }
 
-        [DataMember(Name = "trackingNumber")]
-        public string TrackingNumber { get; set; }
-
         [DataMember(Name = "totalCost")]
         public decimal TotalPrice { get; set; }
 

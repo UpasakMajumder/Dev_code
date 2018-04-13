@@ -15,6 +15,7 @@ using Kadena.Container.Default;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Old_App_Code.Kadena.InBoundForm;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
 {
@@ -56,9 +57,9 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 var userInfo = DIContainer.Resolve<IKenticoUserProvider>();
                 var kenticoResourceService = DIContainer.Resolve<IKenticoResourceService>();
                 var usersWithShoppingCartItems = shoppingCartInfo.GetUserIDsWithShoppingCart(openCampaignID,Convert.ToInt32(ProductsType.PreBuy));
-                var orderTemplateSettingKey= kenticoResourceService.GetSiteSettingsKey("KDA_OrderReservationEmailTemplate");
-                var failedOrderTemplateSettingKey = kenticoResourceService.GetSiteSettingsKey("KDA_FailedOrdersEmailTemplate");
-                var failedOrdersUrl = kenticoResourceService.GetSiteSettingsKey("KDA_FailedOrdersPageUrl");
+                var orderTemplateSettingKey= kenticoResourceService.GetSiteSettingsKey(Settings.KDA_OrderReservationEmailTemplate);
+                var failedOrderTemplateSettingKey = kenticoResourceService.GetSiteSettingsKey(Settings.KDA_FailedOrdersEmailTemplate);
+                var failedOrdersUrl = kenticoResourceService.GetSiteSettingsKey(Settings.KDA_FailedOrdersPageUrl);
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 usersWithShoppingCartItems.ForEach(shoppingCartUser =>
                 {
@@ -71,7 +72,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                         ShippingOptionInfo shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(Cart.ShoppingCartShippingOptionID);
                         if (shippingOption == null)
                         {
-                            shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(kenticoResourceService.GetSiteSettingsKey("KDA_DefaultShipppingOption"), SiteContext.CurrentSiteName);
+                            shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(kenticoResourceService.GetSiteSettingsKey(Settings.KDA_DefaultShipppingOption), SiteContext.CurrentSiteName);
                             if (shippingOption == null)
                             {
                                 Cart.ShoppingCartShippingOptionID = shippingOption.ShippingOptionID;

@@ -24,6 +24,7 @@ import {
   changePaymentMethod
 } from 'app.ac/checkout';
 import { changeProducts } from 'app.ac/cartPreview';
+import toggleEmailProof from 'app.ac/emailProof';
 import { addAddress as saveAddress } from 'app.ac/settingsAddresses';
 /* local components */
 import DeliveryAddress from './DeliveryAddress';
@@ -32,6 +33,7 @@ import PaymentMethod from './PaymentMethod';
 import Products from './Products';
 import Total from './Total';
 import EmailConfirmation from './EmailConfirmation';
+import EmailProof from '../EmailProof';
 
 class Checkout extends Component {
   constructor() {
@@ -371,6 +373,7 @@ class Checkout extends Component {
 
       content = (
         <div>
+          {this.props.emailProof.show && <EmailProof />}
           {welcomeMessage}
           <div className="shopping-cart__block">
             <Products
@@ -378,6 +381,7 @@ class Checkout extends Component {
               disableInteractivity={!totals}
               changeProductQuantity={changeProductQuantity}
               ui={products}
+              toggleEmailProof={this.props.toggleEmailProof}
             />
           </div>
 
@@ -422,12 +426,12 @@ class Checkout extends Component {
 }
 
 export default connect((state) => {
-  const { checkout } = state;
+  const { checkout, emailProof } = state;
 
   const { redirectURL } = checkout.sendData;
   if (redirectURL) location.assign(redirectURL);
 
-  return { checkout };
+  return { checkout, emailProof };
 }, {
   getUI,
   initCheckedShoppingData,
@@ -439,5 +443,6 @@ export default connect((state) => {
   saveAddress,
   changeDeliveryAddress,
   changeDeliveryMethod,
-  changePaymentMethod
+  changePaymentMethod,
+  toggleEmailProof
 })(Checkout);

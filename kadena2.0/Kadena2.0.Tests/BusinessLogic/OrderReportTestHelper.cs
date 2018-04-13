@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Kadena.Tests.OrderReports
+namespace Kadena.Tests.BusinessLogic
 {
-    public class OrderReportTestHelper
+    class OrderReportTestHelper
     {
         static Random random = new Random();
 
@@ -32,7 +32,6 @@ namespace Kadena.Tests.OrderReports
                 ShippingDate = GetRandomDateTime(),
                 Site = "test_site",
                 Status = "test_status",
-                TrackingNumber = random.Next(1, 1000000).ToString(),
                 User = "test_user",
                 Url = "http://test.com/this/is/test/url/",
                 Items = Enumerable.Range(1, itemsCount)
@@ -49,7 +48,8 @@ namespace Kadena.Tests.OrderReports
                 Name = "Product" + itemNumber,
                 SKU = "SKU" + itemNumber,
                 Quantity = random.Next(),
-                Price = random.Next() / 10
+                Price = random.Next() / 10,
+                TrackingNumber = random.Next(1, 1000000).ToString(),
             };
         }
 

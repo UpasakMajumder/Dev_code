@@ -1,7 +1,6 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.Controllers;
 using Moq;
-using Moq.AutoMock;
 using System;
 using System.Threading.Tasks;
 using System.Web.Http.Results;
@@ -9,15 +8,12 @@ using Xunit;
 
 namespace Kadena.Tests.WebApi
 {
-    public class TemplateContollerTest
+    public class TemplateContollerTest : KadenaUnitTest<TemplateController>
     {
         [Fact(DisplayName = "TemplateController.GetPreview() | NotFound")]
         public async Task GetPreviewNotFound()
         {
-            var autoMock = new AutoMocker();
-            var sut = autoMock.CreateInstance<TemplateController>();
-
-            var actualResult = await sut.GetPreview(Guid.Empty, Guid.Empty);
+            var actualResult = await Sut.GetPreview(Guid.Empty, Guid.Empty);
 
             Assert.IsType<NotFoundResult>(actualResult);
             Assert.NotNull(actualResult);
@@ -27,14 +23,9 @@ namespace Kadena.Tests.WebApi
         public async Task GetPreviewRedirect()
         {
             var expectedResult = new Uri("http://example.com");
-            var autoMock = new AutoMocker();
-            var templateService = autoMock.GetMock<ITemplateService>();
-            templateService
-                .Setup(cl => cl.GetPreviewUri(It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(Task.FromResult(expectedResult));
-            var sut = autoMock.CreateInstance<TemplateController>();
+            Setup<ITemplateService, Task<Uri>>(cl => cl.GetPreviewUri(It.IsAny<Guid>(), It.IsAny<Guid>()), Task.FromResult(expectedResult));
 
-            var actualResult = await sut.GetPreview(Guid.Empty, Guid.Empty);
+            var actualResult = await Sut.GetPreview(Guid.Empty, Guid.Empty);
 
             Assert.IsType<RedirectResult>(actualResult);
             Assert.NotNull(actualResult);

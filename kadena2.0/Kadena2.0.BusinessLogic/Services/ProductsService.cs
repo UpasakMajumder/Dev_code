@@ -1,5 +1,6 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.Models.Product;
+using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,14 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoProductsProvider products;
         private readonly IKenticoFavoritesProvider favorites;
         private readonly IKenticoResourceService resources;
+        private readonly IImageService imageService;
 
-        public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources)
+        public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources, IImageService imageService)
         {
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.favorites = favorites ?? throw new ArgumentNullException(nameof(favorites));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
         }
 
         public Price GetPrice(int skuId, Dictionary<string, int> skuOptions = null)
@@ -41,9 +44,12 @@ namespace Kadena.BusinessLogic.Services
             var products = this.products.GetProducts(path).OrderBy(p => p.Order).ToList();
             var favoriteIds = favorites.CheckFavoriteProductIds(products.Select(p => p.Id).ToList());
             var pathCategory = this.products.GetCategory(path);
-            var bordersEnabledOnSite = resources.GetSiteSettingsKey<bool>("KDA_ProductThumbnailBorderEnabled");
+            var bordersEnabledOnSite = resources.GetSiteSettingsKey<bool>(Settings.KDA_ProductThumbnailBorderEnabled);
             var borderEnabledOnParentCategory = pathCategory?.ProductBordersEnabled ?? true; // true to handle product in the root, without parent category
-            var borderStyle = resources.GetSiteSettingsKey("KDA_ProductThumbnailBorderStyle");
+            var borderStyle = resources.GetSiteSettingsKey(Settings.KDA_ProductThumbnailBorderStyle);
+
+            products.ForEach(p => p.ImageUrl = imageService.GetThumbnailLink(p.ImageUrl));
+            categories.ForEach(c => c.ImageUrl = imageService.GetThumbnailLink(c.ImageUrl));
 
             var productsPage = new ProductsPage
             {
