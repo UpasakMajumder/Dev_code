@@ -2,6 +2,7 @@
 using Kadena.AmazonFileSystemProvider;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Helpers;
+using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.BusinessLogic.Services
@@ -10,11 +11,13 @@ namespace Kadena.BusinessLogic.Services
     {
         private readonly IKenticoMediaProvider _mediaProvider;
         private readonly IKenticoSiteProvider _siteProvider;
+        private readonly IKenticoResourceService _resourceService;
 
-        public ImageService(IKenticoMediaProvider mediaProvider, IKenticoSiteProvider siteProvider)
+        public ImageService(IKenticoMediaProvider mediaProvider, IKenticoSiteProvider siteProvider, IKenticoResourceService resourceService)
         {
             _mediaProvider = mediaProvider ?? throw new ArgumentNullException(nameof(mediaProvider));
             _siteProvider = siteProvider ?? throw new ArgumentNullException(nameof(siteProvider));
+            _resourceService = resourceService ?? throw new ArgumentNullException(nameof(resourceService));
         }
 
         public string GetThumbnailLink(string originalImageLink)
@@ -50,7 +53,8 @@ namespace Kadena.BusinessLogic.Services
             var libraryFolderName = fileLibraryLink.Split('/')[0];
             var fileLibraryRelativeLink = fileLibraryLink.Remove(fileLibraryLink.IndexOf(libraryFolderName, 0), libraryFolderName.Length).TrimStart('/');
 
-            var thumbnailLibraryLink = _mediaProvider.GetThumbnailPath(libraryFolderName, fileLibraryRelativeLink, 200).TrimStart('/');
+            var thumbnailMaxSideSize = _resourceService.GetSiteSettingsKey<int>(Settings.KDA_ThumbnailMaxSideSize);
+            var thumbnailLibraryLink = _mediaProvider.GetThumbnailPath(libraryFolderName, fileLibraryRelativeLink, thumbnailMaxSideSize).TrimStart('/');
 
             var mediaLibraryLink = _mediaProvider.GetMediaLibraryPath(libraryFolderName);
             var originalFileFolderUri = new Uri(hostUri, $"{mediaLibraryLink}/");
