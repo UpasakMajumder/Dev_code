@@ -212,6 +212,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             cartItemInfo.CartItemText = item.CartItemText;
             cartItemInfo.CartItemUnits = item.SKUUnits;
+            cartItemInfo.CartItemPrice = item.CartItemPrice.HasValue ? (double)item.CartItemPrice.Value : double.NaN;
             cartItemInfo.SetValue("ProductType", item.ProductType);
             cartItemInfo.SetValue("ProductPageID", item.ProductPageID);
             cartItemInfo.SetValue("ProductProductionTime", item.ProductProductionTime);
@@ -295,6 +296,7 @@ namespace Kadena.WebAPI.KenticoProviders
             var cartItemInfo = cart.SetShoppingCartItem(parameters);
 
             cartItemInfo.CartItemText = cartItemInfo.SKU.SKUName;
+            cartItemInfo.CartItemPrice = cartItemInfo.SKU.SKUPrice;
             cartItemInfo.SetValue("ProductType", productDocument.GetStringValue("ProductType", string.Empty));
             cartItemInfo.SetValue("ProductPageID", productDocument.NodeID);
             cartItemInfo.SetValue("ProductProductionTime", productDocument.GetStringValue("ProductProductionTime", string.Empty));
