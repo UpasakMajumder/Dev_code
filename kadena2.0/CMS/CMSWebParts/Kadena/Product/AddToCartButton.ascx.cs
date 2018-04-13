@@ -2,6 +2,8 @@
 using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
+using Kadena.BusinessLogic.Contracts;
+using Kadena.Container.Default;
 using Kadena.Models.Product;
 using System.IO;
 using System.Web.UI;
@@ -47,6 +49,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
             {
                 Controls.Add(new LiteralControl(GetHiddenInput("containerId", Request.QueryString["containerId"])));
             }
+
+            var productUom = _productDocument.GetStringValue("ProductUnitOfMeasure", string.Empty);
+            this.pcs.InnerText = DIContainer.Resolve<IProductsService>().GetUnitOfMeasure(productUom, LocalizationContext.CurrentCulture.CultureCode);
         }
 
         private void SetupQuantity()

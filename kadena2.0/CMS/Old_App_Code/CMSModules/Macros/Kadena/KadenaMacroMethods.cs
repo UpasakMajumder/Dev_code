@@ -170,14 +170,15 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return DIContainer.Resolve<IProductsService>().CanDisplayAddToCartButton(productType, numberOfAvailableProducts, sellOnlyIfAvailable);
         }
 
-        [MacroMethod(typeof(string), "Validates whether product is an invertory product type.", 1)]
+        [MacroMethod(typeof(string), "Gets formated and localized product availability string.", 1)]
         [MacroMethodParam(0, "productType", typeof(string), "Current product type")]
         [MacroMethodParam(1, "numberOfAvailableProducts", typeof(int), "NumberOfAvailableProducts")]
         [MacroMethodParam(2, "cultureCode", typeof(string), "Current culture code")]
         [MacroMethodParam(3, "numberOfAvailableProductsHelper", typeof(int), "NumberOfAvailableProducts of ECommerce")]
+        [MacroMethodParam(4, "unitOfMeasure", typeof(string), "Unit of measure")]
         public static object GetAvailableProductsString(EvaluationContext context, params object[] parameters)
         {
-            if (parameters.Length != 4)
+            if (parameters.Length != 5)
             {
                 throw new NotSupportedException();
             }
@@ -186,9 +187,31 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var numberOfAvailableProducts = (int?)parameters[1];
             var cultureCode = (string)parameters[2];
             var numberOfStockProducts = (int)parameters[3];
+            var unitOfmeasure = (string)parameters[4];
 
-            return DIContainer.Resolve<IProductsService>().GetAvailableProductsString(productType, numberOfAvailableProducts, cultureCode, numberOfStockProducts);
+            return DIContainer.Resolve<IProductsService>()
+                .GetAvailableProductsString(productType, numberOfAvailableProducts, cultureCode, numberOfStockProducts, unitOfmeasure);
         }
+
+        [MacroMethod(typeof(string), "Gets formated and localized product availability string.", 1)]
+        [MacroMethodParam(0, "numberOfAvailableProducts", typeof(int), "NumberOfAvailableProducts")]
+        [MacroMethodParam(1, "unitOfMeasure", typeof(string), "Unit of measure")]
+        [MacroMethodParam(2, "cultureCode", typeof(string), "Current culture code")]
+        public static object GetPackagingString(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 3)
+            {
+                throw new NotSupportedException();
+            }
+
+            var numberOfItemsInPackage = (int)parameters[0];
+            var unitOfmeasure = (string)parameters[1];
+            var cultureCode = (string)parameters[2];
+
+            return DIContainer.Resolve<IProductsService>()
+                .GetPackagingString(numberOfItemsInPackage, unitOfmeasure, cultureCode);
+        }
+
 
         [MacroMethod(typeof(string), "Gets appropriate css class for label that holds amount of products in stock", 1)]
         [MacroMethodParam(0, "numberOfAvailableProducts", typeof(object), "NumberOfAvailableProducts")]

@@ -19,27 +19,10 @@ namespace Kadena2.BusinessLogic.Services.Orders
 
         public SendSubmitOrder(IMapper mapper, IOrderSubmitClient orderClient, IKenticoResourceService resources, IKenticoLogger log)
         {
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            if (orderClient == null)
-            {
-                throw new ArgumentNullException(nameof(orderClient));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (log == null)
-            {
-                throw new ArgumentNullException(nameof(log));
-            }
-
-            this.mapper = mapper;
-            this.orderClient = orderClient;
-            this.resources = resources;
-            this.log = log;
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.orderClient = orderClient ?? throw new ArgumentNullException(nameof(orderClient));
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
         public async Task<SubmitOrderResult> SubmitOrderData(OrderDTO orderData)

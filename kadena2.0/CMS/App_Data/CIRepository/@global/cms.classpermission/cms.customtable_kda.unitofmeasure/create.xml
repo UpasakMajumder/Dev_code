@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.UnitOfMeasure</CodeName>
+    <GUID>4f010742-9bc3-4116-b54a-03a93eafcd09</GUID>
+    <ObjectType>cms.customtable</ObjectType>
+  </ClassID>
+  <PermissionDescription>{$permissiondescription.customtable.create$}</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>{$permissionnames.create$}</PermissionDisplayName>
+  <PermissionGUID>7b76037a-748e-4d7a-a1fc-b457f536ccd0</PermissionGUID>
+  <PermissionName>Create</PermissionName>
+  <PermissionOrder>3</PermissionOrder>
+</cms.classpermission>
