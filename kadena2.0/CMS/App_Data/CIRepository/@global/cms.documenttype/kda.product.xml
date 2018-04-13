@@ -405,7 +405,7 @@
       </field>
       <field allowempty="true" column="ProductUnitOfMeasure" columnsize="40" columntype="text" guid="0b4c540d-8078-4e63-a886-da283d8048f7" publicfield="false" visible="true">
         <properties>
-          <fieldcaption>Unit ofMeasure</fieldcaption>
+          <fieldcaption>Unit of Measure</fieldcaption>
         </properties>
         <settings>
           <controlname>DropDownListControl</controlname>
@@ -414,7 +414,8 @@
           <Query>
 <![CDATA[
 SELECT Name,Name
-FROM KDA_UnitOfMeasure WITH(nolock)
+FROM KDA_UnitOfMeasure 
+ORDER BY IsDefault DESC
 ]]>
           </Query>
           <SortItems>False</SortItems>
