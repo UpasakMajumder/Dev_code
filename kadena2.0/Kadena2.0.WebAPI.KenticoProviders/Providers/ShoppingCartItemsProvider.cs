@@ -94,8 +94,8 @@ namespace Kadena.WebAPI.KenticoProviders
                     TemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
                     PdfSettings = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
                 };
-                var product = productProvider.GetProductByDocumentId(cartItem.ProductPageId);
-                cartItem.Preview.Url = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, product.TemplateLowResSettingId);
+                var templateLowResSettingId = productProvider.GetProductByDocumentId(cartItem.ProductPageId)?.TemplateLowResSettingId ?? Guid.Empty;
+                cartItem.Preview.Url = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, templateLowResSettingId);
                 cartItem.Preview.Exists = true;
 
                 var editorUrl = documents.GetDocumentUrl(URLHelper.ResolveUrl(resources.GetSiteSettingsKey("KDA_Templating_ProductEditorUrl")));
@@ -107,7 +107,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 editorUrl = URLHelper.AddParameterToUrl(editorUrl, "customName", URLHelper.URLEncode(cartItem.CartItemText));
                 cartItem.EditorURL = editorUrl;
 
-                var previewUrl = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, product.TemplateLowResSettingId);
+                var previewUrl = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, templateLowResSettingId);
                 var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
 
                 cartItem.EmailProof = new Button()
