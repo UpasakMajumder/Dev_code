@@ -55,10 +55,10 @@ namespace Kadena.Tests.WebApi
         [Fact(DisplayName = "TemplateService.GetTemplatesByProduct() | Product not templated")]
         public async Task GetTemplatesByProduct_ReturnsEmptyModel_WhenDocumentIsNotTemplatedProduct()
         {
-            var invalidNodeId = 0;
-            Setup<IKenticoProductsProvider, Product>(srv => srv.GetProductByNodeId(invalidNodeId), new Product { ProductType = ProductTypes.StaticProduct });
+            var invalidDocumentId = 0;
+            Setup<IKenticoProductsProvider, Product>(srv => srv.GetProductByDocumentId(invalidDocumentId), new Product { ProductType = ProductTypes.StaticProduct });
 
-            var templates = await Sut.GetTemplatesByProduct(invalidNodeId);
+            var templates = await Sut.GetTemplatesByProduct(invalidDocumentId);
 
             Assert.NotNull(templates);
             Assert.NotNull(templates.Data);
@@ -70,7 +70,7 @@ namespace Kadena.Tests.WebApi
         [Fact(DisplayName = "TemplateService.GetTemplatesByProduct() | Product has templates")]
         public async Task GetTemplatesByProduct_ReturnsData_WhenDocumentHasTemplates()
         {
-            var nodeId = 10;
+            var documentId = 10;
 
             Setup<ITemplatedClient, Task<BaseResponseDto<List<TemplateServiceDocumentResponse>>>>(srv => srv.GetTemplates(It.IsAny<int>(), It.IsAny<Guid>())
                 , Task.FromResult(new BaseResponseDto<List<TemplateServiceDocumentResponse>>()
@@ -83,9 +83,9 @@ namespace Kadena.Tests.WebApi
                         }
                 }));
             Setup<IKenticoUserProvider, User>(prv => prv.GetCurrentUser(), new User { });
-            Setup<IKenticoProductsProvider, Product>(srv => srv.GetProductByNodeId(nodeId), new Product { ProductType = ProductTypes.TemplatedProduct });
+            Setup<IKenticoProductsProvider, Product>(srv => srv.GetProductByDocumentId(documentId), new Product { ProductType = ProductTypes.TemplatedProduct });
 
-            var templates = await Sut.GetTemplatesByProduct(nodeId);
+            var templates = await Sut.GetTemplatesByProduct(documentId);
 
             Assert.Equal(2, templates.Data.Length);
         }
@@ -93,7 +93,7 @@ namespace Kadena.Tests.WebApi
         [Fact(DisplayName = "TemplateService.GetTemplatesByProduct() | Get only saved templates")]
         public async Task GetTemplatesByProduct_ReturnsOnlySavedTemplates()
         {
-            var nodeId = 10;
+            var documentId = 10;
             Setup<ITemplatedClient, Task<BaseResponseDto<List<TemplateServiceDocumentResponse>>>>(srv => srv.GetTemplates(It.IsAny<int>(), It.IsAny<Guid>())
                 , Task.FromResult(new BaseResponseDto<List<TemplateServiceDocumentResponse>>()
                 {
@@ -107,9 +107,9 @@ namespace Kadena.Tests.WebApi
                         }
                 }));
             Setup<IKenticoUserProvider, User>(prv => prv.GetCurrentUser(), new User { });
-            Setup<IKenticoProductsProvider, Product>(srv => srv.GetProductByNodeId(nodeId), new Product { ProductType = ProductTypes.TemplatedProduct });
+            Setup<IKenticoProductsProvider, Product>(srv => srv.GetProductByDocumentId(documentId), new Product { ProductType = ProductTypes.TemplatedProduct });
 
-            var templates = await Sut.GetTemplatesByProduct(nodeId);
+            var templates = await Sut.GetTemplatesByProduct(documentId);
 
             Assert.Equal(3, templates.Data.Length);
         }

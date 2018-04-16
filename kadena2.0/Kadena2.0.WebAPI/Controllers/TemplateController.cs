@@ -38,10 +38,10 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [CustomerAuthorizationFilter]
-        [Route("api/products/{nodeId}/templates")]
-        public async Task<IHttpActionResult> GetTemplates(int nodeId)
+        [Route("api/products/{documentId}/templates")]
+        public async Task<IHttpActionResult> GetTemplates(int documentId)
         {
-            var result = await _templateService.GetTemplatesByProduct(nodeId);
+            var result = await _templateService.GetTemplatesByProduct(documentId);
             var resultDto = _mapper.Map<ProductTemplatesDTO>(result);
             return ResponseJson(resultDto);
         }

@@ -755,7 +755,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="inlinescript">
 <![CDATA[
 config.localization.manageProducts = {
-    templatesUrl: '/api/products/{% CurrentDocument.NodeID |(user)rostyslav.diachenko@actum.cz|(hash)8e4f72bf4ed124e897adde2445ff942b4e4dc928ced559da6a6413fb4cdddb23%}/templates'
+    templatesUrl: '/api/products/{% CurrentDocument.DocumentID |(user)rostyslav.diachenko@actum.cz|(hash)fb290f67ac64f5c81e14e9a2babd62d76606ddf8c1cf880b36160bd3e9f4b88c%}/templates'
 };
 ]]>
           </property>

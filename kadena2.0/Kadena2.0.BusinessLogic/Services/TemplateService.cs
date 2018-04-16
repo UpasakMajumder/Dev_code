@@ -49,7 +49,7 @@ namespace Kadena.BusinessLogic.Services
             return result.Success;
         }
 
-        public async Task<ProductTemplates> GetTemplatesByProduct(int nodeId)
+        public async Task<ProductTemplates> GetTemplatesByProduct(int documentId)
         {
             var productTemplates = new ProductTemplates
             {
@@ -85,7 +85,7 @@ namespace Kadena.BusinessLogic.Services
                 Data = new ProductTemplate[0]
             };
 
-            var product = _products.GetProductByNodeId(nodeId);
+            var product = _products.GetProductByDocumentId(documentId);
             if (product != null && !product.HasProductTypeFlag(ProductTypes.TemplatedProduct))
             {
                 return productTemplates;
@@ -104,12 +104,12 @@ namespace Kadena.BusinessLogic.Services
                 productEditorUrl = _documents.GetDocumentUrl(productEditorUrl);
             }
 
-            Func<DateTime, DateTime, bool> IsNewTemplate = (created, updated) =>
+            bool IsNewTemplate(DateTime created, DateTime updated)
             {
                 var diff = updated - created;
                 var isNew = diff.TotalSeconds < 10;
                 return isNew;
-            };
+            }
 
             if (requestResult.Success)
             {
@@ -133,7 +133,7 @@ namespace Kadena.BusinessLogic.Services
 
                         return new ProductTemplate
                         {
-                            EditorUrl = BuildTemplateEditorUrl(productEditorUrl, nodeId, t.TemplateId.ToString(),
+                            EditorUrl = BuildTemplateEditorUrl(productEditorUrl, documentId, t.TemplateId.ToString(),
                                 product.ProductChiliWorkgroupID.ToString(), quantity, t.MailingList?.ContainerId, t.Name),
                             TemplateId = t.TemplateId,
                             CreatedDate = t.Created,
@@ -157,7 +157,7 @@ namespace Kadena.BusinessLogic.Services
             string containerId = null, string customName = null)
         {
             var argumentFormat = "&{0}={1}";
-            var url = new StringBuilder(productEditorBaseUrl + "?nodeId=" + nodeId)
+            var url = new StringBuilder(productEditorBaseUrl + "?documentId=" + nodeId)
                 .AppendFormat(argumentFormat, "templateId", templateId)
                 .AppendFormat(argumentFormat, "workspaceid", productChiliWorkgroupID)
                 .AppendFormat(argumentFormat, "quantity", mailingListRowCount);

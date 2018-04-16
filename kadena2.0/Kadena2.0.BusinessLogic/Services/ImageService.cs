@@ -54,7 +54,12 @@ namespace Kadena.BusinessLogic.Services
             var fileLibraryRelativeLink = fileLibraryLink.Remove(fileLibraryLink.IndexOf(libraryFolderName, 0), libraryFolderName.Length).TrimStart('/');
 
             var thumbnailMaxSideSize = _resourceService.GetSiteSettingsKey<int>(Settings.KDA_ThumbnailMaxSideSize);
-            var thumbnailLibraryLink = _mediaProvider.GetThumbnailPath(libraryFolderName, fileLibraryRelativeLink, thumbnailMaxSideSize).TrimStart('/');
+            var thumbnailLibraryLink = _mediaProvider.GetThumbnailPath(libraryFolderName, fileLibraryRelativeLink, thumbnailMaxSideSize)?.TrimStart('/');
+
+            if (string.IsNullOrWhiteSpace(thumbnailLibraryLink))
+            {
+                return originalImageLink;
+            }
 
             var mediaLibraryLink = _mediaProvider.GetMediaLibraryPath(libraryFolderName);
             var originalFileFolderUri = new Uri(hostUri, $"{mediaLibraryLink}/");
