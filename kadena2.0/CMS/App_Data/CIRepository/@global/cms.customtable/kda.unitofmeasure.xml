@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.customtable>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <NameSpace>KDA</NameSpace>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDisplayName>Unit of Measure</ClassDisplayName>
+  <ClassFormDefinition>
+    <form version="2">
+      <field column="ItemID" columnprecision="0" columntype="integer" guid="dd3b1976-a62e-4b2d-b96b-9d7a47c8f475" isPK="true" publicfield="false">
+        <properties>
+          <fieldcaption>ItemID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="Name" columnsize="40" columntype="text" guid="7e687c3c-2302-46d7-8758-d03557475f48" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Name</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="ErpCode" columnsize="40" columntype="text" guid="cd3694c9-c17c-4f92-bf6c-03e19795cba5" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>ERP code</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="LocalizationString" columnsize="40" columntype="text" guid="f0a85493-2615-4089-ba56-1d0a605c48ec" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Localization string</fieldcaption>
+          <fielddescription>
+            <![CDATA[Name of localization string to be used as display name]]>
+          </fielddescription>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="IsDefault" columntype="boolean" guid="d36c6902-f69f-4009-b87e-c5b9b7cd41f3" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>False</defaultvalue>
+          <fieldcaption>IsDefault</fieldcaption>
+          <fielddescription>
+            <![CDATA[Indicates which unit is default, typically it is 'Each']]>
+          </fielddescription>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemCreatedBy" columnprecision="0" columntype="integer" guid="1c9b0746-d55d-49fa-97af-e9c2c34a57b7" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Created by</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemCreatedWhen" columnprecision="0" columntype="datetime" guid="67641c01-a836-4a73-b222-befc3a4ab5c3" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Created when</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemModifiedBy" columnprecision="0" columntype="integer" guid="907e6d60-667e-4824-a4d7-cd49547d46aa" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Modified by</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemModifiedWhen" columnprecision="0" columntype="datetime" guid="38e17c9f-9710-4387-a595-e2361edeca13" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Modified when</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="ItemGUID" columnprecision="0" columntype="guid" guid="5277dac1-7df4-4235-a2fe-4fa52606263f" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>GUID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>4f010742-9bc3-4116-b54a-03a93eafcd09</ClassGUID>
+  <ClassIsContentOnly>False</ClassIsContentOnly>
+  <ClassIsCoupledClass>True</ClassIsCoupledClass>
+  <ClassIsCustomTable>True</ClassIsCustomTable>
+  <ClassIsDocumentType>False</ClassIsDocumentType>
+  <ClassIsForm>False</ClassIsForm>
+  <ClassIsMenuItemType>False</ClassIsMenuItemType>
+  <ClassIsProduct>False</ClassIsProduct>
+  <ClassName>KDA.UnitOfMeasure</ClassName>
+  <ClassNodeNameSource />
+  <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>
+  <ClassSearchCreationDateColumn>DocumentCreatedWhen</ClassSearchCreationDateColumn>
+  <ClassSearchEnabled>True</ClassSearchEnabled>
+  <ClassSearchSettings>
+    <search>
+      <item content="False" id="0bbc6e09-2a22-46cd-a614-69372c1e45a5" name="ItemModifiedWhen" searchable="True" tokenized="False" />
+      <item content="True" id="3eab14e3-d94c-4ef6-a58b-ca99ab32fda8" name="LocalizationString" searchable="False" tokenized="True" />
+      <item content="True" id="3ebe14d4-1f9d-466d-a975-11dd8849172d" name="Name" searchable="False" tokenized="True" />
+      <item content="False" id="582e9930-677f-4d7f-b07c-e467f3c4cb43" name="ItemCreatedWhen" searchable="True" tokenized="False" />
+      <item content="False" id="6dd44a15-2b58-4d25-96b2-b7b3355925e1" name="ItemCreatedBy" searchable="True" tokenized="False" />
+      <item content="True" id="75c28a18-2ca6-48e2-a5fe-9b4a0977257c" name="ErpCode" searchable="False" tokenized="True" />
+      <item content="False" id="9287272e-40cd-4384-b812-bddf2748fcae" name="ItemGUID" searchable="False" tokenized="False" />
+      <item content="False" id="b6a6b766-bf7a-4fd9-8f45-b13d3ba0e182" name="ItemID" searchable="True" tokenized="False" />
+      <item content="False" id="d6874f9c-1fc2-451d-9cf7-b3874e5d26bb" name="ItemModifiedBy" searchable="True" tokenized="False" />
+    </search>
+  </ClassSearchSettings>
+  <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
+  <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
+  <ClassTableName>KDA_UnitOfMeasure</ClassTableName>
+  <ClassUsePublishFromTo>False</ClassUsePublishFromTo>
+  <ClassUsesVersioning>False</ClassUsesVersioning>
+</cms.customtable>

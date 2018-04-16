@@ -125,7 +125,6 @@ namespace Kadena.Tests.OrderResubmission
         [Fact(DisplayName = "OrderResubmissionService.GetFailedOrders() | Microservice call")]
         public async Task GetFailedOrders_ShouldMapDataFromMicroserviceResponse()
         {
-            var orderStatusMapped = "order_status_mapped";
             var expectedResult = new PagedData<FailedOrder>
             {
                 Data = new List<FailedOrder>
@@ -134,14 +133,13 @@ namespace Kadena.Tests.OrderResubmission
                     {
                         Id = "order_id",
                         OrderDate = new DateTime(2018, 3, 21),
-                        OrderStatus = orderStatusMapped,
+                        OrderStatus = "order_status",
                         SiteName = "order_site",
                         SubmissionAttemptsCount = 2,
                         TotalPrice = 3.5m
                     }
                 }
             };
-            var orderStatus = "order_status";
             var orders = new OrderListDto
             {
                 Orders = new[]
@@ -150,7 +148,7 @@ namespace Kadena.Tests.OrderResubmission
                     {
                         Id = "order_id",
                         CreateDate = new DateTime(2018, 3, 21),
-                        Status = orderStatus,
+                        Status = "order_status",
                         SiteName = "order_site",
                         StatusAmounts = new Dictionary<int, int>
                         {
@@ -162,7 +160,6 @@ namespace Kadena.Tests.OrderResubmission
             };
             Setup<IOrderViewClient, Task<BaseResponseDto<OrderListDto>>>(oc => oc.GetOrders(It.IsAny<OrderListFilter>())
                 , Task.FromResult(new BaseResponseDto<OrderListDto> { Success = true, Payload = orders }));
-            Setup<IKenticoOrderProvider, string>(kop => kop.MapOrderStatus(orderStatus), orderStatusMapped);
 
             var result = await Sut.GetFailedOrders(1, 1);
 
