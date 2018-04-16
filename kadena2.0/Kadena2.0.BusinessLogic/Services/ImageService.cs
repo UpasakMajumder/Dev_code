@@ -1,5 +1,4 @@
 ﻿using System;
-using Kadena.AmazonFileSystemProvider;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Helpers;
 using Kadena.Models.SiteSettings;
@@ -12,12 +11,14 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoMediaProvider _mediaProvider;
         private readonly IKenticoSiteProvider _siteProvider;
         private readonly IKenticoResourceService _resourceService;
+        private readonly IKenticoFileProvider _fileProvider;
 
-        public ImageService(IKenticoMediaProvider mediaProvider, IKenticoSiteProvider siteProvider, IKenticoResourceService resourceService)
+        public ImageService(IKenticoMediaProvider mediaProvider, IKenticoSiteProvider siteProvider, IKenticoFileProvider fileProvider, IKenticoResourceService resourceService)
         {
             _mediaProvider = mediaProvider ?? throw new ArgumentNullException(nameof(mediaProvider));
             _siteProvider = siteProvider ?? throw new ArgumentNullException(nameof(siteProvider));
             _resourceService = resourceService ?? throw new ArgumentNullException(nameof(resourceService));
+            _fileProvider = fileProvider ?? throw new ArgumentNullException(nameof(fileProvider));
         }
 
         public string GetThumbnailLink(string originalImageLink)
@@ -65,13 +66,7 @@ namespace Kadena.BusinessLogic.Services
             var originalFileFolderUri = new Uri(hostUri, $"{mediaLibraryLink}/");
             var thumbnailUri = new Uri(originalFileFolderUri, thumbnailLibraryLink);
 
-            if (s3FileUri.IsBaseOf(originalImageUri))
-            {
-                return s3FileUri
-                    .AddParameter("path", PathHelper.GetObjectKeyFromPathNonEnvironment(thumbnailUri.LocalPath))
-                    .PathAndQuery;
-            }
-            return thumbnailUri.LocalPath;
+            return _fileProvider.GetFileUrl(thumbnailUri.LocalPath);
         }
     }
 }
