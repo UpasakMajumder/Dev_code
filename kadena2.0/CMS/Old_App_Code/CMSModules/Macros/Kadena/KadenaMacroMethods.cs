@@ -189,6 +189,11 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var numberOfStockProducts = (int)parameters[3];
             var unitOfmeasure = (string)parameters[4];
 
+            if (string.IsNullOrEmpty(unitOfmeasure))
+            {
+                unitOfmeasure = UnitOfMeasure.DefaultUnit;
+            }
+
             return DIContainer.Resolve<IProductsService>()
                 .GetAvailableProductsString(productType, numberOfAvailableProducts, cultureCode, numberOfStockProducts, unitOfmeasure);
         }
@@ -207,6 +212,11 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var numberOfItemsInPackage = (int)parameters[0];
             var unitOfmeasure = (string)parameters[1];
             var cultureCode = (string)parameters[2];
+
+            if (string.IsNullOrEmpty(unitOfmeasure))
+            {
+                unitOfmeasure = UnitOfMeasure.DefaultUnit;
+            }
 
             return DIContainer.Resolve<IProductsService>()
                 .GetPackagingString(numberOfItemsInPackage, unitOfmeasure, cultureCode);
