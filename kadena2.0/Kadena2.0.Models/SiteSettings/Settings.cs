@@ -1310,5 +1310,13 @@ namespace Kadena.Models.SiteSettings
         [DefaultValueAttribute(@"Ground")]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkRlZmF1bHQgU2hpcHBpbmcgT3B0aW9uIiwiS2V5TmFtZSI6IktEQV9EZWZhdWx0U2hpcHBwaW5nT3B0aW9uIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6Ikdyb3VuZCIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjoiRHJvcERvd25MaXN0Q29udHJvbCIsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOiI8c2V0dGluZ3M+PERpc3BsYXlBY3R1YWxWYWx1ZUFzSXRlbT5GYWxzZTwvRGlzcGxheUFjdHVhbFZhbHVlQXNJdGVtPjxFZGl0VGV4dD5GYWxzZTwvRWRpdFRleHQ+PFF1ZXJ5PnNlbGVjdCBTaGlwcGluZ09wdGlvbk5hbWUgYXMgdmFsdWUsU2hpcHBpbmdPcHRpb25EaXNwbGF5TmFtZSBhcyB0ZXh0IGZyb20gQ09NX1NoaXBwaW5nT3B0aW9uPC9RdWVyeT48U29ydEl0ZW1zPkZhbHNlPC9Tb3J0SXRlbXM+PC9zZXR0aW5ncz4iLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJQcmUtYnV5IENhcnQgTWFuYWdlbWVudCJ9fQ==")]
         public const string KDA_DefaultShipppingOption = "KDA_DefaultShipppingOption";
+        /// <summary>
+        /// Maximum side size (px) for generating thumbnails of product's/category's image.
+        /// </summary>
+        [CategoryAttribute("Product", "KDASettingProductCategory", "ECommerceSettings")]
+        [GroupAttribute("Image settings")]
+        [DefaultValueAttribute(@"200")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IlRodW1ibmFpbCdzIG1heGltdW0gc2lkZSBzaXplIiwiS2V5TmFtZSI6IktEQV9UaHVtYm5haWxNYXhTaWRlU2l6ZSIsIktleVR5cGUiOiJpbnQiLCJLZXlEZWZhdWx0VmFsdWUiOiIyMDAiLCJLZXlEZXNjcmlwdGlvbiI6Ik1heGltdW0gc2lkZSBzaXplIChweCkgZm9yIGdlbmVyYXRpbmcgdGh1bWJuYWlscyBvZiBwcm9kdWN0J3MvY2F0ZWdvcnkncyBpbWFnZS4iLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiUHJvZHVjdCIsIk5hbWUiOiJLREFTZXR0aW5nUHJvZHVjdENhdGVnb3J5IiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiRUNvbW1lcmNlU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJJbWFnZSBzZXR0aW5ncyJ9fQ==")]
+        public const string KDA_ThumbnailMaxSideSize = "KDA_ThumbnailMaxSideSize";
     }
 }

@@ -75,9 +75,9 @@ namespace Kadena.CMSWebParts.Kadena.Chili
             {
                 var uri = new Uri(newTemplateUrl);
                 var newTemplateID = HttpUtility.ParseQueryString(uri.Query).Get("doc");
-                var destinationUrl = string.Format("{0}?nodeId={1}&templateId={2}&workspaceid={3}&use3d={4}",
+                var destinationUrl = string.Format("{0}?documentId={1}&templateId={2}&workspaceid={3}&use3d={4}",
                   ProductEditorUrl,
-                  DocumentContext.CurrentDocument.NodeID,
+                  DocumentContext.CurrentDocument.DocumentID,
                   newTemplateID,
                   workspaceID,
                   use3d);

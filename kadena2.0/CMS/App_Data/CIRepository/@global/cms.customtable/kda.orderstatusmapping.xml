@@ -70,6 +70,7 @@
   </ClassSearchSettings>
   <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
   <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowColumns>ItemID;MicroserviceStatus;GenericStatus</ClassShowColumns>
   <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
   <ClassTableName>KDA_OrderStatusMapping</ClassTableName>
   <ClassUsePublishFromTo>False</ClassUsePublishFromTo>
