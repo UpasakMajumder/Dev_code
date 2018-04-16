@@ -80,7 +80,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 Template = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
                 ProductPageId = i.GetIntegerValue("ProductPageID", 0),
                 SKUID = i.SKUID,
-                StockQuantity = i.SKU.SKUAvailableItems,
+                StockQuantity = i.SKU?.SKUAvailableItems ?? 0,
                 MailingListPrefix = resources.GetResourceString("Kadena.Checkout.MailingListLabel"),
                 TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplateLabel"),
                 ProductionTime = displayProductionAndShipping ? i.GetValue("ProductProductionTime", string.Empty) : null,

@@ -19,10 +19,20 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public UnitOfMeasure GetUnitOfMeasure(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException(nameof(name), "Empty name of UnitOfMeasure");
+            }
+
             var unit = CustomTableItemProvider.GetItems(CustomTableName)
                                           .WhereEquals("Name", name)
                                           .Columns("Name", "ErpCode", "LocalizationString", "IsDefault")
                                           .FirstOrDefault();
+
+            if (unit == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(name), $"Unable to find item with name '{name}' in UnitOfMeasure table");
+            }
 
             return mapper.Map<UnitOfMeasure>(unit);
         }
