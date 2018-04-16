@@ -56,6 +56,11 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private CartItem MapCartItem(ShoppingCartItemInfo i, bool showPrices, bool displayProductionAndShipping)
         {
+            if (i.SKU == null)
+            {
+                throw new ArgumentNullException(nameof(i.SKU), "CartItem has null SKU");
+            }
+
             var cartItem = new CartItem()
             {
                 Id = i.CartItemID,
@@ -64,8 +69,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                 ProductChiliWorkspaceId = i.GetValue("ProductChiliWorkspaceId", Guid.Empty),
                 ChiliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
-                SKUName = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU?.SKUName,
-                SKUNumber = i.SKU?.SKUNumber,
+                SKUName = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
+                SKUNumber = i.SKU.SKUNumber,
                 TotalTax = 0.0m,
                 UnitPrice = showPrices ? (decimal)i.UnitPrice : 0.0m,
                 UnitOfMeasure = units.GetUnitOfMeasure(i.GetStringValue("UnitOfMeasure", string.Empty)).ErpCode,
