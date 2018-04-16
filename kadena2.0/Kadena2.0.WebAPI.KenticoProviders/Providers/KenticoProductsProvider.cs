@@ -22,12 +22,7 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly string CustomTableName = "KDA.UserAllocatedProducts";
         public KenticoProductsProvider(IMapper mapper)
         {
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-
-            this.mapper = mapper;
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public List<ProductCategoryLink> GetCategories(string path)
@@ -117,11 +112,12 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public string GetProductImagePath(int productPageId)
         {
-            var productPage = DocumentHelper.GetDocuments("KDA.Product")
-                .Where(d => d.DocumentNodeID == productPageId).FirstOrDefault();
+            var productPage = DocumentHelper.GetDocument(productPageId, new TreeProvider(MembershipContext.AuthenticatedUser));
 
             if (productPage == null)
+            {
                 return string.Empty;
+            }
 
             var imagePath = productPage.GetValue("ProductImage", string.Empty);
 

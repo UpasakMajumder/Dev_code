@@ -170,7 +170,7 @@
 {%
 result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
 
-productDocument = Documents.Where("NodeID=" + QueryString.nodeId)[0];
+productDocument = Documents.Where("DocumentID=" + QueryString.documentId)[0];
 result = String.FormatString("{0}{1}", "<a href='" + productDocument.AbsoluteURL + "'>" + productDocument.DocumentName + "</a>", result);
 
 iteratedDocument = productDocument.Parent;
@@ -183,7 +183,7 @@ iteratedDocument = iteratedDocument.Parent;
 };
 
 "<div class='breadcrumbs'>" + result + "</div>"
-|(user)rostyslav.diachenko@actum.cz|(hash)82477e78b43da926264512114b55eaa9d77b5a551fd7e50b6bc23a1e0bbf13aa%}
+|(user)rostyslav.diachenko@actum.cz|(hash)f7b10cb4fe10620030dbe7297cb6005567748035e2990efb163d874335bc21e6%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -296,7 +296,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="visible">True</property>
           <property name="webparttitle"></property>
           <property name="webparttype">repeater</property>
-          <property name="wherecondition">NodeID = {?nodeId?}</property>
+          <property name="wherecondition">DocumentID = {?documentId?}</property>
           <property name="zerorowstext">No data found</property>
         </webpart>
       </webpartzone>

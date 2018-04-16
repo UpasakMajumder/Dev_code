@@ -382,6 +382,8 @@ namespace Kadena.BusinessLogic.Services
 
             var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);
 
+
+
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.InventoryProduct))
             {
                 EnsureInventoryAmount(cartItem, newItem.Quantity, cartItem.SKUUnits);
@@ -425,10 +427,6 @@ namespace Kadena.BusinessLogic.Services
             if (price > decimal.MinusOne)
             {
                 cartItem.CartItemPrice = price;
-            }
-            else
-            {
-                cartItem.CartItemPrice = null;
             }
         }
 

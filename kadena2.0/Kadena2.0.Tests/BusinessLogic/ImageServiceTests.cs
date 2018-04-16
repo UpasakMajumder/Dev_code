@@ -104,5 +104,23 @@ namespace Kadena.Tests.BusinessLogic
 
             Assert.Equal(expectedResult, actualResult);
         }
+
+        [Theory(DisplayName = "ImageService.GetThumbnailLink() | Thumbnail not generated")]
+        [InlineData(@"http://example.com/kda/media/images/image.jpg", @"http://example.com", @"/kda/media","")]
+        [InlineData(@"http://example.com/kda/media/images/image.jpg", @"http://example.com", @"KDA/media", null)]
+        [InlineData(@"http://example.com/kda/media/images/image.jpg", @"http://example.com", @"/KDA/media", "     ")]
+        public void GetThumbnailLink_ThumbnailNotGenerated(string originalImageLink, string baseLink, string mediaLibrariesLink, string thumbnailLink)
+        {
+            var expectedResult = originalImageLink;
+
+            Setup<IKenticoSiteProvider, string>(s => s.GetFullUrl(), baseLink);
+            Setup<IKenticoMediaProvider, string>(s => s.GetMediaLibrariesLocation(), mediaLibrariesLink);
+            Setup<IKenticoMediaProvider, string>(s => s.GetThumbnailPath(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), thumbnailLink);
+            Setup<IKenticoMediaProvider, string, string>(s => s.GetMediaLibraryPath(It.IsAny<string>()), (s) => $"{mediaLibrariesLink}/{s}");
+
+            var actualResult = Sut.GetThumbnailLink(originalImageLink);
+
+            Assert.Equal(expectedResult, actualResult, true);
+        }
     }
 }

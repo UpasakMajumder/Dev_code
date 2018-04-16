@@ -6,7 +6,6 @@ using Kadena.Models.Orders;
 using Kadena.Models.Orders.Failed;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
-using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -18,7 +17,6 @@ namespace Kadena.BusinessLogic.Services.Orders
     {
         private readonly IOrderResubmitClient orderResubmitClient;
         private readonly IOrderViewClient orderViewClient;
-        private readonly IKenticoOrderProvider kenticoOrderProvider;
         private readonly IKenticoLogger logger;
         public const int FirstPageNumber = 1;
 
@@ -27,12 +25,10 @@ namespace Kadena.BusinessLogic.Services.Orders
         public OrderResubmissionService(
             IOrderResubmitClient orderResubmitClient,
             IOrderViewClient orderViewClient,
-            IKenticoOrderProvider kenticoOrderProvider,
             IKenticoLogger logger)
         {
             this.orderResubmitClient = orderResubmitClient ?? throw new ArgumentNullException(nameof(orderResubmitClient));
             this.orderViewClient = orderViewClient ?? throw new ArgumentNullException(nameof(orderViewClient));
-            this.kenticoOrderProvider = kenticoOrderProvider ?? throw new ArgumentNullException(nameof(kenticoOrderProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -92,7 +88,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 Id = dto.Id,
                 OrderDate = dto.CreateDate,
-                OrderStatus = kenticoOrderProvider.MapOrderStatus(dto.Status),
+                OrderStatus = dto.Status,
                 SiteName = dto.SiteName,
                 SubmissionAttemptsCount = dto.StatusAmounts[(int)OrderStatus.SentToTibcoError],
                 TotalPrice = dto.TotalPrice

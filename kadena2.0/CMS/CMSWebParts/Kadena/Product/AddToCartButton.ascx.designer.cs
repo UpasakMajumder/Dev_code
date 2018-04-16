@@ -22,6 +22,15 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl inpNumberOfItems;
         
         /// <summary>
+        /// pcs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pcs;
+        
+        /// <summary>
         /// btnAddToCart control.
         /// </summary>
         /// <remarks>

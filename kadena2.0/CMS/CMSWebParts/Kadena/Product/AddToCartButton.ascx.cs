@@ -2,6 +2,8 @@
 using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
+using Kadena.BusinessLogic.Contracts;
+using Kadena.Container.Default;
 using Kadena.Models.Product;
 using System.IO;
 using System.Web.UI;
@@ -47,6 +49,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
             {
                 Controls.Add(new LiteralControl(GetHiddenInput("containerId", Request.QueryString["containerId"])));
             }
+
+            var productUom = _productDocument.GetStringValue("ProductUnitOfMeasure", UnitOfMeasure.DefaultUnit);
+            this.pcs.InnerText = DIContainer.Resolve<IProductsService>().GetUnitOfMeasure(productUom, LocalizationContext.CurrentCulture.CultureCode);
         }
 
         private void SetupQuantity()
@@ -94,15 +99,14 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         private void SetupDocument()
         {
-            var nodeId = Request.QueryString["nodeId"];
-            if (string.IsNullOrWhiteSpace(nodeId))
+            var documentId = Request.QueryString["documentId"];
+            if (string.IsNullOrWhiteSpace(documentId))
             {
                 _productDocument = DocumentContext.CurrentDocument;
             }
             else
             {
-                _productDocument = DocumentHelper.GetDocument(int.Parse(nodeId), LocalizationContext.CurrentCulture.CultureCode,
-                    new TreeProvider(MembershipContext.AuthenticatedUser));
+                _productDocument = DocumentHelper.GetDocument(int.Parse(documentId), new TreeProvider(MembershipContext.AuthenticatedUser));
             }
         }
     }
