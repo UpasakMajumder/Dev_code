@@ -1,4 +1,5 @@
 ﻿using CMS.DocumentEngine;
+using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using Kadena.BusinessLogic.Contracts;
