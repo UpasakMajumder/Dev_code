@@ -8,6 +8,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,6 +19,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IOrderResubmitClient orderResubmitClient;
         private readonly IOrderViewClient orderViewClient;
         private readonly IKenticoLogger logger;
+        private readonly IKenticoUserProvider kenticoUserProvider;
         public const int FirstPageNumber = 1;
 
         public const string OrderFailureStatus = "Error sending to Tibco";
@@ -25,11 +27,13 @@ namespace Kadena.BusinessLogic.Services.Orders
         public OrderResubmissionService(
             IOrderResubmitClient orderResubmitClient,
             IOrderViewClient orderViewClient,
-            IKenticoLogger logger)
+            IKenticoLogger logger,
+            IKenticoUserProvider kenticoUserProvider)
         {
             this.orderResubmitClient = orderResubmitClient ?? throw new ArgumentNullException(nameof(orderResubmitClient));
             this.orderViewClient = orderViewClient ?? throw new ArgumentNullException(nameof(orderViewClient));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.kenticoUserProvider = kenticoUserProvider ?? throw new ArgumentNullException(nameof(kenticoUserProvider));
         }
 
         public async Task<PagedData<FailedOrder>> GetFailedOrders(int page, int itemsPerPage)
@@ -83,6 +87,32 @@ namespace Kadena.BusinessLogic.Services.Orders
             };
         }
 
+        private Dictionary<int, string> _customerDictionary = new Dictionary<int, string>();
+
+        private string GetCustomerName(int customerId)
+        {
+            if (!_customerDictionary.TryGetValue(customerId, out var customerName))
+            {
+                var customer = kenticoUserProvider.GetCustomer(customerId);
+                if (customer != null)
+                {
+                    customerName = $"{customer.FirstName} {customer.LastName}".Trim();
+                    if (customerName.Length == 0)
+                    {
+                        customerName = customer.Email;
+                    }
+                }
+                else
+                {
+                    customerName = "";
+                }
+
+                _customerDictionary[customerId] = customerName;
+            }
+
+            return customerName;
+        }
+
         private FailedOrder Map(RecentOrderDto dto)
             => new FailedOrder
             {
@@ -90,6 +120,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 OrderDate = dto.CreateDate,
                 OrderStatus = dto.Status,
                 SiteName = dto.SiteName,
+                CustomerName = GetCustomerName(dto.CustomerId),
                 SubmissionAttemptsCount = dto.StatusAmounts[(int)OrderStatus.SentToTibcoError],
                 TotalPrice = dto.TotalPrice
             };
