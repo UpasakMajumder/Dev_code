@@ -6,14 +6,14 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers
 {
     public class KenticoPermissionsProvider : IKenticoPermissionsProvider
     {
+        public bool IsAuthorizedPerResource(string resourceName, string permissionName)
+        {
+            return IsAuthorizedPerResource(resourceName, permissionName, SiteContext.CurrentSiteName);
+        }
+
         public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
         {
             return MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(resourceName, permissionName, siteName);
-        }
-
-        public bool IsAuthorizedPerResource(string resourceName, string permissionName)
-        {
-            return MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(resourceName, permissionName, SiteContext.CurrentSiteName);
         }
 
         public bool UserCanSeePrices()

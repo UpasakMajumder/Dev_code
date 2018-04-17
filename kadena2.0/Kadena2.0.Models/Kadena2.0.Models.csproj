@@ -64,7 +64,6 @@
     <Compile Include="IBTF\IBTFAdjustment.cs" />
     <Compile Include="ModuleAccess\KnownModules.cs" />
     <Compile Include="ModuleAccess\KnownPermissions.cs" />
-    <Compile Include="ModuleAccess\KnownRoles.cs" />
     <Compile Include="ModuleAccess\KadenaModuleState.cs" />
     <Compile Include="ModuleAccess\KnownPageTypes.cs" />
     <Compile Include="Orders\Failed\FailedOrder.cs" />
