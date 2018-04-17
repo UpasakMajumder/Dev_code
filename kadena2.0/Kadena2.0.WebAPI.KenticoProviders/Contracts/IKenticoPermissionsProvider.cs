@@ -9,6 +9,7 @@
         /// <param name="permissionName">Permission name</param>
         /// <param name="siteName">Site name</param>
         bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName);
+        bool IsAuthorizedPerResource(string resourceName, string permissionName);
         bool UserCanSeePrices();
         bool UserCanSeePrices(int siteId, int userId);
         bool UserCanSeeAllOrders();
