@@ -4,6 +4,7 @@ using Kadena.Models.ModuleAccess;
 using Kadena.Models.Site;
 using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,19 +18,22 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoUserProvider kenticoUserProvider;
         private readonly IKenticoRoleProvider kenticoRoleProvider;
         private readonly IKenticoModuleMappingProvider kenticoModuleMappingProvider;
+        private readonly IKenticoPermissionsProvider kenticoPermissionsProvider;
 
         public ModuleAccessService(
             IKenticoSiteProvider kenticoSiteProvider,
             IKenticoResourceService kenticoResourceService,
             IKenticoUserProvider kenticoUserProvider,
             IKenticoRoleProvider kenticoRoleProvider,
-            IKenticoModuleMappingProvider kenticoModuleMappingProvider)
+            IKenticoModuleMappingProvider kenticoModuleMappingProvider,
+            IKenticoPermissionsProvider kenticoPermissionsProvider)
         {
             this.kenticoSiteProvider = kenticoSiteProvider ?? throw new ArgumentNullException(nameof(kenticoSiteProvider));
             this.kenticoResourceService = kenticoResourceService ?? throw new ArgumentNullException(nameof(kenticoResourceService));
             this.kenticoUserProvider = kenticoUserProvider ?? throw new ArgumentNullException(nameof(kenticoUserProvider));
             this.kenticoRoleProvider = kenticoRoleProvider ?? throw new ArgumentNullException(nameof(kenticoRoleProvider));
             this.kenticoModuleMappingProvider = kenticoModuleMappingProvider ?? throw new ArgumentNullException(nameof(kenticoModuleMappingProvider));
+            this.kenticoPermissionsProvider = kenticoPermissionsProvider ?? throw new ArgumentNullException(nameof(kenticoPermissionsProvider));
         }
 
         public string GetMainNavigationWhereCondition(KadenaModuleState moduleState)
@@ -67,7 +71,7 @@ namespace Kadena.BusinessLogic.Services
                 case Modules.AdminModule:
                     return IsUserInTWEAdminRole();
                 case Modules.OrdersReport:
-                    return IsUserInAnyRole(KnownRoles.MarketingManager);
+                    return kenticoPermissionsProvider.IsAuthorizedPerResource(KnownModules.Kadena_Orders, KnownPermissions.KDA_OrdersReport);
                 default:
                     return true;
             }
