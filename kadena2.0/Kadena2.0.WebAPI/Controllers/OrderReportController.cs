@@ -54,9 +54,9 @@ namespace Kadena.WebAPI.Controllers
             return File(export);
         }
 
-        private void CheckAccess(string moduleName)
+        private void CheckAccess(string pageType)
         {
-            if (!moduleAccessService.IsAccessible(moduleName))
+            if (!moduleAccessService.HasUserAccessToPageType(pageType))
             {
                 throw new Exception("Unauthorized access");
             }

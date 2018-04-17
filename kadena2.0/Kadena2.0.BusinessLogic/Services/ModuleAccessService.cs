@@ -63,7 +63,7 @@ namespace Kadena.BusinessLogic.Services
             return allowedModules;
         }
 
-        private bool HasUserAccessToPageType(string pageType)
+        public bool HasUserAccessToPageType(string pageType)
         {
             var moduleNameNormalized = pageType.ToLower();
             switch (moduleNameNormalized)
@@ -110,13 +110,6 @@ namespace Kadena.BusinessLogic.Services
             }
 
             return false;
-        }
-
-        public bool IsAccessible(string moduleName)
-        {
-            var allowedModules = GetAllowedModules(KadenaModuleState.enabled);
-            var isAccessible = allowedModules.Any(m => m.PageType.ToLowerInvariant() == moduleName);
-            return isAccessible;
         }
     }
 }
