@@ -51,7 +51,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             }
 
             var productUom = _productDocument.GetStringValue("ProductUnitOfMeasure", UnitOfMeasure.DefaultUnit);
-            this.pcs.InnerText = DIContainer.Resolve<IProductsService>().GetUnitOfMeasure(productUom, LocalizationContext.CurrentCulture.CultureCode);
+            this.pcs.InnerText = DIContainer.Resolve<IProductsService>().TranslateUnitOfMeasure(productUom, LocalizationContext.CurrentCulture.CultureCode);
         }
 
         private void SetupQuantity()
