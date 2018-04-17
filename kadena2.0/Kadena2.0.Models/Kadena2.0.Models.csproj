@@ -62,6 +62,10 @@
     <Compile Include="FyBudget\FyBudget.cs" />
     <Compile Include="IBTF\IBTF.cs" />
     <Compile Include="IBTF\IBTFAdjustment.cs" />
+    <Compile Include="ModuleAccess\KnownModules.cs" />
+    <Compile Include="ModuleAccess\KnownPermissions.cs" />
+    <Compile Include="ModuleAccess\KadenaModuleState.cs" />
+    <Compile Include="ModuleAccess\KnownPageTypes.cs" />
     <Compile Include="Orders\Failed\FailedOrder.cs" />
     <Compile Include="Orders\OrderFilter.cs" />
     <Compile Include="Orders\OrderReport.cs" />
@@ -106,6 +110,10 @@
     <Compile Include="Checkout\SubmitButton.cs" />
     <Compile Include="Checkout\Total.cs" />
     <Compile Include="Checkout\Totals.cs" />
+    <Compile Include="SiteSettings\Settings.General.cs" />
+    <Compile Include="SiteSettings\Settings.Microservices.cs" />
+    <Compile Include="SiteSettings\Settings.OrderDetails.cs" />
+    <Compile Include="Site\ModuleMapping.cs" />
     <Compile Include="TemplatedProduct\EmailProofRequest.cs" />
     <Compile Include="_Common\ContentTypes.cs" />
     <Compile Include="_Common\Country.cs" />

@@ -2,6 +2,7 @@
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
 using Kadena.Dto.Order.Failed;
+using Kadena.Models;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
 using Kadena.Models.Orders.Failed;
@@ -125,6 +126,7 @@ namespace Kadena.Tests.OrderResubmission
         [Fact(DisplayName = "OrderResubmissionService.GetFailedOrders() | Microservice call")]
         public async Task GetFailedOrders_ShouldMapDataFromMicroserviceResponse()
         {
+            const string customerEmail = "just@in.time";
             var expectedResult = new PagedData<FailedOrder>
             {
                 Data = new List<FailedOrder>
@@ -134,6 +136,7 @@ namespace Kadena.Tests.OrderResubmission
                         Id = "order_id",
                         OrderDate = new DateTime(2018, 3, 21),
                         OrderStatus = "order_status",
+                        CustomerName = customerEmail,
                         SiteName = "order_site",
                         SubmissionAttemptsCount = 2,
                         TotalPrice = 3.5m
@@ -160,6 +163,7 @@ namespace Kadena.Tests.OrderResubmission
             };
             Setup<IOrderViewClient, Task<BaseResponseDto<OrderListDto>>>(oc => oc.GetOrders(It.IsAny<OrderListFilter>())
                 , Task.FromResult(new BaseResponseDto<OrderListDto> { Success = true, Payload = orders }));
+            Setup<IKenticoUserProvider, Customer>(up => up.GetCustomer(It.IsAny<int>()), new Customer { Email = customerEmail });
 
             var result = await Sut.GetFailedOrders(1, 1);
 

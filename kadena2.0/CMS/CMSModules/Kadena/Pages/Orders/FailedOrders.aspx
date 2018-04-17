@@ -38,6 +38,8 @@
             <ug:Column runat="server" Wrap="false"
                 Source="SiteName" Name="SiteName" Caption="Site" />
             <ug:Column runat="server" Wrap="false"
+                Source="CustomerName" Name="CustomerName" Caption="Customer" />
+            <ug:Column runat="server" Wrap="false"
                 Source="OrderDate" Name="OrderDate" Caption="Submission date" />
             <ug:Column runat="server" Wrap="false"
                 Source="TotalPrice" Name="TotalPrice" Caption="Total price" />

@@ -24,6 +24,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Kadena.Helpers.SerializerConfig;
+using Kadena.Models.SiteSettings;
+using Kadena.Models.Membership;
+using Kadena.Models.ModuleAccess;
 
 [assembly: CMS.RegisterExtension(typeof(KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 
@@ -322,9 +325,21 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 throw new NotSupportedException();
             }
+
             var isForEnabledItems = ValidationHelper.GetBoolean(parameters[0], false);
-            string adminCacheKey = IsUserInKadenaAdminRole() ? "_admin" : string.Empty;
-            return CacheHelper.Cache(cs => GetMainNavigationWhereConditionInternal(isForEnabledItems), new CacheSettings(20, "Kadena.MacroMethods.GetMainNavigationWhereCondition" + adminCacheKey + "_" + SiteContext.CurrentSiteName + "|" + isForEnabledItems));
+
+            var moduleState = isForEnabledItems 
+                ? KadenaModuleState.enabled 
+                : KadenaModuleState.disabled;
+
+            var cacheKey = $@"Kadena.MacroMethods.GetMainNavigationWhereCondition_{
+                SiteContext.CurrentSiteName}_{
+                isForEnabledItems}_{
+                MembershipContext.AuthenticatedUser.UserName}";
+
+            return CacheHelper.Cache(
+                cs => DIContainer.Resolve<IModuleAccessService>().GetMainNavigationWhereCondition(moduleState),
+                new CacheSettings(TimeSpan.FromMinutes(20).TotalMinutes, cacheKey));
         }
 
         [MacroMethod(typeof(string[]), "Returns array of parsed urls items.", 1)]
@@ -405,76 +420,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         {
             var originalFile = ValidationHelper.GetString(parameters[0], string.Empty);
             return DIContainer.Resolve<IImageService>().GetThumbnailLink(originalFile);
-        }
-
-        private static string GetMainNavigationWhereConditionInternal(bool isForEnabledItems)
-        {
-            var result = string.Empty;
-            var pageTypes = new List<string>();
-
-            var moduleSettingsMappingsDataClassInfo = DataClassInfoProvider.GetDataClassInfo("KDA.KadenaModuleAndPageTypeConnection");
-            if (moduleSettingsMappingsDataClassInfo != null)
-            {
-                var mappingItems = CustomTableItemProvider.GetItems("KDA.KadenaModuleAndPageTypeConnection");
-
-                if (mappingItems != null)
-                {
-                    foreach (var mappingItem in mappingItems)
-                    {
-                        var moduleState = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{mappingItem.GetStringValue("SettingsKeyCodeName", string.Empty)}");
-                        if ((isForEnabledItems && moduleState.ToLowerInvariant().Equals(KadenaModuleState.enabled.ToString())) || (!isForEnabledItems && moduleState.ToLowerInvariant().Equals(KadenaModuleState.disabled.ToString())))
-                        {
-                            pageTypes.Add(mappingItem.GetStringValue("PageTypeCodeName", string.Empty));
-                        }
-                    }
-                }
-            }
-            foreach (var pageType in pageTypes)
-            {
-                if (GetRoleBasedAdminAccessModuleStatus(pageType))
-                {
-                    result += $"ClassName = N'{pageType}' OR ";
-                }
-            }
-            if (result.Length > 0)
-            {
-                result = result.Substring(0, result.Length - 3);
-            }
-            else
-            {
-                result = "1 = 0";
-            }
-            return result;
-        }
-
-        private static bool GetRoleBasedAdminAccessModuleStatus(string className)
-        {
-            bool status = true;
-            if (className.ToLower().Equals("kda.adminmodule"))
-            {
-                status = IsUserInKadenaAdminRole();
-            }
-            return status;
-        }
-
-        private static bool IsUserInKadenaAdminRole()
-        {
-            bool isKadenaAdmin = false;
-            string adminRoles = SettingsKeyInfoProvider.GetValue("KDA_AdminRoles", SiteContext.CurrentSiteID);
-            UserInfo user = MembershipContext.AuthenticatedUser;
-            if (user != null && !string.IsNullOrWhiteSpace(adminRoles))
-            {
-                string[] roles = adminRoles.Split(';');
-                foreach (string role in roles)
-                {
-                    isKadenaAdmin = user.IsInRole(role, SiteContext.CurrentSiteName);
-                    if(isKadenaAdmin)
-                    {
-                        break;
-                    }
-                }
-            }
-            return isKadenaAdmin;
         }
 
         #region TWE macro methods
@@ -672,7 +617,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 }
                 else
                 {
-                    var loggedInUSerCartIDs = ShoppingCartHelper.GetCartsByUserID(userID, ProductType.GeneralInventory,openCampaignID);
+                    var loggedInUSerCartIDs = ShoppingCartHelper.GetCartsByUserID(userID, ProductType.GeneralInventory, openCampaignID);
                     decimal cartTotal = 0;
                     loggedInUSerCartIDs.ForEach(cartID =>
                     {
@@ -815,13 +760,13 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         /// <param name="context"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        [MacroMethod(typeof(int), "Returns campaignid if any campaign is open",0)]
+        [MacroMethod(typeof(int), "Returns campaignid if any campaign is open", 0)]
         public static object OpenCampaignID(EvaluationContext context, params object[] parameters)
         {
             try
             {
                 var campaign = ShoppingCartHelper.GetOpenCampaign();
-                return campaign!=null? campaign.CampaignID:default(int);
+                return campaign != null ? campaign.CampaignID : default(int);
             }
             catch (Exception ex)
             {
