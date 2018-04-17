@@ -182,6 +182,7 @@ class AddressDialog extends Component {
             placeholder={label}
             onChange={(e) => { this.handleChange(e.target.value, id); }}
             type="text"
+            maximumLength={id}
           />
         );
       } else if (values.length) {
