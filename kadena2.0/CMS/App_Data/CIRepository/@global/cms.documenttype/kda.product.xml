@@ -403,7 +403,7 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field allowempty="true" column="ProductUnitOfMeasure" columnsize="40" columntype="text" guid="0b4c540d-8078-4e63-a886-da283d8048f7" publicfield="false" visible="true">
+      <field column="ProductUnitOfMeasure" columnsize="40" columntype="text" guid="0b4c540d-8078-4e63-a886-da283d8048f7" publicfield="false" visible="true">
         <properties>
           <defaultvalue>Each</defaultvalue>
           <fieldcaption>Unit of Measure</fieldcaption>
