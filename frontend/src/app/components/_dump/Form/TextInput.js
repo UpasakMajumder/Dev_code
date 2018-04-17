@@ -9,7 +9,9 @@ const getMaxLength = (maximumLength) => {
   if (typeof maximumLength === 'number') {
     return maximumLength;
   } else if (typeof maximumLength === 'string') {
-    if (maximumLength === 'address2') {
+    if (maximumLength === 'address1'
+      || maximumLength === 'address2'
+    ) {
       return 35;
     }
   }
