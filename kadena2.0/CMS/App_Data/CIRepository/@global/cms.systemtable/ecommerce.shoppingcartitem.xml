@@ -28,6 +28,7 @@
       </field>
       <field allowempty="true" column="UnitOfMeasure" columnsize="40" columntype="text" guid="98a7cea2-1ee6-480a-82fe-caf663b176fa" publicfield="false" visible="true">
         <properties>
+          <defaultvalue>Each</defaultvalue>
           <fieldcaption>Unit of measure</fieldcaption>
         </properties>
         <settings>
