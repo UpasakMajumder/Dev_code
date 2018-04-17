@@ -62,11 +62,11 @@
     <Compile Include="FyBudget\FyBudget.cs" />
     <Compile Include="IBTF\IBTF.cs" />
     <Compile Include="IBTF\IBTFAdjustment.cs" />
-    <Compile Include="Membership\KnownModules.cs" />
-    <Compile Include="Membership\KnownPermissions.cs" />
-    <Compile Include="Membership\KnownRoles.cs" />
+    <Compile Include="ModuleAccess\KnownModules.cs" />
+    <Compile Include="ModuleAccess\KnownPermissions.cs" />
+    <Compile Include="ModuleAccess\KnownRoles.cs" />
     <Compile Include="ModuleAccess\KadenaModuleState.cs" />
-    <Compile Include="ModuleAccess\Modules.cs" />
+    <Compile Include="ModuleAccess\KnownPageTypes.cs" />
     <Compile Include="Orders\Failed\FailedOrder.cs" />
     <Compile Include="Orders\OrderFilter.cs" />
     <Compile Include="Orders\OrderReport.cs" />

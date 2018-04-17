@@ -58,19 +58,19 @@ namespace Kadena.BusinessLogic.Services
             var modules = kenticoModuleMappingProvider.Get()
                             .Where(mm => mm.State == moduleState);
             var allowedModules = modules
-                .Where(m => HasUserAccessToModule(m.PageType))
+                .Where(m => HasUserAccessToPageType(m.PageType))
                 .ToList();
             return allowedModules;
         }
 
-        private bool HasUserAccessToModule(string moduleName)
+        private bool HasUserAccessToPageType(string pageType)
         {
-            var moduleNameNormalized = moduleName.ToLower();
+            var moduleNameNormalized = pageType.ToLower();
             switch (moduleNameNormalized)
             {
-                case Modules.AdminModule:
+                case KnownPageTypes.AdminModule:
                     return IsUserInTWEAdminRole();
-                case Modules.OrdersReport:
+                case KnownPageTypes.OrdersReport:
                     return kenticoPermissionsProvider.IsAuthorizedPerResource(KnownModules.Kadena_Orders, KnownPermissions.KDA_OrdersReport);
                 default:
                     return true;

@@ -34,7 +34,7 @@ namespace Kadena.WebAPI.Controllers
         public async Task<IHttpActionResult> Get(
             DateTime? dateFrom = null, DateTime? dateTo = null, string sort = null, int page = 1)
         {
-            CheckAccess(Modules.OrdersReport);
+            CheckAccess(KnownPageTypes.OrdersReport);
 
             var orders = await orderService
                 .GetOrders(page, new OrderFilter { FromDate = dateFrom, ToDate = dateTo, OrderByExpression = sort });
@@ -47,7 +47,7 @@ namespace Kadena.WebAPI.Controllers
         [Route(Routes.OrderReport.Export)]
         public async Task<IHttpActionResult> Export(DateTime? dateFrom = null, DateTime? dateTo = null)
         {
-            CheckAccess(Modules.OrdersReport);
+            CheckAccess(KnownPageTypes.OrdersReport);
 
             var export = await orderService
                 .GetOrdersExport(new OrderFilter { FromDate = dateFrom, ToDate = dateTo });

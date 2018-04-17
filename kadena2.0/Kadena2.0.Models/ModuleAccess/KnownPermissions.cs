@@ -1,4 +1,4 @@
-﻿namespace Kadena.Models.Membership
+﻿namespace Kadena.Models.ModuleAccess
 {
     public class KnownPermissions
     {
