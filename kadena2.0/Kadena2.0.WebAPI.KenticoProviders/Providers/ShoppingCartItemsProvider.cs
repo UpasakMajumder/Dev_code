@@ -96,15 +96,15 @@ namespace Kadena.WebAPI.KenticoProviders
 
             if (cartItem.IsTemplated)
             {
-                var templateLowResSettingId = productProvider.GetProductByDocumentId(cartItem.ProductPageId)?.TemplateLowResSettingId ?? Guid.Empty;
-                var previewUrl = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, templateLowResSettingId);
-                var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
-
                 cartItem.ChiliProcess = new ChiliProcess
                 {
                     TemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
                     PdfSettings = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
                 };
+
+                var templateLowResSettingId = productProvider.GetProductByDocumentId(cartItem.ProductPageId)?.TemplateLowResSettingId ?? Guid.Empty;
+                var previewUrl = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, templateLowResSettingId);
+                var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
 
                 cartItem.Preview.Url = previewAbsoluteUrl;
                 cartItem.Preview.Exists = true;
