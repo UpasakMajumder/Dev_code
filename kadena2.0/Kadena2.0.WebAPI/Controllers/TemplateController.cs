@@ -22,6 +22,7 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpPost]
+        [CustomerAuthorizationFilter]
         [Route("api/template/setname")]
         public async Task<IHttpActionResult> UpdateTemplate([FromBody] NewCartItem item)
         {
@@ -46,8 +47,7 @@ namespace Kadena.WebAPI.Controllers
             return ResponseJson(resultDto);
         }
 
-        [HttpGet]
-        [CustomerAuthorizationFilter]
+        [HttpGet]        
         [Route("api/template/{templateId}/preview/{settingId}")]
         public async Task<IHttpActionResult> GetPreview(Guid templateId, Guid settingId)
         {

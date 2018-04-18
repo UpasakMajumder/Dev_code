@@ -230,7 +230,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     {
                         Exists = templatedProduct != null,
                         Text = resources.GetResourceString("Kadena.Checkout.PreviewButton"),
-                        Url = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, templatedProduct?.TemplateLowResSettingId ?? Guid.Empty)
+                        Url = previewAbsoluteUrl
                     },
                     EmailProof = new Button
                     {
