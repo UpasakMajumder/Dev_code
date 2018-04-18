@@ -49,5 +49,14 @@ namespace Kadena.Models.SiteSettings
         [DefaultValueAttribute(@"1")]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9PcmRlclJlc3VibWl0U2VydmljZVZlcnNpb24iLCJLZXlOYW1lIjoiS0RBX09yZGVyUmVzdWJtaXRTZXJ2aWNlVmVyc2lvbiIsIktleVR5cGUiOiJpbnQiLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJNaWNyb3NlcnZpY2VzIHNldHRpbmdzIn19")]
         public const string KDA_OrderResubmitServiceVersion = "KDA_OrderResubmitServiceVersion";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Microservices settings")]
+        [DefaultValueAttribute(@"1")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IlN0YXRpc3RpY3Mgc2VydmljZSB2ZXJzaW9uIiwiS2V5TmFtZSI6IktEQV9TdGF0aXN0aWNzU2VydmljZVZlcnNpb24iLCJLZXlUeXBlIjoiaW50IiwiS2V5RGVmYXVsdFZhbHVlIjoiMSIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6Ik1pY3Jvc2VydmljZXMiLCJOYW1lIjoiTWljcm9zZXJ2aWNlcyIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkthZGVuYSJ9LCJEaXNwbGF5TmFtZSI6IlZlcnNpb25zIn19")]
+        public const string KDA_StatisticsServiceVersion = "KDA_StatisticsServiceVersion";
     }
 }
