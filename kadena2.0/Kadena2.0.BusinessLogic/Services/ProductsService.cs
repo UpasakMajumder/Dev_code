@@ -175,5 +175,11 @@ namespace Kadena.BusinessLogic.Services
 
             return resources.GetResourceString(unit.LocalizationString, cultureCode);
         }
+
+        public string TranslateUnitOfMeasure(string unitOfMeasure, string cultureCode)
+        {
+            var unit = units.GetUnitOfMeasure(unitOfMeasure);
+            return resources.GetResourceString(unit.LocalizationString, cultureCode);
+        }
     }
 }

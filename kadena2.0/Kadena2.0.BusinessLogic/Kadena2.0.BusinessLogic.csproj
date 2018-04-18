@@ -57,6 +57,7 @@
     <Compile Include="Contracts\IIBTFService.cs" />
     <Compile Include="Contracts\IIdentityService.cs" />
     <Compile Include="Contracts\IImageService.cs" />
+    <Compile Include="Contracts\IModuleAccessService.cs" />
     <Compile Include="Contracts\IUserService.cs" />
     <Compile Include="Contracts\IMailService.cs" />
     <Compile Include="Contracts\Orders\IOrderReportService.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Services\IdentityService.cs" />
     <Compile Include="Services\MailService.cs" />
     <Compile Include="Services\ImageService.cs" />
+    <Compile Include="Services\ModuleAccessService.cs" />
     <Compile Include="Services\OrderPayment\SavedCreditCard3dsi.cs" />
     <Compile Include="Services\IBTFService.cs" />
     <Compile Include="Services\Orders\GetOrderDataService.cs" />

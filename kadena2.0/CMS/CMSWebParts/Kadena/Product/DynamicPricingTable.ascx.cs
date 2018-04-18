@@ -6,6 +6,9 @@ using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.BusinessLogic.Contracts;
+using Kadena.Container.Default;
+using Kadena.Models.Product;
 using Kadena.Old_App_Code.Kadena.DynamicPricing;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +19,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
 {
     public partial class DynamicPricingTable : CMSAbstractWebPart
     {
-        private const string _TableRowTemplate = "<tr><td>{0}</td><td{2}>{3} {1}</td></tr>";
+        private const string _TableRowTemplate = "<tr><td>{0} {1}</td><td{3}>{4} {2}</td></tr>";
 
         public string PriceElementName
         {
@@ -49,6 +52,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
             if (!StopProcessing)
             {
                 var rawData = new JavaScriptSerializer().Deserialize<List<DynamicPricingRawData>>(DocumentContext.CurrentDocument.GetStringValue("ProductDynamicPricing", string.Empty));
+                var uom = DocumentContext.CurrentDocument.GetStringValue("ProductUnitOfMeasure", UnitOfMeasure.DefaultUnit);
+                var uomLocalized = DIContainer.Resolve<IProductsService>().TranslateUnitOfMeasure(uom, LocalizationContext.CurrentCulture.CultureCode);
 
                 if (rawData == null || rawData.Count == 0)
                 {
@@ -82,8 +87,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
                         var basePrice = variant?.SKUPrice ?? DocumentContext.CurrentDocument.GetDoubleValue("SKUPrice", 0);
 
+                        
+
                         ltlTableContent.Text = string.Format(_TableRowTemplate,
                                 ResHelper.GetString("Kadena.Product.BasePriceTitle", LocalizationContext.CurrentCulture.CultureCode),
+                                uomLocalized,
                                 basePrice.ToString("N2"),
                                 string.IsNullOrWhiteSpace(PriceElementName) ? string.Empty : $" id='{PriceElementName}'",
                                 ResHelper.GetString("Kadena.Checkout.ItemPricePrefix", LocalizationContext.CurrentCulture.CultureCode));
@@ -99,6 +107,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         {
                             result.Append(string.Format(_TableRowTemplate,
                                 string.Format(ResHelper.GetString("Kadena.Product.PiecesFormatString", LocalizationContext.CurrentCulture.CultureCode), item.Min, item.Max),
+                                uomLocalized,
                                 item.Price.ToString("N2"),
                                 string.Empty,
                                 ResHelper.GetString("Kadena.Checkout.ItemPricePrefix", LocalizationContext.CurrentCulture.CultureCode)));

@@ -125,6 +125,7 @@
     <Compile Include="Contracts\IKenticoFileProvider.cs" />
     <Compile Include="Contracts\IKenticoIBTFProvider.cs" />
     <Compile Include="Contracts\IKenticoMediaProvider.cs" />
+    <Compile Include="Contracts\IKenticoModuleMappingProvider.cs" />
     <Compile Include="Contracts\IKenticoRoleProvider.cs" />
     <Compile Include="Contracts\IKenticoSettingsProvider.cs" />
     <Compile Include="Contracts\IKenticoUnitOfMeasureProvider.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="Providers\KenticoLocalizationProvider.cs" />
     <Compile Include="Providers\KenticoMediaProvider.cs" />
     <Compile Include="Providers\KenticoUnitOfMeasureProvider.cs" />
+    <Compile Include="Providers\KenticoModuleMappingProvider.cs" />
     <Compile Include="Providers\KenticoRoleProvider.cs" />
     <Compile Include="Providers\KenticoPermissionsProvider.cs" />
     <Compile Include="Providers\KenticoProgramsProvider.cs" />

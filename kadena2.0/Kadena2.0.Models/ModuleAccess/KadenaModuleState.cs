@@ -1,4 +1,4 @@
-﻿namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
+﻿namespace Kadena.Models.ModuleAccess
 {
     public enum KadenaModuleState
     {
