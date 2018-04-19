@@ -30,7 +30,7 @@ namespace Kadena.BusinessLogic.Services
                 Html = html
             };
 
-            var sendResult = await notificationClient.SendCustomNotification(microserviceRequest);
+            var sendResult = await notificationClient.SendCustomNotification(microserviceRequest).ConfigureAwait(false);
 
             if (!sendResult.Success)
             {

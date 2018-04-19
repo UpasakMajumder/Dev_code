@@ -1308,6 +1308,6 @@ namespace Kadena.Models.SiteSettings
         [GroupAttribute("Image settings")]
         [DefaultValueAttribute(@"200")]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IlRodW1ibmFpbCdzIG1heGltdW0gc2lkZSBzaXplIiwiS2V5TmFtZSI6IktEQV9UaHVtYm5haWxNYXhTaWRlU2l6ZSIsIktleVR5cGUiOiJpbnQiLCJLZXlEZWZhdWx0VmFsdWUiOiIyMDAiLCJLZXlEZXNjcmlwdGlvbiI6Ik1heGltdW0gc2lkZSBzaXplIChweCkgZm9yIGdlbmVyYXRpbmcgdGh1bWJuYWlscyBvZiBwcm9kdWN0J3MvY2F0ZWdvcnkncyBpbWFnZS4iLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiUHJvZHVjdCIsIk5hbWUiOiJLREFTZXR0aW5nUHJvZHVjdENhdGVnb3J5IiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiRUNvbW1lcmNlU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJJbWFnZSBzZXR0aW5ncyJ9fQ==")]
-        public const string KDA_ThumbnailMaxSideSize = "KDA_ThumbnailMaxSideSize";
+        public const string KDA_ThumbnailMaxSideSize = "KDA_ThumbnailMaxSideSize";        
     }
 }
