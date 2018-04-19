@@ -39,6 +39,7 @@ const products = {
       "quantityPrefix": "Quantity:",
       "quantity": 11,
       "stockQuantity": 15,
+      "unitOfMeasure": "pc",
       "isQuantityEditable": true,
       "productionTime": "Now",
       "shipTime": "Tomorrow",
@@ -71,7 +72,8 @@ const products = {
       "quantityPrefix": "Quantity:",
       "quantity": 11,
       "stockQuantity": 15,
-      "isQuantityEditable": true,
+      "unitOfMeasure": "pc",
+      "isQuantityEditable": false,
       "productionTime": "",
       "shipTime": "Tomorrow",
       "emailProof": {
