@@ -73,7 +73,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 SKUNumber = i.SKU.SKUNumber,
                 TotalTax = 0.0m,
                 UnitPrice = showPrices ? (decimal)i.UnitPrice : 0.0m,
-                UnitOfMeasure = units.GetUnitOfMeasure(i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit)).ErpCode,
+                UnitOfMeasure = units.GetLocalizedUnitOfMeasure(i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit)),
                 Image = productProvider.GetProductImagePath(i.GetIntegerValue("ProductPageID", 0)),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
