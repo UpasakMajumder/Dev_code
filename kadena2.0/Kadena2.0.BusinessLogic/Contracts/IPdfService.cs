@@ -4,6 +4,7 @@ namespace Kadena.BusinessLogic.Contracts
 {
     public interface IPdfService
     {
-        Task<string> GetHiresPdfLink(string orderId, int line);
+        Task<string> GetHiresPdfRedirectLink(string orderId, int line, string hash);
+        string GetHiresPdfUrl(string orderId, int lineNumber);
     }
 }

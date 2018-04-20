@@ -34,6 +34,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoBusinessUnitsProvider businessUnits;
         private readonly IKenticoSiteProvider site;
         private readonly IImageService imageService;
+        private readonly IPdfService pdfService;
 
 
         public OrderDetailService(IMapper mapper,
@@ -49,7 +50,8 @@ namespace Kadena.BusinessLogic.Services.Orders
             IKenticoPermissionsProvider permissions,
             IKenticoBusinessUnitsProvider businessUnits,
             IKenticoSiteProvider site,
-            IImageService imageService
+            IImageService imageService,
+            IPdfService pdfService
             )
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -66,6 +68,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.businessUnits = businessUnits ?? throw new ArgumentNullException(nameof(businessUnits));
             this.site = site ?? throw new ArgumentNullException(nameof(site));
             this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
+            this.pdfService = pdfService ?? throw new ArgumentNullException(nameof(pdfService));
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
@@ -210,7 +213,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 {
                     Id = i.SkuId,
                     Image = imageService.GetThumbnailLink(products.GetSkuImageUrl(i.SkuId)),
-                    DownloadPdfURL = i.Type.Contains(OrderItemTypeDTO.TemplatedProduct.ToString()) ? $"/api/pdf/hires/{orderId}/{i.LineNumber}" : string.Empty,
+                    DownloadPdfURL = i.Type.Contains(OrderItemTypeDTO.TemplatedProduct.ToString()) ? pdfService.GetHiresPdfUrl(orderId, i.LineNumber) : string.Empty,
                     MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                     Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                     Quantity = i.Quantity,
@@ -243,11 +246,13 @@ namespace Kadena.BusinessLogic.Services.Orders
                 };
             }).ToList();
 
-
             await SetMailingListNames(orderedItems);
 
             return orderedItems;
         }
+
+
+        
 
         private async Task SetMailingListNames(List<OrderedItem> orderedItems)
         {

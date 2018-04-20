@@ -1309,5 +1309,14 @@ namespace Kadena.Models.SiteSettings
         [DefaultValueAttribute(@"200")]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IlRodW1ibmFpbCdzIG1heGltdW0gc2lkZSBzaXplIiwiS2V5TmFtZSI6IktEQV9UaHVtYm5haWxNYXhTaWRlU2l6ZSIsIktleVR5cGUiOiJpbnQiLCJLZXlEZWZhdWx0VmFsdWUiOiIyMDAiLCJLZXlEZXNjcmlwdGlvbiI6Ik1heGltdW0gc2lkZSBzaXplIChweCkgZm9yIGdlbmVyYXRpbmcgdGh1bWJuYWlscyBvZiBwcm9kdWN0J3MvY2F0ZWdvcnkncyBpbWFnZS4iLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiUHJvZHVjdCIsIk5hbWUiOiJLREFTZXR0aW5nUHJvZHVjdENhdGVnb3J5IiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiRUNvbW1lcmNlU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJJbWFnZSBzZXR0aW5ncyJ9fQ==")]
         public const string KDA_ThumbnailMaxSideSize = "KDA_ThumbnailMaxSideSize";        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("General Site Settings")]
+        [DefaultValueAttribute(@"4rt5yh7rt8ye7rth68y7erh68y74e")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9IaXJlc1BkZkxpbmtIYXNoU2FsdCIsIktleU5hbWUiOiJLREFfSGlyZXNQZGZMaW5rSGFzaFNhbHQiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjoiNHJ0NXloN3J0OHllN3J0aDY4eTdlcmg2OHk3NGUiLCJLZXlEZXNjcmlwdGlvbiI6IiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiR2VuZXJhbCBTaXRlIFNldHRpbmdzIn19")]
+        public const string KDA_HiresPdfLinkHashSalt = "KDA_HiresPdfLinkHashSalt";
     }
 }

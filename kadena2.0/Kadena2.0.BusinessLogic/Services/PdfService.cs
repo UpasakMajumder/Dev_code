@@ -4,6 +4,8 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Kadena.BusinessLogic.Services
@@ -25,8 +27,24 @@ namespace Kadena.BusinessLogic.Services
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<string> GetHiresPdfLink(string orderId, int line)
+
+        public string GetHiresPdfUrl(string orderId, int lineNumber)
         {
+            var hash = GetHash(orderId, lineNumber);
+            return $"/api/pdf/hires/{orderId}/{lineNumber}?hash={hash}";
+        }
+
+
+        public async Task<string> GetHiresPdfRedirectLink(string orderId, int line, string hash)
+        {
+            var checkHash = GetHash(orderId, line);
+
+            if (hash != checkHash)
+            {
+                logger.LogError("GetHiresPdfLink", $"Failed to verify request hash");
+                return documents.GetDocumentAbsoluteUrl(resources.GetSiteSettingsKey(Settings.KDA_HiresPdfLinkFail));
+            }
+
             var order = await orderViewClient.GetOrderByOrderId(orderId);
 
             if (!order.Success || order.Payload == null)
@@ -57,6 +75,15 @@ namespace Kadena.BusinessLogic.Services
         private string GetCustomizedFailUrl(int siteId)
         {
             return documents.GetDocumentAbsoluteUrl(resources.GetSettingsKey<string>(Settings.KDA_HiresPdfLinkFail, siteId));
+        }
+
+        private string GetHash(string orderId, int lineNumber)
+        {
+            var salt = resources.GetSiteSettingsKey(Settings.KDA_HiresPdfLinkHashSalt);
+            var hashBase = $"{orderId}_{lineNumber}|{salt}";
+            var shaComputer = SHA256Managed.Create();
+            var hashBytes = shaComputer.ComputeHash(Encoding.ASCII.GetBytes(hashBase));
+            return BitConverter.ToString(hashBytes).Replace("-", string.Empty);
         }
     }
 }
