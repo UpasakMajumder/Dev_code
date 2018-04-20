@@ -469,6 +469,7 @@
     <Compile Include="BusinessLogic\CreditCard\SavedCreditCard3dsiTests.cs" />
     <Compile Include="BusinessLogic\CreditCard\CreditCard3dsiTests.cs" />
     <Compile Include="BusinessLogic\ImageServiceTests.cs" />
+    <Compile Include="MicroserviceClients\StatisticsClientTests.cs" />
     <Compile Include="Models\OrderFilterTests.cs" />
     <Compile Include="Models\PaymentMethodTest.cs" />
     <Compile Include="BusinessLogic\DateTimeFormatterTest.cs" />
