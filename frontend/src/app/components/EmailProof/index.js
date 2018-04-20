@@ -125,7 +125,7 @@ class EmailProof extends Component {
 
         <div className="mb-4">
           <TextInput
-            maxLength={Infinity}
+            maximumLength={Infinity}
             label={dialog.recepientEmailLabel}
             error={this.getErrorMessage('recepientEmail')}
             value={form.recepientEmail}
@@ -135,7 +135,7 @@ class EmailProof extends Component {
 
         <div className="mb-4">
           <TextInput
-            maxLength={Infinity}
+            maximumLength={Infinity}
             label={dialog.subjectLabel}
             error={this.getErrorMessage('subject')}
             value={form.subject}
