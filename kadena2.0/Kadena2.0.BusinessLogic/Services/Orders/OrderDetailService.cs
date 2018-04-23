@@ -6,7 +6,6 @@ using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Common;
 using Kadena.Models.OrderDetail;
-using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
@@ -35,6 +34,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoSiteProvider site;
         private readonly IImageService imageService;
         private readonly IPdfService pdfService;
+        private readonly IKenticoUnitOfMeasureProvider units;
 
 
         public OrderDetailService(IMapper mapper,
@@ -52,6 +52,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             IKenticoSiteProvider site,
             IImageService imageService,
             IPdfService pdfService
+            IKenticoUnitOfMeasureProvider units
             )
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -69,6 +70,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.site = site ?? throw new ArgumentNullException(nameof(site));
             this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
             this.pdfService = pdfService ?? throw new ArgumentNullException(nameof(pdfService));
+            this.units = units ?? throw new ArgumentNullException(nameof(units));
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
@@ -216,6 +218,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     DownloadPdfURL = i.Type.Contains(OrderItemTypeDTO.TemplatedProduct.ToString()) ? pdfService.GetHiresPdfUrl(orderId, i.LineNumber) : string.Empty,
                     MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                     Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
+                    UnitOfMeasure = units.GetLocalizedUnitOfMeasure(i.UnitOfMeasure),
                     Quantity = i.Quantity,
                     QuantityShipped = i.QuantityShipped,
                     QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? resources.GetResourceString("Kadena.Order.QuantityPrefixAddresses") : resources.GetResourceString("Kadena.Order.QuantityPrefix"),
