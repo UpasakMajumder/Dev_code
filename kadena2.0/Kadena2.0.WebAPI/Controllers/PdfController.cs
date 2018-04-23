@@ -26,5 +26,13 @@ namespace Kadena.WebAPI.Controllers
             var result = await service.GetHiresPdfRedirectLink(orderId, line, hash);
             return Redirect(result);
         }
+
+        [HttpGet]
+        [Route("api/pdf/lowres/{templateid}/{settingsid}")]
+        public async Task<RedirectResult> GetLowresPdf(Guid templateId, Guid settingsId, [FromUri]string hash)
+        {
+            var result = await service.GetLowresPdfRedirectLink(templateId, settingsId, hash);
+            return Redirect(result);
+        }
     }
 }

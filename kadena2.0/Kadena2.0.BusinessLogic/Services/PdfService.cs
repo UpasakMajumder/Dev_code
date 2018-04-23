@@ -57,7 +57,7 @@ namespace Kadena.BusinessLogic.Services
                 return GetCustomizedFailUrl(0);
             }
 
-            return pdfUri.AbsolutePath;
+            return pdfUri.AbsoluteUri;
         }
 
 
@@ -91,7 +91,7 @@ namespace Kadena.BusinessLogic.Services
 
             if (!linkResult.Success || string.IsNullOrEmpty(linkResult.Payload))
             {
-                logger.LogError("GetHiresPdfLink", $"Failed to call File microservice. {order.ErrorMessages}");
+                logger.LogError("GetHiresPdfLink", $"Failed to call File microservice. {linkResult.ErrorMessages}");
                 return GetCustomizedFailUrl(order.Payload.SiteId);
             }
 
