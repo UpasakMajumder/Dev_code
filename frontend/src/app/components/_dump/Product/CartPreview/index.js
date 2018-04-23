@@ -14,7 +14,7 @@ const CartPreviewProduct = (props) => {
     )
     : (
       <p>
-        {props.quantityPrefix} <strong>{props.quantity}</strong>
+        {props.quantityPrefix} <strong>{props.quantity}</strong> {props.unitOfMeasure}
       </p>
     );
 
@@ -46,6 +46,7 @@ CartPreviewProduct.propTypes = {
   mailingList: PropTypes.string,
   pricePrefix: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
+  unitOfMeasure: PropTypes.string.isRequired,
   quantityPrefix: PropTypes.string,
   quantity: PropTypes.number
 };

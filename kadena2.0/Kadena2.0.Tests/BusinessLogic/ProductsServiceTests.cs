@@ -235,6 +235,24 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(expectedResult, result);
         }
 
+        [Theory(DisplayName = "TranslateUnitOfMeasureTest")]
+        [InlineData("Each", true, "EachCZ")]
+        [InlineData("Role", false, "RoleCZ")]
+        public void TranslateUnitOfMeasureTest(string unitOfMeasure, bool isDefault, string expectedResult)
+        {
+            // Arrange
+            const string culture = "cz-CZ";
+            const string localizationString = "loc.key";
+            Setup<IKenticoUnitOfMeasureProvider, UnitOfMeasure>(p => p.GetUnitOfMeasure(unitOfMeasure), new UnitOfMeasure { LocalizationString = localizationString, IsDefault = isDefault });
+            Setup<IKenticoResourceService, string>(r => r.GetResourceString(localizationString, culture), expectedResult);
+
+            // Act
+            var result = Sut.TranslateUnitOfMeasure(unitOfMeasure, culture);
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
+
 
         [Theory(DisplayName = "ProductsService.GetInventoryProductAvailability() | Non inventory type")]
         [InlineData("KDA.MailingProduct")]

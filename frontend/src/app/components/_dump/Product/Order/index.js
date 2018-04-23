@@ -51,6 +51,7 @@ const Order = ({
   productStatus,
   options,
   preview,
+  unitOfMeasure,
   // emailProof
   emailProof,
   toogleEmailProof
@@ -93,13 +94,13 @@ const Order = ({
   const quantityElement = mailingList
     ? (
       <div className="cart-product__optional">
-        <p>{quantityPrefix} {quantity}</p>
+        <p>{quantityPrefix} {quantity} {unitOfMeasure}</p>
       </div>
     )
     : (
       <div className="cart-product__optional">
-        <p>{quantityPrefix} {quantity}</p>
-        <p>{quantityShippedPrefix} {quantityShipped}</p>
+        <p>{quantityPrefix} {quantity} {unitOfMeasure}</p>
+        <p>{quantityShippedPrefix} {quantityShipped} {unitOfMeasure}</p>
       </div>
     );
 
@@ -164,6 +165,7 @@ Order.propTypes = {
   productStatusPrefix: PropTypes.string.isRequired,
   productStatus: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  unitOfMeasure: PropTypes.string.isRequired,
   emailProof: PropTypes.object.isRequired,
   toogleEmailProof: PropTypes.func.isRequired
 };
