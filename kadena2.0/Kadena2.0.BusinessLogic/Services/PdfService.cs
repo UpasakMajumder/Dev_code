@@ -17,27 +17,32 @@ namespace Kadena.BusinessLogic.Services
         private readonly ITemplateService templatedClient;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoDocumentProvider documents;
+        private readonly IKenticoSiteProvider site;
         private readonly IKenticoLogger logger;
 
-        public PdfService(IOrderViewClient orderViewClient, IFileClient fileClient, ITemplateService templatedClient, IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoLogger logger)
+        public PdfService(IOrderViewClient orderViewClient, IFileClient fileClient, ITemplateService templatedClient, IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoSiteProvider site, IKenticoLogger logger)
         {
             this.orderViewClient = orderViewClient ?? throw new ArgumentNullException(nameof(orderViewClient));
             this.fileClient = fileClient ?? throw new ArgumentNullException(nameof(fileClient));
             this.templatedClient = templatedClient ?? throw new ArgumentNullException(nameof(templatedClient));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
+            this.site = site ?? throw new ArgumentNullException(nameof(site));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public string GetHiresPdfUrl(string orderId, int lineNumber)
         {
             var hash = GetHash(orderId, lineNumber.ToString());
-            return $"/api/pdf/hires/{orderId}/{lineNumber}?hash={hash}";
+            var url = $"/api/pdf/hires/{orderId}/{lineNumber}?hash={hash}";
+            return site.GetAbsoluteUrl(url);
+
         }
         public string GetLowresPdfUrl(Guid templateId, Guid settingsId)
         {
             var hash = GetHash(templateId.ToString(), settingsId.ToString());
-            return $"/api/pdf/lowres/{templateId}/{settingsId}?hash={hash}";
+            var url = $"/api/pdf/lowres/{templateId}/{settingsId}?hash={hash}";
+            return site.GetAbsoluteUrl(url);
         }
 
         public async Task<string> GetLowresPdfRedirectLink(Guid templateId, Guid settingsId, string hash)

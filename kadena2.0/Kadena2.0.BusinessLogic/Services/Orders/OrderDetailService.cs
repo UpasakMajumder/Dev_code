@@ -232,6 +232,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 var templatedProduct = i.TemplateId != Guid.Empty ? products.GetProductBySkuId(i.SkuId) : null;
                 var previewUrl = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, templatedProduct?.TemplateLowResSettingId ?? Guid.Empty);
                 var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
+                var pdfUrl = string.Empty;
 
                 return new OrderedItem()
                 {
@@ -264,7 +265,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     {
                         Exists = templatedProduct != null,
                         Text = resources.GetResourceString("Kadena.EmailProof.ButtonLabel"),
-                        Url = previewAbsoluteUrl
+                        Url = GetPdfUrl(orderId, i, templatedProduct)
                     },
 
                     Options = i.Attributes?.Select(a => new ItemOption { Name = products.GetOptionCategory(a.Key)?.DisplayName ?? a.Key, Value = a.Value }) ?? Enumerable.Empty<ItemOption>()
