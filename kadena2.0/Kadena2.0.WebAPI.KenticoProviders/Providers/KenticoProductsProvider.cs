@@ -183,6 +183,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 product.StockItems = sku.SKUAvailableItems;
                 product.Availability = sku.SKUAvailableItems > 0 ? "available" : "out";
                 product.Weight = sku.SKUWeight;
+                product.HiResPdfDownloadEnabled = sku.GetBooleanValue("SKUHiResPdfDownloadEnabled", false);
             }
 
             return product;

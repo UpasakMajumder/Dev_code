@@ -7,5 +7,6 @@
         public bool NeedsShipping { get; set; }
         public int AvailableItems { get; set; }
         public bool SellOnlyIfAvailable { get; set; }
+        public bool HiResPdfDownloadEnabled { get; set; }
     }
 }
