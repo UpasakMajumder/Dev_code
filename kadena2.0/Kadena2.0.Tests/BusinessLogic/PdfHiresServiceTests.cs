@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Kadena.Tests.BusinessLogic
 {
-    public class PdfServiceTests : KadenaUnitTest<PdfService>
+    public class PdfhiresServiceTests : KadenaUnitTest<PdfService>
     {
         private const string _correctOrderNo = "123-123-123-123";
         private const int _correctLineNo = 4;
@@ -16,22 +16,22 @@ namespace Kadena.Tests.BusinessLogic
         private const string _notFoundUrl = "http://no.pdf/found";
 
         [Fact]
-        public void HashComputationTest()
+        public void HashComputationTest_Hires()
         {
             Setup<IKenticoResourceService, string>(r => r.GetSiteSettingsKey(Settings.KDA_HiresPdfLinkHashSalt), _correctSalt);
+            Setup<IKenticoSiteProvider, string, string>(s => s.GetAbsoluteUrl(It.IsAny<string>()), s => s);
 
             var result = Sut.GetHiresPdfUrl(_correctOrderNo, _correctLineNo);
 
             Assert.Equal($"/api/pdf/hires/{_correctOrderNo}/{_correctLineNo}?hash={_correctHash}", result);
         }
 
-
-        [Theory(DisplayName = "PdfServiceTests - Passing changed data")]
+        [Theory(DisplayName = "PdfHiresServiceTests - Passing changed data")]
         [InlineData("666-666-666-666", _correctLineNo, _correctHash, _correctSalt)]
         [InlineData(_correctOrderNo, 666, _correctHash, _correctSalt)]
         [InlineData(_correctOrderNo, _correctLineNo, "wronghash", _correctSalt)]
         [InlineData(_correctOrderNo, _correctLineNo, _correctHash, "WRONGsalt")]
-        public async Task HashFailedTest_WrongSalt(string orderId, int lineNo, string hash, string salt)
+        public async Task HashFailedTest_Hires(string orderId, int lineNo, string hash, string salt)
         {
             Setup<IKenticoResourceService, string>(r => r.GetSiteSettingsKey(Settings.KDA_HiresPdfLinkHashSalt), salt);
             Setup<IKenticoDocumentProvider, string>(d => d.GetDocumentAbsoluteUrl(It.IsAny<string>()), _notFoundUrl);
