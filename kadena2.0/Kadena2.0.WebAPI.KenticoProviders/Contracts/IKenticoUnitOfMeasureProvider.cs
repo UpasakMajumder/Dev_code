@@ -5,8 +5,9 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
     public interface IKenticoUnitOfMeasureProvider
     {
         UnitOfMeasure GetUnitOfMeasure(string name);
-        UnitOfMeasure GetUnitOfMeasureByErpCode(string erpCode);
+        UnitOfMeasure GetUnitOfMeasureByCode(string erpCode);
         UnitOfMeasure GetDefaultUnitOfMeasure();
-        string GetLocalizedUnitOfMeasure(string codeOfUnit);
+        string GetDisplaynameByCode(string erpCode);
+        string GetDisplayname(string unitName);
     }
 }

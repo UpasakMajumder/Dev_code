@@ -39,7 +39,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return mapper.Map<UnitOfMeasure>(unit);
         }
 
-        public UnitOfMeasure GetUnitOfMeasureByErpCode(string erpCode)
+        public UnitOfMeasure GetUnitOfMeasureByCode(string erpCode)
         {
             var unit = CustomTableItemProvider.GetItems(CustomTableName)
                                           .WhereEquals("ErpCode", erpCode)
@@ -59,16 +59,26 @@ namespace Kadena.WebAPI.KenticoProviders
             return mapper.Map<UnitOfMeasure>(unit);
         }
 
-        public string GetLocalizedUnitOfMeasure(string codeOfUnit)
+        public string GetDisplaynameByCode(string erpCode)
         {
-            var unit = GetUnitOfMeasureByErpCode(codeOfUnit);
+            var unit = GetUnitOfMeasureByCode(erpCode);
+            return Translate(unit, erpCode);
+        }
 
-            if (unit == null)
+        public string GetDisplayname(string unitName)
+        {
+            var unit = GetUnitOfMeasure(unitName);
+            return Translate(unit, unitName);
+        }
+
+        private string Translate(UnitOfMeasure uom, string defaultName)
+        {
+            if (uom == null)
             {
-                return codeOfUnit;
+                return defaultName;
             }
 
-            return ResHelper.GetString(unit.LocalizationString, LocalizationContext.CurrentCulture.CultureCode);
+            return ResHelper.GetString(uom.LocalizationString, LocalizationContext.CurrentCulture.CultureCode);
         }
     }
 }

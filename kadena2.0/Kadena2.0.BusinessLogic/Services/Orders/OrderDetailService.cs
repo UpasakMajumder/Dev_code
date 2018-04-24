@@ -241,7 +241,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     DownloadPdfURL =  GetPdfUrl(orderId, i, templatedProduct),
                     MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                     Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
-                    UnitOfMeasure = units.GetLocalizedUnitOfMeasure(i.UnitOfMeasure),
+                    UnitOfMeasure = units.GetDisplaynameByCode(i.UnitOfMeasure),
                     Quantity = i.Quantity,
                     QuantityShipped = i.QuantityShipped,
                     QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? resources.GetResourceString("Kadena.Order.QuantityPrefixAddresses") : resources.GetResourceString("Kadena.Order.QuantityPrefix"),
