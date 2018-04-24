@@ -33,6 +33,7 @@
   &__img {
     @include rem(margin-right, $product-blocks-gap);
     width: $product-img-size;
+    position: relative;
 
     img {
       @extend .mb-3;
@@ -42,6 +43,12 @@
       margin-left: auto;
       margin-right: auto;
     }
+  }
+
+  &__flag {
+    position: absolute;
+    top: 7px;
+    right: -3px;
   }
 
   &__preview {
