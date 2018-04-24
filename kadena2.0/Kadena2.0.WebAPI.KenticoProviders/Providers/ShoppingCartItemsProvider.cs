@@ -61,6 +61,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 throw new ArgumentNullException(nameof(i.SKU), "CartItem has null SKU");
             }
 
+            var unitOfMeasure = i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit);
+
             var cartItem = new CartItem()
             {
                 Id = i.CartItemID,
@@ -73,7 +75,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 SKUNumber = i.SKU.SKUNumber,
                 TotalTax = 0.0m,
                 UnitPrice = showPrices ? (decimal)i.UnitPrice : 0.0m,
-                UnitOfMeasure = units.GetUnitOfMeasure(i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit)).ErpCode,
+                UnitOfMeasureName = units.GetDisplayname(unitOfMeasure),
+                UnitOfMeasureErpCode = units.GetUnitOfMeasure(unitOfMeasure).ErpCode,
                 Image = productProvider.GetProductImagePath(i.GetIntegerValue("ProductPageID", 0)),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,

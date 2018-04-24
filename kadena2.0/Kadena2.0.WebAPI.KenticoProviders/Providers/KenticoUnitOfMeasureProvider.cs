@@ -4,6 +4,8 @@ using System;
 using AutoMapper;
 using CMS.CustomTables;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using CMS.Helpers;
+using CMS.Localization;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -37,6 +39,16 @@ namespace Kadena.WebAPI.KenticoProviders
             return mapper.Map<UnitOfMeasure>(unit);
         }
 
+        public UnitOfMeasure GetUnitOfMeasureByCode(string erpCode)
+        {
+            var unit = CustomTableItemProvider.GetItems(CustomTableName)
+                                          .WhereEquals("ErpCode", erpCode)
+                                          .Columns("Name", "ErpCode", "LocalizationString", "IsDefault")
+                                          .FirstOrDefault();
+
+            return mapper.Map<UnitOfMeasure>(unit);
+        }
+
         public UnitOfMeasure GetDefaultUnitOfMeasure()
         {
             var unit = CustomTableItemProvider.GetItems(CustomTableName)
@@ -45,6 +57,28 @@ namespace Kadena.WebAPI.KenticoProviders
                                           .FirstOrDefault();
 
             return mapper.Map<UnitOfMeasure>(unit);
+        }
+
+        public string GetDisplaynameByCode(string erpCode)
+        {
+            var unit = GetUnitOfMeasureByCode(erpCode);
+            return Translate(unit, erpCode);
+        }
+
+        public string GetDisplayname(string unitName)
+        {
+            var unit = GetUnitOfMeasure(unitName);
+            return Translate(unit, unitName);
+        }
+
+        private string Translate(UnitOfMeasure uom, string defaultName)
+        {
+            if (uom == null)
+            {
+                return defaultName;
+            }
+
+            return ResHelper.GetString(uom.LocalizationString, LocalizationContext.CurrentCulture.CultureCode);
         }
     }
 }

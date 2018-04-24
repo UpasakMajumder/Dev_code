@@ -5,6 +5,7 @@ using Kadena.Dto.Order;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -12,13 +13,13 @@ namespace Kadena2.MicroserviceClients.Clients
     {
         public StatisticsClient(IMicroProperties properties)
         {
-            _serviceUrlSettingKey = "KDA_OrderStatisticsServiceEndpoint";
+            _serviceVersionSettingKey = Settings.KDA_StatisticsServiceVersion;
             _properties = properties ?? throw new ArgumentNullException(nameof(properties));
         }
 
         public async Task<BaseResponseDto<OrderStatisticDto>> GetOrderStatistics()
         {
-            var url = $"{BaseUrlOld}/api/OrderStats?customerName={_properties.GetCustomerName()}";
+            var url = $"{BaseUrl}/statistics/orders?customerName={_properties.GetCustomerName()}";
             return await Get<OrderStatisticDto>(url).ConfigureAwait(false);
         }
     }
