@@ -162,7 +162,7 @@ namespace Kadena.BusinessLogic.Services
                     {
                         resultItem.Stock = new Stock()
                         {
-                            Text = string.Format(resources.GetResourceString("Kadena.Product.NumberOfAvailableProducts"), product.StockItems),
+                            Text = string.Format(resources.GetResourceString("Kadena.Search.NumberOfAvailableProducts"), product.StockItems),
                             Type = product.Availability
                         };
                     }
