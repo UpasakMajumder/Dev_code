@@ -199,6 +199,7 @@
       <field column="SKUParentSKUID" guid="cfda202f-ccbf-47b8-9b24-d6feae3a470c" />
       <field column="SKUCustomerReferenceNumber" guid="c32528ae-48e9-4e78-9114-c3b6909f0b08" order="56" />
       <field column="SKUDontSendPriceToERP" visible="false" />
+      <field column="SKUHiResPdfDownloadEnabled" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Product - E-product properties</FormDisplayName>

@@ -244,6 +244,15 @@
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="SKUHiResPdfDownloadEnabled" columntype="boolean" guid="8ad34b07-1b2e-47f3-929b-c590f0813b1c" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>false</defaultvalue>
+          <fieldcaption>HiRes PDF download enabled</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="SKUCustomData" columntype="longtext" guid="29e8c9c5-d3c7-4846-a18f-057d5cd0a352" publicfield="false" system="true">
         <properties>
           <fieldcaption>SKUCustomData</fieldcaption>

@@ -6,6 +6,7 @@ using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Common;
 using Kadena.Models.OrderDetail;
+using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
@@ -33,6 +34,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoBusinessUnitsProvider businessUnits;
         private readonly IKenticoSiteProvider site;
         private readonly IImageService imageService;
+        private readonly IPdfService pdfService;
         private readonly IKenticoUnitOfMeasureProvider units;
 
 
@@ -50,6 +52,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             IKenticoBusinessUnitsProvider businessUnits,
             IKenticoSiteProvider site,
             IImageService imageService,
+            IPdfService pdfService,
             IKenticoUnitOfMeasureProvider units
             )
         {
@@ -67,6 +70,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.businessUnits = businessUnits ?? throw new ArgumentNullException(nameof(businessUnits));
             this.site = site ?? throw new ArgumentNullException(nameof(site));
             this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
+            this.pdfService = pdfService ?? throw new ArgumentNullException(nameof(pdfService));
             this.units = units ?? throw new ArgumentNullException(nameof(units));
         }
 
@@ -200,6 +204,27 @@ namespace Kadena.BusinessLogic.Services.Orders
             return orderDetail;
         }
 
+        private string GetPdfUrl(string orderId, Dto.ViewOrder.MicroserviceResponses.OrderItemDTO orderItem, Product orderedProduct)
+        {
+            if (!orderItem.Type.Contains(OrderItemTypeDTO.TemplatedProduct.ToString()))
+            {
+                return string.Empty;
+            }
+
+            if (orderedProduct.HiResPdfDownloadEnabled)
+            {
+                return pdfService.GetHiresPdfUrl(orderId, orderItem.LineNumber);
+            }
+
+            if (orderedProduct == null)
+            {
+                kenticoLog.LogError("GetPdfUrl", $"Couldn't find product for item line {orderItem.LineNumber} from order {orderId}");
+                return string.Empty;
+            }
+
+            return pdfService.GetLowresPdfUrl(orderItem.TemplateId, orderedProduct.TemplateLowResSettingId);
+        }
+
         private async Task<List<OrderedItem>> MapOrderedItems(List<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO> items, string orderId)
         {
             var orderedItems = items.Select(i =>
@@ -207,12 +232,13 @@ namespace Kadena.BusinessLogic.Services.Orders
                 var templatedProduct = i.TemplateId != Guid.Empty ? products.GetProductBySkuId(i.SkuId) : null;
                 var previewUrl = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, templatedProduct?.TemplateLowResSettingId ?? Guid.Empty);
                 var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
+                var pdfUrl = string.Empty;
 
                 return new OrderedItem()
                 {
                     Id = i.SkuId,
                     Image = imageService.GetThumbnailLink(products.GetSkuImageUrl(i.SkuId)),
-                    DownloadPdfURL = i.Type.Contains(OrderItemTypeDTO.TemplatedProduct.ToString()) ? $"/api/pdf/hires/{orderId}/{i.LineNumber}" : string.Empty,
+                    DownloadPdfURL =  GetPdfUrl(orderId, i, templatedProduct),
                     MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                     Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                     UnitOfMeasure = units.GetLocalizedUnitOfMeasure(i.UnitOfMeasure),
@@ -239,18 +265,20 @@ namespace Kadena.BusinessLogic.Services.Orders
                     {
                         Exists = templatedProduct != null,
                         Text = resources.GetResourceString("Kadena.EmailProof.ButtonLabel"),
-                        Url = previewAbsoluteUrl
+                        Url = GetPdfUrl(orderId, i, templatedProduct)
                     },
 
                     Options = i.Attributes?.Select(a => new ItemOption { Name = products.GetOptionCategory(a.Key)?.DisplayName ?? a.Key, Value = a.Value }) ?? Enumerable.Empty<ItemOption>()
                 };
             }).ToList();
 
-
             await SetMailingListNames(orderedItems);
 
             return orderedItems;
         }
+
+
+        
 
         private async Task SetMailingListNames(List<OrderedItem> orderedItems)
         {
