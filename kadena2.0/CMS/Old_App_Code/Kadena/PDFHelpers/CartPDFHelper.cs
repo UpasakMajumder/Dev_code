@@ -5,8 +5,9 @@ using CMS.DocumentEngine.Types.KDA;
 using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
-using CMS.MediaLibrary;
 using CMS.SiteProvider;
+using Kadena.BusinessLogic.Contracts;
+using Kadena.Container.Default;
 using Kadena.Models.Common;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
@@ -23,6 +24,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
     public class CartPDFHelper
     {
         private const string _cartPDFFileName = "KDA_CartPDFFileName";
+        private static IImageService imageService = DIContainer.Resolve<IImageService>();
         #region Methods
 
         /// <summary>
@@ -198,49 +200,8 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
 
         public static string GetProductThumbnailImage(string url)
         {
-            string thumbnailurl = string.Empty;
-            if (!string.IsNullOrEmpty(url))
-            {
-                if (url.StartsWith("~/getmedia/"))
-                {
-                    string strPathAndQuery = HttpContext.Current.Request.Url.PathAndQuery;
-                    thumbnailurl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(strPathAndQuery, "") + url.Trim('~');
-                }
-                else
-                {
-                    thumbnailurl = GetS3ImageMediaFileURL(url);
-                }
-            }
-            return string.IsNullOrEmpty(thumbnailurl) ? SettingsKeyInfoProvider.GetValue($@"{SiteContext.CurrentSiteName}.KDA_ProductsPlaceHolderImage") : thumbnailurl + "?MaxSideSize=100";
-        }
-
-        private static string GetS3ImageMediaFileURL(string url)
-        {
-            string s3ImageMediaURL = string.Empty;
-            Uri imgS3URL = null;
-            if (Uri.TryCreate(url, UriKind.Absolute, out imgS3URL))
-            {
-                string path = HttpUtility.ParseQueryString(imgS3URL.Query).Get("path");
-                if (!string.IsNullOrEmpty(path))
-                {
-                    string imgPath = path.Replace(SiteContext.CurrentSiteName.ToLower() + "/media/", "");
-                    if (!string.IsNullOrEmpty(imgPath))
-                    {
-                        string[] param = imgPath.Split('/');
-                        if (param.Length > 1)
-                        {
-                            string libraryFolder = param[0];
-                            string mediaFilePath = imgPath.Replace(libraryFolder + "/", "");
-                            MediaFileInfo mediaFile = MediaFileInfoProvider.GetMediaFileInfo(SiteContext.CurrentSiteName, mediaFilePath, libraryFolder);
-                            if (mediaFile != null)
-                            {
-                                s3ImageMediaURL = MediaFileInfoProvider.GetMediaFileAbsoluteUrl(mediaFile.FileGUID, mediaFile.FileName);
-                            }
-                        }
-                    }
-                }
-            }
-            return s3ImageMediaURL;
+            string thumbnailurl = imageService?.GetThumbnailLink(url);
+            return string.IsNullOrEmpty(thumbnailurl) ? SettingsKeyInfoProvider.GetValue($@"{SiteContext.CurrentSiteName}.KDA_ProductsPlaceHolderImage") : thumbnailurl;
         }
         #endregion Methods
     }
