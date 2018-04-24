@@ -253,6 +253,15 @@
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="SKUApprovalRequired" columntype="boolean" guid="e8895743-9873-453a-919e-5391220cb16c" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>false</defaultvalue>
+          <fieldcaption>Approval Required</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="SKUCustomData" columntype="longtext" guid="29e8c9c5-d3c7-4846-a18f-057d5cd0a352" publicfield="false" system="true">
         <properties>
           <fieldcaption>SKUCustomData</fieldcaption>
