@@ -230,6 +230,7 @@
       <field column="SKUCustomerReferenceNumber" guid="93af8472-8c7f-4012-ad78-750eeecddc23" order="56" />
       <field column="SKUDontSendPriceToERP" visible="false" />
       <field column="SKUHiResPdfDownloadEnabled" visible="false" />
+      <field column="SKUApprovalRequired" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Option (Text)</FormDisplayName>

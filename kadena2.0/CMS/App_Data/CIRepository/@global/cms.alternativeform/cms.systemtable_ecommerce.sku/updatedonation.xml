@@ -204,6 +204,7 @@
       <field column="SKUCustomerReferenceNumber" guid="c3694e50-7a89-4060-8717-150ced03dcc4" order="56" />
       <field column="SKUDontSendPriceToERP" visible="false" />
       <field column="SKUHiResPdfDownloadEnabled" visible="false" />
+      <field column="SKUApprovalRequired" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Product - Donation properties</FormDisplayName>
