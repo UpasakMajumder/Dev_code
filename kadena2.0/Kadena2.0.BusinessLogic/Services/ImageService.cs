@@ -39,7 +39,7 @@ namespace Kadena.BusinessLogic.Services
 
             var thumbnailMaxSideSize = _resourceService.GetSiteSettingsKey<int>(Settings.KDA_ThumbnailMaxSideSize);
 
-            if (IsPermanentLink(originalFileRelativeLink))
+            if (_mediaProvider.IsPermanentLink(originalFileRelativeLink))
             {
                 var linkParts = originalFileRelativeLink.Split('/');
                 if (linkParts.Length == 3)
@@ -83,11 +83,6 @@ namespace Kadena.BusinessLogic.Services
                     .PathAndQuery;
             }
             return thumbnailUri.LocalPath;
-        }
-
-        private static bool IsPermanentLink(string link)
-        {
-            return link.TrimStart('~', '/').StartsWith("getmedia");
         }
     }
 }

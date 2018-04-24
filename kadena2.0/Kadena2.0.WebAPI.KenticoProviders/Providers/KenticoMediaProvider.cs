@@ -31,5 +31,10 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             var thumbnailLink = URLHelper.AddParameterToUrl(mediaFileLink, "MaxSideSize", maxSideSize.ToString());
             return URLHelper.ResolveUrl(thumbnailLink);
         }
+
+        public bool IsPermanentLink(string link)
+        {
+            return link.TrimStart('~', '/').StartsWith("getmedia");
+        }
     }
 }

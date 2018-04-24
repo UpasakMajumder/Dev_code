@@ -11,5 +11,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetMediaLibraryPath(string mediaLibraryFolder);
 
         string GetMediaLibrariesLocation();
+
+        bool IsPermanentLink(string link);
     }
 }
