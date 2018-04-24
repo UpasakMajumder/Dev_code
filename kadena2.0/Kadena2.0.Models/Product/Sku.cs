@@ -8,5 +8,6 @@
         public int AvailableItems { get; set; }
         public bool SellOnlyIfAvailable { get; set; }
         public bool HiResPdfDownloadEnabled { get; set; }
+        public bool ApprovalRequired { get; set; }
     }
 }

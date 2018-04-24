@@ -180,7 +180,8 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.SellOnlyIfAvailable, opt => opt.MapFrom(src => src.SKUSellOnlyAvailable))
                 .ForMember(dest => dest.AvailableItems, opt => opt.MapFrom(src => src.SKUAvailableItems))
                 .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.SKUWeight))
-                .ForMember(dest => dest.HiResPdfDownloadEnabled, opt => opt.MapFrom(src => src.GetBooleanValue("SKUHiResPdfDownloadEnabled", false)));
+                .ForMember(dest => dest.HiResPdfDownloadEnabled, opt => opt.MapFrom(src => src.GetBooleanValue("SKUHiResPdfDownloadEnabled", false)))
+                .ForMember(dest => dest.ApprovalRequired, opt => opt.MapFrom(src => src.GetBooleanValue("SKUApprovalRequired", false)));
 
             CreateMap<User, UserInfo>()
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"));
