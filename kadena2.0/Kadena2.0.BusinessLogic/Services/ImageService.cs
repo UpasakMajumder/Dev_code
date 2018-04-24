@@ -35,9 +35,21 @@ namespace Kadena.BusinessLogic.Services
             }
 
             originalImageUri = new Uri(hostUri, originalImageLink.TrimStart('~'));
-            var s3FileUri = new Uri(hostUri, Helpers.Routes.File.Get);
-
             var originalFileRelativeLink = originalImageUri.LocalPath.TrimStart('/').ToLower();
+
+            var thumbnailMaxSideSize = _resourceService.GetSiteSettingsKey<int>(Settings.KDA_ThumbnailMaxSideSize);
+
+            if (IsPermanentLink(originalFileRelativeLink))
+            {
+                var linkParts = originalFileRelativeLink.Split('/');
+                if (linkParts.Length == 3)
+                {
+                    var mediaFileId = new Guid(linkParts[1]);
+                    return _mediaProvider.GetThumbnailPath(mediaFileId, linkParts[2], thumbnailMaxSideSize);
+                }
+            }
+
+            var s3FileUri = new Uri(hostUri, Helpers.Routes.File.Get);
             if (s3FileUri.IsBaseOf(originalImageUri))
             {
                 originalFileRelativeLink = originalImageUri.GetParameter("path").TrimStart('/').ToLower();
@@ -53,7 +65,6 @@ namespace Kadena.BusinessLogic.Services
             var libraryFolderName = fileLibraryLink.Split('/')[0];
             var fileLibraryRelativeLink = fileLibraryLink.Remove(fileLibraryLink.IndexOf(libraryFolderName, 0), libraryFolderName.Length).TrimStart('/');
 
-            var thumbnailMaxSideSize = _resourceService.GetSiteSettingsKey<int>(Settings.KDA_ThumbnailMaxSideSize);
             var thumbnailLibraryLink = _mediaProvider.GetThumbnailPath(libraryFolderName, fileLibraryRelativeLink, thumbnailMaxSideSize)?.TrimStart('/');
 
             if (string.IsNullOrWhiteSpace(thumbnailLibraryLink))
@@ -72,6 +83,11 @@ namespace Kadena.BusinessLogic.Services
                     .PathAndQuery;
             }
             return thumbnailUri.LocalPath;
+        }
+
+        private static bool IsPermanentLink(string link)
+        {
+            return link.TrimStart('~', '/').StartsWith("getmedia");
         }
     }
 }
