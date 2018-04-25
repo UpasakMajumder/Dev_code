@@ -163,7 +163,7 @@
           <property name="assigntoroles" ismacro="true">
             <![CDATA[{%Settings.KDA_SignupDefaultRole|(user)cvoqa2@gmail.com|(hash)8ed96f1bcba133242c75996350660a4560772a2e8d76ffb528453610c78231de%}]]>
           </property>
-          <property name="assigntosites">TWE</property>
+          <property name="assigntosites"></property>
           <property name="buttoncss">btn-action j-submit-button </property>
           <property name="buttontext">Sign Up</property>
           <property name="cat_open_ajax"></property>
