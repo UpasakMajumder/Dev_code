@@ -14,6 +14,7 @@ using CMS.CustomTables;
 using Kadena.Models.CreditCard;
 using Kadena.Models.Membership;
 using Kadena.Models.Checkout;
+using System.Data;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -194,6 +195,13 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.ErpCode, opt => opt.MapFrom(src => src.GetStringValue("ErpCode", string.Empty)))
                 .ForMember(dest => dest.LocalizationString, opt => opt.MapFrom(src => src.GetStringValue("LocalizationString", string.Empty)))
                 .ForMember(dest => dest.IsDefault, opt => opt.MapFrom(src => src.GetBooleanValue("IsDefault", false)));
+
+            CreateMap<DataRow, User>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => (int)src[0]))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => (string)src[1]))
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => (string)src[2]))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => (string)src[4]))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => (string)src[6]));
         }
     }
 }

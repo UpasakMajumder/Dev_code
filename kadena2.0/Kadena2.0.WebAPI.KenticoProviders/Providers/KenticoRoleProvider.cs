@@ -15,12 +15,7 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers
 
         public KenticoRoleProvider(IMapper mapper)
         {
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-
-            this.mapper = mapper;
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public IEnumerable<Role> GetUserRoles(int userId)
@@ -59,6 +54,27 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers
             {
                 UserInfoProvider.RemoveUserFromRole(userName, siteName, role);
             }
+        }
+
+        public IEnumerable<User> GetRoleUsers(string roleName, int siteId)
+        {
+            var role = RoleInfoProvider.GetRoleInfo(roleName, siteId);
+
+            if (role == null)
+            {
+                throw new ArgumentOutOfRangeException($"Cannot find role '{roleName}' on site '{siteId}'");
+            }
+
+            var usersTable = RoleInfoProvider.GetRoleUsers(role.RoleID);
+
+            var users = new List<User>();
+
+            foreach (var row in usersTable.Rows)
+            {
+                users.Add(mapper.Map<User>(row));
+            }
+
+            return users;
         }
 
         private string GetSiteName(int siteId)
