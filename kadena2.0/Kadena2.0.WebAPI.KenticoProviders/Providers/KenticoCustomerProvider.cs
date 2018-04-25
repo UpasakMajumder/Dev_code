@@ -3,7 +3,6 @@ using CMS.Ecommerce;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
-using System.Linq;
 
 namespace Kadena.WebAPI.KenticoProviders.Providers
 {
@@ -30,11 +29,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
         {
             return _mapper.Map<Customer>(CustomerInfoProvider.GetCustomerInfoByUserID(userId));
         }
-
-        /// <summary>
-        /// Creates and saves new Customer
-        /// </summary>
-        /// <returns>ID of new Customer</returns>
+        
         public int CreateCustomer(Customer customer)
         {
             var customerInfo = _mapper.Map<CustomerInfo>(customer);
@@ -58,16 +53,6 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             customerInfo.CustomerPhone = customer.Phone;
             customerInfo.CustomerCompany = customer.Company;
             customerInfo.Update();
-        }
-
-        public int GetUserIDByCustomerID(int customerID)
-        {
-            return CustomerInfoProvider.GetCustomers().WhereEquals("CustomerID", customerID).FirstOrDefault()?.CustomerUserID ?? 0;
-        }
-
-        public int GetCustomerIDByUserID(int userID)
-        {
-            return CustomerInfoProvider.GetCustomers().WhereEquals("CustomerUserID", userID).FirstOrDefault()?.CustomerID ?? 0;
         }
     }
 }

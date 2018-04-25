@@ -150,10 +150,10 @@ namespace Kadena.WebAPI.KenticoProviders
         public List<AddressData> GetAddressesListByUserID(int userID, int inventoryType = 1, int campaignID = 0)
         {
             var myAddressList = new List<AddressData>();
-            int currentCustomerId = customers.GetCustomerIDByUserID(userID);
-            if (currentCustomerId != default(int))
+            var customer = customers.GetCustomerByUser(userID);
+            if (customer != null)
             {
-                myAddressList = GetAddressesList(currentCustomerId)?.Select(x =>
+                myAddressList = GetAddressesList(customer.Id)?.Select(x =>
                 {
                     x.DistributorShoppingCartID = shoppingCartProvider.GetDistributorCartID(x.AddressID, inventoryType, campaignID);
                     return x;
