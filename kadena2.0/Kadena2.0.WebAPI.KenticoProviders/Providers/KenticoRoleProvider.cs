@@ -77,6 +77,18 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers
             return users;
         }
 
+        public bool UserHasRole(int userId, string roleName)
+        {
+            var user = UserInfoProvider.GetUserInfo(userId);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            return UserInfoProvider.IsUserInRole(user.UserName, roleName, SiteContext.CurrentSiteName);
+        }
+
         private string GetSiteName(int siteId)
         {
             var siteName = SiteInfoProvider.GetSiteName(siteId);

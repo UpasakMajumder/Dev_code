@@ -21,5 +21,10 @@ namespace Kadena.BusinessLogic.Services.Approval
         {
             return roles.GetRoleUsers(ApproversRoleName, siteId);
         }
+
+        public bool UserIsApprover(int userId)
+        {
+            return roles.UserHasRole(userId, ApproversRoleName);
+        }
     }
 }
