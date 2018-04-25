@@ -97,6 +97,20 @@
           <controlname>textboxcontrol</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="CustomerApproverUserID" columntype="integer" guid="1d9824a7-20c3-4a5a-a7ee-c75a21f4e989" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Approver User ID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Macro>
+            <![CDATA[{%KadenaMacroMethods.GetApprovers()|(user)michal.machacek@actum.cz|(hash)923d127ca60fdad8109718f30fd45ef76c7ec489cdf28eca958ed77f80d7b1e7%}]]>
+          </Macro>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
       <field allowempty="true" column="CustomerCountryID" columntype="integer" guid="80182aa0-ae56-432a-8f66-51ea1ec857ac" publicfield="false" system="true">
         <properties>
           <fieldcaption>CustomerCountryID</fieldcaption>
