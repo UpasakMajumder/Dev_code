@@ -356,16 +356,14 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         [MacroMethod(typeof(string[]), "Returns approver users", 1)]
         public static object GetApprovers(EvaluationContext context, params object[] parameters)
         {
-            if (parameters.Length != 0)
-            {
-                throw new NotSupportedException();
-            }
+            var none = new string[] { "0;none" };
 
-            return DIContainer.Resolve<IApproverService>()
+            var approvers = DIContainer.Resolve<IApproverService>()
                 .GetApprovers(SiteContext.CurrentSiteID)
-                .Select(u => $"{u.UserId};{u.UserName}")
-                .ToArray();
-        }
+                .Select(u => $"{u.UserId};{u.UserName} ({u.Email})");
+
+            return none.Concat(approvers).ToArray();
+         }
 
         [MacroMethod(typeof(string), "Returns file name from media attachment url.", 1)]
         [MacroMethodParam(0, "url", typeof(string), "Url")]

@@ -99,7 +99,7 @@
       </field>
       <field allowempty="true" column="CustomerApproverUserID" columntype="integer" guid="1d9824a7-20c3-4a5a-a7ee-c75a21f4e989" publicfield="false" visible="true">
         <properties>
-          <fieldcaption>Approver User ID</fieldcaption>
+          <fieldcaption>Approver User</fieldcaption>
         </properties>
         <settings>
           <controlname>DropDownListControl</controlname>
