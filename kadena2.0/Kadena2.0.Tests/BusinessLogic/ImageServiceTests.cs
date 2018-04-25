@@ -83,6 +83,7 @@ namespace Kadena.Tests.BusinessLogic
             var expectedResult = "/getmedia/f0c239da-cab0-4e8e-be22-fc83ee4112fc/image?MaxSideSize=200";
 
             Setup<IKenticoSiteProvider, string>(s => s.GetFullUrl(), baseLink);
+            Setup<IKenticoMediaProvider, bool>(s => s.IsPermanentLink(It.IsAny<string>()), true);
             Setup<IKenticoMediaProvider, string>(s => s.GetThumbnailPath(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<int>()), expectedResult);
 
             var actualResult = Sut.GetThumbnailLink(originalImageLink);
