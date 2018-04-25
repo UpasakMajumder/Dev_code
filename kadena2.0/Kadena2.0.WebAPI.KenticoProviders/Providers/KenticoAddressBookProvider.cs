@@ -2,7 +2,6 @@
 using CMS.Ecommerce;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.WebAPI.KenticoProviders.Providers;
 using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
 using System.Collections.Generic;
@@ -18,12 +17,15 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly IShoppingCartProvider shoppingCartProvider;
         private readonly IKadenaSettings kadenaSettings;
         private readonly IKenticoLocalizationProvider localizationProvider;
-        public KenticoAddressBookProvider(IMapper mapper, IShoppingCartProvider shoppingCartProvider, IKadenaSettings kadenaSettings, IKenticoLocalizationProvider localizationProvider)
+        private readonly IKenticoCustomerProvider customers;
+
+        public KenticoAddressBookProvider(IMapper mapper, IShoppingCartProvider shoppingCartProvider, IKadenaSettings kadenaSettings, IKenticoLocalizationProvider localizationProvider, IKenticoCustomerProvider customers)
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.shoppingCartProvider = shoppingCartProvider ?? throw new ArgumentNullException(nameof(shoppingCartProvider));
             this.kadenaSettings = kadenaSettings ?? throw new ArgumentNullException(nameof(kadenaSettings));
             this.localizationProvider = localizationProvider ?? throw new ArgumentNullException(nameof(localizationProvider));
+            this.customers = customers ?? throw new ArgumentNullException(nameof(customers));
         }
         public void DeleteAddress(int addressID)
         {
@@ -147,8 +149,8 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public List<AddressData> GetAddressesListByUserID(int userID, int inventoryType = 1, int campaignID = 0)
         {
-            List<AddressData> myAddressList = new List<AddressData>();
-            int currentCustomerId = new KenticoCustomerProvider().GetCustomerIDByUserID(userID);
+            var myAddressList = new List<AddressData>();
+            int currentCustomerId = customers.GetCustomerIDByUserID(userID);
             if (currentCustomerId != default(int))
             {
                 myAddressList = GetAddressesList(currentCustomerId)?.Select(x =>

@@ -21,7 +21,7 @@ namespace Kadena.BusinessLogic.Factories
     public class OrderReportFactory : IOrderReportFactory
     {
         private readonly IKenticoOrderProvider kenticoOrderProvider;
-        private readonly IKenticoUserProvider kenticoUserProvider;
+        private readonly IKenticoCustomerProvider kenticoCustomerProvider;
         private readonly IDateTimeFormatter dateTimeFormatter;
         private readonly IKenticoResourceService kenticoResources;
         private readonly IKenticoDocumentProvider kenticoDocumentProvider;
@@ -40,13 +40,13 @@ namespace Kadena.BusinessLogic.Factories
         }
 
         public OrderReportFactory(IKenticoOrderProvider kenticoOrderProvider,
-            IKenticoUserProvider kenticoUserProvider,
+            IKenticoCustomerProvider kenticoCustomerProvider,
             IDateTimeFormatter dateTimeFormatter,
             IKenticoResourceService kenticoResources,
             IKenticoDocumentProvider kenticoDocumentProvider)
         {
             this.kenticoOrderProvider = kenticoOrderProvider ?? throw new ArgumentNullException(nameof(kenticoOrderProvider));
-            this.kenticoUserProvider = kenticoUserProvider ?? throw new ArgumentNullException(nameof(kenticoUserProvider));
+            this.kenticoCustomerProvider = kenticoCustomerProvider ?? throw new ArgumentNullException(nameof(kenticoCustomerProvider));
             this.dateTimeFormatter = dateTimeFormatter ?? throw new ArgumentNullException(nameof(dateTimeFormatter));
             this.kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
             this.kenticoDocumentProvider = kenticoDocumentProvider ?? throw new ArgumentNullException(nameof(kenticoDocumentProvider));
@@ -69,7 +69,7 @@ namespace Kadena.BusinessLogic.Factories
                 Site = orderDto.SiteName,
                 Status = FormatOrderStatus(orderDto.Status),
                 Url = FormatDetailUrl(orderDto),
-                User = FormatCustomer(kenticoUserProvider.GetCustomer(orderDto.CustomerId))
+                User = FormatCustomer(kenticoCustomerProvider.GetCustomer(orderDto.CustomerId))
             };
         }
 

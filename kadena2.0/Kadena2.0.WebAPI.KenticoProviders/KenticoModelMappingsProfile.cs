@@ -96,6 +96,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.UserID, opt => opt.MapFrom(src => src.CustomerUserID))
                 .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.CustomerCompany))
                 .ForMember(dest => dest.SiteId, opt => opt.MapFrom(src => src.CustomerSiteID))
+                .ForMember(dest => dest.ApproverUserId, opt => opt.MapFrom(src => src.GetIntegerValue("CustomerApproverUserID", 0)))
                 .ForMember(dest => dest.DefaultShippingAddressId, opt => opt.MapFrom(src => src.GetIntegerValue(KenticoAddressBookProvider.CustomerDefaultShippingAddresIDFieldName, 0)))
                 .AfterMap((src, dest) => dest.PreferredLanguage = src.CustomerUser?.PreferredCultureCode ?? string.Empty);
 
@@ -173,7 +174,8 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.CustomerPhone, opt => opt.MapFrom(src => src.Phone))
                 .ForMember(dest => dest.CustomerUserID, opt => opt.MapFrom(src => src.UserID))
                 .ForMember(dest => dest.CustomerCompany, opt => opt.MapFrom(src => src.Company))
-                .ForMember(dest => dest.CustomerSiteID, opt => opt.MapFrom(src => src.SiteId));
+                .ForMember(dest => dest.CustomerSiteID, opt => opt.MapFrom(src => src.SiteId))
+                .AfterMap((src,dest) => dest.SetValue("CustomerApproverUserID", src.ApproverUserId));
 
             CreateMap<SKUInfo, Sku>()
                 .ForMember(dest => dest.SkuId, opt => opt.MapFrom(src => src.SKUID))
