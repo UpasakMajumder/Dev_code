@@ -52,7 +52,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             if (!StopProcessing)
             {
                 var rawData = new JavaScriptSerializer().Deserialize<List<DynamicPricingRawData>>(DocumentContext.CurrentDocument.GetStringValue("ProductDynamicPricing", string.Empty));
-                var uom = DocumentContext.CurrentDocument.GetStringValue("ProductUnitOfMeasure", UnitOfMeasure.DefaultUnit);
+                var uom = DocumentContext.CurrentDocument.GetStringValue("SKUUnitOfMeasure", UnitOfMeasure.DefaultUnit);
                 var uomLocalized = DIContainer.Resolve<IProductsService>().TranslateUnitOfMeasure(uom, LocalizationContext.CurrentCulture.CultureCode);
 
                 if (rawData == null || rawData.Count == 0)
