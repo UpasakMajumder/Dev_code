@@ -53,7 +53,7 @@
                         <img src='<%#Kadena.Old_App_Code.Kadena.PDFHelpers.CartPDFHelper.GetProductThumbnailImage(Eval<string>("ProductImage"))%>' />
                     </label>
                 </div>
-                 <div class="zoom__in"><a href="javascript:void(0);" onclick="ShowZoomEffect(this)"><svg class="icon"> <use xlink:href="/gfx/svg/sprites/icons.svg#search" xmlns:xlink="http://www.w3.org/1999/xlink"></use> </svg></a></div>
+                 <div class="zoom__in"><a href="javascript:void(0);" onclick='ShowZoomEffect("<%# Eval<string>("ProductImage")%>")'><svg class="icon"> <use xlink:href="/gfx/svg/sprites/icons.svg#search" xmlns:xlink="http://www.w3.org/1999/xlink"></use> </svg></a></div>
                 <div class="input__wrapper custom__blockin">
                     <h4><%= POSNumberText %> : <%# Eval("SKUProductCustomerReferenceNumber")%></h4>
                     <label for="dom" class="input__label "><%# TypeOfProduct == (int)ProductsType.GeneralInventory? GetBrandName(ValidationHelper.GetInteger(Eval("BrandID"), default(int))):""%></label>
