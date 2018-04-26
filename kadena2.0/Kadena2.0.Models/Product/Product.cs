@@ -16,6 +16,7 @@ namespace Kadena.Models.Product
         public Guid ProductChiliWorkgroupID { get; set; }
         public Guid TemplateLowResSettingId { get; set; }
         public double Weight { get; set; }
+        public bool HiResPdfDownloadEnabled { get; set; }
 
         public bool HasProductTypeFlag(string productType)
         {

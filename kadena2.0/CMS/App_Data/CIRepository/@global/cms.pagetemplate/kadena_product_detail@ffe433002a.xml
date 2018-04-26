@@ -191,6 +191,64 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
         </properties>
+        <webpart controlid="RequiresApprovalIcon" guid="dce67df9-c1b1-4092-ae18-c7562c019366" type="statictext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility">False</property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">RequiresApprovalIcon</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">dce67df9-c1b1-4092-ae18-c7562c019366</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="tag"></property>
+          <property name="text">
+<![CDATA[
+<div class="product-view__flag flag flag--red">
+  <svg class="icon flag__icon">
+    <use xlink:href="/gfx/svg/sprites/icons.svg#guarantee" />
+  </svg>
+    <span class="flag__label">{$Kadena.Product.RequiresApproval$}</span>
+</div>
+]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible" ismacro="true">
+            <![CDATA[{% DocumentContext.CurrentDocument.GetValue("SKUApprovalRequired").ToString() == "True" |(user)michal.machacek@actum.cz|(hash)87f85b4b39e78ea4328e5be16b41bc2084763caa3ada2d282173317185337f09%}]]>
+          </property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">statictext</property>
+        </webpart>
         <webpart controlid="Thumbnail" guid="89833f2e-e12e-444e-bcee-266a6dbfa4e4" type="statictext" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>

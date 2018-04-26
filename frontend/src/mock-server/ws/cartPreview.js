@@ -22,6 +22,7 @@ module.exports = {
         "mailingList": "Mailing list",
         "pricePrefix": "$",
         "price": "112.2",
+        "unitOfMeasure": "pc",
         "quantityPrefix": "Quantity:",
         "quantity": 11
       },
@@ -34,6 +35,7 @@ module.exports = {
         "mailingList": "Mailing list",
         "pricePrefix": "$",
         "price": "112.2",
+        "unitOfMeasure": "pc",
         "quantityPrefix": "Quantity:",
         "quantity": 11
       },
@@ -46,6 +48,7 @@ module.exports = {
         "mailingList": "Mailing list",
         "pricePrefix": "$",
         "price": "112.2",
+        "unitOfMeasure": "pc",
         "quantityPrefix": "Quantity:",
         "quantity": 100
       },
@@ -58,6 +61,7 @@ module.exports = {
         "mailingList": "Mailing list",
         "pricePrefix": "$",
         "price": "112.2",
+        "unitOfMeasure": "pc",
         "quantityPrefix": "Quantity:",
         "quantity": 100
       },
@@ -70,6 +74,7 @@ module.exports = {
         "mailingList": "Mailing list",
         "pricePrefix": "$",
         "price": "112.2",
+        "unitOfMeasure": "pc",
         "quantityPrefix": "Quantity:",
         "quantity": 100
       },
@@ -82,6 +87,7 @@ module.exports = {
         "mailingList": "Mailing list",
         "pricePrefix": "$",
         "price": "112.2",
+        "unitOfMeasure": "pc",
         "quantityPrefix": "Quantity:",
         "quantity": 100
       }

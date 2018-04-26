@@ -5,6 +5,7 @@ using System;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using Kadena.Dto.Notification.MicroserviceRequests;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -12,13 +13,13 @@ namespace Kadena2.MicroserviceClients.Clients
     {
         public NotificationClient(IMicroProperties properties)
         {
-            _serviceUrlSettingKey = "KDA_NotificationServiceUrl";
             _properties = properties ?? throw new ArgumentNullException(nameof(properties));
+            _serviceVersionSettingKey = Settings.KDA_NotificationServiceVersion;
         }
 
         public async Task<BaseResponseDto<object>> SendCustomNotification(SendCustomNotificationRequestDto request)
         {
-            var url = $"{BaseUrlOld}/api/notification/sendmails";
+            var url = $"{BaseUrl}/notification/sendmails";
             return await Post<object>(url, request).ConfigureAwait(false);
         }
     }

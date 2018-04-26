@@ -21,6 +21,7 @@ class CheckoutProduct extends Component {
     disableInteractivity: PropTypes.bool.isRequired,
     quantityPrefix: PropTypes.string,
     stockQuantity: PropTypes.number,
+    unitOfMeasure: PropTypes.string,
     isMailingList: PropTypes.bool,
     mailingList: PropTypes.string,
     editorURL: PropTypes.string,
@@ -183,7 +184,8 @@ class CheckoutProduct extends Component {
       templatePrefix,
       mailingListPrefix,
       buttonLabels,
-      options
+      options,
+      unitOfMeasure
     } = this.props;
     const { quantity } = this.state;
 
@@ -192,11 +194,13 @@ class CheckoutProduct extends Component {
       : null;
 
     const quantityElement = isQuantityEditable
-      ? <input onChange={(e) => { this.handleChange(e.target); }}
-               type="number"
-               min="1"
-               disabled={disableInteractivity}
-               value={quantity}/>
+      ? <input
+          onChange={(e) => { this.handleChange(e.target); }}
+          type="number"
+          min="1"
+          disabled={disableInteractivity}
+          value={quantity}
+        />
       : <span>{quantity}</span>;
 
     const productDifference = isMailingList
@@ -210,7 +214,7 @@ class CheckoutProduct extends Component {
         </div>
       ) : (
         <div className="cart-product__quantity">
-          <div>{quantityPrefix} {quantityElement}</div>
+          <div>{quantityPrefix} {quantityElement} {unitOfMeasure}</div>
           {optionsElement}
         </div>
       );

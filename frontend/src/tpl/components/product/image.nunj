@@ -2,6 +2,11 @@
 {% from "macro/attachment.nunj" import linkAttachment %}
 
 <div class="js-collapse product-view__img" data-target=".js-product-preview">
+  <div class="product-view__flag flag flag--red">
+    {{ svg('guarantee', 'flag__icon') }}
+    <span class="flag__label">Requires approval</span>
+  </div>
+  
   <img style="border: 2px solid black;" src="http://satyr.io/500x300">
 
   <div class="product-view__actions">

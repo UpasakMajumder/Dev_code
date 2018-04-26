@@ -118,8 +118,9 @@ namespace Kadena.Models.Checkout
             }
         }
 
-        public string UnitOfMeasure { get; set; }
-        
+        public string UnitOfMeasureErpCode { get; set; }
+        public string UnitOfMeasureName { get; set; }
+
         public string MailingListPrefix { get; set; }
         public string TemplatePrefix { get; set; }
         public string ProductionTime { get; set; }
@@ -134,5 +135,6 @@ namespace Kadena.Models.Checkout
         public string CustomName { get; set; }
 
         public bool SendPriceToErp { get; set; }
+        public bool RequiresApproval { get; set; }
     }
 }

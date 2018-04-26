@@ -396,16 +396,17 @@ namespace Kadena.BusinessLogic.Services
 
             shoppingCartItems.SetArtwork(cartItem, newItem.DocumentId);
 
+            // do this before calculating dynamic price
+            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))
+            {
+                cartItem.SKUUnits = newItem.Quantity;
+            }
+
             SetDynamicPrice(cartItem, newItem.DocumentId);
 
             if (!string.IsNullOrEmpty(newItem.CustomProductName))
             {
                 cartItem.CartItemText = newItem.CustomProductName;
-            }
-
-            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))
-            {
-                cartItem.SKUUnits = newItem.Quantity;
             }
 
             shoppingCartItems.SaveCartItem(cartItem);

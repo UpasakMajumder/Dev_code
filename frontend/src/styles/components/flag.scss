@@ -1,0 +1,27 @@
+.flag {
+  @extend .p-1;
+  display: inline-flex;
+  align-items: center;
+
+  &--red {
+    background: $brand-dangerous;
+    color: white;
+
+    .flag__icon {
+      fill: white;
+    }
+  }
+
+  &__icon {
+    @extend .mr-1;
+    $size: 20px;
+    width: $size;
+    height: $size;
+  }
+
+  &__label {
+    font-size: $font-xxs;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+}

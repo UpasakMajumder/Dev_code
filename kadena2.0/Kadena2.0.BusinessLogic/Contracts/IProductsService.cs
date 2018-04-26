@@ -12,6 +12,6 @@ namespace Kadena.BusinessLogic.Contracts
         bool CanDisplayAddToCartButton(string productType, int? numberOfAvailableProducts, bool sellOnlyIfAvailable);
         string GetPackagingString(int numberOfItemsInPackage, string unitOfMeasure, string cultureCode);
         string GetUnitOfMeasure(string unitOfMeasure, string cultureCode);
-        string TranslateUnitOfMeasure(string unitOfMeasure, string cultureCode);
+        string TranslateUnitOfMeasure(string unitOfMeasure, string cultureCode);        
     }
 }

@@ -72,17 +72,20 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.UnitCount, opt => opt.MapFrom(src => src.Quantity))
                 .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src => src.Options.ToDictionary(i => i.Name, i => i.Value)))
                 .ForMember(dest => dest.DesignFileKey, opt => opt.MapFrom(src => src.Artwork))
-                .ForMember(dest => dest.SendPriceToErp, opt => opt.MapFrom(src => src.SendPriceToErp));
+                .ForMember(dest => dest.SendPriceToErp, opt => opt.MapFrom(src => src.SendPriceToErp))
+                .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.UnitOfMeasureErpCode));
 
             CreateMap<CustomerData, CustomerDataDTO>();
             CreateMap<CustomerAddress, CustomerAddressDTO>();
             CreateMap<CartItems, CartItemsDTO>();
             CreateMap<CartItem, CartItemDTO>()
-                .AfterMap((src, dest) => dest.Price = src.PriceText)
-                .AfterMap((src, dest) => dest.MailingList = src.MailingListName);
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.PriceText))
+                .ForMember(dest => dest.MailingList, opt => opt.MapFrom(src => src.MailingListName))
+                .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.UnitOfMeasureName));
             CreateMap<CartItem, CartItemPreviewDTO>()
                 .AfterMap((src, dest) => dest.Price = src.PriceText)
-                .AfterMap((src, dest) => dest.MailingList = src.MailingListName);
+                .AfterMap((src, dest) => dest.MailingList = src.MailingListName)
+                .AfterMap((src, dest) => dest.UnitOfMeasure = src.UnitOfMeasureName);
             CreateMap<Models.PaymentMethod, PaymentMethodDTO>();
             CreateMap<PaymentMethods, PaymentMethodsDTO>();
             CreateMap<Total, TotalDTO>();

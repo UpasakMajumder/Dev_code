@@ -5,8 +5,23 @@ import { removeProps } from 'app.helpers/object';
 /* globals */
 import { STATIC_FIELDS } from 'app.globals';
 
+const getMaxLength = (maximumLength) => {
+  if (typeof maximumLength === 'number') {
+    return maximumLength;
+  } else if (typeof maximumLength === 'string') {
+    if (maximumLength === 'address1'
+      || maximumLength === 'address2'
+    ) {
+      return 35;
+    }
+  }
+
+  return null;
+};
+
+
 const TextInput = (props) => {
-  const { label, error, disabled, isOptional, className, maxLength } = props;
+  const { label, error, disabled, isOptional, className, maximumLength } = props;
 
   const inputProps = removeProps(props, ['label', 'error', 'isOptional', 'isSelect', 'options', 'className']);
 
@@ -24,7 +39,7 @@ const TextInput = (props) => {
       <input
         type="text"
         className={inputSelector}
-        maxLength={maxLength}
+        maxLength={getMaxLength(maximumLength)}
         {...inputProps}
       />
       {errorElement}
@@ -33,7 +48,7 @@ const TextInput = (props) => {
 };
 
 TextInput.defaultProps = {
-  maxLength: 50
+  maximumLength: 50
 };
 
 TextInput.propTypes = {
@@ -42,7 +57,7 @@ TextInput.propTypes = {
   error: PropTypes.string,
   disabled: PropTypes.bool,
   isOptional: PropTypes.bool,
-  maxLength: PropTypes.number
+  maximumLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 export default TextInput;

@@ -61,6 +61,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 throw new ArgumentNullException(nameof(i.SKU), "CartItem has null SKU");
             }
 
+            var unitOfMeasure = i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit);
+
             var cartItem = new CartItem()
             {
                 Id = i.CartItemID,
@@ -73,7 +75,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 SKUNumber = i.SKU.SKUNumber,
                 TotalTax = 0.0m,
                 UnitPrice = showPrices ? (decimal)i.UnitPrice : 0.0m,
-                UnitOfMeasure = units.GetUnitOfMeasure(i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit)).ErpCode,
+                UnitOfMeasureName = units.GetDisplayname(unitOfMeasure),
+                UnitOfMeasureErpCode = units.GetUnitOfMeasure(unitOfMeasure).ErpCode,
                 Image = productProvider.GetProductImagePath(i.GetIntegerValue("ProductPageID", 0)),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
@@ -91,7 +94,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 ProductionTime = displayProductionAndShipping ? i.GetValue("ProductProductionTime", string.Empty) : null,
                 ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null,
                 Preview = new Button { Exists = false, Text = resources.GetResourceString("Kadena.Checkout.PreviewButton") },
-                SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true)
+                SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true),
+                RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false)
             };
 
             if (cartItem.IsTemplated)
@@ -101,8 +105,12 @@ namespace Kadena.WebAPI.KenticoProviders
                     TemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
                     PdfSettings = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
                 };
+
                 var templateLowResSettingId = productProvider.GetProductByDocumentId(cartItem.ProductPageId)?.TemplateLowResSettingId ?? Guid.Empty;
-                cartItem.Preview.Url = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, templateLowResSettingId);
+                var previewUrl = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, templateLowResSettingId);
+                var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
+
+                cartItem.Preview.Url = previewAbsoluteUrl;
                 cartItem.Preview.Exists = true;
 
                 var editorUrl = documents.GetDocumentUrl(URLHelper.ResolveUrl(resources.GetSiteSettingsKey("KDA_Templating_ProductEditorUrl")));
@@ -113,9 +121,6 @@ namespace Kadena.WebAPI.KenticoProviders
                 editorUrl = URLHelper.AddParameterToUrl(editorUrl, "quantity", cartItem.Quantity.ToString());
                 editorUrl = URLHelper.AddParameterToUrl(editorUrl, "customName", URLHelper.URLEncode(cartItem.CartItemText));
                 cartItem.EditorURL = editorUrl;
-
-                var previewUrl = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, templateLowResSettingId);
-                var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
 
                 cartItem.EmailProof = new Button()
                 {
