@@ -246,6 +246,7 @@
       <field column="SKUParentSKUID" guid="cfda202f-ccbf-47b8-9b24-d6feae3a470c" order="56" />
       <field column="SKUCustomerReferenceNumber" guid="425bf5ba-2238-4dbb-886a-8c23a3df2473" order="57" />
       <field column="SKUDontSendPriceToERP" visible="false" />
+      <field column="SKUUnitOfMeasure" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Option (Attribute)</FormDisplayName>

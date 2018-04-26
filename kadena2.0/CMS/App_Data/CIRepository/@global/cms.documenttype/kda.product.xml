@@ -403,25 +403,6 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field column="ProductUnitOfMeasure" columnsize="40" columntype="text" guid="0b4c540d-8078-4e63-a886-da283d8048f7" publicfield="false" visible="true">
-        <properties>
-          <defaultvalue>Each</defaultvalue>
-          <fieldcaption>Unit of Measure</fieldcaption>
-        </properties>
-        <settings>
-          <controlname>DropDownListControl</controlname>
-          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
-          <EditText>False</EditText>
-          <Query>
-<![CDATA[
-SELECT Name,Name
-FROM KDA_UnitOfMeasure 
-ORDER BY IsDefault DESC
-]]>
-          </Query>
-          <SortItems>False</SortItems>
-        </settings>
-      </field>
       <category name="Shipping">
         <properties>
           <visible>True</visible>
