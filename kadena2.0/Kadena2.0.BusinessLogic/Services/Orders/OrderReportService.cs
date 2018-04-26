@@ -48,7 +48,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 if (value < 1)
                 {
-                    throw new ArgumentOutOfRangeException($"Given value {value} is invalidu. Value must be greater than 0");
+                    throw new ArgumentOutOfRangeException($"Given value {value} is invalid. Value must be greater than 0");
                 }
 
                 _ordersPerPage = value;
