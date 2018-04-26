@@ -34,12 +34,24 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             get
             {
-                int.TryParse(kenticoResources.GetSiteSettingsKey(Settings.KDA_RecentOrdersPageCapacity), out _ordersPerPage);
                 if (_ordersPerPage == 0)
                 {
-                    return DefaultCountOfOrdersPerPage;
+                    int.TryParse(kenticoResources.GetSiteSettingsKey(Settings.KDA_RecentOrdersPageCapacity), out _ordersPerPage);
+                    if (_ordersPerPage == 0)
+                    {
+                        return DefaultCountOfOrdersPerPage;
+                    }
                 }
                 return _ordersPerPage;
+            }
+            set
+            {
+                if (value < 1)
+                {
+                    throw new ArgumentOutOfRangeException($"Given value {value} is invalidu. Value must be greater than 0");
+                }
+
+                _ordersPerPage = value;
             }
         }
 
@@ -67,7 +79,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         public async Task<PagedData<OrderReport>> GetOrdersForSite(string site, int page, OrderFilter filter)
         {
             var orderFilter = CreateOrderListFilter(filter, site, page);
-            var ordersDto = await orderViewClient.GetOrders(orderFilter);
+            var ordersDto = await orderViewClient.GetOrders(orderFilter).ConfigureAwait(false);
             var orders = ordersDto.Payload?.Orders ?? new List<RecentOrderDto>();
 
             if (orders.Count() > 0)
@@ -102,11 +114,11 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 throw new ArgumentNullException(nameof(orders));
             }
+            var report = orderReportFactory.CreateReportView(orders.Data);
+            var table = orderReportFactory.CreateTableView(report);
+            table.Pagination = orders.Pagination;
 
-            var view = orderReportFactory.CreateTableView(orders.Data);
-            view.Pagination = orders.Pagination;
-
-            return view;
+            return table;
         }
 
         public Task<FileResult> GetOrdersExport(OrderFilter filter)
@@ -118,12 +130,12 @@ namespace Kadena.BusinessLogic.Services.Orders
         public async Task<FileResult> GetOrdersExportForSite(string site, OrderFilter filter)
         {
             var orderFilter = CreateOrderListFilter(filter, site);
-            var ordersDto = await orderViewClient.GetOrders(orderFilter);
+            var ordersDto = await orderViewClient.GetOrders(orderFilter).ConfigureAwait(false);
             var orders = ordersDto.Payload?.Orders ?? new List<RecentOrderDto>();
 
-            var ordersReport = orders
-                    .Select(o => orderReportFactory.Create(o));
-            var tableView = orderReportFactory.CreateTableView(ordersReport);
+            var ordersReport = orders.Select(o => orderReportFactory.Create(o));
+            var report = orderReportFactory.CreateReportView(ordersReport);
+            var tableView = orderReportFactory.CreateTableView(report);
 
             var fileDataTable = mapper.Map<Table>(tableView);
             var fileResult = new FileResult
