@@ -12,13 +12,19 @@ namespace Kadena.BusinessLogic.Services
     public class CustomerDataService : ICustomerDataService
     {
         private readonly IKenticoCustomerProvider kenticoCustomers;
+        private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoPermissionsProvider kenticoPermissions;
         private readonly IKenticoLocalizationProvider kenticoLocalization;
         private readonly IKenticoAddressBookProvider kenticoAddresses;
 
-        public CustomerDataService(IKenticoCustomerProvider kenticoCustomers, IKenticoPermissionsProvider kenticoPermissions, IKenticoLocalizationProvider kenticoLocalization, IKenticoAddressBookProvider kenticoAddresses)
+        public CustomerDataService(IKenticoCustomerProvider kenticoCustomers,
+                                   IKenticoUserProvider kenticoUsers, 
+                                   IKenticoPermissionsProvider kenticoPermissions, 
+                                   IKenticoLocalizationProvider kenticoLocalization, 
+                                   IKenticoAddressBookProvider kenticoAddresses)
         {
             this.kenticoCustomers = kenticoCustomers ?? throw new ArgumentNullException(nameof(kenticoCustomers));
+            this.kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
             this.kenticoPermissions = kenticoPermissions ?? throw new ArgumentNullException(nameof(kenticoPermissions));
             this.kenticoLocalization = kenticoLocalization ?? throw new ArgumentNullException(nameof(kenticoLocalization));
             this.kenticoAddresses = kenticoAddresses ?? throw new ArgumentNullException(nameof(kenticoAddresses));
@@ -32,7 +38,7 @@ namespace Kadena.BusinessLogic.Services
                 return null;
                     
             var claims = GetCustomerClaims(siteId, customer.UserID);
-            var approvers = GetApprovers(customer.UserID);
+            var approvers = GetApprovers(customer.ApproverUserId);
 
             var customerData = new CustomerData()
             {
