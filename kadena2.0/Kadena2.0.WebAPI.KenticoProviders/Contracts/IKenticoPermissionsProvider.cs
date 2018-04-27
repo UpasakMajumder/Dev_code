@@ -18,8 +18,6 @@ namespace Kadena2.WebAPI.KenticoProviders.Contracts
         bool UserCanSeeAllOrders();
         bool UserCanModifyShippingAddress();
         bool UserCanDownloadHiresPdf(int siteId, int userId);
-        bool UserIsApprover(int siteId, int userId);
         IEnumerable<User> GetUsersWithPermission(string resourceName, string permissionName, int siteId);
-        IEnumerable<User> GetUsersWithApproverPermission(int siteId);
     }
 }

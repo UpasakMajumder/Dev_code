@@ -32,6 +32,7 @@ using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Infrastructure.FileConversion;
 using Kadena.Models;
 using Kadena.Models.AddToCart;
+using Kadena.Models.Approval;
 using Kadena.Models.Brand;
 using Kadena.Models.BusinessUnit;
 using Kadena.Models.Checkout;

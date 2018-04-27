@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Kadena.Models;
 using System;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena.Models.Approval;
 
 namespace Kadena.BusinessLogic.Services
 {
