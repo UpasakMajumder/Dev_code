@@ -85,7 +85,8 @@ namespace Kadena.BusinessLogic.Services
             else
             {
                 var baseString = resources.GetResourceString("Kadena.Product.NumberOfAvailableProducts", cultureCode);
-                formattedValue = string.Format(baseString, numberOfStockProducts, unitOfMeasure);
+                var uomDisplayName = resources.GetResourceString(units.GetUnitOfMeasure(unitOfMeasure).LocalizationString, cultureCode);
+                formattedValue = string.Format(baseString, numberOfStockProducts, uomDisplayName);
             }
 
             return formattedValue;
