@@ -50,7 +50,7 @@
                 <div class="img__block">
                     <input type="checkbox" id="zoomCheck_<%# Eval("NodeSKUID")%>" />
                     <label for="zoomCheck_<%# Eval("NodeSKUID")%>">
-                        <img src='<%#Kadena.Old_App_Code.Kadena.PDFHelpers.CartPDFHelper.GetProductThumbnailImage(Eval<string>("ProductImage"))%>' />
+                        <img src='<%#Kadena.Old_App_Code.Kadena.PDFHelpers.CartPDFHelper.GetThumbnailImageAbsolutePath(Eval<string>("ProductImage"))%>' />
                     </label>
                 </div>
                  <div class="zoom__in"><a href="javascript:void(0);" onclick='ShowZoomEffect("<%# Eval<string>("ProductImage")%>")'><svg class="icon"> <use xlink:href="/gfx/svg/sprites/icons.svg#search" xmlns:xlink="http://www.w3.org/1999/xlink"></use> </svg></a></div>
