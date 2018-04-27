@@ -52,6 +52,17 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers
                 return false;
 
             return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_CanDownloadHiresPdf", site.SiteName, userinfo);
-        }        
+        }
+
+        public bool UserIsApprover(int siteId, int userId)
+        {
+            var userinfo = UserInfoProvider.GetUserInfo(userId);
+            var site = SiteInfoProvider.GetSiteInfo(siteId);
+
+            if (userinfo == null || site == null)
+                return false;
+
+            return UserInfoProvider.IsAuthorizedPerResource("Kadena_Orders", "KDA_ApproveOrders", site.SiteName, userinfo);
+        }
     }
 }

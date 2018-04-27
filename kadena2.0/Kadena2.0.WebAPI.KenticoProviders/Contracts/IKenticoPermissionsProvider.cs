@@ -15,5 +15,6 @@
         bool UserCanSeeAllOrders();
         bool UserCanModifyShippingAddress();
         bool UserCanDownloadHiresPdf(int siteId, int userId);
+        bool UserIsApprover(int siteId, int userId);
     }
 }
