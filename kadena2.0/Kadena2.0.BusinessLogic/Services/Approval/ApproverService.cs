@@ -1,6 +1,6 @@
 ﻿using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.Models.Membership;
-using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
 
@@ -8,23 +8,16 @@ namespace Kadena.BusinessLogic.Services.Approval
 {
     public class ApproverService  : IApproverService
     {
-        public string ApproversRoleName => "Approvers";
+        private readonly IKenticoPermissionsProvider permissions;
 
-        private readonly IKenticoRoleProvider roles;
-
-        public ApproverService(IKenticoRoleProvider roles)
+        public ApproverService(IKenticoPermissionsProvider permissions)
         {
-            this.roles = roles ?? throw new ArgumentNullException(nameof(roles));
+            this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
         }
 
         public IEnumerable<User> GetApprovers(int siteId)
         {
-            return roles.GetRoleUsers(ApproversRoleName, siteId);
-        }
-
-        public bool UserIsApprover(int userId)
-        {
-            return roles.UserHasRole(userId, ApproversRoleName);
+            return permissions.GetUsersWithApproverPermission(siteId);
         }
     }
 }
