@@ -19,21 +19,21 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IOrderResubmitClient orderResubmitClient;
         private readonly IOrderViewClient orderViewClient;
         private readonly IKenticoLogger logger;
-        private readonly IKenticoUserProvider kenticoUserProvider;
-        public const int FirstPageNumber = 1;
+        private readonly IKenticoCustomerProvider kenticoCustomerProvider;
 
+        public const int FirstPageNumber = 1;
         public const string OrderFailureStatus = "Error sending to Tibco";
 
         public OrderResubmissionService(
             IOrderResubmitClient orderResubmitClient,
             IOrderViewClient orderViewClient,
             IKenticoLogger logger,
-            IKenticoUserProvider kenticoUserProvider)
+            IKenticoCustomerProvider kenticoCustomerProvider)
         {
             this.orderResubmitClient = orderResubmitClient ?? throw new ArgumentNullException(nameof(orderResubmitClient));
             this.orderViewClient = orderViewClient ?? throw new ArgumentNullException(nameof(orderViewClient));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.kenticoUserProvider = kenticoUserProvider ?? throw new ArgumentNullException(nameof(kenticoUserProvider));
+            this.kenticoCustomerProvider = kenticoCustomerProvider ?? throw new ArgumentNullException(nameof(kenticoCustomerProvider));
         }
 
         public async Task<PagedData<FailedOrder>> GetFailedOrders(int page, int itemsPerPage)
@@ -93,7 +93,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             if (!_customerDictionary.TryGetValue(customerId, out var customerName))
             {
-                var customer = kenticoUserProvider.GetCustomer(customerId);
+                var customer = kenticoCustomerProvider.GetCustomer(customerId);
                 if (customer != null)
                 {
                     customerName = $"{customer.FirstName} {customer.LastName}".Trim();

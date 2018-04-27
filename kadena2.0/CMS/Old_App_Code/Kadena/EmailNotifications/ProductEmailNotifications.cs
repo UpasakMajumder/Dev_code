@@ -106,7 +106,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                     var customerOrderData = responseData.GroupBy(x => x.CustomerId).ToList();
                     customerOrderData.ForEach(x =>
                     {
-                        var userID = DIContainer.Resolve<IKenticoCustomerProvider>().GetUserIDByCustomerID(x.Key);
+                        var userID = DIContainer.Resolve<IKenticoCustomerProvider>().GetCustomer(x.Key)?.UserID ?? 0;
                         var customerData = DIContainer.Resolve<IKenticoUserProvider>().GetUserByUserId(userID);
                         if (customerData != null)
                         {

@@ -193,7 +193,7 @@ namespace Kadena.Tests.BusinessLogic
                 FirstName = "Bruce",
                 LastName = "Wayne"
             };
-            Setup<IKenticoUserProvider, Customer>(kup => kup.GetCustomer(It.IsAny<int>()), customer);
+            Setup<IKenticoCustomerProvider, Customer>(kcp => kcp.GetCustomer(It.IsAny<int>()), customer);
 
             var orderDto = OrderReportTestHelper.CreateTestRecentOrder(1, 1);
             var sut = Sut;

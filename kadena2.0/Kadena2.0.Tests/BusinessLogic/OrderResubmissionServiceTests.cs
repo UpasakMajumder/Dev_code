@@ -163,7 +163,7 @@ namespace Kadena.Tests.OrderResubmission
             };
             Setup<IOrderViewClient, Task<BaseResponseDto<OrderListDto>>>(oc => oc.GetOrders(It.IsAny<OrderListFilter>())
                 , Task.FromResult(new BaseResponseDto<OrderListDto> { Success = true, Payload = orders }));
-            Setup<IKenticoUserProvider, Customer>(up => up.GetCustomer(It.IsAny<int>()), new Customer { Email = customerEmail });
+            Setup<IKenticoCustomerProvider, Customer>(cp => cp.GetCustomer(It.IsAny<int>()), new Customer { Email = customerEmail });
 
             var result = await Sut.GetFailedOrders(1, 1);
 
