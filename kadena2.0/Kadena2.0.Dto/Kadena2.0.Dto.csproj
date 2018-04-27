@@ -61,6 +61,7 @@
     <Compile Include="CreditCard\MicroserviceResponses\UserStoredCardDto.cs" />
     <Compile Include="CreditCard\Requests\SaveCreditCardRequestDto.cs" />
     <Compile Include="CreditCard\Responses\CreditCardPaymentDoneDto.cs" />
+    <Compile Include="CustomerData\ApproverDto.cs" />
     <Compile Include="CustomerData\UserBudgetDto.cs" />
     <Compile Include="Logon\Requests\SamlAuthenticationDto.cs" />
     <Compile Include="Notification\MicroserviceRequests\SendCustomNotificationRequestDto.cs" />

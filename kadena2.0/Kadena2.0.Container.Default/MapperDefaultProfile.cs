@@ -76,6 +76,7 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.UnitOfMeasureErpCode));
 
             CreateMap<CustomerData, CustomerDataDTO>();
+            CreateMap<Approver, ApproverDto>();
             CreateMap<CustomerAddress, CustomerAddressDTO>();
             CreateMap<CartItems, CartItemsDTO>();
             CreateMap<CartItem, CartItemDTO>()
