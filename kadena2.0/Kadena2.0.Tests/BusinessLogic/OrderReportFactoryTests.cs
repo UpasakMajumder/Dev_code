@@ -163,7 +163,7 @@ namespace Kadena.Tests.BusinessLogic
                     }
                 },
                 OrderingDate = new DateTime(),
-                ShippingDate = new DateTime()
+                ShippingDate = null
             };
 
             Setup<IDateTimeFormatter, string>(dtf => dtf.Format(It.IsAny<DateTime>()), "formatted");
@@ -174,14 +174,14 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(report.Url, firstActualItem.Url);
             Assert.Equal(report.Site, firstActualItem.Site);
             Assert.Equal(report.Number, firstActualItem.Number);
-            Assert.Equal("formatted", firstActualItem.OrderingDate);
+            Assert.Equal(Sut.FormatDate(report.OrderingDate), firstActualItem.OrderingDate);
             Assert.Equal(report.User, firstActualItem.User);
             Assert.Equal(report.Items[0].Name, firstActualItem.Name);
             Assert.Equal(report.Items[0].SKU, firstActualItem.SKU);
             Assert.Equal(report.Items[0].Quantity, firstActualItem.Quantity);
             Assert.Equal(report.Items[0].Price, firstActualItem.Price);
             Assert.Equal(report.Status, firstActualItem.Status);
-            Assert.Equal("formatted", firstActualItem.ShippingDate);
+            Assert.Equal(Sut.FormatDate(report.ShippingDate), firstActualItem.ShippingDate);
             Assert.Equal(report.Items[0].TrackingNumber, firstActualItem.TrackingNumber);
         }
 

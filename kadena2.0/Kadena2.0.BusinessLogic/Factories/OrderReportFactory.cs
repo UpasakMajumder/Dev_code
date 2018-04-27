@@ -105,7 +105,7 @@ namespace Kadena.BusinessLogic.Factories
                         Quantity = it.Quantity,
                         Price = it.Price,
                         Status = o.Status,
-                        ShippingDate = FormatDate(o.ShippingDate.Value),
+                        ShippingDate = FormatDate(o.ShippingDate),
                         TrackingNumber = it.TrackingNumber
                     }))
                     .ToArray()
