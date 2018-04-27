@@ -11,39 +11,22 @@ namespace Kadena.BusinessLogic.Services
 {
     public class CustomerDataService : ICustomerDataService
     {
-        private readonly IKenticoUserProvider kenticoUsers;
+        private readonly IKenticoCustomerProvider kenticoCustomers;
         private readonly IKenticoPermissionsProvider kenticoPermissions;
         private readonly IKenticoLocalizationProvider kenticoLocalization;
         private readonly IKenticoAddressBookProvider kenticoAddresses;
 
-        public CustomerDataService(IKenticoUserProvider kenticoUsers, IKenticoPermissionsProvider kenticoPermissions, IKenticoLocalizationProvider kenticoLocalization, IKenticoAddressBookProvider kenticoAddresses)
+        public CustomerDataService(IKenticoCustomerProvider kenticoCustomers, IKenticoPermissionsProvider kenticoPermissions, IKenticoLocalizationProvider kenticoLocalization, IKenticoAddressBookProvider kenticoAddresses)
         {
-            if (kenticoUsers == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoUsers));
-            }
-            if (kenticoPermissions == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoPermissions));
-            }
-            if (kenticoLocalization == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoLocalization));
-            }
-            if (kenticoAddresses == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoAddresses));
-            }
-
-            this.kenticoUsers = kenticoUsers;
-            this.kenticoPermissions = kenticoPermissions;
-            this.kenticoLocalization = kenticoLocalization;
-            this.kenticoAddresses = kenticoAddresses;
+            this.kenticoCustomers = kenticoCustomers ?? throw new ArgumentNullException(nameof(kenticoCustomers));
+            this.kenticoPermissions = kenticoPermissions ?? throw new ArgumentNullException(nameof(kenticoPermissions));
+            this.kenticoLocalization = kenticoLocalization ?? throw new ArgumentNullException(nameof(kenticoLocalization));
+            this.kenticoAddresses = kenticoAddresses ?? throw new ArgumentNullException(nameof(kenticoAddresses));
         }
 
         public CustomerData GetCustomerData(int siteId, int customerId)
         {
-            var customer = kenticoUsers.GetCustomer(customerId);
+            var customer = kenticoCustomers.GetCustomer(customerId);
 
             if (customer == null)
                 return null;

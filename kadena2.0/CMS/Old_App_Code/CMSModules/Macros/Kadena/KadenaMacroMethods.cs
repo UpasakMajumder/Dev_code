@@ -11,7 +11,6 @@ using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.BusinessLogic.Contracts;
-using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Models.Product;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
 using Kadena.Old_App_Code.Kadena.Constants;
@@ -24,9 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Kadena.Helpers.SerializerConfig;
-using Kadena.Models.SiteSettings;
-using Kadena.Models.Membership;
 using Kadena.Models.ModuleAccess;
+using Kadena.BusinessLogic.Contracts.Approval;
 
 [assembly: CMS.RegisterExtension(typeof(KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 
@@ -354,6 +352,18 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var urls = MediaMultiField.GetValues(fieldValue);
             return urls;
         }
+
+        [MacroMethod(typeof(string[]), "Returns approver users", 1)]
+        public static object GetApprovers(EvaluationContext context, params object[] parameters)
+        {
+            var none = new string[] { "0;none" };
+
+            var approvers = DIContainer.Resolve<IApproverService>()
+                .GetApprovers(SiteContext.CurrentSiteID)
+                .Select(u => $"{u.UserId};{u.UserName} ({u.Email})");
+
+            return none.Concat(approvers).ToArray();
+         }
 
         [MacroMethod(typeof(string), "Returns file name from media attachment url.", 1)]
         [MacroMethodParam(0, "url", typeof(string), "Url")]

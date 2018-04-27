@@ -2,7 +2,6 @@
 using CMS.Ecommerce;
 using CMS.Membership;
 using CMS.SiteProvider;
-using Kadena.Models;
 using Kadena.Models.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
@@ -20,24 +19,14 @@ namespace Kadena.WebAPI.KenticoProviders
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public Customer GetCurrentCustomer()
+        public User GetUser(string mail)
         {
-            return _mapper.Map<Customer>(ECommerceContext.CurrentCustomer);
-        }
-
-        public Customer GetCustomer(int customerId)
-        {
-            return _mapper.Map<Customer>(CustomerInfoProvider.GetCustomerInfo(customerId));
+            return _mapper.Map<User>(UserInfoProvider.GetUserInfo(mail));
         }
 
         public User GetCurrentUser()
         {
             return _mapper.Map<User>(MembershipContext.AuthenticatedUser);
-        }
-
-        public User GetUser(string mail)
-        {
-            return _mapper.Map<User>(UserInfoProvider.GetUserInfo(mail));
         }
 
         public bool SaveLocalization(string code)
@@ -69,36 +58,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return _mapper.Map<User>(UserInfoProvider.GetUserInfo(userId));
         }
-
-        /// <summary>
-        /// Creates and saves new Customer
-        /// </summary>
-        /// <returns>ID of new Customer</returns>
-        public int CreateCustomer(Customer customer)
-        {
-            var customerInfo = _mapper.Map<CustomerInfo>(customer);
-            customerInfo.CustomerID = 0;
-            customerInfo.Insert();
-            return customerInfo.CustomerID;
-        }
-
-        public void UpdateCustomer(Customer customer)
-        {
-            var customerInfo = CustomerInfoProvider.GetCustomerInfo(customer.Id);
-
-            if (customerInfo == null)
-            {
-                throw new ArgumentOutOfRangeException(nameof(customer.Id), "Existing Customer with given Id not found");
-            }
-
-            customerInfo.CustomerFirstName = customer.FirstName;
-            customerInfo.CustomerLastName = customer.LastName;
-            customerInfo.CustomerEmail = customer.Email;
-            customerInfo.CustomerPhone = customer.Phone;
-            customerInfo.CustomerCompany = customer.Company;
-            customerInfo.Update();
-        }
-
+       
         public void CreateUser(User user, int siteId, UserSettings userSettings = null)
         {
             var newUser = _mapper.Map<UserInfo>(user);
@@ -161,12 +121,7 @@ namespace Kadena.WebAPI.KenticoProviders
             var customer = CustomerInfoProvider.GetCustomerInfo(customerId);
             customer.CustomerUserID = userId;
             customer.Update();
-        }
-
-        public Customer GetCustomerByUser(int userId)
-        {
-            return _mapper.Map<Customer>(CustomerInfoProvider.GetCustomerInfoByUserID(userId));
-        }
+        }        
 
         public UserSettings GetUserSettings(int userId)
         {

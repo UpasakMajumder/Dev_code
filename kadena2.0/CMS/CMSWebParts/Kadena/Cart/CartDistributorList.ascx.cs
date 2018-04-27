@@ -56,7 +56,8 @@ public partial class CMSWebParts_Kadena_Cart_CartDistributorList : CMSAbstractWe
             hdnInsufficientStockError.Value = ResHelper.GetString("Kadena.AddToCart.StockError");
             hdnMoreThanAllocatedError.Value = ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError");
             hdnCartUpdatedText.Value = ResHelper.GetString("Kadena.AddToCart.SuccessfullyAdded");
-            if (DIContainer.Resolve<IKenticoCustomerProvider>().GetCustomerIDByUserID(CurrentUser.UserID) == 0)
+            var customerId = DIContainer.Resolve<IKenticoCustomerProvider>().GetCustomerByUser(CurrentUser.UserID)?.Id ?? 0;
+            if (customerId == 0)
             {
                 CreateCustomer();
             }
