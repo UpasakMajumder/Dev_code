@@ -50,7 +50,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 Controls.Add(new LiteralControl(GetHiddenInput("containerId", Request.QueryString["containerId"])));
             }
 
-            var productUom = _productDocument.GetStringValue("ProductUnitOfMeasure", UnitOfMeasure.DefaultUnit);
+            var productUom = _productDocument.GetStringValue("SKUUnitOfMeasure", UnitOfMeasure.DefaultUnit);
             this.pcs.InnerText = DIContainer.Resolve<IProductsService>().TranslateUnitOfMeasure(productUom, LocalizationContext.CurrentCulture.CultureCode);
         }
 
