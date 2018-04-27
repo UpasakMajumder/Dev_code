@@ -26,7 +26,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoOrderProvider kenticoOrder;
         private readonly IShoppingCartProvider shoppingCart;
         private readonly IKenticoProductsProvider products;
-        private readonly IKenticoUserProvider kenticoUsers;
+        private readonly IKenticoCustomerProvider kenticoCustomers;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoLogger kenticoLog;
         private readonly IKenticoLocalizationProvider localization;
@@ -44,7 +44,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             IKenticoOrderProvider kenticoOrder,
             IShoppingCartProvider shoppingCart,
             IKenticoProductsProvider products,
-            IKenticoUserProvider kenticoUsers,
+            IKenticoCustomerProvider kenticoCustomers,
             IKenticoResourceService resources,
             IKenticoLogger kenticoLog,
             IKenticoLocalizationProvider localization,
@@ -61,7 +61,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.kenticoOrder = kenticoOrder ?? throw new ArgumentNullException(nameof(kenticoOrder));
             this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
             this.products = products ?? throw new ArgumentNullException(nameof(products));
-            this.kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
+            this.kenticoCustomers = kenticoCustomers?? throw new ArgumentNullException(nameof(kenticoCustomers));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.mailingClient = mailingClient ?? throw new ArgumentNullException(nameof(mailingClient));
             this.kenticoLog = kenticoLog ?? throw new ArgumentNullException(nameof(kenticoLog));
@@ -76,7 +76,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
         {
-            CheckOrderDetailPermisson(orderId, kenticoUsers.GetCurrentCustomer());
+            CheckOrderDetailPermisson(orderId, kenticoCustomers.GetCurrentCustomer());
 
             var microserviceResponse = await orderViewClient.GetOrderByOrderId(orderId);
 
