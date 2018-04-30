@@ -12,73 +12,27 @@
   <PageTemplateFile />
   <PageTemplateForAllPages>True</PageTemplateForAllPages>
   <PageTemplateGUID>08597670-d7bd-4c14-8291-a31ac3f3a971</PageTemplateGUID>
-  <PageTemplateInheritPageLevels>/</PageTemplateInheritPageLevels>
   <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
   <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
   <PageTemplateIsLayout>False</PageTemplateIsLayout>
   <PageTemplateIsReusable>True</PageTemplateIsReusable>
   <PageTemplateLayout>
 <![CDATA[
-<div class="container-fluid">
-  <div class="login signup__form">
-    <div class="login__form">
-      <div class="login__form-inner">
-        <div class="login__custom-logo mb-3">
-          {^WebPartZone|(id)zoneCustomersLogo^}
-        </div>
-        {^WebPartZone|(id)zoneLogin^}
+<div class="login signup__form">
+  <div class="login__form">
+    <div class="login__form-inner">
+      <div class="login__custom-logo mb-3">
+        {^WebPartZone|(id)zoneCustomersLogo^}
       </div>
+      {^WebPartZone|(id)zoneLogin^}
     </div>
-    {^WebPartZone|(id)zonePageBackgroud^}
-    <div class="login__kadena-logo">
-      {^WebPartZone|(id)zoneKadenaLogo^}
-    </div>
+  </div>
+  {^WebPartZone|(id)zonePageBackgroud^}
+  <div class="login__kadena-logo">
+    {^WebPartZone|(id)zoneKadenaLogo^}
   </div>
 </div>
 
-<script>
-  var config = {
-    localization: {
-      login: {
-        email: '{%JSEscape(GetResourceString("Kadena.Login.Email"))|(user)administrator|(hash)b85d2701eb43e00a0f599802b49263eae4b099df2b88fbaa442f9ea430220dc1%}',
-        emailPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.EmailPlaceholder"))|(user)administrator|(hash)10eaa914d934056458d92f4302a9178945091fab55f38d0e6950fad411ad7047%}',
-        emailValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.EmailValidationMessage"))|(user)administrator|(hash)cd85786537b70307fb0c209589613ad3c9a0e27f436286e6f3a5a5d8e0a51af0%}',
-        password: '{%JSEscape(GetResourceString("Kadena.Login.Password"))|(user)administrator|(hash)a22b4f0cc65d0b41a1c2cc422eba582784febc2e3b218c331dd0b177838545ca%}',
-        passwordPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.PasswordPlaceholder"))|(user)administrator|(hash)a0403b144a44a100d1162502fd2a394082d80a3f4959cfa950e37627afaed8f8%}',
-        passwordShow: '{%JSEscape(GetResourceString("Kadena.Login.PasswordShow"))|(user)administrator|(hash)4c0f39a588fcf4a952ba2ea4bb4b2cd29893a2de282af616d482d4ff2ef3581d%}',
-        passwordHide: '{%JSEscape(GetResourceString("Kadena.Login.PasswordHide"))|(user)administrator|(hash)565d693bb82f475dd78b0003b78ddd33d18fc47d389efd15408100b7089d0e14%}',
-        passwordValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.PasswordValidationMessage"))|(user)administrator|(hash)238eee9be35d8230ca1b17a4d5d744c314aa7909388ef4a0d381f700de5aee5a%}',
-        keepMeLoggedIn: '{%JSEscape(GetResourceString("Kadena.Login.KeepMeLoggedIn"))|(user)administrator|(hash)5debfee01e321a82ee23fe41ddd2256b7ee2a27781a8f9f9f2dd031035d648ac%}',
-        login: '{%JSEscape(GetResourceString("Kadena.Login.LoginButtonText"))|(user)administrator|(hash)ac38af960eb42388514afac07e26dc4d6265db216f70385204de0f27861e86f4%}'
-      }
-    }
-};
-  config.localization.staticFields = {
-    validation: {
-      requiredMessage: '{%JSEscape(GetResourceString("Kadena.Field.RequiredMessage"))|(user)rostyslav.diachenko@actum.cz|(hash)d4eb9376f1d2ec01229945a039c00d1f138f5916e3d8fa411828ccc02a57974f%}',
-      optionalLabel: '{%JSEscape(GetResourceString("Kadena.Field.Optional"))|(user)rostyslav.diachenko@actum.cz|(hash)76a69f8b7509599b0184c46011468afc9905e954566919564cc678baea6e2d45%}'
-      },
-    password: {
-      show: '{%JSEscape(GetResourceString("Kadena.Field.Show"))|(user)rostyslav.diachenko@actum.cz|(hash)a72cd75bbddfcbe9e3077b350cfeb45086b6de2b1146d6435ca7f40818bd7d23%}',
-      hide: '{%JSEscape(GetResourceString("Kadena.Field.Hide"))|(user)rostyslav.diachenko@actum.cz|(hash)6e716e8668071c88e21f9ff746926e4798f5632731a8b439db900e5d04f6861a%}'
-      }
-  };
-  config.localization.smarty= {
-    url:'https://us-street.api.smartystreets.com/street-address',
-    key:''+{%Settings.SmartyKey|(user)cvoqa2@gmail.com|(hash)a77d611b45b63cc6503e12eeb400db9b1e2784045fe6804814a3a33ca8121f7b%}+'',
-    errorLabel: '{% GetResourceString("Kadena.Smarty.ErrorText") |(user)cvoqa2@gmail.com|(hash)a9a8782099ca4650ca3480ba8d5ce95117c83299b1959d22ed90d62c57a7a74b%}',
-    reqErrorLabel:'{% GetResourceString("Kadena.Smarty.ReqErrorText") |(user)cvoqa2@gmail.com|(hash)ca9ebd29bbebcb697ec62abfbabf702e8de1847351558a427cff70089b24ba4a%}',
-    missingInputLabel:'{% GetResourceString("Kadena.Smarty.MissingInputText") |(user)cvoqa2@gmail.com|(hash)9a457ca9af15a5aeef79d5a1b50ac2f5db53af5bd70c893ab941fcdfb2e6fe89%}',
-    certifyMessageLabel:'{% GetResourceString("Kadena.Smarty.CertifyMessageText") |(user)cvoqa2@gmail.com|(hash)147df896af8e772fc4dc5c227d3e971c646b2403131f716649772bee0732724e%}',
-    autoCompleteCount:'{% GetResourceString("Kadena.Smarty.AutoCompleteCount") |(user)cvoqa2@gmail.com|(hash)5c224d0a48af68ac29ae2fa02133c3e1426a93fd3562803dfae02728c1633862%}',
-    candidateCount:'{% GetResourceString("Kadena.Smarty.CandidateCount") |(user)cvoqa2@gmail.com|(hash)99c9daa20c4dbd36e7af5cc0610f6c41738ee28e9dd0ae761b720c344ebd026e%}'        
-  };
-</script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="/js/common.min.js?v=0.2"></script>
-<script src="/js/app.min.js?v=0.2" async></script>
-<script src="/CMSScripts/Custom/Kadena/custom.js?v=0.2"></script>
 
 
 ]]>
