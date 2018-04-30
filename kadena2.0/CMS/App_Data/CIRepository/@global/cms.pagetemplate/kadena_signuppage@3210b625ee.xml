@@ -36,8 +36,6 @@
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
 <script>
   var config = {
     localization: {
@@ -77,10 +75,11 @@
   };
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="/js/common.min.js?v=0.2"></script>
 <script src="/js/app.min.js?v=0.2" async></script>
 <script src="/CMSScripts/Custom/Kadena/custom.js?v=0.2"></script>
-{%Settings.KDA_EnableSmartyStreet ? "<script src='//d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/4.1/jquery.liveaddress.min.js'></script><script src='~/CMSScripts/Custom/Kadena/SmartyStreet.js'></script>" : ""|(user)cvoqa2@gmail.com|(hash)74f45a1668f557914ae7fcc25425f86cc90c7b68ac81fb244fac1882a5eb4ced%}
+
 
 ]]>
   </PageTemplateLayout>
