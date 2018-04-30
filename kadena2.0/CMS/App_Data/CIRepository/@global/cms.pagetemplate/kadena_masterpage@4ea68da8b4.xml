@@ -7,11 +7,12 @@
   </PageTemplateCategoryID>
   <PageTemplateCloneAsAdHoc>False</PageTemplateCloneAsAdHoc>
   <PageTemplateCodeName>_Kadena_MasterPage</PageTemplateCodeName>
-  <PageTemplateDisplayName>_Master Page</PageTemplateDisplayName>
+  <PageTemplateDisplayName>Authenticated Master Page</PageTemplateDisplayName>
   <PageTemplateFile />
   <PageTemplateForAllPages>False</PageTemplateForAllPages>
   <PageTemplateGUID>6e064439-e786-42a1-920a-9ab3dde84f46</PageTemplateGUID>
   <PageTemplateIconClass>icon-square-dashed</PageTemplateIconClass>
+  <PageTemplateInheritPageLevels>/</PageTemplateInheritPageLevels>
   <PageTemplateIsReusable>True</PageTemplateIsReusable>
   <PageTemplateLayout>
 <![CDATA[
@@ -224,7 +225,7 @@
 ]]>
   </PageTemplateLayout>
   <PageTemplateLayoutType>html</PageTemplateLayoutType>
-  <PageTemplateShowAsMasterTemplate>False</PageTemplateShowAsMasterTemplate>
+  <PageTemplateShowAsMasterTemplate>True</PageTemplateShowAsMasterTemplate>
   <PageTemplateType>portal</PageTemplateType>
   <PageTemplateWebParts>
     <page>
