@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.pagetemplate>
+  <PageTemplateAllowInheritHeader>True</PageTemplateAllowInheritHeader>
+  <PageTemplateCategoryID>
+    <CodeName>Kadena_Structure</CodeName>
+    <GUID>2e313d97-1ab1-4e82-8787-a8be93959c39</GUID>
+    <ObjectType>cms.pagetemplatecategory</ObjectType>
+  </PageTemplateCategoryID>
+  <PageTemplateCloneAsAdHoc>False</PageTemplateCloneAsAdHoc>
+  <PageTemplateCodeName>Kadena_PublicMasterPage</PageTemplateCodeName>
+  <PageTemplateDisplayName>Public MasterPage</PageTemplateDisplayName>
+  <PageTemplateFile />
+  <PageTemplateForAllPages>True</PageTemplateForAllPages>
+  <PageTemplateGUID>3c081ee9-1681-494d-b247-8b5450c56163</PageTemplateGUID>
+  <PageTemplateHeader>
+<![CDATA[
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="apple-touch-icon" sizes="180x180" href="/gfx/images/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/gfx/images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/gfx/images/favicon/favicon-16x16.png">
+<link rel="manifest" href="/gfx/images/favicon/manifest.json">
+<link rel="mask-icon" href="/gfx/images/favicon/safari-pinned-tab.svg" color="#5bbad5 ">
+<meta name="theme-color" content="#ffffff ">
+<link rel="stylesheet" href="/css/main.min.css">
+<link href='https://fonts.googleapis.com/css?family=Lato:400,500,600,700,900' rel='stylesheet'>
+
+<script>
+  var config = { localization: { } };
+</script>
+]]>
+  </PageTemplateHeader>
+  <PageTemplateIconClass>icon-square-dashed</PageTemplateIconClass>
+  <PageTemplateInheritPageLevels>/</PageTemplateInheritPageLevels>
+  <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
+  <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
+  <PageTemplateIsLayout>False</PageTemplateIsLayout>
+  <PageTemplateIsReusable>True</PageTemplateIsReusable>
+  <PageTemplateLayout>
+<![CDATA[
+<div class="container-fluid">
+  {^WebPartZone|(id)zoneContent^}
+</div>
+
+<script>
+  config.localization.notification = {
+    serverNotAvailable: {
+      title: '{%JSEscape(GetResourceString("Kadena.ServerNotAvailable.ErrorTitle"))|(user)rostyslav.diachenko@actum.cz|(hash)23fc75d25994f08dfd7330dbd8a75bb36e9d383cb8e3e09392c5b2a25a00e3c5%}',
+      text: '{%JSEscape(GetResourceString("Kadena.ServerNotAvailable.ErrorText"))|(user)rostyslav.diachenko@actum.cz|(hash)9fc9d0a71167f163cdf8065975676d2ba67cdd89f562fa5bf4fd0182f12bfe89%}'
+    }
+  };
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/js/common.min.js?v=0.2"></script>
+<script src="/js/app.min.js?v=0.2" async></script>
+<script src="/CMSScripts/Custom/Kadena/custom.js?v=0.2"></script>
+]]>
+  </PageTemplateLayout>
+  <PageTemplateLayoutType>html</PageTemplateLayoutType>
+  <PageTemplateShowAsMasterTemplate>True</PageTemplateShowAsMasterTemplate>
+  <PageTemplateType>portal</PageTemplateType>
+  <PageTemplateWebParts>
+    <page>
+      <webpartzone id="zoneContent" v="1">
+        <webpart controlid="pageplaceholder" guid="ebe3ff13-d6da-452c-a89f-9bc0a7f70a8f" type="pageplaceholder" v="1">
+          <property name="cacheminutes"></property>
+          <property name="checkpermissions">True</property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages"></property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">pageplaceholder</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="hideonsubpages"></property>
+          <property name="instanceguid">ebe3ff13-d6da-452c-a89f-9bc0a7f70a8f</property>
+          <property name="outputconverttablestodivs"></property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="pagetemplate"></property>
+          <property name="partialcachedependencies"></property>
+          <property name="partialcacheminutes"></property>
+          <property name="path"></property>
+          <property name="preservepartialcacheonpostback"></property>
+          <property name="showfordocumenttypes"></property>
+          <property name="timezonetype"></property>
+          <property name="usedefaulttemplateonsubpages">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">pageplaceholder</property>
+        </webpart>
+      </webpartzone>
+    </page>
+  </PageTemplateWebParts>
+</cms.pagetemplate>
