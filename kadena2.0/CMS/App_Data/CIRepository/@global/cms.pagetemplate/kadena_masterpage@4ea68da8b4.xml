@@ -296,36 +296,6 @@
           <property name="webparttitle"></property>
           <property name="webparttype">pageplaceholder</property>
         </webpart>
-        <webpart controlid="Javascript" guid="a9f3fbc4-f78b-4221-a1eb-7f8af2e25007" type="javascript" v="1">
-          <property name="cat_open_behavior">False</property>
-          <property name="cat_open_performance"></property>
-          <property name="controlid">Javascript</property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="generatescripttags">True</property>
-          <property name="hideonsubpages">False</property>
-          <property name="inlinescript">
-<![CDATA[
-config.localization.languages = {
-        url: '/api/usersettings/savelocalization',
-        selected: '{% LocalizationContext.CurrentCulture.CultureShortName |(user)tomas.rucki@actum.cz|(hash)2fbd1c8c6b5ce501826006147a1b08eae8d3a10b1208edb38f44feff6fb1c601%}',
-        languages: {% KadenaNamespace.GetUrlsForLanguageSelector(CurrentDocument.NodeAliasPath) |(user)tomas.rucki@actum.cz|(hash)d42d59abfc188a6a5f5a8e0b27ab7171fdfbb92874748127bacc67f56d52b66d%},
-        locale: '{% LocalizationContext.CurrentCulture.CultureCode |(user)rostyslav.diachenko@actum.cz|(hash)9a7da667d65bd3c5543dde45b302df958df905497305769c94a77023c9ca25dd%}'
-}
-]]>
-          </property>
-          <property name="inlinescriptpagelocation">Inline</property>
-          <property name="instanceguid">a9f3fbc4-f78b-4221-a1eb-7f8af2e25007</property>
-          <property name="linkedfile"></property>
-          <property name="linkedfilepagelocation">Header</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="visible" ismacro="true">
-            <![CDATA[{% CurrentSite.HasMultipleCultures |(user)tomas.rucki@actum.cz|(hash)0f7530668a9e01e014218f2361e4eb65416f4c7a43be224e4de4c10d7d399542%}]]>
-          </property>
-          <property name="webparttitle">Language selector</property>
-          <property name="webparttype">javascript</property>
-        </webpart>
       </webpartzone>
       <webpartzone id="zoneNavigation" v="1">
         <webpart controlid="LogoImage" guid="5eb4e5cc-5ae2-4818-8bc3-0ef1acaf06b5" type="EditableImage" v="1">
@@ -542,6 +512,36 @@ config.localization.languages = {
         </webpart>
       </webpartzone>
       <webpartzone id="TopNavigationZone_zone" layoutzone="true" v="1">
+        <webpart controlid="Javascript" guid="a9f3fbc4-f78b-4221-a1eb-7f8af2e25007" type="javascript" v="1">
+          <property name="cat_open_behavior">False</property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">Javascript</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+config.localization.languages = {
+        url: '/api/usersettings/savelocalization',
+        selected: '{% LocalizationContext.CurrentCulture.CultureShortName |(user)tomas.rucki@actum.cz|(hash)2fbd1c8c6b5ce501826006147a1b08eae8d3a10b1208edb38f44feff6fb1c601%}',
+        languages: {% KadenaNamespace.GetUrlsForLanguageSelector(CurrentDocument.NodeAliasPath) |(user)tomas.rucki@actum.cz|(hash)d42d59abfc188a6a5f5a8e0b27ab7171fdfbb92874748127bacc67f56d52b66d%},
+        locale: '{% LocalizationContext.CurrentCulture.CultureCode |(user)rostyslav.diachenko@actum.cz|(hash)9a7da667d65bd3c5543dde45b302df958df905497305769c94a77023c9ca25dd%}'
+}
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Inline</property>
+          <property name="instanceguid">a9f3fbc4-f78b-4221-a1eb-7f8af2e25007</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible" ismacro="true">
+            <![CDATA[{% CurrentSite.HasMultipleCultures |(user)tomas.rucki@actum.cz|(hash)0f7530668a9e01e014218f2361e4eb65416f4c7a43be224e4de4c10d7d399542%}]]>
+          </property>
+          <property name="webparttitle">Language selector</property>
+          <property name="webparttype">javascript</property>
+        </webpart>
         <webpart controlid="LanguageSelector" guid="c4967541-2519-420d-b3dd-b43d5893c7e1" type="statictext" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter">False</property>
@@ -1587,6 +1587,14 @@ config.localization.languages = {
         </webpart>
       </webpartzone>
       <webpartzone id="zoneProductImage" v="1">
+        <properties>
+          <property name="containerhideonsubpages">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+        </properties>
         <webpart controlid="ProductImageLarge" guid="c3945710-450b-445e-b612-54fda2b16a7e" type="statictext" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
