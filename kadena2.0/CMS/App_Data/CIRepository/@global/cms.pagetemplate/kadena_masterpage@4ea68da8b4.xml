@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cms.pagetemplate>
+  <PageTemplateAllowInheritHeader>True</PageTemplateAllowInheritHeader>
   <PageTemplateCategoryID>
     <CodeName>Kadena_Structure</CodeName>
     <GUID>2e313d97-1ab1-4e82-8787-a8be93959c39</GUID>
@@ -11,8 +12,28 @@
   <PageTemplateFile />
   <PageTemplateForAllPages>False</PageTemplateForAllPages>
   <PageTemplateGUID>6e064439-e786-42a1-920a-9ab3dde84f46</PageTemplateGUID>
+  <PageTemplateHeader>
+<![CDATA[
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="apple-touch-icon" sizes="180x180" href="/gfx/images/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/gfx/images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/gfx/images/favicon/favicon-16x16.png">
+<link rel="manifest" href="/gfx/images/favicon/manifest.json">
+<link rel="mask-icon" href="/gfx/images/favicon/safari-pinned-tab.svg" color="#5bbad5 ">
+<meta name="theme-color" content="#ffffff ">
+<link rel="stylesheet" href="css/main.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,500,600,700,900">
+
+<meta name="robots" content="noindex, nofollow">
+<script>
+  var config = { localization: { } };
+</script>
+]]>
+  </PageTemplateHeader>
   <PageTemplateIconClass>icon-square-dashed</PageTemplateIconClass>
   <PageTemplateInheritPageLevels>/</PageTemplateInheritPageLevels>
+  <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
   <PageTemplateIsReusable>True</PageTemplateIsReusable>
   <PageTemplateLayout>
 <![CDATA[
