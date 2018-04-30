@@ -57,6 +57,8 @@ namespace Kadena.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<RegistrationDto, Registration>();
+
             CreateMap<ChiliProcess, ChiliProcessDto>();
             CreateMap<ItemOption, ItemOptionDto>();
 

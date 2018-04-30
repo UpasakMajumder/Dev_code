@@ -2,7 +2,7 @@
 
 namespace Kadena.Dto.Logon.Requests
 {
-    public class RegisterUserDto
+    public class RegistrationDto
     {
         [Required]
         public string FirstName { get; set; }

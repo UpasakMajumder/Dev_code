@@ -62,6 +62,7 @@
     <Compile Include="FyBudget\FyBudget.cs" />
     <Compile Include="IBTF\IBTF.cs" />
     <Compile Include="IBTF\IBTFAdjustment.cs" />
+    <Compile Include="Login\Registration.cs" />
     <Compile Include="ModuleAccess\KnownModules.cs" />
     <Compile Include="ModuleAccess\KnownPermissions.cs" />
     <Compile Include="ModuleAccess\KadenaModuleState.cs" />
