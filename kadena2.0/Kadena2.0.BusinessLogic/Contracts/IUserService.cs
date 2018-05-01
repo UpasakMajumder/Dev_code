@@ -1,5 +1,6 @@
 ﻿using Kadena.Models;
 using Kadena.Models.Login;
+using Kadena.Models.Membership;
 
 namespace Kadena.BusinessLogic.Contracts
 {
@@ -7,5 +8,6 @@ namespace Kadena.BusinessLogic.Contracts
     {
         CheckTaCResult CheckTaC();
         void AcceptTaC();
+        void RegisterUser(Registration registration);
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Kadena.BusinessLogic.Services;
+using Kadena.Models.Login;
 using Kadena.Models.Membership;
+using Kadena.Models.Site;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Moq;
 using System;
@@ -62,6 +64,16 @@ namespace Kadena.Tests.BusinessLogic
 
             Assert.NotNull(actualResult);
             Assert.False(actualResult.Show);
+        }
+
+        [Fact(DisplayName = "UserService.Register()")]
+        public void Register()
+        {
+            Setup<IKenticoSiteProvider, KenticoSite>(s => s.GetKenticoSite(), new KenticoSite());
+
+            var exception = Record.Exception(() => Sut.RegisterUser(new Registration()));
+
+            Assert.Null(exception);
         }
     }
 }

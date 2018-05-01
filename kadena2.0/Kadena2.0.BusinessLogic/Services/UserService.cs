@@ -13,12 +13,15 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoUserProvider userProvider;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoDocumentProvider documents;
+        private readonly IKenticoSiteProvider siteProvider;
 
-        public UserService(IKenticoUserProvider userProvider, IKenticoResourceService resources, IKenticoDocumentProvider documents)
+        public UserService(IKenticoUserProvider userProvider, IKenticoResourceService resources, IKenticoDocumentProvider documents
+            , IKenticoSiteProvider siteProvider)
         {
             this.userProvider = userProvider ?? throw new ArgumentNullException(nameof(userProvider));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
+            this.siteProvider = siteProvider ?? throw new ArgumentNullException(nameof(siteProvider));
         }
 
         public CheckTaCResult CheckTaC()
@@ -46,5 +49,30 @@ namespace Kadena.BusinessLogic.Services
         }
 
         public void AcceptTaC() => userProvider.AcceptTaC();
+
+        public void RegisterUser(Registration registration)
+        {
+            var user = userProvider.GetUser(registration.Email);
+
+            user = new User
+            {
+                FirstName = registration.FirstName,
+                LastName = registration.LastName,
+                UserName = registration.Email,
+                Email = registration.Email
+            };
+
+            var customer = new Customer
+            {
+                FirstName = registration.FirstName,
+                LastName = registration.LastName,
+                Email = registration.Email
+            };
+
+            userProvider.CreateUser(user, siteProvider.GetKenticoSite().Id);
+            customer.Id = userProvider.CreateCustomer(customer);
+
+            userProvider.LinkCustomerToUser(customer.Id, user.UserId);
+        }
     }
 }
