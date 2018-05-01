@@ -99,7 +99,7 @@ namespace Kadena.WebAPI.KenticoProviders
             customerInfo.Update();
         }
 
-        public void CreateUser(User user, int siteId, UserSettings userSettings = null)
+        public void CreateUser(User user, int siteId)
         {
             var newUser = _mapper.Map<UserInfo>(user);
             newUser.Enabled = true;
@@ -108,15 +108,9 @@ namespace Kadena.WebAPI.KenticoProviders
             var newUserId = newUser.UserID;
             UserSiteInfoProvider.AddUserToSite(newUserId, siteId);
             user.UserId = newUserId;
-
-            if (userSettings != null)
-            {
-                userSettings.UserId = newUserId;
-                UpdateUserSettings(userSettings);
-            }
         }
 
-        public void UpdateUser(User user, UserSettings userSettings = null)
+        public void UpdateUser(User user)
         {
             var userInfo = UserInfoProvider.GetUserInfo(user.UserId);
 
@@ -129,33 +123,11 @@ namespace Kadena.WebAPI.KenticoProviders
             userInfo.FirstName = user.FirstName;
             userInfo.LastName = user.LastName;
             userInfo.Email = user.Email;
+            userInfo.UserURLReferrer = user.CallBackUrl;
 
             userInfo.Update();
-
-            if (userSettings != null)
-            {
-                userSettings.UserId = user.UserId;
-                UpdateUserSettings(userSettings);
-            }
         }
-
-        private void UpdateUserSettings(UserSettings userSettings)
-        {
-            if (userSettings != null)
-            {
-                UserSettingsInfo userSettingsInfo = UserSettingsInfoProvider.GetUserSettingsInfoByUser(userSettings.UserId);
-                if (userSettingsInfo == null)
-                {
-                    userSettingsInfo = _mapper.Map<UserSettingsInfo>(userSettings);
-                }
-                else
-                {
-                    userSettingsInfo.UserURLReferrer = userSettings.CallBackUrl;
-                }
-                UserSettingsInfoProvider.SetUserSettingsInfo(userSettingsInfo);
-            }
-        }
-
+        
         public void LinkCustomerToUser(int customerId, int userId)
         {
             var customer = CustomerInfoProvider.GetCustomerInfo(customerId);
@@ -166,11 +138,6 @@ namespace Kadena.WebAPI.KenticoProviders
         public Customer GetCustomerByUser(int userId)
         {
             return _mapper.Map<Customer>(CustomerInfoProvider.GetCustomerInfoByUserID(userId));
-        }
-
-        public UserSettings GetUserSettings(int userId)
-        {
-            return _mapper.Map<UserSettings>(UserSettingsInfoProvider.GetUserSettingsInfoByUser(userId));
         }
 
         public void AcceptTaC()

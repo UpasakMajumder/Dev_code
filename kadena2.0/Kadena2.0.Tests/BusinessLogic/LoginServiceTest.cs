@@ -31,9 +31,7 @@ namespace Kadena.Tests.BusinessLogic
             var autoMock = new AutoMocker();
             var userProvider = autoMock.GetMock<IKenticoUserProvider>();
             userProvider.Setup(s => s.GetCurrentUser())
-                .Returns(new User());
-            userProvider.Setup(s => s.GetUserSettings(It.IsAny<int>()))
-                .Returns(new UserSettings { CallBackUrl = expectedResult });
+                .Returns(new User { CallBackUrl = expectedResult });
             var sut = autoMock.CreateInstance<LoginService>();
 
             var actualResult = sut.Logout();

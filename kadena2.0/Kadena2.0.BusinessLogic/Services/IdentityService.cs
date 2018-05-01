@@ -111,18 +111,17 @@ namespace Kadena.BusinessLogic.Services
                 logger.LogInfo(this.GetType().Name, "ENSURESAMLUSER", "User info extraction has failed.");
                 return null;
             }
-            var userSettings = mapper.Map<UserSettings>(user);
 
             var existingUser = userProvider.GetUser(newUser.UserName);
             if (existingUser == null)
             {
                 newUser.IsExternal = true;
-                userProvider.CreateUser(newUser, currentSiteId, userSettings);
+                userProvider.CreateUser(newUser, currentSiteId);
             }
             else
             {
                 newUser.UserId = existingUser.UserId;
-                userProvider.UpdateUser(newUser, userSettings);
+                userProvider.UpdateUser(newUser);
             }
             return newUser;
         }

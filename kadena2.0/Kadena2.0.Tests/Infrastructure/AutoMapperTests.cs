@@ -6,7 +6,7 @@ namespace Kadena.Tests.Infrastructure
 {
     public class AutoMapperTests
     {
-        [Fact(DisplayName = "Mapper Configuration" )]
+        [Fact(DisplayName = "AutoMapper Configuration" )]
         public void ConfigurationValid()
         {
             var sut = DIContainer.Resolve<IMapper>();

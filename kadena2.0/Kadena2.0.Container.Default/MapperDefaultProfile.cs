@@ -326,8 +326,6 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.UserId, opt => opt.Ignore())
                 .ForMember(dest => dest.TermsConditionsAccepted, opt => opt.Ignore())
                 .ForMember(dest => dest.IsExternal, opt => opt.Ignore());
-            CreateMap<UserDto, UserSettings>()
-                .ForMember(dest => dest.UserId, opt => opt.Ignore());
             CreateMap<CustomerDto, Customer>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.CustomerNumber, opt => opt.Ignore())
