@@ -1,25 +1,19 @@
 ﻿using Xunit;
-using Moq.AutoMock;
-using Moq;
 using Kadena.BusinessLogic.Services;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Membership;
 
 namespace Kadena.Tests.BusinessLogic
 {
-    public class LoginServiceTest
+    public class LoginServiceTest : KadenaUnitTest<LoginService>
     {
         [Fact(DisplayName = "LoginService.Logout() | Empty callback url")]
         public void LogoutEmpty()
         {
             var expectedResult = "/";
-            var autoMock = new AutoMocker();
-            var userProvider = autoMock.GetMock<IKenticoUserProvider>();
-            userProvider.Setup(s => s.GetCurrentUser())
-                .Returns(new User());
-            var sut = autoMock.CreateInstance<LoginService>();
+            Setup<IKenticoUserProvider, User>(s => s.GetCurrentUser(), new User());
 
-            var actualResult = sut.Logout();
+            var actualResult = Sut.Logout();
 
             Assert.Equal(expectedResult, actualResult);
         }
@@ -28,13 +22,9 @@ namespace Kadena.Tests.BusinessLogic
         public void LogoutNonEmpty()
         {
             var expectedResult = "http://example.com";
-            var autoMock = new AutoMocker();
-            var userProvider = autoMock.GetMock<IKenticoUserProvider>();
-            userProvider.Setup(s => s.GetCurrentUser())
-                .Returns(new User { CallBackUrl = expectedResult });
-            var sut = autoMock.CreateInstance<LoginService>();
+            Setup<IKenticoUserProvider, User>(s => s.GetCurrentUser(), new User { CallBackUrl = expectedResult });
 
-            var actualResult = sut.Logout();
+            var actualResult = Sut.Logout();
 
             Assert.Equal(expectedResult, actualResult);
         }
