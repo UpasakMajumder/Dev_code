@@ -108,6 +108,7 @@ namespace Kadena.Container.Default
             container.Register<IMailService, MailService>();
             container.Register<IImageService, ImageService>();
             container.Register<IApproverService, ApproverService>();
+            container.Register<IApprovalService, ApprovalService>();
             return container;
         }
 
