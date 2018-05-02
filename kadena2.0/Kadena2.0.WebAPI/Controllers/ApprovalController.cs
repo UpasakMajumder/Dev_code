@@ -1,10 +1,10 @@
 ﻿using System.Web.Http;
 using System;
-using AutoMapper;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena.BusinessLogic.Contracts.Approval;
 using System.Threading.Tasks;
+using Kadena.Dto.Approval.Requests;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -12,27 +12,25 @@ namespace Kadena.WebAPI.Controllers
     public class ApprovalController : ApiControllerBase
     {
         private readonly IApprovalService service;
-        private readonly IMapper mapper;
 
-        public ApprovalController(IApprovalService service, IMapper mapper)
+        public ApprovalController(IApprovalService service)
         {
             this.service = service ?? throw new ArgumentNullException(nameof(service));
-            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpPost]
-        [Route("api/approval/aprove")]
-        public async Task<IHttpActionResult> Approve(string orderId, int customerId, string customerName)
+        [Route("api/approval/approve")]
+        public async Task<IHttpActionResult> Approve([FromBody]ApprovalRequestDto request)
         {
-            var result = await service.ApproveOrder(orderId, customerId, customerName);
+            var result = await service.ApproveOrder(request.OrderId, request.CustomerId, request.CustomerName);
             return ResponseJson(result);
         }
 
         [HttpPost]
         [Route("api/approval/reject")]
-        public async Task<IHttpActionResult> Reject(string orderId, int customerId, string customerName, string rejectionNote)
+        public async Task<IHttpActionResult> Reject([FromBody]ApprovalRequestDto request)
         {
-            var result = await service.RejectOrder(orderId, customerId, customerName, rejectionNote);
+            var result = await service.RejectOrder(request.OrderId, request.CustomerId, request.CustomerName, request.RejectionNote);
             return ResponseJson(result);
         }
     }
