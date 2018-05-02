@@ -19,18 +19,12 @@
   <PageTemplateIsReusable>True</PageTemplateIsReusable>
   <PageTemplateLayout>
 <![CDATA[
-<div class="new-login">
-  <div class="r-tac"></div>
-  {^WebPartZone|(id)zoneKadenaLogo^}
-  <div class="new-login__form new-login__form--abs new-login__form--bc">
-    <div class="login__custom-logo mb-3">
-        {^WebPartZone|(id)zoneCustomersLogo^}
-    </div>
-    {^WebPartZone|(id)zoneLogin^}
+<div class="new-login__form new-login__form--abs new-login__form--bc">
+  <div class="login__custom-logo mb-3">
+      {^WebPartZone|(id)zoneCustomersLogo^}
   </div>
-  {^WebPartZone|(id)zonePageBackgroud^}
+  {^WebPartZone|(id)zoneLogin^}
 </div>
-
 ]]>
   </PageTemplateLayout>
   <PageTemplateLayoutType>html</PageTemplateLayoutType>
@@ -247,24 +241,7 @@
         login: '{%JSEscape(GetResourceString("Kadena.Login.LoginButtonText"))|(user)rostyslav.diachenko@actum.cz|(hash)e5e720403bb0259b4ca0d629bfdeb22c5fbf902c56862c3eb85798b858c607e2%}',
         loginUrl:'/api/login'
       };
-  config.localization.tac = {
-        show: undefined,
-        title: '{$Kadena.TermsAndConditions.Title$}',
-        submitText: '{$Kadena.TermsAndConditions.Accept$}',
-        acceptTaCUrl: '/api/user/accepttac',
-        checkTaCUrl: '/api/user/checktac',
-        iframeUrl: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_TermsAndConditionPage) |(user)rostyslav.diachenko@actum.cz|(hash)d3da338f27c0ef291ffe93fda5fd5fd555a0650fdb5e673861e4f4284f570b7d%}'
-      };
-  config.localization.staticFields = {
-    validation: {
-      requiredMessage: '{%JSEscape(GetResourceString("Kadena.Field.RequiredMessage"))|(user)rostyslav.diachenko@actum.cz|(hash)d4eb9376f1d2ec01229945a039c00d1f138f5916e3d8fa411828ccc02a57974f%}',
-      optionalLabel: '{%JSEscape(GetResourceString("Kadena.Field.Optional"))|(user)rostyslav.diachenko@actum.cz|(hash)76a69f8b7509599b0184c46011468afc9905e954566919564cc678baea6e2d45%}'
-      },
-    password: {
-      show: '{%JSEscape(GetResourceString("Kadena.Field.Show"))|(user)rostyslav.diachenko@actum.cz|(hash)a72cd75bbddfcbe9e3077b350cfeb45086b6de2b1146d6435ca7f40818bd7d23%}',
-      hide: '{%JSEscape(GetResourceString("Kadena.Field.Hide"))|(user)rostyslav.diachenko@actum.cz|(hash)6e716e8668071c88e21f9ff746926e4798f5632731a8b439db900e5d04f6861a%}'
-      }
-  };
+  
 ]]>
           </property>
           <property name="inlinescriptpagelocation">Header</property>
@@ -273,127 +250,12 @@
           <property name="linkedfilepagelocation">Header</property>
           <property name="showfordocumenttypes"></property>
           <property name="visible">True</property>
-          <property name="webparttitle"></property>
+          <property name="webparttitle">Login config</property>
           <property name="webparttype">javascript</property>
         </webpart>
       </webpartzone>
-      <webpartzone id="zonePageBackgroud" v="1">
-        <webpart controlid="Background" guid="06dc4d15-62e2-496c-850f-18e73ddc65b3" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">Background</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">True</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">06dc4d15-62e2-496c-850f-18e73ddc65b3</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="resolvedynamiccontrols">False</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text">
-            <![CDATA[<div class="new-login__bg new-login__bg--stretch" style="background-image: url(/CMSPages/GetFile.aspx?guid={%MenuItemTeaserImage%}); opacity: {%MenuItemTeaserImageOpacity%}"></div>]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
-        </webpart>
-      </webpartzone>
-      <webpartzone id="zoneKadenaLogo" v="1">
-        <webpart controlid="KadenaLogo" guid="5173ae57-0c3b-46b2-a2d2-67ba4b09672f" type="EditableImage" v="1">
-          <property name="alternatetext"></property>
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter"></property>
-          <property name="cat_open_performance"></property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="checkpermissions">False</property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">KadenaLogo</property>
-          <property name="customtimezone"></property>
-          <property name="defaultimage"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displayselectortextbox">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="imageautoresize">
-<![CDATA[
-<AutoResize>
-  <autoresize>noresize</autoresize>
-  <autoresize_width />
-  <autoresize_height />
-  <autoresize_maxsidesize />
-</AutoResize>
-]]>
-          </property>
-          <property name="imagecssclass">new-login__logo new-login__logo--tl</property>
-          <property name="imageheight"></property>
-          <property name="imagestyle"></property>
-          <property name="imagetitle">Kadena Logo</property>
-          <property name="imagewidth"></property>
-          <property name="instanceguid">5173ae57-0c3b-46b2-a2d2-67ba4b09672f</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">True</property>
-          <property name="outputfixhtml5">True</property>
-          <property name="outputfixjavascript">True</property>
-          <property name="outputfixlowercase">True</property>
-          <property name="outputfixselfclose">True</property>
-          <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">False</property>
-          <property name="selectonlypublished">False</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="timezonetype">inherit</property>
-          <property name="useparentcontent">False</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle">Kadena Logo (Editable image)</property>
-          <property name="webparttype">EditableImage</property>
-        </webpart>
-      </webpartzone>
+      <webpartzone id="zonePageBackgroud" v="1" />
+      <webpartzone id="zoneKadenaLogo" v="1" />
     </page>
   </PageTemplateWebParts>
 </cms.pagetemplate>
