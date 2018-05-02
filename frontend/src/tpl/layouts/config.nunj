@@ -136,6 +136,10 @@
           confirmPassword: 'Passwords are not equal'
         },
         url: PATH + 'registration',
+        toLogin: {
+          url: 'lol',
+          text: 'To Login'
+        },
         strength: {
           minLength: 3,
           preferedLength: 7,

@@ -32,6 +32,10 @@ class Registration extends Component {
         confirmPassword: REGISTRATION.confirmPassword || 'Passwords are not equal'
       },
       url: REGISTRATION.url || '',
+      toLogin: REGISTRATION.toLogin || {
+        url: '#',
+        text: 'Sign Inn'
+      },
       strength: REGISTRATION.strength || null
     } : {
       title: 'Sign Up',
@@ -49,6 +53,10 @@ class Registration extends Component {
         confirmPassword: 'Passwords are not equal'
       },
       url: '',
+      toLogin: {
+        url: '#',
+        text: 'Sign In'
+      },
       strength: null
     }
   }
@@ -70,6 +78,10 @@ class Registration extends Component {
         confirmPassword: PropTypes.string.isRequired
       }).isRequired,
       url: PropTypes.string.isRequired,
+      toLogin: {
+        url: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired
+      },
       strength: PropTypes.shape({
         minLength: PropTypes.number,
         preferedLength: PropTypes.number,
@@ -339,7 +351,7 @@ class Registration extends Component {
           />
         </div>
 
-        <div>
+        <div className="mb-3">
             <Button
               text={config.labels.button}
               type="action"
@@ -347,6 +359,10 @@ class Registration extends Component {
               onClick={this.handleSubmit}
               isLoading={this.state.isPending}
             />
+          </div>
+
+          <div>
+            <a className="link" href={config.toLogin.url}>{config.toLogin.text}</a>
           </div>
       </div>
     );
