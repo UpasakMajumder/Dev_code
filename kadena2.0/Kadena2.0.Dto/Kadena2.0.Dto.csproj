@@ -51,6 +51,9 @@
   <ItemGroup>
     <Compile Include="AddToCart\DistributorCartDto.cs" />
     <Compile Include="AddToCart\DistributorCartItemDto.cs" />
+    <Compile Include="Approval\MicroserviceRequests\ApprovalRequestDto.cs" />
+    <Compile Include="Approval\MicroserviceRequests\ApprovalUnitDto.cs" />
+    <Compile Include="Approval\MicroserviceRequests\CustomerDto.cs" />
     <Compile Include="Brands\BrandDto.cs" />
     <Compile Include="BusinessUnits\BusinessUnitDto.cs" />
     <Compile Include="Checkout\Responses\ChangeDeliveryAddressResponseDto.cs" />
