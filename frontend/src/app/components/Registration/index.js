@@ -6,7 +6,6 @@ import TextInput from 'app.dump/Form/TextInput';
 import PasswordInput from 'app.dump/Form/PasswordInput';
 import Button from 'app.dump/Button';
 /* utilities */
-import { getSearchObj } from 'app.helpers/location';
 import { emailRegExp } from 'app.helpers/regexp';
 import defineStrength from 'app.helpers/password';
 /* constants */
@@ -235,14 +234,7 @@ class Registration extends Component {
               this.setState({ invalids });
             }
           } else {
-            let returnurl;
-            const query = getSearchObj();
-            if (query.returnurl) {
-              returnurl = decodeURIComponent(query.returnurl);
-            } else {
-              returnurl = '/';
-            }
-            location.assign(returnurl);
+            location.assign(this.props.config.toLogin.url);
           }
         } else {
           window.store.dispatch({
