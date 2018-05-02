@@ -146,5 +146,11 @@ namespace Kadena.WebAPI.KenticoProviders
             user.SetValue("TermsConditionsAccepted", DateTime.Now);
             user.Update();
         }
+
+        public void SetPassword(int userId, string password)
+        {
+            var userInfo = UserInfoProvider.GetUserInfo(userId);
+            UserInfoProvider.SetPassword(userInfo, password);
+        }
     }
 }
