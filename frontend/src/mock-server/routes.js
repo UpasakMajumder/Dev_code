@@ -6,6 +6,7 @@ const Products = require('./controllers/products');
 const Orders = require('./controllers/order');
 const MailingList = require('./controllers/mailingList');
 const Login = require('./controllers/login');
+const Registration = require('./controllers/registration');
 const CheckTaC = require('./controllers/checkTaC');
 const AcceptTaC = require('./controllers/acceptTaC');
 const EmailProof = require('./controllers/emailProof');
@@ -24,6 +25,8 @@ apiRouter.get('/order/recent/filtered/orders/:selectedOrderType/:selectedCampaig
 apiRouter.post('/login', Login);
 apiRouter.get('/accepttac', AcceptTaC);
 apiRouter.get('/checktac', CheckTaC);
+
+apiRouter.post('/registration', Registration);
 
 apiRouter.get('/cartPreview', CartPreview);
 
