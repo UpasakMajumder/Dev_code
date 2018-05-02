@@ -14,7 +14,7 @@ namespace Kadena.Tests.BusinessLogic.Approval
 
             Sut.GetApprovers(siteId);
 
-            Verify<IKenticoPermissionsProvider>(p => p.GetUsersWithApproverPermission(siteId), Times.Once);
+            Verify<IKenticoPermissionsProvider>(p => p.GetUsersWithPermission("Kadena_Orders", "KDA_ApproveOrders", siteId), Times.Once);
         }
     }
 }

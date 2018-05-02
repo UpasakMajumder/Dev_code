@@ -1,5 +1,6 @@
 ﻿using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.Models.Membership;
+using Kadena.Models.SiteSettings.Permissions;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,9 @@ namespace Kadena.BusinessLogic.Services.Approval
 
         public IEnumerable<User> GetApprovers(int siteId)
         {
-            return permissions.GetUsersWithApproverPermission(siteId);
+            return permissions.GetUsersWithPermission(ModulePermissions.KadenaOrdersModule,
+                                                      ModulePermissions.KadenaOrdersModule.ApproveOrders,
+                                                      siteId);
         }
     }
 }
