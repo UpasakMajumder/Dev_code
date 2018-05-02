@@ -234,13 +234,21 @@ $arrow-width: 10px;
   color: $brand-darker !important;
   border-radius: 4px !important;
   padding: .3rem .5rem !important;
-  text-align: center !important;
+  text-align: left !important;
   will-change: transform !important;
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
   background-color: $brand-info-light !important;
   border: 1px solid $brand-info !important;
   line-height: 1 !important;
+
+  &.pwd {
+    &--0-theme {
+      color: white !important;
+      background-color: lighten($pwd-weak, 20%) !important;
+      border-color: $pwd-weak !important;
+    }
+  }
 
   [x-arrow] {
     z-index: -1;

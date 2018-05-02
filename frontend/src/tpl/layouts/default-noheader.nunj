@@ -57,6 +57,7 @@
   <form>
     {# Main content of the page #}
     <div class="container-fluid">
+      <div class="r-toastr"></div>
       <div class="r-tac"></div>
       {% block content %}{% endblock %}
     </div>
