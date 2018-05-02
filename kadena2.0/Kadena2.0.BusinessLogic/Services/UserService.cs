@@ -73,6 +73,8 @@ namespace Kadena.BusinessLogic.Services
             customer.Id = userProvider.CreateCustomer(customer);
 
             userProvider.LinkCustomerToUser(customer.Id, user.UserId);
+
+            userProvider.SetPassword(user.UserId, registration.Password);
         }
     }
 }
