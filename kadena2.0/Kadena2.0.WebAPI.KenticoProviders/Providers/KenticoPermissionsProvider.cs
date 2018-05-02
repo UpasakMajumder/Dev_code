@@ -18,14 +18,31 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public bool IsAuthorizedPerResource(string resourceName, string permissionName)
+        public bool CurrentUserHasPermission(string resourceName, string permissionName)
         {
-            return IsAuthorizedPerResource(resourceName, permissionName, SiteContext.CurrentSiteName);
+            return CurrentUserHasPermission(resourceName, permissionName, SiteContext.CurrentSiteName);
         }
 
-        public bool IsAuthorizedPerResource(string resourceName, string permissionName, string siteName)
+        public bool CurrentUserHasPermission(string resourceName, string permissionName, string siteName)
         {
             return MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(resourceName, permissionName, siteName);
+        }
+
+        public bool UserHasPermission(int userId, string resourceName, string permissionName)
+        {
+            return UserHasPermission(userId, resourceName, permissionName, SiteContext.CurrentSiteName);
+        }
+
+        public bool UserHasPermission(int userId, string resourceName, string permissionName, string siteName)
+        {
+            var user = UserInfoProvider.GetUserInfo(userId);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            return UserInfoProvider.IsAuthorizedPerResource(resourceName, permissionName, siteName, user);
         }
 
         public bool UserCanSeePrices()

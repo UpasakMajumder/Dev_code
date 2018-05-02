@@ -14,6 +14,7 @@ using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Checkout;
 using Kadena.Models.Common;
 using Kadena.Models.SiteSettings;
+using Kadena.Models.SiteSettings.Permissions;
 
 namespace Kadena.BusinessLogic.Services.Orders
 {
@@ -152,7 +153,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             var siteName = _site.GetKenticoSite().Name;
             BaseResponseDto<OrderListDto> response = null;
-            if (_permissions.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", siteName))
+            if (_permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.SeeAllOrders, siteName))
             {
                 response = await _orderClient.GetOrders(siteName, pageNumber, _pageCapacity);
             }
@@ -177,7 +178,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             var siteName = _site.GetKenticoSite().Name;
             BaseResponseDto<OrderListDto> response = null;
-            if (_permissions.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", siteName))
+            if (_permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.SeeAllOrders, siteName))
             {
                 response = await _orderClient.GetOrders(siteName, pageNumber, _pageCapacity, campaignID, orderType);
             }
