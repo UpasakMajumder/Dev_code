@@ -16,6 +16,17 @@
 
     <asp:HiddenField runat="server" ID="orderByOrderDateDesc" ClientIDMode="Static" Value="1" />
 
+    <asp:PlaceHolder runat="server" ID="messageContainer" Visible="false">
+        <div class="alert-dismissable alert-error alert">
+            <span class="alert-icon">
+                <i class="icon-i-circle"></i>
+            </span>
+            <div class="alert-label">
+                <asp:Literal runat="server" ID="message"></asp:Literal>
+            </div>
+        </div>
+    </asp:PlaceHolder>
+
     <div class="form-group">
         <label class="control-label" for="siteSelector" style="text-align: left">Site:</label>
         <cms:SiteSelector ClientIDMode="Static" ID="siteSelector" runat="server" AllowAll="false" />

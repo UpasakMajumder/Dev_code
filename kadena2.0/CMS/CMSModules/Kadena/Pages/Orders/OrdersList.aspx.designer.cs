@@ -22,6 +22,24 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders {
         protected global::System.Web.UI.WebControls.HiddenField orderByOrderDateDesc;
         
         /// <summary>
+        /// messageContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder messageContainer;
+        
+        /// <summary>
+        /// message control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal message;
+        
+        /// <summary>
         /// siteSelector control.
         /// </summary>
         /// <remarks>
