@@ -32,6 +32,7 @@ using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Infrastructure.FileConversion;
 using Kadena.Models;
 using Kadena.Models.AddToCart;
+using Kadena.Models.Approval;
 using Kadena.Models.Brand;
 using Kadena.Models.BusinessUnit;
 using Kadena.Models.Checkout;
@@ -76,6 +77,7 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.UnitOfMeasureErpCode));
 
             CreateMap<CustomerData, CustomerDataDTO>();
+            CreateMap<Approver, ApproverDto>();
             CreateMap<CustomerAddress, CustomerAddressDTO>();
             CreateMap<CartItems, CartItemsDTO>();
             CreateMap<CartItem, CartItemDTO>()
