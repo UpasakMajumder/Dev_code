@@ -14,6 +14,8 @@
 
     <%= RenderTableStyle() %>
 
+    <asp:HiddenField runat="server" ID="orderByOrderDateDesc" ClientIDMode="Static" Value="1" />
+
     <div class="form-group">
         <label class="control-label" for="siteSelector" style="text-align: left">Site:</label>
         <cms:SiteSelector ClientIDMode="Static" ID="siteSelector" runat="server" AllowAll="false" />
@@ -39,12 +41,12 @@
     <div class="form-group">
         <cms:BasicDataGrid runat="server" ClientIDMode="Static" ID="ordersDatagrid" AutoGenerateColumns="false" 
             CssClass="table table-hover" BorderStyle="None" 
-            HeaderStyle-BackColor="#e5e5e5" HeaderStyle-Font-Bold="true" HeaderStyle-BorderStyle="None"
+            HeaderStyle-BackColor="#e5e5e5" HeaderStyle-Font-Bold="true" HeaderStyle-BorderStyle="None" 
             >
             <Columns>
                 <asp:BoundColumn HeaderText="Site" DataField="Site"></asp:BoundColumn>
                 <asp:BoundColumn HeaderText="Number" DataField="Number"></asp:BoundColumn>
-                <asp:BoundColumn HeaderText="Ordering Date" DataField="OrderingDate"></asp:BoundColumn>
+                <asp:BoundColumn HeaderText="Ordering Date" DataField="OrderingDate" HeaderStyle-CssClass="OrderingDate order-by-enabled" ></asp:BoundColumn>
                 <asp:BoundColumn HeaderText="User" DataField="User"></asp:BoundColumn>
                 <asp:BoundColumn HeaderText="Name" DataField="Name"></asp:BoundColumn>
                 <asp:BoundColumn HeaderText="SKU" DataField="SKU"></asp:BoundColumn>
@@ -90,10 +92,30 @@
     </div>
 
     <script>
-        window.document.getElementById('btnExport').addEventListener('click', function () {
-            // hide loader
+        // hide loader
+        window.document.getElementById('btnExport').addEventListener('click', function () {            
             window.setTimeout(function () { window.Loader.hide(); }, 2000);
         }, false);
+
+        // order by create date toggle
+        let orderingDateHeader = window.document.getElementsByClassName('OrderingDate')[0];
+        if (orderingDateHeader) {
+            // add direction glyph
+            orderingDateHeader.textContent = `${orderingDateHeader.textContent} ${isOrderByOrderDateDesc() ? '▼' : '▲'}`;
+
+            orderingDateHeader.addEventListener('click', function () {
+                // get current direction
+                let isDesc = isOrderByOrderDateDesc();
+                // toggle
+                let orderByElement = window.document.getElementById('orderByOrderDateDesc');
+                orderByElement.value = isDesc ? '0' : '1';
+                // reload
+                window.document.getElementById('btnApplyFilter').click();
+            }, false);
+        }
+        function isOrderByOrderDateDesc() {
+            return window.document.getElementById('orderByOrderDateDesc').value == '1';
+        }
     </script>
 
 </asp:Content>

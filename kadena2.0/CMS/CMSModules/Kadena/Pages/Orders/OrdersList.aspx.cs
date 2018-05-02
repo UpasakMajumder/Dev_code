@@ -36,6 +36,10 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
                     border-left: none;
                     border-right: none;
                 }
+                td.order-by-enabled {
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
             </style>
         ";
         
@@ -50,10 +54,15 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
         private DateTime? FilterDateTo => dateTo.SelectedDateTime > DateTime.MinValue
             ? dateTo.SelectedDateTime
             : (DateTime?)null;
+        private string FilterOrderBy => "CreateDate-" + 
+            (orderByOrderDateDesc.Value == "1" 
+                ? OrderFilter.OrderByDirection.DESC 
+                : OrderFilter.OrderByDirection.ASC);
         private OrderFilter Filter => new OrderFilter
         {
             FromDate = FilterDateFrom,
-            ToDate = FilterDateTo
+            ToDate = FilterDateTo,
+            OrderByExpression = FilterOrderBy
         };
         private int CurrentPageSize => ReportService.OrdersPerPage;
 
