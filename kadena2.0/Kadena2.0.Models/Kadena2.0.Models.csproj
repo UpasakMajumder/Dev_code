@@ -111,6 +111,8 @@
     <Compile Include="Checkout\SubmitButton.cs" />
     <Compile Include="Checkout\Total.cs" />
     <Compile Include="Checkout\Totals.cs" />
+    <Compile Include="SiteSettings\Permissions\PermissionModules.cs" />
+    <Compile Include="SiteSettings\Permissions\ModulePermissions.cs" />
     <Compile Include="SiteSettings\Settings.General.cs" />
     <Compile Include="SiteSettings\Settings.Microservices.cs" />
     <Compile Include="SiteSettings\Settings.OrderDetails.cs" />
