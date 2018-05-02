@@ -14,14 +14,16 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoResourceService resources;
         private readonly IKenticoDocumentProvider documents;
         private readonly IKenticoSiteProvider siteProvider;
+        private readonly IRoleService roleService;
 
         public UserService(IKenticoUserProvider userProvider, IKenticoResourceService resources, IKenticoDocumentProvider documents
-            , IKenticoSiteProvider siteProvider)
+            , IKenticoSiteProvider siteProvider, IRoleService roleService)
         {
             this.userProvider = userProvider ?? throw new ArgumentNullException(nameof(userProvider));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
             this.siteProvider = siteProvider ?? throw new ArgumentNullException(nameof(siteProvider));
+            this.roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
         }
 
         public CheckTaCResult CheckTaC()
@@ -69,12 +71,19 @@ namespace Kadena.BusinessLogic.Services
                 Email = registration.Email
             };
 
-            userProvider.CreateUser(user, siteProvider.GetKenticoSite().Id);
-            customer.Id = userProvider.CreateCustomer(customer);
+            var siteId = siteProvider.GetKenticoSite().Id;
 
+            userProvider.CreateUser(user, siteId);
+            customer.Id = userProvider.CreateCustomer(customer);
             userProvider.LinkCustomerToUser(customer.Id, user.UserId);
 
             userProvider.SetPassword(user.UserId, registration.Password);
+
+            var roles = resources.GetSettingsKey<string>(Settings.KDA_SignupDefaultRole)?.Split(';');
+            if (roles != null)
+            {
+                roleService.AssignRoles(user, siteId, roles);
+            }
         }
     }
 }

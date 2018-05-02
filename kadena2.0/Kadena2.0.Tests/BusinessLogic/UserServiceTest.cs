@@ -66,10 +66,13 @@ namespace Kadena.Tests.BusinessLogic
             Assert.False(actualResult.Show);
         }
 
-        [Fact(DisplayName = "UserService.Register()")]
-        public void Register()
+        [Theory(DisplayName = "UserService.Register()")]
+        [InlineData("")]
+        [InlineData(null)]
+        public void Register(string roleSetting)
         {
             Setup<IKenticoSiteProvider, KenticoSite>(s => s.GetKenticoSite(), new KenticoSite());
+            Setup<IKenticoResourceService, string>(s => s.GetSettingsKey<string>(It.IsAny<string>(), 0), roleSetting);
 
             var exception = Record.Exception(() => Sut.RegisterUser(new Registration()));
 
