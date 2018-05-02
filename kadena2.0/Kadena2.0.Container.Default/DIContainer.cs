@@ -178,6 +178,7 @@ namespace Kadena.Container.Default
             container.Register<IStatisticsClient, StatisticsClient>();
             container.Register<IExportClient, ExportClient>();
             container.Register<INotificationClient, NotificationClient>();
+            container.Register<IApprovalServiceClient, ApprovalServiceClient>();
             return container;
         }
 
