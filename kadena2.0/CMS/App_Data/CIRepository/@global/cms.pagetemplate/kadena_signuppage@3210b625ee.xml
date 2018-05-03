@@ -18,20 +18,7 @@
   <PageTemplateIsReusable>True</PageTemplateIsReusable>
   <PageTemplateLayout>
 <![CDATA[
-<div class="login signup__form">
-  <div class="login__form">
-    <div class="login__form-inner">
-      <div class="login__custom-logo mb-3">
-        {^WebPartZone|(id)zoneCustomersLogo^}
-      </div>
-      {^WebPartZone|(id)zoneLogin^}
-    </div>
-  </div>
-  {^WebPartZone|(id)zonePageBackgroud^}
-  <div class="login__kadena-logo">
-    {^WebPartZone|(id)zoneKadenaLogo^}
-  </div>
-</div>
+{^WebPartZone|(id)zoneRegistration^}
 
 
 
@@ -43,82 +30,12 @@
   <PageTemplateWebParts>
     <page>
       <webpartzone id="zoneContent" v="1" />
-      <webpartzone id="zoneCustomersLogo" v="1">
-        <webpart controlid="CustomersLogo" guid="74d6a2eb-f9a5-4256-ab13-7234982ada9f" type="EditableImage" v="1">
-          <property name="alternatetext">logo</property>
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="checkpermissions">False</property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">CustomersLogo</property>
-          <property name="customtimezone"></property>
-          <property name="defaultimage"></property>
-          <property name="disablemacros">True</property>
-          <property name="disableviewstate">True</property>
-          <property name="displayselectortextbox">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="imageautoresize">
-<![CDATA[
-<AutoResize>
-  <autoresize>noresize</autoresize>
-  <autoresize_width />
-  <autoresize_height />
-  <autoresize_maxsidesize />
-</AutoResize>
-]]>
-          </property>
-          <property name="imagecssclass"></property>
-          <property name="imageheight"></property>
-          <property name="imagestyle"></property>
-          <property name="imagetitle">logo</property>
-          <property name="imagewidth"></property>
-          <property name="instanceguid">74d6a2eb-f9a5-4256-ab13-7234982ada9f</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="selectonlypublished">False</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="timezonetype">inherit</property>
-          <property name="useparentcontent">False</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">EditableImage</property>
-        </webpart>
-      </webpartzone>
-      <webpartzone id="zoneLogin" v="1">
-        <webpart controlid="CustomRegistrationForm" guid="c7055693-98b7-4fdb-9558-0946b60e3e6b" type="CustomRegistrationForm" v="1">
-          <property name="alternativeform">cms.user.KDA_UserRegistrationForm</property>
-          <property name="approvalpage">~/CMSPages/Dialogs/UserRegistration.aspx</property>
-          <property name="assigntoroles" ismacro="true">
-            <![CDATA[{%Settings.KDA_SignupDefaultRole|(user)cvoqa2@gmail.com|(hash)8ed96f1bcba133242c75996350660a4560772a2e8d76ffb528453610c78231de%}]]>
-          </property>
-          <property name="assigntosites"></property>
-          <property name="buttoncss">btn-action j-submit-button </property>
-          <property name="buttontext">Sign Up</property>
+      <webpartzone id="zoneCustomersLogo" v="1" />
+      <webpartzone id="zoneLogin" v="1" />
+      <webpartzone id="zonePageBackgroud" v="1" />
+      <webpartzone id="zoneKadenaLogo" v="1" />
+      <webpartzone id="zoneRegistration" v="1">
+        <webpart controlid="StaticText" guid="5eacb01b-ea8a-4498-9091-b26cce3a0117" type="statictext" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
@@ -131,23 +48,15 @@
           <property name="containertitle"></property>
           <property name="contentafter"></property>
           <property name="contentbefore"></property>
-          <property name="controlid">CustomRegistrationForm</property>
-          <property name="conversionvalue"></property>
+          <property name="controlid">StaticText</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
-          <property name="displaycaptcha">False</property>
-          <property name="displaycolons">True</property>
-          <property name="displaymessage"></property>
           <property name="displaytoroles"></property>
           <property name="enableoutputfilter">False</property>
-          <property name="enableuserafterregistration">True</property>
-          <property name="fieldlayout">default</property>
-          <property name="formlayout">Divs</property>
-          <property name="fromaddress"></property>
+          <property name="encodetext">False</property>
           <property name="hideonsubpages">False</property>
-          <property name="instanceguid">c7055693-98b7-4fdb-9558-0946b60e3e6b</property>
-          <property name="notifyadministrator">True</property>
+          <property name="instanceguid">5eacb01b-ea8a-4498-9091-b26cce3a0117</property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>
@@ -163,195 +72,79 @@
           </property>
           <property name="partialcacheminutes"></property>
           <property name="preservepartialcacheonpostback">False</property>
-          <property name="redirecttourl">~/login</property>
-          <property name="registrationerrormessage"></property>
-          <property name="resourceprefix"></property>
-          <property name="sendwelcomeemail">True</property>
+          <property name="resolvedynamiccontrols">True</property>
           <property name="showfordocumenttypes"></property>
-          <property name="startingaliaspath"></property>
+          <property name="tag"></property>
+          <property name="text">
+<![CDATA[
+<div class="registration__form new-login__form--abs new-login__form--bc">
+  <div class="login__form-content r-registration"></div>
+</div>
+]]>
+          </property>
           <property name="timezonetype">inherit</property>
-          <property name="toaddress"></property>
-          <property name="trackconversionname"></property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">CustomRegistrationForm</property>
+          <property name="webparttitle">Registration form</property>
+          <property name="webparttype">statictext</property>
         </webpart>
-        <webpart controlid="Javascript" guid="e1692798-0a2a-4bf5-8d27-fc3be1d66f00" type="javascript" v="1">
+        <webpart controlid="Javascript" guid="201bdca4-74b3-4ffc-9362-ab9262600c46" type="javascript" v="1">
           <property name="cat_open_behavior"></property>
           <property name="cat_open_performance"></property>
           <property name="controlid">Javascript</property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
-          <property name="generatescripttags">False</property>
+          <property name="generatescripttags">True</property>
           <property name="hideonsubpages">False</property>
           <property name="inlinescript">
 <![CDATA[
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-  $(document).ready(function(){ 
-    //confirm password 
-    $('.password-strength').children('input').addClass('input__text');
-    $('.ConfirmationSeparator').next().addClass('input__label').css('display','block').html('{$Kadena.Common.ConfirmPassword$}');
-    $('.ConfirmationSeparator').next().next().addClass('input__text');
-    $('.ConfirmationSeparator').next().next().addClass('js-cpwdtext')
-      $('.ConfirmationSeparator').next().addClass('js-cpwdlabel').css('display','block').html('{$Kadena.Common.ConfirmPassword$}')
-        
-        var regEx='{%Settings.KDA_Email_Validation|(user)cvoqa2@gmail.com|(hash)2c2de5d7f49b1b43fee586327be72f42cd93aaaa1ff9951a52a3bcf73a76d2aa%}';
-    $('[id$=btnRegister]').click(function(event){
-      if(regEx!=null ||regEx!='') {
-        var email=new RegExp(regEx);
-        var val=$('[id$=txtEmailInput]').val();
-        if(val=="")
-        {
-          event.preventDefault();
-          if($('[id$=Email_lbe]').text()!='')
+config.localization.registration=
           {
-            $('[id$=Email_lbe]').text('Please enter valid Email');
-          }
-          else
-          {
-            if($('#emailError').text()=='')
-              $('[id$=ncpemail]').after('<span id="emailError" class="input__error">Please enter valid Email</span>');
-          }
-        }
-        if(val!='')
-        {
-          if(!email.test(val)){
-            if($('[id$=Email_lbe]').text()!='')
+            title: 'Sign Up',
+            labels:
             {
-              $('[id$=Email_lbe]').text('Please enter valid Email');
-            }
-            else
+              firstName: 'First Name',
+              lastName: 'Last Name',
+              email: 'Email',
+              password: 'Password',
+              confirmPassword: 'Confirm Password',
+              button: 'Sign Up'
+            },
+            errors:
             {
-              if($('#emailError').text()=='')
-                $('[id$=ncpemail]').after('<span id="emailError" class="input__error">Please enter valid Email</span>');
+              required: 'Required!',
+              email: 'Invalid Email!',
+              confirmPassword: 'Passwords are not equal'
+            },
+            url: 'registration',
+            toLogin:
+            {
+              url: 'lol',
+              text: 'To Login'
+            },
+            strength:
+            {
+              minLength: 3,
+              preferedLength: 7,
+              minNonAlphaNumChars: 0,
+              preferedNonAlphaNumChars: 0,
+              regularExpression: null,
+              policyStrings: ['Not Accepted', 'Weak', 'Acceptable', 'Average', 'Strong', 'Excelent'],
+              usePolicy: false,
+              info: 'Hello <br> How Are you? <br> Nice!'
             }
-            event.preventDefault();
-          }
-          
-        } 
-      }
-    });
-  });
-</script>
+      };
 ]]>
           </property>
           <property name="inlinescriptpagelocation">Beginning</property>
-          <property name="instanceguid">e1692798-0a2a-4bf5-8d27-fc3be1d66f00</property>
+          <property name="instanceguid">201bdca4-74b3-4ffc-9362-ab9262600c46</property>
           <property name="linkedfile"></property>
           <property name="linkedfilepagelocation">Header</property>
           <property name="showfordocumenttypes"></property>
           <property name="visible">True</property>
-          <property name="webparttitle"></property>
+          <property name="webparttitle">Registration config</property>
           <property name="webparttype">javascript</property>
-        </webpart>
-      </webpartzone>
-      <webpartzone id="zonePageBackgroud" v="1">
-        <webpart controlid="Backgroud" guid="06dc4d15-62e2-496c-850f-18e73ddc65b3" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">Backgroud</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">True</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">06dc4d15-62e2-496c-850f-18e73ddc65b3</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="resolvedynamiccontrols">False</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text">
-            <![CDATA[<div class="new-login__bg new-login__bg--stretch" style="background-image: url(/CMSPages/GetFile.aspx?guid={%MenuItemTeaserImage%}); opacity: {%MenuItemTeaserImageOpacity%}"></div>]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
-        </webpart>
-      </webpartzone>
-      <webpartzone id="zoneKadenaLogo" v="1">
-        <webpart controlid="KadenaLogo" guid="028bda11-e3eb-4758-b1f8-5f662837f698" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance"></property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">KadenaLogo</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">True</property>
-          <property name="disableviewstate">True</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">028bda11-e3eb-4758-b1f8-5f662837f698</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="resolvedynamiccontrols">False</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text" ismacro="true">
-<![CDATA[
-<svg class="icon logo">
-  <use xlink:href="/gfx/svg/sprites/icons.svg#logo" />
-</svg>
-]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
         </webpart>
       </webpartzone>
     </page>
