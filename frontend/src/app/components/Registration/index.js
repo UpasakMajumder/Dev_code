@@ -16,19 +16,19 @@ import { REGISTRATION } from 'app.globals';
 class Registration extends Component {
   static defaultProps = {
     config: REGISTRATION ? {
-      title: REGISTRATION.title || 'Sign Up',
+      title: REGISTRATION.title || 'Sign Up2',
       labels: {
-        firstName: REGISTRATION.firstName || 'First Name',
-        lastName: REGISTRATION.lastName || 'Last Name',
-        email: REGISTRATION.email || 'Email',
-        password: REGISTRATION.password || 'Password',
-        confirmPassword: REGISTRATION.confirmPassword || 'Confirm Password',
-        button: REGISTRATION.button || 'Sign Up'
+        firstName: REGISTRATION.labels.firstName || 'First Name1',
+        lastName: REGISTRATION.labels.lastName || 'Last Name1',
+        email: REGISTRATION.labels.email || 'Email1',
+        password: REGISTRATION.labels.password || 'Password1',
+        confirmPassword: REGISTRATION.labels.confirmPassword || 'Confirm Password1',
+        button: REGISTRATION.labels.button || 'Sign Up1'
       },
       errors: {
-        required: REGISTRATION.required || 'Required!',
-        email: REGISTRATION.email || 'Invalid Email!',
-        confirmPassword: REGISTRATION.confirmPassword || 'Passwords are not equal'
+        required: REGISTRATION.errors.required || 'Required!',
+        email: REGISTRATION.errors.email || 'Invalid Email!',
+        confirmPassword: REGISTRATION.errors.confirmPassword || 'Passwords are not equal'
       },
       url: REGISTRATION.url || '',
       toLogin: REGISTRATION.toLogin || {
