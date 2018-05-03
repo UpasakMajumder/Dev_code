@@ -1,10 +1,7 @@
-﻿using CMS.DataEngine;
-using CMS.EmailEngine;
-using CMS.EventLog;
+﻿using CMS.EmailEngine;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
-using CMS.SiteProvider;
 using Kadena.Models;
 using Kadena.Models.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;

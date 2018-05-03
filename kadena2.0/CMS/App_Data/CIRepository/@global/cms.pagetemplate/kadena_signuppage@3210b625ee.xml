@@ -16,24 +16,12 @@
   <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
   <PageTemplateIsLayout>False</PageTemplateIsLayout>
   <PageTemplateIsReusable>True</PageTemplateIsReusable>
-  <PageTemplateLayout>
-<![CDATA[
-{^WebPartZone|(id)zoneRegistration^}
-
-
-
-]]>
-  </PageTemplateLayout>
+  <PageTemplateLayout>{^WebPartZone|(id)zoneRegistration^}</PageTemplateLayout>
   <PageTemplateLayoutType>html</PageTemplateLayoutType>
   <PageTemplateShowAsMasterTemplate>False</PageTemplateShowAsMasterTemplate>
   <PageTemplateType>portal</PageTemplateType>
   <PageTemplateWebParts>
     <page>
-      <webpartzone id="zoneContent" v="1" />
-      <webpartzone id="zoneCustomersLogo" v="1" />
-      <webpartzone id="zoneLogin" v="1" />
-      <webpartzone id="zonePageBackgroud" v="1" />
-      <webpartzone id="zoneKadenaLogo" v="1" />
       <webpartzone id="zoneRegistration" v="1">
         <webpart controlid="StaticText" guid="5eacb01b-ea8a-4498-9091-b26cce3a0117" type="statictext" v="1">
           <property name="cat_open_ajax"></property>

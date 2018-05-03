@@ -32,7 +32,6 @@
   <PageTemplateType>portal</PageTemplateType>
   <PageTemplateWebParts>
     <page>
-      <webpartzone id="zoneContent" v="1" />
       <webpartzone id="zoneCustomersLogo" v="1">
         <webpart controlid="CustomersLogo" guid="74d6a2eb-f9a5-4256-ab13-7234982ada9f" type="EditableImage" v="1">
           <property name="alternatetext"></property>
@@ -254,8 +253,6 @@
           <property name="webparttype">javascript</property>
         </webpart>
       </webpartzone>
-      <webpartzone id="zonePageBackgroud" v="1" />
-      <webpartzone id="zoneKadenaLogo" v="1" />
     </page>
   </PageTemplateWebParts>
 </cms.pagetemplate>
