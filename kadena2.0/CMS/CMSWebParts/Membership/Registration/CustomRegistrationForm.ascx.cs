@@ -320,23 +320,6 @@ public partial class CMSWebParts_Membership_Registration_CustomRegistrationForm 
         }
     }
 
-
-    /// <summary>
-    /// Gets or sets the sites where is user assigned after successful registration.
-    /// </summary>
-    public string AssignToSites
-    {
-        get
-        {
-            return ValidationHelper.GetString(GetValue("AssignToSites"), String.Empty);
-        }
-        set
-        {
-            SetValue("AssignToSites", value);
-        }
-    }
-
-
     /// <summary>
     /// Gets or sets the message which is displayed after successful registration.
     /// </summary>
@@ -478,7 +461,7 @@ public partial class CMSWebParts_Membership_Registration_CustomRegistrationForm 
     {
         get
         {
-            return mSiteList ?? (mSiteList = !String.IsNullOrEmpty(AssignToSites) ? AssignToSites.Split(';') : new[] { CurrentSiteName });
+            return mSiteList ?? (mSiteList = new[] { CurrentSiteName });
         }
     }
 
