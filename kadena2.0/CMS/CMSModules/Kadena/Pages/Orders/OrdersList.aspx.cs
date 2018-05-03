@@ -27,7 +27,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            HideErrorMessage();
         }
 
         protected string RenderTableStyle() => @"
@@ -115,17 +115,30 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
 
         private Pagination ReloadData()
         {
-            var orders = ReportService
-                .GetOrdersForSite(FilterSelectedSiteName, CurrentPage, Filter)
-                .Result;
+            try
+            {
+                var orders = ReportService
+                    .GetOrdersForSite(FilterSelectedSiteName, CurrentPage, Filter)
+                    .Result;
 
-            var ordersReport = OrderReportFactory.CreateReportView(orders.Data);
+                var ordersReport = OrderReportFactory.CreateReportView(orders.Data);
 
-            var source = new DataView(ordersReport.Items.ToDataSet().Tables[0]);
-            ordersDatagrid.DataSource = source;
-            ordersDatagrid.DataBind();
+                var source = new DataView(ordersReport.Items.ToDataSet().Tables[0]);
+                ordersDatagrid.DataSource = source;
+                ordersDatagrid.DataBind();
 
-            return orders.Pagination;
+                return orders.Pagination;
+            }
+            catch (AggregateException ex)
+            {
+                ShowErrorMessage(ex.InnerException?.Message);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage(ex.Message);
+            }
+
+            return Pagination.Empty;
         }
 
         protected void btnExport_Click(object sender, EventArgs e)
@@ -165,5 +178,13 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
         {
             ReloadData();
         }
+
+        protected void ShowErrorMessage(string messageText)
+        {
+            messageContainer.Visible = true;
+            message.Text = messageText;
+        }
+
+        protected void HideErrorMessage() => messageContainer.Visible = false;
     }
 }
