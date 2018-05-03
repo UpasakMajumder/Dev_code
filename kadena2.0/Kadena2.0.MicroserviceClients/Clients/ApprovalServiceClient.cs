@@ -17,10 +17,10 @@ namespace Kadena2.MicroserviceClients.Clients
             _serviceVersionSettingKey = Settings.KDA_ApprovalServiceVersion;
         }
 
-        public async Task<BaseResponseDto<bool>> Approval(ApprovalRequestDto approval)
+        public async Task<BaseResponseDto<string>> Approval(ApprovalRequestDto approval)
         {
             var url = $"{BaseUrl}/approval";
-            return await Patch<bool>(url, approval).ConfigureAwait(false);
+            return await Patch<string>(url, approval).ConfigureAwait(false);
         }
     }
 }

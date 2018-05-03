@@ -1,6 +1,7 @@
 ﻿using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.BusinessLogic.Services.Approval;
 using Kadena.Dto.Approval.MicroserviceRequests;
+using Kadena.Dto.Approval.MicroserviceResponses;
 using Kadena.Dto.General;
 using Kadena.Models.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -25,8 +26,8 @@ namespace Kadena.Tests.BusinessLogic.Approval
         {
             Setup<IKenticoUserProvider, User>(u => u.GetCurrentUser(), new User { UserId = approverUserId });
             Setup<IApproverService, bool>(a => a.IsCustomersApprover(approverUserId, customerId), true);
-            Setup<IApprovalServiceClient, Task<BaseResponseDto<bool>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
-                Task.FromResult(new BaseResponseDto<bool>() { Success = true, Payload = true }));
+            Setup<IApprovalServiceClient, Task<BaseResponseDto<string>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
+                Task.FromResult(new BaseResponseDto<string>() { Success = true, Payload = ApprovalResponseDto.Approved }));
 
             await Sut.ApproveOrder(orderId, customerId, customerName);
 
@@ -37,23 +38,38 @@ namespace Kadena.Tests.BusinessLogic.Approval
                                                                                             req.Approvals[0].Customer.Id == customerId &&
                                                                                             req.Approvals[0].Customer.Name == customerName
                                                                                             )), Times.Once);
+            
+            Verify<IKenticoLogger>(l => l.LogInfo("ApproveOrder", "Info", It.Is<string>(s => s.Contains(orderId) && 
+                                                                                             s.Contains(ApprovalResponseDto.Approved))), Times.Once);
             VerifyNoOtherCalls<IKenticoLogger>();
         }
 
-        [Theory]
-        [InlineData(true, false)]
-        [InlineData(false, true)]
-        [InlineData(false, false)]
-        public async Task ApproveOrderTest_ErrorLogged(bool apiSuccess, bool payloadSuccess)
+        [Fact]
+        public async Task ApproveOrderTest_ErrorLogged()
         {
             Setup<IKenticoUserProvider, User>(u => u.GetCurrentUser(), new User { UserId = approverUserId });
             Setup<IApproverService, bool>(a => a.IsCustomersApprover(approverUserId, customerId), true);
-            Setup<IApprovalServiceClient, Task<BaseResponseDto<bool>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
-                Task.FromResult(new BaseResponseDto<bool>() { Success = apiSuccess, Payload = payloadSuccess }));
+            Setup<IApprovalServiceClient, Task<BaseResponseDto<string>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
+                Task.FromResult(new BaseResponseDto<string>() { Success = false, Payload = null }));
 
             await Sut.ApproveOrder(orderId, customerId, customerName);
             
-            Verify<IKenticoLogger>(l => l.LogError("Approval", It.Is<string>(s => s.Contains(orderId))), Times.Once);
+            Verify<IKenticoLogger>(l => l.LogError("ApproveOrder", It.Is<string>(s => s.Contains(orderId))), Times.Once);
+        }
+
+        [Fact]
+        public async Task ApproveOrderTest_StatusLogged()
+        {
+            const string badStatus = "SomeUnknownStatus";
+            Setup<IKenticoUserProvider, User>(u => u.GetCurrentUser(), new User { UserId = approverUserId });
+            Setup<IApproverService, bool>(a => a.IsCustomersApprover(approverUserId, customerId), true);
+            Setup<IApprovalServiceClient, Task<BaseResponseDto<string>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
+                Task.FromResult(new BaseResponseDto<string>() { Success = true, Payload = badStatus }));
+
+            await Sut.ApproveOrder(orderId, customerId, customerName);
+
+            Verify<IKenticoLogger>(l => l.LogError("ApproveOrder", It.Is<string>(s => s.Contains(badStatus) && 
+                                                                                      s.Contains(orderId))), Times.Once);
         }
 
         [Fact]
@@ -72,8 +88,8 @@ namespace Kadena.Tests.BusinessLogic.Approval
 
             Setup<IKenticoUserProvider, User>(u => u.GetCurrentUser(), new User { UserId = approverUserId });
             Setup<IApproverService, bool>(a => a.IsCustomersApprover(approverUserId, customerId), true);
-            Setup<IApprovalServiceClient, Task<BaseResponseDto<bool>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
-                Task.FromResult(new BaseResponseDto<bool>() { Success = true, Payload = true }));
+            Setup<IApprovalServiceClient, Task<BaseResponseDto<string>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
+                Task.FromResult(new BaseResponseDto<string>() { Success = true, Payload = ApprovalResponseDto.Rejected }));
 
             await Sut.RejectOrder(orderId, customerId, customerName, rejectNote);
 
@@ -85,25 +101,40 @@ namespace Kadena.Tests.BusinessLogic.Approval
                                                                                             req.Approvals[0].Customer.Name == customerName &&
                                                                                             req.Approvals[0].Note == rejectNote
                                                                                             )), Times.Once);
+            
+            Verify<IKenticoLogger>(l => l.LogInfo("RejectOrder", "Info", It.Is<string>(s => s.Contains(orderId) &&
+                                                                                            s.Contains(ApprovalResponseDto.Rejected) &&
+                                                                                            s.Contains(rejectNote))), Times.Once);
             VerifyNoOtherCalls<IKenticoLogger>();
         }
 
-        [Theory]
-        [InlineData(true, false)]
-        [InlineData(false, true)]
-        [InlineData(false, false)]
-        public async Task RejectOrderTest_ErrorLogged(bool apiSuccess, bool payloadSuccess)
+        [Fact]
+        public async Task RejectOrderTest_ErrorLogged()
         {
             Setup<IKenticoUserProvider, User>(u => u.GetCurrentUser(), new User { UserId = approverUserId });
             Setup<IApproverService, bool>(a => a.IsCustomersApprover(approverUserId, customerId), true);
-            Setup<IApprovalServiceClient, Task<BaseResponseDto<bool>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
-                Task.FromResult(new BaseResponseDto<bool>() { Success = apiSuccess, Payload = payloadSuccess }));
+            Setup<IApprovalServiceClient, Task<BaseResponseDto<string>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
+                Task.FromResult(new BaseResponseDto<string>() { Success = false, Payload = null }));
 
             await Sut.RejectOrder(orderId, customerId, customerName);
 
-            Verify<IKenticoLogger>(l => l.LogError("Approval", It.Is<string>(s => s.Contains(orderId))), Times.Once);
+            Verify<IKenticoLogger>(l => l.LogError("RejectOrder", It.Is<string>(s => s.Contains(orderId))), Times.Once);
         }
 
+        [Fact]
+        public async Task RejectOrderTest_StatusLogged()
+        {
+            const string badStatus = "SomeUnknownStatus";
+            Setup<IKenticoUserProvider, User>(u => u.GetCurrentUser(), new User { UserId = approverUserId });
+            Setup<IApproverService, bool>(a => a.IsCustomersApprover(approverUserId, customerId), true);
+            Setup<IApprovalServiceClient, Task<BaseResponseDto<string>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
+                Task.FromResult(new BaseResponseDto<string>() { Success = true, Payload = badStatus }));
+
+            await Sut.RejectOrder(orderId, customerId, customerName);
+
+            Verify<IKenticoLogger>(l => l.LogError("RejectOrder", It.Is<string>(s => s.Contains(orderId) && s.Contains(badStatus))), Times.Once);
+        }
+        
         [Fact]
         public async Task RejectOrderTest_Exception()
         {

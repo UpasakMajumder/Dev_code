@@ -6,6 +6,6 @@ namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface IApprovalServiceClient
     {
-        Task<BaseResponseDto<bool>> Approval(ApprovalRequestDto approval);
+        Task<BaseResponseDto<string>> Approval(ApprovalRequestDto approval);
     }
 }
