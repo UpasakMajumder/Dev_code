@@ -47,11 +47,6 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
             siteDropDown.SelectedIndex = 0;
         }
 
-        protected void Page_LoadComplete(object sender, EventArgs e)
-        {
-            PerformFullSearch();
-        }
-
         protected string RenderTableStyle() => @"
             <style>
                 td {
