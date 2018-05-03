@@ -56,6 +56,11 @@ namespace Kadena.BusinessLogic.Services
 
         public void RegisterUser(Registration registration)
         {
+            if (!resources.GetSiteSettingsKey<bool>(Settings.KDA_EnableRegistration))
+            {
+                throw new InvalidOperationException("Action denied.");
+            }
+
             var user = userProvider.GetUser(registration.Email);
 
             user = new User
@@ -81,7 +86,7 @@ namespace Kadena.BusinessLogic.Services
 
             userProvider.SetPassword(user.UserId, registration.Password);
 
-            var roles = resources.GetSettingsKey<string>(Settings.KDA_SignupDefaultRole)?.Split(';');
+            var roles = resources.GetSiteSettingsKey<string>(Settings.KDA_SignupDefaultRole)?.Split(';');
             if (roles != null)
             {
                 roleService.AssignRoles(user, siteId, roles);

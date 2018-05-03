@@ -66,17 +66,28 @@ namespace Kadena.Tests.BusinessLogic
             Assert.False(actualResult.Show);
         }
 
-        [Theory(DisplayName = "UserService.Register()")]
+        [Theory(DisplayName = "UserService.Register() | Enabled")]
         [InlineData("")]
         [InlineData(null)]
-        public void Register(string roleSetting)
+        public void Register_Enabled(string roleSetting)
         {
+            Setup<IKenticoResourceService, bool>(s => s.GetSiteSettingsKey<bool>(It.IsAny<string>()), true);
             Setup<IKenticoSiteProvider, KenticoSite>(s => s.GetKenticoSite(), new KenticoSite());
-            Setup<IKenticoResourceService, string>(s => s.GetSettingsKey<string>(It.IsAny<string>(), 0), roleSetting);
+            Setup<IKenticoResourceService, string>(s => s.GetSiteSettingsKey<string>(It.IsAny<string>()), roleSetting);
 
             var exception = Record.Exception(() => Sut.RegisterUser(new Registration()));
 
             Assert.Null(exception);
+        }
+
+        [Fact(DisplayName = "UserService.Register() | Disabled")]
+        public void Register_Disabled()
+        {
+            Setup<IKenticoResourceService, bool>(s => s.GetSiteSettingsKey<bool>(It.IsAny<string>()), false);
+
+            Action action = () => Sut.RegisterUser(new Registration());
+
+            Assert.Throws<InvalidOperationException>(action);
         }
     }
 }
