@@ -205,7 +205,7 @@
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<div class="new-login__bg new-login__bg--stretch" style="background-image: url(/CMSPages/GetFile.aspx?guid={%MenuItemTeaserImage%}); opacity: {%MenuItemTeaserImageOpacity%}"></div>]]>
+            <![CDATA[<div class="new-login__bg new-login__bg--stretch" style="background-image: url(/CMSPages/GetFile.aspx?guid={% MenuItemTeaserImage == null && CurrentDocument.Parent != null && CurrentDocument.Parent.MenuItemTeaserImage != null ? CurrentDocument.Parent.MenuItemTeaserImage : MenuItemTeaserImage |(user)rostyslav.diachenko@actum.cz|(hash)40805bc720052d9a8192c397c2de45b81793f1daa213c7c9d3e764c6749ed5d9%}); opacity: {% MenuItemTeaserImage == null && CurrentDocument.Parent != null && CurrentDocument.Parent.MenuItemTeaserImageOpacity != null ? CurrentDocument.Parent.MenuItemTeaserImageOpacity : MenuItemTeaserImageOpacity|(user)rostyslav.diachenko@actum.cz|(hash)2bb5fc5f70abce1bc641f5f2002ab2e3ec36aacd7873bff3b74904cfe1b9c584%}"></div>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
