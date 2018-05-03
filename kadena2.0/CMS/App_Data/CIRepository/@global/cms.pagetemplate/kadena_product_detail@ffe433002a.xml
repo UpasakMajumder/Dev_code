@@ -600,7 +600,7 @@ iteratedDocument = iteratedDocument.Parent;
   DocumentContext.CurrentDocument.GetValue("SKUAvailableItems") , 
   LocalizationContext.CurrentCulture.CultureCode, 
   ECommerceContext.CurrentProduct.SKUAvailableItems,
-  ProductUnitOfMeasure)|(user)michal.machacek@actum.cz|(hash)b294d8988a11721ab8d1dc23f4a2da2fd9e47aadc441808ca1c7eb9a230c06a9%} 
+  ECommerceContext.CurrentProduct.SKUUnitOfMeasure)|(user)michal.machacek@actum.cz|(hash)cf97c95955a8739b5216eb7b4970a98d7ba6a5b948d1cd8c2d3e08b7d4cf48bd%} 
 </div>
 
 ]]>
@@ -656,9 +656,9 @@ iteratedDocument = iteratedDocument.Parent;
 <span class="add-to-cart__info" {% (ProductNumberOfItemsInPackage == "0" || ProductNumberOfItemsInPackage == "1") ? "style=display:none;" : "" %}>
   {% KadenaNamespace.GetPackagingString(
     ProductNumberOfItemsInPackage,
-    ProductUnitOfMeasure,
+    SKUUnitOfMeasure,
     LocalizationContext.CurrentCulture.CultureCode) 
-  |(user)michal.machacek@actum.cz|(hash)1fef1459daa989bdb1db2d8c977b3648d72324aaee4cbfc2ad78b26c4e8ab36d%}
+  |(user)michal.machacek@actum.cz|(hash)da2b8100494afb8f1283328d9669225e888b67d3eeaffb04f492f7ade084abe6%}
 </span>
 ]]>
           </property>
