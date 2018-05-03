@@ -71,7 +71,7 @@ namespace Kadena.BusinessLogic.Services.Approval
 
             if ((currentUser == null) || !approvers.IsCustomersApprover(currentUser.UserId, customerId))
             {
-                throw new Exception($"Current User is not an approver of customer {customerId}");
+                throw new Exception($"Current User is not an approver of customer '{customerName}' (Id={customerId})");
             }
         }
 
