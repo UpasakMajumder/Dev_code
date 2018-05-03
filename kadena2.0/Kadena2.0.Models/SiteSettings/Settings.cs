@@ -985,15 +985,33 @@ namespace Kadena.Models.SiteSettings
         [DefaultValueAttribute(@"customer company name")]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkRlZmF1bHQgc2hpcCB0byBjb21wYW55IG5hbWUiLCJLZXlOYW1lIjoiS0RBX1NoaXBwaW5nQWRkcmVzc19EZWZhdWx0Q29tcGFueU5hbWUiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjoiY3VzdG9tZXIgY29tcGFueSBuYW1lIiwiS2V5RGVzY3JpcHRpb24iOiJVc2VkIGluIFwic3VibWl0IG9yZGVyXCIgYXMgZGVmYXVsdCB2YWx1ZSB3aGVuIEN1c3RvbWVyIGhhcyBub3QgZmlsbGVkIGluIGhpcyBcIkNvbXBhbnkgbmFtZVwiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJDYXJyaWVyIHByb3ZpZGVycyJ9fQ==")]
         public const string KDA_ShippingAddress_DefaultCompanyName = "KDA_ShippingAddress_DefaultCompanyName";
-      
+
+        /// <summary>
+        /// Roles to assign during self registration.
+        /// </summary>
+        [CategoryAttribute("Membership", "KDAMembershipSettingCategory", "Kadena")]
+        [GroupAttribute("Registration")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkRlZmF1bHQgcm9sZSIsIktleU5hbWUiOiJLREFfU2lnbnVwRGVmYXVsdFJvbGUiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjpudWxsLCJLZXlEZXNjcmlwdGlvbiI6IlJvbGVzIHRvIGFzc2lnbiBkdXJpbmcgc2VsZiByZWdpc3RyYXRpb24uIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjoiUm9sZUNoZWNrYm94U2VsZWN0b3IiLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6Ik1lbWJlcnNoaXAiLCJOYW1lIjoiS0RBTWVtYmVyc2hpcFNldHRpbmdDYXRlZ29yeSIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkthZGVuYSJ9LCJEaXNwbGF5TmFtZSI6IlJlZ2lzdHJhdGlvbiJ9fQ==")]
+        public const string KDA_SignupDefaultRole = "KDA_SignupDefaultRole";
+
         /// <summary>
         /// 
         /// </summary>
-        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
-        [GroupAttribute("User Management")]
+        [CategoryAttribute("Membership", "KDAMembershipSettingCategory", "Kadena")]
+        [GroupAttribute("Registration")]
         [DefaultValueAttribute(null)]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IlNpZ251cCBEZWZhdWx0IFJvbGUiLCJLZXlOYW1lIjoiS0RBX1NpZ251cERlZmF1bHRSb2xlIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6bnVsbCwiS2V5RGVzY3JpcHRpb24iOiIiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOiJSb2xlQ2hlY2tib3hTZWxlY3RvciIsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiS2FkZW5hIiwiTmFtZSI6IkthZGVuYSIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkNNUy5TZXR0aW5ncyJ9LCJEaXNwbGF5TmFtZSI6IlVzZXIgTWFuYWdlbWVudCJ9fQ==")]
-        public const string KDA_SignupDefaultRole = "KDA_SignupDefaultRole";
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IlJlZ2lzdHJhdGlvbiBwYWdlIiwiS2V5TmFtZSI6IktEQV9SZWdpc3RyYXRpb25QYWdlVXJsIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6bnVsbCwiS2V5RGVzY3JpcHRpb24iOiIiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOiJzZWxlY3RzaW5nbGVwYXRoIiwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6IjxzZXR0aW5ncz48QWxsb3dTZXRQZXJtaXNzaW9ucz5GYWxzZTwvQWxsb3dTZXRQZXJtaXNzaW9ucz48U2VsZWN0YWJsZVBhZ2VUeXBlcz4wPC9TZWxlY3RhYmxlUGFnZVR5cGVzPjwvc2V0dGluZ3M+IiwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJNZW1iZXJzaGlwIiwiTmFtZSI6IktEQU1lbWJlcnNoaXBTZXR0aW5nQ2F0ZWdvcnkiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJLYWRlbmEifSwiRGlzcGxheU5hbWUiOiJSZWdpc3RyYXRpb24ifX0=")]
+        public const string KDA_RegistrationPageUrl = "KDA_RegistrationPageUrl";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Membership", "KDAMembershipSettingCategory", "Kadena")]
+        [GroupAttribute("Registration")]
+        [DefaultValueAttribute(@"False")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkVuYWJsZSByZWdpc3RyYXRpb24iLCJLZXlOYW1lIjoiS0RBX0VuYWJsZVJlZ2lzdHJhdGlvbiIsIktleVR5cGUiOiJib29sZWFuIiwiS2V5RGVmYXVsdFZhbHVlIjoiRmFsc2UiLCJLZXlEZXNjcmlwdGlvbiI6IiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJNZW1iZXJzaGlwIiwiTmFtZSI6IktEQU1lbWJlcnNoaXBTZXR0aW5nQ2F0ZWdvcnkiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJLYWRlbmEifSwiRGlzcGxheU5hbWUiOiJSZWdpc3RyYXRpb24ifX0=")]
+        public const string KDA_EnableRegistration = "KDA_EnableRegistration";
 
         /// <summary>
         /// 
@@ -1251,19 +1269,19 @@ namespace Kadena.Models.SiteSettings
         /// <summary>
         /// Thumbprint of certificate which is trusted to sign incoming SAML object.
         /// </summary>
-        [CategoryAttribute("Single sign-on", "KDASSO", "Kadena")]
+        [CategoryAttribute("Membership", "KDAMembershipSettingCategory", "Kadena")]
         [GroupAttribute("SAML 2.0")]
         [DefaultValueAttribute(null)]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IlRydXN0ZWQgY2VydGlmaWNhdGUgdGh1bWJwcmludCIsIktleU5hbWUiOiJLREFfVHJ1c3RlZENlcnRpZmljYXRlVGh1bWJwcmludCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiVGh1bWJwcmludCBvZiBjZXJ0aWZpY2F0ZSB3aGljaCBpcyB0cnVzdGVkIHRvIHNpZ24gaW5jb21pbmcgU0FNTCBvYmplY3QuIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IlNpbmdsZSBzaW5nLW9uIiwiTmFtZSI6IktEQVNTTyIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkthZGVuYSJ9LCJEaXNwbGF5TmFtZSI6IlNBTUwgMi4wIn19")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IlRydXN0ZWQgY2VydGlmaWNhdGUgdGh1bWJwcmludCIsIktleU5hbWUiOiJLREFfVHJ1c3RlZENlcnRpZmljYXRlVGh1bWJwcmludCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiVGh1bWJwcmludCBvZiBjZXJ0aWZpY2F0ZSB3aGljaCBpcyB0cnVzdGVkIHRvIHNpZ24gaW5jb21pbmcgU0FNTCBvYmplY3QuIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6Ik1lbWJlcnNoaXAiLCJOYW1lIjoiS0RBTWVtYmVyc2hpcFNldHRpbmdDYXRlZ29yeSIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkthZGVuYSJ9LCJEaXNwbGF5TmFtZSI6IlNBTUwgMi4wIn19")]
         public const string KDA_TrustedCertificateThumbprint = "KDA_TrustedCertificateThumbprint";
 
         /// <summary>
         /// Audience URI for which SAML object allowed to.
         /// </summary>
-        [CategoryAttribute("Single sign-on", "KDASSO", "Kadena")]
+        [CategoryAttribute("Membership", "KDAMembershipSettingCategory", "Kadena")]
         [GroupAttribute("SAML 2.0")]
         [DefaultValueAttribute(null)]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkFsbG93ZWQgYXVkaWVuY2UgVVJJIiwiS2V5TmFtZSI6IktEQV9BbGxvd2VkQXVkaWVuY2VVcmkiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjpudWxsLCJLZXlEZXNjcmlwdGlvbiI6IkF1ZGllbmNlIFVSSSBmb3Igd2hpY2ggU0FNTCBvYmplY3QgYWxsb3dlZCB0by4iLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiU2luZ2xlIHNpbmctb24iLCJOYW1lIjoiS0RBU1NPIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiS2FkZW5hIn0sIkRpc3BsYXlOYW1lIjoiU0FNTCAyLjAifX0=")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkFsbG93ZWQgYXVkaWVuY2UgVVJJIiwiS2V5TmFtZSI6IktEQV9BbGxvd2VkQXVkaWVuY2VVcmkiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjpudWxsLCJLZXlEZXNjcmlwdGlvbiI6IkF1ZGllbmNlIFVSSSBmb3Igd2hpY2ggU0FNTCBvYmplY3QgYWxsb3dlZCB0by4iLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiTWVtYmVyc2hpcCIsIk5hbWUiOiJLREFNZW1iZXJzaGlwU2V0dGluZ0NhdGVnb3J5IiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiS2FkZW5hIn0sIkRpc3BsYXlOYW1lIjoiU0FNTCAyLjAifX0=")]
         public const string KDA_AllowedAudienceUri = "KDA_AllowedAudienceUri";
 
         /// <summary>
