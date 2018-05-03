@@ -6,6 +6,7 @@ using Kadena.Models;
 using Kadena.Models.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
+using System.Web;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -103,6 +104,8 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var newUser = _mapper.Map<UserInfo>(user);
             newUser.Enabled = true;
+            newUser.UserSettings.UserRegistrationInfo.IPAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+            newUser.UserSettings.UserRegistrationInfo.Agent = HttpContext.Current.Request.UserAgent;
             newUser.Insert();
             
             var newUserId = newUser.UserID;
