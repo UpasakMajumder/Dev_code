@@ -202,13 +202,13 @@
             <![CDATA[{% Settings.EnablePasswordHint|(user)cvoqa2@gmail.com|(hash)ae494ace6f5925358a09d79455a11bdd15b0da9247efa090a11912d11e0c03b9%}]]>
           </property>
           <property name="showsignuplink" ismacro="true">
-            <![CDATA[{% Settings.EnableAccountCreation|(user)cvoqa2@gmail.com|(hash)18e90a16bc6e9a3a44f9eac1c071bac1f8100e8b3cb027ae2914f946de8f1298%}]]>
+            <![CDATA[{% Settings.KDA_EnableRegistration |(user)rostyslav.diachenko@actum.cz|(hash)aa361173447e5135a7afc5e5eacf03c75eeabd54fd8942b6f413de2b3146a1df%}]]>
           </property>
           <property name="signuplinktext" ismacro="true">
-            <![CDATA[{% GetResourceString("Kadena.loginForm.SignupText") |(user)cvoqa2@gmail.com|(hash)a444ab2d9f40ae9f1c58efcf6623a2b9f89baa90c328211234846d4ebbd4f56e%}]]>
+            <![CDATA[{% GetResourceString("Kadena.Login.SignupText") |(user)rostyslav.diachenko@actum.cz|(hash)0ffaa9f5400533a1889e0f1a6ac62f1bf6ed1fc0405e82e54b15e19f70c37b21%}]]>
           </property>
           <property name="signuppageurl" ismacro="true">
-            <![CDATA[{% Settings.AccountRegistrationPage |(user)cvoqa2@gmail.com|(hash)3cd0a1f7fa6da2c75d64a9e14a1d19cdeef1ca556353b3264018f5059205517c%}]]>
+            <![CDATA[{% Settings.KDA_RegistrationPageUrl |(user)rostyslav.diachenko@actum.cz|(hash)709ce9083d585f27518d5f5782a861b3b701df7e41a49192872f3abd5c7f0f88%}]]>
           </property>
           <property name="skinid"></property>
           <property name="timezonetype">inherit</property>
