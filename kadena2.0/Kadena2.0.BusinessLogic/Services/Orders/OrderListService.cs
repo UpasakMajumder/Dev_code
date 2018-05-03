@@ -89,6 +89,11 @@ namespace Kadena.BusinessLogic.Services.Orders
             _documents = documents ?? throw new ArgumentNullException(nameof(documents));
         }
 
+        public Task<OrderHead> GetOrdersToApprove()
+        {
+            // TODO
+        }
+
         public async Task<OrderHead> GetHeaders()
         {
             var orderList = _mapper.Map<OrderList>(await GetOrders(1));
