@@ -23,6 +23,7 @@
                     <div class="custom__blockin">
                         <h4><%= POSNumberText %> : <%# Eval("SKUProductCustomerReferenceNumber")%></h4>
                         <h3><%#Eval("SKUName") %></h3>
+                        <h3><cms:LocalizedLiteral runat ="server" ResourceString="Kadena.Product.QuantityAvailable"/> <%#Eval("SKUAvailableItems") %></h3>
                         <span><%# ProductType == (int)ProductsType.GeneralInventory? $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("SKUPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" : $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("EstimatedPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" %></span>
                         <b>
                             <asp:Label runat="server" Visible='<%# ProductType == (int)ProductsType.PreBuy %>'>

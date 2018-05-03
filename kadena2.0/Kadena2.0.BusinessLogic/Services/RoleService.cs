@@ -14,17 +14,8 @@ namespace Kadena.BusinessLogic.Services
 
         public RoleService(IKenticoRoleProvider roles, IKenticoLogger log)
         {
-            if (roles == null)
-            {
-                throw new ArgumentNullException(nameof(roles));
-            }
-            if (log == null)
-            {
-                throw new ArgumentNullException(nameof(log));
-            }
-
-            this.roles = roles;
-            this.log = log;
+            this.roles = roles ?? throw new ArgumentNullException(nameof(roles));
+            this.log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
         public void AssignSSORoles(User user, int siteId, IEnumerable<string> ssoRoles)

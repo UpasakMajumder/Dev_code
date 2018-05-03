@@ -31,6 +31,8 @@ using Kadena.BusinessLogic.Services.SSO;
 using Kadena.Infrastructure.FileConversion;
 using System.IdentityModel.Tokens;
 using Kadena.Infrastructure.Contracts;
+using Kadena.BusinessLogic.Contracts.Approval;
+using Kadena.BusinessLogic.Services.Approval;
 
 namespace Kadena.Container.Default
 {
@@ -105,6 +107,7 @@ namespace Kadena.Container.Default
             container.Register<IUserService, UserService>();
             container.Register<IMailService, MailService>();
             container.Register<IImageService, ImageService>();
+            container.Register<IApproverService, ApproverService>();
             return container;
         }
 

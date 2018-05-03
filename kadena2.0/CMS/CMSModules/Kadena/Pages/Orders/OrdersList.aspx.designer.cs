@@ -13,12 +13,102 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders {
     public partial class OrdersList {
         
         /// <summary>
-        /// grdOrders control.
+        /// orderByOrderDateDesc control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSAdminControls_UI_UniGrid_UniGrid grdOrders;
+        protected global::System.Web.UI.WebControls.HiddenField orderByOrderDateDesc;
+        
+        /// <summary>
+        /// siteSelector control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMSFormControls_Sites_SiteSelector siteSelector;
+        
+        /// <summary>
+        /// dateFrom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.DateTimePicker dateFrom;
+        
+        /// <summary>
+        /// dateTo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.DateTimePicker dateTo;
+        
+        /// <summary>
+        /// btnApplyFilter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnApplyFilter;
+        
+        /// <summary>
+        /// btnExport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnExport;
+        
+        /// <summary>
+        /// ordersDatagrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.DocumentEngine.Web.UI.BasicDataGrid ordersDatagrid;
+        
+        /// <summary>
+        /// previousPage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton previousPage;
+        
+        /// <summary>
+        /// nextPage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton nextPage;
+        
+        /// <summary>
+        /// jumpToPage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList jumpToPage;
+        
+        /// <summary>
+        /// totalPages control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal totalPages;
     }
 }

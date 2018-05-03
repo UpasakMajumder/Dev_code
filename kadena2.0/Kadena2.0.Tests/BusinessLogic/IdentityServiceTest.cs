@@ -85,7 +85,7 @@ namespace Kadena.Tests.BusinessLogic
             Setup<ISaml2Service, Dictionary<string, IEnumerable<string>>>(s => s.GetAttributes(It.IsAny<string>()), new Dictionary<string, IEnumerable<string>>());
             Setup<IKenticoSiteProvider, KenticoSite>(s => s.GetKenticoSite(), new KenticoSite { Id = 1 });
             Setup<IKenticoAddressBookProvider, List<AddressData>>(s => s.GetAddressesList(It.IsAny<int>()), Enumerable.Empty<AddressData>().ToList());
-            Setup<IKenticoUserProvider, Customer>(s => s.GetCustomer(It.IsAny<int>()), new Customer());
+            Setup<IKenticoCustomerProvider, Customer>(s => s.GetCustomer(It.IsAny<int>()), new Customer());
             Setup<IMapper, User>(s => s.Map<User>(It.IsAny<UserDto>()), new User());
             Setup<IMapper, UserDto>(s => s.Map<UserDto>(It.IsAny<Dictionary<string, IEnumerable<string>>>()), new UserDto());
             Setup<IMapper, Customer>(s => s.Map<Customer>(It.IsAny<CustomerDto>()), new Customer());

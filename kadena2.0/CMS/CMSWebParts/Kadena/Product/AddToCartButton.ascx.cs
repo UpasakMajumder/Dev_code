@@ -88,13 +88,13 @@ namespace Kadena.CMSWebParts.Kadena.Product
         private bool IsProductMailingType()
         {
             var productType = _productDocument.GetStringValue("ProductType", string.Empty);
-            return ProductTypes.IsOfType(ProductTypes.MailingProduct, productType);
+            return ProductTypes.IsOfType(productType, ProductTypes.MailingProduct);
         }
 
         private bool IsProductTemplatedType()
         {
             var productType = _productDocument.GetStringValue("ProductType", string.Empty);
-            return ProductTypes.IsOfType(ProductTypes.TemplatedProduct, productType);
+            return ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct);
         }
 
         private void SetupDocument()

@@ -11,39 +11,24 @@ namespace Kadena.BusinessLogic.Services
         private readonly ISubmissionIdProvider submissionProvider;
         private readonly IUserDataServiceClient userClient;
         private readonly IKenticoUserProvider kenticoUsers;
+        private readonly IKenticoCustomerProvider kenticoCustomer;
         private readonly IKenticoSiteProvider kenticoSite;
         private readonly IKenticoLogger kenticoLog;
 
 
-        public SubmissionService(ISubmissionIdProvider submissionProvider, IUserDataServiceClient userClient, IKenticoUserProvider kenticoUsers, IKenticoSiteProvider kenticoSite, IKenticoLogger kenticoLog)
+        public SubmissionService(ISubmissionIdProvider submissionProvider, 
+                                 IUserDataServiceClient userClient, 
+                                 IKenticoUserProvider kenticoUsers,
+                                 IKenticoCustomerProvider kenticoCustomer,
+                                 IKenticoSiteProvider kenticoSite, 
+                                 IKenticoLogger kenticoLog)
         {
-            if (submissionProvider == null)
-            {
-                throw new ArgumentNullException(nameof(submissionProvider));
-            }
-            if (userClient == null)
-            {
-                throw new ArgumentNullException(nameof(userClient));
-            }
-            if (kenticoUsers == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoUsers));
-            }
-            if (kenticoSite == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoSite));
-            }
-            if (kenticoLog == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoLog));
-            }
-
-
-            this.submissionProvider = submissionProvider;
-            this.userClient = userClient;
-            this.kenticoUsers = kenticoUsers;
-            this.kenticoSite = kenticoSite;
-            this.kenticoLog = kenticoLog;
+            this.submissionProvider = submissionProvider ?? throw new ArgumentNullException(nameof(submissionProvider));
+            this.userClient = userClient ?? throw new ArgumentNullException(nameof(userClient));
+            this.kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
+            this.kenticoCustomer = kenticoCustomer ?? throw new ArgumentNullException(nameof(kenticoCustomer));
+            this.kenticoSite = kenticoSite ?? throw new ArgumentNullException(nameof(kenticoSite));
+            this.kenticoLog = kenticoLog ?? throw new ArgumentNullException(nameof(kenticoLog));
         }
 
         public Guid GenerateNewSubmissionId()
@@ -55,7 +40,7 @@ namespace Kadena.BusinessLogic.Services
         {
             int siteId = kenticoSite.GetKenticoSite().Id;
             int userId = kenticoUsers.GetCurrentUser().UserId;
-            int customerId = kenticoUsers.GetCurrentCustomer().Id;
+            int customerId = kenticoCustomer.GetCurrentCustomer().Id;
 
             var oldSubmissions = submissionProvider.GetSubmissions(siteId, userId, customerId);
 
@@ -144,7 +129,7 @@ namespace Kadena.BusinessLogic.Services
         {
             int siteId = kenticoSite.GetKenticoSite().Id;
             int userId = kenticoUsers.GetCurrentUser().UserId;
-            int customerId = kenticoUsers.GetCurrentCustomer().Id;
+            int customerId = kenticoCustomer.GetCurrentCustomer().Id;
             return submission.CheckOwner(siteId, userId, customerId);
         }
 

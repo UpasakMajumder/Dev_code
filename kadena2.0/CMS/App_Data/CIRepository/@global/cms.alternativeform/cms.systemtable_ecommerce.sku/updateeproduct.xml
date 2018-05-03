@@ -200,6 +200,8 @@
       <field column="SKUCustomerReferenceNumber" guid="c32528ae-48e9-4e78-9114-c3b6909f0b08" order="56" />
       <field column="SKUDontSendPriceToERP" visible="false" />
       <field column="SKUUnitOfMeasure" visible="false" />
+      <field column="SKUHiResPdfDownloadEnabled" visible="false" />
+      <field column="SKUApprovalRequired" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Product - E-product properties</FormDisplayName>

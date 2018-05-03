@@ -181,6 +181,6 @@ namespace Kadena.BusinessLogic.Services
         {
             var unit = units.GetUnitOfMeasure(unitOfMeasure);
             return resources.GetResourceString(unit.LocalizationString, cultureCode);
-        }
+        }        
     }
 }

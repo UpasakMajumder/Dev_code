@@ -1,4 +1,7 @@
-﻿namespace Kadena2.WebAPI.KenticoProviders.Contracts
+﻿using Kadena.Models.Membership;
+using System.Collections.Generic;
+
+namespace Kadena2.WebAPI.KenticoProviders.Contracts
 {
     public interface IKenticoPermissionsProvider
     {
@@ -15,5 +18,6 @@
         bool UserCanSeeAllOrders();
         bool UserCanModifyShippingAddress();
         bool UserCanDownloadHiresPdf(int siteId, int userId);
+        IEnumerable<User> GetUsersWithPermission(string resourceName, string permissionName, int siteId);
     }
 }

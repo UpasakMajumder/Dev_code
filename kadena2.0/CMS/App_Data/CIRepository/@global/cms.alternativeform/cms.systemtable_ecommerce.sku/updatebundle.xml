@@ -205,6 +205,8 @@
       <field column="SKUCustomerReferenceNumber" guid="4058c043-1588-4aac-a0e4-ccc542725928" order="56" />
       <field column="SKUDontSendPriceToERP" visible="false" />
       <field column="SKUUnitOfMeasure" visible="false" />
+      <field column="SKUHiResPdfDownloadEnabled" visible="false" />
+      <field column="SKUApprovalRequired" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Product - Bundle properties</FormDisplayName>

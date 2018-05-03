@@ -50,7 +50,7 @@ namespace Kadena.Tests.BusinessLogic
             Use(MapperBuilder.MapperInstance);
 
             Setup<IKenticoPermissionsProvider, bool>(p => p.UserCanSeeAllOrders(), false);
-            Setup<IKenticoUserProvider, Customer>(p => p.GetCurrentCustomer(), new Customer() { Id = 10, UserID = 16 });
+            Setup<IKenticoCustomerProvider, Customer>(p => p.GetCurrentCustomer(), new Customer() { Id = 10, UserID = 16 });
             Setup<IKenticoSiteProvider, KenticoSite>(p => p.GetKenticoSite(), new KenticoSite());
         }
 

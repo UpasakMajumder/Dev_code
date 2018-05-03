@@ -81,7 +81,7 @@ namespace Kadena.Tests.BusinessLogic
 
         private void SetupBase()
         {
-            Setup<IKenticoUserProvider, Customer>(p => p.GetCurrentCustomer(), new Customer { DefaultShippingAddressId = 1, Id = 1 });
+            Setup<IKenticoCustomerProvider, Customer>(p => p.GetCurrentCustomer(), new Customer { DefaultShippingAddressId = 1, Id = 1 });
             Setup<IKenticoUserProvider, User>(p => p.GetCurrentUser(), new User { UserId = 1 });
 
             Setup<IKenticoAddressBookProvider, DeliveryAddress[]>(p => p.GetCustomerAddresses(AddressType.Shipping), new[] { CreateDeliveryAddress() });

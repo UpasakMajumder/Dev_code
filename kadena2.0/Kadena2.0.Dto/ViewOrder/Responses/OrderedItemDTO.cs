@@ -21,6 +21,7 @@ namespace Kadena.Dto.ViewOrder.Responses
         public string QuantityShippedPrefix { get; set; }
         public int Quantity { get; set; }
         public int QuantityShipped { get; set; }
+        public string UnitOfMeasure { get; set; }
         public string DownloadPdfURL { get; set; }
         public string ProductStatusPrefix { get; set; }
         public string ProductStatus { get; set; }
