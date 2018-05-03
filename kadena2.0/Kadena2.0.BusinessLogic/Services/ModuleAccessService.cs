@@ -71,7 +71,7 @@ namespace Kadena.BusinessLogic.Services
                 case KnownPageTypes.AdminModule:
                     return IsUserInTWEAdminRole();
                 case KnownPageTypes.OrdersReport:
-                    return kenticoPermissionsProvider.IsAuthorizedPerResource(KnownModules.Kadena_Orders, KnownPermissions.KDA_OrdersReport);
+                    return kenticoPermissionsProvider.CurrentUserHasPermission(KnownModules.Kadena_Orders, KnownPermissions.KDA_OrdersReport);
                 default:
                     return true;
             }

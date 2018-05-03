@@ -20,6 +20,7 @@ namespace Kadena.Dto.Checkout
         public string QuantityPrefix { get; set; }
         public int Quantity { get; set; }
         public int StockQuantity { get; set; }
+        public string UnitOfMeasure { get; set; }
         public string EditorURL { get; set; }
         public string MailingListPrefix { get; set; }
         public string TemplatePrefix { get; set; }

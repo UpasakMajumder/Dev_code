@@ -61,6 +61,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 throw new ArgumentNullException(nameof(i.SKU), "CartItem has null SKU");
             }
 
+            var unitOfMeasure = i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit);
+
             var cartItem = new CartItem()
             {
                 Id = i.CartItemID,
@@ -73,7 +75,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 SKUNumber = i.SKU.SKUNumber,
                 TotalTax = 0.0m,
                 UnitPrice = showPrices ? (decimal)i.UnitPrice : 0.0m,
-                UnitOfMeasure = units.GetUnitOfMeasure(i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit)).ErpCode,
+                UnitOfMeasureName = units.GetDisplayname(unitOfMeasure),
+                UnitOfMeasureErpCode = units.GetUnitOfMeasure(unitOfMeasure).ErpCode,
                 Image = productProvider.GetProductImagePath(i.GetIntegerValue("ProductPageID", 0)),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
@@ -91,7 +94,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 ProductionTime = displayProductionAndShipping ? i.GetValue("ProductProductionTime", string.Empty) : null,
                 ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null,
                 Preview = new Button { Exists = false, Text = resources.GetResourceString("Kadena.Checkout.PreviewButton") },
-                SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true)
+                SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true),
+                RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false)
             };
 
             if (cartItem.IsTemplated)
@@ -313,7 +317,7 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItemInfo.SetValue("ProductChiliPdfGeneratorSettingsId", productDocument.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));
             cartItemInfo.SetValue("ProductChiliWorkspaceId", productDocument.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
             cartItemInfo.SetValue("SendPriceToErp", !cartItemInfo.SKU.GetBooleanValue("SKUDontSendPriceToERP", false));
-            cartItemInfo.SetValue("UnitOfMeasure", productDocument.GetStringValue("ProductUnitOfMeasure", UnitOfMeasure.DefaultUnit));
+            cartItemInfo.SetValue("UnitOfMeasure", productDocument.GetStringValue("SKUUnitOfMeasure", UnitOfMeasure.DefaultUnit));
 
             return mapper.Map<CartItemEntity>(cartItemInfo);
         }

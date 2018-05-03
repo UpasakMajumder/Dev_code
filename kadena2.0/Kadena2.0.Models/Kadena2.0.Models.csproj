@@ -50,6 +50,7 @@
     <Compile Include="AddToCart\DistributorCart.cs" />
     <Compile Include="AddToCart\DistributorCartItem.cs" />
     <Compile Include="Address\BillingAddress.cs" />
+    <Compile Include="Approval\Approver.cs" />
     <Compile Include="Brand\Brand.cs" />
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
     <Compile Include="CampaignData\Campaign.cs" />
@@ -110,6 +111,8 @@
     <Compile Include="Checkout\SubmitButton.cs" />
     <Compile Include="Checkout\Total.cs" />
     <Compile Include="Checkout\Totals.cs" />
+    <Compile Include="SiteSettings\Permissions\PermissionModules.cs" />
+    <Compile Include="SiteSettings\Permissions\ModulePermissions.cs" />
     <Compile Include="SiteSettings\Settings.General.cs" />
     <Compile Include="SiteSettings\Settings.Microservices.cs" />
     <Compile Include="SiteSettings\Settings.OrderDetails.cs" />

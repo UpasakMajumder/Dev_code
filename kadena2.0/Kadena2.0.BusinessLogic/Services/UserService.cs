@@ -11,6 +11,7 @@ namespace Kadena.BusinessLogic.Services
     public class UserService : IUserService
     {
         private readonly IKenticoUserProvider userProvider;
+        private readonly IKenticoCustomerProvider customerProvider;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoDocumentProvider documents;
         private readonly IKenticoSiteProvider siteProvider;
@@ -18,7 +19,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoMailProvider mailProvider;
 
         public UserService(IKenticoUserProvider userProvider, IKenticoResourceService resources, IKenticoDocumentProvider documents
-            , IKenticoSiteProvider siteProvider, IRoleService roleService, IKenticoMailProvider mailProvider)
+            , IKenticoSiteProvider siteProvider, IRoleService roleService, IKenticoMailProvider mailProvider, IKenticoCustomerProvider customerProvider)
         {
             this.userProvider = userProvider ?? throw new ArgumentNullException(nameof(userProvider));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
@@ -26,6 +27,7 @@ namespace Kadena.BusinessLogic.Services
             this.siteProvider = siteProvider ?? throw new ArgumentNullException(nameof(siteProvider));
             this.roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
             this.mailProvider = mailProvider ?? throw new ArgumentNullException(nameof(mailProvider));
+            this.customerProvider = customerProvider ?? throw new ArgumentNullException(nameof(customerProvider));
         }
 
         public CheckTaCResult CheckTaC()
@@ -81,7 +83,7 @@ namespace Kadena.BusinessLogic.Services
             var siteId = siteProvider.GetKenticoSite().Id;
 
             userProvider.CreateUser(user, siteId);
-            customer.Id = userProvider.CreateCustomer(customer);
+            customer.Id = customerProvider.CreateCustomer(customer);
             userProvider.LinkCustomerToUser(customer.Id, user.UserId);
 
             userProvider.SetPassword(user.UserId, registration.Password);

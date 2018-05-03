@@ -14,6 +14,7 @@ using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.Checkout;
 using Kadena.Models.Common;
 using Kadena.Models.SiteSettings;
+using Kadena.Models.SiteSettings.Permissions;
 
 namespace Kadena.BusinessLogic.Services.Orders
 {
@@ -21,7 +22,7 @@ namespace Kadena.BusinessLogic.Services.Orders
     {
         private readonly IMapper _mapper;
         private readonly IOrderViewClient _orderClient;
-        private readonly IKenticoUserProvider _kenticoUsers;
+        private readonly IKenticoCustomerProvider _kenticoCustomers;
         private readonly IKenticoResourceService _kenticoResources;
         private readonly IKenticoSiteProvider _site;
         private readonly IKenticoOrderProvider _order;
@@ -65,14 +66,20 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public bool EnablePaging { get; set; }
 
-        public OrderListService(IMapper mapper, IOrderViewClient orderClient, IKenticoUserProvider kenticoUsers,
-            IKenticoResourceService kenticoResources, IKenticoSiteProvider site, IKenticoOrderProvider order,
-            IKenticoDocumentProvider documents, IKenticoPermissionsProvider permissions, IKenticoLogger logger, 
-            IKenticoAddressBookProvider kenticoAddressBook)
+        public OrderListService(IMapper mapper, 
+                                IOrderViewClient orderClient,
+                                IKenticoCustomerProvider kenticoCustomers,
+                                IKenticoResourceService kenticoResources, 
+                                IKenticoSiteProvider site, 
+                                IKenticoOrderProvider order,
+                                IKenticoDocumentProvider documents, 
+                                IKenticoPermissionsProvider permissions, 
+                                IKenticoLogger logger, 
+                                IKenticoAddressBookProvider kenticoAddressBook)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _orderClient = orderClient ?? throw new ArgumentNullException(nameof(orderClient));
-            _kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
+            _kenticoCustomers = kenticoCustomers ?? throw new ArgumentNullException(nameof(kenticoCustomers));
             _kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
             _site = site ?? throw new ArgumentNullException(nameof(site));
             _order = order ?? throw new ArgumentNullException(nameof(order));
@@ -146,13 +153,13 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             var siteName = _site.GetKenticoSite().Name;
             BaseResponseDto<OrderListDto> response = null;
-            if (_permissions.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", siteName))
+            if (_permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.SeeAllOrders, siteName))
             {
                 response = await _orderClient.GetOrders(siteName, pageNumber, _pageCapacity);
             }
             else
             {
-                var customer = _kenticoUsers.GetCurrentCustomer();
+                var customer = _kenticoCustomers.GetCurrentCustomer();
                 response = await _orderClient.GetOrders(customer?.Id ?? 0, pageNumber, _pageCapacity);
             }
 
@@ -171,13 +178,13 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             var siteName = _site.GetKenticoSite().Name;
             BaseResponseDto<OrderListDto> response = null;
-            if (_permissions.IsAuthorizedPerResource("Kadena_Orders", "KDA_SeeAllOrders", siteName))
+            if (_permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.SeeAllOrders, siteName))
             {
                 response = await _orderClient.GetOrders(siteName, pageNumber, _pageCapacity, campaignID, orderType);
             }
             else
             {
-                var customer = _kenticoUsers.GetCurrentCustomer();
+                var customer = _kenticoCustomers.GetCurrentCustomer();
                 response = await _orderClient.GetOrders(customer?.Id ?? 0, pageNumber, _pageCapacity, campaignID, orderType);
             }
 

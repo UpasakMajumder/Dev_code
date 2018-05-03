@@ -11,5 +11,6 @@ namespace Kadena.Dto.CustomerData
         public CustomerAddressDTO Address { get; set; }
         public Dictionary<string, string> Claims { get; set; }
         public string PreferredLanguage { get; set; }
+        public ApproverDto[] Approvers { get; set; }
     }
 }

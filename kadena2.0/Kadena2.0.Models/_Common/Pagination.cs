@@ -21,5 +21,7 @@
         /// Current page number, starting from 1
         /// </summary>
         public int CurrentPage { get; set; }
+
+        public static Pagination Empty => new Pagination { CurrentPage = 1, PagesCount = 1 };
     }
 }

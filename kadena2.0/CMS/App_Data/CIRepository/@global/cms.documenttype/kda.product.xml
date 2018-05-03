@@ -331,6 +331,14 @@
           <Trim>False</Trim>
         </settings>
       </field>
+      <field allowempty="true" column="ProductHiResPdfDownloadEnabled" columntype="boolean" guid="c0f188ae-1a50-4e2e-831d-59a1c877d0b3" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>HiRes Pdf Download Enabled</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="ProductChili3dEnabled" columntype="boolean" guid="03312785-902a-4f07-bc18-03e0c69b22fa" publicfield="false" visible="true">
         <properties>
           <defaultvalue>false</defaultvalue>
@@ -401,25 +409,6 @@
           <controlname>TextBoxControl</controlname>
           <FilterMode>False</FilterMode>
           <Trim>False</Trim>
-        </settings>
-      </field>
-      <field column="ProductUnitOfMeasure" columnsize="40" columntype="text" guid="0b4c540d-8078-4e63-a886-da283d8048f7" publicfield="false" visible="true">
-        <properties>
-          <defaultvalue>Each</defaultvalue>
-          <fieldcaption>Unit of Measure</fieldcaption>
-        </properties>
-        <settings>
-          <controlname>DropDownListControl</controlname>
-          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
-          <EditText>False</EditText>
-          <Query>
-<![CDATA[
-SELECT Name,Name
-FROM KDA_UnitOfMeasure 
-ORDER BY IsDefault DESC
-]]>
-          </Query>
-          <SortItems>False</SortItems>
         </settings>
       </field>
       <category name="Shipping">

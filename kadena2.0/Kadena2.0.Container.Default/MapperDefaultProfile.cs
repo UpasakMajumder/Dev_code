@@ -32,6 +32,7 @@ using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Infrastructure.FileConversion;
 using Kadena.Models;
 using Kadena.Models.AddToCart;
+using Kadena.Models.Approval;
 using Kadena.Models.Brand;
 using Kadena.Models.BusinessUnit;
 using Kadena.Models.Checkout;
@@ -75,18 +76,22 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src => src.Options.ToDictionary(i => i.Name, i => i.Value)))
                 .ForMember(dest => dest.DesignFileKey, opt => opt.MapFrom(src => src.Artwork))
                 .ForMember(dest => dest.SendPriceToErp, opt => opt.MapFrom(src => src.SendPriceToErp))
+                .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.UnitOfMeasureErpCode))
                 .ForMember(dest => dest.Type, opt => opt.Ignore())
                 .ForMember(dest => dest.MailingList, opt => opt.Ignore());
 
             CreateMap<CustomerData, CustomerDataDTO>();
+            CreateMap<Approver, ApproverDto>();
             CreateMap<CustomerAddress, CustomerAddressDTO>();
             CreateMap<CartItems, CartItemsDTO>();
             CreateMap<CartItem, CartItemDTO>()
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.PriceText))
-                .ForMember(dest => dest.MailingList, opt => opt.MapFrom(src => src.MailingListName));
+                .ForMember(dest => dest.MailingList, opt => opt.MapFrom(src => src.MailingListName))
+                .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.UnitOfMeasureName));
             CreateMap<CartItem, CartItemPreviewDTO>()
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.PriceText))
-                .ForMember(dest => dest.MailingList, opt => opt.MapFrom(src => src.MailingListName));
+                .ForMember(dest => dest.MailingList, opt => opt.MapFrom(src => src.MailingListName))
+                .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.UnitOfMeasureName));
             CreateMap<Models.PaymentMethod, PaymentMethodDTO>();
             CreateMap<PaymentMethods, PaymentMethodsDTO>();
             CreateMap<Total, TotalDTO>();
@@ -333,6 +338,7 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.Company, opt => opt.Ignore())
                 .ForMember(dest => dest.SiteId, opt => opt.Ignore())
                 .ForMember(dest => dest.PreferredLanguage, opt => opt.Ignore())
+                .ForMember(dest => dest.ApproverUserId, opt => opt.Ignore())
                 .ForMember(dest => dest.DefaultShippingAddressId, opt => opt.Ignore());
             CreateMap<Dto.SSO.AddressDto, DeliveryAddress>()
                 .ForMember(dest => dest.Country, opt => opt.ResolveUsing(src => new Country { Code = src.Country }))

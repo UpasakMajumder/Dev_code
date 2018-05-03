@@ -16,12 +16,12 @@ namespace Kadena.Tests
             autoMocker.Setup(setupAction).Returns(result);
         }
 
-        protected void Setup<TService, T, TResult>(Expression<Func<TService, TResult>> setupAction, Func<T, TResult> result) where TService : class
+        protected void Setup<TService, TArg, TResult>(Expression<Func<TService, TResult>> setupAction, Func<TArg, TResult> result) where TService : class
         {
             autoMocker.Setup(setupAction).Returns(result);
         }
 
-        protected void Setup<TService, T1, T2, TResult>(Expression<Func<TService, TResult>> setupAction, Func<T1, T2, TResult> result) where TService : class
+        protected void Setup<TService, TArg1, TArg2, TResult>(Expression<Func<TService, TResult>> setupAction, Func<TArg1, TArg2, TResult> result) where TService : class
         {
             autoMocker.Setup(setupAction).Returns(result);
         }

@@ -244,6 +244,24 @@
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="SKUHiResPdfDownloadEnabled" columntype="boolean" guid="8ad34b07-1b2e-47f3-929b-c590f0813b1c" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>false</defaultvalue>
+          <fieldcaption>HiRes PDF download enabled</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="SKUApprovalRequired" columntype="boolean" guid="e8895743-9873-453a-919e-5391220cb16c" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>false</defaultvalue>
+          <fieldcaption>Approval Required</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="SKUCustomData" columntype="longtext" guid="29e8c9c5-d3c7-4846-a18f-057d5cd0a352" publicfield="false" system="true">
         <properties>
           <fieldcaption>SKUCustomData</fieldcaption>
@@ -526,6 +544,25 @@
           <FilterType>0|3</FilterType>
           <Trim>True</Trim>
           <ValidChars>.,</ValidChars>
+        </settings>
+      </field>
+      <field allowempty="true" column="SKUUnitOfMeasure" columnsize="40" columntype="text" guid="79380af2-d662-438c-9ba2-22d7a62e6b7b" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>Each</defaultvalue>
+          <fieldcaption>Unit of measure</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Query>
+<![CDATA[
+SELECT Name,Name
+FROM KDA_UnitOfMeasure 
+ORDER BY IsDefault DESC
+]]>
+          </Query>
+          <SortItems>False</SortItems>
         </settings>
       </field>
       <category name="com.sku.inventorycategory">

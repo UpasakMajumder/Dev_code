@@ -182,6 +182,9 @@
       <field column="SKUParentSKUID" guid="cfda202f-ccbf-47b8-9b24-d6feae3a470c" />
       <field column="SKUCustomerReferenceNumber" guid="acc7ffb4-eb2e-40bb-a6e1-b454bad2b597" order="56" />
       <field column="SKUDontSendPriceToERP" visible="false" />
+      <field column="SKUUnitOfMeasure" visible="false" />
+      <field column="SKUHiResPdfDownloadEnabled" visible="false" />
+      <field column="SKUApprovalRequired" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Product - General properties</FormDisplayName>

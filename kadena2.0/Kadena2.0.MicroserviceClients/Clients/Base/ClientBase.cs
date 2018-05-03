@@ -1,4 +1,5 @@
 ﻿using Kadena.Dto.General;
+using Kadena.Models.SiteSettings;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using Newtonsoft.Json;
 using System;
@@ -14,7 +15,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
     {
         protected IMicroProperties _properties;
         private readonly ISuppliantDomainClient _suppliantDomain;
-        private readonly string _baseServiceUrlSettingKey = "KDA_MicroservicesBaseAddress";
+        private readonly string _baseServiceUrlSettingKey = Settings.KDA_MicroservicesBaseAddress;
         protected string _serviceVersionSettingKey;
 
         [Obsolete("Remove after all microservices will use base url")]

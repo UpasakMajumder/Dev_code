@@ -16,52 +16,30 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoLocalizationProvider _localization;
         private readonly IKenticoSiteProvider _site;
         private readonly IKenticoUserProvider _kenticoUsers;
+        private readonly IKenticoCustomerProvider _kenticoCustomers;
         private readonly IKenticoResourceService _resources;
         private readonly IKenticoAddressBookProvider  _addresses;
 
         public SettingsService(IKenticoPermissionsProvider permissions,
                                IKenticoLocalizationProvider localization,
                                IKenticoSiteProvider site,
-                               IKenticoUserProvider kenticoUsers, 
+                               IKenticoUserProvider kenticoUsers,
+                               IKenticoCustomerProvider kenticoCustomers,
                                IKenticoResourceService resources,
                                IKenticoAddressBookProvider addresses)
         {
-            if (permissions == null)
-            {
-                throw new ArgumentNullException(nameof(permissions));
-            }
-            if (localization == null)
-            {
-                throw new ArgumentNullException(nameof(localization));
-            }
-            if (site == null)
-            {
-                throw new ArgumentNullException(nameof(site));
-            }
-            if (kenticoUsers == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoUsers));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (addresses == null)
-            {
-                throw new ArgumentNullException(nameof(addresses));
-            }
-
-            _permissions = permissions;
-            _localization = localization;
-            _site = site;
-            _kenticoUsers = kenticoUsers;
-            _resources = resources;
-            _addresses = addresses;
+            _permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
+            _localization = localization ?? throw new ArgumentNullException(nameof(localization));
+            _site = site ?? throw new ArgumentNullException(nameof(site));
+            _kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
+            _kenticoCustomers = kenticoCustomers ?? throw new ArgumentNullException(nameof(kenticoCustomers));
+            _resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            _addresses = addresses ?? throw new ArgumentNullException(nameof(addresses));
         }
 
         public SettingsAddresses GetAddresses()
         {
-            var customer = _kenticoUsers.GetCurrentCustomer();
+            var customer = _kenticoCustomers.GetCurrentCustomer();
             var billingAddresses = _addresses.GetCustomerAddresses(AddressType.Billing);
             var shippingAddresses = _addresses.GetCustomerAddresses(AddressType.Shipping);
             var shippingAddressesSorted = shippingAddresses

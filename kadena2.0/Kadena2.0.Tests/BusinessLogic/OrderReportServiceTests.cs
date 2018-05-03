@@ -12,7 +12,6 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -21,7 +20,7 @@ namespace Kadena.Tests.BusinessLogic
 {
     public class OrderReportServiceTests : KadenaUnitTest<OrderReportService>
     {
-        [Fact(DisplayName = "OrderReportService.OrdersPerPage | Setting value is set")]
+        [Fact]
         public void Service_ShouldLoadPagingSettings_WhenConfigured()
         {
             Setup<IKenticoResourceService, string>(res => res.GetSiteSettingsKey(Settings.KDA_RecentOrdersPageCapacity), "15");
@@ -31,7 +30,7 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(15, actual);
         }
 
-        [Fact(DisplayName = "OrderReportService.OrdersPerPage | Setting value isn't set")]
+        [Fact]
         public void Service_ShouldUseDefaultPagingSettings_WhenNotConfigured()
         {
             var expected = OrderReportService.DefaultCountOfOrdersPerPage;
@@ -41,47 +40,34 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(expected, actual);
         }
 
-        [Fact(DisplayName = "OrderReportService.ConvertOrdersToView() | Null data")]
+        [Fact]
         public void ConvertOrdersToView_ShouldThrow_WhenArgumentNull()
         {
             Assert.Throws<ArgumentNullException>(() => Sut.ConvertOrdersToView(null));
         }
 
-        [Fact(DisplayName = "OrderReportService.ConvertOrdersToView() | Non null data")]
-        public void ConvertOrdersToView_ShouldFlattenOrdersToTable()
+        [Fact]
+        public void ConvertOrdersToView_ShouldMapOrdersToTableView()
         {
             var orders = new PagedData<OrderReport>
             {
-                Data = OrderReportTestHelper.CreateTestOrders(ordersCount: 1, itemsPerOrderCount: 1)
-            };
-
-            var expected = new TableView();
-            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(orders.Data), expected);
-
-            var actual = Sut.ConvertOrdersToView(orders);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact(DisplayName = "OrderReportService.ConvertOrdersToView() | Proper pagination")]
-        public void ConvertOrdersToView_ShouldReusePagination()
-        {
-            var testOrder = OrderReportTestHelper.CreateTestOrder(orderNumber: 1, itemsCount: 1);
-            var orders = new PagedData<OrderReport>()
-            {
-                Data = new List<OrderReport> { testOrder },
+                Data = OrderReportTestHelper.CreateTestOrders(ordersCount: 1, itemsPerOrderCount: 1),
                 Pagination = new Pagination()
             };
 
-            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(orders.Data), new TableView());
+            var tableView = new TableView();
+            var reportView = new OrderReportView();
+            Setup<IOrderReportFactory, OrderReportView>(orf => orf.CreateReportView(orders.Data), reportView);
+            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(reportView), tableView);
 
             var actual = Sut.ConvertOrdersToView(orders);
 
+            Assert.Equal(tableView, actual);
             Assert.Equal(orders.Pagination, actual.Pagination);
         }
 
-        [Fact(DisplayName = "OrderReportService.GetOrders() | Site and page are valid")]
-        public async Task GetOrders_ShouldUseCurrentSite()
+        [Fact]
+        public async Task GetOrders_ShouldGetOrdersForCurrentSite()
         {
             var currentSite = "test_site";
             Setup<IKenticoSiteProvider, string>(sp => sp.GetCurrentSiteCodeName(), currentSite);
@@ -92,17 +78,16 @@ namespace Kadena.Tests.BusinessLogic
                     actualFilter = f;
                     return Task.FromResult(new BaseResponseDto<OrderListDto>());
                 });
-            var sut = Sut;
             var page = 2;
 
-            await sut.GetOrders(page, new OrderFilter());
+            await Sut.GetOrders(page, new OrderFilter());
 
             Assert.Equal(currentSite, actualFilter.SiteName);
             Assert.Equal(page, actualFilter.PageNumber);
         }
 
-        [Fact(DisplayName = "OrderReportService.GetOrdersForSite() | Invalid page number")]
-        public async Task GetOrdersForSite_ShouldValidateArgumentsAndThrow_WhenInvalidPage()
+        [Fact]
+        public async Task GetOrdersForSite_ShouldThrow_WhenInvalidPage()
         {
             var invalidPageNumber = OrderReportService.FirstPageNumber - 1;
 
@@ -111,28 +96,17 @@ namespace Kadena.Tests.BusinessLogic
             await Assert.ThrowsAsync<ArgumentException>("page", action);
         }
 
-        [Fact(DisplayName = "OrderReportService.GetOrdersForSite() | Invalid filter's dates")]
+        [Fact]
         public async Task GetOrdersForSite_ShouldValidateFilter()
         {
+            var someInvalidFilter = GetInvalidDateFilter();
+
             Task action() => Sut.GetOrdersForSite("test_site", OrderReportService.FirstPageNumber
-                , new OrderFilter { FromDate = DateTime.Today.AddDays(1), ToDate = DateTime.Today });
+                , someInvalidFilter);
 
             await Assert.ThrowsAsync<ArgumentException>("filter", action);
         }
-
-        [Theory(DisplayName = "OrderReportService.GetOrders() | Invalid filter's order expression")]
-        [InlineData("wrong-sort-expression")]
-        [InlineData("not_supported_property-ASC")]
-        public async Task ValidateFilter_ShouldThrow_WhenFilterHasInvalidOrderByExpression(string orderBy)
-        {
-            var filterWithInvalidSort = new OrderFilter { OrderByExpression = orderBy };
-
-            Task<PagedData<OrderReport>> action() => Sut.GetOrders(1, filterWithInvalidSort);
-
-            await Assert.ThrowsAsync<ArgumentException>("filter", action);
-        }
-
-
+        
         [Fact]
         public async Task GetOrdersForSite_ShouldConfigureDateFilterAsInclusive()
         {
@@ -161,7 +135,7 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(expectedDateTo, actualFilter.DateTo);
         }
 
-        [Fact(DisplayName = "OrderReportService.GetOrdersForSite() | Filter valid")]
+        [Fact]
         public async Task GetOrdersForSite_ShouldPassArgumentsToMicroserviceClient()
         {
             var actualFilter = new OrderListFilter();
@@ -196,25 +170,37 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(expectedOrderListFilter, actualFilter);
         }
 
-        [Fact(DisplayName = "OrderReportService.GetOrders() | Invalid filter's dates")]
+        [Theory]
+        [InlineData("wrong-orderBy-expression")]
+        [InlineData("not_supported_property-ASC")]
+        public async Task ValidateFilter_ShouldThrow_WhenFilterHasInvalidOrderByExpression(string orderBy)
+        {
+            var filterWithInvalidSort = new OrderFilter { OrderByExpression = orderBy };
+
+            Task<PagedData<OrderReport>> action() => Sut.GetOrders(1, filterWithInvalidSort);
+
+            await Assert.ThrowsAsync<ArgumentException>("filter", action);
+        }
+
+        private OrderFilter GetInvalidDateFilter() =>
+            new OrderFilter
+            {
+                FromDate = new DateTime(2020, 1, 1),
+                ToDate = new DateTime(1910, 1, 1)
+            };
+
+        [Fact]
         public async Task ValidateFilter_ShouldThrow_WhenFilterHasInvalidDateRange()
         {
-            var pastDate = new DateTime(2010, 1, 1);
-            var futureDate = new DateTime(2010, 2, 1);
-
-            var filterWithInvalidDateRange = new OrderFilter
-            {
-                FromDate = futureDate,
-                ToDate = pastDate
-            };
+            var filterWithInvalidDateRange = GetInvalidDateFilter();
 
             Task action() => Sut.GetOrders(1, filterWithInvalidDateRange);
 
             await Assert.ThrowsAsync<ArgumentException>("filter", action);
         }
 
-        [Fact(DisplayName = "OrderReportService.GetOrdersExport() | Site valid")]
-        public void GetOrdersExport_ShouldUseCurrentSite()
+        [Fact]
+        public void GetOrdersExport_ShouldGetOrdersForCurrentSite()
         {
             var currentSite = "test_site";
             Setup<IKenticoSiteProvider, string>(sp => sp.GetCurrentSiteCodeName(), currentSite);
@@ -232,15 +218,17 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(currentSite, actualFilter.SiteName);
         }
 
-        [Fact(DisplayName = "OrderReportService.GetOrdersExportForSite() | Invalid filter's dates")]
+        [Fact]
         public async Task GetOrdersExportForSite_ShouldValidateFilter()
         {
-            Task action() => Sut.GetOrdersExportForSite("test_site", new OrderFilter { FromDate = DateTime.Today.AddDays(1), ToDate = DateTime.Today });
+            var someInvalidFilter = GetInvalidDateFilter();
+
+            Task action() => Sut.GetOrdersExportForSite("test_site", someInvalidFilter);
 
             await Assert.ThrowsAsync<ArgumentException>("filter", action);
         }
 
-        [Fact(DisplayName = "OrderReportService.GetOrdersExportForSite() | Valid export file")]
+        [Fact]
         public async Task GetOrdersExportForSite_ShouldCreateExportFileResult()
         {
             var orders = new BaseResponseDto<OrderListDto>()
@@ -260,7 +248,7 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(dummyFileData, result.Data);
         }
 
-        [Fact(DisplayName = "OrderReportService.GetOrdersExportForSite() | Valid conversion table")]
+        [Fact]
         public async Task GetOrdersExportForSite_ShouldCreateTableForConversion()
         {
             // expected values to be passed to excelconvert
@@ -287,7 +275,7 @@ namespace Kadena.Tests.BusinessLogic
             };
             SetupOrderViewClientReturning(orders);
             var actualResult = new Table();
-            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<IEnumerable<OrderReport>>()), expected);
+            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<OrderReportView>()), expected);
             Setup<IExcelConvert, Table, byte[]>(ec => ec.Convert(It.IsAny<Table>()), t =>
               {
                   actualResult = t;
@@ -302,7 +290,7 @@ namespace Kadena.Tests.BusinessLogic
             Assert.True(AreEqual(expected, actualResult));
         }
 
-        [Fact(DisplayName = "OrderReportService.GetOrdersExportForSite() | Filter valid")]
+        [Fact]
         public async Task GetOrdersExportForSite_ShouldPassArgumentsToMicroserviceClient_WhenFilterSpecified()
         {
             var actualFilter = new OrderListFilter();
@@ -334,7 +322,7 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(expectedOrderListFilter, actualFilter);
         }
 
-        [Fact(DisplayName = "OrderReportService.GetOrdersExportForSite() | Filter valid")]
+        [Fact]
         public async Task GetOrdersExportForSite_ShouldPassArgumentsToMicroserviceClient_WhenFilterEmpty()
         {
             var actualFilter = new OrderListFilter();
