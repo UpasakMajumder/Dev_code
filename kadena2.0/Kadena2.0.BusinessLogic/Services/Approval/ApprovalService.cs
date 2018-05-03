@@ -15,13 +15,13 @@ namespace Kadena.BusinessLogic.Services.Approval
         private readonly IKenticoUserProvider users;
         private readonly IKenticoLogger log;
 
-        public ApprovalService(IApproverService approverService,
-                               IApprovalServiceClient approvalMicroservice, 
+        public ApprovalService(IApproverService approvers,
+                               IApprovalServiceClient approvalClient, 
                                IKenticoUserProvider users, 
                                IKenticoLogger log)
         {
-            this.approvers = approverService ?? throw new ArgumentNullException(nameof(approverService));
-            this.approvalClient = approvalMicroservice ?? throw new ArgumentNullException(nameof(approvalMicroservice));
+            this.approvers = approvers ?? throw new ArgumentNullException(nameof(approvers));
+            this.approvalClient = approvalClient ?? throw new ArgumentNullException(nameof(approvalClient));
             this.users = users ?? throw new ArgumentNullException(nameof(users));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
         }
