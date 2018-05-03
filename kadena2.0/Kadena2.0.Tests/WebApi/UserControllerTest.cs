@@ -1,4 +1,5 @@
-﻿using Kadena.Dto.Logon.Responses;
+﻿using Kadena.Dto.Logon.Requests;
+using Kadena.Dto.Logon.Responses;
 using Kadena.WebAPI.Controllers;
 using Kadena.WebAPI.Infrastructure.Communication;
 using System.Web.Http.Results;
@@ -23,6 +24,15 @@ namespace Kadena.Tests.WebApi
             var actualResult = Sut.CheckTaC();
 
             Assert.IsType<JsonResult<BaseResponse<CheckTaCResultDTO>>>(actualResult);
+            Assert.NotNull(actualResult);
+        }
+
+        [Fact(DisplayName = "UserController.Register()")]
+        public void Register()
+        {
+            var actualResult = Sut.Register(new RegistrationDto());
+
+            Assert.IsType<JsonResult<BaseResponse<object>>>(actualResult);
             Assert.NotNull(actualResult);
         }
     }
