@@ -15,15 +15,17 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoDocumentProvider documents;
         private readonly IKenticoSiteProvider siteProvider;
         private readonly IRoleService roleService;
+        private readonly IKenticoMailProvider mailProvider;
 
         public UserService(IKenticoUserProvider userProvider, IKenticoResourceService resources, IKenticoDocumentProvider documents
-            , IKenticoSiteProvider siteProvider, IRoleService roleService)
+            , IKenticoSiteProvider siteProvider, IRoleService roleService, IKenticoMailProvider mailProvider)
         {
             this.userProvider = userProvider ?? throw new ArgumentNullException(nameof(userProvider));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
             this.siteProvider = siteProvider ?? throw new ArgumentNullException(nameof(siteProvider));
             this.roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
+            this.mailProvider = mailProvider ?? throw new ArgumentNullException(nameof(mailProvider));
         }
 
         public CheckTaCResult CheckTaC()
@@ -84,6 +86,8 @@ namespace Kadena.BusinessLogic.Services
             {
                 roleService.AssignRoles(user, siteId, roles);
             }
+
+            mailProvider.SendRegistrationEmails(user);
         }
     }
 }
