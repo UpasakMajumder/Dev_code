@@ -397,20 +397,6 @@
           <visible>True</visible>
         </properties>
       </category>
-      <field column="ProductNumberOfItemsInPackage" columntype="integer" guid="884ded84-31ab-4eed-a61c-a2062f6ed92e" publicfield="false" visible="true">
-        <properties>
-          <defaultvalue>1</defaultvalue>
-          <fieldcaption>Number of items in package</fieldcaption>
-        </properties>
-        <settings>
-          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
-          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
-          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
-          <controlname>TextBoxControl</controlname>
-          <FilterMode>False</FilterMode>
-          <Trim>False</Trim>
-        </settings>
-      </field>
       <category name="Shipping">
         <properties>
           <visible>True</visible>
