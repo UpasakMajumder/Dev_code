@@ -17,7 +17,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public List<BusinessUnit> GetBusinessUnits()
         {
-            ObjectQuery<CustomTableItem> businessUnits = CustomTableItemProvider.GetItems(BusinessUnitsCustomTableName)
+            var businessUnits = CustomTableItemProvider.GetItems(BusinessUnitsCustomTableName)
                                                                                 .WhereEquals("SiteID", SiteContext.CurrentSiteID)
                                                                                 .And()
                                                                                 .WhereTrue("Status");
@@ -26,23 +26,21 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public List<BusinessUnit> GetUserBusinessUnits(int userID)
         {
-            ObjectQuery<CustomTableItem> userBusinessUnits = CustomTableItemProvider.GetItems(UserBusinessUnitsCustomTableName)
-                                                                                    .WhereEquals("UserID", userID)
-                                                                                    .Columns("BusinessUnitID");
+            var userBusinessUnits = CustomTableItemProvider.GetItems(BusinessUnitsCustomTableName)
+                                        .WhereEquals("SiteID", SiteContext.CurrentSiteID)
+                                        .WhereIn("ItemID", 
+                                            CustomTableItemProvider.GetItems(UserBusinessUnitsCustomTableName)
+                                                .WhereEquals("UserID", userID)
+                                                .Columns("BusinessUnitID"));
+
             if (userBusinessUnits.TypedResult.Items.Count > 0)
             {
-                return userBusinessUnits.Select(x => CreateBusinessUnit(GetBusinessUnitItem(x))).ToList();
+                return userBusinessUnits.Select(x => CreateBusinessUnit(x)).ToList();
             }
             else
             {
                 return null;
             }
-        }
-
-        private CustomTableItem GetBusinessUnitItem(CustomTableItem businessUnitItemID)
-        {
-            int itemID = businessUnitItemID.GetIntegerValue("BusinessUnitID", 0);
-            return CustomTableItemProvider.GetItem(itemID, BusinessUnitsCustomTableName);
         }
 
         private BusinessUnit CreateBusinessUnit(CustomTableItem businessUnitItem)
@@ -104,7 +102,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 .GetItems(BusinessUnitsCustomTableName)
                 .WhereEquals("BusinessUnitNumber", businessUnitNumber)
                 .FirstOrDefault();
-            return businessUnitItem != null 
+            return businessUnitItem != null
                 ? businessUnitItem.GetStringValue("BusinessUnitName", string.Empty)
                 : string.Empty;
         }
