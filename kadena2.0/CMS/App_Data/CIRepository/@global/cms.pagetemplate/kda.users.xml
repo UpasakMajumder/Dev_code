@@ -389,22 +389,21 @@ iteratedDocument = iteratedDocument.Parent;
           if(currentUserID > 0) 
           {
             $.ajax({
-              type: "POST",
-              url: '/KadenaWebservice.asmx/GetUserBusinessUnitData',
+              type: "GET",
+              url: '/api/userbusinessunits/' + currentUserID,
               contentType: "application/json; charset=utf-8",
-              data: '{userID: ' + currentUserID + '}',
               dataType: "json",
               success: function (data) {
-                if (data != '') {
-                  var parsedData=JSON.parse(data.d);
+                if (data.success == true && data.payload != '') {
+                  var parsedData=data.payload;
                   var th="<tr><th>{$Kadena.Users.BusinessUnitNumber$}</th><th>{$Kadena.Users.BusinessUnitName$}</th></tr>";
                   var rowData='';
                   var ids='';
                   $('#hdnbuid').val('');
                   for(i=0; i<parsedData.length;i++)  {
-                    rowData +='<tr id='+parsedData[i].ItemID+'><td>'+parsedData[i].BusinessUnitNumber+'</td><td>'+parsedData[i].BusinessUnitName+
+                    rowData +='<tr id='+parsedData[i].itemID+'><td>'+parsedData[i].businessUnitNumber+'</td><td>'+parsedData[i].businessUnitName+
                       '</td></tr>';
-                    ids+=parsedData[i].ItemID+';';
+                    ids+=parsedData[i].itemID+';';
                   }
                   $('#hdnbuid').val(ids);                           
                   $('#UserBusinessUnitbody').append(rowData);
@@ -421,17 +420,17 @@ iteratedDocument = iteratedDocument.Parent;
     function BindBusinessUnits(){
       $.ajax({
         type: "GET",
-        url: '/KadenaWebservice.asmx/GetAllActiveBusienssUnits',
+        url: '/api/businessunits',
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-          if (data.d != '') {
+          if (data.success == true && data.payload != '') {
             $('#buinessunits').html('');
             var th='<tr><td><input type="checkbox" class="js-chkAll" id="selectAll"></td><td>{$Kadena.Users.BusinessUnitNumber$}</td><td>{$Kadena.Users.BusinessUnitName$}</td></tr>';
-            var parsedData=JSON.parse(data.d);          
+            var parsedData=data.payload;
             var rowData='';
             for(i=0; i<parsedData.length;i++)
-              rowData +='<tr><td><input type="checkbox" class="js-chk" value='+parsedData[i].ItemID+'></td><td class=js-td>'+parsedData[i].BusinessUnitNumber+'</td><td class=js-td>'+parsedData[i].BusinessUnitName+
+              rowData +='<tr><td><input type="checkbox" class="js-chk" value='+parsedData[i].itemID+'></td><td class=js-td>'+parsedData[i].businessUnitNumber+'</td><td class=js-td>'+parsedData[i].businessUnitName+
                 '</td></tr>';
             if(rowData != ''){
               $('#buinessunits').append(th+rowData);
@@ -444,7 +443,6 @@ iteratedDocument = iteratedDocument.Parent;
               });
             }
             
-          } else {            
           }
         },
         error: function (xhr, ajaxOptions, thrownError) {          
@@ -496,7 +494,7 @@ iteratedDocument = iteratedDocument.Parent;
 </script>
 ]]>
           </property>
-          <property name="inlinescriptpagelocation">Beginning</property>
+          <property name="inlinescriptpagelocation">Inline</property>
           <property name="instanceguid">2219a8a4-7a1c-486a-a8e3-56e8c8aa6b16</property>
           <property name="linkedfile"></property>
           <property name="linkedfilepagelocation">Header</property>

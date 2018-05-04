@@ -1,9 +1,9 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.WebAPI.KenticoProviders;
 using System.Collections.Generic;
 using Kadena.Models.BusinessUnit;
 using System;
+using System.Linq;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -29,7 +29,10 @@ namespace Kadena.BusinessLogic.Services
 
         public List<BusinessUnit> GetBusinessUnits()
         {
-            return kenticoBusinessUnits.GetBusinessUnits();
+            return kenticoBusinessUnits
+                .GetBusinessUnits()
+                .OrderBy(bu => bu.BusinessUnitNumber)
+                .ToList();
         }
 
         public List<BusinessUnit> GetUserBusinessUnits(int UserID)

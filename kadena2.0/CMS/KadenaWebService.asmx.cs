@@ -15,9 +15,6 @@
     using CMS.CustomTables;
     using CMS.EventLog;
     using Kadena.Helpers;
-    using Newtonsoft.Json;
-    using System.Linq;
-    using CMS.CustomTables.Types.KDA;
 
     [WebService]
     [ScriptService]
@@ -442,50 +439,5 @@
             }
         }
         #endregion
-
-
-        #region "TWE"
-        [WebMethod(EnableSession = true)]
-        public string GetUserBusinessUnitData(int userID)
-        {
-            var usersBU = CustomTableItemProvider.GetItems<BusinessUnitItem>()
-                .Columns(nameof(BusinessUnitItem.BusinessUnitName), nameof(BusinessUnitItem.BusinessUnitNumber), nameof(BusinessUnitItem.ItemID))
-                .WhereEquals(nameof(BusinessUnitItem.SiteID), SiteContext.CurrentSiteID)
-                .WhereIn(nameof(BusinessUnitItem.ItemID),
-                    CustomTableItemProvider
-                        .GetItems<UserBusinessUnitsItem>()
-                        .Column(nameof(UserBusinessUnitsItem.BusinessUnitID))
-                        .WhereEquals(nameof(UserBusinessUnitsItem.UserID), userID))
-                .Select(i => new
-                {
-                    ItemID = (int)i[nameof(BusinessUnitItem.ItemID)],
-                    BusinessUnitNumber = (long)i[nameof(BusinessUnitItem.BusinessUnitNumber)],
-                    BusinessUnitName = i[nameof(BusinessUnitItem.BusinessUnitName)].ToString()
-                })
-                .ToList();
-            return usersBU.Count == 0 ? string.Empty : JsonConvert.SerializeObject(usersBU);
-        }
-
-        [WebMethod]
-        [ScriptMethod(UseHttpGet = true)]
-        public string GetAllActiveBusienssUnits()
-        {
-            var businessUnits = CustomTableItemProvider.GetItems<BusinessUnitItem>()
-                .WhereEquals(nameof(BusinessUnitItem.Status), true)
-                .WhereEquals(nameof(BusinessUnitItem.SiteID), SiteContext.CurrentSiteID)
-                .Columns(nameof(BusinessUnitItem.BusinessUnitName), nameof(BusinessUnitItem.BusinessUnitNumber), nameof(BusinessUnitItem.ItemID))
-                .OrderByAscending(nameof(BusinessUnitItem.BusinessUnitNumber))
-                .Select(i => new
-                {
-                    ItemID = (int)i[nameof(BusinessUnitItem.ItemID)],
-                    BusinessUnitNumber = (long)i[nameof(BusinessUnitItem.BusinessUnitNumber)],
-                    BusinessUnitName = i[nameof(BusinessUnitItem.BusinessUnitName)].ToString()
-                })
-                .ToList();
-            return businessUnits.Count == 0 ? string.Empty : JsonConvert.SerializeObject(businessUnits);
-        }
-        #endregion
-
-
     }
 }

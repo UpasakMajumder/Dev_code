@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.BusinessUnits;
-using Kadena.Dto.CustomerData;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
-using System.Net;
 using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
