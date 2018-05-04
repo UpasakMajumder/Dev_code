@@ -15,6 +15,9 @@
     using CMS.CustomTables;
     using CMS.EventLog;
     using Kadena.Helpers;
+    using Newtonsoft.Json;
+    using System.Linq;
+    using CMS.CustomTables.Types.KDA;
 
     [WebService]
     [ScriptService]
@@ -503,20 +506,18 @@
         [ScriptMethod(UseHttpGet = true)]
         public string GetAllActiveBusienssUnits()
         {
-            QueryDataParameters parameters = new QueryDataParameters();
-            GeneralConnection cn = ConnectionHelper.GetConnection();
-            parameters.Add("@Status", 1);
-            parameters.Add("@SiteID", SiteContext.CurrentSiteID);
-            var query = "select BusinessUnitName,BusinessUnitNumber,ItemID from KDA_BusinessUnit where  Status = @Status and SiteID=@SiteID";
-            QueryParameters qp = new QueryParameters(query, parameters, QueryTypeEnum.SQLQuery);
-            var userBUData = cn.ExecuteQuery(qp);
-            if (!DataHelper.DataSourceIsEmpty(userBUData))
-            {
-                var buData = userBUData.Tables[0];
-                var JSONString = ConvertDataTbaleToJson(buData);
-                return JSONString.ToString();
-            }
-            return string.Empty;
+            var businessUnits = CustomTableItemProvider.GetItems<BusinessUnitItem>()
+                .WhereEquals("Status", true)
+                .WhereEquals("SiteID", SiteContext.CurrentSiteID)
+                .Columns("BusinessUnitName", "BusinessUnitNumber", "ItemID")
+                .Select(i => new
+                {
+                    ItemID = (int)i["ItemID"],
+                    BusinessUnitNumber = (long)i["BusinessUnitNumber"],
+                    BusinessUnitName = i["BusinessUnitName"].ToString()
+                })
+                .ToList();
+            return businessUnits.Count == 0 ? string.Empty : JsonConvert.SerializeObject(businessUnits);
         }
         #endregion
 
