@@ -448,58 +448,22 @@
         [WebMethod(EnableSession = true)]
         public string GetUserBusinessUnitData(int userID)
         {
-            QueryDataParameters parameters = new QueryDataParameters();
-            GeneralConnection cn = ConnectionHelper.GetConnection();
-            parameters.Add("@UserID", userID);
-            parameters.Add("@SiteID", SiteContext.CurrentSiteID);
-            var query = "select BusinessUnitName,BusinessUnitNumber,b.ItemID from KDA_UserBusinessUnits ub inner join KDA_BusinessUnit b on ub.BusinessUnitID = b.ItemID  where ub.UserID = @UserID and b.SiteID=@SiteID";
-            QueryParameters qp = new QueryParameters(query, parameters, QueryTypeEnum.SQLQuery);
-            var userBUData = cn.ExecuteQuery(qp);
-            if (!DataHelper.DataSourceIsEmpty(userBUData))
-            {
-                var buData = userBUData.Tables[0];
-                var JSONString = ConvertDataTbaleToJson(buData);
-                return JSONString.ToString();
-            }
-            return string.Empty;
-        }
-
-
-        public System.Text.StringBuilder ConvertDataTbaleToJson(System.Data.DataTable table)
-        {
-            var JSONString = new System.Text.StringBuilder();
-            if (!DataHelper.DataSourceIsEmpty(table))
-            {
-                if (table.Rows.Count > 0)
+            var usersBU = CustomTableItemProvider.GetItems<BusinessUnitItem>()
+                .Columns(nameof(BusinessUnitItem.BusinessUnitName), nameof(BusinessUnitItem.BusinessUnitNumber), nameof(BusinessUnitItem.ItemID))
+                .WhereEquals(nameof(BusinessUnitItem.SiteID), SiteContext.CurrentSiteID)
+                .WhereIn(nameof(BusinessUnitItem.ItemID),
+                    CustomTableItemProvider
+                        .GetItems<UserBusinessUnitsItem>()
+                        .Column(nameof(UserBusinessUnitsItem.BusinessUnitID))
+                        .WhereEquals(nameof(UserBusinessUnitsItem.UserID), userID))
+                .Select(i => new
                 {
-                    JSONString.Append("[");
-                    for (int i = 0; i < table.Rows.Count; i++)
-                    {
-                        JSONString.Append("{");
-                        for (int j = 0; j < table.Columns.Count; j++)
-                        {
-                            if (j < table.Columns.Count - 1)
-                            {
-                                JSONString.Append("\"" + table.Columns[j].ColumnName.ToString() + "\":" + "\"" + table.Rows[i][j].ToString() + "\",");
-                            }
-                            else if (j == table.Columns.Count - 1)
-                            {
-                                JSONString.Append("\"" + table.Columns[j].ColumnName.ToString() + "\":" + "\"" + table.Rows[i][j].ToString() + "\"");
-                            }
-                        }
-                        if (i == table.Rows.Count - 1)
-                        {
-                            JSONString.Append("}");
-                        }
-                        else
-                        {
-                            JSONString.Append("},");
-                        }
-                    }
-                    JSONString.Append("]");
-                }
-            }
-            return JSONString;
+                    ItemID = (int)i[nameof(BusinessUnitItem.ItemID)],
+                    BusinessUnitNumber = (long)i[nameof(BusinessUnitItem.BusinessUnitNumber)],
+                    BusinessUnitName = i[nameof(BusinessUnitItem.BusinessUnitName)].ToString()
+                })
+                .ToList();
+            return usersBU.Count == 0 ? string.Empty : JsonConvert.SerializeObject(usersBU);
         }
 
         [WebMethod]
