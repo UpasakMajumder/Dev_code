@@ -507,15 +507,15 @@
         public string GetAllActiveBusienssUnits()
         {
             var businessUnits = CustomTableItemProvider.GetItems<BusinessUnitItem>()
-                .WhereEquals("Status", true)
-                .WhereEquals("SiteID", SiteContext.CurrentSiteID)
-                .Columns("BusinessUnitName", "BusinessUnitNumber", "ItemID")
-                .OrderByAscending("BusinessUnitNumber")
+                .WhereEquals(nameof(BusinessUnitItem.Status), true)
+                .WhereEquals(nameof(BusinessUnitItem.SiteID), SiteContext.CurrentSiteID)
+                .Columns(nameof(BusinessUnitItem.BusinessUnitName), nameof(BusinessUnitItem.BusinessUnitNumber), nameof(BusinessUnitItem.ItemID))
+                .OrderByAscending(nameof(BusinessUnitItem.BusinessUnitNumber))
                 .Select(i => new
                 {
-                    ItemID = (int)i["ItemID"],
-                    BusinessUnitNumber = (long)i["BusinessUnitNumber"],
-                    BusinessUnitName = i["BusinessUnitName"].ToString()
+                    ItemID = (int)i[nameof(BusinessUnitItem.ItemID)],
+                    BusinessUnitNumber = (long)i[nameof(BusinessUnitItem.BusinessUnitNumber)],
+                    BusinessUnitName = i[nameof(BusinessUnitItem.BusinessUnitName)].ToString()
                 })
                 .ToList();
             return businessUnits.Count == 0 ? string.Empty : JsonConvert.SerializeObject(businessUnits);
