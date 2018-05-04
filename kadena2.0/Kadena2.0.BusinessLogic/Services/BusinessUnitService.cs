@@ -14,20 +14,11 @@ namespace Kadena.BusinessLogic.Services
 
         public BusinessUnitService(IKenticoBusinessUnitsProvider kenticoBusinessUnits, IShoppingCartProvider shoppingCartProvider)
         {
-            if (kenticoBusinessUnits == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoBusinessUnits));
-            }
-
-            if (shoppingCartProvider == null)
-            {
-                throw new ArgumentNullException(nameof(shoppingCartProvider));
-            }
-            this.kenticoBusinessUnits = kenticoBusinessUnits;
-            _shoppingCartProvider = shoppingCartProvider;
+            this.kenticoBusinessUnits = kenticoBusinessUnits ?? throw new ArgumentNullException(nameof(kenticoBusinessUnits));
+            _shoppingCartProvider = shoppingCartProvider ?? throw new ArgumentNullException(nameof(shoppingCartProvider));
         }
 
-        public List<BusinessUnit> GetBusinessUnits()
+        public List<BusinessUnit> GetSiteActiveBusinessUnits()
         {
             return kenticoBusinessUnits
                 .GetBusinessUnits()

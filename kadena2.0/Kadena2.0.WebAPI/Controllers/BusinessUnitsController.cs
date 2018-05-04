@@ -39,9 +39,9 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [Route("api/businessunits")]
-        public IHttpActionResult GetAllActiveBusienssUnits()
+        public IHttpActionResult GetSiteActiveBusinessUnits()
         {
-            var activeBusinessUnits = businessUnits.GetBusinessUnits();
+            var activeBusinessUnits = businessUnits.GetSiteActiveBusinessUnits();
             var activeBusinessUnitsDto = mapper.Map<BusinessUnitDto[]>(activeBusinessUnits);
             return ResponseJson(activeBusinessUnitsDto);
         }
