@@ -510,6 +510,7 @@
                 .WhereEquals("Status", true)
                 .WhereEquals("SiteID", SiteContext.CurrentSiteID)
                 .Columns("BusinessUnitName", "BusinessUnitNumber", "ItemID")
+                .OrderByAscending("BusinessUnitNumber")
                 .Select(i => new
                 {
                     ItemID = (int)i["ItemID"],
