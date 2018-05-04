@@ -21,7 +21,7 @@ namespace Kadena.BusinessLogic.Services
         public List<BusinessUnit> GetSiteActiveBusinessUnits()
         {
             return kenticoBusinessUnits
-                .GetBusinessUnits()
+                .GetBusinessUnits()?
                 .OrderBy(bu => bu.BusinessUnitNumber)
                 .ToList();
         }
