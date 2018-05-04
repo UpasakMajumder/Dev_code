@@ -63,9 +63,7 @@ namespace Kadena.BusinessLogic.Services
                 throw new InvalidOperationException("Action denied.");
             }
 
-            var user = userProvider.GetUser(registration.Email);
-
-            user = new User
+            var user = new User
             {
                 FirstName = registration.FirstName,
                 LastName = registration.LastName,
