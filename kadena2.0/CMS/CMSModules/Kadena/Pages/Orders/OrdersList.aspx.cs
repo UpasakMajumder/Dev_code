@@ -9,6 +9,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Data;
 using System.Linq;
+using System.Web.UI.WebControls;
 
 namespace Kadena.CMSModules.Kadena.Pages.Orders
 {
@@ -28,6 +29,22 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
         protected void Page_Load(object sender, EventArgs e)
         {
             HideErrorMessage();
+
+            if (!IsPostBack)
+            {
+                BindSites();
+                PerformFullSearch();
+            }
+        }
+
+        private void BindSites()
+        {
+            var sites = KenticoSiteProvider
+                .GetSites()
+                .Select(s => new ListItem(s.Name, s.Id.ToString()))
+                .ToArray();
+            siteDropDown.Items.AddRange(sites);
+            siteDropDown.SelectedIndex = 0;
         }
 
         protected string RenderTableStyle() => @"
@@ -42,9 +59,8 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
                 }
             </style>
         ";
-        
 
-        private int FilterSelectedSiteID => Convert.ToInt32(siteSelector.Value);
+        private int FilterSelectedSiteID => Convert.ToInt32(siteDropDown.SelectedValue);
         private string FilterSelectedSiteName => FilterSelectedSiteID > 0
                 ? KenticoSiteProvider.GetKenticoSite(FilterSelectedSiteID).Name
                 : null;
@@ -104,6 +120,11 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
         }
 
         protected void btnApplyFilter_Click(object sender, EventArgs e)
+        {
+            PerformFullSearch();
+        }
+
+        private void PerformFullSearch()
         {
             CurrentPage = 1;
 
