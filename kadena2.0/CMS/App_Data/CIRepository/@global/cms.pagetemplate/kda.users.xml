@@ -27,33 +27,7 @@
   {^WebPartZone|(id)zoneTextAfter^}
   
 </div>
-<!--pop up html-->
-<div class="dialog modal_businessunit" id="businessUnitPopup">  
-  <div class="dialog__shadow"></div>
-  <div class="dialog__block">    
-    <div class="dialog__header">      
-      <a href="#" class="btn-action js-btnSaveBU">{$Kadena.BuinessUnit.AddBusinessUnits$}</a>
-      <a href="#" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>      
-    </div>    
-    <div class="dialog__content">      
-      <table class="table" id="buinessunits">
-        <tbody id="buinessunitsbody">
-          <tr>
-            <td>
-              <input type="checkbox" class="js-chkAll" id="selectAll">
-            </td>            
-            <td>{$Kadena.Users.BusinessUnitNumber$}</td>
-            <td>{$Kadena.Users.BusinessUnitName$}</td>
-          </tr>
-        </tbody>
-      </table>      
-    </div>    
-    <div class="dialog__footer">      
-      <div class="btn-group btn-group--right">                         
-      </div>          
-    </div>      
-  </div>    
-</div>
+
 
 ]]>
   </PageTemplateLayout>
@@ -363,6 +337,83 @@ iteratedDocument = iteratedDocument.Parent;
         </webpart>
       </webpartzone>
       <webpartzone id="zoneTextAfter" v="1">
+        <webpart controlid="StaticText" guid="920dc61c-ed95-4c2a-a0c3-9084a38ce37c" type="statictext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">StaticText</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">920dc61c-ed95-4c2a-a0c3-9084a38ce37c</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="tag"></property>
+          <property name="text">
+<![CDATA[
+<!--pop up html-->
+<div class="dialog modal_businessunit" id="businessUnitPopup">  
+  <div class="dialog__shadow"></div>
+  <div class="dialog__block">    
+    <div class="dialog__header">      
+      <a href="#" class="btn-action js-btnSaveBU">{$Kadena.BuinessUnit.AddBusinessUnits$}</a>
+      <a href="#" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>      
+    </div>    
+    <div class="dialog__content">      
+      <table class="table" id="buinessunits">
+        <tbody id="buinessunitsbody">
+          <tr>
+            <td>
+              <input type="checkbox" class="js-chkAll" id="selectAll">
+            </td>            
+            <td>{$Kadena.Users.BusinessUnitNumber$}</td>
+            <td>{$Kadena.Users.BusinessUnitName$}</td>
+          </tr>
+        </tbody>
+      </table>      
+    </div>    
+    <div class="dialog__footer">      
+      <div class="btn-group btn-group--right">                         
+      </div>          
+    </div>      
+  </div>    
+</div>
+]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
+          <property name="webparttitle">Business Unit Pop-up</property>
+          <property name="webparttype">statictext</property>
+        </webpart>
         <webpart controlid="Javascript" guid="2219a8a4-7a1c-486a-a8e3-56e8c8aa6b16" type="javascript" v="1">
           <property name="cat_open_behavior"></property>
           <property name="cat_open_performance"></property>
