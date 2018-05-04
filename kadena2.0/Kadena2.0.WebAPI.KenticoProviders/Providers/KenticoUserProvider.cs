@@ -5,6 +5,7 @@ using CMS.SiteProvider;
 using Kadena.Models.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
+using System.Web;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -59,24 +60,20 @@ namespace Kadena.WebAPI.KenticoProviders
             return _mapper.Map<User>(UserInfoProvider.GetUserInfo(userId));
         }
        
-        public void CreateUser(User user, int siteId, UserSettings userSettings = null)
+        public void CreateUser(User user, int siteId)
         {
             var newUser = _mapper.Map<UserInfo>(user);
             newUser.Enabled = true;
+            newUser.UserSettings.UserRegistrationInfo.IPAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+            newUser.UserSettings.UserRegistrationInfo.Agent = HttpContext.Current.Request.UserAgent;
             newUser.Insert();
             
             var newUserId = newUser.UserID;
             UserSiteInfoProvider.AddUserToSite(newUserId, siteId);
             user.UserId = newUserId;
-
-            if (userSettings != null)
-            {
-                userSettings.UserId = newUserId;
-                UpdateUserSettings(userSettings);
-            }
         }
 
-        public void UpdateUser(User user, UserSettings userSettings = null)
+        public void UpdateUser(User user)
         {
             var userInfo = UserInfoProvider.GetUserInfo(user.UserId);
 
@@ -89,33 +86,11 @@ namespace Kadena.WebAPI.KenticoProviders
             userInfo.FirstName = user.FirstName;
             userInfo.LastName = user.LastName;
             userInfo.Email = user.Email;
+            userInfo.UserURLReferrer = user.CallBackUrl;
 
             userInfo.Update();
-
-            if (userSettings != null)
-            {
-                userSettings.UserId = user.UserId;
-                UpdateUserSettings(userSettings);
-            }
         }
-
-        private void UpdateUserSettings(UserSettings userSettings)
-        {
-            if (userSettings != null)
-            {
-                UserSettingsInfo userSettingsInfo = UserSettingsInfoProvider.GetUserSettingsInfoByUser(userSettings.UserId);
-                if (userSettingsInfo == null)
-                {
-                    userSettingsInfo = _mapper.Map<UserSettingsInfo>(userSettings);
-                }
-                else
-                {
-                    userSettingsInfo.UserURLReferrer = userSettings.CallBackUrl;
-                }
-                UserSettingsInfoProvider.SetUserSettingsInfo(userSettingsInfo);
-            }
-        }
-
+        
         public void LinkCustomerToUser(int customerId, int userId)
         {
             var customer = CustomerInfoProvider.GetCustomerInfo(customerId);
@@ -123,16 +98,17 @@ namespace Kadena.WebAPI.KenticoProviders
             customer.Update();
         }        
 
-        public UserSettings GetUserSettings(int userId)
-        {
-            return _mapper.Map<UserSettings>(UserSettingsInfoProvider.GetUserSettingsInfoByUser(userId));
-        }
-
         public void AcceptTaC()
         {
             var user = MembershipContext.AuthenticatedUser;
             user.SetValue("TermsConditionsAccepted", DateTime.Now);
             user.Update();
+        }
+
+        public void SetPassword(int userId, string password)
+        {
+            var userInfo = UserInfoProvider.GetUserInfo(userId);
+            UserInfoProvider.SetPassword(userInfo, password);
         }
     }
 }

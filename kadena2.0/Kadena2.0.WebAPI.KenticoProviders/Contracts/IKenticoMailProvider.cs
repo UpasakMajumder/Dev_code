@@ -1,5 +1,6 @@
 ﻿using CMS.EmailEngine;
 using Kadena.Models;
+using Kadena.Models.Membership;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -8,5 +9,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         MailTemplate GetMailTemplate(int siteId, string templateId, string cultureCode = null);
 
         EmailTemplateInfo GetEmailTemplate(string templateName,int siteId);
+
+        void SendRegistrationEmails(User user);
     }
 }
