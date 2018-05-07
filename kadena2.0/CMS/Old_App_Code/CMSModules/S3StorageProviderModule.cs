@@ -41,7 +41,7 @@ namespace Kadena.Old_App_Code.CMSModules
                         var customAmazonProvider = new StorageProvider("CustomAmazon", "Kadena.AmazonFileSystemProvider", true)
                         {
                             CustomRootPath = s3BucketName,
-                            CustomRootUrl = Path.EnsureSlashes(Path.Combine(environment.AmazonS3Folder ?? string.Empty, "media"))
+                            CustomRootUrl = environment.AmazonS3Folder
                         };
                         StorageHelper.MapStoragePath("~/", customAmazonProvider);
                         EventLogProvider.LogInformation(GetType().Name, "STORAGECONFIG", $"Data storage was mapped to Amazon S3 bucket '{s3BucketName}' with {customAmazonProvider.ExternalStorageName}.");

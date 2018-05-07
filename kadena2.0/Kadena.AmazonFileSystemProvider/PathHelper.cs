@@ -9,7 +9,8 @@ namespace Kadena.AmazonFileSystemProvider
     /// </summary>
     public static class PathHelper
     {
-        private static string _specialFolder;
+        private static string _environmentFolder;
+        private static string _defaultSpecialFolder;
 
         private static string mTempPath;
         private static string mCachePath;
@@ -20,12 +21,13 @@ namespace Kadena.AmazonFileSystemProvider
             var provider = StorageHelper.GetStorageProvider("~/");
             if (string.IsNullOrWhiteSpace(provider.CustomRootUrl))
             {
-                _specialFolder = string.Empty;
+                _environmentFolder = string.Empty;
             }
             else
             {
-                _specialFolder = $"{provider.CustomRootUrl.Trim('/')}/";
+                _environmentFolder = $"{provider.CustomRootUrl.Trim('/')}/";
             }
+            _defaultSpecialFolder = $"{_environmentFolder}media/";
         }
 
         /// <summary>Gets or sets path to local storage for temp.</summary>
@@ -147,9 +149,9 @@ namespace Kadena.AmazonFileSystemProvider
                 return null;
             }
             string nonEnvPath = objectKey;
-            if (objectKey.StartsWith(_specialFolder))
+            if (objectKey.StartsWith(_defaultSpecialFolder))
             {
-                nonEnvPath = objectKey.Substring(_specialFolder.Length);
+                nonEnvPath = objectKey.Substring(_defaultSpecialFolder.Length);
             }
             string str1 = GetValidPath(nonEnvPath, lower);
             string str2 = lower ? CurrentDirectory.ToLowerInvariant() : CurrentDirectory;
@@ -176,7 +178,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="lower">Specifies whether path should be lowered inside method.</param>
         internal static string GetObjectKeyFromPath(string path, bool lower)
         {
-            return $"{_specialFolder}{GetObjectKeyFromPathNonEnvironment(path, lower)}";
+            return $"{_defaultSpecialFolder}{GetObjectKeyFromPathNonEnvironment(path, lower)}";
         }
 
         public static string GetObjectKeyFromPathNonEnvironment(string path, bool lower = true)
@@ -206,11 +208,11 @@ namespace Kadena.AmazonFileSystemProvider
 
         public static string EnsureFullKey(string key)
         {
-            if (key.StartsWith(_specialFolder))
+            if (key.StartsWith(_defaultSpecialFolder))
             {
                 return key;
             }
-            return $"{_specialFolder}{key}";
+            return $"{_defaultSpecialFolder}{key}";
         }
 
         /// <summary>Returns relative path from absolute one.</summary>
