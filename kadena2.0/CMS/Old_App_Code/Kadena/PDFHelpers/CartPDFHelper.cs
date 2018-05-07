@@ -145,7 +145,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                 StringBuilder sb = new StringBuilder();
                 var skuIds = distributorCartData.AsEnumerable().Select(x => x.Field<int>("SkUID")).ToList();
                 var products = CampaignsProductProvider.GetCampaignsProducts()
-                    .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).WhereIn("NodeSKUID", skuIds).Columns("NodeSKUID,State,ProgramID,QtyPerPack,EstimatedPrice,ProductImage").ToList();
+                    .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).WhereIn("NodeSKUID", skuIds).Columns("NodeSKUID,State,ProgramID,EstimatedPrice,ProductImage").ToList();
                 var programs = ProgramProvider.GetPrograms().WhereIn("ProgramID", products.Select(x => x.ProgramID).ToList()).Columns("ProgramID,ProgramName").ToList();
                 var stateGroups = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereIn("ItemID", products.Select(x => x.State).ToList()).Columns("ItemID,States").ToList();
                 distributorCartData.ForEach(row =>
@@ -159,7 +159,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                                            .Replace("{SKUNUMBER}", ValidationHelper.GetString(row["SKUProductCustomerReferenceNumber"], "&nbsp"))
                                            .Replace("{SKUUNITS}", ValidationHelper.GetString(row["SKUUnits"], "&nbsp"))
                                            .Replace("{BUNDLECOST}", inventoryType == Convert.ToInt32(ProductType.GeneralInventory) ? ($"{CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(row["SKUPrice"], default(double)), SiteContext.CurrentSiteID, true)}"): ($"{CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(product.EstimatedPrice, default(double)), SiteContext.CurrentSiteID, true)}"))
-                                           .Replace("{BUNDLEQUANTITY}", ValidationHelper.GetString(product.QtyPerPack, "&nbsp"))
+                                           .Replace("{BUNDLEQUANTITY}", ValidationHelper.GetString(product.SKU.GetValue("SKUNumberOfItemsInPackage"),"&nbsp"))
                                            .Replace("{IMAGEURL}", GetThumbnailImageAbsolutePath(product.ProductImage))
                                            .Replace("{VALIDSTATES}", ValidationHelper.GetString(states?.States, "&nbsp"))
                                            .Replace("{EXPIREDATE}", skuValidity != default(DateTime) ? skuValidity.ToString("MMM dd, yyyy") : "&nbsp")
