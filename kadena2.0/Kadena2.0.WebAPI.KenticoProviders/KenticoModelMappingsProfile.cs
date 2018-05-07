@@ -15,6 +15,7 @@ using Kadena.Models.CreditCard;
 using Kadena.Models.Membership;
 using Kadena.Models.Checkout;
 using System.Data;
+using Kadena.Models.BusinessUnit;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -327,6 +328,12 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.TermsConditionsAccepted, opt => opt.Ignore())
                 .ForMember(dest => dest.IsExternal, opt => opt.Ignore())
                 .ForMember(dest => dest.CallBackUrl, opt => opt.Ignore());
+
+            CreateMap<CustomTableItem, BusinessUnit>()
+                .ForMember(dest => dest.BusinessUnitName, opt => opt.MapFrom(src => src.GetStringValue("BusinessUnitName", string.Empty)))
+                .ForMember(dest => dest.BusinessUnitNumber, opt => opt.MapFrom(src => src.GetValue<long>("BusinessUnitNumber", 0)))
+                .ForMember(dest => dest.SiteID, opt => opt.MapFrom(src => src.GetIntegerValue("SiteID", 0)))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.GetBooleanValue("Status", false)));
         }
     }
 }
