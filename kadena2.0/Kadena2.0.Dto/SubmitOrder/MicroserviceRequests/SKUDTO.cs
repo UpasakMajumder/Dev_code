@@ -8,5 +8,6 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
     [Required(AllowEmptyStrings = false, ErrorMessage = "Item Number in order's items is a mandatory field")]
     public string SKUNumber { get; set; }
     public string Name { get; set; }
+    public bool HiResPdfAllowed { get; set; }
   }
 }
