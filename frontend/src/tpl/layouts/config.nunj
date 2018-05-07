@@ -154,7 +154,7 @@
             'Strong',
             'Excelent'
           ],
-          usePolicy: false,
+          usePolicy: true,
           info: 'Hello <br> How Are you? <br> Nice!'
         }
       },
