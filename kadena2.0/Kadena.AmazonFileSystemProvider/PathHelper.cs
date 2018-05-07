@@ -125,16 +125,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="absolute">Indicates whether returned path is absolute</param>
         internal static string GetPathFromObjectKey(string objectKey, bool absolute)
         {
-            return GetPathFromObjectKey(objectKey, absolute, false);
-        }
-
-        /// <summary>Returns path from given object key.</summary>
-        /// <param name="objectKey">Object key.</param>
-        /// <param name="absolute">Indicates whether returned path is absolute</param>
-        /// <param name="directory">Specifies whether object is directory.</param>
-        internal static string GetPathFromObjectKey(string objectKey, bool absolute, bool directory)
-        {
-            return GetPathFromObjectKey(objectKey, absolute, directory, true);
+            return GetPathFromObjectKey(objectKey, absolute, false, true);
         }
 
         /// <summary>Returns path from given object key.</summary>
