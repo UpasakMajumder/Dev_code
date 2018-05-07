@@ -2,6 +2,7 @@
 using Kadena.Models.Login;
 using Kadena.Models.Membership;
 using Kadena.Models.Site;
+using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Moq;
 using System;
@@ -45,7 +46,7 @@ namespace Kadena.Tests.BusinessLogic
         {
             var expectedResult = acceptedDate < tacDate;
 
-            Setup<IKenticoResourceService, bool>(s => s.GetSettingsKey<bool>(It.IsAny<string>(), It.IsAny<int>()), true);
+            Setup<IKenticoResourceService, bool>(s => s.GetSiteSettingsKey<bool>(Settings.KDA_TermsAndConditionsLogin), true);
             Setup<IKenticoDocumentProvider, DateTime>(s => s.GetTaCValidFrom(), tacDate);
             Setup<IKenticoUserProvider, User>(s => s.GetCurrentUser(), new User { TermsConditionsAccepted = acceptedDate });
 
@@ -58,8 +59,8 @@ namespace Kadena.Tests.BusinessLogic
         [Fact(DisplayName = "UserService.CheckTaC() | Disabled")]
         public void CheckTaCDisabled()
         {
-            Setup<IKenticoResourceService, bool>(s => s.GetSettingsKey<bool>(It.IsAny<string>(), It.IsAny<int>()), false);
-           
+            Setup<IKenticoResourceService, bool>(s => s.GetSiteSettingsKey<bool>(Settings.KDA_TermsAndConditionsLogin), false);
+
             var actualResult = Sut.CheckTaC();
 
             Assert.NotNull(actualResult);
