@@ -69,6 +69,7 @@
     <Compile Include="CreditCard\Responses\CreditCardPaymentDoneDto.cs" />
     <Compile Include="CustomerData\ApproverDto.cs" />
     <Compile Include="CustomerData\UserBudgetDto.cs" />
+    <Compile Include="Logon\Requests\RegistrationDto.cs" />
     <Compile Include="Logon\Requests\SamlAuthenticationDto.cs" />
     <Compile Include="Notification\MicroserviceRequests\SendCustomNotificationRequestDto.cs" />
     <Compile Include="Order\Failed\FailedOrderDto.cs" />

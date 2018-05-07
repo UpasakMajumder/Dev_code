@@ -48,9 +48,8 @@ namespace Kadena.BusinessLogic.Services
         public string Logout()
         {
             var user = kenticoUsers.GetCurrentUser();
-            var userSettings = kenticoUsers.GetUserSettings(user.UserId);
             login.Logout();
-            return string.IsNullOrWhiteSpace(userSettings?.CallBackUrl) ? "/" : userSettings.CallBackUrl;
+            return string.IsNullOrWhiteSpace(user?.CallBackUrl) ? "/" : user.CallBackUrl;
         }
     }
 }
