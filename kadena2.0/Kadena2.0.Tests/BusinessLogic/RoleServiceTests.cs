@@ -2,6 +2,7 @@
 using Kadena.Models.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Moq;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -12,6 +13,22 @@ namespace Kadena.Tests.BusinessLogic
         private const int userId = 123;
         private const int siteId = 5113;
         private const string userName = "lord@craft.com";
+
+        public static IEnumerable<object[]> GetRoles()
+        {
+            yield return new object[]
+            {
+                new string[] {
+                    "Role1",
+                    "Role2"
+                }
+            };
+            yield return new object[]
+            {
+                new string[] {
+                }
+            };
+        }
 
         private IEnumerable<Role> GetAllKenticoRoles()
         {
@@ -83,6 +100,24 @@ namespace Kadena.Tests.BusinessLogic
             VerifyNoOtherCalls<IKenticoLogger>();
             Verify<IKenticoRoleProvider>(m => m.AssignUserRoles(userName, siteId, new[] { "King", "Archer" }), Times.Once);
             Verify<IKenticoRoleProvider>(m => m.RemoveUserRoles(userName, siteId, new[] { "OtherKenticoRole", "ManuallyCreatedRole" }), Times.Once);
+        }
+
+        [Theory(DisplayName = "RoleService.AssignRole() | Success")]
+        [MemberData(nameof(GetRoles))]
+        public void AssginRole_Success(IEnumerable<string> roles)
+        {
+            var exc = Record.Exception(() => Sut.AssignRoles(new User(), 0, roles));
+
+            Assert.Null(exc);
+        }
+
+        [Fact(DisplayName = "RoleService.AssignRole() | Null roles")]
+        public void AssginRole_Null()
+        {
+            Action act = () => Sut.AssignRoles(new User(), 0, null);
+
+            var exception = Assert.Throws<ArgumentNullException>(act);
+            Assert.Equal("roles", exception.ParamName);
         }
     }
 }

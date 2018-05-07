@@ -12,85 +12,26 @@
   <PageTemplateFile />
   <PageTemplateForAllPages>True</PageTemplateForAllPages>
   <PageTemplateGUID>8184e626-743e-4020-8b83-39827833b85d</PageTemplateGUID>
-  <PageTemplateInheritPageLevels>/</PageTemplateInheritPageLevels>
+  <PageTemplateHeader />
   <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
   <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
   <PageTemplateIsLayout>False</PageTemplateIsLayout>
   <PageTemplateIsReusable>True</PageTemplateIsReusable>
   <PageTemplateLayout>
 <![CDATA[
-<div class="container-fluid">
-  <div class="new-login">
-    <div class="r-tac"></div>
-    {^WebPartZone|(id)zoneKadenaLogo^}
-    <div class="new-login__form new-login__form--abs new-login__form--bc">
-      <div class="login__custom-logo mb-3">
-          {^WebPartZone|(id)zoneCustomersLogo^}
-      </div>
-      {^WebPartZone|(id)zoneLogin^}
-    </div>
-    {^WebPartZone|(id)zonePageBackgroud^}
+<div class="new-login__form new-login__form--abs new-login__form--bc">
+  <div class="login__custom-logo mb-3">
+      {^WebPartZone|(id)zoneCustomersLogo^}
   </div>
+  {^WebPartZone|(id)zoneLogin^}
 </div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-<script>
-  var config = {
-    localization: {
-      login: {
-        email: '{%JSEscape(GetResourceString("Kadena.Login.Email"))|(user)administrator|(hash)b85d2701eb43e00a0f599802b49263eae4b099df2b88fbaa442f9ea430220dc1%}',
-        emailPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.EmailPlaceholder"))|(user)administrator|(hash)10eaa914d934056458d92f4302a9178945091fab55f38d0e6950fad411ad7047%}',
-        emailValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.EmailValidationMessage"))|(user)administrator|(hash)cd85786537b70307fb0c209589613ad3c9a0e27f436286e6f3a5a5d8e0a51af0%}',
-        password: '{%JSEscape(GetResourceString("Kadena.Login.Password"))|(user)administrator|(hash)a22b4f0cc65d0b41a1c2cc422eba582784febc2e3b218c331dd0b177838545ca%}',
-        passwordPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.PasswordPlaceholder"))|(user)administrator|(hash)a0403b144a44a100d1162502fd2a394082d80a3f4959cfa950e37627afaed8f8%}',
-        passwordShow: '{%JSEscape(GetResourceString("Kadena.Login.PasswordShow"))|(user)administrator|(hash)4c0f39a588fcf4a952ba2ea4bb4b2cd29893a2de282af616d482d4ff2ef3581d%}',
-        passwordHide: '{%JSEscape(GetResourceString("Kadena.Login.PasswordHide"))|(user)administrator|(hash)565d693bb82f475dd78b0003b78ddd33d18fc47d389efd15408100b7089d0e14%}',
-        passwordValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.PasswordValidationMessage"))|(user)administrator|(hash)238eee9be35d8230ca1b17a4d5d744c314aa7909388ef4a0d381f700de5aee5a%}',
-        keepMeLoggedIn: '{%JSEscape(GetResourceString("Kadena.Login.KeepMeLoggedIn"))|(user)administrator|(hash)5debfee01e321a82ee23fe41ddd2256b7ee2a27781a8f9f9f2dd031035d648ac%}',
-        login: '{%JSEscape(GetResourceString("Kadena.Login.LoginButtonText"))|(user)administrator|(hash)ac38af960eb42388514afac07e26dc4d6265db216f70385204de0f27861e86f4%}',
-        loginUrl:'api/login'
-      },
-      tac: {
-        show: undefined,
-        title: '{$Kadena.TermsAndConditions.Title$}',
-        submitText: '{$Kadena.TermsAndConditions.Accept$}',
-        acceptTaCUrl: 'api/user/accepttac',
-        checkTaCUrl: 'api/user/checktac',
-        iframeUrl: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_TermsAndConditionPage) |(user)rostyslav.diachenko@actum.cz|(hash)d3da338f27c0ef291ffe93fda5fd5fd555a0650fdb5e673861e4f4284f570b7d%}'
-      }
-    }
-};
-  config.localization.staticFields = {
-    validation: {
-      requiredMessage: '{%JSEscape(GetResourceString("Kadena.Field.RequiredMessage"))|(user)rostyslav.diachenko@actum.cz|(hash)d4eb9376f1d2ec01229945a039c00d1f138f5916e3d8fa411828ccc02a57974f%}',
-      optionalLabel: '{%JSEscape(GetResourceString("Kadena.Field.Optional"))|(user)rostyslav.diachenko@actum.cz|(hash)76a69f8b7509599b0184c46011468afc9905e954566919564cc678baea6e2d45%}'
-      },
-    password: {
-      show: '{%JSEscape(GetResourceString("Kadena.Field.Show"))|(user)rostyslav.diachenko@actum.cz|(hash)a72cd75bbddfcbe9e3077b350cfeb45086b6de2b1146d6435ca7f40818bd7d23%}',
-      hide: '{%JSEscape(GetResourceString("Kadena.Field.Hide"))|(user)rostyslav.diachenko@actum.cz|(hash)6e716e8668071c88e21f9ff746926e4798f5632731a8b439db900e5d04f6861a%}'
-      }
-  };
-  
-   config.localization.notification = {
-    serverNotAvailable: {
-      title: '{%JSEscape(GetResourceString("Kadena.ServerNotAvailable.ErrorTitle"))|(user)michal.machacek@actum.cz|(hash)efe4acb3d495a44207155f8d988f7ff326d59fd37b9d202784bd5c8d6dab7882%}',
-      text: '{%JSEscape(GetResourceString("Kadena.ServerNotAvailable.ErrorText"))|(user)michal.machacek@actum.cz|(hash)d3e1ff14a2faabfe78eb5f9bce412098ff49123181e6bb22a9970a6c2505ab8e%}'
-    }
-  };
-</script>
-
-<script src="/js/common.min.js?v=0.2"></script>
-<script src="/js/app.min.js?v=0.2" async></script>
-<script src="/CMSScripts/Custom/Kadena/custom.js?v=0.2"></script>
 ]]>
   </PageTemplateLayout>
   <PageTemplateLayoutType>html</PageTemplateLayoutType>
-  <PageTemplateShowAsMasterTemplate>True</PageTemplateShowAsMasterTemplate>
+  <PageTemplateShowAsMasterTemplate>False</PageTemplateShowAsMasterTemplate>
   <PageTemplateType>portal</PageTemplateType>
   <PageTemplateWebParts>
     <page>
-      <webpartzone id="zoneContent" v="1" />
       <webpartzone id="zoneCustomersLogo" v="1">
         <webpart controlid="CustomersLogo" guid="74d6a2eb-f9a5-4256-ab13-7234982ada9f" type="EditableImage" v="1">
           <property name="alternatetext"></property>
@@ -260,13 +201,13 @@
             <![CDATA[{% Settings.EnablePasswordHint|(user)cvoqa2@gmail.com|(hash)ae494ace6f5925358a09d79455a11bdd15b0da9247efa090a11912d11e0c03b9%}]]>
           </property>
           <property name="showsignuplink" ismacro="true">
-            <![CDATA[{% Settings.EnableAccountCreation|(user)cvoqa2@gmail.com|(hash)18e90a16bc6e9a3a44f9eac1c071bac1f8100e8b3cb027ae2914f946de8f1298%}]]>
+            <![CDATA[{% Settings.KDA_EnableRegistration |(user)rostyslav.diachenko@actum.cz|(hash)aa361173447e5135a7afc5e5eacf03c75eeabd54fd8942b6f413de2b3146a1df%}]]>
           </property>
           <property name="signuplinktext" ismacro="true">
-            <![CDATA[{% GetResourceString("Kadena.loginForm.SignupText") |(user)cvoqa2@gmail.com|(hash)a444ab2d9f40ae9f1c58efcf6623a2b9f89baa90c328211234846d4ebbd4f56e%}]]>
+            <![CDATA[{% GetResourceString("Kadena.Login.SignupText") |(user)rostyslav.diachenko@actum.cz|(hash)0ffaa9f5400533a1889e0f1a6ac62f1bf6ed1fc0405e82e54b15e19f70c37b21%}]]>
           </property>
           <property name="signuppageurl" ismacro="true">
-            <![CDATA[{% Settings.AccountRegistrationPage |(user)cvoqa2@gmail.com|(hash)3cd0a1f7fa6da2c75d64a9e14a1d19cdeef1ca556353b3264018f5059205517c%}]]>
+            <![CDATA[{% Settings.KDA_RegistrationPageUrl |(user)rostyslav.diachenko@actum.cz|(hash)709ce9083d585f27518d5f5782a861b3b701df7e41a49192872f3abd5c7f0f88%}]]>
           </property>
           <property name="skinid"></property>
           <property name="timezonetype">inherit</property>
@@ -275,122 +216,41 @@
           <property name="webparttitle"></property>
           <property name="webparttype">KDA.ForgotPasswordWithHint</property>
         </webpart>
-      </webpartzone>
-      <webpartzone id="zonePageBackgroud" v="1">
-        <webpart controlid="Background" guid="06dc4d15-62e2-496c-850f-18e73ddc65b3" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">Background</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">True</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">06dc4d15-62e2-496c-850f-18e73ddc65b3</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="resolvedynamiccontrols">False</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text">
-            <![CDATA[<div class="new-login__bg new-login__bg--stretch" style="background-image: url(/CMSPages/GetFile.aspx?guid={%MenuItemTeaserImage%}); opacity: {%MenuItemTeaserImageOpacity%}"></div>]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
-        </webpart>
-      </webpartzone>
-      <webpartzone id="zoneKadenaLogo" v="1">
-        <webpart controlid="KadenaLogo" guid="5173ae57-0c3b-46b2-a2d2-67ba4b09672f" type="EditableImage" v="1">
-          <property name="alternatetext"></property>
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter"></property>
+        <webpart controlid="Javascript" guid="b2e26779-c750-4b9c-99c7-5f014612c9b0" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
           <property name="cat_open_performance"></property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="checkpermissions">False</property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">KadenaLogo</property>
-          <property name="customtimezone"></property>
-          <property name="defaultimage"></property>
+          <property name="controlid">Javascript</property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
-          <property name="displayselectortextbox">False</property>
           <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
+          <property name="generatescripttags">True</property>
           <property name="hideonsubpages">False</property>
-          <property name="imageautoresize">
+          <property name="inlinescript">
 <![CDATA[
-<AutoResize>
-  <autoresize>noresize</autoresize>
-  <autoresize_width />
-  <autoresize_height />
-  <autoresize_maxsidesize />
-</AutoResize>
+  config.localization.login = {
+        email: '{%JSEscape(GetResourceString("Kadena.Login.Email"))|(user)rostyslav.diachenko@actum.cz|(hash)453329e98f3480e68b5977302c556a471f0d90b443629579c1a786d45d99be70%}',
+        emailPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.EmailPlaceholder"))|(user)rostyslav.diachenko@actum.cz|(hash)859bccb8292861e5cf0f2c2e0f77d955bd78f194193e1b13f48298adb75a268d%}',
+        emailValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.EmailValidationMessage"))|(user)rostyslav.diachenko@actum.cz|(hash)2cb171350548e3ca599bdf6ff01d0e3eb1b3394f7ca71ea1c14cdb8ee904e81c%}',
+        password: '{%JSEscape(GetResourceString("Kadena.Login.Password"))|(user)rostyslav.diachenko@actum.cz|(hash)5bc6d048c3cef603936df01fecbe28072597752c2bc9c2924f20e8e58710ecca%}',
+        passwordPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.PasswordPlaceholder"))|(user)rostyslav.diachenko@actum.cz|(hash)334d8e54256d779d83f50e7921f0563ade2cf117e4076b3ccc0cf08a7d14ba7e%}',
+        passwordShow: '{%JSEscape(GetResourceString("Kadena.Login.PasswordShow"))|(user)rostyslav.diachenko@actum.cz|(hash)75e698970d1db9911ec92b0a495019afa8940e23580f5f40410ea0ea36be793b%}',
+        passwordHide: '{%JSEscape(GetResourceString("Kadena.Login.PasswordHide"))|(user)rostyslav.diachenko@actum.cz|(hash)7c14d1ed8c95fc404cbd1458304805fbde018bd8a6910ccd33b36d6cd1ffc8d2%}',
+        passwordValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.PasswordValidationMessage"))|(user)rostyslav.diachenko@actum.cz|(hash)8d9f6c82e0db6d819cd5cbb74a3ab746213866b439d2b815e989a304f002d164%}',
+        keepMeLoggedIn: '{%JSEscape(GetResourceString("Kadena.Login.KeepMeLoggedIn"))|(user)rostyslav.diachenko@actum.cz|(hash)1066b4be6ab27a89e38361fd3774c7c49ae7868d316ca6258e3ea7aed32ddc3f%}',
+        login: '{%JSEscape(GetResourceString("Kadena.Login.LoginButtonText"))|(user)rostyslav.diachenko@actum.cz|(hash)e5e720403bb0259b4ca0d629bfdeb22c5fbf902c56862c3eb85798b858c607e2%}',
+        loginUrl:'/api/login'
+      };
+  
 ]]>
           </property>
-          <property name="imagecssclass">new-login__logo new-login__logo--tl</property>
-          <property name="imageheight"></property>
-          <property name="imagestyle"></property>
-          <property name="imagetitle">Kadena Logo</property>
-          <property name="imagewidth"></property>
-          <property name="instanceguid">5173ae57-0c3b-46b2-a2d2-67ba4b09672f</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">True</property>
-          <property name="outputfixhtml5">True</property>
-          <property name="outputfixjavascript">True</property>
-          <property name="outputfixlowercase">True</property>
-          <property name="outputfixselfclose">True</property>
-          <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">False</property>
-          <property name="selectonlypublished">False</property>
+          <property name="inlinescriptpagelocation">Header</property>
+          <property name="instanceguid">b2e26779-c750-4b9c-99c7-5f014612c9b0</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
           <property name="showfordocumenttypes"></property>
-          <property name="timezonetype">inherit</property>
-          <property name="useparentcontent">False</property>
-          <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
-          <property name="webparttitle">Kadena Logo (Editable image)</property>
-          <property name="webparttype">EditableImage</property>
+          <property name="webparttitle">Login config</property>
+          <property name="webparttype">javascript</property>
         </webpart>
       </webpartzone>
     </page>

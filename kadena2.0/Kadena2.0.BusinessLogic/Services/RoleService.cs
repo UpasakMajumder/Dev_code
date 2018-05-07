@@ -9,21 +9,34 @@ namespace Kadena.BusinessLogic.Services
 {
     public class RoleService : IRoleService
     {
-        private readonly IKenticoRoleProvider roles;
+        private readonly IKenticoRoleProvider roleProvider;
         private readonly IKenticoLogger log;
 
-        public RoleService(IKenticoRoleProvider roles, IKenticoLogger log)
+        public RoleService(IKenticoRoleProvider roleProvider, IKenticoLogger log)
         {
-            this.roles = roles ?? throw new ArgumentNullException(nameof(roles));
+            this.roleProvider = roleProvider ?? throw new ArgumentNullException(nameof(roleProvider));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
+        }
+
+        public void AssignRoles(User user, int siteId, IEnumerable<string> roles)
+        {
+            if (roles == null)
+            {
+                throw new ArgumentNullException(nameof(roles));
+            }
+
+            var existingSiteRoles = this.roleProvider.GetRoles(siteId).Select(r => r.CodeName);
+            var addRoles = existingSiteRoles.Intersect(roles);
+
+            roleProvider.AssignUserRoles(user.UserName, siteId, addRoles);
         }
 
         public void AssignSSORoles(User user, int siteId, IEnumerable<string> ssoRoles)
         {
-            var currentUserRolesNames = roles.GetUserRoles(user.UserId).Select(r => r.CodeName);
+            var currentUserRolesNames = roleProvider.GetUserRoles(user.UserId).Select(r => r.CodeName);
             var rolesToAdd = ssoRoles.Except(currentUserRolesNames);
             var rolesToDelete = currentUserRolesNames.Except(ssoRoles);
-            var allExistingRolesNames = roles.GetRoles(siteId).Select(r => r.CodeName);
+            var allExistingRolesNames = roleProvider.GetRoles(siteId).Select(r => r.CodeName);
             var unknownSsoRoles = rolesToAdd.Except(allExistingRolesNames);
             var knownRolesToAdd = rolesToAdd.Except(unknownSsoRoles);
 
@@ -33,9 +46,9 @@ namespace Kadena.BusinessLogic.Services
                 log.LogError("SSO Update Roles", logMessage);
             }
 
-            roles.RemoveUserRoles(user.UserName, siteId, rolesToDelete);
+            roleProvider.RemoveUserRoles(user.UserName, siteId, rolesToDelete);
 
-            roles.AssignUserRoles(user.UserName, siteId, knownRolesToAdd);
+            roleProvider.AssignUserRoles(user.UserName, siteId, knownRolesToAdd);
         }
     }
 }

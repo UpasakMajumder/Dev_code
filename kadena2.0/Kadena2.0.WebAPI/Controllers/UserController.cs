@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.Dto.Logon.Requests;
 using Kadena.Dto.Logon.Responses;
+using Kadena.Models.Login;
 using Kadena.WebAPI.Infrastructure;
 using Kadena.WebAPI.Infrastructure.Filters;
 using System;
@@ -8,7 +10,6 @@ using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
 {
-    [CustomerAuthorizationFilter]
     public class UserController : ApiControllerBase
     {
         private readonly IUserService userService;
@@ -22,6 +23,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [Route("api/user/accepttac")]
+        [CustomerAuthorizationFilter]
         public IHttpActionResult AcceptTaC()
         {
             userService.AcceptTaC();
@@ -30,6 +32,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [Route("api/user/checktac")]
+        [CustomerAuthorizationFilter]
         public IHttpActionResult CheckTaC()
         {
             var serviceResult = userService.CheckTaC();
@@ -37,5 +40,13 @@ namespace Kadena.WebAPI.Controllers
             return ResponseJson(result);
         }
 
+        [HttpPost]
+        [Route(Helpers.Routes.User.Register)]
+        public IHttpActionResult Register([FromBody] RegistrationDto registration)
+        {
+            var registrationModel = mapper.Map<Registration>(registration);
+            userService.RegisterUser(registrationModel);
+            return SuccessJson();
+        }
     }
 }

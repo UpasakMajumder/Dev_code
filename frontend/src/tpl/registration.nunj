@@ -1,0 +1,15 @@
+{% extends "layouts/default-noheader.nunj" %}
+{% from "macro/svg.nunj" import svg %}
+
+{% set title = "Registration" %}.
+
+{% block content %}
+  <div class="new-login">
+    <img class="new-login__logo new-login__logo--tl" src="http://satyr.io/150x150/blue" alt="#">
+    <div class="registration__form new-login__form--abs new-login__form--bc">
+      <div class="login__form-content r-registration"></div>
+    </div>
+    <div class="new-login__bg new-login__bg--stretch" style="background-image: url({{ _imgPath + 'login_bg.png' }}); opacity: 0.2;"></div>
+  </div>
+
+{% endblock %}
