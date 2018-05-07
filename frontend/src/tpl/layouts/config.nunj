@@ -211,7 +211,10 @@
         cartPreviewUrl: PATH + 'cartPreview'
       },
       orderDetail: {
-        orderDetailUrl: PATH + 'order/detail'
+        orderDetailUrl: PATH + 'order/detail',
+        customerName: 'customerName',
+        customerId: 'customerId',
+        orderId: 'orderId'
       },
       searchPage: {
         searchPageUrl: PATH + 'search/result'
