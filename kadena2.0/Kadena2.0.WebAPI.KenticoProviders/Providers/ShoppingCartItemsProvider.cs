@@ -94,7 +94,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 ProductionTime = displayProductionAndShipping ? i.GetValue("ProductProductionTime", string.Empty) : null,
                 ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null,
                 Preview = new Button { Exists = false, Text = resources.GetResourceString("Kadena.Checkout.PreviewButton") },
-                SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true)
+                SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true),
+                RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false)
             };
 
             if (cartItem.IsTemplated)
@@ -316,7 +317,7 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItemInfo.SetValue("ProductChiliPdfGeneratorSettingsId", productDocument.GetGuidValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty));
             cartItemInfo.SetValue("ProductChiliWorkspaceId", productDocument.GetGuidValue("ProductChiliWorkgroupID", Guid.Empty));
             cartItemInfo.SetValue("SendPriceToErp", !cartItemInfo.SKU.GetBooleanValue("SKUDontSendPriceToERP", false));
-            cartItemInfo.SetValue("UnitOfMeasure", productDocument.GetStringValue("ProductUnitOfMeasure", UnitOfMeasure.DefaultUnit));
+            cartItemInfo.SetValue("UnitOfMeasure", productDocument.GetStringValue("SKUUnitOfMeasure", UnitOfMeasure.DefaultUnit));
 
             return mapper.Map<CartItemEntity>(cartItemInfo);
         }

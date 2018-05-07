@@ -51,6 +51,12 @@
   <ItemGroup>
     <Compile Include="AddToCart\DistributorCartDto.cs" />
     <Compile Include="AddToCart\DistributorCartItemDto.cs" />
+    <Compile Include="Approval\MicroserviceRequests\ApprovalRequestDto.cs" />
+    <Compile Include="Approval\MicroserviceRequests\ApprovalState.cs" />
+    <Compile Include="Approval\MicroserviceRequests\ApprovalUnitDto.cs" />
+    <Compile Include="Approval\MicroserviceRequests\CustomerDto.cs" />
+    <Compile Include="Approval\MicroserviceResponses\ApprovalResponseDto.cs" />
+    <Compile Include="Approval\Requests\ApprovalRequestDto.cs" />
     <Compile Include="Brands\BrandDto.cs" />
     <Compile Include="BusinessUnits\BusinessUnitDto.cs" />
     <Compile Include="Checkout\Responses\ChangeDeliveryAddressResponseDto.cs" />
@@ -61,13 +67,16 @@
     <Compile Include="CreditCard\MicroserviceResponses\UserStoredCardDto.cs" />
     <Compile Include="CreditCard\Requests\SaveCreditCardRequestDto.cs" />
     <Compile Include="CreditCard\Responses\CreditCardPaymentDoneDto.cs" />
+    <Compile Include="CustomerData\ApproverDto.cs" />
     <Compile Include="CustomerData\UserBudgetDto.cs" />
+    <Compile Include="Logon\Requests\RegistrationDto.cs" />
     <Compile Include="Logon\Requests\SamlAuthenticationDto.cs" />
     <Compile Include="Notification\MicroserviceRequests\SendCustomNotificationRequestDto.cs" />
     <Compile Include="Order\Failed\FailedOrderDto.cs" />
     <Compile Include="Order\Failed\ResubmitOrderRequestDto.cs" />
     <Compile Include="Order\Failed\ResubmitOrderResponseDto.cs" />
     <Compile Include="Order\OrderListFilter.cs" />
+    <Compile Include="Order\OrderReportDto.cs" />
     <Compile Include="Payment\CreditCard\MicroserviceRequests\UpdateCustomerContainerRequestDto.cs" />
     <Compile Include="Product\BorderDto.cs" />
     <Compile Include="Product\PriceDto.cs" />

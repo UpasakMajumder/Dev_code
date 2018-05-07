@@ -546,6 +546,25 @@
           <ValidChars>.,</ValidChars>
         </settings>
       </field>
+      <field allowempty="true" column="SKUUnitOfMeasure" columnsize="40" columntype="text" guid="79380af2-d662-438c-9ba2-22d7a62e6b7b" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>Each</defaultvalue>
+          <fieldcaption>Unit of measure</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Query>
+<![CDATA[
+SELECT Name,Name
+FROM KDA_UnitOfMeasure 
+ORDER BY IsDefault DESC
+]]>
+          </Query>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
       <category name="com.sku.inventorycategory">
         <properties>
           <caption>{$com.sku.inventorycategory$}</caption>

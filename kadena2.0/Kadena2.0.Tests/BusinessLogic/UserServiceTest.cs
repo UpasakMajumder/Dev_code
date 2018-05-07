@@ -1,16 +1,16 @@
 ﻿using Kadena.BusinessLogic.Services;
-using Kadena.Models;
+using Kadena.Models.Login;
 using Kadena.Models.Membership;
+using Kadena.Models.Site;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Moq;
-using Moq.AutoMock;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
 namespace Kadena.Tests.BusinessLogic
 {
-    public class UserServiceTest
+    public class UserServiceTest : KadenaUnitTest<UserService>
     {
         public static IEnumerable<object[]> GetDates()
         {
@@ -34,13 +34,9 @@ namespace Kadena.Tests.BusinessLogic
         [Fact(DisplayName = "UserService.AcceptTaC()")]
         public void AcceptTaC()
         {
-            var autoMock = new AutoMocker();
-            var sut = autoMock.CreateInstance<UserService>();
-            var userProvider = autoMock.GetMock<IKenticoUserProvider>();
+            Sut.AcceptTaC();
 
-            sut.AcceptTaC();
-
-            userProvider.Verify(s => s.AcceptTaC(), Times.AtLeastOnce);
+            Verify<IKenticoUserProvider>(s => s.AcceptTaC(), Times.AtLeastOnce);
         }
 
         [Theory(DisplayName = "UserService.CheckTaC() | Enabled")]
@@ -49,19 +45,11 @@ namespace Kadena.Tests.BusinessLogic
         {
             var expectedResult = acceptedDate < tacDate;
 
-            var autoMock = new AutoMocker();
-            var sut = autoMock.CreateInstance<UserService>();
-            autoMock
-                .Setup<IKenticoResourceService, bool>(s => s.GetSettingsKey<bool>(It.IsAny<string>(), It.IsAny<int>()))
-                .Returns(true);
-            autoMock
-                .Setup<IKenticoDocumentProvider, DateTime>(s => s.GetTaCValidFrom())
-                .Returns(tacDate);
-            autoMock
-                .Setup<IKenticoUserProvider, User>(s => s.GetCurrentUser())
-                .Returns(new User { TermsConditionsAccepted = acceptedDate });
+            Setup<IKenticoResourceService, bool>(s => s.GetSettingsKey<bool>(It.IsAny<string>(), It.IsAny<int>()), true);
+            Setup<IKenticoDocumentProvider, DateTime>(s => s.GetTaCValidFrom(), tacDate);
+            Setup<IKenticoUserProvider, User>(s => s.GetCurrentUser(), new User { TermsConditionsAccepted = acceptedDate });
 
-            var actualResult = sut.CheckTaC();
+            var actualResult = Sut.CheckTaC();
 
             Assert.NotNull(actualResult);
             Assert.Equal(expectedResult, actualResult.Show);
@@ -70,16 +58,36 @@ namespace Kadena.Tests.BusinessLogic
         [Fact(DisplayName = "UserService.CheckTaC() | Disabled")]
         public void CheckTaCDisabled()
         {
-            var autoMock = new AutoMocker();
-            var sut = autoMock.CreateInstance<UserService>();
-            autoMock
-                .Setup<IKenticoResourceService, bool>(s => s.GetSettingsKey<bool>(It.IsAny<string>(), It.IsAny<int>()))
-                .Returns(false);
+            Setup<IKenticoResourceService, bool>(s => s.GetSettingsKey<bool>(It.IsAny<string>(), It.IsAny<int>()), false);
            
-            var actualResult = sut.CheckTaC();
+            var actualResult = Sut.CheckTaC();
 
             Assert.NotNull(actualResult);
             Assert.False(actualResult.Show);
+        }
+
+        [Theory(DisplayName = "UserService.Register() | Enabled")]
+        [InlineData("")]
+        [InlineData(null)]
+        public void Register_Enabled(string roleSetting)
+        {
+            Setup<IKenticoResourceService, bool>(s => s.GetSiteSettingsKey<bool>(It.IsAny<string>()), true);
+            Setup<IKenticoSiteProvider, KenticoSite>(s => s.GetKenticoSite(), new KenticoSite());
+            Setup<IKenticoResourceService, string>(s => s.GetSiteSettingsKey<string>(It.IsAny<string>()), roleSetting);
+
+            var exception = Record.Exception(() => Sut.RegisterUser(new Registration()));
+
+            Assert.Null(exception);
+        }
+
+        [Fact(DisplayName = "UserService.Register() | Disabled")]
+        public void Register_Disabled()
+        {
+            Setup<IKenticoResourceService, bool>(s => s.GetSiteSettingsKey<bool>(It.IsAny<string>()), false);
+
+            Action action = () => Sut.RegisterUser(new Registration());
+
+            Assert.Throws<InvalidOperationException>(action);
         }
     }
 }

@@ -1,0 +1,6 @@
+.registration {
+  &__form {
+    @extend .new-login__form;
+    width: 400px;
+  }
+}

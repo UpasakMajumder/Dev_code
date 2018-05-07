@@ -16,7 +16,7 @@ namespace Kadena.Tests.BusinessLogic
 {
     public class OrderReportFactoryTests : KadenaUnitTest<OrderReportFactory>
     {
-        [Fact(DisplayName = "OrderReportFactory.FormatCustomer() | Null customer")]
+        [Fact]
         public void FormatCustomer_ShouldBeEmpty_WhenCustomerNotFound()
         {
             var expected = string.Empty;
@@ -26,7 +26,7 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(expected, actual);
         }
 
-        [Fact(DisplayName = "OrderReportFactory.FormatCustomer() | Non null customer")]
+        [Fact]
         public void FormatCustomer_ShouldUseName_WhenNameAvailable()
         {
             var customer = new Customer
@@ -41,7 +41,7 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(expected, actual);
         }
 
-        [Fact(DisplayName = "OrderReportFactory.FormatCustomer() | Email only customer")]
+        [Fact]
         public void FormatCustomer_ShouldUseEmail_WhenNameNotAvailable()
         {
             var customer = new Customer
@@ -55,10 +55,10 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(expected, actual);
         }
 
-        [Fact(DisplayName = "OrderReportFactory.FormatDetailUrl()")]
+        [Fact]
         public void FormatDetailUrl_ShouldGenerateUrl()
         {
-            var detailUrlBase = "test.com/product";
+            const string detailUrlBase = "test.com/product";
             Setup<IKenticoResourceService, string>(res => res.GetSiteSettingsKey(Settings.KDA_OrderDetailUrl), detailUrlBase);
             Setup<IKenticoDocumentProvider, string>(doc => doc.GetDocumentUrl(It.IsAny<string>(), It.IsAny<bool>()), detailUrlBase);
             var order = new RecentOrderDto
@@ -72,7 +72,7 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(expectedUrl, actualUrl);
         }
 
-        [Fact(DisplayName = "OrderReportFactory.FormatOrderStatus()")]
+        [Fact]
         public void FormatOrderStatus_ShouldMapOrderStatus()
         {
             var microserviceStatus = "some micro status";
@@ -84,51 +84,116 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(mappedStatus, actualStatus);
         }
 
-        [Fact(DisplayName = "OrderReportFactory.CreateTableView() | Formatting regular date")]
-        public void CreateTableView_ShouldMapLineItems_WhenShipped()
+        public static IEnumerable<object[]> GetTestDataFor_FormatDate_ShouldUseFormatter =>
+            new[] 
+            {
+                new object[] { new DateTime(), "formatted" },
+                new object[] { null, string.Empty }
+            };
+
+        [Theory]
+        [MemberData(nameof(GetTestDataFor_FormatDate_ShouldUseFormatter))]
+        public void FormatDate_ShouldUseFormatter(DateTime? date, string formatted)
         {
-            string format(DateTime dt) => dt.ToString("yyyyMMdd-HHmmss");
-            Setup<IDateTimeFormatter, DateTime, string>(s => s.Format(It.IsAny<DateTime>()), format);
-            var expected = OrderReportTestHelper.CreateTestOrder(orderNumber: 1, itemsCount: 1);
+            Setup<IDateTimeFormatter, string>(dtf => dtf.Format(It.IsAny<DateTime>()), formatted);
 
-            var actualView = Sut.CreateTableView(new List<OrderReport> { expected });
+            var actual = Sut.FormatDate(date);
 
+            Assert.Equal(formatted, actual);
+        }
+
+        [Fact]
+        public void CreateTableView_ShouldMapReportViewToTableView()
+        {
+            var report = new OrderReportView
+            {
+                Items = new[]
+                {
+                    new OrderReportViewItem
+                    {
+                        Name = "name",
+                        Number = "number",
+                        OrderingDate = "ordDate",
+                        Price = 10,
+                        Quantity = 2,
+                        ShippingDate = "shiDate",
+                        Site = "site",
+                        SKU = "sku",
+                        Status = "status",
+                        TrackingNumber = "track",
+                        Url = "url",
+                        User = "user"
+                    }
+                }
+            };
+            var expected = report.Items.First();
+
+            var actualView = Sut.CreateTableView(report);
             var actual = actualView.Rows[0];
+
             Assert.Equal(expected.Url, actual.Url);
             Assert.Equal(expected.Site, actual.Items[0]);
             Assert.Equal(expected.Number, actual.Items[1]);
-            Assert.Equal(format(expected.OrderingDate), actual.Items[2]);
+            Assert.Equal(expected.OrderingDate, actual.Items[2]);
             Assert.Equal(expected.User, actual.Items[3]);
-            Assert.Equal(expected.Items[0].Name, actual.Items[4]);
-            Assert.Equal(expected.Items[0].SKU, actual.Items[5]);
-            Assert.Equal(expected.Items[0].Quantity, actual.Items[6]);
-            Assert.Equal(expected.Items[0].Price, actual.Items[7]);
+            Assert.Equal(expected.Name, actual.Items[4]);
+            Assert.Equal(expected.SKU, actual.Items[5]);
+            Assert.Equal(expected.Quantity, actual.Items[6]);
+            Assert.Equal(expected.Price, actual.Items[7]);
             Assert.Equal(expected.Status, actual.Items[8]);
-            Assert.Equal(format(expected.ShippingDate.Value), actual.Items[9]);
-            Assert.Equal(expected.Items[0].TrackingNumber, actual.Items[10]);
+            Assert.Equal(expected.ShippingDate, actual.Items[9]);
+            Assert.Equal(expected.TrackingNumber, actual.Items[10]);
         }
 
-        [Fact(DisplayName = "OrderReportFactory.CreateTableView() | Formatting empty date")]
-        public void CreateTableView_ShouldMapLineItems_WhenNotShipped()
+        [Fact]
+        public void CreateReportView_ShouldMapReportToReportView()
         {
-            var testOrder = OrderReportTestHelper.CreateTestOrder(orderNumber: 1, itemsCount: 1);
-            testOrder.ShippingDate = null;
+            var report = new OrderReport
+            {
+                User = "user",
+                Url = "url",
+                Status = "status",
+                Site = "site",
+                Number = "number",
+                Items = new List<ReportLineItem>
+                {
+                    new ReportLineItem
+                    {
+                        Name = "name", Price = 10, Quantity = 2, SKU = "sku", TrackingNumber = "tracking"
+                    }
+                },
+                OrderingDate = new DateTime(),
+                ShippingDate = null
+            };
 
-            var actualView = Sut.CreateTableView(new List<OrderReport> { testOrder });
+            Setup<IDateTimeFormatter, string>(dtf => dtf.Format(It.IsAny<DateTime>()), "formatted");
 
-            var actualRow = actualView.Rows[0];
-            Assert.Equal(string.Empty, actualRow.Items[9]);
+            var actual = Sut.CreateReportView(new[] { report });
+
+            var firstActualItem = actual.Items.First();
+            Assert.Equal(report.Url, firstActualItem.Url);
+            Assert.Equal(report.Site, firstActualItem.Site);
+            Assert.Equal(report.Number, firstActualItem.Number);
+            Assert.Equal(Sut.FormatDate(report.OrderingDate), firstActualItem.OrderingDate);
+            Assert.Equal(report.User, firstActualItem.User);
+            Assert.Equal(report.Items[0].Name, firstActualItem.Name);
+            Assert.Equal(report.Items[0].SKU, firstActualItem.SKU);
+            Assert.Equal(report.Items[0].Quantity, firstActualItem.Quantity);
+            Assert.Equal(report.Items[0].Price, firstActualItem.Price);
+            Assert.Equal(report.Status, firstActualItem.Status);
+            Assert.Equal(Sut.FormatDate(report.ShippingDate), firstActualItem.ShippingDate);
+            Assert.Equal(report.Items[0].TrackingNumber, firstActualItem.TrackingNumber);
         }
 
-        [Fact(DisplayName = "OrderReportFactory.Create() | Regular report")]
-        public void Create_ShouldMap()
+        [Fact]
+        public void Create_ShouldCreateReportFromOrder()
         {
             var customer = new Customer
             {
                 FirstName = "Bruce",
                 LastName = "Wayne"
             };
-            Setup<IKenticoUserProvider, Customer>(kup => kup.GetCustomer(It.IsAny<int>()), customer);
+            Setup<IKenticoCustomerProvider, Customer>(kcp => kcp.GetCustomer(It.IsAny<int>()), customer);
 
             var orderDto = OrderReportTestHelper.CreateTestRecentOrder(1, 1);
             var sut = Sut;

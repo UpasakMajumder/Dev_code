@@ -6,6 +6,7 @@ namespace Kadena.BusinessLogic.Contracts.Orders
 {
     public interface IOrderReportService
     {
+        int OrdersPerPage { get; set; }
         Task<PagedData<OrderReport>> GetOrders(int page, OrderFilter filter);
         Task<PagedData<OrderReport>> GetOrdersForSite(string site, int page, OrderFilter filter);
 

@@ -54,6 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\Approval\IApprovalService.cs" />
+    <Compile Include="Contracts\Approval\IApproverService.cs" />
     <Compile Include="Contracts\IIBTFService.cs" />
     <Compile Include="Contracts\IIdentityService.cs" />
     <Compile Include="Contracts\IImageService.cs" />
@@ -110,6 +112,8 @@
     <Compile Include="Factories\OrderReportFactory.cs" />
     <Compile Include="Factories\OrderResultPageUrlFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Approval\ApprovalService.cs" />
+    <Compile Include="Services\Approval\ApproverService.cs" />
     <Compile Include="Services\IdentityService.cs" />
     <Compile Include="Services\MailService.cs" />
     <Compile Include="Services\ImageService.cs" />
@@ -195,6 +199,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
