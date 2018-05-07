@@ -17,27 +17,10 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
         public PurchaseOrder(IShoppingCartProvider shoppingCart, ISendSubmitOrder sendOrder, IGetOrderDataService orderDataProvider, IOrderResultPageUrlFactory resultUrlFactory)
         {
-            if (shoppingCart == null)
-            {
-                throw new ArgumentNullException(nameof(shoppingCart));
-            }
-            if (sendOrder == null)
-            {
-                throw new ArgumentNullException(nameof(sendOrder));
-            }
-            if (orderDataProvider == null)
-            {
-                throw new ArgumentNullException(nameof(orderDataProvider));
-            }
-            if (resultUrlFactory == null)
-            {
-                throw new ArgumentNullException(nameof(resultUrlFactory));
-            }
-
-            this.shoppingCart = shoppingCart;
-            this.sendOrder = sendOrder;
-            this.orderDataProvider = orderDataProvider;
-            this.resultUrlFactory = resultUrlFactory;
+            this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
+            this.sendOrder = sendOrder ?? throw new ArgumentNullException(nameof(sendOrder));
+            this.orderDataProvider = orderDataProvider ?? throw new ArgumentNullException(nameof(orderDataProvider));
+            this.resultUrlFactory = resultUrlFactory ?? throw new ArgumentNullException(nameof(resultUrlFactory));
         }
 
         public async Task<SubmitOrderResult> SubmitPOOrder(SubmitOrderRequest request)
