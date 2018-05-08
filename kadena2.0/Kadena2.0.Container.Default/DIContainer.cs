@@ -148,6 +148,7 @@ namespace Kadena.Container.Default
             container.Register<IKenticoUnitOfMeasureProvider, KenticoUnitOfMeasureProvider>();
             container.Register<IKenticoMediaProvider, KenticoMediaProvider>();
             container.Register<IKenticoFileProvider, KenticoFileProvider>();
+            container.Register<IKenticoCustomItemProvider, KenticoCustomItemProvider>();
             return container;
         }
 
