@@ -1,4 +1,5 @@
-﻿using Kadena.BusinessLogic.Contracts;
+﻿using Kadena.AmazonFileSystemProvider;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.Container.Default;
 using System;
 using System.Linq;
@@ -36,6 +37,14 @@ namespace Kadena.Tests.Infrastructure
                     throw new Exception($"Failed to resolve {service.Name}", ex);
                 }
             }
+        }
+
+        [Fact]
+        public void ResolveIS3PathService()
+        {
+            var actualResult = DIContainer.Resolve<IS3PathService>();
+
+            Assert.NotNull(actualResult);
         }
     }
 }

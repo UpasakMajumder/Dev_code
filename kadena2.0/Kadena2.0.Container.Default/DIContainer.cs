@@ -33,6 +33,7 @@ using System.IdentityModel.Tokens;
 using Kadena.Infrastructure.Contracts;
 using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.BusinessLogic.Services.Approval;
+using Kadena.AmazonFileSystemProvider;
 
 namespace Kadena.Container.Default
 {
@@ -109,6 +110,8 @@ namespace Kadena.Container.Default
             container.Register<IImageService, ImageService>();
             container.Register<IApproverService, ApproverService>();
             container.Register<IApprovalService, ApprovalService>();
+            container.Register<IS3PathService, PathService>(setup: Setup.Decorator);
+            container.Register<IS3PathService, S3PathService>();
             return container;
         }
 

@@ -9,15 +9,14 @@ namespace Kadena.AmazonFileSystemProvider
     /// </summary>
     public static class PathHelper
     {
-        private static readonly IS3PathService _pathProcessor;
+        public static IS3PathService PathService { get; set; }
 
         private static string mTempPath;
         private static string mCachePath;
-        private static string mCurrentDirectory;
 
         static PathHelper()
         {
-            _pathProcessor = new S3PathService();
+            PathService = new S3PathService();
         }
 
         /// <summary>Gets or sets path to local storage for temp.</summary>
@@ -71,7 +70,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="path">Path</param>
         internal static string GetValidPath(string path)
         {
-            return _pathProcessor.GetValidPath(path, true);
+            return PathService.GetValidPath(path, true);
         }
 
         /// <summary>Returns path from given object key.</summary>
@@ -89,7 +88,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="lower">Specifies whether path should be lowered inside method.</param>
         internal static string GetPathFromObjectKey(string objectKey, bool absolute, bool directory, bool lower)
         {
-            return _pathProcessor.GetPathFromObjectKey(objectKey, absolute, directory, lower);
+            return PathService.GetPathFromObjectKey(objectKey, absolute, directory, lower);
         }
 
         /// <summary>Returns object key from given path.</summary>
@@ -104,26 +103,26 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="lower">Specifies whether path should be lowered inside method.</param>
         internal static string GetObjectKeyFromPath(string path, bool lower)
         {
-            return _pathProcessor.GetObjectKeyFromPath(path, lower);
+            return PathService.GetObjectKeyFromPath(path, lower);
         }
 
         internal static string GetObjectKeyFromPathNonEnvironment(string path, bool lower = true)
         {
-            return _pathProcessor.GetObjectKeyFromPathNonEnvironment(path, lower);
+            return PathService.GetObjectKeyFromPathNonEnvironment(path, lower);
         }
 
         public static string EnsureFullKey(string key)
         {
-            return _pathProcessor.EnsureFullKey(key);
+            return PathService.EnsureFullKey(key);
         }
 
         /// <summary>Returns relative path from absolute one.</summary>
         /// <param name="absolute">Absolute path to process</param>
         internal static string GetRelativePath(string absolute)
         {
-            if (absolute.StartsWith(_pathProcessor.CurrentDirectory, StringComparison.OrdinalIgnoreCase))
+            if (absolute.StartsWith(PathService.CurrentDirectory, StringComparison.OrdinalIgnoreCase))
             {
-                absolute = absolute.Substring(_pathProcessor.CurrentDirectory.Length);
+                absolute = absolute.Substring(PathService.CurrentDirectory.Length);
             }
             return absolute.TrimStart('\\');
         }

@@ -124,6 +124,7 @@
     <Compile Include="Services\Orders\OrderReportService.cs" />
     <Compile Include="Services\Orders\OrderResubmissionService.cs" />
     <Compile Include="Services\Orders\SendSubmitOrder.cs" />
+    <Compile Include="Services\PathService.cs" />
     <Compile Include="Services\SSO\KadenaSaml2SecurityTokenHandler.cs" />
     <Compile Include="Services\SSO\Saml2RecipientValidator.cs" />
     <Compile Include="Services\SSO\Saml2HandlerService.cs" />

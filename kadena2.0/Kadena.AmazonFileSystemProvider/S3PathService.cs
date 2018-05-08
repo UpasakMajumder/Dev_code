@@ -6,39 +6,16 @@ namespace Kadena.AmazonFileSystemProvider
 {
     public class S3PathService : IS3PathService
     {
-        public S3PathService()
-        {
-            var provider = StorageHelper.GetStorageProvider("~/");
-            if (string.IsNullOrWhiteSpace(provider.CustomRootUrl))
-            {
-                EnvironmentFolder = string.Empty;
-            }
-            else
-            {
-                EnvironmentFolder = $"{provider.CustomRootUrl.Trim('/')}/";
-            }
-            DefaultSpecialFolder = $"{EnvironmentFolder}media/";
-            CurrentDirectory = Directory.CurrentDirectory;
-        }
-
-        public string CurrentDirectory { get; private set; }
-
-        protected string EnvironmentFolder { get; private set; }
-
-        protected string DefaultSpecialFolder { get; private set; }
+        public string CurrentDirectory { get; } = Directory.CurrentDirectory;
 
         public string EnsureFullKey(string key)
         {
-            if (key.StartsWith(DefaultSpecialFolder))
-            {
-                return key;
-            }
-            return $"{DefaultSpecialFolder}{key}";
+            return key;
         }
 
         public string GetObjectKeyFromPath(string path, bool lower)
         {
-            return $"{DefaultSpecialFolder}{GetObjectKeyFromPathNonEnvironment(path, lower)}";
+            return GetObjectKeyFromPathNonEnvironment(path, lower);
         }
 
         public string GetObjectKeyFromPathNonEnvironment(string path, bool lower = true)
@@ -72,12 +49,7 @@ namespace Kadena.AmazonFileSystemProvider
             {
                 return null;
             }
-            string nonEnvPath = objectKey;
-            if (nonEnvPath.StartsWith(DefaultSpecialFolder))
-            {
-                nonEnvPath = nonEnvPath.Substring(DefaultSpecialFolder.Length);
-            }
-            string result = GetValidPath(nonEnvPath, lower);
+            string result = GetValidPath(objectKey, lower);
             if (absolute)
             {
                 string currentDirectory = lower ? CurrentDirectory.ToLowerInvariant() : CurrentDirectory;

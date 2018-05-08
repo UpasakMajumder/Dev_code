@@ -1,6 +1,6 @@
 ﻿namespace Kadena.AmazonFileSystemProvider
 {
-    interface IS3PathService
+    public interface IS3PathService
     {
         string CurrentDirectory { get; }
         string GetPathFromObjectKey(string objectKey, bool absolute, bool directory, bool lower);
