@@ -9,8 +9,7 @@ namespace Kadena.AmazonFileSystemProvider
     /// </summary>
     public static class PathHelper
     {
-        private static string _environmentFolder;
-        private static string _defaultSpecialFolder;
+        private static readonly IPathProcessor _pathProcessor;
 
         private static string mTempPath;
         private static string mCachePath;
@@ -18,16 +17,7 @@ namespace Kadena.AmazonFileSystemProvider
 
         static PathHelper()
         {
-            var provider = StorageHelper.GetStorageProvider("~/");
-            if (string.IsNullOrWhiteSpace(provider.CustomRootUrl))
-            {
-                _environmentFolder = string.Empty;
-            }
-            else
-            {
-                _environmentFolder = $"{provider.CustomRootUrl.Trim('/')}/";
-            }
-            _defaultSpecialFolder = $"{_environmentFolder}media/";
+            _pathProcessor = new PathProcessor();
         }
 
         /// <summary>Gets or sets path to local storage for temp.</summary>
@@ -56,23 +46,6 @@ namespace Kadena.AmazonFileSystemProvider
             }
         }
 
-        /// <summary>Gets or sets current directory.</summary>
-        internal static string CurrentDirectory
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(mCurrentDirectory))
-                {
-                    mCurrentDirectory = Directory.CurrentDirectory;
-                }
-                return mCurrentDirectory;
-            }
-            set
-            {
-                mCurrentDirectory = value;
-            }
-        }
-
         /// <summary>
         /// Returns absolute path to temp. Also ensures that the directory exists.
         /// </summary>
@@ -98,26 +71,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="path">Path</param>
         internal static string GetValidPath(string path)
         {
-            return GetValidPath(path, true);
-        }
-
-        /// <summary>
-        /// Converts path to valid one (replaces slash to back slash) and optionally lower the case in the path.
-        /// </summary>
-        /// <param name="path">Path</param>
-        /// <param name="lower">Specifies whether path should be lowered inside method.</param>
-        internal static string GetValidPath(string path, bool lower)
-        {
-            if (path == null)
-            {
-                return null;
-            }
-            path = Path.EnsureBackslashes(path, true);
-            if (lower)
-            {
-                path = path.ToLowerCSafe();
-            }
-            return path;
+            return _pathProcessor.GetValidPath(path, true);
         }
 
         /// <summary>Returns path from given object key.</summary>
@@ -135,26 +89,7 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="lower">Specifies whether path should be lowered inside method.</param>
         internal static string GetPathFromObjectKey(string objectKey, bool absolute, bool directory, bool lower)
         {
-            if (objectKey == null)
-            {
-                return null;
-            }
-            string nonEnvPath = objectKey;
-            if (objectKey.StartsWith(_defaultSpecialFolder))
-            {
-                nonEnvPath = objectKey.Substring(_defaultSpecialFolder.Length);
-            }
-            string str1 = GetValidPath(nonEnvPath, lower);
-            string str2 = lower ? CurrentDirectory.ToLowerInvariant() : CurrentDirectory;
-            if (absolute)
-            {
-                str1 = $"{str2}\\{str1}";
-            }
-            if (directory)
-            {
-                str1 += "\\";
-            }
-            return str1;
+            return _pathProcessor.GetPathFromObjectKey(objectKey, absolute, directory, lower);
         }
 
         /// <summary>Returns object key from given path.</summary>
@@ -169,50 +104,26 @@ namespace Kadena.AmazonFileSystemProvider
         /// <param name="lower">Specifies whether path should be lowered inside method.</param>
         internal static string GetObjectKeyFromPath(string path, bool lower)
         {
-            return $"{_defaultSpecialFolder}{GetObjectKeyFromPathNonEnvironment(path, lower)}";
+            return _pathProcessor.GetObjectKeyFromPath(path, lower);
         }
 
-        public static string GetObjectKeyFromPathNonEnvironment(string path, bool lower = true)
+        internal static string GetObjectKeyFromPathNonEnvironment(string path, bool lower = true)
         {
-            if (path == null)
-            {
-                return null;
-            }
-            bool isDirectory = path.EndsWith("\\", StringComparison.Ordinal) || path.EndsWith("/", StringComparison.Ordinal);
-            path = GetValidPath(path, lower);
-            string str = lower ? CurrentDirectory.ToLowerInvariant() : CurrentDirectory;
-            if (path.StartsWith(str, StringComparison.Ordinal))
-            {
-                path = path.Substring(str.Length);
-            }
-            if (path.StartsWith("~\\", StringComparison.Ordinal))
-            {
-                path = path.Substring(2);
-            }
-            if (isDirectory)
-            {
-                path += "/";
-            }
-            path = Path.EnsureSlashes(path, false);
-            return $"{path.TrimStart('/')}";
+            return _pathProcessor.GetObjectKeyFromPathNonEnvironment(path, lower);
         }
 
         public static string EnsureFullKey(string key)
         {
-            if (key.StartsWith(_defaultSpecialFolder))
-            {
-                return key;
-            }
-            return $"{_defaultSpecialFolder}{key}";
+            return _pathProcessor.EnsureFullKey(key);
         }
 
         /// <summary>Returns relative path from absolute one.</summary>
         /// <param name="absolute">Absolute path to process</param>
         internal static string GetRelativePath(string absolute)
         {
-            if (absolute.StartsWith(CurrentDirectory, StringComparison.OrdinalIgnoreCase))
+            if (absolute.StartsWith(_pathProcessor.CurrentDirectory, StringComparison.OrdinalIgnoreCase))
             {
-                absolute = absolute.Substring(CurrentDirectory.Length);
+                absolute = absolute.Substring(_pathProcessor.CurrentDirectory.Length);
             }
             return absolute.TrimStart('\\');
         }
