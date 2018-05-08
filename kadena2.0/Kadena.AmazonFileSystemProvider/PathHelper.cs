@@ -1,5 +1,4 @@
 ﻿using CMS.Base;
-using CMS.IO;
 using System;
 
 namespace Kadena.AmazonFileSystemProvider
@@ -109,11 +108,6 @@ namespace Kadena.AmazonFileSystemProvider
         internal static string GetObjectKeyFromPathNonEnvironment(string path, bool lower = true)
         {
             return PathService.GetObjectKeyFromPathNonEnvironment(path, lower);
-        }
-
-        public static string EnsureFullKey(string key)
-        {
-            return PathService.EnsureFullKey(key);
         }
 
         /// <summary>Returns relative path from absolute one.</summary>

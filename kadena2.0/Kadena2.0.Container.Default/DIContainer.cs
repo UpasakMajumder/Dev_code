@@ -110,8 +110,8 @@ namespace Kadena.Container.Default
             container.Register<IImageService, ImageService>();
             container.Register<IApproverService, ApproverService>();
             container.Register<IApprovalService, ApprovalService>();
-            container.Register<IS3PathService, PathService>(setup: Setup.Decorator);
             container.Register<IS3PathService, S3PathService>();
+            container.Register<IPathService, PathService>();
             return container;
         }
 

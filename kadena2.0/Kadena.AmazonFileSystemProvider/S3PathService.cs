@@ -8,11 +8,6 @@ namespace Kadena.AmazonFileSystemProvider
     {
         public string CurrentDirectory { get; } = Directory.CurrentDirectory;
 
-        public string EnsureFullKey(string key)
-        {
-            return key;
-        }
-
         public string GetObjectKeyFromPath(string path, bool lower)
         {
             return GetObjectKeyFromPathNonEnvironment(path, lower);

@@ -60,6 +60,7 @@
     <Compile Include="Contracts\IIdentityService.cs" />
     <Compile Include="Contracts\IImageService.cs" />
     <Compile Include="Contracts\IModuleAccessService.cs" />
+    <Compile Include="Contracts\IPathService.cs" />
     <Compile Include="Contracts\IUserService.cs" />
     <Compile Include="Contracts\IMailService.cs" />
     <Compile Include="Contracts\Orders\IOrderReportService.cs" />

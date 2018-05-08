@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Kadena.AmazonFileSystemProvider;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
@@ -12,29 +11,19 @@ namespace Kadena.BusinessLogic.Services
         private readonly IFileClient _fileClient;
         private readonly IKenticoResourceService _resources;
         private readonly IKenticoLogger _logger;
+        private readonly IPathService pathService;
 
-        public FileService(IFileClient fileClient, IKenticoResourceService resources, IKenticoLogger logger)
+        public FileService(IFileClient fileClient, IKenticoResourceService resources, IKenticoLogger logger, IPathService pathService)
         {
-            if (fileClient == null)
-            {
-                throw new ArgumentNullException(nameof(fileClient));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-            _fileClient = fileClient;
-            _resources = resources;
-            _logger = logger;
+            _fileClient = fileClient ?? throw new ArgumentNullException(nameof(fileClient));
+            _resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.pathService = pathService ?? throw new ArgumentNullException(nameof(pathService));
         }
 
         public async Task<string> GetUrlFromS3(string key)
         {
-            var linkResult = await _fileClient.GetShortliveSecureLink(PathHelper.EnsureFullKey(key));
+            var linkResult = await _fileClient.GetShortliveSecureLink(pathService.EnsureFullKey(key));
 
             if (!linkResult.Success || string.IsNullOrEmpty(linkResult.Payload))
             {

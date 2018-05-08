@@ -71,8 +71,6 @@ namespace Kadena.Tests.BusinessLogic
             var argument = "folder1/folder2/file.ext";
             var expectedResult = "dev/media/folder1/folder2/file.ext";
 
-            Setup<IS3PathService, string>(s => s.EnsureFullKey(argument), argument);
-
             var actualResult = Sut.EnsureFullKey(argument);
 
             Assert.NotNull(actualResult);

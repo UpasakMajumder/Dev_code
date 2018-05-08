@@ -4,6 +4,7 @@ using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.IO;
 using Kadena.AmazonFileSystemProvider;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.Container.Default;
 using Kadena.CustomTables;
 using System;
@@ -41,10 +42,9 @@ namespace Kadena.Old_App_Code.CMSModules
                         }
                         var customAmazonProvider = new StorageProvider("CustomAmazon", "Kadena.AmazonFileSystemProvider", true)
                         {
-                            CustomRootPath = s3BucketName,
-                            CustomRootUrl = environment.AmazonS3Folder
+                            CustomRootPath = s3BucketName
                         };
-                        PathHelper.PathService = DIContainer.Resolve<IS3PathService>();
+                        PathHelper.PathService = DIContainer.Resolve<IPathService>();
                         StorageHelper.MapStoragePath("~/", customAmazonProvider);
                         EventLogProvider.LogInformation(GetType().Name, "STORAGECONFIG", $"Data storage was mapped to Amazon S3 bucket '{s3BucketName}' with {customAmazonProvider.ExternalStorageName}.");
                     }

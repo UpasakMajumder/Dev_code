@@ -1,11 +1,12 @@
 ﻿using Kadena.AmazonFileSystemProvider;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 
 namespace Kadena.BusinessLogic.Services
 {
-    public class PathService : IS3PathService
+    public class PathService : IPathService
     {
         private readonly IS3PathService s3PathService;
         private readonly IKenticoResourceService resourceService;
@@ -94,7 +95,6 @@ namespace Kadena.BusinessLogic.Services
 
         public string EnsureFullKey(string key)
         {
-            key = s3PathService.EnsureFullKey(key);
             if (key.StartsWith(DefaultSpecialFolder))
             {
                 return key;
