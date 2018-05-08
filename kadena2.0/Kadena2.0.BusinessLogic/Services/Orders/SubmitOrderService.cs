@@ -18,32 +18,11 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public SubmitOrderService(IShoppingCartProvider shoppingCart, ICreditCard3dsi creditCard3dsi, ISavedCreditCard3dsi savedcreditCard3dsi, ICreditCard3dsiDemo creditCard3dsiDemo, IPurchaseOrder purchaseOrder)
         {
-            if (shoppingCart == null)
-            {
-                throw new ArgumentNullException(nameof(shoppingCart));
-            }
-            if (creditCard3dsi == null)
-            {
-                throw new ArgumentNullException(nameof(creditCard3dsi));
-            }
-            if (creditCard3dsiDemo == null)
-            {
-                throw new ArgumentNullException(nameof(creditCard3dsiDemo));
-            }
-            if (savedcreditCard3dsi == null)
-            {
-                throw new ArgumentNullException(nameof(savedcreditCard3dsi));
-            }
-            if (purchaseOrder == null)
-            {
-                throw new ArgumentNullException(nameof(purchaseOrder));
-            }
-
-            this.shoppingCart = shoppingCart;
-            this.creditCard3dsi = creditCard3dsi;
-            this.savedcreditCard3dsi = savedcreditCard3dsi;
-            this.creditCard3dsiDemo = creditCard3dsiDemo;
-            this.purchaseOrder = purchaseOrder;
+            this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
+            this.creditCard3dsi = creditCard3dsi ?? throw new ArgumentNullException(nameof(creditCard3dsi));
+            this.savedcreditCard3dsi = savedcreditCard3dsi ?? throw new ArgumentNullException(nameof(savedcreditCard3dsi));
+            this.creditCard3dsiDemo = creditCard3dsiDemo ?? throw new ArgumentNullException(nameof(creditCard3dsiDemo));
+            this.purchaseOrder = purchaseOrder ?? throw new ArgumentNullException(nameof(purchaseOrder));
         }
 
         public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)

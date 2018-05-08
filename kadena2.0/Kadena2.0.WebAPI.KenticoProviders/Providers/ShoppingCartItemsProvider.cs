@@ -95,7 +95,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null,
                 Preview = new Button { Exists = false, Text = resources.GetResourceString("Kadena.Checkout.PreviewButton") },
                 SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true),
-                RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false)
+                RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false),
+                HiResPdfAllowed = i.SKU.GetBooleanValue("SKUHiResPdfDownloadEnabled", false)
             };
 
             if (cartItem.IsTemplated)
