@@ -4,40 +4,41 @@ using System;
 
 namespace Kadena.AmazonFileSystemProvider
 {
-    class PathProcessor : IPathProcessor
+    public class PathProcessor : IPathProcessor
     {
-        private static string _environmentFolder;
-        private static string _defaultSpecialFolder;
-
         public PathProcessor()
         {
             var provider = StorageHelper.GetStorageProvider("~/");
             if (string.IsNullOrWhiteSpace(provider.CustomRootUrl))
             {
-                _environmentFolder = string.Empty;
+                EnvironmentFolder = string.Empty;
             }
             else
             {
-                _environmentFolder = $"{provider.CustomRootUrl.Trim('/')}/";
+                EnvironmentFolder = $"{provider.CustomRootUrl.Trim('/')}/";
             }
-            _defaultSpecialFolder = $"{_environmentFolder}media/";
+            DefaultSpecialFolder = $"{EnvironmentFolder}media/";
             CurrentDirectory = Directory.CurrentDirectory;
         }
 
         public string CurrentDirectory { get; private set; }
 
+        protected string EnvironmentFolder { get; private set; }
+
+        protected string DefaultSpecialFolder { get; private set; }
+
         public string EnsureFullKey(string key)
         {
-            if (key.StartsWith(_defaultSpecialFolder))
+            if (key.StartsWith(DefaultSpecialFolder))
             {
                 return key;
             }
-            return $"{_defaultSpecialFolder}{key}";
+            return $"{DefaultSpecialFolder}{key}";
         }
 
         public string GetObjectKeyFromPath(string path, bool lower)
         {
-            return $"{_defaultSpecialFolder}{GetObjectKeyFromPathNonEnvironment(path, lower)}";
+            return $"{DefaultSpecialFolder}{GetObjectKeyFromPathNonEnvironment(path, lower)}";
         }
 
         public string GetObjectKeyFromPathNonEnvironment(string path, bool lower = true)
@@ -72,9 +73,9 @@ namespace Kadena.AmazonFileSystemProvider
                 return null;
             }
             string nonEnvPath = objectKey;
-            if (nonEnvPath.StartsWith(_defaultSpecialFolder))
+            if (nonEnvPath.StartsWith(DefaultSpecialFolder))
             {
-                nonEnvPath = nonEnvPath.Substring(_defaultSpecialFolder.Length);
+                nonEnvPath = nonEnvPath.Substring(DefaultSpecialFolder.Length);
             }
             string result = GetValidPath(nonEnvPath, lower);
             if (absolute)
