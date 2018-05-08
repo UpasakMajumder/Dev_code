@@ -4,9 +4,9 @@ using System;
 
 namespace Kadena.AmazonFileSystemProvider
 {
-    public class PathProcessor : IPathProcessor
+    public class S3PathService : IS3PathService
     {
-        public PathProcessor()
+        public S3PathService()
         {
             var provider = StorageHelper.GetStorageProvider("~/");
             if (string.IsNullOrWhiteSpace(provider.CustomRootUrl))

@@ -9,7 +9,7 @@ namespace Kadena.AmazonFileSystemProvider
     /// </summary>
     public static class PathHelper
     {
-        private static readonly IPathProcessor _pathProcessor;
+        private static readonly IS3PathService _pathProcessor;
 
         private static string mTempPath;
         private static string mCachePath;
@@ -17,7 +17,7 @@ namespace Kadena.AmazonFileSystemProvider
 
         static PathHelper()
         {
-            _pathProcessor = new PathProcessor();
+            _pathProcessor = new S3PathService();
         }
 
         /// <summary>Gets or sets path to local storage for temp.</summary>
