@@ -4,10 +4,10 @@ using Xunit;
 namespace Kadena.Tests.Infrastructure
 {
     [Trait("Infrastructure", "DIContainer")]
-    public class BusinessLogicResolvingTest
+    public class DIContainerTests
     {
         [Fact]
-        public void BusinessLogicInterfacesResolvable()
+        public void RegisteredServicesResolving()
         {
             // Arrange
             var registeredServices = DIContainer.Instance.GetServiceRegistrations();

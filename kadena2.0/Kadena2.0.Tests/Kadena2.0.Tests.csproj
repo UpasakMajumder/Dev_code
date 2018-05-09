@@ -492,7 +492,7 @@
     <Compile Include="Deployment\AutomatedXunitTests.cs" />
     <Compile Include="EventHandlers\ProductEventHandlerTests.cs" />
     <Compile Include="Infrastructure\MapperResolvingTest.cs" />
-    <Compile Include="Infrastructure\BusinessLogicResolvingTest.cs" />
+    <Compile Include="Infrastructure\DIContainerTests.cs" />
     <Compile Include="Infrastructure\ControllerTests.cs" />
     <Compile Include="Infrastructure\NotRegisteredService.cs" />
     <Compile Include="KadenaUnitTest.cs" />
