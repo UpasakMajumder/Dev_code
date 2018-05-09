@@ -1,8 +1,4 @@
-﻿using Kadena.BusinessLogic.Contracts;
-using Kadena.Container.Default;
-using System;
-using System.Linq;
-using System.Reflection;
+﻿using Kadena.Container.Default;
 using Xunit;
 
 namespace Kadena.Tests.Infrastructure
@@ -14,28 +10,13 @@ namespace Kadena.Tests.Infrastructure
         public void BusinessLogicInterfacesResolvable()
         {
             // Arrange
-            var assembly = Assembly.LoadFrom("Kadena2.0.BusinessLogic.dll");
-            var services = assembly.GetExportedTypes().Where(t => t.IsInterface).ToList();
+            var registeredServices = DIContainer.Instance.GetServiceRegistrations();
 
             // Act & Assert
-            foreach (var service in services)
-            {
-                if (service.Name == nameof(IOrderListService))
-                {
-                    // this is resolved using factory
-                    continue; 
-                }
-
-                try
-                {
-                    DIContainer.Instance.Resolve(service, false);
-
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception($"Failed to resolve {service.Name}", ex);
-                }
-            }
+            Assert.All(registeredServices, s => {
+                var actualResult = DIContainer.Instance.Resolve(s.ServiceType, false);
+                Assert.NotNull(actualResult);
+            });
         }
     }
 }
