@@ -7,6 +7,7 @@ using Kadena.AmazonFileSystemProvider;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Container.Default;
 using Kadena.CustomTables;
+using Kadena.Models.SiteSettings;
 using System;
 
 [assembly: RegisterModule(typeof(Kadena.Old_App_Code.CMSModules.S3StorageProviderModule))]
@@ -14,8 +15,6 @@ namespace Kadena.Old_App_Code.CMSModules
 {
     public class S3StorageProviderModule : Module
     {
-        private const string SelectedEnvironment = "KDA_EnvironmentId";
-
         public S3StorageProviderModule()
             : base("S3StorageProvider") { }
 
@@ -23,10 +22,10 @@ namespace Kadena.Old_App_Code.CMSModules
         {
             base.OnInit();
 
-            var s3BucketName = SettingsKeyInfoProvider.GetValue(SettingsKeyNames.AmazonS3BucketName);
+            var s3BucketName = SettingsKeyInfoProvider.GetValue(Settings.KDA_AmazonS3BucketName);
             if (!string.IsNullOrWhiteSpace(s3BucketName))
             {
-                var environmentId = SettingsKeyInfoProvider.GetIntValue(SelectedEnvironment);
+                var environmentId = SettingsKeyInfoProvider.GetIntValue(Settings.KDA_EnvironmentId);
                 try
                 {
                     var environment = CustomTableItemProvider.GetItem<EnvironmentItem>(environmentId);
