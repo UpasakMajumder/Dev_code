@@ -31,6 +31,7 @@ module.exports.recent = {
     campaigns: (req, res) => res.json(campaign),
     orders: (req, res) => res.json(filteredOrders)
   },
+  requiringApproval: (req, res) => res.json(order.recent.requiringApproval),
   ui: (req, res) => res.json(order.recent.ui),
   page: (req, res) => {
     const { page } = req.params;
