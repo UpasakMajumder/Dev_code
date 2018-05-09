@@ -13,7 +13,8 @@ const actionPropTypes = {
 class Actions extends Component {
   state = {
     showReject: false,
-    showAccept: false
+    showAccept: false,
+    proceeded: false
   };
 
   static propTypes = {
@@ -27,14 +28,17 @@ class Actions extends Component {
   handleHideReject = () => this.setState({ showReject: false });
   handleShowAccept = () => this.setState({ showAccept: true });
   handleHideAccept = () => this.setState({ showAccept: false });
+  proceed = () => this.setState({ proceeded: true });
 
   render() {
+    if (!this.props.ui || this.state.proceeded) return null;
+
     const { ui: { accept, reject } } = this.props;
 
     return (
       <div className="text-right">
-        {this.state.showAccept && <Modal accept closeDialog={this.handleHideAccept} { ...accept.dialog } />}
-        {this.state.showReject && <Modal closeDialog={this.handleHideReject} { ...reject.dialog } />}
+        {this.state.showAccept && <Modal accept proceed={this.proceed} closeDialog={this.handleHideAccept} { ...accept.dialog } />}
+        {this.state.showReject && <Modal proceed={this.proceed} closeDialog={this.handleHideReject} { ...reject.dialog } />}
 
         <Button
           text={accept.button}

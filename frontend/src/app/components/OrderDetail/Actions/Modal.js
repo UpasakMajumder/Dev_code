@@ -19,7 +19,8 @@ class Modal extends Component {
     proceedButton: PropTypes.string.isRequired,
     proceedUrl: PropTypes.string.isRequired,
     /* func */
-    closeDialog: PropTypes.func.isRequired
+    closeDialog: PropTypes.func.isRequired,
+    proceed: PropTypes.func.isRequired
   }
 
   state = {
@@ -73,6 +74,7 @@ class Modal extends Component {
         this.setState({ isLoading: false });
       } else {
         this.props.closeDialog();
+        this.props.proceed();
       }
     } catch (e) {
       window.store.dispatch({
