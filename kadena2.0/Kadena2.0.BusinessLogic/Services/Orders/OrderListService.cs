@@ -45,24 +45,9 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
         }
 
-        private int _pageCapacity;
-        private string _pageCapacityKey;
         private Dictionary<int, string> _addressBookList;
 
-        public string PageCapacityKey
-        {
-            get
-            {
-                return _pageCapacityKey;
-            }
-
-            set
-            {
-                _pageCapacityKey = value;
-                string settingValue = _kenticoResources?.GetSiteSettingsKey(_pageCapacityKey);
-                _pageCapacity = int.Parse(string.IsNullOrWhiteSpace(settingValue) ? "5" : settingValue);
-            }
-        }
+        public string PageCapacityKey { get; set; }
 
         public bool EnablePaging { get; set; }
 
@@ -94,9 +79,10 @@ namespace Kadena.BusinessLogic.Services.Orders
             var orderList = _mapper.Map<OrderList>(await GetOrders(1));
             MapOrdersStatusToGeneric(orderList?.Orders);
             int pages = 0;
-            if (EnablePaging && _pageCapacity > 0)
+            var pageCapacity = _kenticoResources.GetSiteSettingsKey<int>(PageCapacityKey);
+            if (EnablePaging && pageCapacity > 0)
             {
-                pages = orderList.TotalCount / _pageCapacity + (orderList.TotalCount % _pageCapacity > 0 ? 1 : 0);
+                pages = orderList.TotalCount / pageCapacity + (orderList.TotalCount % pageCapacity > 0 ? 1 : 0);
             }
             return new OrderHead
             {
@@ -111,7 +97,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 PageInfo = new Pagination
                 {
                     RowsCount = orderList.TotalCount,
-                    RowsOnPage = _pageCapacity,
+                    RowsOnPage = pageCapacity,
                     PagesCount = pages
                 },
                 NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems"),
@@ -151,16 +137,17 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         private async Task<OrderListDto> GetOrders(int pageNumber)
         {
+            var pageCapacity = _kenticoResources.GetSiteSettingsKey<int>(PageCapacityKey);
             var siteName = _site.GetKenticoSite().Name;
             BaseResponseDto<OrderListDto> response = null;
             if (_permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.SeeAllOrders, siteName))
             {
-                response = await _orderClient.GetOrders(siteName, pageNumber, _pageCapacity);
+                response = await _orderClient.GetOrders(siteName, pageNumber, pageCapacity);
             }
             else
             {
                 var customer = _kenticoCustomers.GetCurrentCustomer();
-                response = await _orderClient.GetOrders(customer?.Id ?? 0, pageNumber, _pageCapacity);
+                response = await _orderClient.GetOrders(customer?.Id ?? 0, pageNumber, pageCapacity);
             }
 
             if (response?.Success ?? false)
@@ -176,16 +163,17 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         private async Task<OrderListDto> GetOrders(int pageNumber, int campaignID, string orderType)
         {
+            var pageCapacity = _kenticoResources.GetSiteSettingsKey<int>(PageCapacityKey);
             var siteName = _site.GetKenticoSite().Name;
             BaseResponseDto<OrderListDto> response = null;
             if (_permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.SeeAllOrders, siteName))
             {
-                response = await _orderClient.GetOrders(siteName, pageNumber, _pageCapacity, campaignID, orderType);
+                response = await _orderClient.GetOrders(siteName, pageNumber, pageCapacity, campaignID, orderType);
             }
             else
             {
                 var customer = _kenticoCustomers.GetCurrentCustomer();
-                response = await _orderClient.GetOrders(customer?.Id ?? 0, pageNumber, _pageCapacity, campaignID, orderType);
+                response = await _orderClient.GetOrders(customer?.Id ?? 0, pageNumber, pageCapacity, campaignID, orderType);
             }
 
             if (response?.Success ?? false)
@@ -201,13 +189,14 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public async Task<OrderHeadBlock> GetHeaders(string orderType, int campaignID)
         {
+            var pageCapacity = _kenticoResources.GetSiteSettingsKey<int>(PageCapacityKey);
             _addressBookList = _kenticoAddressBook.GetAddressNames();
             var orderList = _mapper.Map<OrderList>(await GetOrders(1, campaignID, orderType));
             MapOrdersStatusToGeneric(orderList?.Orders);
             int pages = 0;
-            if (EnablePaging && _pageCapacity > 0)
+            if (EnablePaging && pageCapacity > 0)
             {
-                pages = orderList.TotalCount / _pageCapacity + (orderList.TotalCount % _pageCapacity > 0 ? 1 : 0);
+                pages = orderList.TotalCount / pageCapacity + (orderList.TotalCount % pageCapacity > 0 ? 1 : 0);
             }
             return new OrderHeadBlock
             {
@@ -222,7 +211,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 PageInfo = new Pagination
                 {
                     RowsCount = orderList.TotalCount,
-                    RowsOnPage = _pageCapacity,
+                    RowsOnPage = pageCapacity,
                     PagesCount = pages
                 },
                 NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems"),
