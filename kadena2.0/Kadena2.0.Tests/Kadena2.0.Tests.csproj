@@ -468,6 +468,7 @@
   <ItemGroup>
     <Compile Include="BusinessLogic\Approval\ApprovalServiceTests.cs" />
     <Compile Include="BusinessLogic\Approval\ApproverServiceTests.cs" />
+    <Compile Include="BusinessLogic\BusinessUnitServiceTests.cs" />
     <Compile Include="BusinessLogic\CreditCard\SavedCreditCard3dsiTests.cs" />
     <Compile Include="BusinessLogic\CreditCard\CreditCard3dsiTests.cs" />
     <Compile Include="BusinessLogic\ImageServiceTests.cs" />
@@ -507,6 +508,7 @@
     <Compile Include="UserHierarchyTest.cs" />
     <Compile Include="BusinessLogic\ShoppingCartServiceTests.cs" />
     <Compile Include="BusinessLogic\KListServiceTests.cs" />
+    <Compile Include="WebApi\BusinessUnitsControllerTests.cs" />
     <Compile Include="WebApi\LoginControllerTest.cs" />
     <Compile Include="WebApi\ProductsControllerTest.cs" />
     <Compile Include="BusinessLogic\OrderReportServiceTests.cs" />

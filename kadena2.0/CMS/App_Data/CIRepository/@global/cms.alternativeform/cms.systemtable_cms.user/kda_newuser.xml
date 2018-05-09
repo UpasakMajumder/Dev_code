@@ -70,7 +70,7 @@
           </rule>
         </rules>
       </field>
-      <field column="UserPassword" guid="adaad374-af5a-4e1b-afc7-72b4fb798d19" reftype="Required">
+      <field column="UserPassword" guid="adaad374-af5a-4e1b-afc7-72b4fb798d19">
         <settings>
           <controlname>PasswordConfirmator</controlname>
           <showstrength>True</showstrength>
@@ -214,8 +214,9 @@
           <validationerrormessage>{$Kadena.Users.TitleError$}</validationerrormessage>
         </properties>
       </field>
-      <field column="UserCountry" guid="36a41585-d7e2-4349-ad06-d9f49ae3931d" hasdependingfields="true" allowempty="" order="84">
+      <field column="UserCountry" guid="36a41585-d7e2-4349-ad06-d9f49ae3931d" hasdependingfields="true" reftype="Required" allowempty="" order="84">
         <settings>
+          <AddSelectCountryRecord>True</AddSelectCountryRecord>
           <EnableStateSelection>False</EnableStateSelection>
         </settings>
         <properties>
