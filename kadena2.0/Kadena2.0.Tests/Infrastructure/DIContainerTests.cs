@@ -43,15 +43,14 @@ namespace Kadena.Tests.Infrastructure
             var controllers = assembly.GetExportedTypes().Where(t => t.BaseType == typeof(ApiControllerBase)).ToList();
 
             // Act
-            using (var sut = DIContainer.Instance.With(rules => rules.WithoutThrowOnRegisteringDisposableTransient()))
+            var sut = DIContainer.Instance.With(rules => rules.WithoutThrowOnRegisteringDisposableTransient());
+            
+            // Assert
+            Assert.All(controllers, (c) =>
             {
-                // Assert
-                Assert.All(controllers, (c) =>
-                {
-                    var actualResult = sut.New(c);
-                    Assert.NotNull(actualResult);
-                });
-            }
+                var actualResult = sut.New(c);
+                Assert.NotNull(actualResult);
+            });
         }
     }
 }
