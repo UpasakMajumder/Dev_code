@@ -53,13 +53,7 @@ namespace Kadena.Models.Checkout
         }
         public string MailingListName { get; set; }
         public Guid MailingListGuid { get; set; }
-        public string Delivery
-        {
-            get
-            {
-                return IsMailingList && IsTemplated ? $"Delivery to {Quantity} addresses" : string.Empty;
-            }
-        }
+        public string Delivery { get; set; }
         public string PricePrefix { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal TotalPrice { get; set; }

@@ -80,9 +80,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             CheckItemHasSku(i);
 
-            var unitOfMeasure = i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit);
-
-            var cartItem = new CheckoutCartItem()
+            var checkoutCartItem = new CheckoutCartItem()
             {
                 Id = i.CartItemID,
                 CartItemText = i.CartItemText,
@@ -90,7 +88,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 SKUName = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
                 TotalTax = 0.0m,
                 UnitPrice = showPrices ? (decimal)i.UnitPrice : 0.0m,
-                UnitOfMeasureName = units.GetDisplayname(unitOfMeasure),
+                UnitOfMeasureName = units.GetDisplayname(i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit)),
                 Image = productProvider.GetProductImagePath(i.GetIntegerValue("ProductPageID", 0)),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
@@ -112,25 +110,25 @@ namespace Kadena.WebAPI.KenticoProviders
                 Options = GetItemOptions(i)
             };
 
-            if (cartItem.IsTemplated)
+            if (checkoutCartItem.IsTemplated)
             {
-                var templateLowResSettingId = productProvider.GetProductByDocumentId(cartItem.ProductPageId)?.TemplateLowResSettingId ?? Guid.Empty;
+                var templateLowResSettingId = productProvider.GetProductByDocumentId(checkoutCartItem.ProductPageId)?.TemplateLowResSettingId ?? Guid.Empty;
                 var previewUrl = UrlHelper.GetUrlForTemplatePreview(i.GetValue("ChilliEditorTemplateID", Guid.Empty), templateLowResSettingId);
                 var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
 
-                cartItem.Preview.Url = previewAbsoluteUrl;
-                cartItem.Preview.Exists = true;
+                checkoutCartItem.Preview.Url = previewAbsoluteUrl;
+                checkoutCartItem.Preview.Exists = true;
 
                 var editorUrl = documents.GetDocumentUrl(URLHelper.ResolveUrl(resources.GetSiteSettingsKey("KDA_Templating_ProductEditorUrl")));
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "documentId", cartItem.ProductPageId.ToString());
+                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "documentId", checkoutCartItem.ProductPageId.ToString());
                 editorUrl = URLHelper.AddParameterToUrl(editorUrl, "templateId", i.GetValue("ChilliEditorTemplateID", Guid.Empty).ToString());
                 editorUrl = URLHelper.AddParameterToUrl(editorUrl, "workspaceid", i.GetValue("ProductChiliWorkspaceId", Guid.Empty).ToString());
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "containerId", cartItem.MailingListGuid.ToString());
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "quantity", cartItem.Quantity.ToString());
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "customName", URLHelper.URLEncode(cartItem.CartItemText));
-                cartItem.EditorURL = editorUrl;
+                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "containerId", checkoutCartItem.MailingListGuid.ToString());
+                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "quantity", checkoutCartItem.Quantity.ToString());
+                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "customName", URLHelper.URLEncode(checkoutCartItem.CartItemText));
+                checkoutCartItem.EditorURL = editorUrl;
 
-                cartItem.EmailProof = new Button()
+                checkoutCartItem.EmailProof = new Button()
                 {
                     Exists = true,
                     Text = resources.GetResourceString("Kadena.EmailProof.ButtonLabel"),
@@ -138,7 +136,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 };
             }
 
-            return cartItem;
+            return checkoutCartItem;
         }
 
         private OrderCartItem MapOrderCartItem(ShoppingCartItemInfo i)
@@ -147,7 +145,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var unitOfMeasure = i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit);
 
-            var cartItem = new OrderCartItem()
+            var orderCartItem = new OrderCartItem()
             {
                 SKU = new OrderItemSku
                 {
@@ -158,7 +156,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 },
                 
                 Artwork = i.GetValue("ArtworkLocation", string.Empty),
-                MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
+                MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty),
                 UnitPrice = (decimal)i.UnitPrice,
                 UnitOfMeasureErpCode = units.GetUnitOfMeasure(unitOfMeasure).ErpCode,
                 ProductType = i.GetValue("ProductType", string.Empty),
@@ -169,18 +167,16 @@ namespace Kadena.WebAPI.KenticoProviders
                 Options = GetItemOptions(i)
             };
 
-            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))
+            if (ProductTypes.IsOfType(orderCartItem.ProductType, ProductTypes.TemplatedProduct))
             {
-                cartItem.ChiliProcess = new ChiliProcess
+                orderCartItem.ChiliProcess = new ChiliProcess
                 {
                     TemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
                     PdfSettings = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
                 };
             }
 
-            
-
-            return cartItem;
+            return orderCartItem;
         }
 
         private IEnumerable<ItemOption> GetItemOptions(ShoppingCartItemInfo i)

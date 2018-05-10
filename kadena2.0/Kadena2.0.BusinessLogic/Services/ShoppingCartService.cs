@@ -337,6 +337,18 @@ namespace Kadena.BusinessLogic.Services
             var cartItemsTotals = shoppingCart.GetShoppingCartTotals();
             var countOfItemsString = cartItems.Count == 1 ? resources.GetResourceString("Kadena.Checkout.ItemSingular") : resources.GetResourceString("Kadena.Checkout.ItemPlural");
             cartItems.ForEach(i => i.Image = imageService.GetThumbnailLink(i.Image));
+
+            cartItems.ForEach(i => 
+                {
+                    i.Delivery = string.Empty;
+
+                    if (i.IsMailingList && i.IsTemplated)
+                    {
+                        var delivery = resources.GetResourceString("Kadena.Checkout.MailingDelivery");
+                        i.Delivery = string.Format(delivery, i.Quantity);
+                    }
+                }
+             );
             var products = checkoutfactory.CreateProducts(cartItems, cartItemsTotals, countOfItemsString);
 
             if (!permissions.UserCanSeePrices())
