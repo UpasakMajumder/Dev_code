@@ -407,7 +407,7 @@ namespace Kadena.BusinessLogic.Services
                 var s3FileUri = new Uri(kenticoSite.GetAbsoluteUrl(Helpers.Routes.File.Get), UriKind.Absolute);
                 if (s3FileUri.IsBaseOf(attachmentUri))
                 {
-                    cartItem.ArtworkLocation = pathService.EnsureFullKey(attachmentUri.GetParameter("path"));
+                    cartItem.ArtworkLocation = pathService.GetObjectKeyFromPath(attachmentUri.GetParameter("path"), true);
                 }
                 else
                 {

@@ -66,12 +66,7 @@ namespace Kadena.BusinessLogic.Services
 
         public string GetObjectKeyFromPath(string path, bool lower)
         {
-            return $"{DefaultSpecialFolder}{s3PathService.GetObjectKeyFromPath(path, lower)}";
-        }
-
-        public string GetObjectKeyFromPathNonEnvironment(string path, bool lower = true)
-        {
-            return s3PathService.GetObjectKeyFromPathNonEnvironment(path, lower);
+            return $"{EnsureFullKey(s3PathService.GetObjectKeyFromPath(path, lower))}";
         }
 
         public string GetPathFromObjectKey(string objectKey, bool absolute, bool directory, bool lower)

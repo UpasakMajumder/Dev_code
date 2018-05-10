@@ -23,7 +23,7 @@ namespace Kadena.BusinessLogic.Services
 
         public async Task<string> GetUrlFromS3(string key)
         {
-            var linkResult = await _fileClient.GetShortliveSecureLink(pathService.EnsureFullKey(key));
+            var linkResult = await _fileClient.GetShortliveSecureLink(pathService.GetObjectKeyFromPath(key, true));
 
             if (!linkResult.Success || string.IsNullOrEmpty(linkResult.Payload))
             {

@@ -105,11 +105,6 @@ namespace Kadena.AmazonFileSystemProvider
             return PathService.GetObjectKeyFromPath(path, lower);
         }
 
-        internal static string GetObjectKeyFromPathNonEnvironment(string path, bool lower = true)
-        {
-            return PathService.GetObjectKeyFromPathNonEnvironment(path, lower);
-        }
-
         /// <summary>Returns relative path from absolute one.</summary>
         /// <param name="absolute">Absolute path to process</param>
         internal static string GetRelativePath(string absolute)

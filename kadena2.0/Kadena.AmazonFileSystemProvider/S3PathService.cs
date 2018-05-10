@@ -10,11 +10,6 @@ namespace Kadena.AmazonFileSystemProvider
 
         public string GetObjectKeyFromPath(string path, bool lower)
         {
-            return GetObjectKeyFromPathNonEnvironment(path, lower);
-        }
-
-        public string GetObjectKeyFromPathNonEnvironment(string path, bool lower = true)
-        {
             if (path == null)
             {
                 return null;
