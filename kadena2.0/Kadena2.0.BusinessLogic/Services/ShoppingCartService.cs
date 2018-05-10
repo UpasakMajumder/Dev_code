@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Kadena.Models.AddToCart;
 using Kadena.Models.SiteSettings;
 using Kadena.Helpers;
+using Kadena.AmazonFileSystemProvider;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -38,7 +39,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoBusinessUnitsProvider businessUnitsProvider;
         private readonly IDynamicPriceRangeProvider dynamicPrices;
         private readonly IImageService imageService;
-        private readonly IPathService pathService;
+        private readonly IS3PathService pathService;
 
         public ShoppingCartService(IKenticoSiteProvider kenticoSite,
                                    IKenticoLocalizationProvider localization,
@@ -59,7 +60,7 @@ namespace Kadena.BusinessLogic.Services
                                    IKenticoBusinessUnitsProvider businessUnitsProvider,
                                    IDynamicPriceRangeProvider dynamicPrices,
                                    IImageService imageService,
-                                   IPathService pathService)
+                                   IS3PathService pathService)
         {
             this.kenticoSite = kenticoSite ?? throw new ArgumentNullException(nameof(kenticoSite));
             this.localization = localization ?? throw new ArgumentNullException(nameof(localization));

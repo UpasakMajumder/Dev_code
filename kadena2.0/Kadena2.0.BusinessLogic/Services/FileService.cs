@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Kadena.AmazonFileSystemProvider;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
@@ -11,9 +12,9 @@ namespace Kadena.BusinessLogic.Services
         private readonly IFileClient _fileClient;
         private readonly IKenticoResourceService _resources;
         private readonly IKenticoLogger _logger;
-        private readonly IPathService pathService;
+        private readonly IS3PathService pathService;
 
-        public FileService(IFileClient fileClient, IKenticoResourceService resources, IKenticoLogger logger, IPathService pathService)
+        public FileService(IFileClient fileClient, IKenticoResourceService resources, IKenticoLogger logger, IS3PathService pathService)
         {
             _fileClient = fileClient ?? throw new ArgumentNullException(nameof(fileClient));
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));

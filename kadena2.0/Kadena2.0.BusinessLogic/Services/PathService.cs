@@ -1,12 +1,11 @@
 ﻿using Kadena.AmazonFileSystemProvider;
-using Kadena.BusinessLogic.Contracts;
 using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 
 namespace Kadena.BusinessLogic.Services
 {
-    public class PathService : IPathService
+    public class PathService : IS3PathService
     {
         private readonly IS3PathService s3PathService;
         private readonly IKenticoResourceService resourceService;
@@ -66,7 +65,12 @@ namespace Kadena.BusinessLogic.Services
 
         public string GetObjectKeyFromPath(string path, bool lower)
         {
-            return $"{EnsureFullKey(s3PathService.GetObjectKeyFromPath(path, lower))}";
+            var key = s3PathService.GetObjectKeyFromPath(path, lower);
+            if (key.StartsWith(DefaultSpecialFolder))
+            {
+                return key;
+            }
+            return $"{DefaultSpecialFolder}{key}";
         }
 
         public string GetPathFromObjectKey(string objectKey, bool absolute, bool directory, bool lower)
@@ -86,15 +90,6 @@ namespace Kadena.BusinessLogic.Services
         public string GetValidPath(string path, bool lower)
         {
             return s3PathService.GetValidPath(path, lower);
-        }
-
-        public string EnsureFullKey(string key)
-        {
-            if (key.StartsWith(DefaultSpecialFolder))
-            {
-                return key;
-            }
-            return $"{DefaultSpecialFolder}{key}";
         }
     }
 }

@@ -43,7 +43,7 @@ namespace Kadena.Old_App_Code.CMSModules
                         {
                             CustomRootPath = s3BucketName
                         };
-                        PathHelper.PathService = DIContainer.Resolve<IPathService>();
+                        PathHelper.PathService = DIContainer.Resolve<IS3PathService>();
                         StorageHelper.MapStoragePath("~/", customAmazonProvider);
                         EventLogProvider.LogInformation(GetType().Name, "STORAGECONFIG", $"Data storage was mapped to Amazon S3 bucket '{s3BucketName}' with {customAmazonProvider.ExternalStorageName}.");
                     }

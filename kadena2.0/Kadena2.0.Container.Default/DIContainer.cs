@@ -111,7 +111,7 @@ namespace Kadena.Container.Default
             container.Register<IApproverService, ApproverService>();
             container.Register<IApprovalService, ApprovalService>();
             container.Register<IS3PathService, S3PathService>();
-            container.Register<IPathService, PathService>();
+            container.Register<IS3PathService, PathService>(setup: Setup.Decorator);
             return container;
         }
 

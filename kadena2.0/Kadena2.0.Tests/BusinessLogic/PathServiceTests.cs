@@ -35,6 +35,7 @@ namespace Kadena.Tests.BusinessLogic
 
             Assert.NotNull(actualResult);
             Assert.Equal(expectedResult, actualResult);
+            Verify<IS3PathService>(s => s.GetObjectKeyFromPath(It.IsAny<string>(), It.IsAny<bool>()), Times.AtLeastOnce);
         }
 
         [Fact(DisplayName = "PathService.GetPathFromObjectKey()")]
@@ -49,6 +50,7 @@ namespace Kadena.Tests.BusinessLogic
 
             Assert.NotNull(actualResult);
             Assert.Equal(expectedResult, actualResult);
+            Verify<IS3PathService>(s => s.GetPathFromObjectKey(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.AtLeastOnce);
         }
 
         [Theory(DisplayName = "PathService.GetValidPath()")]
@@ -63,18 +65,7 @@ namespace Kadena.Tests.BusinessLogic
             var exc = Record.Exception(() => Sut.GetValidPath(path, lower));
 
             Assert.Null(exc);
-        }
-
-        [Fact(DisplayName = "PathService.EnsureFullKey()")]
-        public void EnsureFullKey()
-        {
-            var argument = "folder1/folder2/file.ext";
-            var expectedResult = "dev/media/folder1/folder2/file.ext";
-
-            var actualResult = Sut.EnsureFullKey(argument);
-
-            Assert.NotNull(actualResult);
-            Assert.Equal(expectedResult, actualResult);
+            Verify<IS3PathService>(s => s.GetValidPath(It.IsAny<string>(), It.IsAny<bool>()), Times.AtLeastOnce);
         }
     }
 }

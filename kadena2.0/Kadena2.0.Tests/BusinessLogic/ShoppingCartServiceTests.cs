@@ -1,4 +1,5 @@
-﻿using Kadena.BusinessLogic.Contracts;
+﻿using Kadena.AmazonFileSystemProvider;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.BusinessLogic.Services;
 using Kadena.Models;
@@ -430,7 +431,7 @@ namespace Kadena.Tests.BusinessLogic
 
             Setup<IShoppingCartItemsProvider, NewCartItem, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), i => { cartItem.ProductPageID = i.DocumentId; return cartItem; });
             Setup<IKenticoProductsProvider, Uri>(ip => ip.GetProductArtworkUri(newCartItem.DocumentId), new Uri($"https://local/{Helpers.Routes.File.Get}?path=files/file.jpg"));
-            Setup<IPathService, string>(ip => ip.EnsureFullKey("files/file.jpg"), expectedResult);
+            Setup<IS3PathService, string>(ip => ip.GetObjectKeyFromPath("files/file.jpg", true), expectedResult);
             Setup<IKenticoSiteProvider, string, string>(ip => ip.GetAbsoluteUrl(Helpers.Routes.File.Get), s => $"https://local/{s}");
 
             // Act

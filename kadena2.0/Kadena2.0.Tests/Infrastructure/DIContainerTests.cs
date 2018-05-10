@@ -2,8 +2,10 @@
 using DryIoc;
 using Kadena.Container.Default;
 using Kadena.WebAPI.Infrastructure;
+using Kadena.BusinessLogic.Services;
 using System.Linq;
 using Xunit;
+using Kadena.AmazonFileSystemProvider;
 
 namespace Kadena.Tests.Infrastructure
 {
@@ -33,6 +35,15 @@ namespace Kadena.Tests.Infrastructure
             // Assert
             Assert.NotNull(result);
             Assert.Equal(MapperBuilder.MapperInstance, result);
+        }
+
+        [Fact(DisplayName = "Resolve(IS3PathService)")]
+        public void PathServiceResolve()
+        {
+            var actualResult = DIContainer.Resolve<IS3PathService>();
+
+            Assert.NotNull(actualResult);
+            Assert.IsType<PathService>(actualResult);
         }
 
         [Fact]
