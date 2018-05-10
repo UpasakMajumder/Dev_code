@@ -199,10 +199,6 @@
     <Compile Include="Providers\SuppliantDomain.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Kadena.AmazonFileSystemProvider\Kadena.AmazonFileSystemProvider.csproj">
-      <Project>{91c29a0f-7655-405e-abb0-990877d6fcfa}</Project>
-      <Name>Kadena.AmazonFileSystemProvider</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.Helpers\Kadena2.0.Helpers.csproj">
       <Project>{6b1835f6-5564-40d8-8ab8-63b6adc56976}</Project>
       <Name>Kadena2.0.Helpers</Name>

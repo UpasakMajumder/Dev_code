@@ -2,9 +2,7 @@
 using DryIoc;
 using Kadena.Container.Default;
 using Kadena.WebAPI.Infrastructure;
-using System;
 using System.Linq;
-using System.Reflection;
 using Xunit;
 
 namespace Kadena.Tests.Infrastructure

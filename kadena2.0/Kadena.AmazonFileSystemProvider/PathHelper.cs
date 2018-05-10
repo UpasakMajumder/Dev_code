@@ -92,7 +92,7 @@ namespace Kadena.AmazonFileSystemProvider
 
         /// <summary>Returns object key from given path.</summary>
         /// <param name="path">Path.</param>
-        public static string GetObjectKeyFromPath(string path)
+        internal static string GetObjectKeyFromPath(string path)
         {
             return GetObjectKeyFromPath(path, true);
         }
