@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Contracts\Approval\IApprovalService.cs" />
     <Compile Include="Contracts\Approval\IApproverService.cs" />
+    <Compile Include="Contracts\IArtworkService.cs" />
     <Compile Include="Contracts\IIBTFService.cs" />
     <Compile Include="Contracts\IIdentityService.cs" />
     <Compile Include="Contracts\IImageService.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Approval\ApprovalService.cs" />
     <Compile Include="Services\Approval\ApproverService.cs" />
+    <Compile Include="Services\ArtworkService.cs" />
     <Compile Include="Services\IdentityService.cs" />
     <Compile Include="Services\MailService.cs" />
     <Compile Include="Services\ImageService.cs" />

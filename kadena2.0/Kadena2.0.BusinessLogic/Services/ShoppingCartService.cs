@@ -13,8 +13,6 @@ using Kadena2.MicroserviceClients.Contracts;
 using System.Collections.Generic;
 using Kadena.Models.AddToCart;
 using Kadena.Models.SiteSettings;
-using Kadena.Helpers;
-using Kadena.AmazonFileSystemProvider;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -39,7 +37,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoBusinessUnitsProvider businessUnitsProvider;
         private readonly IDynamicPriceRangeProvider dynamicPrices;
         private readonly IImageService imageService;
-        private readonly IS3PathService pathService;
+        private readonly IArtworkService artworkService;
 
         public ShoppingCartService(IKenticoSiteProvider kenticoSite,
                                    IKenticoLocalizationProvider localization,
@@ -60,7 +58,7 @@ namespace Kadena.BusinessLogic.Services
                                    IKenticoBusinessUnitsProvider businessUnitsProvider,
                                    IDynamicPriceRangeProvider dynamicPrices,
                                    IImageService imageService,
-                                   IS3PathService pathService)
+                                   IArtworkService artworkService)
         {
             this.kenticoSite = kenticoSite ?? throw new ArgumentNullException(nameof(kenticoSite));
             this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
@@ -81,7 +79,7 @@ namespace Kadena.BusinessLogic.Services
             this.businessUnitsProvider = businessUnitsProvider ?? throw new ArgumentNullException(nameof(businessUnitsProvider));
             this.dynamicPrices = dynamicPrices ?? throw new ArgumentNullException(nameof(dynamicPrices));
             this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
-            this.pathService = pathService ?? throw new ArgumentNullException(nameof(pathService));
+            this.artworkService = artworkService ?? throw new ArgumentNullException(nameof(artworkService));
         }
 
         public async Task<CheckoutPage> GetCheckoutPage()
@@ -402,19 +400,7 @@ namespace Kadena.BusinessLogic.Services
                 await SetMailingList(cartItem, newItem.ContainerId, addedAmount);
             }
 
-            var attachmentUri = productsProvider.GetProductArtworkUri(newItem.DocumentId);
-            if (attachmentUri != null)
-            {
-                var s3FileUri = new Uri(kenticoSite.GetAbsoluteUrl(Helpers.Routes.File.Get), UriKind.Absolute);
-                if (s3FileUri.IsBaseOf(attachmentUri))
-                {
-                    cartItem.ArtworkLocation = pathService.GetObjectKeyFromPath(attachmentUri.GetParameter("path"), true);
-                }
-                else
-                {
-                    cartItem.ArtworkLocation = attachmentUri.OriginalString;
-                }
-            }
+            cartItem.ArtworkLocation = artworkService.GetLocation(newItem.DocumentId);
 
             // do this before calculating dynamic price
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))

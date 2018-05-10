@@ -310,7 +310,6 @@ namespace Kadena.Tests.BusinessLogic
             Verify<IShoppingCartItemsProvider>(m => m.SetCartItemQuantity(1, 100), Times.Once);
         }
 
-
         [Theory(DisplayName = "ShoppingCartService.GetCartItems()")]
         [InlineData(true, false)]
         [InlineData(false, true)]
@@ -364,7 +363,6 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Null(result.Totals.Items);
         }
 
-
         [Fact(DisplayName = "ShoppingCartService.ItemsPreview()")]
         public void ItemPreview()
         {
@@ -400,45 +398,6 @@ namespace Kadena.Tests.BusinessLogic
 
             // Assert
             Assert.NotNull(result);
-        }
-
-        [Fact(DisplayName = "ShoppingCartService.AddToCart() | Product has local artwork")]
-        public async Task AddToCart_LocalArtwork()
-        {
-            // Arrange 
-            var newCartItem = CreateNewCartItem();
-            var cartItem = new CartItemEntity();
-            var expectedResult = "https://local/files/file.jpg";
-
-            Setup<IShoppingCartItemsProvider, NewCartItem, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), i => { cartItem.ProductPageID = i.DocumentId; return cartItem; });
-            Setup<IKenticoProductsProvider, Uri>(ip => ip.GetProductArtworkUri(newCartItem.DocumentId), new Uri(expectedResult));
-            Setup<IKenticoSiteProvider, string, string>(ip => ip.GetAbsoluteUrl(Helpers.Routes.File.Get), s => $"https://local/{s}");
-
-            // Act
-            var result = await Sut.AddToCart(newCartItem);
-
-            // Assert
-            Assert.Equal(expectedResult, cartItem.ArtworkLocation);
-        }
-
-        [Fact(DisplayName = "ShoppingCartService.AddToCart() | Product has artwork in S3")]
-        public async Task AddToCart_S3Artwork()
-        {
-            // Arrange 
-            var newCartItem = CreateNewCartItem();
-            var cartItem = new CartItemEntity();
-            var expectedResult = "environment/files/file.jpg";
-
-            Setup<IShoppingCartItemsProvider, NewCartItem, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), i => { cartItem.ProductPageID = i.DocumentId; return cartItem; });
-            Setup<IKenticoProductsProvider, Uri>(ip => ip.GetProductArtworkUri(newCartItem.DocumentId), new Uri($"https://local/{Helpers.Routes.File.Get}?path=files/file.jpg"));
-            Setup<IS3PathService, string>(ip => ip.GetObjectKeyFromPath("files/file.jpg", true), expectedResult);
-            Setup<IKenticoSiteProvider, string, string>(ip => ip.GetAbsoluteUrl(Helpers.Routes.File.Get), s => $"https://local/{s}");
-
-            // Act
-            var result = await Sut.AddToCart(newCartItem);
-
-            // Assert
-            Assert.Equal(expectedResult, cartItem.ArtworkLocation);
         }
     }
 }

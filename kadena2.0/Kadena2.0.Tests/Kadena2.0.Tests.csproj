@@ -468,6 +468,7 @@
   <ItemGroup>
     <Compile Include="BusinessLogic\Approval\ApprovalServiceTests.cs" />
     <Compile Include="BusinessLogic\Approval\ApproverServiceTests.cs" />
+    <Compile Include="BusinessLogic\ArtworkServiceTests.cs" />
     <Compile Include="BusinessLogic\BusinessUnitServiceTests.cs" />
     <Compile Include="BusinessLogic\CreditCard\SavedCreditCard3dsiTests.cs" />
     <Compile Include="BusinessLogic\CreditCard\CreditCard3dsiTests.cs" />
