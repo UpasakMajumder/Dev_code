@@ -93,6 +93,13 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public Task<OrderHead> GetOrdersToApprove()
         {
+            var siteName = _site.GetKenticoSite().Name;
+            var isApprover = _permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.ApproveOrders, siteName);
+            if (!isApprover)
+            {
+                throw new UnauthorizedAccessException($"Access denied. Missing permission '{ModulePermissions.KadenaOrdersModule.ApproveOrders}'");
+            }
+
             var filter = CreateFilterForOrdersToApprove();
             return GetHeaders(filter);
         }
@@ -107,12 +114,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 Status = (int)OrderStatus.WaitingForApproval
             };
 
-            // todo: check if current user is approver
-            var siteName = _site.GetKenticoSite().Name;
-            var isApprover = _permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.ApproveOrders, siteName);
-
             // todo: filter orders to show only those where current user is approver
-            
 
             return filter;
         }
@@ -130,11 +132,8 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public Task<OrderHead> GetHeaders()
         {
-            return GetHeaders(new OrderListFilter
-            {
-                PageNumber = 1,
-                ItemsPerPage = PageCapacity
-            });
+            var filter = CreateFilterForRecentOrders(1);
+            return GetHeaders(filter);
         }
 
         private async Task<OrderHead> GetHeaders(OrderListFilter filter)

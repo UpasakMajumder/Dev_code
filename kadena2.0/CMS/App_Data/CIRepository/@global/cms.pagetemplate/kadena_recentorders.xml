@@ -165,34 +165,6 @@ result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}"
             <![CDATA[{%CurrentUser.IsAuthorizedPerResource("Kadena_RecentOrders", "KDA_ContentEnabled") || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor) |(user)administrator|(hash)61acad41002f4836011449aacc66d77fb47ccadab6c12497185ae5e9f8d72c6a%}]]>
           </property>
         </properties>
-        <webpart controlid="javascript" guid="298d0267-2de7-42c7-aced-5838746a8b6b" type="javascript" v="1">
-          <property name="cat_open_behavior"></property>
-          <property name="cat_open_performance"></property>
-          <property name="controlid">javascript</property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="generatescripttags">True</property>
-          <property name="hideonsubpages">False</property>
-          <property name="inlinescript">
-<![CDATA[
-config.localization.recentOrders = {
-  getHeaders: '/api/recentorders/getheaders',
-  getPageItems: '/api/recentorders/getbody'
-};
-]]>
-          </property>
-          <property name="inlinescriptpagelocation">Header</property>
-          <property name="instanceguid">298d0267-2de7-42c7-aced-5838746a8b6b</property>
-          <property name="linkedfile"></property>
-          <property name="linkedfilepagelocation">Header</property>
-          <property name="positionleft"></property>
-          <property name="positiontop"></property>
-          <property name="showfordocumenttypes"></property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">javascript</property>
-        </webpart>
         <webpart controlid="StaticText" guid="6ec6caa6-b406-4a4d-92b2-a11d2bfa144a" type="statictext" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
@@ -234,7 +206,22 @@ config.localization.recentOrders = {
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<div class="r-recent-orders"></div>]]>
+<![CDATA[
+<div class="css-tabs__container js-tabs" data-tab=".js-tab-recent-orders" data-tab-active="active" data-tab-active-default=".js-tab-orders">
+  <ul class="css-tabs__list">
+    <li data-id="orders" class="css-tabs__tab js-tab-recent-orders" data-tab-content=".js-tab-orders">Orders</li>
+    <li data-id="requiring-approval" class="css-tabs__tab js-tab-recent-orders" data-tab-content=".js-tab-requiring-approval">Orders requiring approval</li>    
+  </ul>
+  <div>
+    <div class="css-tabs__content js-tab-orders">
+      <div data-react='{ "initURL": "/api/recentorders/getheaders" }' class="r-recent-orders"></div>
+    </div>    
+    <div class="css-tabs__content js-tab-requiring-approval">
+      <div data-react='{ "initURL": "/api/orders/toApprove" }' class="r-recent-orders"></div>
+    </div>
+  </div>
+</div>
+]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
