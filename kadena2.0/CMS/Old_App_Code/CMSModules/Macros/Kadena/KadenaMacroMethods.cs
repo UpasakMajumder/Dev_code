@@ -363,7 +363,17 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 .Select(u => $"{u.UserId};{u.UserName} ({u.Email})");
 
             return none.Concat(approvers).ToArray();
-         }
+        }
+
+        [MacroMethod(typeof(bool), "Checks whether current user is an approver", 1)]
+        public static object IsCurrentUserApprover(EvaluationContext context, params object[] parameters)
+        {
+            var isApprover = DIContainer
+                .Resolve<IApproverService>()
+                .IsApprover(MembershipContext.AuthenticatedUser.UserID);
+
+            return isApprover;
+        }
 
         [MacroMethod(typeof(string), "Returns file name from media attachment url.", 1)]
         [MacroMethodParam(0, "url", typeof(string), "Url")]

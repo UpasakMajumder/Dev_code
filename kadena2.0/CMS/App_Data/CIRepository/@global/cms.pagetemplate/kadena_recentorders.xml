@@ -210,15 +210,19 @@ result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}"
 <div class="css-tabs__container js-tabs" data-tab=".js-tab-recent-orders" data-tab-active="active" data-tab-active-default=".js-tab-orders">
   <ul class="css-tabs__list">
     <li data-id="orders" class="css-tabs__tab js-tab-recent-orders" data-tab-content=".js-tab-orders">Orders</li>
-    <li data-id="requiring-approval" class="css-tabs__tab js-tab-recent-orders" data-tab-content=".js-tab-requiring-approval">Orders requiring approval</li>    
+    {% if(KadenaNamespace.IsCurrentUserApprover()) { %}
+    <li data-id="requiring-approval" class="css-tabs__tab js-tab-recent-orders" data-tab-content=".js-tab-requiring-approval">Orders requiring approval</li>
+    {% } |(user)tomas.rucki@actum.cz|(hash)da97f9fe141659603b13d70c740a9c3e89fb37feda9d4f7e14b177312d58bbe2%}
   </ul>
   <div>
     <div class="css-tabs__content js-tab-orders">
       <div data-react='{ "initURL": "/api/recentorders/getheaders" }' class="r-recent-orders"></div>
-    </div>    
+    </div>
+    {% if(KadenaNamespace.IsCurrentUserApprover()) { %}
     <div class="css-tabs__content js-tab-requiring-approval">
       <div data-react='{ "initURL": "/api/orders/toApprove" }' class="r-recent-orders"></div>
     </div>
+    {% } |(user)tomas.rucki@actum.cz|(hash)5525735f1fd9a1444a2790629252d95809863737bb8d57a2d2ced86fcd701500%}
   </div>
 </div>
 ]]>
