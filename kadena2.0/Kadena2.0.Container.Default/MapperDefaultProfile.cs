@@ -67,10 +67,8 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.PricePrefix, opt => opt.MapFrom(src => src.Prefix))
                 .ForMember(dest => dest.PriceValue, opt => opt.MapFrom(src => src.Value));
 
-            CreateMap<OrderCartItem, SKUDTO>()
-                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SKUName))
-                    .ForMember(dest => dest.KenticoSKUID, opt => opt.MapFrom(src => src.SKUID));
-
+            CreateMap<OrderItemSku, SKUDTO>();
+                    
             CreateMap<OrderCartItem, OrderItemDTO>()
                 .ForMember(dest => dest.SKU, opt => opt.MapFrom(src => src))
                 .ForMember(dest => dest.UnitCount, opt => opt.MapFrom(src => src.Quantity))

@@ -77,7 +77,6 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 Id = i.CartItemID,
                 CartItemText = i.CartItemText,
-                Artwork = i.GetValue("ArtworkLocation", string.Empty),
                 MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
                 SKUName = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
                 TotalTax = 0.0m,
@@ -144,21 +143,23 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var cartItem = new OrderCartItem()
             {
-                Id = i.CartItemID,
+                SKU = new OrderItemSku
+                {
+                    KenticoSKUID = i.SKUID,
+                    Name = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
+                    SKUNumber = i.SKU.SKUNumber,
+                    HiResPdfAllowed = i.SKU.GetBooleanValue("SKUHiResPdfDownloadEnabled", false)
+                },
+                
                 Artwork = i.GetValue("ArtworkLocation", string.Empty),
                 MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
-                ChiliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
-                SKUName = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
-                SKUNumber = i.SKU.SKUNumber,
                 UnitPrice = (decimal)i.UnitPrice,
                 UnitOfMeasureErpCode = units.GetUnitOfMeasure(unitOfMeasure).ErpCode,
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
                 TotalPrice = (decimal)i.UnitPrice * i.CartItemUnits,
-                SKUID = i.SKUID,
                 SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true),
                 RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false),
-                HiResPdfAllowed = i.SKU.GetBooleanValue("SKUHiResPdfDownloadEnabled", false),
                 Options = GetItemOptions(i)
             };
 

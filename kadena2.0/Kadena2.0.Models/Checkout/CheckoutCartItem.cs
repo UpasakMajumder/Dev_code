@@ -95,7 +95,6 @@ namespace Kadena.Models.Checkout
         public string ProductionTime { get; set; }
         public string ShipTime { get; set; }
         public IEnumerable<ItemOption> Options { get; set; }
-        public string Artwork { get; set; }
         public string CustomName { get; set; }
         public bool RequiresApproval { get; set; }
         public bool HiResPdfAllowed { get; set; }
