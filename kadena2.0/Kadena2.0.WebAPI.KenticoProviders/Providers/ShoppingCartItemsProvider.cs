@@ -50,26 +50,35 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var displayProductionAndShipping = resources.GetSiteSettingsKey<bool>(Settings.KDA_Checkout_ShowProductionAndShipping);
 
-            return ECommerceContext.CurrentShoppingCart.CartItems
-                .Where(cartItem => !cartItem.IsProductOption)
+            return GetCurrentShoppingCartItems()
                 .Select(cartItem => MapCheckoutCartItem(cartItem, showPrices, displayProductionAndShipping))
                 .ToArray();
         }
 
         public OrderCartItem[] GetOrderCartItems()
         {
-            return ECommerceContext.CurrentShoppingCart.CartItems
-                .Where(cartItem => !cartItem.IsProductOption)
-                .Select(cartItem => MapOrderCartItem(cartItem))
-                .ToArray();
-        }        
+            return GetCurrentShoppingCartItems()
+                     .Select(cartItem => MapOrderCartItem(cartItem))
+                     .ToArray();
+        }
 
-        private CheckoutCartItem MapCheckoutCartItem(ShoppingCartItemInfo i, bool showPrices, bool displayProductionAndShipping)
+        private IEnumerable<ShoppingCartItemInfo> GetCurrentShoppingCartItems()
+        {
+            return ECommerceContext.CurrentShoppingCart.CartItems
+                .Where(cartItem => !cartItem.IsProductOption);
+        }
+
+        private void CheckItemHasSku(ShoppingCartItemInfo i)
         {
             if (i.SKU == null)
             {
                 throw new ArgumentNullException(nameof(i.SKU), "CartItem has null SKU");
             }
+        }
+
+        private CheckoutCartItem MapCheckoutCartItem(ShoppingCartItemInfo i, bool showPrices, bool displayProductionAndShipping)
+        {
+            CheckItemHasSku(i);
 
             var unitOfMeasure = i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit);
 
@@ -134,10 +143,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private OrderCartItem MapOrderCartItem(ShoppingCartItemInfo i)
         {
-            if (i.SKU == null)
-            {
-                throw new ArgumentNullException(nameof(i.SKU), "CartItem has null SKU");
-            }
+            CheckItemHasSku(i);
 
             var unitOfMeasure = i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit);
 
