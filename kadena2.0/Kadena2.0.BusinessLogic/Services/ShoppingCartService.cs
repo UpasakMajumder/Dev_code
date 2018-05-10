@@ -138,7 +138,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var deliveryAddress = shoppingCart.GetCurrentCartShippingAddress();
 
-            var isShippingApplicable = shoppingCartItems.GetShoppingCartItems()
+            var isShippingApplicable = shoppingCartItems.GetCheckoutCartItems()
                 .Any(item => !item.IsMailingList);
             if (!isShippingApplicable)
             {
@@ -333,7 +333,7 @@ namespace Kadena.BusinessLogic.Services
 
         public CartItems GetCartItems()
         {
-            var cartItems = shoppingCartItems.GetShoppingCartItems().ToList();
+            var cartItems = shoppingCartItems.GetCheckoutCartItems().ToList();
             var cartItemsTotals = shoppingCart.GetShoppingCartTotals();
             var countOfItemsString = cartItems.Count == 1 ? resources.GetResourceString("Kadena.Checkout.ItemSingular") : resources.GetResourceString("Kadena.Checkout.ItemPlural");
             cartItems.ForEach(i => i.Image = imageService.GetThumbnailLink(i.Image));
@@ -350,7 +350,7 @@ namespace Kadena.BusinessLogic.Services
         public CartItemsPreview ItemsPreview()
         {
             bool userCanSeePrices = permissions.UserCanSeePrices();
-            var cartItems = shoppingCartItems.GetShoppingCartItems(userCanSeePrices).ToList();
+            var cartItems = shoppingCartItems.GetCheckoutCartItems(userCanSeePrices).ToList();
             cartItems.ForEach(i => i.Image = imageService.GetThumbnailLink(i.Image));
 
             var preview = new CartItemsPreview

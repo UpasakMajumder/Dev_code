@@ -93,7 +93,7 @@
     <Compile Include="Checkout\AddressDialog.cs" />
     <Compile Include="Checkout\ButtonLabels.cs" />
     <Compile Include="Checkout\CartEmptyInfo.cs" />
-    <Compile Include="Checkout\CartItem.cs" />
+    <Compile Include="Checkout\CheckoutCartItem.cs" />
     <Compile Include="Checkout\CartItems.cs" />
     <Compile Include="Checkout\CartItemsPreview.cs" />
     <Compile Include="Checkout\CartPrice.cs" />
@@ -117,6 +117,7 @@
     <Compile Include="SiteSettings\Settings.Microservices.cs" />
     <Compile Include="SiteSettings\Settings.OrderDetails.cs" />
     <Compile Include="Site\ModuleMapping.cs" />
+    <Compile Include="SubmitOrder\OrderCartItem.cs" />
     <Compile Include="TemplatedProduct\EmailProofRequest.cs" />
     <Compile Include="_Common\ContentTypes.cs" />
     <Compile Include="_Common\Country.cs" />

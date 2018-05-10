@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Kadena.Models.Checkout
 {
-    public class CartItem
+    public class CheckoutCartItem
     {
         public int Id { get; set; }
         public string CartItemText { get; set; }
@@ -13,18 +13,9 @@ namespace Kadena.Models.Checkout
         public string Image { get; set; }
         public string Template { get; set; }
         public int ProductPageId { get; set; }
-
-        /// <summary>
-        /// SKU object ID in DB
-        /// </summary>
-        public int SKUID { get; set; }
-
-        /// <summary>
-        /// Nuber configurable in product's Form -> General -> SKU*
-        /// </summary>
-        public string SKUNumber { get; set; }
         public string SKUName { get; set; }
-        public int LineNumber { get; set; }
+        public string SKUNumber { get; set; }
+
         public bool IsMailingList
         {
             get
@@ -84,7 +75,7 @@ namespace Kadena.Models.Checkout
         public int StockQuantity { get; set; }
         public decimal TotalTax { get; set; }
         public string PriceText { get; set; }
-        public Guid ProductChiliWorkspaceId { get; set; }
+        
 
         public Button Preview { get; set; }
         public Button EmailProof { get; set; }
@@ -98,43 +89,14 @@ namespace Kadena.Models.Checkout
         }
 
         public string EditorURL { get; set; }
-
-        /// <summary>
-        /// Main Chili template ID
-        /// </summary>
-        public Guid ChiliTemplateId { get; set; }
-
-        public Guid ProductChiliPdfGeneratorSettingsId { get; set; }
-
-        /// <summary>
-        /// Indicates if it is necessary to obtain design file path
-        /// via calling Template product service
-        /// </summary>
-        public bool DesignFilePathRequired
-        {
-            get
-            {
-                return IsTemplated;
-            }
-        }
-
-        public string UnitOfMeasureErpCode { get; set; }
         public string UnitOfMeasureName { get; set; }
-
         public string MailingListPrefix { get; set; }
         public string TemplatePrefix { get; set; }
         public string ProductionTime { get; set; }
         public string ShipTime { get; set; }
-        public ChiliProcess ChiliProcess { get; set; }
         public IEnumerable<ItemOption> Options { get; set; }
-
-        public string DynamicPricing { get; set; }
-
         public string Artwork { get; set; }
-
         public string CustomName { get; set; }
-
-        public bool SendPriceToErp { get; set; }
         public bool RequiresApproval { get; set; }
         public bool HiResPdfAllowed { get; set; }
     }
