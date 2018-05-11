@@ -234,7 +234,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                 var templatedProduct = i.TemplateId != Guid.Empty ? products.GetProductBySkuId(i.SkuId) : null;
                 var previewUrl = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, templatedProduct?.TemplateLowResSettingId ?? Guid.Empty);
                 var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
-                var pdfUrl = string.Empty;
 
                 return new OrderedItem()
                 {
