@@ -248,6 +248,9 @@
         <properties>
           <defaultvalue>false</defaultvalue>
           <fieldcaption>HiRes PDF download enabled</fieldcaption>
+          <visiblemacro ismacro="true">
+            <![CDATA[{%KadenaNamespace.IsTemplatedProduct(SKUID.Value)|(user)michal.machacek@actum.cz|(hash)46fde4a75c4fcc507efe60ad13387f4efb6434d5b1a5edc80ba08e35494be138%}]]>
+          </visiblemacro>
         </properties>
         <settings>
           <controlname>CheckBoxControl</controlname>

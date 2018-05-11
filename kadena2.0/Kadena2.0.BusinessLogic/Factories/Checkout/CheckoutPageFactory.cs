@@ -34,7 +34,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
             };
         }
 
-        public CartItems CreateProducts(List<CartItem> cartItems, ShoppingCartTotals cartItemsTotals, string countOfItemsString)
+        public CartItems CreateProducts(List<CheckoutCartItem> cartItems, ShoppingCartTotals cartItemsTotals, string countOfItemsString)
         {
             var count = cartItems?.Count ?? 0;
 
