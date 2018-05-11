@@ -209,10 +209,10 @@ result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}"
 <![CDATA[
 <div class="css-tabs__container js-tabs" data-tab=".js-tab-recent-orders" data-tab-active="active" data-tab-active-default=".js-tab-orders">
   <ul class="css-tabs__list">
-    <li data-id="orders" class="css-tabs__tab js-tab-recent-orders" data-tab-content=".js-tab-orders">Orders</li>
+    <li data-id="orders" class="css-tabs__tab js-tab-recent-orders" data-tab-content=".js-tab-orders">{$ Kadena.RecentOrders.Tabs.RecentOrders.Title $}</li>
     {% if(KadenaNamespace.IsCurrentUserApprover()) { %}
-    <li data-id="requiring-approval" class="css-tabs__tab js-tab-recent-orders" data-tab-content=".js-tab-requiring-approval">Orders requiring approval</li>
-    {% } |(user)tomas.rucki@actum.cz|(hash)da97f9fe141659603b13d70c740a9c3e89fb37feda9d4f7e14b177312d58bbe2%}
+    <li data-id="requiring-approval" class="css-tabs__tab js-tab-recent-orders" data-tab-content=".js-tab-requiring-approval">{$ Kadena.RecentOrders.Tabs.OrdersToApprove.Title $}</li>
+    {% } |(user)tomas.rucki@actum.cz|(hash)549e2f091c872b5cd04a2e86cea7254719d4888655830238cfa00198a4d76697%}
   </ul>
   <div>
     <div class="css-tabs__content js-tab-orders">
