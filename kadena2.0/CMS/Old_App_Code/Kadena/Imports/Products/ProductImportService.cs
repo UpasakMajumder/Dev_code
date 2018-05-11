@@ -296,7 +296,6 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             newProduct.DocumentCulture = _culture;
             newProduct.SetValue("ProductType", product.ProductType);
             newProduct.SetValue("ProductSKUWeight", Convert.ToDecimal(product.PackageWeight));
-            newProduct.SetValue("ProductNumberOfItemsInPackage", Convert.ToInt32(product.ItemsInPackage));
             newProduct.SetValue("ProductChiliTemplateID", product.ChiliTemplateID ?? string.Empty);
             newProduct.SetValue("ProductChiliWorkgroupID", product.ChiliWorkgroupID ?? string.Empty);
             newProduct.SetValue("ProductChiliPdfGeneratorSettingsId", product.ChiliPdfGeneratorSettingsID ?? string.Empty);
@@ -459,6 +458,7 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             sku.SKUNumber = product.SKU;
             sku.SKUDescription = product.Description;
             sku.SKUTrackInventory = ParseTrackInventoryTypeEnum(product.TrackInventory);
+            sku.SetValue("SKUNumberOfItemsInPackage", Convert.ToInt32(product.ItemsInPackage));
 
             if (!string.IsNullOrWhiteSpace(product.MinItemsInOrder))
             {
