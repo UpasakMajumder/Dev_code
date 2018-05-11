@@ -97,41 +97,50 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         {
             try
             {
-                var orderType = Constants.OrderType.prebuy;
-                var client = DIContainer.Resolve<IOrderViewClient>();
-                BaseResponseDto<OrderListDto> response = client.GetOrders(SiteContext.CurrentSiteName, 1, 1000, campaignID, orderType).Result;
+                var orderViewClient = DIContainer.Resolve<IOrderViewClient>();
+                var response = orderViewClient.GetOrders(SiteContext.CurrentSiteName, 1, 1000, campaignID, Constants.OrderType.prebuy).Result;
                 if (response.Success && response.Payload.TotalCount != 0)
                 {
-                    var responseData = response.Payload.Orders.ToList();
-                    var customerOrderData = responseData.GroupBy(x => x.CustomerId).ToList();
+                    var customerProvider = DIContainer.Resolve<IKenticoCustomerProvider>();
+                    var userProvider = DIContainer.Resolve<IKenticoUserProvider>();
+
+                    var customerOrderData = response.Payload.Orders.GroupBy(x => x.CustomerId,
+                        (key, value) => new
+                        {
+                            CustomerId = key,
+                            User = userProvider.GetUserByUserId(customerProvider.GetCustomer(key)?.UserID ?? 0),
+                            Orders = value.Select(ord => new
+                            {
+                                ord.TotalPrice,
+                                ord.ShippingDate,
+                                CampaignId = ord.Campaign.ID,
+                                Items = ord.Items.Select(i => new
+                                {
+                                    SKUNumber = i.Name,
+                                    Name = i.Quantity,
+                                })
+                            }).ToList()
+                        })
+                        .ToList();
                     customerOrderData.ForEach(x =>
                     {
-                        var userID = DIContainer.Resolve<IKenticoCustomerProvider>().GetCustomer(x.Key)?.UserID ?? 0;
-                        var customerData = DIContainer.Resolve<IKenticoUserProvider>().GetUserByUserId(userID);
-                        if (customerData != null)
+                        if (x.User != null)
                         {
-                            x.ToList().ForEach(recentoder =>
+                            x.Orders.ForEach(o =>
                             {
-                                var cartItems = recentoder.Items.Select(item =>
+                                var orderDetails = new Dictionary<string, object>
                                 {
-                                    return new
-                                    {
-                                        SKUNumber = item.Name,
-                                        Name = item.Quantity,
-                                    };
-                                }).ToList();
-                                Dictionary<string, object> orderDetails = new Dictionary<string, object>();
-                                orderDetails.Add("name", customerData.FirstName);
-                                orderDetails.Add("totalprice", recentoder.TotalPrice);
-                                orderDetails.Add("shippingdate", recentoder.ShippingDate);
-                                orderDetails.Add("campaignid", recentoder.Campaign.ID);
-                                SendEmailNotification(templateName, customerData.Email, cartItems, "orderitems", orderDetails);
+                                    { "name", x.User.FirstName },
+                                    { "totalprice", o.TotalPrice },
+                                    { "shippingdate", o.ShippingDate },
+                                    { "campaignid", o.CampaignId }
+                                };
+                                SendEmailNotification(templateName, x.User.Email, o.Items, "orderitems", orderDetails);
                             });
                         }
                     });
                     return true;
                 }
-                return false;
             }
             catch (Exception ex)
             {
