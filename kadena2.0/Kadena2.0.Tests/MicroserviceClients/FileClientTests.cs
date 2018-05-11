@@ -1,5 +1,6 @@
 ﻿using Xunit;
 using Kadena2.MicroserviceClients.Clients;
+using Kadena2.MicroserviceClients;
 using System.Threading.Tasks;
 
 namespace Kadena.Tests.MicroserviceClients
@@ -9,7 +10,7 @@ namespace Kadena.Tests.MicroserviceClients
         [Fact(DisplayName = "FileClient.GetFileKey()")]
         public async Task GetFileKey()
         {
-            var actualResult = await Sut.GetFileKey(string.Empty, string.Empty, string.Empty);
+            var actualResult = await Sut.GetFileKey(FileSystem.Mailing, FileType.Original, string.Empty, string.Empty, string.Empty);
 
             Assert.NotNull(actualResult);
         }

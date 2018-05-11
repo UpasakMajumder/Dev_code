@@ -65,13 +65,13 @@ namespace Kadena2.MicroserviceClients.Clients
             return await Get<string>(url);
         }
 
-        public async Task<BaseResponseDto<string>> GetFileKey(string siteName, string fileName, string extension)
+        public async Task<BaseResponseDto<string>> GetFileKey(FileSystem system, FileType fileType, string siteName, string fileName, string extension)
         {
             var url = $"{BaseUrlOld}/api/filelink";
             var body = new
             {
-                System = "Mailing",
-                Filetype = "Original",
+                System = system.ToString(),
+                Filetype = fileType.ToString(),
                 client = siteName,
                 FileName = fileName,
                 FileExt = extension
