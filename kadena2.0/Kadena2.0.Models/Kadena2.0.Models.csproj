@@ -117,6 +117,7 @@
     <Compile Include="SiteSettings\Settings.Microservices.cs" />
     <Compile Include="SiteSettings\Settings.OrderDetails.cs" />
     <Compile Include="Site\ModuleMapping.cs" />
+    <Compile Include="SubmitOrder\MailingList.cs" />
     <Compile Include="SubmitOrder\OrderCartItem.cs" />
     <Compile Include="SubmitOrder\OrderItemSku.cs" />
     <Compile Include="TemplatedProduct\EmailProofRequest.cs" />
