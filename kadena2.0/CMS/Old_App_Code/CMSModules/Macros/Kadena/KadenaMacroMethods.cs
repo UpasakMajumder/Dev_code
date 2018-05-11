@@ -236,7 +236,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 throw new NotSupportedException();
             }
 
-            var numberOfItemsInPackage = (int)parameters[0];
+            var numberOfItemsInPackage = parameters[0] == null ? 1 : (int)parameters[0];
             var unitOfmeasure = (string)parameters[1];
             var cultureCode = (string)parameters[2];
 

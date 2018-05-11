@@ -539,7 +539,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             ddlBrand.SelectedValue = product.BrandID.ToString();
                             txtEstimatedprice.Text = ValidationHelper.GetString(product.EstimatedPrice, string.Empty);
                             ddlProductcategory.SelectedValue = product.CategoryID.ToString();
-                            txtQty.Text = ValidationHelper.GetString(product.QtyPerPack, string.Empty);
+                            txtQty.Text = ValidationHelper.GetString(product.SKU.GetIntegerValue("SKUNumberOfItemsInPackage",1), string.Empty);
                            
                             if (!string.IsNullOrEmpty(product.CustomItemSpecs))
                             {
@@ -766,7 +766,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             EstimatedPrice = ValidationHelper.GetDouble(txtEstimatedprice.Text, default(double)),
                             BrandID = ValidationHelper.GetInteger(hfBrandItemID.Value, default(int)),
                             CategoryID = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, default(int)),
-                            QtyPerPack = ValidationHelper.GetInteger(txtQty.Text, default(int)),
                             ItemSpecs = ValidationHelper.GetString(itemSpecsID, string.Empty),
                             CustomItemSpecs = ValidationHelper.GetString(customItemSpecs, string.Empty),
                             State = ValidationHelper.GetInteger(ddlState.SelectedValue, default(int)),
@@ -796,6 +795,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                             newProduct.SKUValidUntil = ValidationHelper.GetDateTime(txtExpireDate.Text, DateTime.MinValue);
                         }
                         newProduct.SetValue("SKUProductCustomerReferenceNumber", ValidationHelper.GetString(ddlPos.SelectedValue, string.Empty));
+                        newProduct.SetValue("SKUNumberOfItemsInPackage", ValidationHelper.GetInteger(txtQty.Text, default(int)));
                         SKUInfoProvider.SetSKUInfo(newProduct);
                         products.NodeSKUID = newProduct.SKUID;
                         products.Insert(createNode, true);
@@ -838,7 +838,6 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                     product.State = ValidationHelper.GetInteger(ddlState.SelectedValue, default(int));
                     product.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int));
                     product.CategoryID = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0);
-                    product.QtyPerPack = ValidationHelper.GetInteger(txtQty.Text, default(int));
                     product.ItemSpecs = ValidationHelper.GetString(itemSpecsID, string.Empty);
                     product.CustomItemSpecs = ValidationHelper.GetString(customItemSpecs, string.Empty);
                     product.EstimatedPrice = ValidationHelper.GetDouble(txtEstimatedprice.Text, default(double));
@@ -863,6 +862,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
                         updateProduct.SKUSiteID = CurrentSite.SiteID;
                         updateProduct.SKUProductType = SKUProductTypeEnum.EProduct;
                         updateProduct.SKUPrice = 0;
+                        updateProduct.SetValue("SKUNumberOfItemsInPackage", ValidationHelper.GetInteger(txtQty.Text, default(int)));
                         SKUInfoProvider.SetSKUInfo(updateProduct);
                     }
                     product.Update();

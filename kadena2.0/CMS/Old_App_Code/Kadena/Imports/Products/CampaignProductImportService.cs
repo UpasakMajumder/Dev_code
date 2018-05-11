@@ -261,7 +261,8 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
             }
             if (!string.IsNullOrWhiteSpace(product.BundleQuantity))
             {
-                newProduct.SetValue("QtyPerPack", product.BundleQuantity);
+                sku.SetValue("SKUNumberOfItemsInPackage", Convert.ToInt32(product.BundleQuantity));
+                sku.Update();
             }
 
             if (existingProduct == null)
