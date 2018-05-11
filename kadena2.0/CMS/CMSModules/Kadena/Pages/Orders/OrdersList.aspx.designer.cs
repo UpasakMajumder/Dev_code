@@ -40,13 +40,13 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders {
         protected global::System.Web.UI.WebControls.Literal message;
         
         /// <summary>
-        /// siteSelector control.
+        /// siteDropDown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMSFormControls_Sites_SiteSelector siteSelector;
+        protected global::System.Web.UI.WebControls.DropDownList siteDropDown;
         
         /// <summary>
         /// dateFrom control.

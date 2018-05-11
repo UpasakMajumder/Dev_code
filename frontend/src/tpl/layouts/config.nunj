@@ -120,6 +120,44 @@
           hide: 'hide',
         }
       },
+      registration: {
+        title: 'Sign Up',
+        labels: {
+          firstName: 'First Name',
+          lastName: 'Last Name',
+          email: 'Email',
+          password: 'Password',
+          confirmPassword: 'Confirm Password',
+          button: 'Sign Up'
+        },
+        errors: {
+          required: 'Required!',
+          email: 'Invalid Email!',
+          confirmPassword: 'Passwords are not equal'
+        },
+        url: PATH + 'registration',
+        toLogin: {
+          url: 'lol',
+          text: 'To Login'
+        },
+        strength: {
+          minLength: 3,
+          preferedLength: 7,
+          minNonAlphaNumChars: 0,
+          preferedNonAlphaNumChars: 0,
+          regularExpression: null,
+          policyStrings: [
+            'Not Accepted',
+            'Weak',
+            'Acceptable',
+            'Average',
+            'Strong',
+            'Excelent'
+          ],
+          usePolicy: true,
+          info: 'Hello <br> How Are you? <br> Nice!'
+        }
+      },
       login: {
         email: 'E-MAIL',
         emailPlaceholder: 'your@email.com',

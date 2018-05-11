@@ -63,6 +63,7 @@
     <Compile Include="FyBudget\FyBudget.cs" />
     <Compile Include="IBTF\IBTF.cs" />
     <Compile Include="IBTF\IBTFAdjustment.cs" />
+    <Compile Include="Login\Registration.cs" />
     <Compile Include="ModuleAccess\KnownModules.cs" />
     <Compile Include="ModuleAccess\KnownPermissions.cs" />
     <Compile Include="ModuleAccess\KadenaModuleState.cs" />
@@ -71,7 +72,6 @@
     <Compile Include="Orders\OrderFilter.cs" />
     <Compile Include="Orders\OrderReport.cs" />
     <Compile Include="Orders\OrderStatus.cs" />
-    <Compile Include="Membership\UserSettings.cs" />
     <Compile Include="Product\Border.cs" />
     <Compile Include="Product\CampaignsProduct.cs" />
     <Compile Include="Product\Price.cs" />
@@ -93,7 +93,7 @@
     <Compile Include="Checkout\AddressDialog.cs" />
     <Compile Include="Checkout\ButtonLabels.cs" />
     <Compile Include="Checkout\CartEmptyInfo.cs" />
-    <Compile Include="Checkout\CartItem.cs" />
+    <Compile Include="Checkout\CheckoutCartItem.cs" />
     <Compile Include="Checkout\CartItems.cs" />
     <Compile Include="Checkout\CartItemsPreview.cs" />
     <Compile Include="Checkout\CartPrice.cs" />
@@ -117,6 +117,8 @@
     <Compile Include="SiteSettings\Settings.Microservices.cs" />
     <Compile Include="SiteSettings\Settings.OrderDetails.cs" />
     <Compile Include="Site\ModuleMapping.cs" />
+    <Compile Include="SubmitOrder\OrderCartItem.cs" />
+    <Compile Include="SubmitOrder\OrderItemSku.cs" />
     <Compile Include="TemplatedProduct\EmailProofRequest.cs" />
     <Compile Include="_Common\ContentTypes.cs" />
     <Compile Include="_Common\Country.cs" />

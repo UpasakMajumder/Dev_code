@@ -8,11 +8,11 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         User GetUser(string mail);
         bool SaveLocalization(string code);        
         bool UserIsInCurrentSite(int userId);
-        User GetUserByUserId(int userId);        
-        void CreateUser(User user, int siteId, UserSettings userSettings = null);
-        void UpdateUser(User user, UserSettings userSettings = null);
+        User GetUserByUserId(int userId);
+        void CreateUser(User user, int siteId);
+        void UpdateUser(User user);
         void LinkCustomerToUser(int customerId, int userId);
-        UserSettings GetUserSettings(int userId);
         void AcceptTaC();
+        void SetPassword(int userId, string password);
     }
 }

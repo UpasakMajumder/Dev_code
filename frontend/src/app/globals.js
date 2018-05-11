@@ -24,7 +24,8 @@ const {
   tac,
   filteredRecentOrders,
   recentOrders,
-  emailProof
+  emailProof,
+  registration
 } = localization;
 
 export const LOGIN = login;
@@ -51,3 +52,4 @@ export const RECENT_ORDERS = recentOrders;
 export const TAC = tac;
 export const FILTERED_RECENT_ORDERS = filteredRecentOrders;
 export const EMAIL_PROOF = emailProof;
+export const REGISTRATION = registration;
