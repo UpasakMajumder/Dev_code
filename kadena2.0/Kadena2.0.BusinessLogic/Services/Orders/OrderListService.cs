@@ -94,14 +94,31 @@ namespace Kadena.BusinessLogic.Services.Orders
         public Task<OrderHead> GetOrdersToApprove()
         {
             var siteName = _site.GetKenticoSite().Name;
-            var isApprover = _permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.ApproveOrders, siteName);
+            var isApprover = _permissions.CurrentUserHasPermission(
+                ModulePermissions.KadenaOrdersModule, 
+                ModulePermissions.KadenaOrdersModule.ApproveOrders, 
+                siteName);
             if (!isApprover)
             {
-                throw new UnauthorizedAccessException($"Access denied. Missing permission '{ModulePermissions.KadenaOrdersModule.ApproveOrders}'");
+                throw new UnauthorizedAccessException(
+                    $"Access denied. Missing permission '{ModulePermissions.KadenaOrdersModule.ApproveOrders}'");
+            }
+
+            OrderListDto WhereCurrentUserIsApprover(OrderListDto orders)
+            {
+                var currentUser = _kenticoCustomers.GetCurrentCustomer();
+                var approvingCustomers = _kenticoCustomers
+                    .GetCustomersByApprover(currentUser.UserID)
+                    .ToList();
+                orders.Orders = orders.Orders
+                    //.Where(o => approvingCustomers.Any(c => c.Id == o.CustomerId))
+                    .ToList();
+
+                return orders;
             }
 
             var filter = CreateFilterForOrdersToApprove();
-            return GetHeaders(filter);
+            return GetHeaders(filter, WhereCurrentUserIsApprover);
         }
 
         private OrderListFilter CreateFilterForOrdersToApprove()
@@ -113,8 +130,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                 ItemsPerPage = almostUnlimitedNumberOfItems,
                 Status = (int)OrderStatus.WaitingForApproval
             };
-
-            // todo: filter orders to show only those where current user is approver
 
             return filter;
         }
@@ -136,9 +151,15 @@ namespace Kadena.BusinessLogic.Services.Orders
             return GetHeaders(filter);
         }
 
-        private async Task<OrderHead> GetHeaders(OrderListFilter filter)
+        private async Task<OrderHead> GetHeaders(OrderListFilter filter, Func<OrderListDto, OrderListDto> afterFilter = null)
         {
-            var orderList = _mapper.Map<OrderList>(await GetOrders(filter));
+            var orders = await GetOrders(filter);
+            if (afterFilter != null)
+            {
+                orders = afterFilter(orders);
+            }
+
+            var orderList = _mapper.Map<OrderList>(orders);
             MapOrdersStatusToGeneric(orderList?.Orders);
             var pages = CalculateNumberOfPages(orderList.TotalCount);
             return new OrderHead
