@@ -7,6 +7,6 @@ namespace Kadena.Models.Checkout
         public string EmptyCartMessage { get; set; }
         public CartPrice SummaryPrice { get; set; }
 
-        public List<CartItem> Items { get; set; }
+        public List<CheckoutCartItem> Items { get; set; }
     }
 }

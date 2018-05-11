@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
@@ -21,9 +20,6 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
         public string UnitOfMeasure { get; set; }
 
         public decimal TotalPrice { get; set; }
-
-        public decimal TotalTax { get; set; }
-
         public MailingListDTO MailingList { get; set; }
         public string DesignFileKey { get; set; }
         public Dictionary<string, string> Attributes { get; set; }

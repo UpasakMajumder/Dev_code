@@ -15,7 +15,7 @@ namespace Kadena.Models
 
         public DateTime? ShippingDate { get; set; }
 
-        public IEnumerable<CartItem> Items { get; set; }
+        public IEnumerable<CheckoutCartItem> Items { get; set; }
 
         public Button ViewBtn { get; set; }
 
