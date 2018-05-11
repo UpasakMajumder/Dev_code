@@ -11,7 +11,7 @@ namespace Kadena.Models.Membership
         public string Email { get; set; }
         public string UserName { get; set; }
         public bool IsExternal { get; set; }
-
+        public string CallBackUrl { get; set; }
         public string FullName => $"{FirstName} {LastName}";
     }
 }

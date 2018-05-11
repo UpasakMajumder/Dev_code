@@ -346,7 +346,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 };
         }
 
-        private List<List<OrderDialogTableCell>> GetOrderItemsForDialog(IEnumerable<CartItem> items)
+        private List<List<OrderDialogTableCell>> GetOrderItemsForDialog(IEnumerable<CheckoutCartItem> items)
         {
             return items.Select(i =>
             {
