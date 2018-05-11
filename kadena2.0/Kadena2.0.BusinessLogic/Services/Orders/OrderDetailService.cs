@@ -206,23 +206,25 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         private string GetPdfUrl(string orderId, Dto.ViewOrder.MicroserviceResponses.OrderItemDTO orderItem, Product orderedProduct)
         {
-            if (!orderItem.Type.Contains(OrderItemTypeDTO.TemplatedProduct.ToString()))
+            if (orderItem.Type.Contains(OrderItemTypeDTO.TemplatedProduct.ToString()) ||
+                orderItem.Type.Contains(OrderItemTypeDTO.Mailing.ToString()))
             {
-                return string.Empty;
+
+                if (orderedProduct.HiResPdfDownloadEnabled)
+                {
+                    return pdfService.GetHiresPdfUrl(orderId, orderItem.LineNumber);
+                }
+
+                if (orderedProduct == null)
+                {
+                    kenticoLog.LogError("GetPdfUrl", $"Couldn't find product for item line {orderItem.LineNumber} from order {orderId}");
+                    return string.Empty;
+                }
+
+                return pdfService.GetLowresPdfUrl(orderItem.TemplateId, orderedProduct.TemplateLowResSettingId);
             }
 
-            if (orderedProduct.HiResPdfDownloadEnabled)
-            {
-                return pdfService.GetHiresPdfUrl(orderId, orderItem.LineNumber);
-            }
-
-            if (orderedProduct == null)
-            {
-                kenticoLog.LogError("GetPdfUrl", $"Couldn't find product for item line {orderItem.LineNumber} from order {orderId}");
-                return string.Empty;
-            }
-
-            return pdfService.GetLowresPdfUrl(orderItem.TemplateId, orderedProduct.TemplateLowResSettingId);
+            return string.Empty;
         }
 
         private async Task<List<OrderedItem>> MapOrderedItems(List<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO> items, string orderId)
@@ -232,7 +234,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                 var templatedProduct = i.TemplateId != Guid.Empty ? products.GetProductBySkuId(i.SkuId) : null;
                 var previewUrl = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, templatedProduct?.TemplateLowResSettingId ?? Guid.Empty);
                 var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
-                var pdfUrl = string.Empty;
 
                 return new OrderedItem()
                 {

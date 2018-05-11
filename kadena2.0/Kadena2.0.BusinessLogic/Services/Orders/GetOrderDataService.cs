@@ -63,7 +63,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
             var billingAddress = shoppingCart.GetDefaultBillingAddress();
             var site = siteProvider.GetKenticoSite();
             var paymentMethod = shoppingCart.GetPaymentMethod(request.PaymentMethod.Id);
-            var cartItems = shoppingCartItems.GetShoppingCartItems();
+            var cartItems = shoppingCartItems.GetOrderCartItems();
             var currency = siteProvider.GetSiteCurrency();
             var totals = shoppingCart.GetShoppingCartTotals();
             totals.TotalTax = await taxService.EstimateTotalTax(shippingAddress);
@@ -122,7 +122,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
             };
 
             // If only mailing list items in cart, we are not picking any delivery option
-            if (!cartItems.All(i => i.IsMailingList))
+            if (!cartItems.All( i => ProductTypes.IsOfType( i.ProductType, ProductTypes.MailingProduct)))
             {
                 var deliveryMethod = shoppingCart.GetShippingOption(request.DeliveryMethod);
                 orderDto.ShippingOption = new ShippingOptionDTO()
@@ -137,7 +137,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
             return orderDto;
         }
 
-        private OrderItemDTO MapCartItemTypeToOrderItemType(CartItem item)
+        private OrderItemDTO MapCartItemTypeToOrderItemType(OrderCartItem item)
         {
             var mappedItem = mapper.Map<OrderItemDTO>(item);
             mappedItem.Type = ConvertCartItemProductTypeToOrderItemProductType(item.ProductType);
