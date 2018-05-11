@@ -111,7 +111,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     .GetCustomersByApprover(currentUser.UserID)
                     .ToList();
                 orders.Orders = orders.Orders
-                    //.Where(o => approvingCustomers.Any(c => c.Id == o.CustomerId))
+                    .Where(o => approvingCustomers.Any(c => c.Id == o.CustomerId))
                     .ToList();
 
                 return orders;
