@@ -116,8 +116,11 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                                 CampaignId = ord.Campaign.ID,
                                 Items = ord.Items.Select(i => new
                                 {
-                                    SKUNumber = i.Name,
-                                    Name = i.Quantity,
+                                    i.SKUNumber,
+                                    i.Name,
+                                    i.Quantity,
+                                    Price = i.UnitPrice,
+                                    PosNumber = GetPosNum(i.SKUNumber)
                                 })
                             }).ToList()
                         })
@@ -200,7 +203,14 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                 .FirstOrDefault();
             return skuData != null ? skuData.GetValue("SKUProductCustomerReferenceNumber", string.Empty) : string.Empty;
         }
-
+        public static string GetPosNum(string skuNumber)
+        {
+            var skuData = SKUInfoProvider.GetSKUs()
+                .WhereEquals(nameof(SKUInfo.SKUNumber), skuNumber)
+                .Columns("SKUProductCustomerReferenceNumber")
+                .FirstOrDefault();
+            return skuData != null ? skuData.GetValue("SKUProductCustomerReferenceNumber", string.Empty) : string.Empty;
+        }
 
     }
 }
