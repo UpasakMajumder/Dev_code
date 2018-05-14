@@ -1,7 +1,10 @@
 ﻿using Kadena.AmazonFileSystemProvider;
 using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.MicroserviceClients;
+using Kadena2.MicroserviceClients.Contracts;
 using System;
+using System.IO;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -10,16 +13,21 @@ namespace Kadena.BusinessLogic.Services
         private readonly IS3PathService s3PathService;
         private readonly IKenticoResourceService resourceService;
         private readonly IKenticoCustomItemProvider customItemProvider;
+        private readonly IFileClient fileClient;
+        private readonly IKenticoSiteProvider siteProvider;
 
         private string _environmentFolder = null;
         private string _defaultSpecialFolder = null;
         private const string _environmentClass = "KDA.Environment";
 
-        public PathService(IS3PathService s3PathService, IKenticoResourceService resourceService, IKenticoCustomItemProvider customItemProvider)
+        public PathService(IS3PathService s3PathService, IKenticoResourceService resourceService, IKenticoCustomItemProvider customItemProvider,
+            IFileClient fileClient, IKenticoSiteProvider siteProvider)
         {
             this.s3PathService = s3PathService ?? throw new ArgumentNullException(nameof(s3PathService));
             this.resourceService = resourceService ?? throw new ArgumentNullException(nameof(resourceService));
             this.customItemProvider = customItemProvider ?? throw new ArgumentNullException(nameof(customItemProvider));
+            this.fileClient = fileClient ?? throw new ArgumentNullException(nameof(fileClient));
+            this.siteProvider = siteProvider ?? throw new ArgumentNullException(nameof(siteProvider));
         }
 
         private string EnvironmentFolder
@@ -66,6 +74,19 @@ namespace Kadena.BusinessLogic.Services
         public string GetObjectKeyFromPath(string path, bool lower)
         {
             var key = s3PathService.GetObjectKeyFromPath(path, lower);
+            var system = FileSystem.Create(key);
+            if (system != null)
+            {
+                var site = siteProvider.GetCurrentSiteCodeName();
+                var filename = Path.GetFileNameWithoutExtension(key);
+                var extension = Path.GetExtension(key);
+                var fileKeyResult = fileClient.GetFileKey(system, FileType.Original, site, filename, extension).Result;
+                if (!fileKeyResult.Success)
+                {
+                    throw new InvalidOperationException(fileKeyResult.ErrorMessages);
+                }
+                return fileKeyResult.Payload;
+            }
             if (key.StartsWith(DefaultSpecialFolder))
             {
                 return key;

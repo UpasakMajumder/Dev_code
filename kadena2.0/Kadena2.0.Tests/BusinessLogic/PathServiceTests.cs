@@ -3,8 +3,12 @@ using Xunit;
 using Moq;
 using Kadena.AmazonFileSystemProvider;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.Models.Common;
 using System.Collections.Generic;
+using Kadena2.MicroserviceClients.Contracts;
+using Kadena.Dto.General;
+using System.Threading.Tasks;
+using Kadena2.MicroserviceClients;
+using System;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -12,8 +16,8 @@ namespace Kadena.Tests.BusinessLogic
     {
         public PathServiceTests()
         {
-            Setup<IKenticoCustomItemProvider, Environment>(s => s.GetItem<Environment>(0, It.IsAny<string>()), 
-                new Environment { AmazonS3Folder = "dev" });
+            Setup<IKenticoCustomItemProvider, Kadena.Models.Common.Environment>(s => s.GetItem<Kadena.Models.Common.Environment>(0, It.IsAny<string>()),
+                new Kadena.Models.Common.Environment { AmazonS3Folder = "dev" });
         }
 
         public static IEnumerable<object[]> GetDependencies()
@@ -21,25 +25,46 @@ namespace Kadena.Tests.BusinessLogic
             yield return new object[] {
                 null,
                 new Mock<IKenticoResourceService>().Object,
-                new Mock<IKenticoCustomItemProvider>().Object
+                new Mock<IKenticoCustomItemProvider>().Object,
+                new Mock<IFileClient>().Object,
+                new Mock<IKenticoSiteProvider>().Object,
             };
             yield return new object[] {
                 new Mock<IS3PathService>().Object,
                 null,
-                new Mock<IKenticoCustomItemProvider>().Object
+                new Mock<IKenticoCustomItemProvider>().Object,
+                new Mock<IFileClient>().Object,
+                new Mock<IKenticoSiteProvider>().Object,
             };
             yield return new object[] {
                 new Mock<IS3PathService>().Object,
                 new Mock<IKenticoResourceService>().Object,
+                null,
+                new Mock<IFileClient>().Object,
+                new Mock<IKenticoSiteProvider>().Object,
+            };
+            yield return new object[] {
+                new Mock<IS3PathService>().Object,
+                new Mock<IKenticoResourceService>().Object,
+                new Mock<IKenticoCustomItemProvider>().Object,
+                null,
+                new Mock<IKenticoSiteProvider>().Object,
+            };
+            yield return new object[] {
+                new Mock<IS3PathService>().Object,
+                new Mock<IKenticoResourceService>().Object,
+                new Mock<IKenticoCustomItemProvider>().Object,
+                new Mock<IFileClient>().Object,
                 null
             };
         }
 
-        [Theory(DisplayName = "new PathService()")]
+        [Theory(DisplayName = "PathService()")]
         [MemberData(nameof(GetDependencies))]
-        public void ConstructorNull(IS3PathService pathService, IKenticoResourceService resourceService, IKenticoCustomItemProvider customItemProvider)
+        public void ConstructorNull(IS3PathService pathService, IKenticoResourceService resourceService, IKenticoCustomItemProvider customItemProvider,
+            IFileClient fileClient, IKenticoSiteProvider siteProvider)
         {
-            Assert.Throws<System.ArgumentNullException>(() => new PathService(pathService, resourceService, customItemProvider));
+            Assert.Throws<System.ArgumentNullException>(() => new PathService(pathService, resourceService, customItemProvider, fileClient, siteProvider));
         }
 
         [Fact(DisplayName = "PathService.CurrentDirectory")]
@@ -53,7 +78,7 @@ namespace Kadena.Tests.BusinessLogic
         [Fact(DisplayName = "PathService.GetObjectKeyFromPath() | Environment setting not found")]
         public void GetObjectKeyFromPath_EnvironmentNotFound()
         {
-            Setup<IKenticoCustomItemProvider, Environment>(s => s.GetItem<Environment>(0, It.IsAny<string>()), null);
+            Setup<IKenticoCustomItemProvider, Kadena.Models.Common.Environment>(s => s.GetItem<Kadena.Models.Common.Environment>(0, It.IsAny<string>()), null);
 
             System.Action action = () => Sut.GetObjectKeyFromPath("", false);
 
@@ -67,7 +92,9 @@ namespace Kadena.Tests.BusinessLogic
             var expectedResult = "media/folder1/folder2/file.ext";
 
             Setup<IS3PathService, string>(s => s.GetObjectKeyFromPath(argument, It.IsAny<bool>()), "folder1/folder2/file.ext");
-            Setup<IKenticoCustomItemProvider, Environment>(s => s.GetItem<Environment>(0, It.IsAny<string>()), new Environment());
+            Setup<IKenticoCustomItemProvider, Kadena.Models.Common.Environment>(
+                s => s.GetItem<Kadena.Models.Common.Environment>(0, It.IsAny<string>()), 
+                new Kadena.Models.Common.Environment());
 
             var actualResult = Sut.GetObjectKeyFromPath(argument, false);
 
@@ -76,15 +103,14 @@ namespace Kadena.Tests.BusinessLogic
             Verify<IS3PathService>(s => s.GetObjectKeyFromPath(It.IsAny<string>(), It.IsAny<bool>()), Times.AtLeastOnce);
         }
 
-        [Fact(DisplayName = "PathService.GetObjectKeyFromPath() | Key without special folder")]
-        public void GetObjectKeyFromPath_NotInSpecialFolder()
+        [Theory(DisplayName = "PathService.GetObjectKeyFromPath() | Key without special folder")]
+        [InlineData("folder1/folder2/file.ext", "dev/media/folder1/folder2/file.ext")]
+        [InlineData("folder1/file.ext", "dev/media/folder1/file.ext")]
+        public void GetObjectKeyFromPath_NotInSpecialFolder(string path, string expectedResult)
         {
-            var argument = "\\folder1\\folder2\\file.ext";
-            var expectedResult = "dev/media/folder1/folder2/file.ext";
+            Setup<IS3PathService, string, bool, string>(s => s.GetObjectKeyFromPath(path, It.IsAny<bool>()), (p, l) => p);
 
-            Setup<IS3PathService, string>(s => s.GetObjectKeyFromPath(argument, It.IsAny<bool>()), "folder1/folder2/file.ext");
-
-            var actualResult = Sut.GetObjectKeyFromPath(argument, false);
+            var actualResult = Sut.GetObjectKeyFromPath(path, false);
 
             Assert.NotNull(actualResult);
             Assert.Equal(expectedResult, actualResult);
@@ -104,6 +130,41 @@ namespace Kadena.Tests.BusinessLogic
             Assert.NotNull(actualResult);
             Assert.Equal(expectedResult, actualResult);
             Verify<IS3PathService>(s => s.GetObjectKeyFromPath(It.IsAny<string>(), It.IsAny<bool>()), Times.AtLeastOnce);
+        }
+
+        [Fact(DisplayName = "PathService.GetObjectKeyFromPath() | System key generated")]
+        public void GetObjectKeyFromPath_SystemKeyGenerated()
+        {
+            var argument = $"{FileSystem.Mailing.SystemFolder}/subfolder1/file.ext1.ext";
+            var expectedResult = "generated path";
+
+            Setup<IS3PathService, string>(s => s.GetObjectKeyFromPath(argument, It.IsAny<bool>()), argument);
+            Setup<IFileClient, Task<BaseResponseDto<string>>>(
+                s => s.GetFileKey(It.IsAny<FileSystem>(), FileType.Original, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()),
+                Task.FromResult(new BaseResponseDto<string> { Success = true, Payload = expectedResult }));
+
+            var actualResult = Sut.GetObjectKeyFromPath(argument, false);
+
+            Assert.NotNull(actualResult);
+            Assert.Equal(expectedResult, actualResult);
+            Verify<IFileClient>(s => s.GetFileKey(FileSystem.Mailing, FileType.Original, It.IsAny<string>(), "file.ext1", ".ext"), Times.Once);
+        }
+
+        [Fact(DisplayName = "PathService.GetObjectKeyFromPath() | System key isn't generated")]
+        public void GetObjectKeyFromPath_SystemKeyNoGenerated()
+        {
+            var argument = $"{FileSystem.Mailing.SystemFolder}/subfolder1/file.ext";
+            var expectedResult = "generated path";
+
+            Setup<IS3PathService, string>(s => s.GetObjectKeyFromPath(argument, It.IsAny<bool>()), argument);
+            Setup<IFileClient, Task<BaseResponseDto<string>>>(
+                s => s.GetFileKey(It.IsAny<FileSystem>(), FileType.Original, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()),
+                Task.FromResult(new BaseResponseDto<string> { Success = false, Payload = expectedResult }));
+
+            Action action = () => Sut.GetObjectKeyFromPath(argument, false);
+
+            Assert.Throws<InvalidOperationException>(action);
+            Verify<IFileClient>(s => s.GetFileKey(It.IsAny<FileSystem>(), FileType.Original, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
 
         [Fact(DisplayName = "PathService.GetPathFromObjectKey() | Success")]
