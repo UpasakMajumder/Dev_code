@@ -79,7 +79,7 @@ namespace Kadena.BusinessLogic.Services
             {
                 var site = siteProvider.GetCurrentSiteCodeName();
                 var filename = Path.GetFileNameWithoutExtension(key);
-                var extension = Path.GetExtension(key);
+                var extension = Path.GetExtension(key).TrimStart('.');
                 var fileKeyResult = fileClient.GetFileKey(system, FileType.Original, site, filename, extension).Result;
                 if (!fileKeyResult.Success)
                 {

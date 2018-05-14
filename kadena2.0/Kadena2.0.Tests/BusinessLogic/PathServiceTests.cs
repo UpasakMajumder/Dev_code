@@ -147,7 +147,7 @@ namespace Kadena.Tests.BusinessLogic
 
             Assert.NotNull(actualResult);
             Assert.Equal(expectedResult, actualResult);
-            Verify<IFileClient>(s => s.GetFileKey(FileSystem.Mailing, FileType.Original, It.IsAny<string>(), "file.ext1", ".ext"), Times.Once);
+            Verify<IFileClient>(s => s.GetFileKey(FileSystem.Mailing, FileType.Original, It.IsAny<string>(), "file.ext1", "ext"), Times.Once);
         }
 
         [Fact(DisplayName = "PathService.GetObjectKeyFromPath() | System key isn't generated")]
