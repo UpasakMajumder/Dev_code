@@ -479,6 +479,7 @@
     <Compile Include="BusinessLogic\PdfHiresServiceTests.cs" />
     <Compile Include="Infrastructure\AutoMapperTests.cs" />
     <Compile Include="MicroserviceClients\FileSystemTests.cs" />
+    <Compile Include="MicroserviceClients\ParsingClientTests.cs" />
     <Compile Include="MicroserviceClients\StatisticsClientTests.cs" />
     <Compile Include="BusinessLogic\PdfLowresServiceTests.cs" />
     <Compile Include="Models\OrderFilterTests.cs" />
