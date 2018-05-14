@@ -10,7 +10,7 @@ namespace Kadena.Tests.MicroserviceClients
         {
             var expectedResult = FileSystem.Mailing;
 
-            var actualResult = FileSystem.Create("klist/");
+            var actualResult = FileSystem.Create($"{expectedResult.SystemFolder}asfkjhjdhjhsjf");
 
             Assert.Equal(expectedResult, actualResult);
         }

@@ -6,22 +6,28 @@ namespace Kadena2.MicroserviceClients
     public class FileSystem
     {
         private readonly string _value;
+        public string SystemFolder { get; }
 
-        public static FileSystem Mailing { get; } = new FileSystem("mailing");
+        public static FileSystem Mailing { get; } = new FileSystem("mailing", "klist/");
 
         private static readonly Dictionary<FileSystem, string> systemPaths = new Dictionary<FileSystem, string>
         {
-            { Mailing, "klist/"}
+            { Mailing, Mailing.SystemFolder}
         };
 
         public static FileSystem Create(string path)
         {
-            return systemPaths.FirstOrDefault(sp => sp.Value.Equals(path)).Key;
+            if (string.IsNullOrEmpty(path))
+            {
+                return null;
+            }
+            return systemPaths.FirstOrDefault(sp => path.StartsWith(sp.Value)).Key;
         }
 
-        private FileSystem(string value)
+        private FileSystem(string value, string systemFolder)
         {
             _value = value;
+            SystemFolder = systemFolder;
         }
 
         public override string ToString()
