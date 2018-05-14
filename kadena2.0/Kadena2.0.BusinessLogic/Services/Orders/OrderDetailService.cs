@@ -209,16 +209,15 @@ namespace Kadena.BusinessLogic.Services.Orders
             if (orderItem.Type.Contains(OrderItemTypeDTO.TemplatedProduct.ToString()) ||
                 orderItem.Type.Contains(OrderItemTypeDTO.Mailing.ToString()))
             {
-
-                if (orderedProduct.HiResPdfDownloadEnabled)
-                {
-                    return pdfService.GetHiresPdfUrl(orderId, orderItem.LineNumber);
-                }
-
                 if (orderedProduct == null)
                 {
                     kenticoLog.LogError("GetPdfUrl", $"Couldn't find product for item line {orderItem.LineNumber} from order {orderId}");
                     return string.Empty;
+                }
+
+                if (orderedProduct.HiResPdfDownloadEnabled)
+                {
+                    return pdfService.GetHiresPdfUrl(orderId, orderItem.LineNumber);
                 }
 
                 return pdfService.GetLowresPdfUrl(orderItem.TemplateId, orderedProduct.TemplateLowResSettingId);

@@ -107,8 +107,8 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers
                 throw new ArgumentOutOfRangeException(nameof(siteId));
             }
 
-            var userSet = UserInfoProvider.GetRequiredResourceUsers(ModulePermissions.KadenaOrdersModule,
-                                                                    ModulePermissions.KadenaOrdersModule.ApproveOrders, 
+            var userSet = UserInfoProvider.GetRequiredResourceUsers(resourceName,
+                                                                    permissionName, 
                                                                     site.SiteName);
 
             var rows = userSet?.Tables?[0]?.Rows;

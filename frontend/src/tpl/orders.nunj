@@ -7,7 +7,22 @@
 
 {% block content %}
   <div class="recent-orders">
-    {% include 'components/statistics.nunj' %}
-    <div class="r-recent-orders"></div>
+
+    <div class="css-tabs__container js-tabs" data-tab=".js-tab-recent-orders" data-tab-active="active" data-tab-active-default=".js-tab-requiring-approval">
+      <ul class="css-tabs__list">
+        <li data-id="requiring-approval" class="css-tabs__tab js-tab-recent-orders" data-tab-content=".js-tab-requiring-approval">Orders requiring approval</li>
+        <li data-id="orders" class="css-tabs__tab js-tab-recent-orders" data-tab-content=".js-tab-orders">Orders</li>
+      </ul>
+
+      <div>
+        <div class="css-tabs__content js-tab-requiring-approval">
+          <div data-react='{ "initURL": "http://localhost:3000/api/order/recent/requiring-approval" }' class="r-recent-orders"></div>
+        </div>
+        <div class="css-tabs__content js-tab-orders">
+          <div data-react='{ "initURL": "http://localhost:3000/api/order/recent/ui" }' class="r-recent-orders"></div>
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock %}
+
