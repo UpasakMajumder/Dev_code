@@ -475,6 +475,7 @@
     <Compile Include="BusinessLogic\FileServiceTests.cs" />
     <Compile Include="BusinessLogic\ImageServiceTests.cs" />
     <Compile Include="BusinessLogic\PathServiceTests.cs" />
+    <Compile Include="MicroserviceClients\ExportClientTests.cs" />
     <Compile Include="MicroserviceClients\FileClientTests.cs" />
     <Compile Include="BusinessLogic\PdfHiresServiceTests.cs" />
     <Compile Include="Infrastructure\AutoMapperTests.cs" />
