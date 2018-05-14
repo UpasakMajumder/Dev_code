@@ -2,6 +2,7 @@
 using Moq;
 using Kadena.BusinessLogic.Services;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -72,6 +73,24 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(expectedResult, actualResult, true);
         }
 
+        [Theory(DisplayName = "ImageService.GetThumbnailLink() | Permanent link")]
+        [InlineData(@"http://example.com/getmedia/f0c239da-cab0-4e8e-be22-fc83ee4112fc/image", @"http://example.com")]
+        [InlineData(@"/getmedia/f0c239da-cab0-4e8e-be22-fc83ee4112fc/image", @"http://example.com")]
+        [InlineData(@"getmedia/f0c239da-cab0-4e8e-be22-fc83ee4112fc/image", @"http://example.com")]
+        [InlineData(@"~/getmedia/f0c239da-cab0-4e8e-be22-fc83ee4112fc/image", @"http://example.com")]
+        public void GetThumbnailLink_PermanentLink(string originalImageLink, string baseLink)
+        {
+            var expectedResult = "/getmedia/f0c239da-cab0-4e8e-be22-fc83ee4112fc/image?MaxSideSize=200";
+
+            Setup<IKenticoSiteProvider, string>(s => s.GetFullUrl(), baseLink);
+            Setup<IKenticoMediaProvider, bool>(s => s.IsPermanentLink(It.IsAny<string>()), true);
+            Setup<IKenticoMediaProvider, string>(s => s.GetThumbnailPath(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<int>()), expectedResult);
+
+            var actualResult = Sut.GetThumbnailLink(originalImageLink);
+
+            Assert.Equal(expectedResult, actualResult, true);
+        }
+
         [Theory(DisplayName = "ImageService.GetThumbnailLink() | Image isn't in media library")]
         [InlineData(@"http://example.com/kda/media/images/image.jpg", @"http://example.com", @"/media")]
         [InlineData(@"/kda/media/images/image.jpg", @"http://example.com", @"/media")]
@@ -106,7 +125,7 @@ namespace Kadena.Tests.BusinessLogic
         }
 
         [Theory(DisplayName = "ImageService.GetThumbnailLink() | Thumbnail not generated")]
-        [InlineData(@"http://example.com/kda/media/images/image.jpg", @"http://example.com", @"/kda/media","")]
+        [InlineData(@"http://example.com/kda/media/images/image.jpg", @"http://example.com", @"/kda/media", "")]
         [InlineData(@"http://example.com/kda/media/images/image.jpg", @"http://example.com", @"KDA/media", null)]
         [InlineData(@"http://example.com/kda/media/images/image.jpg", @"http://example.com", @"/KDA/media", "     ")]
         public void GetThumbnailLink_ThumbnailNotGenerated(string originalImageLink, string baseLink, string mediaLibrariesLink, string thumbnailLink)

@@ -13,7 +13,6 @@ namespace Kadena2.MicroserviceClients.Clients
 {
     public sealed class OrderViewClient : SignedClientBase, IOrderViewClient
     {
-        public const string DateArgumentFormat = "yyyy-MM-dd";
         public const string DefaultOrderByField = "CreateDate";
         public const bool DefaultOrderByDescending = true;
         private const string _serviceEndpoint = "/order";
@@ -41,12 +40,13 @@ namespace Kadena2.MicroserviceClients.Clients
                 !string.IsNullOrWhiteSpace(filter.OrderType) ? $"tp={filter.OrderType}" : string.Empty,
                 $"sort={(string.IsNullOrWhiteSpace(filter.OrderBy) ? DefaultOrderByField : filter.OrderBy)}",
                 (filter.OrderByDescending ?? DefaultOrderByDescending) ? "sortDesc=true" : string.Empty,
-                filter.DateFrom != null ? $"dateFrom={filter.DateFrom.Value.ToString(DateArgumentFormat)}" : string.Empty,
-                filter.DateTo != null ? $"dateTo={filter.DateTo.Value.ToString(DateArgumentFormat)}" : string.Empty,
+                filter.DateFrom != null ? $"dateFrom={filter.DateFrom.Value.ToUniversalTime()}" : string.Empty,
+                filter.DateTo != null ? $"dateTo={filter.DateTo.Value.ToUniversalTime()}" : string.Empty,
                 !string.IsNullOrWhiteSpace(filter.SiteName) ? $"siteName={filter.SiteName}" : string.Empty,
                 filter.PageNumber > 0 ? $"pageNumber={filter.PageNumber}" : string.Empty,
                 filter.ItemsPerPage > 0 ? $"quantity={filter.ItemsPerPage}" : string.Empty,
-                filter.StatusHistoryContains != null ? $"containsStatus={filter.StatusHistoryContains.Value}" : string.Empty
+                filter.StatusHistoryContains != null ? $"containsStatus={filter.StatusHistoryContains.Value}" : string.Empty,
+                filter.Status != null ? $"currentStatus={filter.Status}" : string.Empty
             }.Where(p => p != string.Empty));
 
             var parameterizedUrl = $"{BaseUrl}{_serviceEndpoint}?{args}";

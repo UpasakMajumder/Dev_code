@@ -203,6 +203,10 @@
       <field column="SKUParentSKUID" guid="cfda202f-ccbf-47b8-9b24-d6feae3a470c" />
       <field column="SKUCustomerReferenceNumber" guid="40d9c547-c3d8-48d2-b9a0-fab6f44d89a6" order="56" />
       <field column="SKUDontSendPriceToERP" visible="false" />
+      <field column="SKUUnitOfMeasure" visible="false" />
+      <field column="SKUHiResPdfDownloadEnabled" visible="false" />
+      <field column="SKUApprovalRequired" visible="false" />
+      <field column="SKUNumberOfItemsInPackage" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Product - Membership properties</FormDisplayName>

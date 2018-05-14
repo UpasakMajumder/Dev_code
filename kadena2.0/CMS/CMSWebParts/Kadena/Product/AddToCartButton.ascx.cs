@@ -50,7 +50,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 Controls.Add(new LiteralControl(GetHiddenInput("containerId", Request.QueryString["containerId"])));
             }
 
-            var productUom = _productDocument.GetStringValue("ProductUnitOfMeasure", UnitOfMeasure.DefaultUnit);
+            var productUom = _productDocument.GetStringValue("SKUUnitOfMeasure", UnitOfMeasure.DefaultUnit);
             this.pcs.InnerText = DIContainer.Resolve<IProductsService>().TranslateUnitOfMeasure(productUom, LocalizationContext.CurrentCulture.CultureCode);
         }
 
@@ -88,13 +88,13 @@ namespace Kadena.CMSWebParts.Kadena.Product
         private bool IsProductMailingType()
         {
             var productType = _productDocument.GetStringValue("ProductType", string.Empty);
-            return ProductTypes.IsOfType(ProductTypes.MailingProduct, productType);
+            return ProductTypes.IsOfType(productType, ProductTypes.MailingProduct);
         }
 
         private bool IsProductTemplatedType()
         {
             var productType = _productDocument.GetStringValue("ProductType", string.Empty);
-            return ProductTypes.IsOfType(ProductTypes.TemplatedProduct, productType);
+            return ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct);
         }
 
         private void SetupDocument()

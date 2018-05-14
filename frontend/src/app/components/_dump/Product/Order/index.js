@@ -51,15 +51,17 @@ const Order = ({
   productStatus,
   options,
   preview,
+  unitOfMeasure,
   // emailProof
   emailProof,
   toogleEmailProof
 }) => {
   const downloadPdfLink = downloadPdfURL
-    ? <div className="cart-product__file">
-      <a className="link" href={downloadPdfURL}>Download PDF</a>
-    </div>
-    : null;
+    ? (
+      <div className="cart-product__file">
+        <a className="link" target="_blank" href={downloadPdfURL}>Download PDF</a>
+      </div>
+    ) : null;
 
   const mailingListElement = mailingList
     ? <div className="cart-product__mlist">
@@ -93,13 +95,13 @@ const Order = ({
   const quantityElement = mailingList
     ? (
       <div className="cart-product__optional">
-        <p>{quantityPrefix} {quantity}</p>
+        <p>{quantityPrefix} {quantity} {unitOfMeasure}</p>
       </div>
     )
     : (
       <div className="cart-product__optional">
-        <p>{quantityPrefix} {quantity}</p>
-        <p>{quantityShippedPrefix} {quantityShipped}</p>
+        <p>{quantityPrefix} {quantity} {unitOfMeasure}</p>
+        <p>{quantityShippedPrefix} {quantityShipped} {unitOfMeasure}</p>
       </div>
     );
 
@@ -164,6 +166,7 @@ Order.propTypes = {
   productStatusPrefix: PropTypes.string.isRequired,
   productStatus: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  unitOfMeasure: PropTypes.string.isRequired,
   emailProof: PropTypes.object.isRequired,
   toogleEmailProof: PropTypes.func.isRequired
 };

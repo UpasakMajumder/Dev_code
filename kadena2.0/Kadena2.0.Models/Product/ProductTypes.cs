@@ -11,9 +11,15 @@ namespace Kadena.Models.Product
         public static string MailingProduct => "KDA.MailingProduct";
         public static string TemplatedProduct => "KDA.TemplatedProduct";
 
-        public static bool IsOfType(string types, string type)
+        /// <summary>
+        /// Checks is Product is of given type
+        /// </summary>
+        /// <param name="productType">Type string of the product</param>
+        /// <param name="testedType">Type to check</param>
+        /// <returns></returns>
+        public static bool IsOfType(string productType, string checkedType)
         {
-            return types?.Contains(type) ?? false;
+            return productType?.Contains(checkedType) ?? false;
         }
 
         public static string[] GetAll()

@@ -360,7 +360,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
             {
                 CampaignsProduct products = new CampaignsProduct()
                 {
-                    QtyPerPack = ValidationHelper.GetInteger(txtBundleQnt.Text, default(int)),
                     BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)),
                     EstimatedPrice = ValidationHelper.GetDouble(txtEstPrice.Text, default(double)),
                     State = ValidationHelper.GetInteger(ddlState.SelectedValue, default(int)),
@@ -389,6 +388,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     newSkuProduct.SKUValidUntil = ValidationHelper.GetDateTime(txtExpDate.Text, DateTime.Now);
                 }
                 newSkuProduct.SetValue("SKUProductCustomerReferenceNumber", ValidationHelper.GetString(ddlPosNo.SelectedValue, string.Empty));
+                newSkuProduct.SetValue("SKUNumberOfItemsInPackage", ValidationHelper.GetInteger(txtBundleQnt.Text, default(int)));
                 products.DocumentName = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
                 products.DocumentCulture = CurrentDocument.DocumentCulture;
                 SKUInfoProvider.SetSKUInfo(newSkuProduct);
@@ -423,7 +423,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
             if (product != null)
             {
                 product.DocumentName = ValidationHelper.GetString(txtShortDes.Text, string.Empty);
-                product.QtyPerPack = ValidationHelper.GetInteger(txtBundleQnt.Text, default(int));
                 product.BrandID = ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int));
                 product.CategoryID = ValidationHelper.GetInteger(ddlProdCategory.SelectedValue, default(int));
                 product.EstimatedPrice = ValidationHelper.GetInteger(txtEstPrice.Text, default(int));
@@ -450,6 +449,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     updateProduct.SKUAvailableItems = ValidationHelper.GetInteger(txtQuantity.Text, 0);
                     updateProduct.SKUWeight = ValidationHelper.GetDouble(txtWeight.Text, default(double));
                     updateProduct.SKUValidUntil = ValidationHelper.GetDateTime(txtExpDate.Text, DateTime.MinValue);
+                    updateProduct.SetValue("SKUNumberOfItemsInPackage", ValidationHelper.GetInteger(txtBundleQnt.Text, default(int)));
                     SKUInfoProvider.SetSKUInfo(updateProduct);
                 }
                 product.Update();
@@ -512,7 +512,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             txtQuantity.Text = ValidationHelper.GetString(skuDetails.SKUAvailableItems, string.Empty);
                             txtWeight.Text = ValidationHelper.GetString(skuDetails.SKUWeight, string.Empty);
                         }
-                        txtBundleQnt.Text = ValidationHelper.GetString(product.QtyPerPack, string.Empty);
+                        txtBundleQnt.Text = ValidationHelper.GetString(skuDetails.GetIntegerValue("SKUNumberOfItemsInPackage",1), string.Empty);
                         ddlState.SelectedValue = ValidationHelper.GetString(product.State, string.Empty);
                         ddlProdCategory.SelectedValue = ValidationHelper.GetString(product.CategoryID, string.Empty);
                         BindEditProduct(ValidationHelper.GetInteger(product.CampaignsProductID, 0));
@@ -782,7 +782,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     if (product != null)
                     {
                         imgProduct.ImageUrl = ValidationHelper.GetString(product.ProductImage, string.Empty);
-                        txtBundleQnt.Text = ValidationHelper.GetString(product.QtyPerPack, string.Empty);
+                        txtBundleQnt.Text = ValidationHelper.GetString(skuDetails.GetIntegerValue("SKUNumberOfItemsInPackage", 1), string.Empty);
                         ddlBrand.SelectedValue = ValidationHelper.GetString(product.BrandID, string.Empty);
                         ddlState.SelectedValue = ValidationHelper.GetString(product.State, string.Empty);
                         ddlProdCategory.SelectedValue = ValidationHelper.GetString(product.CategoryID, string.Empty);

@@ -1,14 +1,20 @@
-﻿using System;
+﻿using Kadena.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
    public interface IKenticoCustomerProvider
     {
-        int GetUserIDByCustomerID(int customerID);
-        int GetCustomerIDByUserID(int userID);
+        Customer GetCurrentCustomer();
+        Customer GetCustomer(int customerId);
+        Customer GetCustomerByUser(int userId);
+
+        /// <summary>
+        /// Creates and saves new Customer
+        /// </summary>
+        /// <returns>ID of new Customer</returns>
+        int CreateCustomer(Customer customer);
+        void UpdateCustomer(Customer customer);
+        IEnumerable<Customer> GetCustomersByApprover(int approverUserId);
     }
 }

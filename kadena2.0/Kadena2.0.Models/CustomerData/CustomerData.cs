@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Kadena.Models.Approval;
+using System.Collections.Generic;
 
 namespace Kadena.Models.CustomerData
 {
@@ -11,5 +12,6 @@ namespace Kadena.Models.CustomerData
         public CustomerAddress Address { get; set; }
         public Dictionary<string, string> Claims { get; set; }
         public string PreferredLanguage { get; set; }
+        public Approver[] Approvers { get; set; }
     }
 }

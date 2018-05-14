@@ -589,7 +589,22 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                             productItems = CampaignsProductProvider.GetCampaignsProducts().Where(new WhereCondition().WhereEquals("ProgramID", null).Or().WhereEquals("ProgramID", 0)).WhereEquals("NodeSiteID", CurrentSite.SiteID).ToList();
                         }
                         var catalogList = productItems
-                                        .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProductName, x.EstimatedPrice, x.BrandID, x.ProgramID, x.QtyPerPack, x.State, y.SKUPrice, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber, y.SKUDescription, y.SKUShortDescription, x.ProductImage, y.SKUValidUntil })
+                                        .Join(skuDetails, 
+                                              cp => cp.NodeSKUID, 
+                                              sku => sku.SKUID, 
+                                              (cp, sku) => new { cp.ProductName,
+                                                                 cp.EstimatedPrice,
+                                                                 cp.BrandID,
+                                                                 cp.ProgramID,
+                                                                 QtyPerPack = sku.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
+                                                                 cp.State,
+                                                                 sku.SKUPrice,
+                                                                 sku.SKUNumber,
+                                                                 cp.Product.SKUProductCustomerReferenceNumber,
+                                                                 sku.SKUDescription,
+                                                                 sku.SKUShortDescription,
+                                                                 cp.ProductImage,
+                                                                 sku.SKUValidUntil })
                                         .Where(x => x.BrandID == brand)
                                         .ToList();
                         if (catalogList != null && TypeOfProduct == (int)ProductsType.PreBuy)
@@ -614,7 +629,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                             {
                                 var stateInfo = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereEquals("ItemID", product.State).FirstOrDefault();
                                 string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PDFInnerHTML");
-                                pdfProductContent = pdfProductContent.Replace("IMAGEGUID", CartPDFHelper.GetProductThumbnailImage(product.ProductImage));
+                                pdfProductContent = pdfProductContent.Replace("IMAGEGUID", CartPDFHelper.GetThumbnailImageAbsolutePath(product.ProductImage));
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTPARTNUMBER", product?.SKUProductCustomerReferenceNumber ?? string.Empty);
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTBRANDNAME", GetBrandName(product.BrandID));
                                 pdfProductContent = pdfProductContent.Replace("PRODUCTSHORTDESCRIPTION", product?.ProductName ?? string.Empty);
@@ -744,7 +759,21 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 if (!DataHelper.DataSourceIsEmpty(skuDetails))
                 {
                     var catalogList = productsList
-                                      .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProductName, x.NodeSKUID, x.QtyPerPack, x.State, x.BrandID, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber, y.SKUDescription, y.SKUShortDescription, x.ProductImage, y.SKUValidUntil, x.EstimatedPrice })
+                                      .Join(skuDetails, 
+                                            x => x.NodeSKUID, 
+                                            y => y.SKUID, 
+                                            (cp, sku) => new { cp.ProductName,
+                                                               cp.NodeSKUID,
+                                                               QtyPerPack = sku.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
+                                                               cp.State,
+                                                               cp.BrandID,
+                                                               sku.SKUNumber,
+                                                               cp.Product.SKUProductCustomerReferenceNumber,
+                                                               sku.SKUDescription,
+                                                               sku.SKUShortDescription,
+                                                               cp.ProductImage,
+                                                               sku.SKUValidUntil,
+                                                               cp.EstimatedPrice })
                                       .OrderBy(p => p.ProductName)
                                       .ToList();
                     if (!DataHelper.DataSourceIsEmpty(catalogList) && posNum != null)
@@ -861,7 +890,22 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 productBrandHeader = productBrandHeader.Replace("^PROGRAMNAME^", programs.Where(x => x.BrandID == brand).Select(y => y.ProgramName).FirstOrDefault());
                 productBrandHeader = productBrandHeader.Replace("^BrandName^", GetBrandName(brand));
                 var catalogList = productData
-                 .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProductName, x.EstimatedPrice, x.BrandID, x.ProgramID, x.QtyPerPack, x.State, y.SKUPrice, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber, y.SKUDescription, y.SKUShortDescription, x.ProductImage, y.SKUValidUntil })
+                 .Join(skuDetails, 
+                       cp => cp.NodeSKUID,
+                       sku => sku.SKUID, 
+                       (cp, sku) => new { cp.ProductName,
+                                       cp.EstimatedPrice,
+                                       cp.BrandID,
+                                       cp.ProgramID,
+                                       QtyPerPack = sku.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
+                                       cp.State,
+                                       sku.SKUPrice,
+                                       sku.SKUNumber,
+                                       cp.Product.SKUProductCustomerReferenceNumber,
+                                       sku.SKUDescription,
+                                       sku.SKUShortDescription,
+                                       cp.ProductImage,
+                                       sku.SKUValidUntil })
                  .Where(x => x.BrandID == brand)
                  .ToList();
                 string pdfProductsContent = string.Empty;
@@ -871,7 +915,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     {
                         var stateInfo = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereEquals("ItemID", product.State).FirstOrDefault();
                         string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PDFInnerHTML");
-                        pdfProductContent = pdfProductContent.Replace("IMAGEGUID", CartPDFHelper.GetProductThumbnailImage(product.ProductImage));
+                        pdfProductContent = pdfProductContent.Replace("IMAGEGUID", CartPDFHelper.GetThumbnailImageAbsolutePath(product.ProductImage));
                         pdfProductContent = pdfProductContent.Replace("PRODUCTPARTNUMBER", product?.SKUProductCustomerReferenceNumber ?? string.Empty);
                         pdfProductContent = pdfProductContent.Replace("PRODUCTBRANDNAME", GetBrandName(product.BrandID));
                         pdfProductContent = pdfProductContent.Replace("PRODUCTSHORTDESCRIPTION", product?.ProductName ?? string.Empty);
@@ -923,7 +967,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                  .ToList();
             lblNoProducts.Visible = false;
             var skuDetails = SKUInfoProvider.GetSKUs()
-                                        .WhereIn("SKUID", productData.Select(s => s.SKU.SKUID).ToList())
+                                        .WhereIn("SKUID", productData.Select(s => s.SKU?.SKUID ?? -1).ToList())
                                         .ToList();
             string generalInventory = string.Empty;
             generalInventory = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_GeneralInventoryCover");
@@ -945,7 +989,22 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     productBrandHeader = productBrandHeader.Replace("^BrandName^", GetBrandName(brand));
                     productBrandHeader = productBrandHeader.Replace("^PROGRAMNAME^", string.Empty);
                     var catalogList = productData
-                                    .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProductName, x.EstimatedPrice, x.BrandID, x.ProgramID, x.QtyPerPack, x.State, y.SKUPrice, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber, y.SKUDescription, y.SKUShortDescription, x.ProductImage, y.SKUValidUntil })
+                                    .Join(skuDetails, 
+                                          cp => cp.NodeSKUID, 
+                                          sku => sku.SKUID,
+                                          (cp, sku) => new { cp.ProductName,
+                                                             cp.EstimatedPrice,
+                                                             cp.BrandID,
+                                                             cp.ProgramID,
+                                                             QtyPerPack = sku.GetIntegerValue("SKUNumberOfItemsInPackage",1),
+                                                             cp.State,
+                                                             sku.SKUPrice,
+                                                             sku.SKUNumber,
+                                                             cp.Product.SKUProductCustomerReferenceNumber,
+                                                             sku.SKUDescription,
+                                                             sku.SKUShortDescription,
+                                                             cp.ProductImage,
+                                                             sku.SKUValidUntil })
                                     .Where(x => x.BrandID == brand)
                                     .ToList();
                     string pdfProductsContent = string.Empty;
@@ -955,7 +1014,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                         {
                             var stateInfo = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereEquals("ItemID", product.State).FirstOrDefault();
                             string pdfProductContent = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.PDFInnerHTML");
-                            pdfProductContent = pdfProductContent.Replace("IMAGEGUID", CartPDFHelper.GetProductThumbnailImage(product.ProductImage));
+                            pdfProductContent = pdfProductContent.Replace("IMAGEGUID", CartPDFHelper.GetThumbnailImageAbsolutePath(product.ProductImage));
                             pdfProductContent = pdfProductContent.Replace("PRODUCTPARTNUMBER", product?.SKUProductCustomerReferenceNumber ?? string.Empty);
                             pdfProductContent = pdfProductContent.Replace("PRODUCTBRANDNAME", GetBrandName(product.BrandID));
                             pdfProductContent = pdfProductContent.Replace("PRODUCTSHORTDESCRIPTION", product?.ProductName ?? string.Empty);
@@ -1014,7 +1073,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     ProductId = p.CampaignsProductID,
                     ProductName = p.ProductName,
                     ShortDescription = p.DocumentSKUShortDescription,
-                    BundleQuantity = p.QtyPerPack,
+                    BundleQuantity = p.SKU.GetIntegerValue("SKUNumberOfItemsInPackage",1),
                     ProductCost = CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(p.EstimatedPrice, default(double)), CurrentSite.SiteID, true),
                     ProgramName = GetProgramFormId(p.ProgramID),
                     BrandName = GetBrandName(p.BrandID),
@@ -1038,7 +1097,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     ProductId = p.CampaignsProductID,
                     ProductName = p.ProductName,
                     ShortDescription = p.DocumentSKUShortDescription,
-                    BundleQuantity = p.QtyPerPack,
+                    BundleQuantity = p.SKU.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
                     ProductCost = CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(p.SKU.SKUPrice, default(double)), CurrentSite.SiteID, true),
                     BrandName = GetBrandName(p.BrandID),
                     PosNumber = GetPosNumber(p.SKU.SKUID),
@@ -1123,7 +1182,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 ProductId = productData.CampaignsProductID,
                 ProductName = productData.ProductName,
                 ShortDescription = p.SKUShortDescription,
-                BundleQuantity = productData.QtyPerPack,
+                BundleQuantity = productData.SKU.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
                 ProductCost = CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(p.SKUPrice, default(double)), CurrentSite.SiteID, true),
                 BrandName = GetBrandName(productData.BrandID),
                 PosNumber = GetPosNumber(productData.SKU.SKUID),
@@ -1141,7 +1200,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     ProductId = productData.CampaignsProductID,
                     ProductName = productData.ProductName,
                     ShortDescription = p.SKUShortDescription,
-                    BundleQuantity = productData.QtyPerPack,
+                    BundleQuantity = productData.SKU.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
                     ProductCost = CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(productData.EstimatedPrice, default(double)), CurrentSite.SiteID, true),
                 BrandName = GetBrandName(productData.BrandID),
                     PosNumber = GetPosNumber(productData.SKU.SKUID),

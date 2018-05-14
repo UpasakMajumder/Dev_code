@@ -20,27 +20,14 @@ namespace Kadena.WebAPI.Controllers
             IOrderListServiceFactory orderListServiceFactory, 
             IMapper mapper)
         {
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             if (orderListServiceFactory == null)
             {
                 throw new ArgumentNullException(nameof(orderListServiceFactory));
             }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
 
             _orderService = orderListServiceFactory.GetRecentOrders();
             this.orderDetailService = orderDetailService;
-            _mapper = mapper;
-        }
-
-        [HttpGet]
-        [Route("api/recentorders/getheaders")]
-        public async Task<IHttpActionResult> GetHeaders()
-        {
-            var orderHead = await _orderService.GetHeaders();
-            var result = _mapper.Map<OrderHeadDto>(orderHead);
-            return ResponseJson(result);
         }
 
         [HttpGet]
@@ -49,6 +36,24 @@ namespace Kadena.WebAPI.Controllers
         {
             var orderBody = await _orderService.GetBody(pageNumber);
             var result = _mapper.Map<OrderBodyDto>(orderBody);
+            return ResponseJson(result);
+        }
+
+        [HttpGet]
+        [Route(Routes.Order.ToApprove)]
+        public async Task<IHttpActionResult> GetOrdersToApprove()
+        {
+            var orders = await _orderService.GetOrdersToApprove();
+            var result = _mapper.Map<OrderHeadDto>(orders);
+            return ResponseJson(result);
+        }
+
+        [HttpGet]
+        [Route("api/recentorders/getheaders")]
+        public async Task<IHttpActionResult> GetHeaders()
+        {
+            var orderHead = await _orderService.GetHeaders();
+            var result = _mapper.Map<OrderHeadDto>(orderHead);
             return ResponseJson(result);
         }
 

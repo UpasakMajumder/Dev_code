@@ -22,6 +22,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoLocalizationProvider localization;
         private readonly IKenticoPermissionsProvider permissions;
         private readonly IKenticoUserProvider kenticoUsers;
+        private readonly IKenticoCustomerProvider kenticoCustomer;
         private readonly IKenticoAddressBookProvider kenticoAddresses;
         private readonly IKenticoResourceService resources;
         private readonly ITaxEstimationService taxCalculator;
@@ -41,6 +42,7 @@ namespace Kadena.BusinessLogic.Services
                                    IKenticoLocalizationProvider localization,
                                    IKenticoPermissionsProvider permissions,
                                    IKenticoUserProvider kenticoUsers,
+                                   IKenticoCustomerProvider kenticoCustomer,
                                    IKenticoAddressBookProvider addresses,
                                    IKenticoResourceService resources,
                                    ITaxEstimationService taxCalculator,
@@ -60,6 +62,7 @@ namespace Kadena.BusinessLogic.Services
             this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
             this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             this.kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
+            this.kenticoCustomer= kenticoCustomer ?? throw new ArgumentNullException(nameof(kenticoCustomer));
             this.kenticoAddresses = addresses ?? throw new ArgumentNullException(nameof(addresses));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.taxCalculator = taxCalculator ?? throw new ArgumentNullException(nameof(taxCalculator));
@@ -135,7 +138,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var deliveryAddress = shoppingCart.GetCurrentCartShippingAddress();
 
-            var isShippingApplicable = shoppingCartItems.GetShoppingCartItems()
+            var isShippingApplicable = shoppingCartItems.GetCheckoutCartItems()
                 .Any(item => !item.IsMailingList);
             if (!isShippingApplicable)
             {
@@ -258,7 +261,7 @@ namespace Kadena.BusinessLogic.Services
             }
             else
             {
-                var defaultAddressId = kenticoUsers.GetCurrentCustomer().DefaultShippingAddressId;
+                var defaultAddressId = kenticoCustomer.GetCurrentCustomer().DefaultShippingAddressId;
                 if (defaultAddressId == 0 || shoppingCart.GetAddress(defaultAddressId) == null)
                 {
                     defaultAddressId = page.DeliveryAddresses.GetDefaultAddressId();
@@ -330,10 +333,22 @@ namespace Kadena.BusinessLogic.Services
 
         public CartItems GetCartItems()
         {
-            var cartItems = shoppingCartItems.GetShoppingCartItems().ToList();
+            var cartItems = shoppingCartItems.GetCheckoutCartItems().ToList();
             var cartItemsTotals = shoppingCart.GetShoppingCartTotals();
             var countOfItemsString = cartItems.Count == 1 ? resources.GetResourceString("Kadena.Checkout.ItemSingular") : resources.GetResourceString("Kadena.Checkout.ItemPlural");
             cartItems.ForEach(i => i.Image = imageService.GetThumbnailLink(i.Image));
+
+            cartItems.ForEach(i => 
+                {
+                    i.Delivery = string.Empty;
+
+                    if (i.IsMailingList && i.IsTemplated)
+                    {
+                        var delivery = resources.GetResourceString("Kadena.Checkout.MailingDelivery");
+                        i.Delivery = string.Format(delivery, i.Quantity);
+                    }
+                }
+             );
             var products = checkoutfactory.CreateProducts(cartItems, cartItemsTotals, countOfItemsString);
 
             if (!permissions.UserCanSeePrices())
@@ -347,7 +362,7 @@ namespace Kadena.BusinessLogic.Services
         public CartItemsPreview ItemsPreview()
         {
             bool userCanSeePrices = permissions.UserCanSeePrices();
-            var cartItems = shoppingCartItems.GetShoppingCartItems(userCanSeePrices).ToList();
+            var cartItems = shoppingCartItems.GetCheckoutCartItems(userCanSeePrices).ToList();
             cartItems.ForEach(i => i.Image = imageService.GetThumbnailLink(i.Image));
 
             var preview = new CartItemsPreview

@@ -168,11 +168,13 @@ namespace Kadena.Tests.BusinessLogic
         {
             // Arrange
             const string culture = "cz-CZ";
+            const string unit = "plasticbags";
             Setup<IKenticoResourceService, string, string, string>(r => r.GetResourceString(It.IsAny<string>(), culture), (a, b) => a);
             Setup<IKenticoResourceService, string>(r => r.GetResourceString("Kadena.Product.NumberOfAvailableProducts", culture), "{0} {1} in stock");
+            Setup<IKenticoUnitOfMeasureProvider, UnitOfMeasure>(r => r.GetUnitOfMeasure(unit), new UnitOfMeasure {LocalizationString = unit });
 
             // Act
-            var result = Sut.GetAvailableProductsString("KDA.InventoryProduct", numberOfAvailableProducts, culture, numberOfStockProducts, "plasticbags");
+            var result = Sut.GetAvailableProductsString("KDA.InventoryProduct", numberOfAvailableProducts, culture, numberOfStockProducts, unit);
 
             // Assert
             Assert.Equal(expectedResult, result);
@@ -230,6 +232,24 @@ namespace Kadena.Tests.BusinessLogic
 
             // Act
             var result = Sut.GetUnitOfMeasure(unitOfMeasure, culture);
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Theory(DisplayName = "TranslateUnitOfMeasureTest")]
+        [InlineData("Each", true, "EachCZ")]
+        [InlineData("Role", false, "RoleCZ")]
+        public void TranslateUnitOfMeasureTest(string unitOfMeasure, bool isDefault, string expectedResult)
+        {
+            // Arrange
+            const string culture = "cz-CZ";
+            const string localizationString = "loc.key";
+            Setup<IKenticoUnitOfMeasureProvider, UnitOfMeasure>(p => p.GetUnitOfMeasure(unitOfMeasure), new UnitOfMeasure { LocalizationString = localizationString, IsDefault = isDefault });
+            Setup<IKenticoResourceService, string>(r => r.GetResourceString(localizationString, culture), expectedResult);
+
+            // Act
+            var result = Sut.TranslateUnitOfMeasure(unitOfMeasure, culture);
 
             // Assert
             Assert.Equal(expectedResult, result);

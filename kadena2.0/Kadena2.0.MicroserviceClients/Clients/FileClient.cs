@@ -60,7 +60,8 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<string>> GetShortliveSecureLink(string key)
         {
-            var url = $"{BaseUrlOld}/api/File?key={key}";
+            var encodedKey = HttpUtility.UrlEncode(key);
+            var url = $"{BaseUrlOld}/api/File?key={encodedKey}";
             return await Get<string>(url);
         }
     }

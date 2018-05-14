@@ -55,9 +55,9 @@ namespace Kadena.Tests.BusinessLogic
             };
         }
 
-        private CartItem CreateCartitem(int id)
+        private CheckoutCartItem CreateCartitem(int id)
         {
-            return new CartItem()
+            return new CheckoutCartItem()
             {
                 Id = id,
                 CartItemText = $"Item{id}",
@@ -81,7 +81,7 @@ namespace Kadena.Tests.BusinessLogic
 
         private void SetupBase()
         {
-            Setup<IKenticoUserProvider, Customer>(p => p.GetCurrentCustomer(), new Customer { DefaultShippingAddressId = 1, Id = 1 });
+            Setup<IKenticoCustomerProvider, Customer>(p => p.GetCurrentCustomer(), new Customer { DefaultShippingAddressId = 1, Id = 1 });
             Setup<IKenticoUserProvider, User>(p => p.GetCurrentUser(), new User { UserId = 1 });
 
             Setup<IKenticoAddressBookProvider, DeliveryAddress[]>(p => p.GetCustomerAddresses(AddressType.Shipping), new[] { CreateDeliveryAddress() });
@@ -90,7 +90,7 @@ namespace Kadena.Tests.BusinessLogic
             Setup<IShoppingCartProvider, PaymentMethod[]>(p => p.GetPaymentMethods(), new[] { CreatePaymentMethod() });
             Setup<IShoppingCartProvider, ShoppingCartTotals>(p => p.GetShoppingCartTotals(), GetShoppingCartTotals(100));
 
-            Setup<IShoppingCartItemsProvider, CartItem[]>(p => p.GetShoppingCartItems(It.IsAny<bool>()), new[] { CreateCartitem(1) });
+            Setup<IShoppingCartItemsProvider, CheckoutCartItem[]>(p => p.GetCheckoutCartItems(It.IsAny<bool>()), new[] { CreateCartitem(1) });
 
             Setup<IKenticoResourceService, string>(m => m.GetResourceString("Kadena.Checkout.CountOfItems"), "You have {0} {1} in cart");
             Setup<IKenticoResourceService, string>(m => m.GetResourceString("Kadena.Checkout.ItemSingular"), "item");

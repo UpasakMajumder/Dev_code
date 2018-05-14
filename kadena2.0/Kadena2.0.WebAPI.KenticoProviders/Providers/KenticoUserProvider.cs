@@ -2,10 +2,10 @@
 using CMS.Ecommerce;
 using CMS.Membership;
 using CMS.SiteProvider;
-using Kadena.Models;
 using Kadena.Models.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
+using System.Web;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -20,24 +20,14 @@ namespace Kadena.WebAPI.KenticoProviders
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public Customer GetCurrentCustomer()
+        public User GetUser(string mail)
         {
-            return _mapper.Map<Customer>(ECommerceContext.CurrentCustomer);
-        }
-
-        public Customer GetCustomer(int customerId)
-        {
-            return _mapper.Map<Customer>(CustomerInfoProvider.GetCustomerInfo(customerId));
+            return _mapper.Map<User>(UserInfoProvider.GetUserInfo(mail));
         }
 
         public User GetCurrentUser()
         {
             return _mapper.Map<User>(MembershipContext.AuthenticatedUser);
-        }
-
-        public User GetUser(string mail)
-        {
-            return _mapper.Map<User>(UserInfoProvider.GetUserInfo(mail));
         }
 
         public bool SaveLocalization(string code)
@@ -69,54 +59,21 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return _mapper.Map<User>(UserInfoProvider.GetUserInfo(userId));
         }
-
-        /// <summary>
-        /// Creates and saves new Customer
-        /// </summary>
-        /// <returns>ID of new Customer</returns>
-        public int CreateCustomer(Customer customer)
-        {
-            var customerInfo = _mapper.Map<CustomerInfo>(customer);
-            customerInfo.CustomerID = 0;
-            customerInfo.Insert();
-            return customerInfo.CustomerID;
-        }
-
-        public void UpdateCustomer(Customer customer)
-        {
-            var customerInfo = CustomerInfoProvider.GetCustomerInfo(customer.Id);
-
-            if (customerInfo == null)
-            {
-                throw new ArgumentOutOfRangeException(nameof(customer.Id), "Existing Customer with given Id not found");
-            }
-
-            customerInfo.CustomerFirstName = customer.FirstName;
-            customerInfo.CustomerLastName = customer.LastName;
-            customerInfo.CustomerEmail = customer.Email;
-            customerInfo.CustomerPhone = customer.Phone;
-            customerInfo.CustomerCompany = customer.Company;
-            customerInfo.Update();
-        }
-
-        public void CreateUser(User user, int siteId, UserSettings userSettings = null)
+       
+        public void CreateUser(User user, int siteId)
         {
             var newUser = _mapper.Map<UserInfo>(user);
             newUser.Enabled = true;
+            newUser.UserSettings.UserRegistrationInfo.IPAddress = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+            newUser.UserSettings.UserRegistrationInfo.Agent = HttpContext.Current.Request.UserAgent;
             newUser.Insert();
             
             var newUserId = newUser.UserID;
             UserSiteInfoProvider.AddUserToSite(newUserId, siteId);
             user.UserId = newUserId;
-
-            if (userSettings != null)
-            {
-                userSettings.UserId = newUserId;
-                UpdateUserSettings(userSettings);
-            }
         }
 
-        public void UpdateUser(User user, UserSettings userSettings = null)
+        public void UpdateUser(User user)
         {
             var userInfo = UserInfoProvider.GetUserInfo(user.UserId);
 
@@ -129,55 +86,29 @@ namespace Kadena.WebAPI.KenticoProviders
             userInfo.FirstName = user.FirstName;
             userInfo.LastName = user.LastName;
             userInfo.Email = user.Email;
+            userInfo.UserURLReferrer = user.CallBackUrl;
 
             userInfo.Update();
-
-            if (userSettings != null)
-            {
-                userSettings.UserId = user.UserId;
-                UpdateUserSettings(userSettings);
-            }
         }
-
-        private void UpdateUserSettings(UserSettings userSettings)
-        {
-            if (userSettings != null)
-            {
-                UserSettingsInfo userSettingsInfo = UserSettingsInfoProvider.GetUserSettingsInfoByUser(userSettings.UserId);
-                if (userSettingsInfo == null)
-                {
-                    userSettingsInfo = _mapper.Map<UserSettingsInfo>(userSettings);
-                }
-                else
-                {
-                    userSettingsInfo.UserURLReferrer = userSettings.CallBackUrl;
-                }
-                UserSettingsInfoProvider.SetUserSettingsInfo(userSettingsInfo);
-            }
-        }
-
+        
         public void LinkCustomerToUser(int customerId, int userId)
         {
             var customer = CustomerInfoProvider.GetCustomerInfo(customerId);
             customer.CustomerUserID = userId;
             customer.Update();
-        }
-
-        public Customer GetCustomerByUser(int userId)
-        {
-            return _mapper.Map<Customer>(CustomerInfoProvider.GetCustomerInfoByUserID(userId));
-        }
-
-        public UserSettings GetUserSettings(int userId)
-        {
-            return _mapper.Map<UserSettings>(UserSettingsInfoProvider.GetUserSettingsInfoByUser(userId));
-        }
+        }        
 
         public void AcceptTaC()
         {
             var user = MembershipContext.AuthenticatedUser;
             user.SetValue("TermsConditionsAccepted", DateTime.Now);
             user.Update();
+        }
+
+        public void SetPassword(int userId, string password)
+        {
+            var userInfo = UserInfoProvider.GetUserInfo(userId);
+            UserInfoProvider.SetPassword(userInfo, password);
         }
     }
 }

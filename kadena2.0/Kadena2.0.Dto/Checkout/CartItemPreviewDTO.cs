@@ -10,6 +10,7 @@
         public string MailingList { get; set; }
         public string PricePrefix { get; set; }
         public string Price { get; set; }
+        public string UnitOfMeasure { get; set; }
         public string QuantityPrefix { get; set; }
         public int Quantity { get; set; }
     }

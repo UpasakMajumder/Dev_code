@@ -6,6 +6,7 @@ const Products = require('./controllers/products');
 const Orders = require('./controllers/order');
 const MailingList = require('./controllers/mailingList');
 const Login = require('./controllers/login');
+const Registration = require('./controllers/registration');
 const CheckTaC = require('./controllers/checkTaC');
 const AcceptTaC = require('./controllers/acceptTaC');
 const EmailProof = require('./controllers/emailProof');
@@ -24,6 +25,8 @@ apiRouter.get('/order/recent/filtered/orders/:selectedOrderType/:selectedCampaig
 apiRouter.post('/login', Login);
 apiRouter.get('/accepttac', AcceptTaC);
 apiRouter.get('/checktac', CheckTaC);
+
+apiRouter.post('/registration', Registration);
 
 apiRouter.get('/cartPreview', CartPreview);
 
@@ -54,6 +57,7 @@ apiRouter.post('/products/add-to-cart', Products.addToCart);
 apiRouter.post('/products/options', Products.options);
 
 apiRouter.get('/order/recent/ui', Orders.recent.ui);
+apiRouter.get('/order/recent/requiring-approval', Orders.recent.requiringApproval);
 apiRouter.get('/order/recent/page/:page', Orders.recent.page);
 apiRouter.get('/order/reports/rows', Orders.reports.rows);
 apiRouter.get('/order/detail', Orders.detail);

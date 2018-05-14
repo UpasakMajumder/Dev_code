@@ -14,6 +14,7 @@ using Xunit;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.Container.Default;
 using Kadena.BusinessLogic.Services.Orders;
+using Kadena.Models.Product;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -50,7 +51,7 @@ namespace Kadena.Tests.BusinessLogic
             Use(MapperBuilder.MapperInstance);
 
             Setup<IKenticoPermissionsProvider, bool>(p => p.UserCanSeeAllOrders(), false);
-            Setup<IKenticoUserProvider, Customer>(p => p.GetCurrentCustomer(), new Customer() { Id = 10, UserID = 16 });
+            Setup<IKenticoCustomerProvider, Customer>(p => p.GetCurrentCustomer(), new Customer() { Id = 10, UserID = 16 });
             Setup<IKenticoSiteProvider, KenticoSite>(p => p.GetKenticoSite(), new KenticoSite());
         }
 
@@ -130,12 +131,15 @@ namespace Kadena.Tests.BusinessLogic
         {
             // Arrange
             SetupBase();
-            var orderId = "0010-0016-17-00006";
+            var templateId = Guid.Parse("E4D7716D-5AA7-4E4F-A621-AB3FB2E93AE8");
+            const string  orderId = "0010-0016-17-00006";
+            const int skuid = 123;
             var orderResponse = CreateOrderDetailDtoOK(new[]
             {
-                new OrderItemDTO { Type = Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString() }
+                new OrderItemDTO { Type = Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString(), TemplateId = templateId, SkuId = skuid }
             });
             Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId(orderId), Task.FromResult(orderResponse));
+            Setup<IKenticoProductsProvider, Product>(p => p.GetProductBySkuId(skuid), new Product { });
 
             // Act
             var actualResult = await Sut.GetOrderDetail(orderId);
@@ -149,12 +153,15 @@ namespace Kadena.Tests.BusinessLogic
         {
             // Arrange
             SetupBase();
-            var orderId = "0010-0016-17-00006";
+            var templateId = Guid.Parse("E4D7716D-5AA7-4E4F-A621-AB3FB2E93AE8");
+            const string orderId = "0010-0016-17-00006";
+            const int skuid = 123;
             var orderResponse = CreateOrderDetailDtoOK(new[]
             {
-                new OrderItemDTO { Type = Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString() }
+                new OrderItemDTO { Type = Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString(), TemplateId = templateId, SkuId = skuid }
             });
             Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId(orderId), Task.FromResult(orderResponse));
+            Setup<IKenticoProductsProvider, Product>(p => p.GetProductBySkuId(skuid), new Product { });
 
             // Act
             var actualResult = await Sut.GetOrderDetail(orderId).ConfigureAwait(false);
