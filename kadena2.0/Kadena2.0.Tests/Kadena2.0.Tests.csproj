@@ -472,6 +472,7 @@
     <Compile Include="BusinessLogic\BusinessUnitServiceTests.cs" />
     <Compile Include="BusinessLogic\CreditCard\SavedCreditCard3dsiTests.cs" />
     <Compile Include="BusinessLogic\CreditCard\CreditCard3dsiTests.cs" />
+    <Compile Include="BusinessLogic\FileServiceTests.cs" />
     <Compile Include="BusinessLogic\ImageServiceTests.cs" />
     <Compile Include="BusinessLogic\PathServiceTests.cs" />
     <Compile Include="MicroserviceClients\FileClientTests.cs" />
