@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.UI;
+using Kadena.BusinessLogic.Contracts;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
 {
@@ -201,7 +202,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
                 var fileStream = ReadRequestFileStream();
                 var fileName = inpFileName.Value;
-                var fileId = UploadFile(microProperties, fileStream, fileName);
+                var fileId = UploadFile(fileStream, fileName);
 
                 var mailingClient = new MailingListClient(microProperties);
                 var containerId = Guid.Empty;
@@ -285,23 +286,17 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             return createResult?.Payload ?? Guid.Empty;
         }
 
-        private static string UploadFile(IMicroProperties properties, Stream fileStream, string fileName)
+        private static string UploadFile(Stream fileStream, string fileName)
         {
-            if (properties == null || fileStream == null || string.IsNullOrWhiteSpace(fileName))
+            if (fileStream == null || string.IsNullOrWhiteSpace(fileName))
             {
                 return string.Empty;
             }
 
-            var fileClient = new FileClient(properties);
-            var uploadResult = fileClient.UploadToS3(SiteContext.CurrentSiteName, FileFolder.OriginalMailing, FileModule.KList,
-                fileStream, fileName).Result;
+            var fileService = DIContainer.Resolve<IFileService>();
+            var mailingListFileKey = fileService.CreateMailingList(fileName, fileStream);
 
-            if (!uploadResult.Success)
-            {
-                throw new InvalidOperationException(uploadResult.ErrorMessages);
-            }
-
-            return uploadResult.Payload;
+            return mailingListFileKey;
         }
 
         private void RedirectToNextPage(Guid containerId, string fileId)

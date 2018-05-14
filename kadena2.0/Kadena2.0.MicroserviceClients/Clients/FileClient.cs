@@ -76,7 +76,7 @@ namespace Kadena2.MicroserviceClients.Clients
                 FileName = fileName,
                 FileExt = extension
             };
-            return await Post<string>(url, body);
+            return await Post<string>(url, body).ConfigureAwait(false);
         }
     }
 }
