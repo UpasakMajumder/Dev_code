@@ -96,9 +96,7 @@
     <Compile Include="Contracts\IStatisticsClient.cs" />
     <Compile Include="Contracts\ITemplatedClient.cs" />
     <Compile Include="Contracts\ITaxEstimationService.cs" />
-    <Compile Include="FileFolder.cs" />
     <Compile Include="FileSystem.cs" />
-    <Compile Include="FileModule.cs" />
     <Compile Include="FileType.cs" />
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Helpers\AwsSignerHelper.cs" />
