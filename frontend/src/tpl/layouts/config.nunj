@@ -583,7 +583,7 @@
           ]
         },
         availability: { // props
-          type: 'outofstock', // unavailable, outofstock, available
+          type: 'available', // unavailable, outofstock, available
           text: 'Out of stock'
         },
         packagingInfo: 'These come in pack 50 pcs', // props
