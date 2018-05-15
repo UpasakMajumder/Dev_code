@@ -170,7 +170,6 @@ namespace Kadena.Container.Default
             container.Register<IOrderViewClient, OrderViewClient>();
             container.Register<ITaxEstimationServiceClient, TaxEstimationServiceClient>();
             container.Register<ITemplatedClient, TemplatedClient>();
-            container.Register<IAddressValidationClient, AddressValidationClient>();
             container.Register<ISuppliantDomainClient, SuppliantDomain>();
             container.Register<IFileClient, FileClient>();
             container.Register<IOrderResubmitClient, OrderResubmitClient>();

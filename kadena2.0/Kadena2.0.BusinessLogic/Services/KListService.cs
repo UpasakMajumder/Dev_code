@@ -14,33 +14,14 @@ namespace Kadena.BusinessLogic.Services
     public class KListService : IKListService
     {
         private readonly IMailingListClient _mailingClient;
-        private readonly IAddressValidationClient _validationClient;
         private readonly IKenticoSiteProvider _site;
         private readonly IMapper _mapper;
 
-        public KListService(IMailingListClient client, IKenticoSiteProvider site, IAddressValidationClient validationClient, IMapper mapper)
+        public KListService(IMailingListClient client, IKenticoSiteProvider site, IMapper mapper)
         {
-            if (client == null)
-            {
-                throw new ArgumentNullException(nameof(client));
-            }
-            if (site == null)
-            {
-                throw new ArgumentNullException(nameof(site));
-            }
-            if (validationClient == null)
-            {
-                throw new ArgumentNullException(nameof(validationClient));
-            }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-
-            _mailingClient = client;
-            _site = site;
-            _mapper = mapper;
-            _validationClient = validationClient;
+            _mailingClient = client ?? throw new ArgumentNullException(nameof(client));
+            _site = site ?? throw new ArgumentNullException(nameof(site));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<MailingList> GetMailingList(Guid containerId)
@@ -56,25 +37,16 @@ namespace Kadena.BusinessLogic.Services
             var changes = _mapper.Map<MailingAddressDto[]>(addresses);
 
             var updateResult = await _mailingClient.UpdateAddresses(containerId, changes);
-            if (updateResult.Success)
-            {
-                var validateResult = await _validationClient.Validate(containerId);
-                return validateResult.Success;
-            }
-            else
-            {
-                return updateResult.Success;
-            }
+            return updateResult.Success;
         }
 
         public async Task<bool> UseOnlyCorrectAddresses(Guid containerId)
         {
             var addresses = await _mailingClient.GetAddresses(containerId);
-            await _mailingClient.RemoveAddresses(containerId,
+            var removeResult = await _mailingClient.RemoveAddresses(containerId,
                 addresses.Payload.Where(a => a.ErrorMessage != null).Select(a => a.Id));
-            var validateResult = await _validationClient.Validate(containerId);
 
-            return validateResult.Success;
+            return removeResult.Success;
         }
     }
 }

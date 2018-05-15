@@ -10,6 +10,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Dto.General;
 using Kadena.Models.Site;
 using Kadena.Container.Default;
+using Moq;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -55,25 +56,6 @@ namespace Kadena.Tests.BusinessLogic
             };
         }
 
-        private BaseResponseDto<string> ValidateSuccess()
-        {
-            return new BaseResponseDto<string>
-            {
-                Success = true,
-                Payload = string.Empty
-            };
-        }
-
-        private BaseResponseDto<string> ValidateFailed()
-        {
-            return new BaseResponseDto<string>
-            {
-                Success = false,
-                Payload = string.Empty,
-                ErrorMessages = "Some error."
-            };
-        }
-
         private BaseResponseDto<IEnumerable<string>> UpdateSuccess()
         {
             return new BaseResponseDto<IEnumerable<string>>
@@ -97,24 +79,12 @@ namespace Kadena.Tests.BusinessLogic
         public async Task UseOnlyCorrectTestSuccess()
         {
             Setup<IMailingListClient, Task<BaseResponseDto<IEnumerable<MailingAddressDto>>>>(c => c.GetAddresses(_containerId), Task.FromResult(GetAddresses()));
-            Setup<IAddressValidationClient, Task<BaseResponseDto<string>>>(c => c.Validate(_containerId), Task.FromResult(ValidateSuccess()));
+            Setup<IMailingListClient, Task<BaseResponseDto<object>>>(c => c.RemoveAddresses(_containerId, It.IsAny<IEnumerable<Guid>>()), Task.FromResult(new BaseResponseDto<object> { Success = true }));
             SetupBase();
 
             var actualResult = await Sut.UseOnlyCorrectAddresses(_containerId);
 
             Assert.True(actualResult);
-        }
-
-        [Fact(DisplayName = "KListService.UseOnlyCorrectAddresses() | Address validation ailed")]
-        public async Task UseOnlyCorrectTestValidationFailed()
-        {
-            Setup<IMailingListClient, Task<BaseResponseDto<IEnumerable<MailingAddressDto>>>>(c => c.GetAddresses(_containerId), Task.FromResult(GetAddresses()));
-            Setup<IAddressValidationClient, Task<BaseResponseDto<string>>>(c => c.Validate(_containerId), Task.FromResult(ValidateFailed()));
-            SetupBase();
-
-            var actualResult = await Sut.UseOnlyCorrectAddresses(_containerId);
-
-            Assert.False(actualResult);
         }
 
         [Fact(DisplayName = "KListService.UseOnlyCorrectAddresses() | Zero addresses in container")]
@@ -133,24 +103,11 @@ namespace Kadena.Tests.BusinessLogic
         public async Task UpdateTestSuccess()
         {
             Setup<IMailingListClient, Task<BaseResponseDto<IEnumerable<string>>>>(c => c.UpdateAddresses(_containerId, null), Task.FromResult(UpdateSuccess()));
-            Setup<IAddressValidationClient, Task<BaseResponseDto<string>>>(c => c.Validate(_containerId), Task.FromResult(ValidateSuccess()));
             SetupBase();
 
             var actualResult = await Sut.UpdateAddresses(_containerId, null);
 
             Assert.True(actualResult);
-        }
-
-        [Fact(DisplayName = "KListService.UpdateAddresses() | Address validation failed")]
-        public async Task UpdateTestValidationFailed()
-        {
-            Setup<IMailingListClient, Task<BaseResponseDto<IEnumerable<string>>>>(c => c.UpdateAddresses(_containerId, null), Task.FromResult(UpdateSuccess()));
-            Setup<IAddressValidationClient, Task<BaseResponseDto<string>>>(c => c.Validate(_containerId), Task.FromResult(ValidateFailed()));
-            SetupBase();
-
-            var actualResult = await Sut.UpdateAddresses(_containerId, null);
-
-            Assert.False(actualResult);
         }
 
         [Fact(DisplayName = "KListService.UpdateAddresses() | Update failed")]
