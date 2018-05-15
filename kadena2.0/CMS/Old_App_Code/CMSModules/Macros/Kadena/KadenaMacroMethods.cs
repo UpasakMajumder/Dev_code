@@ -26,6 +26,8 @@ using static Kadena.Helpers.SerializerConfig;
 using Kadena.Models.ModuleAccess;
 using Kadena.BusinessLogic.Contracts.Approval;
 using CMS.PortalEngine.Web.UI;
+using Newtonsoft.Json;
+using Kadena.Helpers;
 
 [assembly: CMS.RegisterExtension(typeof(KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 
@@ -377,6 +379,26 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var fieldValue = parameters[0] as string;
             var urls = MediaMultiField.GetValues(fieldValue);
             return urls;
+        }
+
+        [MacroMethod(typeof(string), "Returns product options config.", 1)]
+        [MacroMethodParam(0, "skuid", typeof(int), "SKU ID")]
+        public static object GetProductOptions(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+
+            var sku = Convert.ToInt32(parameters[0]);
+
+            var options = DIContainer.Resolve<IKenticoProductsProvider>()
+                .GetProductCategories(sku);
+
+
+            return (options == null || options.Count() == 0)
+                   ? "null"
+                   : JsonConvert.SerializeObject(options, SerializerConfig.CamelCaseSerializer);
         }
 
         [MacroMethod(typeof(string[]), "Returns approver users", 1)]
