@@ -576,7 +576,7 @@
               value: '$2.10'
             },
             {
-              id: '2',
+              id: 'option-price',
               key: '50+ pcs',
               value: '$1.50'
             }
@@ -589,7 +589,7 @@
         packagingInfo: 'These come in pack 50 pcs', // props
         productOptions: {
           priceElementId: "option-price",
-          priceUrl: '/api/price/123',
+          priceUrl: PATH + 'products/options',
           categories: [
             {
               name: "TShirtSize", // not rendered, used in API call
@@ -597,6 +597,7 @@
               options: [
                 {
                   name: "please select", // category default record
+                  id: 0,
                   disabled : true, // user cannot select this
                   selected: true // category.CategoryDefaultRecord == category.CategoryDefaultOptions
                 },
@@ -612,6 +613,27 @@
                 },
                 {
                   name: "S",
+                  id: 125,
+                  selected: false,
+                }
+              ]
+            },
+            {
+              name: "TShirtColor", // not rendered, used in API call
+              selector: "RadioButtonsHorizontal", // Dropdownlist | RadioButtonsHorizontal | RadioButtonsVertical
+              options: [
+                {
+                  name: "Blue", // sku.SKUName
+                  id: 123,  // sku.SKUID
+                  selected: false, // sku.SKUID.ToString() == category.CategoryDefaultOptions
+                },
+                {
+                  name: "Red",
+                  id: 124,
+                  selected: false,
+                },
+                {
+                  name: "Green",
                   id: 125,
                   selected: false,
                 }
@@ -633,7 +655,7 @@
           text: 'Open template in design'
         },
         description: { // props
-          titlte: 'Description',
+          title: 'Description',
           text: '<p>Hello </p><p>How are you?</p>' // html
         }
       }

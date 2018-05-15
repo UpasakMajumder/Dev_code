@@ -8,17 +8,24 @@ import SVG from 'app.dump/SVG';
 
 const Table = ({
   data,
+  optionsPrice,
+  priceElementId,
   estimates = false
 }) => {
-  const body = data.get('body');
+  if (!data) return null;
 
-  if (!data || !body.count()) return null;
+  const body = data.get('body');
+  if (!body || !body.count()) return null;
 
   const list = body.map((item) => {
+    const value = priceElementId === item.get('id')
+      ? optionsPrice || item.get('value')
+      : item.get('value');
+
     return (
       <tr key={uuid()}>
         <td>{item.get('key')}</td>
-        <td>{item.get('value')}</td>
+        <td>{value}</td>
       </tr>
     );
   });
@@ -48,9 +55,11 @@ Table.propTypes = {
       id: PropTypes.string,
       key: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired
-    }).isRequired)
+    }))
   }),
-  estimates: PropTypes.bool
+  estimates: PropTypes.bool,
+  optionsPrice: PropTypes.string,
+  priceElementId: PropTypes.string
 };
 
 export default Table;
