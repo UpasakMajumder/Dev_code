@@ -10,7 +10,7 @@ const Table = ({ availability }) => {
   const type = availability.get('type');
 
   return (
-    <div className={`stock stock--${type}`}>
+    <div className={`stock mr-3 stock--${type}`}>
       <SVG
         name={`stock--${type}`}
         className="icon-stock"

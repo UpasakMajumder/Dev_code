@@ -9,6 +9,7 @@ import ProductThumbnail from './ProductThumbnail';
 import Info from './Info';
 import Table from './Table';
 import Stock from './Stock';
+import Proceed from './Proceed';
 
 class ProductDetail extends Component {
   static defaultProps = {
@@ -26,18 +27,12 @@ class ProductDetail extends Component {
       availability: ImmutablePropTypes.map,
       packagingInfo: PropTypes.string,
       addToCart: ImmutablePropTypes.mapContains({
-        url: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired,
-        unit: PropTypes.string.isRequired,
+        quantityText: PropTypes.string,
         quantity: PropTypes.number,
         minQuantity: PropTypes.number,
-        maxQuantity: PropTypes.number,
-        quantityText: PropTypes.string
+        maxQuantity: PropTypes.number
       }),
-      openTemplate: ImmutablePropTypes.mapContains({
-        url: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired
-      }),
+      openTemplate: ImmutablePropTypes.map,
       description: ImmutablePropTypes.mapContains({
         titlte: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired
@@ -51,9 +46,16 @@ class ProductDetail extends Component {
     quantity: this.props.ui.getIn(['addToCart', 'quantity'], 1),
   }
 
+  handleChangeQuantity = quantity => this.setState({ quantity });
+
   render() {
     const { ui } = this.props;
     console.log('ui', ui.toJS());
+
+    const packagingInfoComponent = ui.get('packagingInfo')
+      ? (
+        <span className="add-to-cart__info mr-3">{ui.get('packagingInfo')}</span>
+      ) : null;
 
     return (
       <div>
@@ -79,6 +81,13 @@ class ProductDetail extends Component {
             <div className="product-view__footer">
               <Stock
                 availability={ui.get('availability')}
+              />
+              {packagingInfoComponent}
+              <Proceed
+                addToCart={ui.get('addToCart')}
+                openTemplate={ui.get('openTemplate')}
+                handleChangeQuantity={this.handleChangeQuantity}
+                quantity={this.state.quantity}
               />
             </div>
           </div>
