@@ -69,6 +69,7 @@ const app = {
     render('TaC', document.querySelectorAll('.r-tac'));
     render('FilteredRecentOrders', document.querySelectorAll('.r-filtered-recent-orders'));
     render('Registration', document.querySelectorAll('.r-registration'));
+    render('ProductDetail', document.querySelectorAll('.r-product-detail'));
   }
 };
 

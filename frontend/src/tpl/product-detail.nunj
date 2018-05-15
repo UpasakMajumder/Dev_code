@@ -1,0 +1,10 @@
+{% extends "layouts/default.nunj" %}
+
+{% set title = 'Product' %}
+{% set sidebarActive = 'Products' %}
+{% set breadcrumbs = ['Category name', title] %}
+{% set headerTitle = title %}
+
+{% block content %}
+  <div class="r-product-detail"></div>
+{% endblock %}
