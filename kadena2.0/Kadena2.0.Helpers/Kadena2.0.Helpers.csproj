@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Data\DatasetHelpers.cs" />
     <Compile Include="Routes\File.cs" />
+    <Compile Include="Routes\Routes.OrderReport.cs" />
     <Compile Include="Routes\User.cs" />
     <Compile Include="UrlHelper.cs" />
     <Compile Include="MailValidator.cs" />
@@ -50,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Compile Include="Routes\Routes.Order.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

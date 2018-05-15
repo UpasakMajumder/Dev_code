@@ -14,5 +14,9 @@
         public int ApproverUserId { get; set; }
         public string PreferredLanguage { get; set; }
         public int DefaultShippingAddressId { get; set; }
+
+        public override string ToString() => $"{FirstName} {LastName}";
+
+        public string FullName => ToString();
     }
 }

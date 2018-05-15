@@ -232,9 +232,11 @@
     <Compile Include="ViewOrder\MicroserviceResponses\ShippingInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\AddressDto.cs" />
     <Compile Include="ViewOrder\Responses\CommonInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderActionsDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderDetailDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemsDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\PaymentInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\PricingInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\PricingInfoItemDTO.cs" />
@@ -242,6 +244,8 @@
     <Compile Include="ViewOrder\Responses\TitleValuePairDto.cs" />
     <Compile Include="ViewOrder\Responses\TrackingDTO.cs" />
     <Compile Include="_Attributes\StringListValidationAttribute.cs" />
+    <Compile Include="_Common\DialogButtonDTO.cs" />
+    <Compile Include="_Common\DialogDTO.cs" />
     <Compile Include="_Common\PaginationDto.cs" />
     <Compile Include="_Common\TableViewDto.cs" />
     <Compile Include="_Common\TableRowDto.cs" />

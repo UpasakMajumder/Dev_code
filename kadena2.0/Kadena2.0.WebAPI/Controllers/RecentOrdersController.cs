@@ -2,6 +2,7 @@
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.RecentOrders;
 using Kadena.Dto.ViewOrder.Responses;
+using Kadena.Helpers.Routes;
 using Kadena.WebAPI.Infrastructure;
 using System;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route(Routes.Order.ToApprove)]
+        [Route(Routes.Order.GetToApprove)]
         public async Task<IHttpActionResult> GetOrdersToApprove()
         {
             var orders = await _orderService.GetOrdersToApprove();

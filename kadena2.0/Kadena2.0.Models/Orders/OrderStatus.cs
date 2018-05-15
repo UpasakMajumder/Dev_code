@@ -1,4 +1,6 @@
-﻿namespace Kadena.Models.Orders
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Kadena.Models.Orders
 {
     public enum OrderStatus
     {

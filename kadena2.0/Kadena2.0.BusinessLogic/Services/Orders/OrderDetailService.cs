@@ -2,10 +2,12 @@ using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Helpers;
+using Kadena.Helpers.Routes;
 using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Common;
 using Kadena.Models.OrderDetail;
+using Kadena.Models.Orders;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
@@ -36,7 +38,6 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IImageService imageService;
         private readonly IPdfService pdfService;
         private readonly IKenticoUnitOfMeasureProvider units;
-
 
         public OrderDetailService(IMapper mapper,
             IOrderViewClient orderViewClient,
@@ -95,9 +96,50 @@ namespace Kadena.BusinessLogic.Services.Orders
                 businessUnitName = businessUnits.GetBusinessUnitName(bun);
             }
 
+            var customer = kenticoCustomers.GetCustomer(data.ClientId);
+
+            var isWaitingForApproval = data.StatusId == (int)OrderStatus.WaitingForApproval;
+
             var orderDetail = new OrderDetail()
             {
                 DateTimeNAString = resources.GetResourceString("Kadena.Order.ItemShippingDateNA"),
+
+                General = new OrderInfo
+                {
+                    OrderId = orderId,
+                    CustomerId = customer.Id,
+                    CustomerName = customer.FullName
+                },
+
+                Actions = isWaitingForApproval
+                    ? new OrderActions
+                    {
+                        Accept = new DialogButton
+                        {
+                            Button = "Kadena.Order.ButtonAccept",
+                            Dialog = new Dialog
+                            {
+                                CancelButton = "Kadena.Order.DialogAccept.Cancel",
+                                ProceedButton = "Kadena.Order.DialogAccept.Proceed",
+                                ProceedUrl = Routes.Order.Approve,
+                                Text = "Kadena.Order.DialogAccept.Message",
+                                Title = "Kadena.Order.DialogAccept.Title"
+                            }
+                        },
+                        Reject = new DialogButton
+                        {
+                            Button = "Kadena.Order.ButtonReject",
+                            Dialog = new Dialog
+                            {
+                                CancelButton = "Kadena.Order.DialogReject.Cancel",
+                                ProceedButton = "Kadena.Order.DialogReject.Proceed",
+                                ProceedUrl = Routes.Order.Reject,
+                                Text = "Kadena.Order.DialogReject.Message",
+                                Title = "Kadena.Order.DialogReject.Title"
+                            }
+                        }
+                    }
+                    : null,
 
                 CommonInfo = new CommonInfo()
                 {
