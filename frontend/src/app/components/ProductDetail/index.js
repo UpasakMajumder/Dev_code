@@ -6,6 +6,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { PRODUCT_DETAIL } from 'app.globals';
 /* components */
 import ProductThumbnail from './ProductThumbnail';
+import Info from './Info';
+import Table from './Table';
+import Stock from './Stock';
 
 class ProductDetail extends Component {
   static defaultProps = {
@@ -17,29 +20,10 @@ class ProductDetail extends Component {
       thumbnail: ImmutablePropTypes.map.isRequired,
       requiresApproval: ImmutablePropTypes.map.isRequired,
       attachments: ImmutablePropTypes.list,
-      info: ImmutablePropTypes.mapContains({
-        createdDate: PropTypes.string,
-        code: PropTypes.string
-      }),
-      estimates: ImmutablePropTypes.mapContains({
-        header: PropTypes.string.isRequired,
-        body: ImmutablePropTypes.listOf(ImmutablePropTypes.mapContains({
-          key: PropTypes.string.isRequired,
-          value: PropTypes.string.isRequired
-        }).isRequired).isRequired
-      }),
-      dynamicPrices: ImmutablePropTypes.mapContains({
-        header: PropTypes.string.isRequired,
-        body: ImmutablePropTypes.listOf(ImmutablePropTypes.mapContains({
-          id: PropTypes.string.isRequired,
-          key: PropTypes.string.isRequired,
-          value: PropTypes.string.isRequired
-        }).isRequired).isRequired
-      }),
-      availability: ImmutablePropTypes.mapContains({
-        type: PropTypes.oneOf(['unavailable', 'outofstock', 'available']).isRequired,
-        text: PropTypes.string.isRequired
-      }),
+      info: ImmutablePropTypes.map,
+      estimates: ImmutablePropTypes.map,
+      dynamicPrices: ImmutablePropTypes.map,
+      availability: ImmutablePropTypes.map,
       packagingInfo: PropTypes.string,
       addToCart: ImmutablePropTypes.mapContains({
         url: PropTypes.string.isRequired,
@@ -79,6 +63,25 @@ class ProductDetail extends Component {
             attachments={ui.get('attachments')}
             requiresApproval={ui.get('requiresApproval')}
           />
+          <div className="product-view__block">
+            <Info
+              info={ui.get('info')}
+            />
+            <div className="product-view__tables">
+              <Table
+                data={ui.get('estimates')}
+                estimates
+              />
+              <Table
+                data={ui.get('dynamicPrices')}
+              />
+            </div>
+            <div className="product-view__footer">
+              <Stock
+                availability={ui.get('availability')}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );
