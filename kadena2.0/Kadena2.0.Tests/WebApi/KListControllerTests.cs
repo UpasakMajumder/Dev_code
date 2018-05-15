@@ -20,19 +20,27 @@ namespace Kadena.Tests.WebApi
             {
                 null,
                 new Mock<IMapper>().Object,
+                new Mock<IFileService>().Object,
             };
             yield return new object[]
             {
                 new Mock<IKListService>().Object,
+                null,
+                new Mock<IFileService>().Object,
+            };
+            yield return new object[]
+            {
+                new Mock<IKListService>().Object,
+                new Mock<IMapper>().Object,
                 null,
             };
         }
 
         [Theory(DisplayName = "KListController()")]
         [MemberData(nameof(GetDependencies))]
-        public void KListController(IKListService kListService, IMapper mapper)
+        public void KListController(IKListService kListService, IMapper mapper, IFileService fileService)
         {
-            Assert.Throws<ArgumentNullException>(() => new KListController(kListService, mapper));
+            Assert.Throws<ArgumentNullException>(() => new KListController(kListService, mapper, fileService));
         }
 
         [Fact(DisplayName = "KListController.UseOnlyCorrect() | Success")]
@@ -81,6 +89,27 @@ namespace Kadena.Tests.WebApi
             var actualResult = await Sut.Update(containerId, null);
 
             Assert.IsType<JsonResult<ErrorResponse>>(actualResult);
+        }
+
+        [Fact(DisplayName = "KListController.Export() | Success")]
+        public async Task Export_Success()
+        {
+            var containerId = Guid.NewGuid();
+            Setup<IFileService, Task<Uri>>(s => s.GetContainerFileUrl(containerId), Task.FromResult(new Uri("https://google.com")));
+
+            var actualResult = await Sut.Export(containerId);
+
+            Assert.IsType<RedirectResult>(actualResult);
+        }
+
+        [Fact(DisplayName = "KListController.Export() | Failed")]
+        public async Task Export_Failed()
+        {
+            var containerId = Guid.NewGuid();
+
+            var actualResult = await Sut.Export(containerId);
+
+            Assert.IsType<NotFoundResult>(actualResult);
         }
     }
 }
