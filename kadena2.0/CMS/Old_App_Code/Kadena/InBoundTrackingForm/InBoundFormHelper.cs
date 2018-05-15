@@ -24,7 +24,7 @@ namespace Kadena.Old_App_Code.Kadena.InBoundForm
                         isExist = false;
                     }
                     inboundData.SKUID = product.SKU.KenticoSKUID;
-                    inboundData.QtyOrdered = product.UnitCount;
+                    inboundData.QtyOrdered += product.UnitCount;
                     if (!isExist)
                     {
                         inboundData.Insert();
