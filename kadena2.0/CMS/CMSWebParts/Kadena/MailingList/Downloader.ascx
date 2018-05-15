@@ -3,11 +3,11 @@
 <div class="mailing-ready__block">
     <cms:LocalizedHeading Level="2" CssClass="mailing-ready__header" runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.DownloadMaterials" />
     <div class="mailing-ready__links">
-        <a class="link link--attachment" href="/klist/export/<% =Request.QueryString["containerId"] %>" download="<% =Request.QueryString["containerId"] %>">
+        <asp:HyperLink runat="server" ID="hlnkDownload" CssClass="link link--attachment">
             <svg class="icon icon-download">
                 <use xlink:href="/gfx/svg/sprites/icons.svg#download--blue" />
             </svg>
             <cms:LocalizedLabel runat="server" EnableViewState="false" ResourceString="Kadena.MailingList.DownloadFile" />
-        </a>
+        </asp:HyperLink>
     </div>
 </div>

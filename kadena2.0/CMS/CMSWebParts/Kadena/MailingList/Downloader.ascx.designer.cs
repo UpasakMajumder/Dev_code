@@ -11,5 +11,14 @@ namespace Kadena.CMSWebParts.Kadena.MailingList {
     
     
     public partial class Downloader {
+        
+        /// <summary>
+        /// hlnkDownload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlnkDownload;
     }
 }

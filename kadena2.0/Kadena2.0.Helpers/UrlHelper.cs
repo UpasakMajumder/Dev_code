@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kadena.Helpers.Routes;
+using System;
 
 namespace Kadena.Helpers
 {
@@ -12,6 +13,11 @@ namespace Kadena.Helpers
         public static Uri GetACSUri()
         {
             return new Uri("/api/login/saml2", UriKind.Relative);
+        }
+
+        public static Uri GetMailingListExportUrl(Guid containerId)
+        {
+            return new Uri($"/{Klist.Export.Replace("{containerId}", containerId.ToString())}", UriKind.Relative);
         }
     }
 }
