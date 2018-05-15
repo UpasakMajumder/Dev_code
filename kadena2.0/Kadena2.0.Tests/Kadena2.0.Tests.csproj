@@ -497,7 +497,6 @@
     <Compile Include="Deployment\AutomatedXunitTests.cs" />
     <Compile Include="EventHandlers\ProductEventHandlerTests.cs" />
     <Compile Include="Infrastructure\DIContainerTests.cs" />
-    <Compile Include="Infrastructure\NotRegisteredService.cs" />
     <Compile Include="KadenaUnitTest.cs" />
     <Compile Include="MicroserviceClients\TemplateClientTest.cs" />
     <Compile Include="Models\ProductValidatorTests.cs" />
