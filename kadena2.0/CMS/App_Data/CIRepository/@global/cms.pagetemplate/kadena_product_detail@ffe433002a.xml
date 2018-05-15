@@ -1309,8 +1309,8 @@ config.localization.productDetail = {
     },
     attachments: {% KadenaNamespace.GetProductAttachments(ProductAttachments) |(user)michal.machacek@actum.cz|(hash)605c8842e68b8e9693f25f2a2e4411e0880609292263d245f5cdfa9926494930%},
     info: { 
-      createdDate: '',
-      code: ''
+      createdDate: '{$Kadena.Product.ProductAdded$}: {% KadenaNamespace.FormatDate(DocumentCreatedWhen) |(user)michal.machacek@actum.cz|(hash)048c71002e4ca196f80f9db8796d648abbe8b1161bdccdfc387c953fba2b34f1%}',
+      code: '{% ProductCustomerReferenceNumber == "" ? "" : String.FormatString("{0}: {1}",  GetResourceString("Kadena.Product.ProductCode"), ProductCustomerReferenceNumber) |(user)michal.machacek@actum.cz|(hash)55b9e9d00409bead0de0a451a093c2b8b834f6092e0bbc98014f3784aa1f303a%}'
     },
     estimates: {
       header: '',
