@@ -5,6 +5,7 @@
         public class Order
         {
             public const string Detail = "api/orderdetail/{orderId}";
+            public const string ToApprove = "api/orders/toApprove";
         }
     }
 }

@@ -653,12 +653,12 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<span class="add-to-cart__info" {% (ProductNumberOfItemsInPackage == "0" || ProductNumberOfItemsInPackage == "1") ? "style=display:none;" : "" %}>
+<span class="add-to-cart__info" {% (ECommerceContext.CurrentProduct.SKUNumberOfItemsInPackage == "0" || ECommerceContext.CurrentProduct.SKUNumberOfItemsInPackage == "1") ? "style=display:none;" : "" |(user)michal.machacek@actum.cz|(hash)17c3113a6f182e15caabd685eddb50fa77876c1b08afd55243e5981d18af4708%}>
   {% KadenaNamespace.GetPackagingString(
-    ProductNumberOfItemsInPackage,
+    ECommerceContext.CurrentProduct.SKUNumberOfItemsInPackage,
     SKUUnitOfMeasure,
     LocalizationContext.CurrentCulture.CultureCode) 
-  |(user)michal.machacek@actum.cz|(hash)da2b8100494afb8f1283328d9669225e888b67d3eeaffb04f492f7ade084abe6%}
+  |(user)michal.machacek@actum.cz|(hash)22f4a9f14ab49c0d8d7532a03d5a7e8588f8de8d4433b0421ab7abe8e81bfbc7%}
 </span>
 ]]>
           </property>

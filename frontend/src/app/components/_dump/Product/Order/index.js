@@ -57,10 +57,11 @@ const Order = ({
   toogleEmailProof
 }) => {
   const downloadPdfLink = downloadPdfURL
-    ? <div className="cart-product__file">
-      <a className="link" href={downloadPdfURL}>Download PDF</a>
-    </div>
-    : null;
+    ? (
+      <div className="cart-product__file">
+        <a className="link" target="_blank" href={downloadPdfURL}>Download PDF</a>
+      </div>
+    ) : null;
 
   const mailingListElement = mailingList
     ? <div className="cart-product__mlist">
