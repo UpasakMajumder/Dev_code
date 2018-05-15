@@ -91,7 +91,7 @@ class ProductThumbnail extends Component {
           </button>
         </div>
       </div>
-    );;
+    );
   }
 }
 
