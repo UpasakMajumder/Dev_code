@@ -368,6 +368,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 new CacheSettings(TimeSpan.FromMinutes(20).TotalMinutes, cacheKey));
         }
 
+        [Obsolete]
         [MacroMethod(typeof(string[]), "Returns array of parsed urls items.", 1)]
         [MacroMethodParam(0, "fieldValue", typeof(string), "Value stored MediaMultiField field")]
         public static object GetUrlsFromMediaMultiField(EvaluationContext context, params object[] parameters)
@@ -379,6 +380,28 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var fieldValue = parameters[0] as string;
             var urls = MediaMultiField.GetValues(fieldValue);
             return urls;
+        }
+
+        [MacroMethod(typeof(string), "Returns json of product attachments", 1)]
+        [MacroMethodParam(0, "fieldValue", typeof(string), "Value stored MediaMultiField field")]
+        public static object GetProductAttachments(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+            var fieldValue = parameters[0] as string;
+
+            var urls = MediaMultiField.GetValues(fieldValue);
+
+            var attachments = urls.Select(url => new
+            {
+                url,
+                text = MediaMultiField.ParseFrom(url).Name
+            }
+            );
+
+            return JsonConvert.SerializeObject(attachments, CamelCaseSerializer);
         }
 
         [MacroMethod(typeof(string), "Returns product options config.", 1)]
@@ -413,6 +436,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return none.Concat(approvers).ToArray();
          }
 
+        [Obsolete]
         [MacroMethod(typeof(string), "Returns file name from media attachment url.", 1)]
         [MacroMethodParam(0, "url", typeof(string), "Url")]
         public static object GetFilenameFromMediaUrl(EvaluationContext context, params object[] parameters)
@@ -447,7 +471,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
                 var kenticoLocalization = DIContainer.Resolve<IKenticoLocalizationProvider>();
-                return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoLocalization.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
+                return JsonConvert.SerializeObject(kenticoLocalization.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
             }
             return string.Empty;
         }

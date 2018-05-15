@@ -25,6 +25,8 @@
 </div>
 <div class="content-block">
   
+  {^WebPartZone|(id)ProductDetailReact^}
+  
   <div class="product-view">
     {^WebPartZone|(id)zoneImage^}
     <div class="product-view__block">
@@ -1279,6 +1281,150 @@ config.localization.manageProducts = {
           <property name="visible" ismacro="true">
             <![CDATA[{% !String.IsNullOrWhiteSpace(CurrentDocument.DocumentSKUDescription) |(user)tomas.rucki@actum.cz|(hash)a9117ce6664d62122ef53bc380d0554ca14288d550b4d22cfb2f937849cf964e%}]]>
           </property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">statictext</property>
+        </webpart>
+      </webpartzone>
+      <webpartzone id="ProductDetailReact" v="1">
+        <webpart controlid="JavascriptReact" guid="a4695515-f876-4959-87f7-41590a1c6d26" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">JavascriptReact</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+config.localization.productDetail = {
+    thumbnail: {
+      image: '{% KadenaNamespace.GetThumbnailLink(ProductImage) |(user)michal.machacek@actum.cz|(hash)d3dd6e072e730386dddefb3cb9662c29ab30b3ca0cdffaa4482f729d46edfe61%}',
+      border: '{% (Settings.KDA_ProductThumbnailBorderEnabled && !ProductThumbnailBorderDisabled) ? Settings.KDA_ProductThumbnailBorderStyle : "" |(user)michal.machacek@actum.cz|(hash)2690ccf44a2b85edb42e55dfbfba5d211291f4013f137743ba134c3ec0d2c062%}',
+      magnifyImage: '{% KadenaNamespace.GetThumbnailLink(ProductImage) |(user)michal.machacek@actum.cz|(hash)d3dd6e072e730386dddefb3cb9662c29ab30b3ca0cdffaa4482f729d46edfe61%}'
+    },
+    requiresApproval: {
+      exists: {% DocumentContext.CurrentDocument.GetValue("SKUApprovalRequired").ToString() == "True" ? "true" : "false"|(user)michal.machacek@actum.cz|(hash)d76b7bba99d51ede1efaca9b29c944322cd67f952627cc36aead3002b48eec13%},
+      text: '{$Kadena.Product.RequiresApproval$}'
+    },
+    attachments: {% KadenaNamespace.GetProductAttachments(ProductAttachments) |(user)michal.machacek@actum.cz|(hash)605c8842e68b8e9693f25f2a2e4411e0880609292263d245f5cdfa9926494930%},
+    info: { 
+      createdDate: '',
+      code: ''
+    },
+    estimates: {
+      header: '',
+      body: [
+        {
+          key: '',
+          value: ''
+        }
+      ]
+    },
+    dynamicPrices: {
+      header: '',
+      body: [
+        {
+          id: '',
+          key: '',
+          value: ''
+        }
+      ]
+    },
+    availability: {
+      type: '', 
+      text: ''
+    },
+    packagingInfo: '',
+    productOptions:{
+          priceElementId: "option-price",
+          priceUrl: '/api/price/{%NodeSKU.ID|(user)michal.machacek@actum.cz|(hash)bcef10f415a2354c4810ec862a0471de9276dda4620c639e041ca603f3977dac%}',
+          options: {% KadenaNamespace.GetProductOptions(NodeSKU.ID) |(user)michal.machacek@actum.cz|(hash)b8c8e779b4fb8e921b101939ec8aec929d24a48523724241aab85ce8deb532a0%}
+      },
+    addToCart: {
+      url: '/api/shoppingcart/addtocart',
+      text: '',
+      unit: '',
+      quantity: 1,
+      minQuantity: 1,
+      maxQuantity: 10,
+      quantityText: "Order limit: 5 packs per order"
+    },
+    openTemplate: {
+      url: '',
+      text: ''
+    },
+    description: {
+      titlte: '',
+      text: ''
+    },
+    relatedProducts: {
+      title: '',
+      products: [
+        {
+          url: ,
+          image: '',
+          name
+        }
+      ]
+    }
+  }
+
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Inline</property>
+          <property name="instanceguid">a4695515-f876-4959-87f7-41590a1c6d26</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
+        <webpart controlid="divForReact" guid="d860398e-06f1-4614-bdff-9a4e6bbeb6b0" type="statictext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">divForReact</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">d860398e-06f1-4614-bdff-9a4e6bbeb6b0</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="tag"></property>
+          <property name="text"></property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>
         </webpart>
