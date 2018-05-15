@@ -13,6 +13,7 @@ using AutoMapper;
 using CMS.DataEngine;
 using CMS.CustomTables;
 using Kadena.Models.SiteSettings;
+using Kadena.Models.ProductOptions;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -345,6 +346,64 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 return null;
             }
+        }
+
+        public IEnumerable<ProductCategory> GetProductCategories(int skuid)
+        {
+            var categories = new List<ProductCategory>();
+
+            var skuCategories = SKUOptionCategoryInfoProvider
+                .GetSKUOptionCategories()
+                .Columns(nameof(SKUOptionCategoryInfo.CategoryID))
+                .WhereEquals(nameof(SKUOptionCategoryInfo.SKUID), skuid)
+                .OrderByDefault();
+
+            foreach (var cat in skuCategories)
+            {
+                var category = OptionCategoryInfoProvider.GetOptionCategoryInfo(cat.CategoryID);
+                if (category.CategoryType != OptionCategoryTypeEnum.Attribute
+                    || !category.CategoryEnabled)
+                {
+                    continue;
+                }
+                var optionSkus = SKUInfoProvider.GetSKUOptionsForProduct(skuid, cat.CategoryID, true);
+
+                var categoryModel = new ProductCategory
+                {
+                    Name = category.CategoryName,
+                    Selector = category.CategorySelectionType.ToString(),
+                    Options = GetCategoryOptions(category, optionSkus)
+                };
+
+                categories.Add(categoryModel);
+            }
+
+            return categories;
+        }
+
+        IList<ProductOption> GetCategoryOptions(OptionCategoryInfo category, IEnumerable<SKUInfo> skus)
+        {
+            var options = new List<ProductOption>();
+
+            options.Add(new ProductOption
+            {
+                Name = category.CategoryDefaultRecord,
+                Disabled = true,
+                Selected = (category.CategoryDefaultRecord == category.CategoryDefaultOptions)
+            });
+
+            foreach (var sku in skus)
+            {
+                options.Add(new ProductOption
+                {
+                    Name = sku.SKUName,
+                    Id = sku.SKUID,
+                    Selected = (sku.SKUID.ToString() == category.CategoryDefaultOptions),
+                    Disabled = false
+                });
+            }
+
+            return options;
         }
     }
 }

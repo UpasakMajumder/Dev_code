@@ -72,6 +72,9 @@
     <Compile Include="Orders\OrderFilter.cs" />
     <Compile Include="Orders\OrderReport.cs" />
     <Compile Include="Orders\OrderStatus.cs" />
+    <Compile Include="ProductOptions\ProductCategory.cs" />
+    <Compile Include="ProductOptions\ProductOption.cs" />
+    <Compile Include="ProductOptions\ProductOptions.cs" />
     <Compile Include="Product\Border.cs" />
     <Compile Include="Product\CampaignsProduct.cs" />
     <Compile Include="Product\Price.cs" />
