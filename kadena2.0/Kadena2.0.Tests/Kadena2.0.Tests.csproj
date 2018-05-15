@@ -511,6 +511,7 @@
     <Compile Include="BusinessLogic\ShoppingCartServiceTests.cs" />
     <Compile Include="BusinessLogic\KListServiceTests.cs" />
     <Compile Include="WebApi\BusinessUnitsControllerTests.cs" />
+    <Compile Include="WebApi\KListControllerTests.cs" />
     <Compile Include="WebApi\LoginControllerTest.cs" />
     <Compile Include="WebApi\ProductsControllerTest.cs" />
     <Compile Include="BusinessLogic\OrderReportServiceTests.cs" />
