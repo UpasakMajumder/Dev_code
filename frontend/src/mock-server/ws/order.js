@@ -451,6 +451,11 @@ module.exports.detail =  {
     "errorMessage": null,
     "payload": {
       "dateTimeNAString": "N/A",
+      "general": {
+        customerName: 'customerName',
+        customerId: 'customerId',
+        orderId: 'orderId'
+      },
       "commonInfo": {
         status: {
           title: 'Status',
@@ -624,7 +629,11 @@ module.exports.detail =  {
   },
   accept: {
     success: true,
-    payload: true,
+    payload: {
+      title: 'Yeahoo! 🚀',
+      text: 'The order has been accepted',
+      newStatus: 'Approved'
+    },
     errorMessage: ''
   },
   reject: {

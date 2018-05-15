@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { toastr } from 'react-redux-toastr';
 /* constants */
 import { FAILURE } from 'app.consts';
-/* globals */
-import { ORDER_DETAIL } from 'app.globals';
 /* components */
 import Dialog from 'app.dump/Dialog';
 import Button from 'app.dump/Button';
@@ -18,9 +17,14 @@ class Modal extends Component {
     cancelButton: PropTypes.string.isRequired,
     proceedButton: PropTypes.string.isRequired,
     proceedUrl: PropTypes.string.isRequired,
+    general: PropTypes.shape({
+      customerName: PropTypes.string.isRequired,
+      customerId: PropTypes.string.isRequired,
+      orderId: PropTypes.string.isRequired
+    }).isRequired,
     /* func */
     closeDialog: PropTypes.func.isRequired,
-    proceed: PropTypes.func.isRequired
+    changeStatus: PropTypes.func.isRequired
   }
 
   state = {
@@ -57,9 +61,7 @@ class Modal extends Component {
     try {
       this.setState({ isLoading: true });
       const body = {
-        customerName: ORDER_DETAIL.customerName,
-        customerId: ORDER_DETAIL.customerId,
-        orderId: ORDER_DETAIL.orderId,
+        ...this.props.general,
         rejectionNote: this.state.input
       };
 
@@ -73,8 +75,10 @@ class Modal extends Component {
         });
         this.setState({ isLoading: false });
       } else {
+        toastr.success(payload.title, payload.text);
         this.props.closeDialog();
-        this.props.proceed();
+        setTimeout(() => window.history.go(-1), 2000);
+        this.props.changeStatus(payload.newStatus);
       }
     } catch (e) {
       window.store.dispatch({

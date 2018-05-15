@@ -13,32 +13,32 @@ const actionPropTypes = {
 class Actions extends Component {
   state = {
     showReject: false,
-    showAccept: false,
-    proceeded: false
+    showAccept: false
   };
 
   static propTypes = {
     ui: PropTypes.shape({
       accept: { ...actionPropTypes },
       reject: { ...actionPropTypes }
-    }).isRequired
+    }).isRequired,
+    general: PropTypes.object.isRequired,
+    changeStatus: PropTypes.func.isRequired
   };
 
   handleShowReject = () => this.setState({ showReject: true });
   handleHideReject = () => this.setState({ showReject: false });
   handleShowAccept = () => this.setState({ showAccept: true });
   handleHideAccept = () => this.setState({ showAccept: false });
-  proceed = () => this.setState({ proceeded: true });
 
   render() {
-    if (!this.props.ui || this.state.proceeded) return null;
+    if (!this.props.ui) return null;
 
-    const { ui: { accept, reject } } = this.props;
+    const { ui: { accept, reject }, general, changeStatus } = this.props;
 
     return (
       <div className="text-right">
-        {this.state.showAccept && <Modal accept proceed={this.proceed} closeDialog={this.handleHideAccept} { ...accept.dialog } />}
-        {this.state.showReject && <Modal proceed={this.proceed} closeDialog={this.handleHideReject} { ...reject.dialog } />}
+        {this.state.showAccept && <Modal accept changeStatus={changeStatus} general={general} closeDialog={this.handleHideAccept} { ...accept.dialog } />}
+        {this.state.showReject && <Modal changeStatus={changeStatus} general={general} closeDialog={this.handleHideReject} { ...reject.dialog } />}
 
         <Button
           text={accept.button}
