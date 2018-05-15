@@ -4,8 +4,6 @@ using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
-using System.IO;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients

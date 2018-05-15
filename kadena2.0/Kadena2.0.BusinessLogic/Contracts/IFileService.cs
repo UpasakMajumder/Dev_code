@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Kadena.BusinessLogic.Contracts
@@ -8,5 +9,7 @@ namespace Kadena.BusinessLogic.Contracts
         Task<string> GetUrlFromS3(string key);
 
         string CreateMailingList(string fileName, Stream fileStream);
+
+        Task<Uri> GetContainerFileUrl(Guid containerId);
     }
 }
