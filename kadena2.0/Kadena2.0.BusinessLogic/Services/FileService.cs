@@ -42,7 +42,7 @@ namespace Kadena.BusinessLogic.Services
         public async Task<Uri> GetContainerFileUrl(Guid containerId)
         {
             var site = siteProvider.GetCurrentSiteCodeName();
-            var exportResult = await exportClient.ExportMailingList(containerId, site);
+            var exportResult = await exportClient.ExportMailingList(containerId);
             if (!exportResult.Success)
             {
                 _logger.LogError(GetType().Name, exportResult.ErrorMessages);

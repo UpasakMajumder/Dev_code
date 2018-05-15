@@ -110,7 +110,7 @@ namespace Kadena.Tests.BusinessLogic
         [InlineData("")]
         public async Task GetContainerFileUrl_Success(string url)
         {
-            Setup<IExportClient, Task<BaseResponseDto<string>>>(s => s.ExportMailingList(It.IsAny<Guid>(), It.IsAny<string>()),
+            Setup<IExportClient, Task<BaseResponseDto<string>>>(s => s.ExportMailingList(It.IsAny<Guid>()),
                 Task.FromResult(new BaseResponseDto<string> { Success = true, Payload = url }));
 
             var actualResult = await Sut.GetContainerFileUrl(Guid.Empty);
@@ -121,7 +121,7 @@ namespace Kadena.Tests.BusinessLogic
         [Fact(DisplayName = "FileService.GetContainerFileUrl() | Success null value")]
         public async Task GetContainerFileUrl_SuccessNullValue()
         {
-            Setup<IExportClient, Task<BaseResponseDto<string>>>(s => s.ExportMailingList(It.IsAny<Guid>(), It.IsAny<string>()),
+            Setup<IExportClient, Task<BaseResponseDto<string>>>(s => s.ExportMailingList(It.IsAny<Guid>()),
                 Task.FromResult(new BaseResponseDto<string> { Success = true, Payload = null }));
 
             Task action() => Sut.GetContainerFileUrl(Guid.Empty);
@@ -132,7 +132,7 @@ namespace Kadena.Tests.BusinessLogic
         [Fact(DisplayName = "FileService.GetContainerFileUrl() | Failed")]
         public async Task GetContainerFileUrl_Failed()
         {
-            Setup<IExportClient, Task<BaseResponseDto<string>>>(s => s.ExportMailingList(It.IsAny<Guid>(), It.IsAny<string>()),
+            Setup<IExportClient, Task<BaseResponseDto<string>>>(s => s.ExportMailingList(It.IsAny<Guid>()),
                 Task.FromResult(new BaseResponseDto<string> { Success = false }));
 
             var actualResult = await Sut.GetContainerFileUrl(Guid.Empty);

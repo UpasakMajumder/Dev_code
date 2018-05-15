@@ -10,13 +10,13 @@ namespace Kadena.Tests.MicroserviceClients
         [Fact(DisplayName = "ExportClient()")]
         public void ExportClient()
         {
-            Assert.Throws<ArgumentNullException>(()=>new ExportClient(null));
+            Assert.Throws<ArgumentNullException>(() => new ExportClient(null));
         }
 
         [Fact(DisplayName = "ExportClient.ExportMailingList()")]
         public async Task ExportMailingList()
         {
-            var actualResult = await Sut.ExportMailingList(Guid.Empty, string.Empty);
+            var actualResult = await Sut.ExportMailingList(Guid.Empty);
 
             Assert.NotNull(actualResult);
         }
