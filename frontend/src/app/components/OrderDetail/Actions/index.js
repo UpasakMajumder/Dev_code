@@ -34,9 +34,9 @@ class Actions extends Component {
 
   render() {
     if (!this.props.ui) return null;
-    if (this.state.proceeded) return null;
 
     const { ui: { accept, reject }, general, changeStatus } = this.props;
+    const { proceeded } = this.state;
 
     return (
       <div className="text-right">
@@ -47,13 +47,15 @@ class Actions extends Component {
           text={accept.button}
           type="success"
           btnClass="mr-2"
-          onClick={this.handleShowAccept}
+          disabled={proceeded}
+          onClick={proceeded ? () => {} : this.handleShowAccept}
         />
 
         <Button
           text={reject.button}
           type="danger"
-          onClick={this.handleShowReject}
+          disabled={proceeded}
+          onClick={proceeded ? () => {} : this.handleShowReject}
         />
       </div>
     );
