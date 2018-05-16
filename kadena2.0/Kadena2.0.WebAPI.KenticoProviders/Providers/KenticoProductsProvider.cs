@@ -169,7 +169,10 @@ namespace Kadena.WebAPI.KenticoProviders
                 ProductType = doc.GetValue("ProductType", string.Empty),
                 ProductMasterTemplateID = doc.GetValue<Guid>("ProductChiliTemplateID", Guid.Empty),
                 ProductChiliWorkgroupID = doc.GetValue<Guid>("ProductChiliWorkgroupID", Guid.Empty),
-                TemplateLowResSettingId = doc.GetValue("ProductChiliLowResSettingId", Guid.Empty)
+                TemplateLowResSettingId = doc.GetValue("ProductChiliLowResSettingId", Guid.Empty),
+                ProductionTime = doc.GetStringValue("ProductProductionTime", string.Empty),
+                ShipTime = doc.GetStringValue("ProductShipTime", string.Empty),
+                ShippingCost = doc.GetStringValue("ProductShippingCost", string.Empty)
             };
 
             if (product.IsTemplateLowResSettingMissing)
@@ -385,12 +388,15 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var options = new List<ProductOption>();
 
-            options.Add(new ProductOption
+            if (category.CategorySelectionType == OptionCategorySelectionTypeEnum.Dropdownlist)
             {
-                Name = category.CategoryDefaultRecord,
-                Disabled = true,
-                Selected = (category.CategoryDefaultRecord == category.CategoryDefaultOptions)
-            });
+                options.Add(new ProductOption
+                {
+                    Name = category.CategoryDefaultRecord,
+                    Disabled = true,
+                    Selected = (category.CategoryDefaultRecord == category.CategoryDefaultOptions)
+                });
+            }
 
             foreach (var sku in skus)
             {

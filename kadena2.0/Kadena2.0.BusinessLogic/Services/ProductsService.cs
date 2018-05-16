@@ -1,7 +1,9 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.Models.Product;
 using Kadena.Models.SiteSettings;
+using Kadena.Models.SiteSettings.Permissions;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +17,16 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoResourceService resources;
         private readonly IKenticoUnitOfMeasureProvider units;
         private readonly IImageService imageService;
+        private readonly IKenticoPermissionsProvider permissions;
 
-        public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources, IKenticoUnitOfMeasureProvider units, IImageService imageService)
+        public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources, IKenticoUnitOfMeasureProvider units, IImageService imageService, IKenticoPermissionsProvider permissions)
         {
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.favorites = favorites ?? throw new ArgumentNullException(nameof(favorites));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
             this.units = units ?? throw new ArgumentNullException(nameof(units));
+            this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
         }
 
         public Price GetPrice(int skuId, Dictionary<string, int> skuOptions = null)
@@ -181,6 +185,42 @@ namespace Kadena.BusinessLogic.Services
         {
             var unit = units.GetUnitOfMeasure(unitOfMeasure);
             return resources.GetResourceString(unit.LocalizationString, cultureCode);
+        }
+
+        public IEnumerable<ProductEstimation> GetProductEstimations(int documentId)
+        {
+            var product = products.GetProductByDocumentId(documentId);
+            bool canSeePrices = permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.SeePrices);
+            var estimates = new List<ProductEstimation>();
+
+            if (!string.IsNullOrEmpty(product.ProductionTime))
+            {
+                estimates.Add(new ProductEstimation
+                {
+                    Key = resources.GetResourceString("Kadena.Product.ProductionTime"),
+                    Value = product.ProductionTime
+                });
+            }
+
+            if (!string.IsNullOrEmpty(product.ShipTime))
+            {
+                estimates.Add(new ProductEstimation
+                {
+                    Key = resources.GetResourceString("Kadena.Product.ShipTime"),
+                    Value = product.ShipTime
+                });
+            }
+
+            if (!string.IsNullOrEmpty(product.ShippingCost) && canSeePrices)
+            {
+                estimates.Add(new ProductEstimation
+                {
+                    Key = resources.GetResourceString("Kadena.Product.ShippingCost"),
+                    Value = product.ShipTime
+                });
+            }
+
+            return estimates;
         }
     }
 }

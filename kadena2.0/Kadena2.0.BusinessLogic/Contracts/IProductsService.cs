@@ -1,5 +1,4 @@
 ﻿using Kadena.Models.Product;
-using Kadena.Models.ProductOptions;
 using System.Collections.Generic;
 
 namespace Kadena.BusinessLogic.Contracts
@@ -14,5 +13,6 @@ namespace Kadena.BusinessLogic.Contracts
         string GetPackagingString(int numberOfItemsInPackage, string unitOfMeasure, string cultureCode);
         string GetUnitOfMeasure(string unitOfMeasure, string cultureCode);
         string TranslateUnitOfMeasure(string unitOfMeasure, string cultureCode);
+        IEnumerable<ProductEstimation> GetProductEstimations(int documentId);
     }
 }

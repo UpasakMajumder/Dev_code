@@ -25,31 +25,14 @@
 </div>
 <div class="content-block">
   
-  <div class="product-view">
-    {^WebPartZone|(id)zoneImage^}
-    <div class="product-view__block">
-      {^WebPartZone|(id)zoneInfoProperties^}
-      <div class="product-view__tables">
-        {^WebPartZone|(id)zoneTables^}
-      </div>
-      <div class="add-to-cart">
-        <div class="add-to-cart__left">
-          {^WebPartZone|(id)zonePackagingGeneralInformation^}
-        </div>
-        <div class="add-to-cart__right">
-          {^WebPartZone|(id)zoneAddToCart^}
-        </div>
-      </div>
-      </div>
-  </div>
-
+  {^WebPartZone|(id)ProductDetailReact^}
   
-  {^WebPartZone|(id)zoneDescription^}
-
+  <div class="r-product-detail">
+    {^WebPartZone|(id)zoneDescription^}
+  </div>
   
   {^WebPartZone|(id)zoneRelatedProducts^}
-
-  
+ 
   <div class="product-template__block">
     {^WebPartZone|(id)zoneManageTemplates^}
   </div>
@@ -191,605 +174,11 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
         </properties>
-        <webpart controlid="RequiresApprovalIcon" guid="dce67df9-c1b1-4092-ae18-c7562c019366" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter"></property>
-          <property name="cat_open_performance"></property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility">False</property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">RequiresApprovalIcon</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">dce67df9-c1b1-4092-ae18-c7562c019366</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">True</property>
-          <property name="outputfixhtml5">True</property>
-          <property name="outputfixjavascript">True</property>
-          <property name="outputfixlowercase">True</property>
-          <property name="outputfixselfclose">True</property>
-          <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">False</property>
-          <property name="resolvedynamiccontrols">True</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text">
-<![CDATA[
-<div class="product-view__flag flag flag--red">
-  <svg class="icon flag__icon">
-    <use xlink:href="/gfx/svg/sprites/icons.svg#guarantee" />
-  </svg>
-    <span class="flag__label">{$Kadena.Product.RequiresApproval$}</span>
-</div>
-]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible" ismacro="true">
-            <![CDATA[{% DocumentContext.CurrentDocument.GetValue("SKUApprovalRequired").ToString() == "True" |(user)michal.machacek@actum.cz|(hash)87f85b4b39e78ea4328e5be16b41bc2084763caa3ada2d282173317185337f09%}]]>
-          </property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
-        </webpart>
-        <webpart controlid="Thumbnail" guid="89833f2e-e12e-444e-bcee-266a6dbfa4e4" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter"></property>
-          <property name="cat_open_performance"></property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility">False</property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">Thumbnail</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">89833f2e-e12e-444e-bcee-266a6dbfa4e4</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">True</property>
-          <property name="outputfixhtml5">True</property>
-          <property name="outputfixjavascript">True</property>
-          <property name="outputfixlowercase">True</property>
-          <property name="outputfixselfclose">True</property>
-          <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">False</property>
-          <property name="resolvedynamiccontrols">True</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text">
-            <![CDATA[<img style='border:{% (Settings.KDA_ProductThumbnailBorderEnabled && !ProductThumbnailBorderDisabled) ? Settings.KDA_ProductThumbnailBorderStyle : ""|(user)michal.machacek@actum.cz|(hash)babce78fae2ef9e22019ce8193ed9fc4263439add052534e6997be4156185e0e%}' src='{% KadenaNamespace.GetThumbnailLink(ProductImage) |(user)rostyslav.diachenko@actum.cz|(hash)4c47002d599359e5a73e7ae25c705f821044dc58c47fc66970fb2674c8b68c6f%}'>]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
-        </webpart>
-        <webpart controlid="WebPartZone" guid="bca41341-7883-42f3-942b-99d5b2aac995" type="WebPartZone" v="1">
-          <property name="allowdesignmode">True</property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages"></property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">WebPartZone</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="height"></property>
-          <property name="hideonsubpages"></property>
-          <property name="horizontaloffset"></property>
-          <property name="instanceguid">bca41341-7883-42f3-942b-99d5b2aac995</property>
-          <property name="location"></property>
-          <property name="outputconverttablestodivs"></property>
-          <property name="outputfixattributes">True</property>
-          <property name="outputfixhtml5">True</property>
-          <property name="outputfixjavascript">True</property>
-          <property name="outputfixlowercase">True</property>
-          <property name="outputfixselfclose">True</property>
-          <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies"></property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback"></property>
-          <property name="scrolleffectduration"></property>
-          <property name="showfordocumenttypes"></property>
-          <property name="timezonetype"></property>
-          <property name="useupdatepanel">False</property>
-          <property name="verticaloffset"></property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">WebPartZone</property>
-          <property name="width"></property>
-          <property name="zonecssclass"></property>
-        </webpart>
       </webpartzone>
-      <webpartzone id="zoneInfoProperties" v="1">
-        <webpart controlid="ProductInfo" guid="9fc80b1f-713e-4095-b243-dbb2a5cc1fc2" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">ProductInfo</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">True</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">9fc80b1f-713e-4095-b243-dbb2a5cc1fc2</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="resolvedynamiccontrols">False</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text" ismacro="true">
-<![CDATA[
-<div class="product-view__info">
-  <div class="product-view__info-description">
-    <span>{$Kadena.Product.ProductAdded$}: {% KadenaNamespace.FormatDate(DocumentCreatedWhen) |(user)michal.machacek@actum.cz|(hash)048c71002e4ca196f80f9db8796d648abbe8b1161bdccdfc387c953fba2b34f1%}</span>
-    <span {% ProductCustomerReferenceNumber == "" ? "style='display:none;'" : "" %}>{$Kadena.Product.ProductCode$}: {%ProductCustomerReferenceNumber%}</span>
-  </div>
-</div>
-]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
-        </webpart>
-        <webpart controlid="ProductOptions" guid="09348d9d-247b-4514-a073-0bbbef535299" type="Kadena_ProductOptions" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter"></property>
-          <property name="cat_open_performance"></property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">ProductOptions</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">09348d9d-247b-4514-a073-0bbbef535299</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">True</property>
-          <property name="outputfixhtml5">True</property>
-          <property name="outputfixjavascript">True</property>
-          <property name="outputfixlowercase">True</property>
-          <property name="outputfixselfclose">True</property>
-          <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">False</property>
-          <property name="priceelementname">price-element</property>
-          <property name="priceurl" ismacro="true">
-            <![CDATA[/api/products/getprice/{%NodeSKU.ID|(user)rostyslav.diachenko@actum.cz|(hash)42f88f9b6db2780805374060a91a7000b5197b41c6b4b7c78aaf31ddd42475f0%}]]>
-          </property>
-          <property name="showfordocumenttypes"></property>
-          <property name="skuid" ismacro="true">
-            <![CDATA[{% NodeSKU.ID |(user)rostyslav.diachenko@actum.cz|(hash)a3655ec25597a1ea8eff79bb69cb20bff3bba2544814702657d8e5839cef3575%}]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible" ismacro="true">
-            <![CDATA[{% NodeSKU.HasVariants |(user)rostyslav.diachenko@actum.cz|(hash)3cf13697f98b7879f7f57692a6d5dbce06f6325bb2a28bfefca1c5d32f9a8275%}]]>
-          </property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">Kadena_ProductOptions</property>
-        </webpart>
-      </webpartzone>
-      <webpartzone id="zoneTables" v="1">
-        <webpart controlid="EstimatesTable" guid="e6d2a7d4-5e99-49ae-98f2-1d5f59462590" type="EstimatesTable" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">EstimatesTable</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">True</property>
-          <property name="disableviewstate">True</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">e6d2a7d4-5e99-49ae-98f2-1d5f59462590</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">EstimatesTable</property>
-        </webpart>
-        <webpart controlid="DynamicPricingTable" guid="4933cb49-524d-4aea-a65d-89e9a5793056" type="DynamicPricingTable" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">DynamicPricingTable</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">True</property>
-          <property name="disableviewstate">True</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">4933cb49-524d-4aea-a65d-89e9a5793056</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="priceelementname">price-element</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">DynamicPricingTable</property>
-        </webpart>
-      </webpartzone>
-      <webpartzone id="zonePackagingGeneralInformation" v="1">
-        <webpart controlid="AvailabilityInfo" guid="98eb5924-a3f2-488c-8285-4b04096d0802" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">AvailabilityInfo</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">True</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">98eb5924-a3f2-488c-8285-4b04096d0802</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes">0</property>
-          <property name="preservepartialcacheonpostback">False</property>
-          <property name="resolvedynamiccontrols">False</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text" ismacro="true">
-<![CDATA[
-<div class="{%KadenaNamespace.GetAppropriateCssClassOfAvailability(DocumentContext.CurrentDocument.GetValue("SKUAvailableItems"),DocumentContext.CurrentDocument.GetValue("ProductType").ToString(), ECommerceContext.CurrentProduct.SKUAvailableItems)|(user)jiri.draska@actum.cz|(hash)17ea3250d0ff095dd953c7cc9ad5cca95402d56b4d3f274c350ac2f8c4a08fdb%}">
- {% if ( DocumentContext.CurrentDocument.GetValue("ProductType").ToString().Contains("KDA.InventoryProduct")) { %}
-    <svg class="icon icon-stock icon-stock--available">
-    <use xlink:href="/gfx/svg/sprites/icons.svg#stock--available"></use>
-  </svg> 
-  <svg class="icon icon-stock icon-stock--unavailable">
-    <use xlink:href="/gfx/svg/sprites/icons.svg#stock--unavailable"></use>
-  </svg>
-  <svg class="icon icon-stock icon-stock--out">
-    <use xlink:href="/gfx/svg/sprites/icons.svg#stock--out"></use>
-  </svg>
-  {% }|(user)michal.machacek@actum.cz|(hash)1453b9ca594d1544c1e49d8d53b8ece0c39e14dbbf8243bd1b515ac3ef1832dd%} 
-
-
-{%KadenaNamespace.GetAvailableProductsString(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),
-  DocumentContext.CurrentDocument.GetValue("SKUAvailableItems") , 
-  LocalizationContext.CurrentCulture.CultureCode, 
-  ECommerceContext.CurrentProduct.SKUAvailableItems,
-  ECommerceContext.CurrentProduct.SKUUnitOfMeasure)|(user)michal.machacek@actum.cz|(hash)cf97c95955a8739b5216eb7b4970a98d7ba6a5b948d1cd8c2d3e08b7d4cf48bd%} 
-</div>
-
-]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
-        </webpart>
-        <webpart controlid="PackagingInfo" guid="5c1396fd-ee9b-46a6-8021-2aef2939b022" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter"></property>
-          <property name="cat_open_performance"></property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">PackagingInfo</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">5c1396fd-ee9b-46a6-8021-2aef2939b022</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">True</property>
-          <property name="outputfixhtml5">True</property>
-          <property name="outputfixjavascript">True</property>
-          <property name="outputfixlowercase">True</property>
-          <property name="outputfixselfclose">True</property>
-          <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">False</property>
-          <property name="resolvedynamiccontrols">True</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text">
-<![CDATA[
-<span class="add-to-cart__info" {% (ECommerceContext.CurrentProduct.SKUNumberOfItemsInPackage == "0" || ECommerceContext.CurrentProduct.SKUNumberOfItemsInPackage == "1") ? "style=display:none;" : "" |(user)michal.machacek@actum.cz|(hash)17c3113a6f182e15caabd685eddb50fa77876c1b08afd55243e5981d18af4708%}>
-  {% KadenaNamespace.GetPackagingString(
-    ECommerceContext.CurrentProduct.SKUNumberOfItemsInPackage,
-    SKUUnitOfMeasure,
-    LocalizationContext.CurrentCulture.CultureCode) 
-  |(user)michal.machacek@actum.cz|(hash)22f4a9f14ab49c0d8d7532a03d5a7e8588f8de8d4433b0421ab7abe8e81bfbc7%}
-</span>
-]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
-        </webpart>
-      </webpartzone>
-      <webpartzone id="zoneAddToCart" v="1">
-        <webpart controlid="Javascript" guid="c8bc6679-23f5-4aa7-bf57-8deabe825331" type="javascript" v="1">
-          <property name="cat_open_behavior"></property>
-          <property name="cat_open_performance"></property>
-          <property name="controlid">Javascript</property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="generatescripttags">True</property>
-          <property name="hideonsubpages">False</property>
-          <property name="inlinescript">
-            <![CDATA[config.localization.addToCartUrl = "/api/shoppingcart/addtocart";]]>
-          </property>
-          <property name="inlinescriptpagelocation">Header</property>
-          <property name="instanceguid">c8bc6679-23f5-4aa7-bf57-8deabe825331</property>
-          <property name="linkedfile"></property>
-          <property name="linkedfilepagelocation">Header</property>
-          <property name="positionleft"></property>
-          <property name="positiontop"></property>
-          <property name="showfordocumenttypes"></property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">javascript</property>
-        </webpart>
-        <webpart controlid="AddToCartButton" guid="67b9e26c-9a9f-4de4-bfd0-e0caaa771ae6" type="AddToCartButton" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility">False</property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">AddToCartButton</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">True</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">67b9e26c-9a9f-4de4-bfd0-e0caaa771ae6</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible" ismacro="true">
-            <![CDATA[{% KadenaNamespace.CanDisplayAddToCartButton(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),DocumentContext.CurrentDocument.GetValue("SKUAvailableItems"),ECommerceContext.CurrentProduct.SKUSellOnlyAvailable)&&(ECommerceContext.CurrentCustomer != null)|(user)michal.machacek@actum.cz|(hash)2a93d7bb9f20e67af33ab462a0a192e3b08593121bce85c7439fd0966853fa19%}]]>
-          </property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">AddToCartButton</property>
-        </webpart>
-        <webpart controlid="OpenTemplatedProductButton" guid="a6092f7a-6ed8-4f7c-9822-712066f8bc59" type="OpenTemplatedProductButton" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility">False</property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">OpenTemplatedProductButton</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">a6092f7a-6ed8-4f7c-9822-712066f8bc59</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="producteditorurl" ismacro="true">
-            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_Templating_ProductEditorUrl) |(user)rostyslav.diachenko@actum.cz|(hash)b3448a120ede99ccb62f1e9796861692c6989cdb5a570a32885e684443163ff5%}]]>
-          </property>
-          <property name="selectmailinglisturl" ismacro="true">
-            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_Templating_SelectListPageUrl) |(user)rostyslav.diachenko@actum.cz|(hash)551325b52de5aad8091b6f6d0ef7f8140ec6f6219de8dfcc2bdd537f89792562%}]]>
-          </property>
-          <property name="showfordocumenttypes"></property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible" ismacro="true">
-            <![CDATA[{% ProductType.Contains("KDA.MailingProduct") || ProductType.Contains("KDA.TemplatedProduct") |(user)administrator|(hash)48174235c564703f11fee18ff4686d64d3e7d6ba0724de9dd7dce2f94f3c0b52%}]]>
-          </property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">OpenTemplatedProductButton</property>
-        </webpart>
-      </webpartzone>
+      <webpartzone id="zoneInfoProperties" v="1" />
+      <webpartzone id="zoneTables" v="1" />
+      <webpartzone id="zonePackagingGeneralInformation" v="1" />
+      <webpartzone id="zoneAddToCart" v="1" />
       <webpartzone id="zoneManageTemplates" v="1">
         <properties>
           <property name="containerhideonsubpages">False</property>
@@ -1079,145 +468,6 @@ config.localization.manageProducts = {
           <property name="webparttype">statictext</property>
         </webpart>
       </webpartzone>
-      <webpartzone id="WebPartZone_zone" layoutzone="true" v="1">
-        <properties>
-          <property name="containerhideonsubpages">False</property>
-          <property name="contentafter">
-            <![CDATA[</div>]]>
-          </property>
-          <property name="contentbefore">
-            <![CDATA[<div class="product-view__actions">]]>
-          </property>
-          <property name="disableviewstate">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-        </properties>
-        <webpart controlid="Attachments" guid="a160f3ac-5598-42ae-892f-400c481303e2" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter"></property>
-          <property name="cat_open_performance"></property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">Attachments</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">a160f3ac-5598-42ae-892f-400c481303e2</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">True</property>
-          <property name="outputfixhtml5">True</property>
-          <property name="outputfixjavascript">True</property>
-          <property name="outputfixlowercase">True</property>
-          <property name="outputfixselfclose">True</property>
-          <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">False</property>
-          <property name="resolvedynamiccontrols">True</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text">
-<![CDATA[
-<ul class="product-view__attachments">
-  {% foreach (item in KadenaNamespace.GetUrlsFromMediaMultiField(ProductAttachments)) { %}
-  <li>
-    <a class="link link--attachment product-view__attachment" href="{% item %}" target="_blank">
-      <svg class="icon icon-download">
-        <use xlink:href="/gfx/svg/sprites/icons.svg#download--blue"></use>
-      </svg>
-      <span>{% KadenaNamespace.GetFilenameFromMediaUrl(item) %}</span>
-    </a>
-  </li>
-  {% } |(user)tomas.rucki@actum.cz|(hash)73b6f50ea75ae6e3f1cb06368f8e35f3855706de57e9c97b46efef0cb734ae5b%}
-</ul>
-]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
-        </webpart>
-        <webpart controlid="ImageZoomButton" guid="2e56f8f0-14e1-4871-a70c-22f218703ba2" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter"></property>
-          <property name="cat_open_performance"></property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility">False</property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">ImageZoomButton</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">2e56f8f0-14e1-4871-a70c-22f218703ba2</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">True</property>
-          <property name="outputfixhtml5">True</property>
-          <property name="outputfixjavascript">True</property>
-          <property name="outputfixlowercase">True</property>
-          <property name="outputfixselfclose">True</property>
-          <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">False</property>
-          <property name="resolvedynamiccontrols">True</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text">
-<![CDATA[
-<button 
-  type="button" 
-  class="product-view__zoom js-product-view js-toggle"
-  data-target=".js-product-preview-image"
->
-  <svg class="icon icon-zoom">
-    <use xlink:href="/gfx/svg/sprites/icons.svg#zoom" />
-  </svg>    
-</button>
-]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible" ismacro="true">
-            <![CDATA[{% !String.IsNullOrWhiteSpace(ProductImage) |(user)rostyslav.diachenko@actum.cz|(hash)515c926b7c4efa6fc67410b245417088853f12bd746e9ee77435c2a8fb4ec9cc%}]]>
-          </property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
-        </webpart>
-      </webpartzone>
       <webpartzone id="zoneConfig" v="1" />
       <webpartzone id="zoneDescription" v="1">
         <webpart controlid="Description" guid="98f803bb-ff76-4450-ad33-fe5fbfd722f2" type="statictext" v="1">
@@ -1279,6 +529,143 @@ config.localization.manageProducts = {
           <property name="visible" ismacro="true">
             <![CDATA[{% !String.IsNullOrWhiteSpace(CurrentDocument.DocumentSKUDescription) |(user)tomas.rucki@actum.cz|(hash)a9117ce6664d62122ef53bc380d0554ca14288d550b4d22cfb2f937849cf964e%}]]>
           </property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">statictext</property>
+        </webpart>
+      </webpartzone>
+      <webpartzone id="ProductDetailReact" v="1">
+        <webpart controlid="JavascriptReact" guid="a4695515-f876-4959-87f7-41590a1c6d26" type="javascript" v="1">
+          <property name="cat_open_behavior"></property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">JavascriptReact</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+config.localization.productDetail = {
+    thumbnail: {
+      image: '{% KadenaNamespace.GetThumbnailLink(ProductImage) |(user)michal.machacek@actum.cz|(hash)d3dd6e072e730386dddefb3cb9662c29ab30b3ca0cdffaa4482f729d46edfe61%}',
+      border: '{% (Settings.KDA_ProductThumbnailBorderEnabled && !ProductThumbnailBorderDisabled) ? Settings.KDA_ProductThumbnailBorderStyle : "" |(user)michal.machacek@actum.cz|(hash)2690ccf44a2b85edb42e55dfbfba5d211291f4013f137743ba134c3ec0d2c062%}',
+      magnifyImage: '{% KadenaNamespace.GetThumbnailLink(ProductImage) |(user)michal.machacek@actum.cz|(hash)d3dd6e072e730386dddefb3cb9662c29ab30b3ca0cdffaa4482f729d46edfe61%}'
+    },
+    requiresApproval: {
+      exists: {% DocumentContext.CurrentDocument.GetValue("SKUApprovalRequired").ToString() == "True" ? "true" : "false"|(user)michal.machacek@actum.cz|(hash)d76b7bba99d51ede1efaca9b29c944322cd67f952627cc36aead3002b48eec13%},
+      text: '{$Kadena.Product.RequiresApproval$}'
+    },
+    attachments: {% KadenaNamespace.GetProductAttachments(ProductAttachments) |(user)michal.machacek@actum.cz|(hash)605c8842e68b8e9693f25f2a2e4411e0880609292263d245f5cdfa9926494930%},
+    info: { 
+      createdDate: '{$Kadena.Product.ProductAdded$}: {% KadenaNamespace.FormatDate(DocumentCreatedWhen) |(user)michal.machacek@actum.cz|(hash)048c71002e4ca196f80f9db8796d648abbe8b1161bdccdfc387c953fba2b34f1%}',
+      code: '{% ProductCustomerReferenceNumber == "" ? "" : String.FormatString("{0}: {1}",  GetResourceString("Kadena.Product.ProductCode"), ProductCustomerReferenceNumber) |(user)michal.machacek@actum.cz|(hash)55b9e9d00409bead0de0a451a093c2b8b834f6092e0bbc98014f3784aa1f303a%}'
+    },
+    estimates: {
+      header: '',
+      body: [
+        {
+          key: '',
+          value: ''
+        }
+      ]
+    },
+    dynamicPrices: {
+      header: '',
+      body: [
+        {
+          id: '',
+          key: '',
+          value: ''
+        }
+      ]
+    },
+    availability: {
+      type: '', 
+      text: ''
+    },
+    packagingInfo: '',
+    productOptions:{
+          priceElementId: "option-price",
+          priceUrl: '/api/products/getprice/{%NodeSKU.ID|(user)michal.machacek@actum.cz|(hash)bcef10f415a2354c4810ec862a0471de9276dda4620c639e041ca603f3977dac%}',
+          categories: {% KadenaNamespace.GetProductOptions(NodeSKU.ID) |(user)michal.machacek@actum.cz|(hash)b8c8e779b4fb8e921b101939ec8aec929d24a48523724241aab85ce8deb532a0%}
+      },
+    addToCart: {
+      url: '/api/shoppingcart/addtocart',
+      text: '',
+      unit: '',
+      quantity: 1,
+      minQuantity: 1,
+      maxQuantity: 10,
+      quantityText: "Order limit: 5 packs per order"
+    },
+    openTemplate: {
+      url: '',
+      text: ''
+    },
+    description: {
+      titlte: '',
+      text: ''
+    },
+    relatedProducts: null
+  }
+
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Inline</property>
+          <property name="instanceguid">a4695515-f876-4959-87f7-41590a1c6d26</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
+        <webpart controlid="divForReact" guid="d860398e-06f1-4614-bdff-9a4e6bbeb6b0" type="statictext" v="1">
+          <property name="cat_open_ajax"></property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
+          <property name="cat_open_time zones"></property>
+          <property name="cat_open_visibility"></property>
+          <property name="container"></property>
+          <property name="containercssclass"></property>
+          <property name="containercustomcontent"></property>
+          <property name="containerhideonsubpages">False</property>
+          <property name="containertitle"></property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
+          <property name="controlid">divForReact</property>
+          <property name="customtimezone"></property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="enableoutputfilter">False</property>
+          <property name="encodetext">False</property>
+          <property name="hideonsubpages">False</property>
+          <property name="instanceguid">d860398e-06f1-4614-bdff-9a4e6bbeb6b0</property>
+          <property name="outputconverttablestodivs">none</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
+          <property name="partialcachedependencies">
+<![CDATA[
+##DEFAULT##
+
+]]>
+          </property>
+          <property name="partialcacheminutes"></property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="tag"></property>
+          <property name="text">
+            <![CDATA[<div class="r-thumbnail-preview"></div>]]>
+          </property>
+          <property name="timezonetype">inherit</property>
+          <property name="useupdatepanel">False</property>
+          <property name="visible">True</property>
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>
         </webpart>
