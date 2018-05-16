@@ -24,7 +24,8 @@ class Modal extends Component {
     }).isRequired,
     /* func */
     closeDialog: PropTypes.func.isRequired,
-    changeStatus: PropTypes.func.isRequired
+    changeStatus: PropTypes.func.isRequired,
+    handleProceed: PropTypes.func.isRequired
   }
 
   state = {
@@ -75,9 +76,9 @@ class Modal extends Component {
         });
         this.setState({ isLoading: false });
       } else {
+        this.props.handleProceed();
         toastr.success(payload.title, payload.text);
         this.props.closeDialog();
-        setTimeout(() => window.history.go(-1), 2000);
         this.props.changeStatus(payload.newStatus);
       }
     } catch (e) {
