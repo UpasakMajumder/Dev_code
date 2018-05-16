@@ -96,7 +96,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 businessUnitName = businessUnits.GetBusinessUnitName(bun);
             }
 
-            var customer = kenticoCustomers.GetCustomer(data.ClientId) ?? new Customer();
+            var customer = kenticoCustomers.GetCustomer(data.ClientId) ?? Customer.Unknown;
 
             var isWaitingForApproval = data.StatusId == (int)OrderStatus.WaitingForApproval;
 
@@ -121,7 +121,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                             {
                                 CancelButton = "Kadena.Order.DialogAccept.Cancel",
                                 ProceedButton = "Kadena.Order.DialogAccept.Proceed",
-                                ProceedUrl = Routes.Order.Approve,
+                                ProceedUrl = '/' + Routes.Order.Approve,
                                 Text = "Kadena.Order.DialogAccept.Message",
                                 Title = "Kadena.Order.DialogAccept.Title"
                             }
@@ -133,7 +133,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                             {
                                 CancelButton = "Kadena.Order.DialogReject.Cancel",
                                 ProceedButton = "Kadena.Order.DialogReject.Proceed",
-                                ProceedUrl = Routes.Order.Reject,
+                                ProceedUrl = '/' + Routes.Order.Reject,
                                 Text = "Kadena.Order.DialogReject.Message",
                                 Title = "Kadena.Order.DialogReject.Title"
                             }
