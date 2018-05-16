@@ -202,6 +202,7 @@
       <field column="SKUUnitOfMeasure" visible="false" />
       <field column="SKUHiResPdfDownloadEnabled" visible="false" />
       <field column="SKUApprovalRequired" visible="false" />
+      <field column="SKUNumberOfItemsInPackage" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Product - E-product properties</FormDisplayName>

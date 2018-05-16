@@ -248,6 +248,9 @@
         <properties>
           <defaultvalue>false</defaultvalue>
           <fieldcaption>HiRes PDF download enabled</fieldcaption>
+          <visiblemacro ismacro="true">
+            <![CDATA[{%KadenaNamespace.IsTemplatedProduct(SKUID.Value)|(user)michal.machacek@actum.cz|(hash)46fde4a75c4fcc507efe60ad13387f4efb6434d5b1a5edc80ba08e35494be138%}]]>
+          </visiblemacro>
         </properties>
         <settings>
           <controlname>CheckBoxControl</controlname>
@@ -563,6 +566,20 @@ ORDER BY IsDefault DESC
 ]]>
           </Query>
           <SortItems>False</SortItems>
+        </settings>
+      </field>
+      <field allowempty="true" column="SKUNumberOfItemsInPackage" columntype="integer" guid="3afd1d0c-970b-43c5-9b73-94041a17ad9e" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>1</defaultvalue>
+          <fieldcaption>Number of items in package</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
         </settings>
       </field>
       <category name="com.sku.inventorycategory">

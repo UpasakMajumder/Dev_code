@@ -66,16 +66,13 @@ namespace Kadena.Container.Default
             CreateMap<Price, PriceDto>()
                 .ForMember(dest => dest.PricePrefix, opt => opt.MapFrom(src => src.Prefix))
                 .ForMember(dest => dest.PriceValue, opt => opt.MapFrom(src => src.Value));
-            CreateMap<CartItem, SKUDTO>()
-                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SKUName))
-                    .ForMember(dest => dest.KenticoSKUID, opt => opt.MapFrom(src => src.SKUID));
 
-            CreateMap<CartItem, OrderItemDTO>()
-                .ForMember(dest => dest.SKU, opt => opt.MapFrom(src => src))
+            CreateMap<OrderItemSku, SKUDTO>();
+                    
+            CreateMap<OrderCartItem, OrderItemDTO>()
                 .ForMember(dest => dest.UnitCount, opt => opt.MapFrom(src => src.Quantity))
                 .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src => src.Options.ToDictionary(i => i.Name, i => i.Value)))
                 .ForMember(dest => dest.DesignFileKey, opt => opt.MapFrom(src => src.Artwork))
-                .ForMember(dest => dest.SendPriceToErp, opt => opt.MapFrom(src => src.SendPriceToErp))
                 .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.UnitOfMeasureErpCode))
                 .ForMember(dest => dest.Type, opt => opt.Ignore())
                 .ForMember(dest => dest.MailingList, opt => opt.Ignore());
@@ -84,11 +81,11 @@ namespace Kadena.Container.Default
             CreateMap<Approver, ApproverDto>();
             CreateMap<CustomerAddress, CustomerAddressDTO>();
             CreateMap<CartItems, CartItemsDTO>();
-            CreateMap<CartItem, CartItemDTO>()
+            CreateMap<CheckoutCartItem, CartItemDTO>()
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.PriceText))
                 .ForMember(dest => dest.MailingList, opt => opt.MapFrom(src => src.MailingListName))
                 .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.UnitOfMeasureName));
-            CreateMap<CartItem, CartItemPreviewDTO>()
+            CreateMap<CheckoutCartItem, CartItemPreviewDTO>()
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.PriceText))
                 .ForMember(dest => dest.MailingList, opt => opt.MapFrom(src => src.MailingListName))
                 .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.UnitOfMeasureName));
@@ -170,7 +167,7 @@ namespace Kadena.Container.Default
             CreateMap<DeliveryAddress, IdDto>();
             CreateMap<PageButton, PageButtonDto>();
             CreateMap<AddressList, AddressListDto>();
-            CreateMap<DialogButton, DialogButtonDto>();
+            CreateMap<Models.Settings.DialogButton, DialogButtonDto>();
             CreateMap<DialogType, DialogTypeDto>();
             CreateMap<DialogField, DialogFieldDto>();
             CreateMap<Models.Settings.AddressDialog, Dto.Settings.AddressDialogDto>();
@@ -181,6 +178,10 @@ namespace Kadena.Container.Default
             CreateMap<OrderedItems, OrderedItemsDTO>();
             CreateMap<OrderDetail, OrderDetailDTO>();
             CreateMap<CommonInfo, CommonInfoDTO>();
+            CreateMap<OrderInfo, OrderInfoDTO>();
+            CreateMap<OrderActions, OrderActionsDTO>();
+            CreateMap<Models.Common.DialogButton, DialogButtonDTO>();
+            CreateMap<Dialog, DialogDTO>();
             CreateMap(typeof(TitleValuePair<>), typeof(TitleValuePairDto<>));
             CreateMap<ShippingInfo, ShippingInfoDTO>();
             CreateMap<PaymentInfo, PaymentInfoDTO>();
@@ -200,12 +201,12 @@ namespace Kadena.Container.Default
             CreateMap<ResultItemPage, AutocompletePage>();
             CreateMap<Pagination, PaginationDto>();
             CreateMap<OrderHead, OrderHeadDto>();
-            CreateMap<Dto.Order.OrderItemDto, CartItem>()
-                .ProjectUsing(s => new CartItem { SKUName = s.Name, Quantity = s.Quantity });
+            CreateMap<Dto.Order.OrderItemDto, CheckoutCartItem>()
+                .ProjectUsing(s => new CheckoutCartItem { SKUName = s.Name, Quantity = s.Quantity });
             CreateMap<RecentOrderDto, Order>()
                 .ForMember(dest => dest.ViewBtn, opt => opt.Ignore());
             CreateMap<OrderListDto, OrderList>();
-            CreateMap<CartItem, Dto.RecentOrders.OrderItemDto>()
+            CreateMap<CheckoutCartItem, Dto.RecentOrders.OrderItemDto>()
                 .ProjectUsing(s => new Dto.RecentOrders.OrderItemDto { Name = s.SKUName, Quantity = s.Quantity.ToString() });
             CreateMap<Button, ButtonDto>();
             CreateMap<Campaign, CampaignDTO>();

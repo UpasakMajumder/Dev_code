@@ -45,7 +45,8 @@ namespace Kadena2.MicroserviceClients.Clients
                 !string.IsNullOrWhiteSpace(filter.SiteName) ? $"siteName={filter.SiteName}" : string.Empty,
                 filter.PageNumber > 0 ? $"pageNumber={filter.PageNumber}" : string.Empty,
                 filter.ItemsPerPage > 0 ? $"quantity={filter.ItemsPerPage}" : string.Empty,
-                filter.StatusHistoryContains != null ? $"containsStatus={filter.StatusHistoryContains.Value}" : string.Empty
+                filter.StatusHistoryContains != null ? $"containsStatus={filter.StatusHistoryContains.Value}" : string.Empty,
+                filter.Status != null ? $"currentStatus={filter.Status}" : string.Empty
             }.Where(p => p != string.Empty));
 
             var parameterizedUrl = $"{BaseUrl}{_serviceEndpoint}?{args}";

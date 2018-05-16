@@ -2,10 +2,12 @@ using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Helpers;
+using Kadena.Helpers.Routes;
 using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Common;
 using Kadena.Models.OrderDetail;
+using Kadena.Models.Orders;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
@@ -36,7 +38,6 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IImageService imageService;
         private readonly IPdfService pdfService;
         private readonly IKenticoUnitOfMeasureProvider units;
-
 
         public OrderDetailService(IMapper mapper,
             IOrderViewClient orderViewClient,
@@ -95,9 +96,50 @@ namespace Kadena.BusinessLogic.Services.Orders
                 businessUnitName = businessUnits.GetBusinessUnitName(bun);
             }
 
+            var customer = kenticoCustomers.GetCustomer(data.ClientId) ?? Customer.Unknown;
+
+            var isWaitingForApproval = data.StatusId == (int)OrderStatus.WaitingForApproval;
+
             var orderDetail = new OrderDetail()
             {
                 DateTimeNAString = resources.GetResourceString("Kadena.Order.ItemShippingDateNA"),
+
+                General = new OrderInfo
+                {
+                    OrderId = orderId,
+                    CustomerId = customer.Id,
+                    CustomerName = customer.FullName
+                },
+
+                Actions = isWaitingForApproval
+                    ? new OrderActions
+                    {
+                        Accept = new DialogButton
+                        {
+                            Button = "Kadena.Order.ButtonAccept",
+                            Dialog = new Dialog
+                            {
+                                CancelButton = "Kadena.Order.DialogAccept.Cancel",
+                                ProceedButton = "Kadena.Order.DialogAccept.Proceed",
+                                ProceedUrl = '/' + Routes.Order.Approve,
+                                Text = "Kadena.Order.DialogAccept.Message",
+                                Title = "Kadena.Order.DialogAccept.Title"
+                            }
+                        },
+                        Reject = new DialogButton
+                        {
+                            Button = "Kadena.Order.ButtonReject",
+                            Dialog = new Dialog
+                            {
+                                CancelButton = "Kadena.Order.DialogReject.Cancel",
+                                ProceedButton = "Kadena.Order.DialogReject.Proceed",
+                                ProceedUrl = '/' + Routes.Order.Reject,
+                                Text = "Kadena.Order.DialogReject.Message",
+                                Title = "Kadena.Order.DialogReject.Title"
+                            }
+                        }
+                    }
+                    : null,
 
                 CommonInfo = new CommonInfo()
                 {
@@ -206,23 +248,24 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         private string GetPdfUrl(string orderId, Dto.ViewOrder.MicroserviceResponses.OrderItemDTO orderItem, Product orderedProduct)
         {
-            if (!orderItem.Type.Contains(OrderItemTypeDTO.TemplatedProduct.ToString()))
+            if (orderItem.Type.Contains(OrderItemTypeDTO.TemplatedProduct.ToString()) ||
+                orderItem.Type.Contains(OrderItemTypeDTO.Mailing.ToString()))
             {
-                return string.Empty;
+                if (orderedProduct == null)
+                {
+                    kenticoLog.LogError("GetPdfUrl", $"Couldn't find product for item line {orderItem.LineNumber} from order {orderId}");
+                    return string.Empty;
+                }
+
+                if (orderedProduct.HiResPdfDownloadEnabled)
+                {
+                    return pdfService.GetHiresPdfUrl(orderId, orderItem.LineNumber);
+                }
+
+                return pdfService.GetLowresPdfUrl(orderItem.TemplateId, orderedProduct.TemplateLowResSettingId);
             }
 
-            if (orderedProduct.HiResPdfDownloadEnabled)
-            {
-                return pdfService.GetHiresPdfUrl(orderId, orderItem.LineNumber);
-            }
-
-            if (orderedProduct == null)
-            {
-                kenticoLog.LogError("GetPdfUrl", $"Couldn't find product for item line {orderItem.LineNumber} from order {orderId}");
-                return string.Empty;
-            }
-
-            return pdfService.GetLowresPdfUrl(orderItem.TemplateId, orderedProduct.TemplateLowResSettingId);
+            return string.Empty;
         }
 
         private async Task<List<OrderedItem>> MapOrderedItems(List<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO> items, string orderId)
@@ -232,7 +275,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                 var templatedProduct = i.TemplateId != Guid.Empty ? products.GetProductBySkuId(i.SkuId) : null;
                 var previewUrl = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, templatedProduct?.TemplateLowResSettingId ?? Guid.Empty);
                 var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
-                var pdfUrl = string.Empty;
 
                 return new OrderedItem()
                 {

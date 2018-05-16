@@ -12,14 +12,14 @@ export default ({
 
   // DEFINE MINIMUM THRESHOLD
   // required
-  if (!length) return getResult(0);
+  if (!length) return getResult(1);
   // minimum length
-  if (minLength && length < minLength) return getResult(0);
+  if (minLength && length < minLength) return getResult(1);
   // minimum non-alpha symbols
   const numberNonAlphaNumChars = getNumberNonAlphaNumChars();
-  if (minNonAlphaNumChars && numberNonAlphaNumChars < minNonAlphaNumChars) return getResult(0);
+  if (minNonAlphaNumChars && numberNonAlphaNumChars < minNonAlphaNumChars) return getResult(1);
   // regexp
-  if (regularExpression && !password.match(regularExpression)) return getResult(0);
+  if (regularExpression && !password.match(regularExpression)) return getResult(1);
 
   // DEFINE LEVELS
   const passwordStrength = getPasswordStrength();
@@ -32,14 +32,14 @@ export default ({
 
   function getResult(level) {
     let levelFormatted = level;
-    if (usePolicy && level !== 5) levelFormatted = 0;
+    if (usePolicy && level === 1) levelFormatted = 0;
 
-    const valid = !!levelFormatted;
+    const valid = !!length && !!levelFormatted;
 
     return {
       level: levelFormatted,
       valid,
-      message: policyStrings[levelFormatted]
+      message: policyStrings[length && levelFormatted]
     };
   }
 
