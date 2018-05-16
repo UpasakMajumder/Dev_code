@@ -10,7 +10,9 @@ const Proceed = ({
   addToCart,
   openTemplate,
   handleChangeQuantity,
-  quantity
+  quantity,
+  proceedProduct,
+  isLoading
 }) => {
   if (!addToCart || !openTemplate) return null;
 
@@ -23,12 +25,15 @@ const Proceed = ({
           type="number"
           value={quantity}
           onChange={e => handleChangeQuantity(e.target.value)}
+          className="product-view__proceed-input"
         />
         <span className="mx-2">{addToCart.get('unit')}</span>
         <Button
           type="action"
           isLoading={false}
           text={addToCart.get('text')}
+          onClick={proceedProduct}
+          isLoading={isLoading}
         />
       </div>
     );
@@ -48,18 +53,17 @@ const Proceed = ({
 
 Proceed.propTypes = {
   addToCart: ImmutablePropTypes.mapContains({
-    url: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
-    unit: PropTypes.string.isRequired,
-    minQuantity: PropTypes.number,
-    maxQuantity: PropTypes.number
+    unit: PropTypes.string.isRequired
   }),
   openTemplate: ImmutablePropTypes.mapContains({
     url: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired
   }),
   handleChangeQuantity: PropTypes.func.isRequired,
-  quantity: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  proceedProduct: PropTypes.func.isRequired,
+  quantity: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  isLoading: PropTypes.bool.isRequired
 };
 
 export default Proceed;

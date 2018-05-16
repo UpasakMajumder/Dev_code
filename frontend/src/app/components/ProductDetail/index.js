@@ -4,9 +4,11 @@ import Immutable from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import axios from 'axios';
 /* globals */
-import { PRODUCT_DETAIL } from 'app.globals';
+import { PRODUCT_DETAIL, BUTTONS_UI } from 'app.globals';
 /* constants */
-import { FAILURE } from 'app.consts';
+import { FAILURE, CART_PREVIEW_CHANGE_ITEMS, HIDE, HEADER_SHADOW } from 'app.consts';
+/* helpers */
+import { toggleDialogAlert } from 'app.helpers/ac';
 /* components */
 import ProductThumbnail from './ProductThumbnail';
 import Info from './Info';
@@ -34,7 +36,9 @@ class ProductDetail extends Component {
         quantityText: PropTypes.string,
         quantity: PropTypes.number,
         minQuantity: PropTypes.number,
-        maxQuantity: PropTypes.number
+        maxQuantity: PropTypes.number,
+        documentId: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired
       }),
       openTemplate: ImmutablePropTypes.map,
       description: ImmutablePropTypes.mapContains({
@@ -71,14 +75,139 @@ class ProductDetail extends Component {
     this.state = {
       options: Immutable.Map(options),
       optionsPrice: null,
-      quantity: this.props.ui.getIn(['addToCart', 'quantity'], 1)
+      quantity: this.props.ui.getIn(['addToCart', 'quantity'], 1),
+      isLoading: false,
+      quantityText: '',
+      optionsError: false
     };
   }
+
+  isValid = () => {
+    const { ui } = this.props;
+    // validation
+    // options
+    // we have productOptions and categories
+    if (ui.get('productOptions') &&
+      ui.getIn(['productOptions', 'categories']) &&
+      ui.getIn(['productOptions', 'categories']).count()) {
+      // check options state for null
+      const emptyOption = this.state.options.findEntry(value => !value);
+      if (emptyOption) {
+        this.setState({ optionsError: true });
+        return false;
+      }
+      this.setState({ optionsError: false });
+    }
+
+    // quantity
+    const minQuantity = parseInt(ui.getIn(['addToCart', 'minQuantity']), 10);
+    const maxQuantity = parseInt(ui.getIn(['addToCart', 'maxQuantity']), 10);
+    const quantity = parseInt(this.state.quantity, 10);
+
+    const quantityText = ui.getIn(['addToCart', 'quantityText']);
+
+    // check min max
+    if (minQuantity && maxQuantity) {
+      if (quantity < minQuantity || quantity > maxQuantity) {
+        this.setState({ quantityText });
+        return false;
+      }
+      this.setState({ quantityText: '' });
+    // check min
+    } else if (minQuantity) {
+      if (quantity < minQuantity) {
+        this.setState({ quantityText });
+        return false;
+      }
+      this.setState({ quantityText: '' });
+    // check max
+    } else if (maxQuantity) {
+      if (quantity > maxQuantity) {
+        this.setState({ quantityText });
+        return false;
+      }
+      this.setState({ quantityText: '' });
+    }
+
+    return true;
+  };
+
+  proceedProduct = () => {
+    // validation
+    if (!this.isValid()) return;
+
+    this.setState({ isLoading: true });
+    const { ui } = this.props;
+    const { quantity, options } = this.state;
+
+    // collect body
+      // Quantity
+      // Options
+      // documentId
+    const body = {
+      quantity,
+      options: options.toJS(),
+      documentId: ui.getIn(['addToCart', 'documentId'])
+    };
+
+    // send
+    axios
+      .post(ui.getIn(['addToCart', 'url']), body)
+      .then((response) => {
+        this.setState({ isLoading: false });
+        const { payload, success, errorMessage } = response.data;
+
+        if (!success) {
+          window.store.dispatch({
+            type: FAILURE,
+            alert: errorMessage
+          });
+          return;
+        }
+
+        const closeDialog = () => {
+          toggleDialogAlert(false);
+          window.store.dispatch({ type: HEADER_SHADOW + HIDE });
+        };
+
+        const { confirmation, cartPreview } = payload;
+
+        window.store.dispatch({
+          type: CART_PREVIEW_CHANGE_ITEMS,
+          payload: {
+            items: cartPreview.items,
+            summaryPrice: cartPreview.summaryPrice
+          }
+        });
+
+        const confirmBtn = [
+          {
+            label: BUTTONS_UI.products.text,
+            func: () => window.location.assign(BUTTONS_UI.products.url)
+          },
+          {
+            label: BUTTONS_UI.checkout.text,
+            func: () => window.location.assign(BUTTONS_UI.checkout.url)
+          }
+        ];
+
+        // show notification
+        toggleDialogAlert(true, confirmation.alertMessage, closeDialog, confirmBtn);
+      })
+      .catch(() => {
+        window.store.dispatch({ type: CART_PREVIEW_CHANGE_ITEMS + FAILURE });
+        this.setState({ isLoading: false });
+      });
+  };
 
   handleChangeQuantity = quantity => this.setState({ quantity });
 
   handleChangeOptions = (name, value) => {
     const options = this.state.options.set(name, value);
+
+    const emptyOption = options.findEntry(value => !value);
+    if (!emptyOption) this.setState({ optionsError: false });
+
     this.setState({ options }, this.getOptionsPrice);
   };
 
@@ -117,6 +246,13 @@ class ProductDetail extends Component {
         </div>
       ) : null;
 
+    const quantityTextComponent = this.state.quantityText
+      ? (
+        <div className="block">
+          <h2 className="block__heading text--danger pt-4 pb-2">{this.state.quantityText}</h2>
+        </div>
+      ) : null;
+
     return (
       <div>
         <div className="product-view">
@@ -133,6 +269,7 @@ class ProductDetail extends Component {
               productOptions={ui.get('productOptions')}
               handleChangeOptions={this.handleChangeOptions}
               stateOptions={this.state.options}
+              optionsError={this.state.optionsError}
             />
             <div className="product-view__tables">
               <Table
@@ -157,11 +294,14 @@ class ProductDetail extends Component {
                 openTemplate={ui.get('openTemplate')}
                 handleChangeQuantity={this.handleChangeQuantity}
                 quantity={this.state.quantity}
+                proceedProduct={this.proceedProduct}
+                isLoading={this.state.isLoading}
               />
             </div>
           </div>
         </div>
         {descriptionComponent}
+        {quantityTextComponent}
       </div>
     );
   }

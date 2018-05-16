@@ -135,4 +135,8 @@
     @extend %flex--center--between;
     margin-left: auto;
   }
+
+  &__proceed-input {
+    width: 100px;
+  }
 }
