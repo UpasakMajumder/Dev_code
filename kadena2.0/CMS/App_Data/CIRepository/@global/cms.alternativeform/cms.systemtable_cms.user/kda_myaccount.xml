@@ -21,10 +21,10 @@
         </properties>
         <rules>
           <rule errormsg="First Name length should not be more than 50 characters">
-            <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)2a2f4705cdec2abbbe1cb46f9a1b25ee25f87cf5beb950f79eedfab3d39719de%}]]>
+            <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)5fdd1b472b919c1f4b774fa2cb5a6b34e5e13b72404e21f9b6a6e043ba0165b9%}]]>
           </rule>
           <rule errormsg="Please enter First Name">
-            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
+            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)efc157ede6fb5c7f650a4178bfc9d60a8c59d242b012125bfc266cd241686a4a%}]]>
           </rule>
         </rules>
       </field>
@@ -43,10 +43,10 @@
         </properties>
         <rules>
           <rule errormsg="Please enter Last Name">
-            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
+            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)efc157ede6fb5c7f650a4178bfc9d60a8c59d242b012125bfc266cd241686a4a%}]]>
           </rule>
           <rule errormsg="Last Name length should not be more than 50 characters">
-            <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)2a2f4705cdec2abbbe1cb46f9a1b25ee25f87cf5beb950f79eedfab3d39719de%}]]>
+            <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)5fdd1b472b919c1f4b774fa2cb5a6b34e5e13b72404e21f9b6a6e043ba0165b9%}]]>
           </rule>
         </rules>
       </field>
@@ -177,7 +177,7 @@
           <controlcssclass>input__text js-Zipcode</controlcssclass>
         </properties>
       </field>
-      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" reftype="Required" allowempty="">
+      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" allowempty="">
         <settings>
           <controlname>DropDownListControl</controlname>
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
@@ -186,7 +186,7 @@
 <![CDATA[
 select 0,'{$KDA.Common.SelectState$}'
 union
-select StateID,StateDisplayName from CMS_State where CountryID={%if(UserCountry>0){UserCountry}else{0}|(user)cvoqa2@gmail.com|(hash)c04f178bff69a81c32dbf38c22d99eb0bbeb059b70bd4587f469a0e121d11fe4%}
+select StateID,StateDisplayName from CMS_State where CountryID={%if(UserCountry>0){UserCountry}else{0} |(user)administrator|(hash)38e069f4ec9dcaa9d162082b243e8314d75b4c0d2877761bada649c81b992ff9%}
 ]]>
           </Query>
           <SortItems>False</SortItems>
@@ -214,10 +214,10 @@ select StateID,StateDisplayName from CMS_State where CountryID={%if(UserCountry>
         </properties>
         <rules>
           <rule errormsg="Please enter City">
-            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
+            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)efc157ede6fb5c7f650a4178bfc9d60a8c59d242b012125bfc266cd241686a4a%}]]>
           </rule>
           <rule errormsg="City should not be more than 20 characters">
-            <![CDATA[{%Rule("(Value.Length <= 20)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>20</t><v>20</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)cf08b793c88446bcd6e41fb212565a9b6e12f70531a841ee87e4ca1f29dc6f65%}]]>
+            <![CDATA[{%Rule("(Value.Length <= 20)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>20</t><v>20</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)d51271b2b8c48363428896a50b666f5761ec86aca193f389329e0a7158fc2284%}]]>
           </rule>
         </rules>
       </field>
@@ -293,17 +293,17 @@ select ItemID,DivisionName from KDA_Division
           <controlcssclass>input__text</controlcssclass>
         </properties>
       </field>
-      <field column="UserAddress" guid="241299df-6273-402f-aca6-ed3034fed4ae" allowempty="" order="93">
+      <field column="UserAddress" guid="241299df-6273-402f-aca6-ed3034fed4ae" reftype="Required" allowempty="" order="93">
         <properties>
           <controlcssclass>input__text js-Address</controlcssclass>
           <validationerrormessage>{$Kadena.MyAccount.AddressRequired$}</validationerrormessage>
         </properties>
         <rules>
           <rule errormsg="Please enter Address">
-            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
+            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)efc157ede6fb5c7f650a4178bfc9d60a8c59d242b012125bfc266cd241686a4a%}]]>
           </rule>
           <rule errormsg="Address should not be more than 50 characters">
-            <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)2a2f4705cdec2abbbe1cb46f9a1b25ee25f87cf5beb950f79eedfab3d39719de%}]]>
+            <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)5fdd1b472b919c1f4b774fa2cb5a6b34e5e13b72404e21f9b6a6e043ba0165b9%}]]>
           </rule>
         </rules>
       </field>
@@ -338,7 +338,7 @@ select ItemID,DivisionName from KDA_Division
 
 <div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.SalesManagerID$}</span>$$input:SalesManagerID$$</div>
 
-<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.BusinessUnits$}</span> <input class="form-control input__text" disabled="disabled" type="text" value="{%KadenaNamespace.GetBusinessUnits(CurrentUser.UserID)|(user)cvoqa2@gmail.com|(hash)655cd0e897fb8a9197b65ff1da6a72e9a9f38f714b16c869951a1272f1b553fc%}" /></div>
+<div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.BusinessUnits$}</span> <input class="form-control input__text" disabled="disabled" type="text" value="{% KadenaNamespace.GetBusinessUnits(CurrentUser.UserID) |(user)administrator|(hash)dba6a4847238f1dbe294eb47dc20be266dc3f654bdafb0b6b2610c25fab86721%}" /></div>
 
 <div class="input__wrapper"><span class="input__label">{$Kadena.MyAccount.DivisionID$}</span>$$input:UserDivisionID$$</div>
 
