@@ -33,7 +33,7 @@
       <field column="Year" columnsize="10" columntype="text" guid="3aa96c3b-d578-4701-841a-1912d318c929" publicfield="false" visible="true">
         <properties>
           <defaultvalue ismacro="true">
-            <![CDATA[{%DateTime.Now.Year|(user)cvoqa2@gmail.com|(hash)a3f13b3815baa25cc593f85f4852a84761453707f9d76747eb6866bc412a9777%}]]>
+            <![CDATA[{% DateTime.Now.Year |(user)administrator|(hash)dc46208af8bf4113eaf496bd42fe7e93e65a225c4eb6560150b480f28c810fda%}]]>
           </defaultvalue>
           <fieldcaption>Year</fieldcaption>
         </properties>
@@ -43,12 +43,12 @@
           <EditText>False</EditText>
           <Options>
 <![CDATA[
-{%DateTime.Now.AddYears(0).Year|(user)cvoqa2@gmail.com|(hash)8bd16525292843b334b2d8621963e181c7a9a035d4ab7b142bad8e7956e97450%}
-{%DateTime.Now.AddYears(1).Year|(user)cvoqa2@gmail.com|(hash)af61f3455f21f7fff2ebe0c44b2c0fa985c860a7dffe7e64e72a63f85e711f14%}
-{%DateTime.Now.AddYears(2).Year|(user)cvoqa2@gmail.com|(hash)59aa6c5158983e5d97a63ee241b60042a903dbfb7d096e3ed04eabd2396b97f8%}
-{%DateTime.Now.AddYears(3).Year|(user)cvoqa2@gmail.com|(hash)5f553a2677aab9b6d00eaa5e1d82cfe43d7c5914bdd6978ff487f193407e862a%}
-{%DateTime.Now.AddYears(4).Year|(user)cvoqa2@gmail.com|(hash)f2d0ce1a96f25b174b27dd1ddc53f9118987d7fcd0321465097f8a62e139d3de%}
-{%DateTime.Now.AddYears(5).Year|(user)cvoqa2@gmail.com|(hash)2b4137bb8aa155c2820ccab1f07e262fcb60b09f3d50dcbde221d425d973e46f%}
+{%DateTime.Now.AddYears(0).Year |(user)administrator|(hash)7a6b51a5e3e92fee85cf76063198c4610deccffdca83388643a245fd320f3783%}
+{%DateTime.Now.AddYears(1).Year |(user)administrator|(hash)67c0ed8f6c34e46838c418c2a60b4bb21eff758148b6d4832318e9f0d812a60c%}
+{%DateTime.Now.AddYears(2).Year |(user)administrator|(hash)3efda3755ac413f08e695fcf17c16d47f8634f02dd5c18133fc78469f78c9490%}
+{%DateTime.Now.AddYears(3).Year |(user)administrator|(hash)be712d1ac5c409c7a27d4316b2860a199962290e09e75af932c225c85689655a%}
+{%DateTime.Now.AddYears(4).Year |(user)administrator|(hash)a5bb742994c67a2c301e0ef3861ee4b40df222e4070be32a5fac1a358fe80005%}
+{%DateTime.Now.AddYears(5).Year |(user)administrator|(hash)06100fce5e6b5922fd9c045d71fec0f4c8a6bd31b8e53fe130d250deb446ffb4%}
 ]]>
           </Options>
           <SortItems>False</SortItems>
