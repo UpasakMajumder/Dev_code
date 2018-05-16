@@ -25,6 +25,7 @@ const Proceed = ({
           type="number"
           value={quantity}
           onChange={e => handleChangeQuantity(e.target.value)}
+          className="product-view__proceed-input"
         />
         <span className="mx-2">{addToCart.get('unit')}</span>
         <Button
