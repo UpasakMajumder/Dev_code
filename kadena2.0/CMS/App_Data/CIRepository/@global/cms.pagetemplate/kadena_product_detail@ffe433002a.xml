@@ -561,13 +561,8 @@ config.localization.productDetail = {
       code: '{% ProductCustomerReferenceNumber == "" ? "" : String.FormatString("{0}: {1}",  GetResourceString("Kadena.Product.ProductCode"), ProductCustomerReferenceNumber) |(user)michal.machacek@actum.cz|(hash)55b9e9d00409bead0de0a451a093c2b8b834f6092e0bbc98014f3784aa1f303a%}'
     },
     estimates: {
-      header: '',
-      body: [
-        {
-          key: '',
-          value: ''
-        }
-      ]
+      header: '{$Kadena.Product.Estimates$}',
+      body: {% KadenaNamespace.GetProductEstimates(DocumentContext.CurrentDocument.DocumentID ) |(user)michal.machacek@actum.cz|(hash)a9fde25549de773075560893a5f39c4d5898c4ea5c03eea51ddbd9546d0e496c%}
     },
     dynamicPrices: {
       header: '',
