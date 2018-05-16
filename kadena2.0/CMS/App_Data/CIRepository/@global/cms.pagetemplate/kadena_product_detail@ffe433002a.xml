@@ -566,13 +566,13 @@ config.localization.productDetail = {
     },
     dynamicPrices: {
       header: '{$Kadena.Product.UnitPrice$}',
-      body: {% KadenaNamespace.GetProductPricings(DocumentContext.CurrentDocument.DocumentID, ECommerceContext.CurrentProduct.SKUUnitOfMeasure |(user)michal.machacek@actum.cz|(hash)9c36593be362a7c09b5c3a938038e651c0a2242810f90a53c52ca4665d6dc586%}
+      body: {% KadenaNamespace.GetProductPricings(DocumentContext.CurrentDocument.DocumentID, SKUUnitOfMeasure |(user)michal.machacek@actum.cz|(hash)e06bdf46ef20df0a9624cfdaae708501caf2581911096340157538146a36d0f7%}
     },
     availability: {
       type: '', 
       text: ''
     },
-    packagingInfo: '',
+    packagingInfo: '{% KadenaNamespace.GetPackagingString(ProductNumberOfItemsInPackage, SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode)|(user)michal.machacek@actum.cz|(hash)3885007b07556b5e19906efa1497e8407f3b4ecd920e2c42717a520279bc4369%}',
     productOptions:{
           priceElementId: "option-price",
           priceUrl: '/api/products/getprice/{%NodeSKU.ID|(user)michal.machacek@actum.cz|(hash)bcef10f415a2354c4810ec862a0471de9276dda4620c639e041ca603f3977dac%}',
@@ -580,11 +580,11 @@ config.localization.productDetail = {
       },
     addToCart: {
       url: '/api/shoppingcart/addtocart',
-      text: '',
+      text: '{%Kadena.Product.AddToCart|(user)michal.machacek@actum.cz|(hash)5f06f354bbb0d671f7965002b08858e62e70a913139ce58d0b127c1302049bba%}',
       unit: '',
       quantity: 1,
-      minQuantity: 1,
-      maxQuantity: 10,
+      minQuantity: '{% ECommerceContext.CurrentProduct.SKUMinItemsInOrder |(user)michal.machacek@actum.cz|(hash)3fc28bb914d325f49e76372da98b6a6e09f444cb409a2311c3c480abb0469f8b%}',
+      maxQuantity: '{% ECommerceContext.CurrentProduct.SKUMaxItemsInOrder |(user)michal.machacek@actum.cz|(hash)7905a3f40b71aa268e8e6bf42c8edd368eeb3d0b67abd8c3e2f04a669ede334f%}',
       quantityText: "Order limit: 5 packs per order"
     },
     openTemplate: {
