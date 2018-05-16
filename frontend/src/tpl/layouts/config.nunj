@@ -529,6 +529,135 @@
         markProductFavouriteUrl: PATH + 'products/favourite',
         unmarkProductFavouriteUrl: PATH + 'products/unfavourite',
         nodeAliasPath: "/Products"
+      },
+      productDetail: {
+        thumbnail: { // props
+          image: 'http://satyr.io/500x300',
+          border: '2px solid red',
+          magnifyImage: 'http://satyr.io/1500x1000'
+        },
+        requiresApproval: { // props
+          exists: true,
+          text: 'Requires Approval'
+        },
+        attachments: [ // props
+          {
+            url: '#',
+            text: 'Download processed file'
+          },
+          {
+            url: '#',
+            text: 'Download processed file'
+          }
+        ],
+        info: { // props
+          createdDate: 'Product added: Feb 15 2017',
+          code: 'Product code: 326B-0815'
+        },
+        estimates: { // props
+          header: 'Delivery',
+          body: [
+            {
+              key: 'Production time',
+              value: '7 days'
+            },
+            {
+              key: 'Shopping cost',
+              value: '$10 - $15'
+            }
+          ]
+        },
+        dynamicPrices: { // props
+          header: 'Unit Price',
+          body: [ // state
+            {
+              id: '1',
+              key: '0-50 pcs',
+              value: '$2.10'
+            },
+            {
+              id: 'option-price',
+              key: '50+ pcs',
+              value: '$1.50'
+            }
+          ]
+        },
+        availability: { // props
+          type: 'available', // unavailable, outofstock, available
+          text: 'Out of stock'
+        },
+        packagingInfo: 'These come in pack 50 pcs', // props
+        productOptions: {
+          priceElementId: "option-price",
+          priceUrl: PATH + 'products/options',
+          categories: [
+            {
+              name: "TShirtSize", // not rendered, used in API call
+              selector: "Dropdownlist", // Dropdownlist | RadioButtonsHorizontal | RadioButtonsVertical
+              options: [
+                {
+                  name: "please select", // category default record
+                  id: 0,
+                  disabled : true, // user cannot select this
+                  selected: true // category.CategoryDefaultRecord == category.CategoryDefaultOptions
+                },
+                {
+                  name: "XXL", // sku.SKUName
+                  id: 123,  // sku.SKUID
+                  selected: false, // sku.SKUID.ToString() == category.CategoryDefaultOptions
+                },
+                {
+                  name: "L",
+                  id: 124,
+                  selected: false,
+                },
+                {
+                  name: "S",
+                  id: 125,
+                  selected: false,
+                }
+              ]
+            },
+            {
+              name: "TShirtColor", // not rendered, used in API call
+              selector: "RadioButtonsHorizontal", // Dropdownlist | RadioButtonsHorizontal | RadioButtonsVertical
+              options: [
+                {
+                  name: "Blue", // sku.SKUName
+                  id: 123,  // sku.SKUID
+                  selected: false, // sku.SKUID.ToString() == category.CategoryDefaultOptions
+                },
+                {
+                  name: "Red",
+                  id: 124,
+                  selected: false,
+                },
+                {
+                  name: "Green",
+                  id: 125,
+                  selected: false,
+                }
+              ]
+            }
+          ]
+        },
+        addToCart: { // null props
+          url: '#', // TODO: Call
+          text: 'Add to cart',
+          unit: 'pack of 50 (50)',
+          quantity: 1, // state
+          minQuantity: 1, // not required
+          maxQuantity: 10, // not required
+          quantityText: 'Maximum is 10' // not required
+        },
+        openTemplate: { // null props
+          url: '#',
+          text: 'Open template in design'
+        },
+        description: { // props
+          title: 'Description',
+          text: '<p>Hello </p><p>How are you?</p>' // html
+        }
       }
     }
   };
