@@ -404,6 +404,24 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return JsonConvert.SerializeObject(attachments, CamelCaseSerializer);
         }
 
+
+        [MacroMethod(typeof(string), "Returns json of product estimates", 1)]
+        [MacroMethodParam(0, "documentId", typeof(int), "document ID")]
+        public static object GetProductEstimates(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+
+            var documentId = Convert.ToInt32(parameters[0]);
+
+            var estimates = DIContainer.Resolve<IProductsService>().GetProductEstimations(documentId);
+
+            return JsonConvert.SerializeObject(estimates, CamelCaseSerializer);
+        }
+
+
         [MacroMethod(typeof(string), "Returns product options config.", 1)]
         [MacroMethodParam(0, "skuid", typeof(int), "SKU ID")]
         public static object GetProductOptions(EvaluationContext context, params object[] parameters)
