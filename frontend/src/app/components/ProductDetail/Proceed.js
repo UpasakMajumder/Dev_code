@@ -11,7 +11,8 @@ const Proceed = ({
   openTemplate,
   handleChangeQuantity,
   quantity,
-  proceedProduct
+  proceedProduct,
+  isLoading
 }) => {
   if (!addToCart || !openTemplate) return null;
 
@@ -31,6 +32,7 @@ const Proceed = ({
           isLoading={false}
           text={addToCart.get('text')}
           onClick={proceedProduct}
+          isLoading={isLoading}
         />
       </div>
     );
@@ -59,7 +61,8 @@ Proceed.propTypes = {
   }),
   handleChangeQuantity: PropTypes.func.isRequired,
   proceedProduct: PropTypes.func.isRequired,
-  quantity: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  quantity: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  isLoading: PropTypes.bool.isRequired
 };
 
 export default Proceed;

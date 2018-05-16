@@ -4,13 +4,15 @@ import Immutable from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import uuid from 'uuid';
 /* components */
+import { Tooltip } from 'react-tippy';
 import Checkbox from 'app.dump/Form/CheckboxInput';
 
 const ProductOptions = ({
   productOptions,
   handleChangeOptions,
   stateOptions,
-  optionsPrice
+  optionsPrice,
+  optionsError
 }) => {
   if (!productOptions) return null;
   const categories = productOptions.get('categories');
@@ -74,17 +76,29 @@ const ProductOptions = ({
     });
   };
 
+  const align = categories.findEntry(category => category.get('selector') === 'RadioButtonsVertical') ? 'top' : 'center';
+
   return (
-    <div className="product-options product-options--row">
-      {getContent()}
-    </div>
+      <Tooltip
+        title={productOptions.get('validationMessage')}
+        position="left"
+        animation="perspective"
+        open={optionsError}
+        theme="danger"
+        arrow
+        className={`product-options product-options--row product-options--${align}`}
+      >
+        {getContent()}
+      </Tooltip>
   );
 };
 
 ProductOptions.propTypes = {
   handleChangeOptions: PropTypes.func.isRequired,
   stateOptions: ImmutablePropTypes.map,
+  optionsError: PropTypes.bool.isRequired,
   productOptions: ImmutablePropTypes.mapContains({
+    validationMessage: PropTypes.string.isRequired,
     categories: ImmutablePropTypes.listOf(ImmutablePropTypes.mapContains({
       name: PropTypes.string.isRequired,
       selector: PropTypes.oneOf(['Dropdownlist', 'RadioButtonsHorizontal', 'RadioButtonsVertical']).isRequired,

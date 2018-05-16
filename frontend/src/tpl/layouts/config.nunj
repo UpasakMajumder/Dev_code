@@ -590,6 +590,7 @@
         productOptions: {
           priceElementId: "option-price",
           priceUrl: PATH + 'products/options',
+          validationMessage: 'Required 🔥',
           categories: [
             {
               name: "TShirtSize", // not rendered, used in API call
@@ -620,7 +621,7 @@
             },
             {
               name: "TShirtColor", // not rendered, used in API call
-              selector: "RadioButtonsHorizontal", // Dropdownlist | RadioButtonsHorizontal | RadioButtonsVertical
+              selector: "Dropdownlist", // Dropdownlist | RadioButtonsHorizontal | RadioButtonsVertical
               options: [
                 {
                   name: "Blue", // sku.SKUName
@@ -642,7 +643,8 @@
           ]
         },
         addToCart: { // null props
-          url: '#', // TODO: Call
+          documentId: 'documentId',
+          url: PATH + 'products/add-to-cart', // TODO: Call
           text: 'Add to cart',
           unit: 'pack of 50 (50)',
           quantity: 1, // state
