@@ -103,7 +103,6 @@ class ProductDetail extends Component {
 
   render() {
     const { ui } = this.props;
-    console.log('ui', ui.toJS());
 
     const packagingInfoComponent = ui.get('packagingInfo')
       ? (

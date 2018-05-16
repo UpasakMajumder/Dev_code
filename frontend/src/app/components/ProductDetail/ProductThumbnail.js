@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import uuid from 'uuid';
+import { connect } from 'react-redux';
 /* components */
 import SVG from 'app.dump/SVG';
+/* ac */
+import togglePreview from 'app.ac/thumbnailPreview';
 
 class ProductThumbnail extends Component {
   static propTypes = {
@@ -21,12 +24,6 @@ class ProductThumbnail extends Component {
       text: PropTypes.string.isRequired
     }).isRequired)
   }
-
-  state = {
-    magnify: false
-  }
-
-  handleToggleMagnify = () => this.setState(prevState => ({ magnify: !prevState.magnify }));
 
   getAttachmentsComponent = () => {
     const { attachments } = this.props;
@@ -82,7 +79,7 @@ class ProductThumbnail extends Component {
           <button
             type="button"
             className="product-view__zoom"
-            onClick={this.handleToggleMagnify}
+            onClick={() => this.props.togglePreview(thumbnail.get('magnifyImage'))}
           >
             <SVG
               name="zoom"
@@ -95,4 +92,6 @@ class ProductThumbnail extends Component {
   }
 }
 
-export default ProductThumbnail;
+export default connect(null, {
+  togglePreview
+})(ProductThumbnail);

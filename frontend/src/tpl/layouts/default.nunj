@@ -63,7 +63,7 @@
       {% include 'components/header.nunj' %}
       <div class="r-header-shadow"></div>
       <div class="r-tac"></div>
-      {% include "components/product/preview.nunj" %}
+      <div class="r-thumbnail-preview"></div>
       <main class="css-main js-main js-collapse isOpen">
         <script>
           var main = document.querySelector('.js-main');

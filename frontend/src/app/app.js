@@ -70,6 +70,7 @@ const app = {
     render('FilteredRecentOrders', document.querySelectorAll('.r-filtered-recent-orders'));
     render('Registration', document.querySelectorAll('.r-registration'));
     render('ProductDetail', document.querySelectorAll('.r-product-detail'));
+    render('ThumbnailPreview', document.querySelectorAll('.r-thumbnail-preview'));
   }
 };
 
