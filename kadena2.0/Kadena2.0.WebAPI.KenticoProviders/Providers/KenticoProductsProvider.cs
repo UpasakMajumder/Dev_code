@@ -411,5 +411,53 @@ namespace Kadena.WebAPI.KenticoProviders
 
             return options;
         }
+
+        public ProductPricingInfo GetDefaultVariantPricing(int documentId, string uomLocalized)
+        {
+            var document = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+
+            var skuCategories = SKUOptionCategoryInfoProvider
+                .GetSKUOptionCategories()
+                .Columns(nameof(SKUOptionCategoryInfo.CategoryID))
+                .WhereEquals(nameof(SKUOptionCategoryInfo.SKUID), document.NodeSKUID);
+            var optionCategories = OptionCategoryInfoProvider
+                .GetOptionCategories()
+                .Columns(nameof(OptionCategoryInfo.CategoryDefaultOptions))
+                .WhereIn(nameof(OptionCategoryInfo.CategoryID), skuCategories)
+                .And()
+                .WhereEquals(nameof(OptionCategoryInfo.CategoryType), OptionCategoryTypeEnum.Attribute.ToStringRepresentation())
+                .And()
+                .WhereEquals(nameof(OptionCategoryInfo.CategoryEnabled), true)
+                .ToList();
+
+            SKUInfo variant = null;
+
+            if (optionCategories.Count > 0)
+            {
+                variant = VariantHelper.GetProductVariant(document.NodeSKUID,
+                    new ProductAttributeSet(optionCategories.Select(c =>
+                    {
+                        int.TryParse(c.CategoryDefaultOptions, out int id);
+                        return id;
+                    })));
+            }
+
+            var basePrice = variant?.SKUPrice ?? document.GetDoubleValue("SKUPrice", 0);
+
+            var key = string.Format("{0} {1}",
+                    ResHelper.GetString("Kadena.Product.BasePriceTitle", LocalizationContext.CurrentCulture.CultureCode), // 1+
+                    uomLocalized);
+
+            var value = string.Format( "{0} {1}",
+                    ResHelper.GetString("Kadena.Checkout.ItemPricePrefix",LocalizationContext.CurrentCulture.CultureCode), // $
+                    basePrice.ToString("N2"));
+
+            return new ProductPricingInfo
+            {
+                Id = "option-price",
+                Key = key,
+                Value = value
+            };
+        }
     }
 }

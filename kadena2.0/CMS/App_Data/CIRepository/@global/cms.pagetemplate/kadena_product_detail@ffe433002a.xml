@@ -565,14 +565,8 @@ config.localization.productDetail = {
       body: {% KadenaNamespace.GetProductEstimates(DocumentContext.CurrentDocument.DocumentID ) |(user)michal.machacek@actum.cz|(hash)a9fde25549de773075560893a5f39c4d5898c4ea5c03eea51ddbd9546d0e496c%}
     },
     dynamicPrices: {
-      header: '',
-      body: [
-        {
-          id: '',
-          key: '',
-          value: ''
-        }
-      ]
+      header: '{$Kadena.Product.UnitPrice$}',
+      body: {% KadenaNamespace.GetProductPricings(DocumentContext.CurrentDocument.DocumentID, ECommerceContext.CurrentProduct.SKUUnitOfMeasure |(user)michal.machacek@actum.cz|(hash)9c36593be362a7c09b5c3a938038e651c0a2242810f90a53c52ca4665d6dc586%}
     },
     availability: {
       type: '', 

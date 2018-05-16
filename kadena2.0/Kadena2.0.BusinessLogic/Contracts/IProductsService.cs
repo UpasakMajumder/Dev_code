@@ -14,5 +14,6 @@ namespace Kadena.BusinessLogic.Contracts
         string GetUnitOfMeasure(string unitOfMeasure, string cultureCode);
         string TranslateUnitOfMeasure(string unitOfMeasure, string cultureCode);
         IEnumerable<ProductEstimation> GetProductEstimations(int documentId);
+        IEnumerable<ProductPricingInfo> GetProductPricings(int documentId, string unitOfMeasure, string cultureCode);
     }
 }

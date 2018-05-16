@@ -81,6 +81,7 @@
     <Compile Include="Checkout\ItemOption.cs" />
     <Compile Include="Product\OptionCategory.cs" />
     <Compile Include="Product\ProductAvailability.cs" />
+    <Compile Include="Product\ProductPricingInfo.cs" />
     <Compile Include="Product\ProductEstimation.cs" />
     <Compile Include="Product\UnitOfMeasure.cs" />
     <Compile Include="Program\CampaignProgram.cs" />

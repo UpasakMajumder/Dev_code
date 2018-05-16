@@ -18,8 +18,9 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoUnitOfMeasureProvider units;
         private readonly IImageService imageService;
         private readonly IKenticoPermissionsProvider permissions;
+        private readonly IDynamicPriceRangeProvider dynamicRanges;
 
-        public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources, IKenticoUnitOfMeasureProvider units, IImageService imageService, IKenticoPermissionsProvider permissions)
+        public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources, IKenticoUnitOfMeasureProvider units, IImageService imageService, IKenticoPermissionsProvider permissions, IDynamicPriceRangeProvider dynamicRanges)
         {
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.favorites = favorites ?? throw new ArgumentNullException(nameof(favorites));
@@ -27,6 +28,7 @@ namespace Kadena.BusinessLogic.Services
             this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
             this.units = units ?? throw new ArgumentNullException(nameof(units));
             this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
+            this.dynamicRanges = dynamicRanges ?? throw new ArgumentNullException(nameof(dynamicRanges));
         }
 
         public Price GetPrice(int skuId, Dictionary<string, int> skuOptions = null)
@@ -221,6 +223,32 @@ namespace Kadena.BusinessLogic.Services
             }
 
             return estimates;
+        }
+
+        public IEnumerable<ProductPricingInfo> GetProductPricings(int documentId, string unitOfMeasure, string cultureCode)
+        {
+            var ranges = dynamicRanges.GetDynamicRanges(documentId);
+            var localizedUom = TranslateUnitOfMeasure(unitOfMeasure, cultureCode);
+            var pricings = new List<ProductPricingInfo>();
+            var currencySymbol = "$";
+
+            if (ranges == null || ranges.Count() == 0)
+            {
+                pricings.Add(products.GetDefaultVariantPricing(documentId, localizedUom));
+            }
+            else
+            {
+                foreach (var r in ranges)
+                {
+                    pricings.Add(new ProductPricingInfo
+                    {
+                        Key = $"{r.MinVal}-{r.MaxVal} {localizedUom}",
+                        Value = $"{currencySymbol}{r.Price}"
+                    });
+                }
+            }
+
+            return pricings;
         }
     }
 }
