@@ -10,7 +10,8 @@ const Proceed = ({
   addToCart,
   openTemplate,
   handleChangeQuantity,
-  quantity
+  quantity,
+  proceedProduct
 }) => {
   if (!addToCart || !openTemplate) return null;
 
@@ -29,6 +30,7 @@ const Proceed = ({
           type="action"
           isLoading={false}
           text={addToCart.get('text')}
+          onClick={proceedProduct}
         />
       </div>
     );
@@ -48,17 +50,15 @@ const Proceed = ({
 
 Proceed.propTypes = {
   addToCart: ImmutablePropTypes.mapContains({
-    url: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
-    unit: PropTypes.string.isRequired,
-    minQuantity: PropTypes.number,
-    maxQuantity: PropTypes.number
+    unit: PropTypes.string.isRequired
   }),
   openTemplate: ImmutablePropTypes.mapContains({
     url: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired
   }),
   handleChangeQuantity: PropTypes.func.isRequired,
+  proceedProduct: PropTypes.func.isRequired,
   quantity: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
 

@@ -34,7 +34,9 @@ class ProductDetail extends Component {
         quantityText: PropTypes.string,
         quantity: PropTypes.number,
         minQuantity: PropTypes.number,
-        maxQuantity: PropTypes.number
+        maxQuantity: PropTypes.number,
+        documentId: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired
       }),
       openTemplate: ImmutablePropTypes.map,
       description: ImmutablePropTypes.mapContains({
@@ -74,6 +76,19 @@ class ProductDetail extends Component {
       quantity: this.props.ui.getIn(['addToCart', 'quantity'], 1)
     };
   }
+
+  proceedProduct = () => {
+    console.log('🚀');
+    // collect body
+      // Quantity
+      // Options
+      // documentId
+    // send
+    // show notification
+    // validation
+      // quantity
+      // options
+  };
 
   handleChangeQuantity = quantity => this.setState({ quantity });
 
@@ -157,6 +172,7 @@ class ProductDetail extends Component {
                 openTemplate={ui.get('openTemplate')}
                 handleChangeQuantity={this.handleChangeQuantity}
                 quantity={this.state.quantity}
+                proceedProduct={this.proceedProduct}
               />
             </div>
           </div>
