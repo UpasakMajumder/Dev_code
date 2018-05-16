@@ -10,5 +10,6 @@ namespace Kadena.BusinessLogic.Contracts.Approval
     {
         IEnumerable<User> GetApprovers(int siteId);
         bool IsCustomersApprover(int approverUserId, int customerId);
+        bool IsApprover(int userId);
     }
 }

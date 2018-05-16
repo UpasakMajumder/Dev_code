@@ -12,6 +12,8 @@ using System.Linq;
 using Kadena.Helpers;
 using Kadena.Models.Common;
 using Kadena.Models.SiteSettings;
+using Kadena.Models.SubmitOrder;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -42,39 +44,49 @@ namespace Kadena.WebAPI.KenticoProviders
             return ECommerceContext.CurrentShoppingCart.CartItems.Count;
         }
 
-        public CartItem[] GetShoppingCartItems(bool showPrices = true)
+        public CheckoutCartItem[] GetCheckoutCartItems(bool showPrices = true)
         {
             var displayProductionAndShipping = resources.GetSiteSettingsKey<bool>(Settings.KDA_Checkout_ShowProductionAndShipping);
 
-            return ECommerceContext.CurrentShoppingCart.CartItems
-                .Where(cartItem => !cartItem.IsProductOption)
-                .Select(cartItem => MapCartItem(cartItem, showPrices, displayProductionAndShipping))
+            return GetCurrentShoppingCartItems()
+                .Select(cartItem => MapCheckoutCartItem(cartItem, showPrices, displayProductionAndShipping))
                 .ToArray();
         }
 
-        private CartItem MapCartItem(ShoppingCartItemInfo i, bool showPrices, bool displayProductionAndShipping)
+        public OrderCartItem[] GetOrderCartItems()
+        {
+            return GetCurrentShoppingCartItems()
+                     .Select(cartItem => MapOrderCartItem(cartItem))
+                     .ToArray();
+        }
+
+        private IEnumerable<ShoppingCartItemInfo> GetCurrentShoppingCartItems()
+        {
+            return ECommerceContext.CurrentShoppingCart.CartItems
+                .Where(cartItem => !cartItem.IsProductOption);
+        }
+
+        private void CheckItemHasSku(ShoppingCartItemInfo i)
         {
             if (i.SKU == null)
             {
                 throw new ArgumentNullException(nameof(i.SKU), "CartItem has null SKU");
             }
+        }
 
-            var unitOfMeasure = i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit);
+        private CheckoutCartItem MapCheckoutCartItem(ShoppingCartItemInfo i, bool showPrices, bool displayProductionAndShipping)
+        {
+            CheckItemHasSku(i);
 
-            var cartItem = new CartItem()
+            var checkoutCartItem = new CheckoutCartItem()
             {
                 Id = i.CartItemID,
                 CartItemText = i.CartItemText,
-                Artwork = i.GetValue("ArtworkLocation", string.Empty),
                 MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty), // seem to be redundant parameter, microservice doesn't use it
-                ProductChiliWorkspaceId = i.GetValue("ProductChiliWorkspaceId", Guid.Empty),
-                ChiliTemplateId = i.GetValue("ChiliTemplateID", Guid.Empty),
                 SKUName = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
-                SKUNumber = i.SKU.SKUNumber,
                 TotalTax = 0.0m,
                 UnitPrice = showPrices ? (decimal)i.UnitPrice : 0.0m,
-                UnitOfMeasureName = units.GetDisplayname(unitOfMeasure),
-                UnitOfMeasureErpCode = units.GetUnitOfMeasure(unitOfMeasure).ErpCode,
+                UnitOfMeasureName = units.GetDisplayname(i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit)),
                 Image = productProvider.GetProductImagePath(i.GetIntegerValue("ProductPageID", 0)),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
@@ -85,42 +97,36 @@ namespace Kadena.WebAPI.KenticoProviders
                 MailingListName = i.GetValue("MailingListName", string.Empty),
                 Template = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
                 ProductPageId = i.GetIntegerValue("ProductPageID", 0),
-                SKUID = i.SKUID,
                 StockQuantity = i.SKU.SKUAvailableItems,
                 MailingListPrefix = resources.GetResourceString("Kadena.Checkout.MailingListLabel"),
                 TemplatePrefix = resources.GetResourceString("Kadena.Checkout.TemplateLabel"),
                 ProductionTime = displayProductionAndShipping ? i.GetValue("ProductProductionTime", string.Empty) : null,
                 ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null,
                 Preview = new Button { Exists = false, Text = resources.GetResourceString("Kadena.Checkout.PreviewButton") },
-                SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true),
-                RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false)
+                RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false),
+                HiResPdfAllowed = i.SKU.GetBooleanValue("SKUHiResPdfDownloadEnabled", false),
+                Options = GetItemOptions(i)
             };
 
-            if (cartItem.IsTemplated)
+            if (checkoutCartItem.IsTemplated)
             {
-                cartItem.ChiliProcess = new ChiliProcess
-                {
-                    TemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
-                    PdfSettings = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
-                };
-
-                var templateLowResSettingId = productProvider.GetProductByDocumentId(cartItem.ProductPageId)?.TemplateLowResSettingId ?? Guid.Empty;
-                var previewUrl = UrlHelper.GetUrlForTemplatePreview(cartItem.ChiliProcess.TemplateId, templateLowResSettingId);
+                var templateLowResSettingId = productProvider.GetProductByDocumentId(checkoutCartItem.ProductPageId)?.TemplateLowResSettingId ?? Guid.Empty;
+                var previewUrl = UrlHelper.GetUrlForTemplatePreview(i.GetValue("ChilliEditorTemplateID", Guid.Empty), templateLowResSettingId);
                 var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
 
-                cartItem.Preview.Url = previewAbsoluteUrl;
-                cartItem.Preview.Exists = true;
+                checkoutCartItem.Preview.Url = previewAbsoluteUrl;
+                checkoutCartItem.Preview.Exists = true;
 
                 var editorUrl = documents.GetDocumentUrl(URLHelper.ResolveUrl(resources.GetSiteSettingsKey("KDA_Templating_ProductEditorUrl")));
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "documentId", cartItem.ProductPageId.ToString());
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "templateId", cartItem.ChiliProcess.TemplateId.ToString());
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "workspaceid", cartItem.ProductChiliWorkspaceId.ToString());
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "containerId", cartItem.MailingListGuid.ToString());
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "quantity", cartItem.Quantity.ToString());
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "customName", URLHelper.URLEncode(cartItem.CartItemText));
-                cartItem.EditorURL = editorUrl;
+                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "documentId", checkoutCartItem.ProductPageId.ToString());
+                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "templateId", i.GetValue("ChilliEditorTemplateID", Guid.Empty).ToString());
+                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "workspaceid", i.GetValue("ProductChiliWorkspaceId", Guid.Empty).ToString());
+                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "containerId", checkoutCartItem.MailingListGuid.ToString());
+                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "quantity", checkoutCartItem.Quantity.ToString());
+                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "customName", URLHelper.URLEncode(checkoutCartItem.CartItemText));
+                checkoutCartItem.EditorURL = editorUrl;
 
-                cartItem.EmailProof = new Button()
+                checkoutCartItem.EmailProof = new Button()
                 {
                     Exists = true,
                     Text = resources.GetResourceString("Kadena.EmailProof.ButtonLabel"),
@@ -128,18 +134,61 @@ namespace Kadena.WebAPI.KenticoProviders
                 };
             }
 
+            return checkoutCartItem;
+        }
+
+        private OrderCartItem MapOrderCartItem(ShoppingCartItemInfo i)
+        {
+            CheckItemHasSku(i);
+
+            var unitOfMeasure = i.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit);
+
+            var orderCartItem = new OrderCartItem()
+            {
+                SKU = new OrderItemSku
+                {
+                    KenticoSKUID = i.SKUID,
+                    Name = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
+                    SKUNumber = i.SKU.SKUNumber,
+                    HiResPdfAllowed = i.SKU.GetBooleanValue("SKUHiResPdfDownloadEnabled", false)
+                },
+                
+                Artwork = i.GetValue("ArtworkLocation", string.Empty),
+                MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty),
+                UnitPrice = (decimal)i.UnitPrice,
+                UnitOfMeasureErpCode = units.GetUnitOfMeasure(unitOfMeasure).ErpCode,
+                ProductType = i.GetValue("ProductType", string.Empty),
+                Quantity = i.CartItemUnits,
+                TotalPrice = (decimal)i.UnitPrice * i.CartItemUnits,
+                SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true),
+                RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false),
+                Options = GetItemOptions(i)
+            };
+
+            if (ProductTypes.IsOfType(orderCartItem.ProductType, ProductTypes.TemplatedProduct))
+            {
+                orderCartItem.ChiliProcess = new ChiliProcess
+                {
+                    TemplateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty),
+                    PdfSettings = i.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty),
+                };
+            }
+
+            return orderCartItem;
+        }
+
+        private IEnumerable<ItemOption> GetItemOptions(ShoppingCartItemInfo i)
+        {
             if (i.VariantParent != null)
             {
                 var variant = new ProductVariant(i.SKUID);
                 var attributes = variant.ProductAttributes.AsEnumerable();
-                cartItem.Options = attributes.Select(a => new ItemOption { Name = a.SKUOptionCategory.CategoryName, Value = a.SKUName });
+                return attributes.Select(a => new ItemOption { Name = a.SKUOptionCategory.CategoryName, Value = a.SKUName });
             }
             else
             {
-                cartItem.Options = Enumerable.Empty<ItemOption>();
+                return Enumerable.Empty<ItemOption>();
             }
-
-            return cartItem;
         }
 
         public void RemoveCartItem(int id)

@@ -25,6 +25,7 @@ using System.Linq;
 using static Kadena.Helpers.SerializerConfig;
 using Kadena.Models.ModuleAccess;
 using Kadena.BusinessLogic.Contracts.Approval;
+using CMS.PortalEngine.Web.UI;
 
 [assembly: CMS.RegisterExtension(typeof(KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 
@@ -84,6 +85,31 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 }
             }
             return true;
+        }
+
+        [MacroMethod(typeof(bool), "Checks if related product is of templated type", 1)]
+        [MacroMethodParam(0, "skuid", typeof(int), "SKU ID")]
+        public static object IsTemplatedProduct(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+
+            int skuid = ValidationHelper.GetInteger(parameters[0], 0);
+
+            if (skuid == 0)
+            {
+                return false;
+            }
+
+            TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
+            NodeSelectionParameters nsp = new NodeSelectionParameters();
+            nsp.Where = $"NodeSKUID = {skuid}";
+            nsp.ClassNames = "KDA.Product";
+            var node = tree.SelectSingleNode(nsp) as SKUTreeNode;
+            var productType = node?.GetStringValue("ProductType", string.Empty);
+            return ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct);
         }
 
         [MacroMethod(typeof(bool), "Validates combination of product types - inventory type variant.", 1)]
@@ -210,7 +236,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 throw new NotSupportedException();
             }
 
-            var numberOfItemsInPackage = (int)parameters[0];
+            var numberOfItemsInPackage = parameters[0] == null ? 1 : (int)parameters[0];
             var unitOfmeasure = (string)parameters[1];
             var cultureCode = (string)parameters[2];
 
@@ -363,7 +389,17 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 .Select(u => $"{u.UserId};{u.UserName} ({u.Email})");
 
             return none.Concat(approvers).ToArray();
-         }
+        }
+
+        [MacroMethod(typeof(bool), "Checks whether current user is an approver", 1)]
+        public static object IsCurrentUserApprover(EvaluationContext context, params object[] parameters)
+        {
+            var isApprover = DIContainer
+                .Resolve<IApproverService>()
+                .IsApprover(MembershipContext.AuthenticatedUser.UserID);
+
+            return isApprover;
+        }
 
         [MacroMethod(typeof(string), "Returns file name from media attachment url.", 1)]
         [MacroMethodParam(0, "url", typeof(string), "Url")]

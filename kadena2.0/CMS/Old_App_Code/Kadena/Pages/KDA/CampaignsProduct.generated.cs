@@ -190,23 +190,6 @@ namespace CMS.DocumentEngine.Types.KDA
 
 
         /// <summary>
-        /// Qty Per Pack.
-        /// </summary>
-        [DatabaseField]
-        public int QtyPerPack
-        {
-            get
-            {
-                return ValidationHelper.GetInteger(GetValue("QtyPerPack"), 0);
-            }
-            set
-            {
-                SetValue("QtyPerPack", value);
-            }
-        }
-
-
-        /// <summary>
         /// Item Specs.
         /// </summary>
         [DatabaseField]
@@ -479,22 +462,6 @@ namespace CMS.DocumentEngine.Types.KDA
                 set
                 {
                     mInstance.CategoryID = value;
-                }
-            }
-
-
-            /// <summary>
-            /// Qty Per Pack.
-            /// </summary>
-            public int QtyPerPack
-            {
-                get
-                {
-                    return mInstance.QtyPerPack;
-                }
-                set
-                {
-                    mInstance.QtyPerPack = value;
                 }
             }
 

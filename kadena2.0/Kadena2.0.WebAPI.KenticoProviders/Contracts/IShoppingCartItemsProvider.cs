@@ -1,11 +1,13 @@
 ﻿using Kadena.Models.Checkout;
+using Kadena.Models.SubmitOrder;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
     public interface IShoppingCartItemsProvider
     {
         int GetShoppingCartItemsCount();
-        CartItem[] GetShoppingCartItems(bool showPrices = true);
+        CheckoutCartItem[] GetCheckoutCartItems(bool showPrices = true);
+        OrderCartItem[] GetOrderCartItems();
         void RemoveCartItem(int id);
         void SetCartItemQuantity(int id, int quantity);
         void SaveCartItem(CartItemEntity item);

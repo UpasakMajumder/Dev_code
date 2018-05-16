@@ -116,7 +116,7 @@ config.localization.registration = {
               preferedLength: 12,
               minNonAlphaNumChars: {% Settings.CMSPolicyNumberOfNonAlphaNumChars |(user)rostyslav.diachenko@actum.cz|(hash)cc2e5781ec79105c1b47cc954f948d55569bef57fdd973ff24b80c280e968d86%},
               preferedNonAlphaNumChars: 2,
-              regularExpression: '{%  Settings.CMSPolicyRegularExpression |(user)rostyslav.diachenko@actum.cz|(hash)c56bd76c5bc7fd156e2b7960c159cd2a9737d773fc71141485db9b004810b8df%}',
+              regularExpression: '{%  JSEscape(Settings.CMSPolicyRegularExpression) |(user)rostyslav.diachenko@actum.cz|(hash)5c2d60e50f9c9983ecb9db67f9c930e22ce4fa2605af07a36c9b9d206c94269b%}',
               policyStrings: [
                 '{%JSEscape(GetResourceString("Kadena.Password.NotAccepted"))|(user)rostyslav.diachenko@actum.cz|(hash)634aad7f101d029cbb7d8acfbfea9dd67f9164e996d013ae7569766567ba0311%}', 
                 '{%JSEscape(GetResourceString("Kadena.Password.Weak"))|(user)rostyslav.diachenko@actum.cz|(hash)9ec6ba4c4a12f74fe5ba659c813134947eb87a584aa31a3ca7500d1d5c640a4c%}',

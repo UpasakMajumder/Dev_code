@@ -32,7 +32,7 @@ namespace Kadena.BusinessLogic.Services
 
         public CheckTaCResult CheckTaC()
         {
-            var tacEnabled = resources.GetSettingsKey<bool>(Settings.KDA_TermsAndConditionsLogin);
+            var tacEnabled = resources.GetSiteSettingsKey<bool>(Settings.KDA_TermsAndConditionsLogin);
 
             var showTaC = false;
 
