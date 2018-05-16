@@ -96,7 +96,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 businessUnitName = businessUnits.GetBusinessUnitName(bun);
             }
 
-            var customer = kenticoCustomers.GetCustomer(data.ClientId);
+            var customer = kenticoCustomers.GetCustomer(data.ClientId) ?? new Customer();
 
             var isWaitingForApproval = data.StatusId == (int)OrderStatus.WaitingForApproval;
 
