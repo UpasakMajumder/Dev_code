@@ -249,7 +249,7 @@
           <defaultvalue>false</defaultvalue>
           <fieldcaption>HiRes PDF download enabled</fieldcaption>
           <visiblemacro ismacro="true">
-            <![CDATA[{%KadenaNamespace.IsTemplatedProduct(SKUID.Value)|(user)michal.machacek@actum.cz|(hash)46fde4a75c4fcc507efe60ad13387f4efb6434d5b1a5edc80ba08e35494be138%}]]>
+            <![CDATA[{%KadenaNamespace.IsTemplatedProduct(SKUID.Value)|(user)administrator|(hash)cfe02e8d0047b21181f63c55d26960d8d4c19ebf64b1d3b30e26e4574e443fb0%}]]>
           </visiblemacro>
         </properties>
         <settings>
