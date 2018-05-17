@@ -55,6 +55,7 @@
 </head>
 <body>
 <form>
+  {% include './config.nunj' %}
   {# Main content of the page #}
   <div class="main-container">
     <div class="r-spinner"></div>
@@ -63,7 +64,6 @@
       {% include 'components/header.nunj' %}
       <div class="r-header-shadow"></div>
       <div class="r-tac"></div>
-      <div class="r-thumbnail-preview"></div>
       <main class="css-main js-main js-collapse isOpen">
         <script>
           var main = document.querySelector('.js-main');
@@ -120,8 +120,6 @@
 {# Scripts #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
-{% include './config.nunj' %}
 
 <script>
   config.localization.tac.show = false; //turn off TAC

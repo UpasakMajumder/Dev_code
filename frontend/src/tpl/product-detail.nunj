@@ -6,5 +6,6 @@
 {% set headerTitle = title %}
 
 {% block content %}
+  <div class="r-thumbnail-preview"></div>
   <div class="r-product-detail"></div>
 {% endblock %}

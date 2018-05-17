@@ -14,7 +14,7 @@ const Proceed = ({
   proceedProduct,
   isLoading
 }) => {
-  if (!addToCart || !openTemplate) return null;
+  if (!addToCart && !openTemplate) return null;
 
   if (addToCart) {
     return (
