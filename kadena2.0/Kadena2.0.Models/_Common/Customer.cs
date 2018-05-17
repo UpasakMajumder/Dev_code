@@ -14,5 +14,15 @@
         public int ApproverUserId { get; set; }
         public string PreferredLanguage { get; set; }
         public int DefaultShippingAddressId { get; set; }
+
+        public override string ToString() => $"{FirstName} {LastName}".Trim();
+
+        public string FullName => ToString();
+
+        public static Customer Unknown => new Customer
+        {
+            Id = 0,
+            FirstName = "Unknown"
+        };
     }
 }

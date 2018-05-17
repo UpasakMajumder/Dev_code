@@ -7,7 +7,7 @@
   </TransformationClassID>
   <TransformationCode>
 <![CDATA[
-<input name="customizedProductName" type="text" maxlength="40" class="input__text js-add-to-cart-name" 
+<input name="customizedProductName" type="text" class="input__text js-add-to-cart-name" 
 value="{%  String.IsNullOrWhiteSpace(QueryString.customName)? DocumentName : QueryString.customName|(user)administrator|(hash)d225ffaf775cae0c4f1552f612f331b9e5f59dd85fcfcff3a93ad24015635238%}">
 
 ]]>
