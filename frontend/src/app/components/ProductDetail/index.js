@@ -77,8 +77,8 @@ class ProductDetail extends Component {
       optionsPrice: null,
       quantity: this.props.ui.getIn(['addToCart', 'quantity'], 1),
       isLoading: false,
-      quantityText: '',
-      optionsError: false
+      optionsError: false,
+      quanityError: false
     };
   }
 
@@ -102,31 +102,29 @@ class ProductDetail extends Component {
     // quantity
     const minQuantity = parseInt(ui.getIn(['addToCart', 'minQuantity']), 10);
     const maxQuantity = parseInt(ui.getIn(['addToCart', 'maxQuantity']), 10);
-    const quantity = parseInt(this.state.quantity, 10);
-
-    const quantityText = ui.getIn(['addToCart', 'quantityText']);
+    const { quantity } = this.state;
 
     // check min max
     if (minQuantity && maxQuantity) {
       if (quantity < minQuantity || quantity > maxQuantity) {
-        this.setState({ quantityText });
+        this.vibrateQuantityText();
         return false;
       }
-      this.setState({ quantityText: '' });
     // check min
     } else if (minQuantity) {
       if (quantity < minQuantity) {
-        this.setState({ quantityText });
+        this.vibrateQuantityText();
         return false;
       }
-      this.setState({ quantityText: '' });
     // check max
     } else if (maxQuantity) {
       if (quantity > maxQuantity) {
-        this.setState({ quantityText });
+        this.vibrateQuantityText();
         return false;
       }
-      this.setState({ quantityText: '' });
+    } else if (!quantity) {
+      this.vibrateQuantityText();
+      return false;
     }
 
     return true;
@@ -200,6 +198,14 @@ class ProductDetail extends Component {
       });
   };
 
+  vibrateQuantityText = () => {
+    this.setState({
+      quanityError: true
+    }, () => {
+      setTimeout(() => this.setState({ quanityError: false }), 1000);
+    });
+  };
+
   handleChangeQuantity = quantity => this.setState({ quantity });
 
   handleChangeOptions = (name, value) => {
@@ -248,10 +254,10 @@ class ProductDetail extends Component {
         </div>
       ) : null;
 
-    const quantityTextComponent = this.state.quantityText
+    const quantityTextComponent = ui.getIn(['addToCart', 'quantityText'])
       ? (
-        <div className="block">
-          <h2 className="block__heading text--danger pt-4 pb-2">{this.state.quantityText}</h2>
+        <div className={`block ${this.state.quanityError ? 'block--vibrate' : ''}`}>
+          <h2 className="block__heading text--danger pt-4 pb-2">{ui.getIn(['addToCart', 'quantityText'])}</h2>
         </div>
       ) : null;
 
