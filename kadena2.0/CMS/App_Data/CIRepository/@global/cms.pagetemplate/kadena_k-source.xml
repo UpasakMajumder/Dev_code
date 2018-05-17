@@ -145,15 +145,15 @@
           <property name="text" ismacro="true">
 <![CDATA[
 {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-result = String.FormatString("{0}{1}", "<a href='"+ RootDocument.AbsoluteURL +"'>{$ Kadena.BreadcrumbsHome $}</a>", result);
-result
-|(user)michal.machacek@actum.cz|(hash)97d7e9acc725220281a55c74700c4cc589482a9fbbb71e0a2959bf1cacf5ac1b%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  result = String.FormatString("{0}{1}", "<a href='"+ RootDocument.AbsoluteURL +"'>{$ Kadena.BreadcrumbsHome $}</a>", result);
+  result
+|(user)administrator|(hash)3e5a75c8f69fa72e1f54f80fbf87153a0542e45b2e78e8ecdb91c272a328f708%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -319,14 +319,14 @@ result
           <property name="text">
 <![CDATA[
 <div class="btn-group btn-group--right">
-    <a href="~{% Settings.KDA_KSourceNewRequestPageURL |(user)tomas.rucki@actum.cz|(hash)898bdd945d7acd2716569c0e7a34573c03b52cb1b7596d3b1cef52a8320dc16c%}" class="btn-action">{$ Kadena.KSource.RequestABid $}</a>
+    <a href="~{% Settings.KDA_KSourceNewRequestPageURL|(user)administrator|(hash)d1796550c703fb73239ef9a2a35a9ccfb400720efb80aeceea8c3a9aed29f1df%}" class="btn-action">{$ Kadena.KSource.RequestABid $}</a>
   </div>
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{%CurrentUser.IsAuthorizedPerResource("Kadena_K-Source", "KDA_ContentEnabled") || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor) |(user)administrator|(hash)acb4f6aedc2376e91791ee1803283140275aaae7f34110dc37811ef515f51e94%}]]>
+            <![CDATA[{%CurrentUser.IsAuthorizedPerResource("Kadena_K-Source", "KDA_ContentEnabled") || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor)|(user)administrator|(hash)ebd3fb58c0432e33eeafafe3bde0d604b2e5af2a08cb5d771f47092593e3095d%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>

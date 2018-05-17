@@ -195,7 +195,7 @@
           <property name="controlid">editabletext</property>
           <property name="customtimezone"></property>
           <property name="defaulttext" ismacro="true">
-            <![CDATA[{% CurrentDocument.DocumentName|(user)cvoqa2@gmail.com|(hash)99dff8a4110e4a69eb6809487cf1b9326821762ff6b2feb7276ae774e8fc8e10%}]]>
+            <![CDATA[{% CurrentDocument.DocumentName |(user)administrator|(hash)4d9f8bd05c90658ff0ed0d5e8dff89c5a5a3360f5014724b541500f4011f4609%}]]>
           </property>
           <property name="dialogheight"></property>
           <property name="dialogwidth"></property>
@@ -290,8 +290,8 @@
           <property name="showfordocumenttypes"></property>
           <property name="text" ismacro="true">
 <![CDATA[
-<a class="btn-action" href='{% KadenaNamespace.GetLocalizedDocumentUrlByGUID(Settings.KDA_CampaignCreatePageUrl) |(user)cvoqa2@gmail.com|(hash)0722e110dd54d18ba3eb52da4b07b960a5a8c84dca3680deb82d5e7858dd962c%}
-'><i></i>{% GetResourceString("Kadena.Campaign.NewButtonText") |(user)cvoqa2@gmail.com|(hash)db7065a33aa08ab30a7f1b58c1b767a0e6cb8823c69e96295a9e0a3545440108%}</a>
+<a class="btn-action" href='{% KadenaNamespace.GetLocalizedDocumentUrlByGUID(Settings.KDA_CampaignCreatePageUrl)|(user)administrator|(hash)67b1416bf65eeb6621cf27a76d851e2ecd95469c1a505ec8aabcfb5b98951deb%}
+'><i></i>{% GetResourceString("Kadena.Campaign.NewButtonText")|(user)administrator|(hash)311a211651a1e5464679a69343a787d09e093c991a18e018313d1ac30f0b21ea%}</a>
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -347,7 +347,7 @@
 <![CDATA[
 {%if(QueryString["searchtext"]!=""){%}
 (Name LIKE '%{?searchtext?}%' OR Description LIKE '%{?searchtext?}%')
-{%}|(handlesqlinjection)false|(user)cvoqa2@gmail.com|(hash)2660a6ecdc7df93bedcbb678f830d8e5ef30781d73a7a9c6c544113ed7bb0889%}
+{%}|(handlesqlinjection)false |(user)administrator|(hash)9f342ee5a4befb089e06ff4550f5f70048d4c9240a18fb4f351ce96e4f883860%}
 ]]>
           </property>
         </webpart>
@@ -377,10 +377,10 @@ contentType: "application/json; charset=utf-8",
 dataType: "json",
 data: "{'CampaignID':" + CampaignID + "}",
 success: function (data) {
-window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=deleted");
+window.location.replace("{%CurrentDocument.AbsoluteURL |(user)administrator|(hash)1c02f0838d9a106fc0cbac312e23d536690989a97caeec5262488f098c696cfb%}?status=deleted");
 },
 error: function (xhr, ajaxOptions, thrownError) {
- window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
+ window.location.replace("{%CurrentDocument.AbsoluteURL |(user)administrator|(hash)1c02f0838d9a106fc0cbac312e23d536690989a97caeec5262488f098c696cfb%}?status=error");
 }
 });
 }
@@ -510,14 +510,14 @@ return false;
           <property name="text" ismacro="true">
 <![CDATA[
 {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)25a38b3f17c6468d659e8f65b22b9d82b2decede46871dc160947145a720db8e%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>

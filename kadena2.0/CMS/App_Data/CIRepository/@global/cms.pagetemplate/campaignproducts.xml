@@ -78,14 +78,14 @@
  <table id="reptable" class="table show__table-bottom">
                                     <tbody>
                                         <tr>
-                                            <th>{% GetResourceString("Kadena.Products.POSHearder") |(user)cvoqa2@gmail.com|(hash)0a3b0a49b3ad64b2cdc3727fa76795debe29d365ba4c68f093d018952df47703%}</th>
-                                            <th>{% GetResourceString("Kadena.Products.ProductNameHearder") |(user)cvoqa2@gmail.com|(hash)b56e1253a72b136d23a32231728c805d8782f80a1583060c89b9dec28397efc4%}</th>
-                                            <th>{% GetResourceString("Kadena.Products.ProgramNameHearder") |(user)cvoqa2@gmail.com|(hash)4fc301a81d8058d3b08ad8e624f6bdf4e877a17962fd385e6133dea7502f36b3%}</th>
+                                            <th>{% GetResourceString("Kadena.Products.POSHearder")|(user)administrator|(hash)62883b87b9a9d9aa5b46c0818a56dddfeaed5bce320a2a1bccc8c7d4128c4ea8%}</th>
+                                            <th>{% GetResourceString("Kadena.Products.ProductNameHearder")|(user)administrator|(hash)648f4a375c71f39e7192e57d0055e29cd3269dcb9495f06328fa0fcd507e5161%}</th>
+                                            <th>{% GetResourceString("Kadena.Products.ProgramNameHearder")|(user)administrator|(hash)c8f1b245550eb1fdcb5bf7aed33a89b87f380196cda3d0df19725b5eb7e5928e%}</th>
                                             
-                                            <th>{% GetResourceString("Kadena.Products.CategoryNameHearder") |(user)cvoqa2@gmail.com|(hash)19d350c6c39c3c6ac8729a4ddc8e37b2326450a5dd556599ea450973afc9ffcd%}</th>
-                                            <th>{% GetResourceString("Kadena.Products.ExpirationDateHearder") |(user)cvoqa2@gmail.com|(hash)ad3147caadf815e6759031446abdcb88351265b1f1b1da01586e7a7fbcc0cfe9%}</th>
-                                          <th>{% GetResourceString("Kadena.Products.EstimatedPriceHearder") |(user)twe_admin|(hash)5feebe76a28bcb7060eb700be84bae6ed40d6c0c4375c4ac4680a83426c42d6d%}</th>
-                                            <th>{% GetResourceString("Kadena.Products.ActionHearder") |(user)cvoqa2@gmail.com|(hash)627b475e82b4d9137d4f2ba62bfed9c6fce16f72aead6a66170964317a83bfb2%}</th>
+                                            <th>{% GetResourceString("Kadena.Products.CategoryNameHearder")|(user)administrator|(hash)e8af8a7f98a5e9564c832179aa3a25744009b59ca9a9f8ce59379a7cdbc2575b%}</th>
+                                            <th>{% GetResourceString("Kadena.Products.ExpirationDateHearder")|(user)administrator|(hash)0d0110ff07f6e733f7c6d2c674287632d957cce518420fae75a1217ca14c7f43%}</th>
+                                          <th>{% GetResourceString("Kadena.Products.EstimatedPriceHearder")|(user)administrator|(hash)c3245cf9c3ae98e9522cfe3db275f49b9e63d626394c5f59877e7590a1b608b8%}</th>
+                                            <th>{% GetResourceString("Kadena.Products.ActionHearder")|(user)administrator|(hash)95f9ec14baa968aace3f2a3a4a82600cd95753b5e3549b9dfb64f17ee5550b56%}</th>
                                         </tr>
 ]]>
           </property>
@@ -136,7 +136,7 @@
           <property name="webparttitle"></property>
           <property name="webparttype">queryrepeater</property>
           <property name="wherecondition">
-            <![CDATA[NodeParentID={%CurrentDocument.NodeID|(user)cvoqa2@gmail.com|(hash)8496d32f3d11301f1acab0730e0f1302133756f181dcb2f01f82e7adcca14a97%} and  [NodeSiteID]={%SiteContext.CurrentSiteID|(user)cvoqa2@gmail.com|(hash)0d8534ef2762873bc532c320eeacd1a901b9f0b3486cb97901fd8ae6dc3607f5%}]]>
+            <![CDATA[NodeParentID={%CurrentDocument.NodeID |(user)administrator|(hash)862eea690ce9cf613c7a658669ae1c13b3131e0d550873be4860863328b6a829%} and  [NodeSiteID]={%SiteContext.CurrentSiteID |(user)administrator|(hash)81c748f4c208b78564a9ba7b75da2707da12dee474e2a672ed970bd552e557ba%}]]>
           </property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[
@@ -246,14 +246,14 @@
           <property name="text">
 <![CDATA[
  {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)25a38b3f17c6468d659e8f65b22b9d82b2decede46871dc160947145a720db8e%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -305,7 +305,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[ <h1 class="content-header__page-name">{%CurrentDocument.DocumentName|(user)cvoqa2@gmail.com|(hash)76becbc016492b55eb7136c1b6b4a6327ceacc520fadb46d5e9f6da566e5a6ed%}</h1>]]>
+            <![CDATA[ <h1 class="content-header__page-name">{%CurrentDocument.DocumentName |(user)administrator|(hash)44c67b1cc4a3472a0ba83693abcc8fecf71585800e60f5459d71f2eec5825674%}</h1>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>

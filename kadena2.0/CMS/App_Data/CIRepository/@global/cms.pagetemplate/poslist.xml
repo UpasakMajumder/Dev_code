@@ -96,7 +96,7 @@
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[{% GetResourceString("Kadena.POSList.Header")|(user)cvoqa2@gmail.com|(hash)27a533c1b49d609402d3a3441f532a8b481332aa11c882331a629807e00fc0e0%}]]>
+            <![CDATA[{% GetResourceString("Kadena.POSList.Header") |(user)administrator|(hash)d2bf80437aba10a3d8b0608dab38da5300a76c3879f09fbd4f7fdb46315bde7b%}]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -203,7 +203,7 @@
             <![CDATA[BrandID,POSNumber,POSCategoryName,Enable,BrandName,ItemID,Year]]>
           </property>
           <property name="controlid">POSTableDataSource</property>
-          <property name="customtable">KDA.POSNumber</property>
+          <property name="customtable">KDA.Environment</property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="enableselecteditem">True</property>
@@ -226,7 +226,7 @@ POSCategoryName LIKE '%{?searchtext?}%' OR
 POSNumber LIKE '%{?searchtext?}%' OR 
 BrandName LIKE '%{?searchtext?}%'
 )
-{%}|(handlesqlinjection)false|(user)cvoqa2@gmail.com|(hash)58a4fa5a1a3113d5089cf4a4a78ea26dcb7fc3777772cbb665a23f74c66f8e2b%}
+{%}|(handlesqlinjection)false |(user)administrator|(hash)7969804d856ce409f7f1516595acf55f90d2a1043bab69e0cb6508de6d45212f%}
 ]]>
           </property>
         </webpart>
@@ -330,7 +330,7 @@ BrandName LIKE '%{?searchtext?}%'
           <property name="resolvedynamiccontrols">True</property>
           <property name="showfordocumenttypes"></property>
           <property name="text" ismacro="true">
-            <![CDATA[<a class="btn-action" href="{% Settings.KDA_POSCreatePageURL|(user)cvoqa2@gmail.com|(hash)2093cbe09f97d8981e11e982381fee4c73b189e536f00eecb7d01f3a24ec8104%}">{$KDA.POS.CreatePOSBtnText$}</a>]]>
+            <![CDATA[<a class="btn-action" href="{% Settings.KDA_POSCreatePageURL |(user)administrator|(hash)801c169334e2b594cab2cd1fdf6133d7c2d5d33468dc792cb397be079a42bef2%}">{$KDA.POS.CreatePOSBtnText$}</a>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -377,7 +377,7 @@ BrandName LIKE '%{?searchtext?}%'
           <property name="resolvedynamiccontrols">True</property>
           <property name="showfordocumenttypes"></property>
           <property name="text" ismacro="true">
-            <![CDATA[&nbsp;<a class="btn-action" href="{%KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_POSBulkUploadPage)|(user)cvoqa2@gmail.com|(hash)6f8d8363d40ef455f13caf3373af2c87832fc26d312bad50be0101a35392f343%}">{$Kadena.POS.POSBulkUploadBtn$}</a>]]>
+            <![CDATA[&nbsp;<a class="btn-action" href="{%KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_POSBulkUploadPage) |(user)administrator|(hash)22d747e373f7d51a244d9093833f4e4c026cd722e511fc506e30cd4151bd0f37%}">{$Kadena.POS.POSBulkUploadBtn$}</a>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -551,14 +551,14 @@ BrandName LIKE '%{?searchtext?}%'
           <property name="text">
 <![CDATA[
  {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)25a38b3f17c6468d659e8f65b22b9d82b2decede46871dc160947145a720db8e%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>

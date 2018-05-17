@@ -59,7 +59,7 @@
           <property name="contentbefore">
 <![CDATA[
    <svg class="icon submitted__central-img">
-    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/gfx/svg/sprites/icons.svg{%QueryString.success == "true" ?"#order-ready" : "#bad-card"|(user)michal.machacek@actum.cz|(hash)f70337ab55ce44fcdbbac0c7d1740c8fe687ddcfbf966504fc0b9362af2097d9%}"></use>
+    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/gfx/svg/sprites/icons.svg{%QueryString.success == "true" ?"#order-ready" : "#bad-card" |(user)administrator|(hash)c9d0312f7b402b2fd1938c2d75f55e4971b4a8c215e028b2901c3fe4de1f3436%}"></use>
   </svg>
 ]]>
           </property>
@@ -78,12 +78,7 @@
           <property name="outputfixlowercase">True</property>
           <property name="outputfixselfclose">True</property>
           <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
+          <property name="partialcachedependencies">##DEFAULT##</property>
           <property name="partialcacheminutes"></property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="resolvedynamiccontrols">True</property>
@@ -130,23 +125,18 @@
           <property name="outputfixlowercase">True</property>
           <property name="outputfixselfclose">True</property>
           <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
+          <property name="partialcachedependencies">##DEFAULT##</property>
           <property name="partialcacheminutes"></property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="resolvedynamiccontrols">True</property>
           <property name="showfordocumenttypes"></property>
           <property name="text" ismacro="true">
-            <![CDATA[{% GetResourceString(QueryString.error) |(user)michal.machacek@actum.cz|(hash)ec13896c4a9569f947be9535fc49c0dc9a6373e5456f6b81c8c0065900e1351c%}]]>
+            <![CDATA[{% GetResourceString(QueryString.error)|(user)administrator|(hash)688a252d388aa876436307dc7224975a49cf5c0f2aa66945bf33fd8f53896990%}]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% QueryString.success != "true" |(user)michal.machacek@actum.cz|(hash)670a5e98d758651f969abe7717abba5f1df83b797377943053dacae7dc949da9%}]]>
+            <![CDATA[{% QueryString.success != "true"|(user)administrator|(hash)e9c23fabc17fb54a76232131c2fbc82c12abcf351cb625b2da466a4cb44e35c7%}]]>
           </property>
           <property name="webparttitle">detailed message</property>
           <property name="webparttype">statichtml</property>
@@ -192,12 +182,7 @@
           <property name="outputfixlowercase">False</property>
           <property name="outputfixselfclose">False</property>
           <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
+          <property name="partialcachedependencies">##DEFAULT##</property>
           <property name="partialcacheminutes"></property>
           <property name="positionleft"></property>
           <property name="positiontop"></property>
@@ -207,7 +192,7 @@
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-{% QueryString.success == "true" ? String.FormatString(GetResourceString("Kadena.OrderSubmitted.HeadlineSuccess"), QueryString.order_id) : GetResourceString("Kadena.OrderSubmitted.HeadlineFailure") |(user)tomas.rucki@actum.cz|(hash)ce0ce8b01b25a2c595a732e11a7514f958f1ccce3c4f0328869895fed980d9db%}
+{% QueryString.success == "true" ? String.FormatString(GetResourceString("Kadena.OrderSubmitted.HeadlineSuccess"), QueryString.order_id) : GetResourceString("Kadena.OrderSubmitted.HeadlineFailure")|(user)administrator|(hash)717676e1e20c5825b519a754d202a1fde05d16d723ce8662f938ffcf919ed33c%}
 
 ]]>
           </property>
@@ -288,7 +273,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty |(user)michal.machacek@actum.cz|(hash)ff867895da2b5b628922aa2c39039994a38f838338f9a73c2c453995ecdf89a9%}]]>
+            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty |(user)administrator|(hash)75a5d4d6be9f049668a70ecbaa200c5f2153d163e7b509a83f86e8edd386e4ca%}]]>
           </property>
         </properties>
       </webpartzone>
@@ -316,7 +301,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty |(user)michal.machacek@actum.cz|(hash)ff867895da2b5b628922aa2c39039994a38f838338f9a73c2c453995ecdf89a9%}]]>
+            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty|(user)administrator|(hash)95ebceee10f40317dc794cc24a0cccc7de70c540ef159457185d13a9ec0d037a%}]]>
           </property>
         </properties>
       </webpartzone>
@@ -349,12 +334,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="outputfixlowercase">True</property>
           <property name="outputfixselfclose">True</property>
           <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
+          <property name="partialcachedependencies">##DEFAULT##</property>
           <property name="partialcacheminutes"></property>
           <property name="positionleft"></property>
           <property name="positiontop"></property>
@@ -363,7 +343,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="showfordocumenttypes"></property>
           <property name="text" ismacro="true">
 <![CDATA[
-<a href='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_ProductsPageUrl) |(user)michal.machacek@actum.cz|(hash)3eb2074881c8cad56b7b78060524e71dad981886ff4b13d4b5008b59a3e85669%}' type="type" class="btn-action btn-action--secondary">{$ Kadena.OrderSubmitted.SeeProducts $}</a>
+<a href='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_ProductsPageUrl) |(user)administrator|(hash)c75a5f1e5816b687cf323225c7f88269402293e732849293d387f90a34781448%}' type="type" class="btn-action btn-action--secondary">{$ Kadena.OrderSubmitted.SeeProducts $}</a>
 <a href="/" type="type" class="btn-action">{$ Kadena.OrderSubmitted.GoToDashboard $}</a>
 
 ]]>
@@ -371,7 +351,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% QueryString.success == "true" |(user)michal.machacek@actum.cz|(hash)127c102057c157da8b813ab435277d87dc7437c2d798759f7d0d90fa3a54271a%}]]>
+            <![CDATA[{% QueryString.success == "true" |(user)administrator|(hash)ee86974a6b860fae5c79ef5a339de939723a7d9d3840498bb1f337201153cd42%}]]>
           </property>
           <property name="webparttitle">buttons OK</property>
           <property name="webparttype">statichtml</property>
@@ -404,12 +384,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="outputfixlowercase">True</property>
           <property name="outputfixselfclose">True</property>
           <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
+          <property name="partialcachedependencies">##DEFAULT##</property>
           <property name="partialcacheminutes"></property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="resolvedynamiccontrols">True</property>
@@ -420,7 +395,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% QueryString.success != "true" && QueryString.submissionId!="" |(user)michal.machacek@actum.cz|(hash)82216e02c1c80ec6e88823e5a776aaed916e78f59fcf65aa355b49e033e4b8f5%}]]>
+            <![CDATA[{% QueryString.success != "true" && QueryString.submissionId!="" |(user)administrator|(hash)19dadde8722101eeb16651ae872b29bd85960abc748e318b43784e3dff898161%}]]>
           </property>
           <property name="webparttitle">buttons Fail - reenter card</property>
           <property name="webparttype">statichtml</property>
@@ -453,12 +428,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="outputfixlowercase">True</property>
           <property name="outputfixselfclose">True</property>
           <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
+          <property name="partialcachedependencies">##DEFAULT##</property>
           <property name="partialcacheminutes"></property>
           <property name="positionleft"></property>
           <property name="positiontop"></property>
@@ -466,12 +436,12 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="resolvedynamiccontrols">True</property>
           <property name="showfordocumenttypes"></property>
           <property name="text" ismacro="true">
-            <![CDATA[<a href="{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_CheckoutPageUrl) |(user)michal.machacek@actum.cz|(hash)f0acb6245b8966f2c4dadde572cc344919e3afed0c4418a3a1b0fd58b5cd4dce%}#payment-method" type="type" class="btn-action">{$ Kadena.OrderByCardFailed.GoToCheckout $}</a>]]>
+            <![CDATA[<a href="{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_CheckoutPageUrl) |(user)administrator|(hash)e8decf350dcd32da4730f1c5b5cd4dbca5c464144ad018fce5c8895267cbe4b6%}#payment-method" type="type" class="btn-action">{$ Kadena.OrderByCardFailed.GoToCheckout $}</a>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% QueryString.success != "true" |(user)michal.machacek@actum.cz|(hash)670a5e98d758651f969abe7717abba5f1df83b797377943053dacae7dc949da9%}]]>
+            <![CDATA[{% QueryString.success != "true"|(user)administrator|(hash)e9c23fabc17fb54a76232131c2fbc82c12abcf351cb625b2da466a4cb44e35c7%}]]>
           </property>
           <property name="webparttitle">buttons Fail - back to checkout</property>
           <property name="webparttype">statichtml</property>

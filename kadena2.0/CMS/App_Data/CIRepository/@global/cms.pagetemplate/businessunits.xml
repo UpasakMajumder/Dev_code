@@ -105,14 +105,14 @@
           <property name="text">
 <![CDATA[
 {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)25a38b3f17c6468d659e8f65b22b9d82b2decede46871dc160947145a720db8e%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -143,7 +143,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="controlid">BusinessUnits_Header</property>
           <property name="customtimezone"></property>
           <property name="defaulttext" ismacro="true">
-            <![CDATA[{% GetResourceString("Kadena.BusinessUnit.ListHeader")|(user)cvoqa2@gmail.com|(hash)7afc421fade93e9c6cccd9b14eebe0e8868b11ffd7813d7edfa204dc1d2172be%}]]>
+            <![CDATA[{% GetResourceString("Kadena.BusinessUnit.ListHeader") |(user)administrator|(hash)24bca6b31031d4a00a32b1309a426f9c840081f0a2659ff9e7ff3b3ec2b0c59b%}]]>
           </property>
           <property name="dialogheight"></property>
           <property name="dialogwidth"></property>
@@ -239,7 +239,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<a class="btn-action" href="{%Settings.KDA_CreateBusinessUnitURL|(user)cvoqa2@gmail.com|(hash)d320e149ee40a72933d72562ac28d0aea4f773e64a3889c70a5f73bc0912b7e6%}"><i class="fa fa-plus" aria-hidden="true"></i>{$Kadena.BusinessUnit.AddNewBusinessUnit$}</a>]]>
+            <![CDATA[<a class="btn-action" href="{%Settings.KDA_CreateBusinessUnitURL |(user)administrator|(hash)382760815945e76dbe0fee725a267f4bec0aa5d2ef3a2bce4aa5b712fbec7fa6%}"><i class="fa fa-plus" aria-hidden="true"></i>{$Kadena.BusinessUnit.AddNewBusinessUnit$}</a>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -291,7 +291,7 @@ iteratedDocument = iteratedDocument.Parent;
 ]]>
           </property>
           <property name="controlid">BusinessUnits</property>
-          <property name="customtable">KDA.BusinessUnit</property>
+          <property name="customtable">KDA.Environment</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
@@ -342,14 +342,14 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="webparttype">CustomTableRepeater</property>
           <property name="wherecondition" ismacro="true">
 <![CDATA[
-BusinessUnitNumber is not null AND SiteID={%CurrentSite.SiteID|(user)cvoqa2@gmail.com|(hash)7cfc90a7531eb28cb1698bcc36ccdc6093504c59ab4a8814d9ecdfe6eb948648%}
+BusinessUnitNumber is not null AND SiteID={%CurrentSite.SiteID |(user)administrator|(hash)6dbf545a518cc6d917c1d163b8a0180c44aaf9240f91c6f470dafc422310dbcb%}
 {%if(QueryString["searchtext"]!=""){%}
  AND
 (
 BusinessUnitNumber LIKE '%{?searchtext?}%' OR 
 BusinessUnitName LIKE '%{?searchtext?}%'
 )
-{%}|(handlesqlinjection)false|(user)cvoqa2@gmail.com|(hash)29c0b6aa8a8085e85fc9cd98cf26e1a8e7c4663d38c7910a3024805e9e2512ae%}
+{%}|(handlesqlinjection)false |(user)administrator|(hash)d8c0f3642ff98c61ed5b50792fa7ce4ade36cae1172de7409bb248a41773e205%}
 ]]>
           </property>
           <property name="zerorowstext" ismacro="true">
