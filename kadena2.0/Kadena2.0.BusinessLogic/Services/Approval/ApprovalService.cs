@@ -52,8 +52,8 @@ namespace Kadena.BusinessLogic.Services.Approval
             {
                 return new ApprovalResultDto
                 {
-                    Title = "Kadena.Order.Approve.Success.ToastTitle",
-                    Text = "Kadena.Order.Approve.Success.ToastMessage",
+                    Title = kenticoResource.GetResourceString("Kadena.Order.Approve.Success.ToastTitle"),
+                    Text = kenticoResource.GetResourceString("Kadena.Order.Approve.Success.ToastMessage"),
                     NewStatus = kenticoOrderProvider.MapOrderStatus(OrderStatus.Approved.GetDisplayName())
                 };
             }
@@ -72,8 +72,8 @@ namespace Kadena.BusinessLogic.Services.Approval
             {
                 return new ApprovalResultDto
                 {
-                    Title = "Kadena.Order.Reject.Success.ToastTitle",
-                    Text = "Kadena.Order.Reject.Success.ToastMessage",
+                    Title = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastTitle"),
+                    Text = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastMessage"),
                     NewStatus = kenticoOrderProvider.MapOrderStatus(OrderStatus.Rejected.GetDisplayName())
                 };
             }

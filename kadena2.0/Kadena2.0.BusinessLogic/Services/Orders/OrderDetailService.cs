@@ -117,26 +117,26 @@ namespace Kadena.BusinessLogic.Services.Orders
                     {
                         Accept = new DialogButton
                         {
-                            Button = "Kadena.Order.ButtonAccept",
+                            Button = resources.GetResourceString("Kadena.Order.ButtonAccept"),
                             Dialog = new Dialog
                             {
-                                CancelButton = "Kadena.Order.DialogAccept.Cancel",
-                                ProceedButton = "Kadena.Order.DialogAccept.Proceed",
+                                CancelButton = resources.GetResourceString("Kadena.Order.DialogAccept.Cancel"),
+                                ProceedButton = resources.GetResourceString("Kadena.Order.DialogAccept.Proceed"),
                                 ProceedUrl = '/' + Routes.Order.Approve,
-                                Text = "Kadena.Order.DialogAccept.Message",
-                                Title = "Kadena.Order.DialogAccept.Title"
+                                Text = resources.GetResourceString("Kadena.Order.DialogAccept.Message"),
+                                Title = resources.GetResourceString("Kadena.Order.DialogAccept.Title")
                             }
                         },
                         Reject = new DialogButton
                         {
-                            Button = "Kadena.Order.ButtonReject",
+                            Button = resources.GetResourceString("Kadena.Order.ButtonReject"),
                             Dialog = new Dialog
                             {
-                                CancelButton = "Kadena.Order.DialogReject.Cancel",
-                                ProceedButton = "Kadena.Order.DialogReject.Proceed",
+                                CancelButton = resources.GetResourceString("Kadena.Order.DialogReject.Cancel"),
+                                ProceedButton = resources.GetResourceString("Kadena.Order.DialogReject.Proceed"),
                                 ProceedUrl = '/' + Routes.Order.Reject,
-                                Text = "Kadena.Order.DialogReject.Message",
-                                Title = "Kadena.Order.DialogReject.Title"
+                                Text = resources.GetResourceString("Kadena.Order.DialogReject.Message"),
+                                Title = resources.GetResourceString("Kadena.Order.DialogReject.Title")
                             }
                         }
                     }
