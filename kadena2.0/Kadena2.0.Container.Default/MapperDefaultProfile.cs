@@ -178,6 +178,7 @@ namespace Kadena.Container.Default
             CreateMap<OrderedItems, OrderedItemsDTO>();
             CreateMap<OrderDetail, OrderDetailDTO>();
             CreateMap<CommonInfo, CommonInfoDTO>();
+            CreateMap<OrderStatusInfo, OrderStatusInfoDTO>();
             CreateMap<OrderInfo, OrderInfoDTO>();
             CreateMap<OrderActions, OrderActionsDTO>();
             CreateMap<Models.Common.DialogButton, DialogButtonDTO>();

@@ -198,6 +198,7 @@
     <Compile Include="TemplatedProduct\Responses\ProductTemplateDTO.cs" />
     <Compile Include="TemplatedProduct\Responses\ProductTemplatesHeaderDTO.cs" />
     <Compile Include="TemplatedProduct\Responses\ProductTemplatesDTO.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\ApprovalDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\GetOrderByOrderIdResponseDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceRequests\GetOrderByOrderIdRequestDTO.cs" />
     <Compile Include="SubmitOrder\Requests\PaymentMethodDto.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="ViewOrder\Responses\OrderedItemDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemsDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderStatusInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\PaymentInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\PricingInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\PricingInfoItemDTO.cs" />
