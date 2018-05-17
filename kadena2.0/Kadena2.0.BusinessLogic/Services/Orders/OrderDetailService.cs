@@ -97,8 +97,9 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
 
             var customer = kenticoCustomers.GetCustomer(data.ClientId) ?? Customer.Unknown;
-
             var isWaitingForApproval = data.StatusId == (int)OrderStatus.WaitingForApproval;
+            var canCurrentUserApproveOrder = IsCurrentUserApproverFor(customer);
+            var showApprovalButtons = isWaitingForApproval && canCurrentUserApproveOrder;
 
             var orderDetail = new OrderDetail()
             {
@@ -111,7 +112,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     CustomerName = customer.FullName
                 },
 
-                Actions = isWaitingForApproval
+                Actions = showApprovalButtons
                     ? new OrderActions
                     {
                         Accept = new DialogButton
@@ -246,6 +247,12 @@ namespace Kadena.BusinessLogic.Services.Orders
             return orderDetail;
         }
 
+        private bool IsCurrentUserApproverFor(Customer customer)
+        {
+            var currentUserId = kenticoCustomers.GetCurrentCustomer().UserID;
+            return currentUserId == customer.ApproverUserId;
+        }
+
         private string GetPdfUrl(string orderId, Dto.ViewOrder.MicroserviceResponses.OrderItemDTO orderItem, Product orderedProduct)
         {
             if (orderItem.Type.Contains(OrderItemTypeDTO.TemplatedProduct.ToString()) ||
@@ -318,9 +325,6 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             return orderedItems;
         }
-
-
-        
 
         private async Task SetMailingListNames(List<OrderedItem> orderedItems)
         {
