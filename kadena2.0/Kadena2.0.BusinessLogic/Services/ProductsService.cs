@@ -71,7 +71,7 @@ namespace Kadena.BusinessLogic.Services
             return productsPage;
         }
 
-        public string GetAvailableProductsString(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasure)
+        public string GetAvailableProductsString(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasureCode)
         {
             string formattedValue = string.Empty;
 
@@ -91,31 +91,37 @@ namespace Kadena.BusinessLogic.Services
             else
             {
                 var baseString = resources.GetResourceString("Kadena.Product.NumberOfAvailableProducts", cultureCode);
-                var uomDisplayName = resources.GetResourceString(units.GetUnitOfMeasure(unitOfMeasure).LocalizationString, cultureCode);
+                var uomDisplayName = resources.GetResourceString(units.GetUnitOfMeasure(unitOfMeasureCode).LocalizationString, cultureCode);
                 formattedValue = string.Format(baseString, numberOfStockProducts, uomDisplayName);
             }
 
             return formattedValue;
         }
 
-        public string GetInventoryProductAvailability(string productType, int? numberOfAvailableProducts, int numberOfStockProducts)
+        public ProductAvailability GetInventoryProductAvailability(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasureCode)
         {
             if (ProductTypes.IsOfType(productType, ProductTypes.InventoryProduct))
             {
+                var availability = new ProductAvailability();
+
                 if (!numberOfAvailableProducts.HasValue)
                 {
-                    return ProductAvailability.Unavailable;
+                    availability.Type = ProductAvailability.Unavailable;
                 }
-
-                if (numberOfStockProducts == 0)
+                else if (numberOfStockProducts == 0)
                 {
-                    return ProductAvailability.OutOfStock;
+                    availability.Type = ProductAvailability.OutOfStock;
+                }
+                else
+                {
+                    availability.Type = ProductAvailability.Available;
                 }
 
-                return ProductAvailability.Available;
+                availability.Text = GetAvailableProductsString(productType, numberOfAvailableProducts, cultureCode, numberOfStockProducts, unitOfMeasureCode);
+                return availability;
             }
 
-            return string.Empty;
+            return null;
         }
 
         public bool CanDisplayAddToCartButton(string productType, int? numberOfAvailableProducts, bool sellOnlyIfAvailable)

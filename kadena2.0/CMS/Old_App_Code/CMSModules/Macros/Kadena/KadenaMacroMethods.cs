@@ -25,7 +25,6 @@ using System.Linq;
 using static Kadena.Helpers.SerializerConfig;
 using Kadena.Models.ModuleAccess;
 using Kadena.BusinessLogic.Contracts.Approval;
-using CMS.PortalEngine.Web.UI;
 using Newtonsoft.Json;
 using Kadena.Helpers;
 
@@ -205,7 +204,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         [MacroMethodParam(2, "cultureCode", typeof(string), "Current culture code")]
         [MacroMethodParam(3, "numberOfAvailableProductsHelper", typeof(int), "NumberOfAvailableProducts of ECommerce")]
         [MacroMethodParam(4, "unitOfMeasure", typeof(string), "Unit of measure")]
-        public static object GetAvailableProductsString(EvaluationContext context, params object[] parameters)
+        public static object GetAvailability(EvaluationContext context, params object[] parameters)
         {
             if (parameters.Length != 5)
             {
@@ -223,8 +222,15 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 unitOfmeasure = UnitOfMeasure.DefaultUnit;
             }
 
-            return DIContainer.Resolve<IProductsService>()
-                .GetAvailableProductsString(productType, numberOfAvailableProducts, cultureCode, numberOfStockProducts, unitOfmeasure);
+            var availability = DIContainer.Resolve<IProductsService>()
+                .GetInventoryProductAvailability(productType, numberOfAvailableProducts, cultureCode, numberOfStockProducts, unitOfmeasure);
+
+            if (availability == null)
+            {
+                return "null";
+            }
+
+            return JsonConvert.SerializeObject(availability, CamelCaseSerializer);
         }
 
         [MacroMethod(typeof(string), "Gets formated and localized product availability string.", 1)]
@@ -251,38 +257,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 .GetPackagingString(numberOfItemsInPackage, unitOfmeasure, cultureCode);
         }
 
-
-        [MacroMethod(typeof(string), "Gets appropriate css class for label that holds amount of products in stock", 1)]
-        [MacroMethodParam(0, "numberOfAvailableProducts", typeof(object), "NumberOfAvailableProducts")]
-        [MacroMethodParam(1, "productType", typeof(string), "Current product type")]
-        [MacroMethodParam(2, "numberOfAvailableProductsHelper", typeof(object), "NumberOfAvailableProducts of ECommerce")]
-        public static object GetAppropriateCssClassOfAvailability(EvaluationContext context, params object[] parameters)
-        {
-            if (parameters.Length != 3)
-            {
-                throw new NotSupportedException();
-            }
-
-            var numberOfAvailableProducts = (int?)parameters[0];
-            var productType = (string)parameters[1];
-            var numberOfStockProducts = (int)parameters[2];
-
-            var availability = DIContainer.Resolve<IProductsService>().GetInventoryProductAvailability(productType, numberOfAvailableProducts, numberOfStockProducts);
-
-            var mappingCssDictionary = new Dictionary<string, string>()
-            {
-                { ProductAvailability.Unavailable, "stock stock--unavailable" },
-                { ProductAvailability.Available, "stock stock--available" },
-                { ProductAvailability.OutOfStock, "stock stock--out" },
-            };
-
-            if (mappingCssDictionary.TryGetValue(availability, out string cssClass))
-            {
-                return cssClass;
-            }
-
-            return string.Empty;
-        }
 
         [MacroMethod(typeof(string), "Returns html (set) of products, that could be in a kit with particular product (for particular user).", 1)]
         [MacroMethodParam(0, "nodeID", typeof(int), "ID of Node, that represents the base product")]

@@ -25,11 +25,7 @@
 </div>
 <div class="content-block">
   
-  {^WebPartZone|(id)ProductDetailReact^}
-  
-  <div class="r-product-detail">
-    {^WebPartZone|(id)zoneDescription^}
-  </div>
+  {^WebPartZone|(id)ProductDetailReact^}     
   
   {^WebPartZone|(id)zoneRelatedProducts^}
  
@@ -469,70 +465,7 @@ config.localization.manageProducts = {
         </webpart>
       </webpartzone>
       <webpartzone id="zoneConfig" v="1" />
-      <webpartzone id="zoneDescription" v="1">
-        <webpart controlid="Description" guid="98f803bb-ff76-4450-ad33-fe5fbfd722f2" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter"></property>
-          <property name="cat_open_performance"></property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility">False</property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter">
-<![CDATA[
-</div>
-</div>
-]]>
-          </property>
-          <property name="contentbefore">
-<![CDATA[
-<div class="block">
-  <h2 class="block__heading pt-4 pb-2 ">{$ Kadena.Product.Description $}</h2>
-  <div>
-]]>
-          </property>
-          <property name="controlid">Description</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">98f803bb-ff76-4450-ad33-fe5fbfd722f2</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">True</property>
-          <property name="outputfixhtml5">True</property>
-          <property name="outputfixjavascript">True</property>
-          <property name="outputfixlowercase">True</property>
-          <property name="outputfixselfclose">True</property>
-          <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">False</property>
-          <property name="resolvedynamiccontrols">True</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text">
-            <![CDATA[{% CurrentDocument.DocumentSKUDescription |(user)tomas.rucki@actum.cz|(hash)30527aa615056ebe4f3881063d2ea8b1a5aeb2ad4e65807eef1af6284be5e7a4%}]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible" ismacro="true">
-            <![CDATA[{% !String.IsNullOrWhiteSpace(CurrentDocument.DocumentSKUDescription) |(user)tomas.rucki@actum.cz|(hash)a9117ce6664d62122ef53bc380d0554ca14288d550b4d22cfb2f937849cf964e%}]]>
-          </property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
-        </webpart>
-      </webpartzone>
+      <webpartzone id="zoneDescription" v="1" />
       <webpartzone id="ProductDetailReact" v="1">
         <webpart controlid="JavascriptReact" guid="a4695515-f876-4959-87f7-41590a1c6d26" type="javascript" v="1">
           <property name="cat_open_behavior"></property>
@@ -568,10 +501,11 @@ config.localization.productDetail = {
       header: '{$Kadena.Product.UnitPrice$}',
       body: {% KadenaNamespace.GetProductPricings(DocumentContext.CurrentDocument.DocumentID, SKUUnitOfMeasure |(user)michal.machacek@actum.cz|(hash)e06bdf46ef20df0a9624cfdaae708501caf2581911096340157538146a36d0f7%}
     },
-    availability: {
-      type: '', 
-      text: ''
-    },
+    availability: {% KadenaNamespace.GetAvailability(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),
+                        DocumentContext.CurrentDocument.GetValue("SKUAvailableItems") , 
+                        LocalizationContext.CurrentCulture.CultureCode, 
+                        ECommerceContext.CurrentProduct.SKUAvailableItems,
+                        ECommerceContext.CurrentProduct.SKUUnitOfMeasure)|(user)michal.machacek@actum.cz|(hash)73ba942cb2686e83f00fde6dc2ef8ebaae864263c6fe43927cdecb3768e14a9f%},
     packagingInfo: '{% KadenaNamespace.GetPackagingString(ProductNumberOfItemsInPackage, SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode)|(user)michal.machacek@actum.cz|(hash)3885007b07556b5e19906efa1497e8407f3b4ecd920e2c42717a520279bc4369%}',
     productOptions:{
           priceElementId: "option-price",
@@ -592,8 +526,8 @@ config.localization.productDetail = {
       text: ''
     },
     description: {
-      titlte: '',
-      text: ''
+      title: '{$Kadena.Product.Description$}',
+      text: '{% CurrentDocument.DocumentSKUDescription |(user)michal.machacek@actum.cz|(hash)e40003aeef3d2e59d6f30e4de4ad129d64d4d0d66ff5813b532f231bc55d88b4%}'
     },
     relatedProducts: null
   }
@@ -650,7 +584,10 @@ config.localization.productDetail = {
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<div class="r-thumbnail-preview"></div>]]>
+<![CDATA[
+<div class="r-thumbnail-preview"></div>
+ <div class="r-product-detail"></div>
+]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>

@@ -265,10 +265,10 @@ namespace Kadena.Tests.BusinessLogic
         public void GetInventoryProductAvailablity_NonInventory(string productType)
         {
             // Act
-            var result = Sut.GetInventoryProductAvailability(productType, 10, 10);
+            var result = Sut.GetInventoryProductAvailability(productType, 10, "cs-CZ", 10, "carton");
 
             // Assert
-            Assert.Equal(string.Empty, result);
+            Assert.Null(result);
         }
 
         [Theory(DisplayName = "ProductsService.GetInventoryProductAvailability() | Inventory type")]
@@ -277,11 +277,19 @@ namespace Kadena.Tests.BusinessLogic
         [InlineData(1, 1, "Available")]
         public void GetInventoryProductAvailablity(int? numberOfAvailableProducts, int numberOfStockProducts, string expectedResult)
         {
+            // Arrange
+            const string culture = "cz-CZ";
+            const string unit = "carton";
+            Setup<IKenticoUnitOfMeasureProvider, UnitOfMeasure>(r => r.GetUnitOfMeasure(unit), new UnitOfMeasure { LocalizationString = unit });
+            Setup<IKenticoResourceService, string, string, string>(r => r.GetResourceString(It.IsAny<string>(), culture), (a, b) => a);
+            Setup<IKenticoResourceService, string>(r => r.GetResourceString("Kadena.Product.NumberOfAvailableProducts", culture), "{0} {1} in stock");
+
             // Act
-            var result = Sut.GetInventoryProductAvailability("KDA.InventoryProduct", numberOfAvailableProducts, numberOfStockProducts);
+            var result = Sut.GetInventoryProductAvailability("KDA.InventoryProduct", numberOfAvailableProducts, culture, numberOfStockProducts, unit);
 
             // Assert
-            Assert.Equal(expectedResult, result);
+            Assert.NotNull(expectedResult);
+            Assert.Equal(expectedResult, result.Type);
         }
 
 
