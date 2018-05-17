@@ -30,7 +30,7 @@
           <Trim>False</Trim>
         </settings>
       </field>
-      <field column="Year" columnsize="10" columntype="text" guid="3aa96c3b-d578-4701-841a-1912d318c929" publicfield="false" visible="true">
+      <field allowempty="true" column="Year" columnsize="10" columntype="text" guid="3aa96c3b-d578-4701-841a-1912d318c929" publicfield="false" visible="true">
         <properties>
           <defaultvalue ismacro="true">
             <![CDATA[{% DateTime.Now.Year |(user)administrator|(hash)dc46208af8bf4113eaf496bd42fe7e93e65a225c4eb6560150b480f28c810fda%}]]>
