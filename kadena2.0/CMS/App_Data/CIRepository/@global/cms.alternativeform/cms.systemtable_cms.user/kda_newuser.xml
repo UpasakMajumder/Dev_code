@@ -86,7 +86,7 @@
           <validationerrormessage>{$Kadena.Users.PasswordRequired$}</validationerrormessage>
         </properties>
       </field>
-      <field column="ConfirmPassword" columnsize="200" columntype="text" dummy="altform" guid="6bbf5326-6bd0-4f8b-abaa-a6afbd334187" publicfield="false" reftype="Required" visible="true" order="8">
+      <field allowempty="true" column="ConfirmPassword" columnsize="200" columntype="text" dummy="altform" guid="6bbf5326-6bd0-4f8b-abaa-a6afbd334187" publicfield="false" visible="true" order="8">
         <properties>
           <controlcssclass> input__text</controlcssclass>
           <validationerrormessage>{$Kadena.Users.ConfirmPasswordReqired$}</validationerrormessage>
@@ -214,7 +214,7 @@
           <validationerrormessage>{$Kadena.Users.TitleError$}</validationerrormessage>
         </properties>
       </field>
-      <field column="UserCountry" guid="36a41585-d7e2-4349-ad06-d9f49ae3931d" hasdependingfields="true" allowempty="" order="84">
+      <field column="UserCountry" guid="36a41585-d7e2-4349-ad06-d9f49ae3931d" hasdependingfields="true" reftype="Required" allowempty="" order="84">
         <settings>
           <AddSelectCountryRecord>True</AddSelectCountryRecord>
           <EnableStateSelection>False</EnableStateSelection>
@@ -278,7 +278,7 @@ select StateID,StateDisplayName from CMS_State where CountryID={%UserCountry%}
           <Trim>False</Trim>
         </settings>
       </field>
-      <field column="TradeMarketingManagerID" guid="e76a0ab7-51db-43b3-934a-97db276e108e" order="89">
+      <field column="TradeMarketingManagerID" guid="e76a0ab7-51db-43b3-934a-97db276e108e" reftype="" order="89">
         <properties>
           <controlcssclass>input__select</controlcssclass>
         </properties>

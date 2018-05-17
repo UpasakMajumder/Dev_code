@@ -203,7 +203,7 @@
           <validationerrormessage>{$KDA.Users.TitleRequired$}</validationerrormessage>
         </properties>
       </field>
-      <field column="UserCountry" guid="36a41585-d7e2-4349-ad06-d9f49ae3931d" hasdependingfields="true" allowempty="">
+      <field column="UserCountry" guid="36a41585-d7e2-4349-ad06-d9f49ae3931d" hasdependingfields="true" reftype="Required" allowempty="">
         <settings>
           <AddSelectCountryRecord>True</AddSelectCountryRecord>
           <EnableStateSelection>False</EnableStateSelection>
@@ -266,7 +266,7 @@ select StateID,StateDisplayName from CMS_State where CountryID={%if(UserCountry=
           <Trim>False</Trim>
         </settings>
       </field>
-      <field column="TradeMarketingManagerID" guid="e76a0ab7-51db-43b3-934a-97db276e108e" order="88">
+      <field column="TradeMarketingManagerID" guid="e76a0ab7-51db-43b3-934a-97db276e108e" reftype="" order="88">
         <properties>
           <controlcssclass>input__select</controlcssclass>
         </properties>
@@ -365,7 +365,7 @@ TWEGlobalAdmin;TWE Global Admin
           <SortItems>False</SortItems>
         </settings>
       </field>
-      <field column="UserCity" guid="60013e3b-97a2-4130-8982-4aef4738a401" reftype="Required" allowempty="" order="95">
+      <field column="UserCity" guid="60013e3b-97a2-4130-8982-4aef4738a401" order="95">
         <properties>
           <controlcssclass>input__text js-City</controlcssclass>
           <fieldcaption>City/Town</fieldcaption>

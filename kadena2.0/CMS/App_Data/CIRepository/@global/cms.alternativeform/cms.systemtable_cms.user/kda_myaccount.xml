@@ -177,7 +177,7 @@
           <controlcssclass>input__text js-Zipcode</controlcssclass>
         </properties>
       </field>
-      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" allowempty="">
+      <field column="UserState" dependsonanotherfield="true" guid="7bf2087f-b2c0-4632-8a2c-62d33de697ae" reftype="Required" allowempty="">
         <settings>
           <controlname>DropDownListControl</controlname>
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
@@ -283,7 +283,7 @@ select ItemID,DivisionName from KDA_Division
           <controlcssclass>input__select</controlcssclass>
         </properties>
       </field>
-      <field column="TradeMarketingManagerID" guid="e76a0ab7-51db-43b3-934a-97db276e108e">
+      <field column="TradeMarketingManagerID" guid="e76a0ab7-51db-43b3-934a-97db276e108e" reftype="">
         <properties>
           <controlcssclass>input__select</controlcssclass>
         </properties>
@@ -293,7 +293,7 @@ select ItemID,DivisionName from KDA_Division
           <controlcssclass>input__text</controlcssclass>
         </properties>
       </field>
-      <field column="UserAddress" guid="241299df-6273-402f-aca6-ed3034fed4ae" reftype="Required" allowempty="" order="93">
+      <field column="UserAddress" guid="241299df-6273-402f-aca6-ed3034fed4ae" order="93">
         <properties>
           <controlcssclass>input__text js-Address</controlcssclass>
           <validationerrormessage>{$Kadena.MyAccount.AddressRequired$}</validationerrormessage>

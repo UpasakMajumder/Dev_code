@@ -291,7 +291,7 @@
 ]]>
           </property>
           <property name="controlid">BusinessUnits</property>
-          <property name="customtable">KDA.Environment</property>
+          <property name="customtable">KDA.BusinessUnit</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
