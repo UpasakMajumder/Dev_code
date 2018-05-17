@@ -621,7 +621,7 @@
             },
             {
               name: "TShirtColor", // not rendered, used in API call
-              selector: "Dropdownlist", // Dropdownlist | RadioButtonsHorizontal | RadioButtonsVertical
+              selector: "RadioButtonsHorizontal", // Dropdownlist | RadioButtonsHorizontal | RadioButtonsVertical
               options: [
                 {
                   name: "Blue", // sku.SKUName

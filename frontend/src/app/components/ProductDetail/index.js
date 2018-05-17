@@ -206,9 +206,11 @@ class ProductDetail extends Component {
     const options = this.state.options.set(name, value);
 
     const emptyOption = options.findEntry(value => !value);
-    if (!emptyOption) this.setState({ optionsError: false });
-
-    this.setState({ options }, this.getOptionsPrice);
+    if (!emptyOption) {
+      this.setState({ options, optionsError: false }, this.getOptionsPrice);
+    } else {
+      this.setState({ options, optionsError: true });
+    }
   };
 
   getOptionsPrice = () => {
