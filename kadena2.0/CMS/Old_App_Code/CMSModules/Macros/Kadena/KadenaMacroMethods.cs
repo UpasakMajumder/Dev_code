@@ -257,6 +257,28 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 .GetPackagingString(numberOfItemsInPackage, unitOfmeasure, cultureCode);
         }
 
+        [MacroMethod(typeof(string), "Gets localized UOM name.", 1)]
+        [MacroMethodParam(0, "unitOfMeasure", typeof(string), "Unit of measure")]
+        [MacroMethodParam(1, "cultureCode", typeof(string), "Current culture code")]
+        public static object LocalizeUom(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 2)
+            {
+                throw new NotSupportedException();
+            }
+
+            var unitOfmeasure = (string)parameters[0];
+            var cultureCode = (string)parameters[1];
+
+            if (string.IsNullOrEmpty(unitOfmeasure))
+            {
+                unitOfmeasure = UnitOfMeasure.DefaultUnit;
+            }
+
+            return DIContainer.Resolve<IProductsService>()
+                .TranslateUnitOfMeasure(unitOfmeasure, cultureCode);
+        }
+
 
         [MacroMethod(typeof(string), "Returns html (set) of products, that could be in a kit with particular product (for particular user).", 1)]
         [MacroMethodParam(0, "nodeID", typeof(int), "ID of Node, that represents the base product")]

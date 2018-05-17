@@ -511,20 +511,7 @@ config.localization.productDetail = {
           priceElementId: "option-price",
           priceUrl: '/api/products/getprice/{%NodeSKU.ID|(user)michal.machacek@actum.cz|(hash)bcef10f415a2354c4810ec862a0471de9276dda4620c639e041ca603f3977dac%}',
           categories: {% KadenaNamespace.GetProductOptions(NodeSKU.ID) |(user)michal.machacek@actum.cz|(hash)b8c8e779b4fb8e921b101939ec8aec929d24a48523724241aab85ce8deb532a0%}
-      },
-    addToCart: {
-      url: '/api/shoppingcart/addtocart',
-      text: '{%Kadena.Product.AddToCart|(user)michal.machacek@actum.cz|(hash)5f06f354bbb0d671f7965002b08858e62e70a913139ce58d0b127c1302049bba%}',
-      unit: '',
-      quantity: 1,
-      minQuantity: '{% ECommerceContext.CurrentProduct.SKUMinItemsInOrder |(user)michal.machacek@actum.cz|(hash)3fc28bb914d325f49e76372da98b6a6e09f444cb409a2311c3c480abb0469f8b%}',
-      maxQuantity: '{% ECommerceContext.CurrentProduct.SKUMaxItemsInOrder |(user)michal.machacek@actum.cz|(hash)7905a3f40b71aa268e8e6bf42c8edd368eeb3d0b67abd8c3e2f04a669ede334f%}',
-      quantityText: "Order limit: 5 packs per order"
-    },
-    openTemplate: {
-      url: '',
-      text: ''
-    },
+      },   
     description: {
       title: '{$Kadena.Product.Description$}',
       text: '{% CurrentDocument.DocumentSKUDescription |(user)michal.machacek@actum.cz|(hash)e40003aeef3d2e59d6f30e4de4ad129d64d4d0d66ff5813b532f231bc55d88b4%}'
@@ -540,6 +527,73 @@ config.localization.productDetail = {
           <property name="linkedfilepagelocation">Header</property>
           <property name="showfordocumenttypes"></property>
           <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
+        <webpart controlid="JavascriptReactAddToCart" guid="5f9f047c-9552-480e-bfa7-ad97481232bd" type="javascript" v="1">
+          <property name="cat_open_behavior">False</property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">JavascriptReactAddToCart</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+config.localization.productDetail.addToCart = {
+      documentId: {% DocumentContext.CurrentDocument.ID |(user)michal.machacek@actum.cz|(hash)675ce3265c0c9a49ada0cb3f12865aa9fb6b6abd5a788c6eb2a89fc4bd526517%},
+      url: '/api/shoppingcart/addtocart',
+      text: '{$Kadena.Product.AddToCart$}',
+      unit: '{% KadenaNamespace.LocalizeUom(SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)michal.machacek@actum.cz|(hash)115d25e0652c40fb0a00619487721cfd2dd72f5c2fcfed0d4042cf7ff3764ed9%}',
+      quantity: 1,
+      minQuantity: '{% ECommerceContext.CurrentProduct.SKUMinItemsInOrder |(user)michal.machacek@actum.cz|(hash)3fc28bb914d325f49e76372da98b6a6e09f444cb409a2311c3c480abb0469f8b%}',
+      maxQuantity: '{% ECommerceContext.CurrentProduct.SKUMaxItemsInOrder |(user)michal.machacek@actum.cz|(hash)7905a3f40b71aa268e8e6bf42c8edd368eeb3d0b67abd8c3e2f04a669ede334f%}',
+      quantityText: ''
+    };
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Inline</property>
+          <property name="instanceguid">5f9f047c-9552-480e-bfa7-ad97481232bd</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible" ismacro="true">
+<![CDATA[
+{% KadenaNamespace.CanDisplayAddToCartButton(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),
+                                          DocumentContext.CurrentDocument.GetValue("SKUAvailableItems"),
+                                          ECommerceContext.CurrentProduct.SKUSellOnlyAvailable) 
+                                          &&(ECommerceContext.CurrentCustomer != null) |(user)michal.machacek@actum.cz|(hash)d9200c048c53c0945dc4495788194b9ae92cecfc97decbcb7797122172356ae7%}
+]]>
+          </property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
+        <webpart controlid="JavascriptReactOpenTemplate" guid="c071f828-a2dc-4388-9d47-e3f47c407b9c" type="javascript" v="1">
+          <property name="cat_open_behavior">False</property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">JavascriptReactOpenTemplate</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+<![CDATA[
+config.localization.productDetail.openTemplate = { 
+    url: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_Templating_ProductEditorUrl) |(user)michal.machacek@actum.cz|(hash)aaa36df316022f61c41fc7d8b01d9610cbafaf9de3f4cde5017501e5d9576308%}',
+    text: '{$Kadena.Product.OpenTemplateInDesign$}'
+  }
+]]>
+          </property>
+          <property name="inlinescriptpagelocation">Inline</property>
+          <property name="instanceguid">c071f828-a2dc-4388-9d47-e3f47c407b9c</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible" ismacro="true">
+            <![CDATA[{% ProductType.Contains("KDA.MailingProduct") || ProductType.Contains("KDA.TemplatedProduct") |(user)michal.machacek@actum.cz|(hash)53b2a71b3423def25006abed544e182782c5a1be45fe6c33c779ccdfca59c160%}]]>
+          </property>
           <property name="webparttitle"></property>
           <property name="webparttype">javascript</property>
         </webpart>
