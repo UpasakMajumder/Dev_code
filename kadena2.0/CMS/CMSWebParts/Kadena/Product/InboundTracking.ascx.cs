@@ -994,6 +994,11 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             gdvInboundProducts.AllowPaging = false;
             gdvInboundProducts.EditIndex = -1;
             GetProducts();
+            for (int i = 0; i < gdvInboundProducts.Rows.Count; i++)
+            {
+                var control = (Label)gdvInboundProducts.Rows[i].FindControl("lblItemSpecs");
+                control.Text = control.ToolTip;
+            }
             Response.Clear();
             Response.AddHeader("content-disposition", "attachment;filename=InboudTracking.xls");
             Response.ContentType = ContentTypes.Xlsx;

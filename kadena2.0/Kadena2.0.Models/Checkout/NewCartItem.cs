@@ -8,7 +8,6 @@ namespace Kadena.Models.Checkout
     {
         public int DocumentId { get; set; }
 
-        [MaxLength(40)]
         public string CustomProductName { get; set; }
 
         public int Quantity { get; set; }
