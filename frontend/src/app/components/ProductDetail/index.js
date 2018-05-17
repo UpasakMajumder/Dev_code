@@ -217,7 +217,7 @@ class ProductDetail extends Component {
       .then((res) => {
         const { errorMessage, payload, success } = res.data;
         if (success) {
-          this.setState({ optionsPrice: `${payload.pricePrefix}${payload.priceValue}` });
+          this.setState({ optionsPrice: `${payload.pricePrefix} ${payload.priceValue.toFixed(2)}` });
         } else {
           window.store.dispatch({
             type: FAILURE,
@@ -238,7 +238,7 @@ class ProductDetail extends Component {
         <span className="add-to-cart__info mr-3">{ui.get('packagingInfo')}</span>
       ) : null;
 
-    const descriptionComponent = ui.get('description')
+    const descriptionComponent = ui.get('description') && ui.getIn(['description', 'text'])
       ? (
         <div className="block">
           <h2 className="block__heading pt-4 pb-2">{ui.getIn(['description', 'title'])}</h2>

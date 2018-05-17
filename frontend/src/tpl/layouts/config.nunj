@@ -642,6 +642,14 @@
             }
           ]
         },
+        openTemplate: { // null props
+          url: '#',
+          text: 'Open template in design'
+        },
+        description: { // props
+          title: 'Description',
+          text: '<p>Hello </p><p>How are you?</p>' // html
+        },
         addToCart: { // null props
           documentId: 'documentId',
           url: PATH + 'products/add-to-cart', // TODO: Call
@@ -651,14 +659,6 @@
           minQuantity: 1, // not required
           maxQuantity: 10, // not required
           quantityText: 'Maximum is 10' // not required
-        },
-        openTemplate: { // null props
-          url: '#',
-          text: 'Open template in design'
-        },
-        description: { // props
-          title: 'Description',
-          text: '<p>Hello </p><p>How are you?</p>' // html
         }
       }
     }
