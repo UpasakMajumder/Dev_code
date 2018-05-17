@@ -5,7 +5,6 @@ using Kadena.WebAPI.Infrastructure.Filters;
 using Kadena.BusinessLogic.Contracts.Approval;
 using System.Threading.Tasks;
 using Kadena.Dto.Approval.Requests;
-using Kadena.Helpers.Routes;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -20,7 +19,7 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route(Routes.Order.Approve)]
+        [Route("api/approval/approve")]
         public async Task<IHttpActionResult> Approve([FromBody]ApprovalRequestDto request)
         {
             var result = await service.ApproveOrder(request.OrderId, request.CustomerId, request.CustomerName);
@@ -28,7 +27,7 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route(Routes.Order.Reject)]
+        [Route("api/approval/reject")]
         public async Task<IHttpActionResult> Reject([FromBody]ApprovalRequestDto request)
         {
             var result = await service.RejectOrder(request.OrderId, request.CustomerId, request.CustomerName, request.RejectionNote);

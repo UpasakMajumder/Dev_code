@@ -7,9 +7,7 @@
         public ShippingInfo ShippingInfo { get; set; }
         public PaymentInfo PaymentInfo { get; set; }
         public PricingInfo PricingInfo { get; set; }
-        public OrderInfo General { get; set; }
         public OrderedItems OrderedItems { get; set; }
-        public OrderActions Actions { get; set; }
 
         public void HidePrices()
         {

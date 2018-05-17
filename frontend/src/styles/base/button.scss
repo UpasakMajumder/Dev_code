@@ -19,7 +19,7 @@ button {
   }
 }
 
-$colors: (main: $brand-secondary, action: $brand-primary, info: $brand-info, success: $brand-success, danger: $brand-dangerous);
+$colors: (main: $brand-secondary, action: $brand-primary, info: $brand-info, success: $brand-success);
 
 @each $key, $color in $colors {
   .btn-#{$key} {

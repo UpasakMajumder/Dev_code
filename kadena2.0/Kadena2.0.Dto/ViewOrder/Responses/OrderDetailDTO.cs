@@ -7,8 +7,6 @@
         public ShippingInfoDTO ShippingInfo { get; set; }
         public PaymentInfoDTO PaymentInfo { get; set; }
         public PricingInfoDTO PricingInfo { get; set; }
-        public OrderInfoDTO General { get; set; }
         public OrderedItemsDTO OrderedItems { get; set; }
-        public OrderActionsDTO Actions { get; set; }
     }
 }

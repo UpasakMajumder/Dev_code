@@ -52,11 +52,7 @@ namespace Kadena.Tests.BusinessLogic.Approval
             Setup<IApprovalServiceClient, Task<BaseResponseDto<string>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
                 Task.FromResult(new BaseResponseDto<string>() { Success = false, Payload = null }));
 
-            try
-            {
-                await Sut.ApproveOrder(orderId, customerId, customerName);
-            }
-            catch (ApprovalServiceException) { }
+            await Sut.ApproveOrder(orderId, customerId, customerName);
             
             Verify<IKenticoLogger>(l => l.LogError("ApproveOrder", It.Is<string>(s => s.Contains(orderId))), Times.Once);
         }
@@ -70,11 +66,7 @@ namespace Kadena.Tests.BusinessLogic.Approval
             Setup<IApprovalServiceClient, Task<BaseResponseDto<string>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
                 Task.FromResult(new BaseResponseDto<string>() { Success = true, Payload = badStatus }));
 
-            try
-            {
-                await Sut.ApproveOrder(orderId, customerId, customerName);
-            }
-            catch (ApprovalServiceException) { }
+            await Sut.ApproveOrder(orderId, customerId, customerName);
 
             Verify<IKenticoLogger>(l => l.LogError("ApproveOrder", It.Is<string>(s => s.Contains(badStatus) && 
                                                                                       s.Contains(orderId))), Times.Once);
@@ -124,11 +116,7 @@ namespace Kadena.Tests.BusinessLogic.Approval
             Setup<IApprovalServiceClient, Task<BaseResponseDto<string>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
                 Task.FromResult(new BaseResponseDto<string>() { Success = false, Payload = null }));
 
-            try
-            {
-                await Sut.RejectOrder(orderId, customerId, customerName);
-            }
-            catch (ApprovalServiceException) { }
+            await Sut.RejectOrder(orderId, customerId, customerName);
 
             Verify<IKenticoLogger>(l => l.LogError("RejectOrder", It.Is<string>(s => s.Contains(orderId))), Times.Once);
         }
@@ -142,11 +130,7 @@ namespace Kadena.Tests.BusinessLogic.Approval
             Setup<IApprovalServiceClient, Task<BaseResponseDto<string>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
                 Task.FromResult(new BaseResponseDto<string>() { Success = true, Payload = badStatus }));
 
-            try
-            {
-                await Sut.RejectOrder(orderId, customerId, customerName);
-            }
-            catch (ApprovalServiceException) { }
+            await Sut.RejectOrder(orderId, customerId, customerName);
 
             Verify<IKenticoLogger>(l => l.LogError("RejectOrder", It.Is<string>(s => s.Contains(orderId) && s.Contains(badStatus))), Times.Once);
         }

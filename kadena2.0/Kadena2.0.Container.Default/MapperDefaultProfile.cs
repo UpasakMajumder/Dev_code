@@ -167,7 +167,7 @@ namespace Kadena.Container.Default
             CreateMap<DeliveryAddress, IdDto>();
             CreateMap<PageButton, PageButtonDto>();
             CreateMap<AddressList, AddressListDto>();
-            CreateMap<Models.Settings.DialogButton, DialogButtonDto>();
+            CreateMap<DialogButton, DialogButtonDto>();
             CreateMap<DialogType, DialogTypeDto>();
             CreateMap<DialogField, DialogFieldDto>();
             CreateMap<Models.Settings.AddressDialog, Dto.Settings.AddressDialogDto>();
@@ -178,10 +178,6 @@ namespace Kadena.Container.Default
             CreateMap<OrderedItems, OrderedItemsDTO>();
             CreateMap<OrderDetail, OrderDetailDTO>();
             CreateMap<CommonInfo, CommonInfoDTO>();
-            CreateMap<OrderInfo, OrderInfoDTO>();
-            CreateMap<OrderActions, OrderActionsDTO>();
-            CreateMap<Models.Common.DialogButton, DialogButtonDTO>();
-            CreateMap<Dialog, DialogDTO>();
             CreateMap(typeof(TitleValuePair<>), typeof(TitleValuePairDto<>));
             CreateMap<ShippingInfo, ShippingInfoDTO>();
             CreateMap<PaymentInfo, PaymentInfoDTO>();
