@@ -34,12 +34,15 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DatasetHelpers.cs" />
+    <Compile Include="EnumHelper.cs" />
     <Compile Include="Routes\File.cs" />
+    <Compile Include="Routes\Routes.OrderReport.cs" />
     <Compile Include="Routes\User.cs" />
     <Compile Include="UrlHelper.cs" />
     <Compile Include="MailValidator.cs" />
@@ -50,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Compile Include="Routes\Routes.Order.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

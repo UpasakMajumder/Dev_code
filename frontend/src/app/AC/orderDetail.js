@@ -1,12 +1,12 @@
 import axios from 'axios';
 /* constants */
-import { FETCH, SUCCESS, FAILURE, INIT_UI, ORDER_DETAIL } from 'app.consts';
+import { FETCH, SUCCESS, FAILURE, INIT_UI, ORDER_DETAIL, CHANGE_STATUS } from 'app.consts';
 /* helpers */
 import { callAC } from 'app.helpers/ac';
 /* globals */
 import { ORDER_DETAIL as ORDER_DETAIL_URL } from 'app.globals';
 
-export default (orderID = '') => {
+export const getUI = (orderID = '') => {
   return (dispatch) => {
     dispatch({ type: ORDER_DETAIL + INIT_UI + FETCH });
 
@@ -33,5 +33,14 @@ export default (orderID = '') => {
       .catch((error) => {
         dispatch({ type: ORDER_DETAIL + INIT_UI + FAILURE });
       });
+  };
+};
+
+export const changeStatus = (newStatus) => {
+  return {
+    type: ORDER_DETAIL + CHANGE_STATUS,
+    payload: {
+      newStatus
+    }
   };
 };

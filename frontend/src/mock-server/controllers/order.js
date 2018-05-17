@@ -2,7 +2,11 @@ const order = require('../ws/order');
 const campaign = require('../ws/filtered-recent-orders/campaigns');
 const filteredOrders = require('../ws/filtered-recent-orders/orders');
 
-module.exports.detail = (req, res) => res.json(order.detail);
+module.exports.detail = {
+  ui: (req, res) => res.json(order.detail.ui),
+  accept: (req, res) => res.json(order.detail.accept),
+  reject: (req, res) => res.json(order.detail.reject),
+};
 
 module.exports.reports = {
   rows: (req, res) => {
