@@ -247,11 +247,8 @@ namespace Kadena.BusinessLogic.Services.Orders
             return orderDetail;
         }
 
-        private bool IsCurrentUserApproverFor(Customer customer)
-        {
-            var currentUserId = kenticoCustomers.GetCurrentCustomer().UserID;
-            return currentUserId == customer.ApproverUserId;
-        }
+        private bool IsCurrentUserApproverFor(Customer customer) =>
+            customer.ApproverUserId == kenticoCustomers.GetCurrentCustomer().UserID;
 
         private string GetPdfUrl(string orderId, Dto.ViewOrder.MicroserviceResponses.OrderItemDTO orderItem, Product orderedProduct)
         {
