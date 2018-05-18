@@ -68,10 +68,7 @@ class ChiliEditor extends AddToCart {
 
   addToCart(event) {
     // callback from HTML `product-editor.nunj`
-    window.addToCartRequest = this.addToCartRequest;
-    window.addToCart = true;
-    window.cartEvent = event;
-
+    this.cartEvent = event;
     this.triggerChiliSave();
   }
 
@@ -86,6 +83,7 @@ class ChiliEditor extends AddToCart {
         const { data: { success, errorMessage } } = await axios.post(CHILI_SAVE.url, this.getBody());
         if (success) {
           toastr.success(NOTIFICATION.chiliSaved.title, NOTIFICATION.chiliSaved.text);
+          this.addToCartRequest(this.cartEvent);
         } else {
           toastr.error(errorMessage);
         }

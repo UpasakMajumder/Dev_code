@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Kadena.Dto.Approval.Responses;
+using System.Threading.Tasks;
 
 namespace Kadena.BusinessLogic.Contracts.Approval
 {
@@ -7,7 +8,7 @@ namespace Kadena.BusinessLogic.Contracts.Approval
     /// </summary>
     public interface IApprovalService
     {
-        Task<bool> ApproveOrder(string orderId, int customerId, string customerName);
-        Task<bool> RejectOrder(string orderId, int customerId, string customerName, string rejectionNote = "");
+        Task<ApprovalResultDto> ApproveOrder(string orderId, int customerId, string customerName);
+        Task<ApprovalResultDto> RejectOrder(string orderId, int customerId, string customerName, string rejectionNote = "");
     }
 }
