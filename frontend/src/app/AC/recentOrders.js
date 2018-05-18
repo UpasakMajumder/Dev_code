@@ -6,13 +6,13 @@ import { callAC } from 'app.helpers/ac';
 /* globals */
 import { RECENT_ORDERS as RECENT_ORDERS_GLOBAL } from 'app.globals';
 
-export const initUI = () => {
+export const initUI = (url) => {
   return (dispatch) => {
     dispatch({ type: RECENT_ORDERS + INIT_UI + FETCH });
 
     axios({
       method: 'get',
-      url: RECENT_ORDERS_GLOBAL.getHeaders
+      url
     }).then((response) => {
       const { payload, success, errorMessage } = response.data;
 

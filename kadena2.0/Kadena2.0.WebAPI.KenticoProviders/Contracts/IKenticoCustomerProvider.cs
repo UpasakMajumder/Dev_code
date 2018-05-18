@@ -1,4 +1,5 @@
 ﻿using Kadena.Models;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -14,5 +15,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         /// <returns>ID of new Customer</returns>
         int CreateCustomer(Customer customer);
         void UpdateCustomer(Customer customer);
+        IEnumerable<Customer> GetCustomersByApprover(int approverUserId);
     }
 }

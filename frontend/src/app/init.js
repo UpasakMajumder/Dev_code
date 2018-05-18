@@ -46,7 +46,9 @@ export function render(componentName, containers, options = {
 
         Component.hasOwnProperty('configureProps') && (initialProps = Component.configureProps(container)); // eslint-disable-line no-prototype-builtins
 
-        let RenderOutput = <Component {...initialProps} />;
+        const optionsFromDOM = container.dataset.react || '{}';
+
+        let RenderOutput = <Component {...initialProps} {...JSON.parse(optionsFromDOM)} />;
         options.store && (RenderOutput = (<Provider store={window.store}>{RenderOutput}</Provider>));
 
         DOMRender(RenderOutput, container); // eslint-disable-line new-cap

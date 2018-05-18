@@ -27,6 +27,12 @@ namespace Kadena.BusinessLogic.Services.Approval
                                                       siteId);
         }
 
+        public bool IsApprover(int userId) =>
+            permissions.UserHasPermission(
+                userId,
+                ModulePermissions.KadenaOrdersModule,
+                ModulePermissions.KadenaOrdersModule.ApproveOrders);
+
         public bool IsCustomersApprover(int approverUserId, int customerId)
         {
             if (approverUserId == 0 || customerId == 0)
@@ -34,7 +40,7 @@ namespace Kadena.BusinessLogic.Services.Approval
                 return false;
             }
 
-            if(!permissions.UserHasPermission(approverUserId, ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.ApproveOrders))
+            if(!IsApprover(approverUserId))
             {
                 return false;
             }

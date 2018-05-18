@@ -57,9 +57,12 @@ apiRouter.post('/products/add-to-cart', Products.addToCart);
 apiRouter.post('/products/options', Products.options);
 
 apiRouter.get('/order/recent/ui', Orders.recent.ui);
+apiRouter.get('/order/recent/requiring-approval', Orders.recent.requiringApproval);
 apiRouter.get('/order/recent/page/:page', Orders.recent.page);
 apiRouter.get('/order/reports/rows', Orders.reports.rows);
-apiRouter.get('/order/detail', Orders.detail);
+apiRouter.get('/order/detail', Orders.detail.ui);
+apiRouter.post('/order/detail/accept', Orders.detail.accept);
+apiRouter.post('/order/detail/reject', Orders.detail.reject);
 
 apiRouter.post('/mailing-list/use-correct/:containerId', MailingList.useCorrect);
 apiRouter.post('/mailing-list/reprocess/:containerId', MailingList.reprocess);
