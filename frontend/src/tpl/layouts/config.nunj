@@ -650,6 +650,7 @@
           title: 'Description',
           text: '<p>Hello </p><p>How are you?</p>' // html
         },
+        quantityText: '😡 🔥 🥇', // not required
         addToCart: { // null props
           documentId: 'documentId',
           url: PATH + 'products/add-to-cart', // TODO: Call
@@ -657,8 +658,7 @@
           unit: 'pack of 50 (50)',
           quantity: 1, // state
           minQuantity: 1, // not required
-          maxQuantity: 10, // not required
-          quantityText: 'Maximum is 10' // not required
+          maxQuantity: 10 // not required
         }
       }
     }
