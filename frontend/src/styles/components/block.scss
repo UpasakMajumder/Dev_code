@@ -1,4 +1,9 @@
 .block {
+  &--vibrate {
+    animation: shake 1s cubic-bezier(.36, .07, .19, .97) both;
+    transform: translate3d(0, 0, 0);
+  }
+
   &__heading {
     @include rem(margin, 8px 0 8px);
     display: flex;
