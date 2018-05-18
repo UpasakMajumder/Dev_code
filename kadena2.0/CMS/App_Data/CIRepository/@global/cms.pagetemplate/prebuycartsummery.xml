@@ -61,8 +61,8 @@
           <property name="contentbefore" ismacro="true">
 <![CDATA[
 <div class="itemcount">
-  <label>{$ KDA.DistributorCart.CartItemsCountStartText $} {%KadenaMacroMethods.GetCartCountByInventoryType(CurrentUser.UserID,2,KadenaMacroMethods.OpenCampaignID())|(user)cvoqa2@gmail.com|(hash)8d18b58392477889bc33ce29e605fa94881deef63cfec27fac1612bd5d5ba2f7%} {$ KDA.DistributorCart.CartItemsCountEndText $} </label>
-  <label>{$ KDA.DistributorCart.CartTotalPrice $} : {%Formatprice(KadenaMacroMethods.GetCartTotalByInventoryType(CurrentUser.UserID,2,KadenaMacroMethods.OpenCampaignID()))|(user)cvoqa2@gmail.com|(hash)31a79ae17e9fd5d9c2e49700e6a7eb0d5841867920ebd7a78010bff986c75399%}</label>
+  <label>{$ KDA.DistributorCart.CartItemsCountStartText $} {%KadenaMacroMethods.GetCartCountByInventoryType(CurrentUser.UserID,2,KadenaMacroMethods.OpenCampaignID()) |(user)administrator|(hash)eb1055ae05833ed753e7cb03d239870a085051feea3bb7548c1d53bdad75e935%} {$ KDA.DistributorCart.CartItemsCountEndText $} </label>
+  <label>{$ KDA.DistributorCart.CartTotalPrice $} : {%Formatprice(KadenaMacroMethods.GetCartTotalByInventoryType(CurrentUser.UserID,2,KadenaMacroMethods.OpenCampaignID())) |(user)administrator|(hash)ee0cb5954ab25731da6ce8342e367259f072093c3eb779c0c4bb7534305e2c42%}</label>
 </div>
 ]]>
           </property>
@@ -117,8 +117,8 @@
           <property name="webparttype">queryrepeater</property>
           <property name="wherecondition" ismacro="true">
 <![CDATA[
-ShoppingCartUserID={%CurrentUser.UserID|(user)cvoqa2@gmail.com|(hash)151ea260d45cbb40b6b460c3d41821d9e9dbc03b916f839032f8f77203b978ef%} AND ShoppingCartInventoryType=2 AND ShoppingCartSiteID={%CurrentSite.SiteID|(user)cvoqa2@gmail.com|(hash)7cfc90a7531eb28cb1698bcc36ccdc6093504c59ab4a8814d9ecdfe6eb948648%}
-AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN {%KadenaMacroMethods.OpenCampaignID()|(user)cvoqa2@gmail.com|(hash)1795d74d9db5a93ad71f02caf423a1c5f8b98729b199b7071dd686517b1dd5c0%} End
+ShoppingCartUserID={%CurrentUser.UserID |(user)administrator|(hash)fe392052a62d37b869a75f3f8c9cdce9d9f5d81bff70416632d46f46cc409ffc%} AND ShoppingCartInventoryType=2 AND ShoppingCartSiteID={%CurrentSite.SiteID |(user)administrator|(hash)6dbf545a518cc6d917c1d163b8a0180c44aaf9240f91c6f470dafc422310dbcb%}
+AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN {%KadenaMacroMethods.OpenCampaignID() |(user)administrator|(hash)cdb93cc16024a0063f5f9e1f4c1c4df4f7b8dedbbe05875d245b9851e3533b89%} End
 
 ]]>
           </property>
@@ -162,7 +162,7 @@ AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN {%KadenaM
         }
       });
       function UpdateItem(id,qty,box){
-        var request= {CartItemId: id,ItemQuantity:qty,UserID:{%CurrentUser.UserID|(user)cvoqa2@gmail.com|(hash)151ea260d45cbb40b6b460c3d41821d9e9dbc03b916f839032f8f77203b978ef%},InventoryType:2}
+        var request= {CartItemId: id,ItemQuantity:qty,UserID:{%CurrentUser.UserID |(user)administrator|(hash)fe392052a62d37b869a75f3f8c9cdce9d9f5d81bff70416632d46f46cc409ffc%},InventoryType:2}
             $.ajax({
               type: "POST",
               data :JSON.stringify(request),

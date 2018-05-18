@@ -97,7 +97,7 @@
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-{% if (QueryString.id !=null) {  GetResourceString("Kadena.Program.EditHeader")  } else{   GetResourceString("Kadena.Program.HeaderText")  }   |(user)cvoqa2@gmail.com|(hash)8f344e160b00e502ba1be3937bcd60b570755aaa0d9b6ce790b8b9a7addb4cfd%}
+{% if (QueryString.id !=null) {  GetResourceString("Kadena.Program.EditHeader")  } else{   GetResourceString("Kadena.Program.HeaderText")  }|(user)administrator|(hash)985cec035fa483fd096ed1d3278b598e2af7b3ac5cfbf6ea2de1544c2db019ce%}
 
 
 ]]>
@@ -200,14 +200,14 @@
           <property name="text">
 <![CDATA[
  {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)25a38b3f17c6468d659e8f65b22b9d82b2decede46871dc160947145a720db8e%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>

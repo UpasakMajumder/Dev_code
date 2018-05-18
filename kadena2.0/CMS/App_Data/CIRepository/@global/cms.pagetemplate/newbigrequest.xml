@@ -79,7 +79,7 @@
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<div class="content-block j-bid-form" data-handler="/CMSPages/Kadena/SubmitBid.ashx" data-thank-you-page='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_BidRequestSentPageUrl) |(user)rostyslav.diachenko@actum.cz|(hash)dd43d28fb5d94282160711afa66f7c1c8bd333ca78df3dd6f346a0d6d611f336%}'>
+<div class="content-block j-bid-form" data-handler="/CMSPages/Kadena/SubmitBid.ashx" data-thank-you-page='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_BidRequestSentPageUrl)|(user)administrator|(hash)2f26b0c7be1624275990548abc5920e064629aac3f3549bb788f3fc3908af7ca%}'>
     <div class="block">
         <h2 class="block__heading">{$Kadena.NewBigRequest.MainInformations$}
         </h2>

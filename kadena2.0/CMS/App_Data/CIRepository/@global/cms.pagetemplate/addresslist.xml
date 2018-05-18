@@ -148,7 +148,7 @@
 <![CDATA[
 {%if(ECommerceContext.CurrentCustomer.ID>0){%}
 AddressCustomerID={%ECommerceContext.CurrentCustomer.ID%}
-{%}else{ "1=0" }|(user)cvoqa2@gmail.com|(hash)acebfebbbca9d949966fc1b658e0e456d3d745ac007465db8487ac2ad0f2d431%}
+{%}else{ "1=0" }|(user)administrator|(hash)efdb89f1914c39c6cedb77f793b694ac6141c576c405fceb37a0dd8874253214%}
 {%if(ECommerceContext.CurrentCustomer.ID>0 && QueryString["searchtext"]!=""){%}
  AND
 (
@@ -159,7 +159,7 @@ CompanyName LIKE '%{?searchtext?}%' OR
 Email LIKE '%{?searchtext?}%' OR 
 AddressPhone LIKE '%{?searchtext?}%'
 )
-{%}|(handlesqlinjection)false|(user)cvoqa2@gmail.com|(hash)2edacb31c18b5b8d64192baf499296b1ca837dd90a41c14196abc33ef71110fd%}
+{%}|(handlesqlinjection)false |(user)administrator|(hash)37c4ed10adddee472a42b951806cff5b3f4599e3ca4c7ad0ce9c48b89bf21135%}
 ]]>
           </property>
           <property name="zerorowstext" ismacro="true">
@@ -197,14 +197,14 @@ AddressPhone LIKE '%{?searchtext?}%'
         dataType: "json",
         success: function (data) {
           if (data.d == true) {
-            window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=deleted");
+            window.location.replace("{%CurrentDocument.AbsoluteURL |(user)administrator|(hash)1c02f0838d9a106fc0cbac312e23d536690989a97caeec5262488f098c696cfb%}?status=deleted");
             //location.reload();
           } else {
-            window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
+            window.location.replace("{%CurrentDocument.AbsoluteURL |(user)administrator|(hash)1c02f0838d9a106fc0cbac312e23d536690989a97caeec5262488f098c696cfb%}?status=error");
           }
         },
         error: function (xhr, ajaxOptions, thrownError) {
-          window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
+          window.location.replace("{%CurrentDocument.AbsoluteURL |(user)administrator|(hash)1c02f0838d9a106fc0cbac312e23d536690989a97caeec5262488f098c696cfb%}?status=error");
         }
       });
     }
@@ -392,7 +392,7 @@ AddressPhone LIKE '%{?searchtext?}%'
           <property name="text">
 <![CDATA[
 <div class="add__btn">
-  <a class="btn-action" href="{% Settings.KDA_CreateAddressURL |(user)cvoqa2@gmail.com|(hash)0e9ef208a37fad94bd8b306cdcabe7b7117fe7381b58993c34b8d6a02ef6e9cb%}"><i class="fa fa-plus" aria-hidden="true"></i>{$Kadena.Address.AddNewText$}</a>
+  <a class="btn-action" href="{% Settings.KDA_CreateAddressURL|(user)administrator|(hash)e486d27834b6fdffcb375ccb7df7f6e6756faa830264d43117dfde24016fd5b9%}"><i class="fa fa-plus" aria-hidden="true"></i>{$Kadena.Address.AddNewText$}</a>
 </div>
 ]]>
           </property>
@@ -445,7 +445,7 @@ AddressPhone LIKE '%{?searchtext?}%'
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[    <h1 class="content-header__page-name">{%CurrentDocument.DocumentName|(user)cvoqa2@gmail.com|(hash)76becbc016492b55eb7136c1b6b4a6327ceacc520fadb46d5e9f6da566e5a6ed%}</h1>]]>
+            <![CDATA[<h1 class="content-header__page-name">{% CurrentDocument.DocumentName |(user)administrator|(hash)4d9f8bd05c90658ff0ed0d5e8dff89c5a5a3360f5014724b541500f4011f4609%}</h1>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -498,14 +498,14 @@ AddressPhone LIKE '%{?searchtext?}%'
           <property name="text">
 <![CDATA[
  {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)25a38b3f17c6468d659e8f65b22b9d82b2decede46871dc160947145a720db8e%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>

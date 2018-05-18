@@ -8,12 +8,12 @@
   <TransformationCode>
 <![CDATA[
 <div class="input__wrapper"> 
-<input id="dom-addr-{% ShippingAddress.AddressID |(user)michal.machacek@actum.cz|(hash)b887b8fe88fbef2e626dc892570926f337810e906f635e9c1877bea6a8c5cba6%}" {% Checked %} name="adress" type="radio" class="input__radio" 
-  onchange="javascript:var inputs = document.getElementById('hiddenAddressesList').getElementsByTagName('input'); var el; for(item in inputs) { if(inputs[item].value == {% ShippingAddress.AddressID |(user)michal.machacek@actum.cz|(hash)b887b8fe88fbef2e626dc892570926f337810e906f635e9c1877bea6a8c5cba6%}) {el = inputs[item]; el.checked = true; el.onclick(); break;}};">
-  <label for="dom-addr-{% ShippingAddress.AddressID |(user)michal.machacek@actum.cz|(hash)b887b8fe88fbef2e626dc892570926f337810e906f635e9c1877bea6a8c5cba6%}" class="input__label input__label--radio">
-    <p>{% ShippingAddress.AddressLine1 |(user)michal.machacek@actum.cz|(hash)9f6a0e607bf9f89ad305846f7c9a71ab8caf7bdf6fd42ad90d2427064ea1d9eb%}</p>
-    <p>{% ShippingAddress.AddressCity |(user)michal.machacek@actum.cz|(hash)ef5297fdcecf1892caf8f68aeb7dbf0420d7a01a195dc45f1390dda968cf0be2%}</p>
-    <p>{% StateCode %} {% ShippingAddress.AddressZip |(user)michal.machacek@actum.cz|(hash)9d76cdb4f294d97abce51613c66c4942d5fcdd3f1d8060108af2c8f3e291f179%}</p>
+<input id="dom-addr-{% ShippingAddress.AddressID |(user)administrator|(hash)920a6470ca9350561f385780fd4ebf4f28f7e15143873b2adf9aec4f52bb71d4%}" {% Checked %} name="adress" type="radio" class="input__radio" 
+  onchange="javascript:var inputs = document.getElementById('hiddenAddressesList').getElementsByTagName('input'); var el; for(item in inputs) { if(inputs[item].value == {% ShippingAddress.AddressID |(user)administrator|(hash)920a6470ca9350561f385780fd4ebf4f28f7e15143873b2adf9aec4f52bb71d4%}) {el = inputs[item]; el.checked = true; el.onclick(); break;}};">
+  <label for="dom-addr-{% ShippingAddress.AddressID |(user)administrator|(hash)920a6470ca9350561f385780fd4ebf4f28f7e15143873b2adf9aec4f52bb71d4%}" class="input__label input__label--radio">
+    <p>{% ShippingAddress.AddressLine1 |(user)administrator|(hash)b7f2ed96ba57904cfa834e80b3c0124cc746b836fc018b65c38e98ee7198cb98%}</p>
+    <p>{% ShippingAddress.AddressCity |(user)administrator|(hash)6e47b8c71e796142f36956f087a8597ab49a33be3b9cd170f06612c55055bbdc%}</p>
+    <p>{% StateCode %} {% ShippingAddress.AddressZip |(user)administrator|(hash)32eedb113746e1f57427044a8a919dd6b27a03fde9261597f86bc287ae370c80%}</p>
   </label>
 </div>
 
