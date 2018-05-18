@@ -32,8 +32,8 @@ class ProductDetail extends Component {
       dynamicPrices: ImmutablePropTypes.map,
       availability: ImmutablePropTypes.map,
       packagingInfo: PropTypes.string,
+      quantityText: PropTypes.string,
       addToCart: ImmutablePropTypes.mapContains({
-        quantityText: PropTypes.string,
         quantity: PropTypes.number,
         minQuantity: PropTypes.number,
         maxQuantity: PropTypes.number,
@@ -254,10 +254,10 @@ class ProductDetail extends Component {
         </div>
       ) : null;
 
-    const quantityTextComponent = ui.getIn(['addToCart', 'quantityText'])
+    const quantityTextComponent = ui.get('quantityText')
       ? (
         <div className={`block ${this.state.quanityError ? 'block--vibrate' : ''}`}>
-          <h2 className="block__heading text--danger pt-4 pb-2">{ui.getIn(['addToCart', 'quantityText'])}</h2>
+          <h2 className="block__heading text--danger pt-4 pb-2">{ui.get('quantityText')}</h2>
         </div>
       ) : null;
 
