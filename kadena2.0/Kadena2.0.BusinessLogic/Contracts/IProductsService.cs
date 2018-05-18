@@ -15,5 +15,6 @@ namespace Kadena.BusinessLogic.Contracts
         IEnumerable<ProductEstimation> GetProductEstimations(int documentId);
         IEnumerable<ProductPricingInfo> GetProductPricings(int documentId, string unitOfMeasure, string cultureCode);
         ProductAvailability GetInventoryProductAvailability(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasureCode);
+        string GetMinMaxItemsString(int min, int max);
     }
 }

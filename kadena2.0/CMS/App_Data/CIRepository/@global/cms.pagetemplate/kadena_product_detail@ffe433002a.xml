@@ -516,6 +516,7 @@ config.localization.productDetail = {
       title: '{$Kadena.Product.Description$}',
       text: '{% CurrentDocument.DocumentSKUDescription |(user)michal.machacek@actum.cz|(hash)e40003aeef3d2e59d6f30e4de4ad129d64d4d0d66ff5813b532f231bc55d88b4%}'
     },
+    quantityText: '{% KadenaNamespace.GetMinMaxString(ECommerceContext.CurrentProduct.SKUMinItemsInOrder, ECommerceContext.CurrentProduct.SKUMaxItemsInOrder) |(user)michal.machacek@actum.cz|(hash)c7a3da11632d2a2a98adc3aa1f001d1c7fa360773a7d373d98fb456c7a89169a%}',
     relatedProducts: null
   }
 
@@ -548,8 +549,7 @@ config.localization.productDetail.addToCart = {
       unit: '{% KadenaNamespace.LocalizeUom(SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)michal.machacek@actum.cz|(hash)115d25e0652c40fb0a00619487721cfd2dd72f5c2fcfed0d4042cf7ff3764ed9%}',
       quantity: 1,
       minQuantity: '{% ECommerceContext.CurrentProduct.SKUMinItemsInOrder |(user)michal.machacek@actum.cz|(hash)3fc28bb914d325f49e76372da98b6a6e09f444cb409a2311c3c480abb0469f8b%}',
-      maxQuantity: '{% ECommerceContext.CurrentProduct.SKUMaxItemsInOrder |(user)michal.machacek@actum.cz|(hash)7905a3f40b71aa268e8e6bf42c8edd368eeb3d0b67abd8c3e2f04a669ede334f%}',
-      quantityText: 'You can order {% ECommerceContext.CurrentProduct.SKUMinItemsInOrder |(user)michal.machacek@actum.cz|(hash)3fc28bb914d325f49e76372da98b6a6e09f444cb409a2311c3c480abb0469f8b%} - {% ECommerceContext.CurrentProduct.SKUMaxItemsInOrder |(user)michal.machacek@actum.cz|(hash)7905a3f40b71aa268e8e6bf42c8edd368eeb3d0b67abd8c3e2f04a669ede334f%}'
+      maxQuantity: '{% ECommerceContext.CurrentProduct.SKUMaxItemsInOrder |(user)michal.machacek@actum.cz|(hash)7905a3f40b71aa268e8e6bf42c8edd368eeb3d0b67abd8c3e2f04a669ede334f%}'      
     };
 ]]>
           </property>

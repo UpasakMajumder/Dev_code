@@ -283,6 +283,24 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 .GetPackagingString(numberOfItemsInPackage, unitOfmeasure, cultureCode);
         }
 
+        [MacroMethod(typeof(string), "Gets formated and localized Min Max string.", 1)]
+        [MacroMethodParam(0, "min", typeof(int), "Minimal items")]
+        [MacroMethodParam(1, "max", typeof(string), "Maximal items")]
+        public static object GetMinMaxString(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 2)
+            {
+                throw new NotSupportedException();
+            }
+
+            var min = ValidationHelper.GetInteger(parameters[0], 0);
+            var max = ValidationHelper.GetInteger(parameters[1], 0);
+
+
+            return DIContainer.Resolve<IProductsService>()
+                .GetMinMaxItemsString(min, max);
+        }
+
         [MacroMethod(typeof(string), "Gets localized UOM name.", 1)]
         [MacroMethodParam(0, "unitOfMeasure", typeof(string), "Unit of measure")]
         [MacroMethodParam(1, "cultureCode", typeof(string), "Current culture code")]

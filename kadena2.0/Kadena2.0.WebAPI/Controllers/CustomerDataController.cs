@@ -15,18 +15,8 @@ namespace Kadena.WebAPI.Controllers
 
         public CustomerDataController(ICustomerDataService service, IMapper mapper)
         {
-            if (service == null)
-            {
-                throw new ArgumentNullException(nameof(service));
-            }
-
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-
-            this.service = service;
-            this.mapper = mapper;
+            this.service = service ?? throw new ArgumentNullException(nameof(service));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet]

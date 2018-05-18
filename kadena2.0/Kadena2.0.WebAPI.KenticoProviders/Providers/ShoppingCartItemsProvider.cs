@@ -365,6 +365,10 @@ namespace Kadena.WebAPI.KenticoProviders
             ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
             var cartItemInfo = cart.SetShoppingCartItem(parameters);
 
+            // To return cart item with original quantity :
+            var quantity = cartItemInfo.GetIntegerValue("SKUUnits", newItem.Quantity);
+            cartItemInfo.SetValue("SKUUnits", quantity - newItem.Quantity );
+
             cartItemInfo.CartItemText = cartItemInfo.SKU.SKUName;
             cartItemInfo.CartItemPrice = cartItemInfo.SKU.SKUPrice;
             cartItemInfo.SetValue("ProductType", productDocument.GetStringValue("ProductType", string.Empty));

@@ -272,9 +272,9 @@ namespace Kadena.Tests.BusinessLogic
         }
 
         [Theory(DisplayName = "ProductsService.GetInventoryProductAvailability() | Inventory type")]
-        [InlineData(0, 0, "OutOfStock")]
-        [InlineData(null, 0, "Unavailable")]
-        [InlineData(1, 1, "Available")]
+        [InlineData(0, 0, "outofstock")]
+        [InlineData(null, 0, "unavailable")]
+        [InlineData(1, 1, "available")]
         public void GetInventoryProductAvailablity(int? numberOfAvailableProducts, int numberOfStockProducts, string expectedResult)
         {
             // Arrange
