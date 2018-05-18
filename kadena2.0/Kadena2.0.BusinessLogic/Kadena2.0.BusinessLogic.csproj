@@ -114,6 +114,7 @@
     <Compile Include="Factories\OrderResultPageUrlFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Approval\ApprovalService.cs" />
+    <Compile Include="Services\Approval\ApprovalServiceException.cs" />
     <Compile Include="Services\Approval\ApproverService.cs" />
     <Compile Include="Services\ArtworkService.cs" />
     <Compile Include="Services\IdentityService.cs" />

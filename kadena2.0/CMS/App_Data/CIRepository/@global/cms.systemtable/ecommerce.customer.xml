@@ -106,7 +106,7 @@
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
           <EditText>False</EditText>
           <Macro>
-            <![CDATA[{%KadenaMacroMethods.GetApprovers()|(user)michal.machacek@actum.cz|(hash)923d127ca60fdad8109718f30fd45ef76c7ec489cdf28eca958ed77f80d7b1e7%}]]>
+            <![CDATA[{%KadenaMacroMethods.GetApprovers() |(user)administrator|(hash)b07a2c998341755dc3dd3bf4304dbc4bc5371a5eff2ed8bf42751ed1c55e9a39%}]]>
           </Macro>
           <SortItems>False</SortItems>
         </settings>

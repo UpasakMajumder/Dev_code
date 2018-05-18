@@ -64,7 +64,7 @@
 <div class="content-block">
  <div class="submitted">
    <svg class="icon submitted__central-img">
-    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/gfx/svg/sprites/icons.svg{%QueryString.success == "true" ?"#order-ready" : "#order-not-ready"|(user)michal.machacek@actum.cz|(hash)a47fb9cf9e0e810feb76dffe0d79f9056a4babf570d6254313b2b1b7c2cea84f%}"></use>
+    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/gfx/svg/sprites/icons.svg{%QueryString.success == "true" ?"#order-ready" : "#order-not-ready" |(user)administrator|(hash)b6adb032bf6f4697ed40ae821abf8521b074a319220454ab88f988bfec1ef660%}"></use>
   </svg>
    <div class="submitted__text-group submitted__text-group--centered">
 ]]>
@@ -84,12 +84,7 @@
           <property name="outputfixlowercase">True</property>
           <property name="outputfixselfclose">True</property>
           <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
+          <property name="partialcachedependencies">##DEFAULT##</property>
           <property name="partialcacheminutes"></property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="resolvedynamiccontrols">True</property>
@@ -97,7 +92,7 @@
           <property name="text" ismacro="true">
 <![CDATA[
 <p class="p-info">
-{% QueryString.success == "true" ? SuccessMessage : ErrorMessage |(user)michal.machacek@actum.cz|(hash)8c690a3db863a17af2f0ecbb21169bf887b225c0558abb49e2847131f79628bc%}
+{% QueryString.success == "true" ? SuccessMessage : ErrorMessage|(user)administrator|(hash)7323ad0cccf06c0a40eda415dc61fe54311792149c15dea771006f97165ff6a1%}
 </p>
 ]]>
           </property>
@@ -135,12 +130,7 @@
           <property name="outputfixlowercase">True</property>
           <property name="outputfixselfclose">True</property>
           <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
+          <property name="partialcachedependencies">##DEFAULT##</property>
           <property name="partialcacheminutes"></property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="resolvedynamiccontrols">True</property>
@@ -148,7 +138,7 @@
           <property name="text" ismacro="true">
 <![CDATA[
 <div class="submitted__btn-group">
-  <a href='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_ProductsPageUrl) |(user)rostyslav.diachenko@actum.cz|(hash)9880c1fcdd88f5967f748d2bc79dc46bb8e9fc96b7e54f4bba7b65fa2f5d3e57%}' type="type" class="btn-action btn-action--secondary">{$ Kadena.OrderSubmitted.SeeProducts $}</a>
+  <a href='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_ProductsPageUrl)|(user)administrator|(hash)8d06aceb353b36cf76b0f34496429de1da7d6c8b7275ca4ced9817a8b2a271a2%}' type="type" class="btn-action btn-action--secondary">{$ Kadena.OrderSubmitted.SeeProducts $}</a>
   <a href="/" type="type" class="btn-action">{$ Kadena.OrderSubmitted.GoToDashboard $}</a> </div>
 ]]>
           </property>
@@ -199,12 +189,7 @@
           <property name="outputfixlowercase">False</property>
           <property name="outputfixselfclose">False</property>
           <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
+          <property name="partialcachedependencies">##DEFAULT##</property>
           <property name="partialcacheminutes"></property>
           <property name="positionleft"></property>
           <property name="positiontop"></property>
@@ -214,7 +199,7 @@
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-{% QueryString.success == "true" ? String.FormatString(GetResourceString("Kadena.OrderSubmitted.HeadlineSuccess"), QueryString.order_id) : GetResourceString("Kadena.OrderSubmitted.HeadlineFailure") |(user)tomas.rucki@actum.cz|(hash)ce0ce8b01b25a2c595a732e11a7514f958f1ccce3c4f0328869895fed980d9db%}
+{% QueryString.success == "true" ? String.FormatString(GetResourceString("Kadena.OrderSubmitted.HeadlineSuccess"), QueryString.order_id) : GetResourceString("Kadena.OrderSubmitted.HeadlineFailure")|(user)administrator|(hash)717676e1e20c5825b519a754d202a1fde05d16d723ce8662f938ffcf919ed33c%}
 
 ]]>
           </property>
@@ -295,7 +280,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty |(user)michal.machacek@actum.cz|(hash)ff867895da2b5b628922aa2c39039994a38f838338f9a73c2c453995ecdf89a9%}]]>
+            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty|(user)administrator|(hash)95ebceee10f40317dc794cc24a0cccc7de70c540ef159457185d13a9ec0d037a%}]]>
           </property>
         </properties>
       </webpartzone>
@@ -323,7 +308,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty |(user)michal.machacek@actum.cz|(hash)ff867895da2b5b628922aa2c39039994a38f838338f9a73c2c453995ecdf89a9%}]]>
+            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty|(user)administrator|(hash)95ebceee10f40317dc794cc24a0cccc7de70c540ef159457185d13a9ec0d037a%}]]>
           </property>
         </properties>
       </webpartzone>

@@ -70,9 +70,8 @@
           <property name="outputresolveurls">True</property>
           <property name="partialcachedependencies">
 <![CDATA[
-          ##DEFAULT##
+##DEFAULT##
 
-          
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
@@ -83,7 +82,7 @@
           <property name="text">
 <![CDATA[
           <div class="content-header__inner">
-            <h1 class="content-header__page-name">{%  GetResourceString("KDA.PreBuy.HeaderText") |(user)cvoqa2@gmail.com|(hash)60809f99b008d43143e40f2d1444e0eb8865483c7608ef466319210dfacd82c4%}</h1>
+            <h1 class="content-header__page-name">{%  GetResourceString("KDA.PreBuy.HeaderText")|(user)administrator|(hash)aa716e3157f3c9e8146f993585a811830f70274ab70b3ac01c27dcd3c435d94a%}</h1>
           </div>
 
 
@@ -130,9 +129,8 @@
           <property name="outputresolveurls">True</property>
           <property name="partialcachedependencies">
 <![CDATA[
-          ##DEFAULT##
+##DEFAULT##
 
-          
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
@@ -142,15 +140,15 @@
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-          {%
-          result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-          iteratedDocument = CurrentDocument.Parent;
-          while (iteratedDocument.Parent != null) {
-          result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-          iteratedDocument = iteratedDocument.Parent;
-          };
-          "<div class='breadcrumbs'>" + result + "</div>"
-          |(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+{%
+result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+iteratedDocument = CurrentDocument.Parent;
+while (iteratedDocument.Parent != null) {
+result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+iteratedDocument = iteratedDocument.Parent;
+};
+"<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)6bfc4283a297cf1dac98542bb0d719e1a27d1c7ac39cab2d6f5aae2e8ba69c23%}
           
 ]]>
           </property>

@@ -14,7 +14,7 @@
   <td>{$KDA.Common.Status.Active$}</td>
   {%} else {%}
   <td>{$KDA.Common.Status.InActive$}</td> 
-  {%}|(user)cvoqa2@gmail.com|(hash)83a5e7de639b43d080171c2d40a8fb4a770bca9636aaf73a089e454c41e85093%}
+  {%}|(user)administrator|(hash)ccaddfa8f81eb1d070ba48f928a0fcb13102b0c7deba3b508e625dc4e7197960%}
  
       {% if (MembershipContext.AuthenticatedUser.IsInRole("TWEGlobalAdmin",false)) { %}
    <td>
@@ -23,7 +23,7 @@
       <a href='{% Settings.KDA_CategoryCreatePageUrl #%}?ID={%ProductCategoryID%}' class="edit_btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
     </div>
      </td>
-    {% } |(user)cvoqa2@gmail.com|(hash)20a3db7b9015ba9f526716ef4af95658d0f65df391113439abdb9dbabac11e96%}
+    {% } |(user)administrator|(hash)91de7c3c230c84613f1ae2c79b99c111d8433c12283de1b8afc1cc996fcdc235%}
   
 </tr>
 ]]>

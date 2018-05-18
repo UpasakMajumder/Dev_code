@@ -86,7 +86,7 @@
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text" ismacro="true">
-            <![CDATA[{$ Kadena.Order.OrderDetailHeader $}{% QueryString.GetValue("orderId") |(user)michal.machacek@actum.cz|(hash)bc713bc0111b4ef175255026bc66eaf62187b7ab372acbf486c61170a66d6e36%}]]>
+            <![CDATA[{$ Kadena.Order.OrderDetailHeader $}{% QueryString.GetValue("orderId")|(user)administrator|(hash)33f8dd8c9442e3930501822e154481135905037ba038cabb7db8feb83feea7f8%}]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
