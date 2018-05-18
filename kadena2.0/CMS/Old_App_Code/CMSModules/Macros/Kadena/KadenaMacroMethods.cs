@@ -88,6 +88,32 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return true;
         }
 
+
+        
+        [MacroMethod(typeof(string), "Gets URL of editor for mailing or templated product", 1)]
+        [MacroMethodParam(0, "documentId", typeof(int), "Product types piped string")]
+        [MacroMethodParam(1, "productType", typeof(string), "Product types piped string")]
+        [MacroMethodParam(2, "masterTemplateId", typeof(string), "Product types piped string")]
+        [MacroMethodParam(3, "workspaceId", typeof(string), "Product types piped string")]
+        [MacroMethodParam(4, "use3d", typeof(bool), "Product types piped string")]
+        public static object TemplatedProductEditorUrl(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 5)
+            {
+                throw new NotSupportedException();
+            }
+
+            var documentId = Convert.ToInt32(parameters[0]);
+            var userId = MembershipContext.AuthenticatedUser.UserID;
+            var productType = (string)parameters[1];
+            Guid masterTemplateId = Guid.Parse((string)parameters[2]);
+            Guid workspaceId = Guid.Parse((string)parameters[3]);
+            bool use3d = Convert.ToBoolean(parameters[4]);
+
+            return DIContainer.Resolve<ITemplateService>().TemplatedProductEditorUrl(documentId, userId, productType, masterTemplateId, workspaceId, use3d).Result;
+        }
+
+
         [MacroMethod(typeof(bool), "Checks if related product is of templated type", 1)]
         [MacroMethodParam(0, "skuid", typeof(int), "SKU ID")]
         public static object IsTemplatedProduct(EvaluationContext context, params object[] parameters)

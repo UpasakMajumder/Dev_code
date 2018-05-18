@@ -549,7 +549,7 @@ config.localization.productDetail.addToCart = {
       quantity: 1,
       minQuantity: '{% ECommerceContext.CurrentProduct.SKUMinItemsInOrder |(user)michal.machacek@actum.cz|(hash)3fc28bb914d325f49e76372da98b6a6e09f444cb409a2311c3c480abb0469f8b%}',
       maxQuantity: '{% ECommerceContext.CurrentProduct.SKUMaxItemsInOrder |(user)michal.machacek@actum.cz|(hash)7905a3f40b71aa268e8e6bf42c8edd368eeb3d0b67abd8c3e2f04a669ede334f%}',
-      quantityText: ''
+      quantityText: 'You can order {% ECommerceContext.CurrentProduct.SKUMinItemsInOrder |(user)michal.machacek@actum.cz|(hash)3fc28bb914d325f49e76372da98b6a6e09f444cb409a2311c3c480abb0469f8b%} - {% ECommerceContext.CurrentProduct.SKUMaxItemsInOrder |(user)michal.machacek@actum.cz|(hash)7905a3f40b71aa268e8e6bf42c8edd368eeb3d0b67abd8c3e2f04a669ede334f%}'
     };
 ]]>
           </property>
@@ -581,7 +581,11 @@ config.localization.productDetail.addToCart = {
           <property name="inlinescript">
 <![CDATA[
 config.localization.productDetail.openTemplate = { 
-    url: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_Templating_ProductEditorUrl) |(user)michal.machacek@actum.cz|(hash)aaa36df316022f61c41fc7d8b01d9610cbafaf9de3f4cde5017501e5d9576308%}',
+    url: '{% KadenaNamespace.TemplatedProductEditorUrl(DocumentContext.CurrentDocument.ID, 
+                                                       ProductType,
+                                                       ProductChiliTemplateID,
+                                                       ProductChiliWorkgroupID,
+                                                       ProductChili3dEnabled)|(user)michal.machacek@actum.cz|(hash)cec1b7b72ea0a878da0e8c7124540f3628a55248e7c9cb8150efa6a1b337bddc%}',
     text: '{$Kadena.Product.OpenTemplateInDesign$}'
   }
 ]]>
