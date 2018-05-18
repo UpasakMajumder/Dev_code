@@ -55,16 +55,10 @@ namespace Kadena.MicroserviceClients.Clients
             return await Post<string>(url, request).ConfigureAwait(false);
         }
 
-        public async Task<BaseResponseDto<string>> SetMailingList(string containerId, string templateId, string workSpaceId, bool use3d)
+        public async Task<BaseResponseDto<string>> SetMailingList(SetMailingListRequestDTO request)
         {
             var requestUrl = $"{BaseUrlOld}/api/template/datasource";
-            return await Post<string>(requestUrl, new
-            {
-                containerId,
-                templateId,
-                workSpaceId,
-                use3d
-            }).ConfigureAwait(false);
+            return await Post<string>(requestUrl, request).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<string>> GetPreview(Guid templateId, Guid settingId)

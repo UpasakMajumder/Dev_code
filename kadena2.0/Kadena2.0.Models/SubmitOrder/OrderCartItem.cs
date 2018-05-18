@@ -13,7 +13,7 @@ namespace Kadena.Models.SubmitOrder
         public int Quantity { get; set; }
         public string UnitOfMeasureErpCode { get; set; }
         public decimal TotalPrice { get; set; }                
-        public Guid MailingListGuid { get; set; }
+        public MailingList MailingList { get; set; }
         public string Artwork { get; set; }                
         public ChiliProcess ChiliProcess { get; set; }
         public bool SendPriceToErp { get; set; }
