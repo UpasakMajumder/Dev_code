@@ -11,12 +11,16 @@ using CMS.EventLog;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.CMSWebParts.Kadena.Product
 {
     public partial class MailingListSelector : CMSAbstractWebPart
     {
-        private KenticoResourceService _resources = new KenticoResourceService();
+        private IKenticoResourceService _resources = DIContainer.Resolve<IKenticoResourceService>();
+        private IKenticoSiteProvider _site = DIContainer.Resolve<IKenticoSiteProvider>();
+
         public string NewMailingListUrl
         {
             get
@@ -99,10 +103,20 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 var workspaceId = string.IsNullOrWhiteSpace(url) ? string.Empty : URLHelper.GetUrlParameter(url, "workspaceid");
                 var use3d = string.IsNullOrWhiteSpace(url) ? false : bool.Parse(URLHelper.GetUrlParameter(url, "use3d"));
                 var quantity = btn.Attributes["quantity"];
+                var customerName = _site.GetKenticoSite().Name;
                 if (!string.IsNullOrWhiteSpace(containerId) && !string.IsNullOrWhiteSpace(templateId) && !string.IsNullOrWhiteSpace(workspaceId))
                 {
                     var templateClient = DIContainer.Resolve<ITemplatedClient>();
-                    var setResult = templateClient.SetMailingList(containerId, templateId, workspaceId, use3d).Result;
+                    var setMailingRequest = new SetMailingListRequestDTO
+                    {
+                        ContainerId = containerId,
+                        TemplateId = templateId,
+                        WorkSpaceId = workspaceId,
+                        Use3d = use3d,
+                        CustomerName = customerName
+                    };
+
+                    var setResult = templateClient.SetMailingList(setMailingRequest).Result;
                     if (!setResult.Success)
                     {
                         EventLogProvider.LogEvent(EventType.ERROR, "SET MAILING LIST", "ERROR", setResult.ErrorMessages);

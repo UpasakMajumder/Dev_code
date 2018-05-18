@@ -3,7 +3,6 @@ using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models;
-using Kadena.Models.Checkout;
 using Kadena.Models.Product;
 using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
