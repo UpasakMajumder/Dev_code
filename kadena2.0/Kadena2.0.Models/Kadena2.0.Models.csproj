@@ -70,6 +70,7 @@
     <Compile Include="ModuleAccess\KnownPageTypes.cs" />
     <Compile Include="OrderDetail\OrderActions.cs" />
     <Compile Include="OrderDetail\OrderInfo.cs" />
+    <Compile Include="OrderDetail\OrderStatusInfo.cs" />
     <Compile Include="Orders\Failed\FailedOrder.cs" />
     <Compile Include="Orders\OrderFilter.cs" />
     <Compile Include="Orders\OrderReport.cs" />
