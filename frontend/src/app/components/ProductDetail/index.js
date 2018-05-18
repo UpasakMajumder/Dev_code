@@ -111,21 +111,33 @@ class ProductDetail extends Component {
         return false;
       }
     // check min
-    } else if (minQuantity) {
+    }
+
+    if (minQuantity) {
       if (quantity < minQuantity) {
         this.vibrateQuantityText();
         return false;
       }
     // check max
-    } else if (maxQuantity) {
+    }
+
+    if (maxQuantity) {
       if (quantity > maxQuantity) {
         this.vibrateQuantityText();
         return false;
       }
-    } else if (!quantity) {
+    }
+
+    if (quantity < 1) {
       this.vibrateQuantityText();
       return false;
     }
+
+    if (isNaN(+quantity)) {
+      this.vibrateQuantityText();
+      return false;
+    }
+
 
     return true;
   };
