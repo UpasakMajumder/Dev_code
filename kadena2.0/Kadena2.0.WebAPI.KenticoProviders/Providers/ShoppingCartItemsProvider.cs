@@ -253,6 +253,16 @@ namespace Kadena.WebAPI.KenticoProviders
                     ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemID));
             }
 
+            var min = item.SKU?.SKUMinItemsInOrder ?? 0;
+            var max = item.SKU?.SKUMaxItemsInOrder ?? 0;
+
+            if ((min > 0 && quantity < min) || (max > 0 && quantity > max))
+            {
+                throw new Exception(string.Format(
+                    ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemID));
+            }
+
+
             var documentId = item.GetIntegerValue("ProductPageID", 0);
             var price = dynamicPrices.GetDynamicPrice(quantity, documentId);
             if (price > decimal.MinusOne)

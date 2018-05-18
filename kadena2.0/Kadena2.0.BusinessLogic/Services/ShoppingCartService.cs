@@ -386,6 +386,23 @@ namespace Kadena.BusinessLogic.Services
             return preview;
         }
 
+        void CheckMinMaxQuantity(CartItemEntity cartitem, int addedQuantity)
+        {
+            var sku = shoppingCart.GetSKU(cartitem.SKUID);
+
+            var totalAmountAfterAdding = cartitem.SKUUnits + addedQuantity;
+
+            if (sku.MinItemsInOrder > 0 && totalAmountAfterAdding < sku.MinItemsInOrder)
+            {
+                throw new Exception("Cannot order less than minimal count of items");
+            }
+
+            if (sku.MaxItemsInOrder > 0 && totalAmountAfterAdding > sku.MaxItemsInOrder)
+            {
+                throw new Exception("Cannot order more than maximal count of items");
+            }
+        }
+
         public async Task<AddToCartResult> AddToCart(NewCartItem newItem)
         {
             var addedAmount = newItem.Quantity;
@@ -395,9 +412,7 @@ namespace Kadena.BusinessLogic.Services
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
 
-            var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);
-
-
+            var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);            
 
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.InventoryProduct))
             {
@@ -416,6 +431,8 @@ namespace Kadena.BusinessLogic.Services
             {
                 cartItem.SKUUnits = newItem.Quantity;
             }
+
+            CheckMinMaxQuantity(cartItem, newItem.Quantity);
 
             SetDynamicPrice(cartItem, newItem.DocumentId);
 
