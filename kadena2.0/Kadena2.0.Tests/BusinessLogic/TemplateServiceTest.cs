@@ -174,5 +174,16 @@ namespace Kadena.Tests.WebApi
             Assert.NotNull(actualResult);
             Assert.Equal(expectedResult, actualResult);
         }
+
+
+        public async Task TemplatedProductEditorUrl_BasicTest()
+        {
+            const int documentId = 1230;
+            const int userId = 45;
+
+            var result = await Sut.TemplatedProductEditorUrl(documentId, userId, ProductTypes.TemplatedProduct, Guid.Empty, Guid.Empty, false);
+
+            Assert.Equal("expected link", result)
+        }
     }
 }
