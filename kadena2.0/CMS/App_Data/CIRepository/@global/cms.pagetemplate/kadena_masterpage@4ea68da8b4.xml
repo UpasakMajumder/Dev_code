@@ -73,7 +73,7 @@
   config.localization.searchPage= { searchPageUrl: '/api/search' };
   config.localization.search = { 
     queryUrl: '/api/autocomplete',
-    placeholder: '{%JSEscape(GetResourceString("Kadena.Search"))|(user)rostyslav.diachenko@actum.cz|(hash)6a97c0321478a4088c7290d1f4ce2d52c676f9f4c6ae473e47abef4ffbe7845c%}'
+    placeholder: '{%JSEscape(GetResourceString("Kadena.Search")) |(user)administrator|(hash)3bb7c0e0bb1c7645a1bf721fe1f7252c657daade5e05647ad9cfd9a293edf60d%}'
   };
   config.localization.ContactPersonDetailsChange= {
     Error: '{%JSEscape(GetResourceString("Kadena.ContanctDetailsChange.Error"))|(user)administrator|(hash)8039ff05632b8fef8d87c34c9e20c0901345c4ff530b50660bdc55351ada8e60%}',
@@ -107,12 +107,12 @@
   };
   config.localization.checkoutButtons = {
     checkout: {
-      text: '{%JSEscape(GetResourceString("Kadena.Checkout.ProceedToCheckout"))|(user)rostyslav.diachenko@actum.cz|(hash)7fc9863118d9dd33a0105f7bebf508c75cefeaa02ea05580b0eb08635253cb27%}',
-      url: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_CheckoutPageUrl) |(user)rostyslav.diachenko@actum.cz|(hash)3ef79a7ccbb3f1b2ecb90b8192fe483c7dd616342d6286fb86020c59002c5e24%}'
+      text: '{%JSEscape(GetResourceString("Kadena.Checkout.ProceedToCheckout")) |(user)administrator|(hash)39aa5ec1a755d1cedcf45ca1e2e7e43c68cf74926666e96e04edf0f16c779cc6%}',
+      url: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_CheckoutPageUrl)|(user)administrator|(hash)b1c353c37b1d43c0a2fec704f7eaf9e85d9039380c6d1cf1823ca12d17e0bdc3%}'
     },
     products: {
-      text: '{%JSEscape(GetResourceString("Kadena.Checkout.ContinueShopping"))|(user)rostyslav.diachenko@actum.cz|(hash)5dce7fa245437f3fca5839e7fafbbd6dcf3944f7a6370f62d7d40c98fb7547f0%}',
-      url: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_ContinueShoppingUrl) |(user)rostyslav.diachenko@actum.cz|(hash)070d3820f393bdf09d86b4e3c55d7087bdbb957119a5f8659922605f6cc606c8%}'
+      text: '{%JSEscape(GetResourceString("Kadena.Checkout.ContinueShopping")) |(user)administrator|(hash)110d205a00ee16672679b8f00827130e8b9b59384c57f69c2bc8137a4fe37dc0%}',
+      url: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_ContinueShoppingUrl)|(user)administrator|(hash)b258c791b433d3021ba26a19ca3c2911ae5b782faa9c90931dfb6b8e294aff6e%}'
     }
   };
   
@@ -154,8 +154,8 @@
       text: '{%JSEscape(GetResourceString("Kadena.ChiliSaved.SuccessText"))|(user)administrator|(hash)fe464cc2aa9c69f4cf9c42604cff57cb6ca36e3e42270076e617e2f5f5ce384d%}'
     },
     addAddress: {
-      title: '{%JSEscape(GetResourceString("Kadena.AddAddress.SuccessTitle"))|(user)rostyslav.diachenko@actum.cz|(hash)fda2e7f51a451b4b5d50546b512240f14ad266772a6f8709ff90b727de203c63%}',
-      text: '{%JSEscape(GetResourceString("Kadena.AddAddress.SuccessText"))|(user)rostyslav.diachenko@actum.cz|(hash)bfa418526f0e55e291235f939ffaa195557b981dce3bb11c9d703951ee2ff533%}'
+      title: '{%JSEscape(GetResourceString("Kadena.AddAddress.SuccessTitle")) |(user)administrator|(hash)149f864b56e0b0f46f287b83605cfb5c5153a672f6f29b3fc0e5dd529f2cda80%}',
+      text: '{%JSEscape(GetResourceString("Kadena.AddAddress.SuccessText")) |(user)administrator|(hash)f3b51495f69518f44e2674635d9727b544aabb13fe8c001832c82db24c3c785e%}'
     },
     checkoutValidation  : {
       deliveryMethod: {
@@ -182,55 +182,55 @@
   };
   config.localization.staticFields = {
     validation: {
-      requiredMessage: '{%JSEscape(GetResourceString("Kadena.Field.RequiredMessage"))|(user)rostyslav.diachenko@actum.cz|(hash)d4eb9376f1d2ec01229945a039c00d1f138f5916e3d8fa411828ccc02a57974f%}',
-      optionalLabel: '{%JSEscape(GetResourceString("Kadena.Field.Optional"))|(user)rostyslav.diachenko@actum.cz|(hash)76a69f8b7509599b0184c46011468afc9905e954566919564cc678baea6e2d45%}'
+      requiredMessage: '{%JSEscape(GetResourceString("Kadena.Field.RequiredMessage")) |(user)administrator|(hash)27d3adc15192cde44d2a479fe57a54ab0457a65baaa113363e9e1129fb65812a%}',
+      optionalLabel: '{%JSEscape(GetResourceString("Kadena.Field.Optional")) |(user)administrator|(hash)e452351c8d2061700d592d81126a9590f98a0d3d5c9d57799325109c2a330f44%}'
     },
     password: {
-      show: '{%JSEscape(GetResourceString("Kadena.Field.Show"))|(user)rostyslav.diachenko@actum.cz|(hash)a72cd75bbddfcbe9e3077b350cfeb45086b6de2b1146d6435ca7f40818bd7d23%}',
-      hide: '{%JSEscape(GetResourceString("Kadena.Field.Hide"))|(user)rostyslav.diachenko@actum.cz|(hash)6e716e8668071c88e21f9ff746926e4798f5632731a8b439db900e5d04f6861a%}'
+      show: '{%JSEscape(GetResourceString("Kadena.Field.Show")) |(user)administrator|(hash)11ce99096a970927048ff0ffc684dad1cb690384c46fe60ec907687a373f8e1b%}',
+      hide: '{%JSEscape(GetResourceString("Kadena.Field.Hide")) |(user)administrator|(hash)9b4fcff407a6d23c39d98f946fdd107416cb6e7e828476701b013fc17818cfa8%}'
     }
   };
   config.localization.pagination= {
     template: {
-      string: '{% GetResourceString("Kadena.Paging.Current") |(user)tomas.rucki@actum.cz|(hash)d71969b16127d0eb0febd52a7da4e2fa92e3f2a0b377d96de12c62aa7bf7b1a4%}',
+      string: '{% GetResourceString("Kadena.Paging.Current")|(user)administrator|(hash)a33fb02d9ecb0d61c45afaead6cbc4942ec391b2a825af2bcf825d5cce128986%}',
       from: '[FROM]',
       to: '[TO]',
       total: '[TOTAL]',
     },
-    nextLabel: '{% GetResourceString("Kadena.Paging.Next") |(user)tomas.rucki@actum.cz|(hash)76263deb45dbc50dadfc642ab79f76a9093daa6a69286c42ca923fd779ee7df0%}',
-    backLabel: '{% GetResourceString("Kadena.Paging.Previous") |(user)tomas.rucki@actum.cz|(hash)9b6cb34e3eb6e770aa5de26e7362459c1f9f74bc12b1b61939c5286503f93fb4%}'
+    nextLabel: '{% GetResourceString("Kadena.Paging.Next")|(user)administrator|(hash)3c94f2535a6a76eeda51138cdc5a71b93cccb73e94367adb393d3a4f216b6d25%}',
+    backLabel: '{% GetResourceString("Kadena.Paging.Previous")|(user)administrator|(hash)a0bbe8f4c7bad10a74475d663450288cda5e1078d9554c72b8cd5c5120ccbeb7%}'
   };   
   config.localization.smarty= {
     url:'https://us-street.api.smartystreets.com/street-address',
-    key:''+{%Settings.SmartyKey|(user)cvoqa2@gmail.com|(hash)a77d611b45b63cc6503e12eeb400db9b1e2784045fe6804814a3a33ca8121f7b%}+'',
-    errorLabel: '{% GetResourceString("Kadena.Smarty.ErrorText") |(user)cvoqa2@gmail.com|(hash)a9a8782099ca4650ca3480ba8d5ce95117c83299b1959d22ed90d62c57a7a74b%}',
-    reqErrorLabel:'{% GetResourceString("Kadena.Smarty.ReqErrorText") |(user)cvoqa2@gmail.com|(hash)ca9ebd29bbebcb697ec62abfbabf702e8de1847351558a427cff70089b24ba4a%}',
-    missingInputLabel:'{% GetResourceString("Kadena.Smarty.MissingInputText") |(user)cvoqa2@gmail.com|(hash)9a457ca9af15a5aeef79d5a1b50ac2f5db53af5bd70c893ab941fcdfb2e6fe89%}',
-    certifyMessageLabel:'{% GetResourceString("Kadena.Smarty.CertifyMessageText") |(user)cvoqa2@gmail.com|(hash)147df896af8e772fc4dc5c227d3e971c646b2403131f716649772bee0732724e%}',
-    autoCompleteCount:'{% GetResourceString("Kadena.Smarty.AutoCompleteCount") |(user)cvoqa2@gmail.com|(hash)5c224d0a48af68ac29ae2fa02133c3e1426a93fd3562803dfae02728c1633862%}',
-    candidateCount:'{% GetResourceString("Kadena.Smarty.CandidateCount") |(user)cvoqa2@gmail.com|(hash)99c9daa20c4dbd36e7af5cc0610f6c41738ee28e9dd0ae761b720c344ebd026e%}'
+    key:''+{%Settings.SmartyKey |(user)administrator|(hash)a813e4c9bf5d0c2c47eae906a68bb19077491b6585e7fa44e424c3936ed1f88f%}+'',
+    errorLabel: '{% GetResourceString("Kadena.Smarty.ErrorText")|(user)administrator|(hash)ce752d13aa2bc80f19a3876863abb0fa6daa932796ddaeb62efcde0d9f14498f%}',
+    reqErrorLabel:'{% GetResourceString("Kadena.Smarty.ReqErrorText")|(user)administrator|(hash)9fa165ab9f47f36e5abe93c84dff4e1ed72dd8fb3629a87cdb4e28af7e3a862e%}',
+    missingInputLabel:'{% GetResourceString("Kadena.Smarty.MissingInputText")|(user)administrator|(hash)430d677b1614c5d4cffb2f92dd0f89649967067952f93be656c7b67cb6e144e3%}',
+    certifyMessageLabel:'{% GetResourceString("Kadena.Smarty.CertifyMessageText")|(user)administrator|(hash)2b5fc399549ee7e75ed0c672b547eefe04bb1f299ac4d10f53a452c03cc878e0%}',
+    autoCompleteCount:'{% GetResourceString("Kadena.Smarty.AutoCompleteCount")|(user)administrator|(hash)fe093fa6ad51bdea65d34492339c4eabe059a2605d40ec7b999253c1c9749339%}',
+    candidateCount:'{% GetResourceString("Kadena.Smarty.CandidateCount")|(user)administrator|(hash)a5e590111b50e4c99a425943008c8e279886a893ec926420ad2045b2f5c98f98%}'
   };
   config.localization.globalSuccess= {
-    addSuccessMessage: '{% GetResourceString("Kadena.GlobalSuccess.AddSuccessMessage") |(user)cvoqa2@gmail.com|(hash)d586e1841f580cf46d6ea516169c515756a1c781a9af08a1c71cc24d2eb54871%}',
-    updateSuccessMessage:'{% GetResourceString("Kadena.GlobalSuccess.UpdateSuccessMessage") |(user)cvoqa2@gmail.com|(hash)ef56d821bc2a31eba96f03ab1a2106db1b9d4f3d75cc93f2dac824b5029cc0af%}',
-    deleteSuccessMessage: '{% GetResourceString("Kadena.GlobalSuccess.DeleteSuccessMessage") |(user)cvoqa2@gmail.com|(hash)499501cb9ff2489885508d87ce0abfc8fff51cedd99a9e2a8748223697d1ab69%}',
-    errorMessage: '{% GetResourceString("Kadena.GlobalError.ErrorMessage") |(user)cvoqa2@gmail.com|(hash)f09f3902d02277c84d599e72dd4711a8c7adcc81a785e6481dd27493e9906263%}',
-    pOSMappedWithProductError: '{% GetResourceString("KDA.POS.MappedWithProductError") |(user)cvoqa2@gmail.com|(hash)0a1cb614f2598768e54571f4626b2fd18cac51e8a5c8a7c3d724fae1f4ef60da%}'
+    addSuccessMessage: '{% GetResourceString("Kadena.GlobalSuccess.AddSuccessMessage")|(user)administrator|(hash)4c1f1e1dcbd5d2941dc7455212de72cbe1645535b355e478d280982b54d96ec1%}',
+    updateSuccessMessage:'{% GetResourceString("Kadena.GlobalSuccess.UpdateSuccessMessage")|(user)administrator|(hash)4c8eed8cf9ebd05ba67e036df1aaa128cb2c55b73135b30c4013b3ca3b9c24a4%}',
+    deleteSuccessMessage: '{% GetResourceString("Kadena.GlobalSuccess.DeleteSuccessMessage") |(user)administrator|(hash)7a2c862817a1efaeedc5775027951c673b9e5706f0ff97136e8f6fa3a342deb9%}',
+    errorMessage: '{% GetResourceString("Kadena.GlobalError.ErrorMessage")|(user)administrator|(hash)34dd2978f8704269393fd9655ff0bdb8a5b57c404b6916c315a4c1d4aec43476%}',
+    pOSMappedWithProductError: '{% GetResourceString("KDA.POS.MappedWithProductError")|(user)administrator|(hash)0757c422f7e42bdd7635af86a032e01a66d5d608aff4ba12e1b8bbd65853e169%}'
   };
   config.localization.orders= {
-    orderScheduleTaskStartMessage: '{% GetResourceString("KDA.OrderSchedular.ExecutionStartMessage") |(user)cvoqa2@gmail.com|(hash)2241462dc6a0e392554d92d91eeafb8cfaabcb6086c8cfaf2a5a66d58eac7c99%}',
-    orderSuccessMessage: '{% GetResourceString("KDA.Checkout.OrderSuccess") |(user)cvoqa2@gmail.com|(hash)ef72c69aaf39631cc4523c3026293dd1df7f6374c79282b24084f69ac8a2dc04%}',
-    orderErrorMessage: '{% GetResourceString("KDA.Checkout.OrderError") |(user)cvoqa2@gmail.com|(hash)64458d21b206b89ed32d00c74585cbab2b2ea527a5d5a9749700392088292645%}',
-    cartContainsInvalidProducts: '{% GetResourceString("KDA.Cart.CartContainsInvalidProducts") |(user)cvoqa2@gmail.com|(hash)7812e266e1c24f684a8ad645a108b8914db9e2fe44d09e2b1de0f968feb6db32%}',
-    invalidProduct: '{% GetResourceString("KDA.Cart.InvalidProduct") |(user)cvoqa2@gmail.com|(hash)9be270fcd983926b5c96a291cbee62db9f479e48c5219938a17a8d7de645536e%}'
+    orderScheduleTaskStartMessage: '{% GetResourceString("KDA.OrderSchedular.ExecutionStartMessage")|(user)administrator|(hash)4d943388a41232ac5ddb28928aabfe7d5488cea7ba4b86ee5a1e074c919cc980%}',
+    orderSuccessMessage: '{% GetResourceString("KDA.Checkout.OrderSuccess")|(user)administrator|(hash)38e5a55c64517f94979dc529f4f1df2462a8bc5543570595a68fc9c8749c96f6%}',
+    orderErrorMessage: '{% GetResourceString("KDA.Checkout.OrderError")|(user)administrator|(hash)3229a92426fa316a578acd0c10351ca1c8914cf96049aeff59aba89376b37561%}',
+    cartContainsInvalidProducts: '{% GetResourceString("KDA.Cart.CartContainsInvalidProducts")|(user)administrator|(hash)db9c5a25f273d5332c7891bf79bb67fba1b04d3cc06c2982fb4c29500de7ad54%}',
+    invalidProduct: '{% GetResourceString("KDA.Cart.InvalidProduct")|(user)administrator|(hash)f6a7647f0ba6b0a75d9e3a5633f4b79f2624b55dc13e6570eb04e90e0de16c2c%}'
   };
   config.localization.tac= {
-    show: {% KadenaNamespace.ShowTaC().ToString().ToLower() |(user)rostyslav.diachenko@actum.cz|(hash)fb0482780c975722b630d1be8cde8b4d788ca6b5fdd539bb6ca22bb46bb0109e%},
+    show: {% KadenaNamespace.ShowTaC().ToString().ToLower()|(user)administrator|(hash)6885d90621575c7e47d255d23df491c6890f36726ebe98b4b8bab03b9746e2ee%},
     title: '{$Kadena.TermsAndConditions.Title$}',
     submitText: '{$Kadena.TermsAndConditions.Accept$}',
     acceptTaCUrl: 'api/user/accepttac',
     checkTaCUrl: 'api/user/checktac',
-    iframeUrl: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_TermsAndConditionPage) |(user)rostyslav.diachenko@actum.cz|(hash)d3da338f27c0ef291ffe93fda5fd5fd555a0650fdb5e673861e4f4284f570b7d%}'
+    iframeUrl: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_TermsAndConditionPage)|(user)administrator|(hash)e994358e78f9c46170b4f82e490bf9ac61d96bceaedc26c7fb2cbd69e6927522%}'
   };
 </script>
 
@@ -238,7 +238,7 @@
 <script src="/js/app.min.js"></script>
 <script src="/CMSScripts/Custom/Kadena/custom.js?v=0.1"></script>
 <script src="/CMSScripts/Custom/Kadena/KadenaExtension.js"></script>
-{%Settings.KDA_EnableSmartyStreet ? "<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script><script src='//d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/4.1/jquery.liveaddress.min.js'></script><script src='~/CMSScripts/Custom/Kadena/SmartyStreet.js'></script>" : ""|(user)rostyslav.diachenko@actum.cz|(hash)4f90e99bc3089e58bf4adab84fb39a439196cf1cec30bd65cf31b4f0be581658%}
+{%Settings.KDA_EnableSmartyStreet ? "<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script><script src='//d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/4.1/jquery.liveaddress.min.js'></script><script src='~/CMSScripts/Custom/Kadena/SmartyStreet.js'></script>" : "" |(user)administrator|(hash)7da159f3d4e3e9aa74c3980c83ea0392e331aeb4277da0687d98a5f5c6057f83%}
 
 
 
@@ -525,9 +525,9 @@
 <![CDATA[
 config.localization.languages = {
         url: '/api/usersettings/savelocalization',
-        selected: '{% LocalizationContext.CurrentCulture.CultureShortName |(user)tomas.rucki@actum.cz|(hash)2fbd1c8c6b5ce501826006147a1b08eae8d3a10b1208edb38f44feff6fb1c601%}',
-        languages: {% KadenaNamespace.GetUrlsForLanguageSelector(CurrentDocument.NodeAliasPath) |(user)tomas.rucki@actum.cz|(hash)d42d59abfc188a6a5f5a8e0b27ab7171fdfbb92874748127bacc67f56d52b66d%},
-        locale: '{% LocalizationContext.CurrentCulture.CultureCode |(user)rostyslav.diachenko@actum.cz|(hash)9a7da667d65bd3c5543dde45b302df958df905497305769c94a77023c9ca25dd%}'
+        selected: '{% LocalizationContext.CurrentCulture.CultureShortName|(user)administrator|(hash)49239d523cd54db6d47e1af49a9f5c6502b12c74755e56402d0e11f1178622a7%}',
+        languages: {% KadenaNamespace.GetUrlsForLanguageSelector(CurrentDocument.NodeAliasPath)|(user)administrator|(hash)09895cd7d018b28506ce8fa745f46e64163937e5b0865622f555842026f80f35%},
+        locale: '{% LocalizationContext.CurrentCulture.CultureCode|(user)administrator|(hash)46355d957f946805ad97428ece930c9427b990e91a442d8e04e36cb6c9d18659%}'
 }
 ]]>
           </property>
@@ -537,7 +537,7 @@ config.localization.languages = {
           <property name="linkedfilepagelocation">Header</property>
           <property name="showfordocumenttypes"></property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% CurrentSite.HasMultipleCultures |(user)tomas.rucki@actum.cz|(hash)0f7530668a9e01e014218f2361e4eb65416f4c7a43be224e4de4c10d7d399542%}]]>
+            <![CDATA[{% CurrentSite.HasMultipleCultures|(user)administrator|(hash)0bcf512bfcd00803283b8390ce867cad632361aed3e6c80dd57e755860138392%}]]>
           </property>
           <property name="webparttitle">Language selector</property>
           <property name="webparttype">javascript</property>
@@ -753,7 +753,7 @@ config.localization.languages = {
           <property name="text">
 <![CDATA[
 <li class="nav-item js-cart-preview">
-  <a class="nav-link" href="{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_CheckoutPageUrl) |(user)tomas.rucki@actum.cz|(hash)ac0240d94ab56fe46b35f5758a43eb7909c95e0fa971955d8f86899a60b57fef%}">
+  <a class="nav-link" href="{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_CheckoutPageUrl)|(user)administrator|(hash)b1c353c37b1d43c0a2fec704f7eaf9e85d9039380c6d1cf1823ca12d17e0bdc3%}">
     <svg class="icon icon-navigation icon-dashboard">
       <use xlink:href="/gfx/svg/sprites/icons.svg#cart" />
     </svg>
@@ -767,7 +767,7 @@ config.localization.languages = {
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{%((Settings.KDA_OrdersModuleEnabled == "enabled" || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor)) && (CurrentUser.IsAuthorizedPerResource("Kadena_RecentOrders", "KDA_ContentEnabled") || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor))) && ECommerceContext.CurrentCustomer != null && !Settings.KDA_IsPreBuyCartEnabled|(user)cvoqa2@gmail.com|(hash)294fdec0c7d4943cc9831c4209757520e79278fb146618ccef87fc3156ede2bf%}]]>
+            <![CDATA[{%((Settings.KDA_OrdersModuleEnabled == "enabled" || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor)) && (CurrentUser.IsAuthorizedPerResource("Kadena_RecentOrders", "KDA_ContentEnabled") || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor))) && ECommerceContext.CurrentCustomer != null && !Settings.KDA_IsPreBuyCartEnabled |(user)administrator|(hash)eb7b175cc800141a99873aa6a527c412ffaab1d9684d9e96c11d8b1bbc466458%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>
@@ -813,11 +813,11 @@ config.localization.languages = {
           <property name="showfordocumenttypes"></property>
           <property name="timezonetype">inherit</property>
           <property name="url" ismacro="true">
-            <![CDATA[{% Settings.PreBuyPageURL |(user)cvoqa2@gmail.com|(hash)1e1cdab0482f840509962500187a437b4b34883583d8ed95ce87f98cb58179d9%}]]>
+            <![CDATA[{% Settings.PreBuyPageURL|(user)administrator|(hash)97734e07e3bdf7dd39cba9cac1dd1de17aa174b10a89f6cb39696a4d70376df7%}]]>
           </property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{%Settings.KDA_IsPreBuyCartEnabled && IsCampaignOpen()|(user)Abdul.Raheman|(hash)53f1ab3684dfa2ed998a2719d1e83197d361acdbba238e1fc00797d945d9248b%}]]>
+            <![CDATA[{%Settings.KDA_IsPreBuyCartEnabled && IsCampaignOpen() |(user)administrator|(hash)dc5f20dd53a8cb96df51dee26cfd0b46e5bf97e9120258f99991984573eb3736%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">ShoppingCartCount</property>
@@ -863,11 +863,11 @@ config.localization.languages = {
           <property name="showfordocumenttypes"></property>
           <property name="timezonetype">inherit</property>
           <property name="url" ismacro="true">
-            <![CDATA[{% Settings.GeneralInventoryPageURL|(user)cvoqa2@gmail.com|(hash)d37fe6ea30756a582585dbd44fa805690c6cde4541a05dd7f062495758908de8%}]]>
+            <![CDATA[{% Settings.GeneralInventoryPageURL |(user)administrator|(hash)ffea47096d76c98c0971cdee4d7f6aac747cb5f56701f9c02c0f736fe4e83646%}]]>
           </property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{%Settings.KDA_IsPreBuyCartEnabled|(user)cvoqa2@gmail.com|(hash)2e4a40e729d4eef5258b9d214aedf69b64c60d286638b8dd57f8dfea6d46bc7b%}]]>
+            <![CDATA[{%Settings.KDA_IsPreBuyCartEnabled |(user)administrator|(hash)1534dc3aa827badfbac1588939931f81b8f0a6c627763c561e8fa1356b85e0f0%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">ShoppingCartCount</property>
@@ -1170,7 +1170,7 @@ config.localization.languages = {
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<a href='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_TermsAndConditionsURL) |(user)tomas.rucki@actum.cz|(hash)ffa9ea5b5106c34a19089541516c73779f9f3d031c65861400c6828fc3c050f0%}'>{$ Kadena.TermsAndConditions $}</a>]]>
+            <![CDATA[<a href='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_TermsAndConditionsURL)|(user)administrator|(hash)2d842120dac39a68cdcf7b11af10343308b77065b366bc6ba5dca00e411e19b7%}'>{$ Kadena.TermsAndConditions $}</a>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -1221,7 +1221,7 @@ config.localization.languages = {
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<a href='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_ContactUsURL) |(user)tomas.rucki@actum.cz|(hash)eaec9e56f31bd20d2e0aae0bd6e4e491efe02e19c7f132c72d25a5fd34779f84%}'>{$ Kadena.ContactUs $}</a>]]>
+            <![CDATA[<a href='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_ContactUsURL)|(user)administrator|(hash)bc0c548f1f1def5d4b5b03e9490b829f86ad0fb1f5a72428bd9f0e8a54551b35%}'>{$ Kadena.ContactUs $}</a>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -1324,12 +1324,12 @@ config.localization.languages = {
           <property name="transformationname">KDA.Module._MainNavigationEnabled</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{%if(Settings.KDA_AdminModuleEnabled=="enabled" && (CurrentDocument.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.Parent.ClassName=="KDA.AdminModule")){return false;}else{return true;}|(user)twe_admin|(hash)f02cf565ef0f1b65045d931ed99778009ac7791f5dca655e7b23aaad16ddb762%}]]>
+            <![CDATA[{%if(Settings.KDA_AdminModuleEnabled=="enabled" && (CurrentDocument.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.Parent.ClassName=="KDA.AdminModule")){return false;}else{return true;} |(user)administrator|(hash)703dcfecf53cb33a0eeeae7ee822cfa829e071df949cc3726bb242714f76e572%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">repeater</property>
           <property name="wherecondition" ismacro="true">
-            <![CDATA[{% KadenaNamespace.GetMainNavigationWhereCondition(true)|(handlesqlinjection)false |(user)michal.machacek@actum.cz|(hash)4703396a420b7818590aebc805a6eb1e56ca04a137d471f1cf3c53183224f6a1%}]]>
+            <![CDATA[{% KadenaNamespace.GetMainNavigationWhereCondition(true)|(handlesqlinjection)false|(user)administrator|(hash)544511554edc295a14c1c09a0de6a78d04d53758a04e3b53e6fe343c23328e4f%}]]>
           </property>
           <property name="zerorowstext">No data found</property>
         </webpart>
@@ -1432,7 +1432,7 @@ config.localization.languages = {
           <property name="webparttype">repeater</property>
           <property name="wherecondition" ismacro="true">
 <![CDATA[
-{% KadenaNamespace.GetMainNavigationWhereCondition(false)|(handlesqlinjection)false |(user)michal.machacek@actum.cz|(hash)49d1b2d0d8856e862381ac305e6c21599c8448b3d4c98aed26479c1727a33306%}
+{% KadenaNamespace.GetMainNavigationWhereCondition(false)|(handlesqlinjection)false|(user)administrator|(hash)02d5b2f0aadeaf0749c2463ae3645ec5ce27c86a3b931a75b5f425f427e8e813%}
 
 ]]>
           </property>
@@ -1533,13 +1533,13 @@ config.localization.languages = {
           <property name="transformationname">KDA.Module._MainNavigationEnabled</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{%if(Settings.KDA_AdminModuleEnabled=="enabled" && (CurrentDocument.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.Parent.ClassName=="KDA.AdminModule")){return true;}else{return false;}|(user)twe_admin|(hash)1de6a519bd6e672ece88bf49db6c9a692798dd0d56e233b66785bb383ad3d156%}]]>
+            <![CDATA[{%if(Settings.KDA_AdminModuleEnabled=="enabled" && (CurrentDocument.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.ClassName=="KDA.AdminModule" || CurrentDocument.Parent.Parent.ClassName=="KDA.AdminModule")){return true;}else{return false;} |(user)administrator|(hash)682de4f5ceae7beb89d4bb1c2b1cdcec8103ad954c2d110c1cfadcf78d7010b0%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">repeater</property>
           <property name="wherecondition" ismacro="true">
 <![CDATA[
-{% KadenaNamespace.GetMainNavigationWhereCondition(true)|(handlesqlinjection)false |(user)michal.machacek@actum.cz|(hash)4703396a420b7818590aebc805a6eb1e56ca04a137d471f1cf3c53183224f6a1%}
+{% KadenaNamespace.GetMainNavigationWhereCondition(true)|(handlesqlinjection)false|(user)administrator|(hash)544511554edc295a14c1c09a0de6a78d04d53758a04e3b53e6fe343c23328e4f%}
 
 ]]>
           </property>
@@ -1646,7 +1646,7 @@ config.localization.languages = {
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% !String.IsNullOrWhiteSpace(ProductImage) |(user)rostyslav.diachenko@actum.cz|(hash)515c926b7c4efa6fc67410b245417088853f12bd746e9ee77435c2a8fb4ec9cc%}]]>
+            <![CDATA[{% !String.IsNullOrWhiteSpace(ProductImage)|(user)administrator|(hash)c2f0c41b3f0b274afea9ad33373b3a10dedbf9ad278bb4dd72fb558a4143f582%}]]>
           </property>
           <property name="webparttitle">Product large image</property>
           <property name="webparttype">statictext</property>

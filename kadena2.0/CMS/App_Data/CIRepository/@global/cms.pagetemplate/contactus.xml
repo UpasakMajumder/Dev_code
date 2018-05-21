@@ -84,7 +84,7 @@
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<div class="contact j-contact-us-form" data-handler="/CMSPages/Kadena/SubmitContactUsForm.ashx" data-thank-you-page='{%KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_MessageSentPageUrl)|(user)rostyslav.diachenko@actum.cz|(hash)593775f981d8ae643ef23ce2f2e43391d1fcb739dda3dfa204b54098b95110b4%}'>
+<div class="contact j-contact-us-form" data-handler="/CMSPages/Kadena/SubmitContactUsForm.ashx" data-thank-you-page='{%KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_MessageSentPageUrl) |(user)administrator|(hash)788f3a444b7e4f803337d8c6e69fd0ed5d8b569fe12848e1cdae6c5846bb4b2e%}'>
     <div class="contact__form">
         <div class="input__wrapper">
             <span class="input__label">{$Kadena.ContactForm.FullName$}

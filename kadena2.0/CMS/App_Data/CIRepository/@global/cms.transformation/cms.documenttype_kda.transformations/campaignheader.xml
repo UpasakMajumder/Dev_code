@@ -11,11 +11,11 @@
 <table id="reptable"  class="table show__table-bottom">
   <tbody>
     <tr>
-      <th>{% GetResourceString("Kadena.Campaignlst.NameHearder") |(user)cvoqa2@gmail.com|(hash)ac1e778e9c8f4794c642c671d69e83a64f20ee9fec8260c0e6217196b79eccee%}</th>
-      <th>{% GetResourceString("Kadena.Campaignlst.DesText") |(user)cvoqa2@gmail.com|(hash)e284b98bbcd091ef902ef302efc460b8be7cb62f47357007db82a24c188e6a3e%}</th>
-      <th>{% GetResourceString("Kadena.Campaignlst.CreatedDateText") |(user)cvoqa2@gmail.com|(hash)461faa3f97b89aa25cf9aa539f571f856d0bf0d7e5a7f7b3ad2f57cb59f94e01%}</th>
-      <th>{% GetResourceString("Kadena.Campaignlst.ModifiedDateText") |(user)cvoqa2@gmail.com|(hash)3d3afe7d15f75fd6838595857436cf1bd050900f2d965c3602c26ee305d656ff%}</th>
-      <th><div class="text-center">{% GetResourceString("Kadena.Campaignlst.ActionText") |(user)cvoqa2@gmail.com|(hash)a39291082e4e94a4999859e5bda52ad87d60a6a7710428c29068f2150c9be15a%}</div></th>
+      <th>{% GetResourceString("Kadena.Campaignlst.NameHearder")|(user)administrator|(hash)041d3d49bdc97bc6f5e3b97f706dc46a758e60a0d2ee4b49cb2a833edb99ee8c%}</th>
+      <th>{% GetResourceString("Kadena.Campaignlst.DesText")|(user)administrator|(hash)c6aedeb02a50e79c161593fead15ee84666eab36be33f2b58dcdba72d7687955%}</th>
+      <th>{% GetResourceString("Kadena.Campaignlst.CreatedDateText")|(user)administrator|(hash)ca2c634a393387e3744406d15514c6fc4ac229fa603651aabd9bfa9a1d8d8b23%}</th>
+      <th>{% GetResourceString("Kadena.Campaignlst.ModifiedDateText")|(user)administrator|(hash)2c584929f1d244d8015e8e3b6e5cf9c31acbebd3f8bf897da8a5b1fb0f316794%}</th>
+      <th><div class="text-center">{% GetResourceString("Kadena.Campaignlst.ActionText")|(user)administrator|(hash)260bf5830ac6f8adf408e57b9e8302d662d2231cf6678b0aa6fd1c67332ede46%}</div></th>
     </tr>
 ]]>
   </TransformationCode>

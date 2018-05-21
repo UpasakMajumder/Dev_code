@@ -98,9 +98,9 @@
           <property name="inlinescript">
 <![CDATA[
 config.localization.cardPayment = {
-        URL3DSi: '{% Settings.GetValue("KDA_CreditCard_3DSi_AuthorizeEndpoint", string.Empty) |(user)michal.machacek@actum.cz|(hash)d959a363d031ec105773138138cf79b0bc0f25bc9c8a5472bda42c7ef5daa5ac%}',
+        URL3DSi: '{% Settings.GetValue("KDA_CreditCard_3DSi_AuthorizeEndpoint", string.Empty) |(user)administrator|(hash)ba3f45834fbc3793bb3915cbf6916e0781cd397b77caf083bacbab8159e54655%}',
         RedirectURL: '/api/3dsi/creditcarddone',
-        ResultURL: '{% Settings.GetValue("KDA_CreditCard_SaveTokenUrl", string.Empty) |(user)michal.machacek@actum.cz|(hash)75e072dc81103f93678f0b819dc33ad0a9c177fc53842758d073cc722a5616d1%}',
+        ResultURL: '{% Settings.GetValue("KDA_CreditCard_SaveTokenUrl", string.Empty) |(user)administrator|(hash)c21496d6911c0d35462e22a8ac7fc3ec5dc7c21017a3ad96914ffc626e8edd0e%}',
         ResponseType: 'Return',
         acceptedCards: ['visa', 'amex', 'mastercard'],
         submitButtonText: '{$Kadena.CreditCard.ProceedPaymentButton$}',
@@ -129,20 +129,20 @@ config.localization.cardPayment = {
             cardLabel: '{$Kadena.CreditCard.ExpiryCardPlaceholder$}'
           },
         },
-        DemoURL: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.GetValue("KDA_CreditCard_PaymentResultPage", string.Empty))|(user)michal.machacek@actum.cz|(hash)7f30219181c97f06264eb18078da115464921f30b9b9357effec24bdff54723b%}?success=true&order_id=123456789',
+        DemoURL: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.GetValue("KDA_CreditCard_PaymentResultPage", string.Empty))|(user)administrator|(hash)87f5b4018dcddefc764821786ba03da55ca27544a0e20408a1e609454b5fd317%}?success=true&order_id=123456789',
         APCount: '0',
         PTCount: '0',
         CreditCard_CSCIndicator: 'Provided',
-        CustomerIdentifier_MerchantCode: '{% Settings.GetValue("KDA_CreditCard_MerchantCode", string.Empty) |(user)michal.machacek@actum.cz|(hash)6a1f636bea5f7d80c57edab0a2df332b3923a834a65aa5d10ad227ae82a41a92%}', 
-        CustomerIdentifier_LocationCode: '{% Settings.GetValue("KDA_CreditCard_LocationCode", string.Empty) |(user)michal.machacek@actum.cz|(hash)dd51852260319571fab93fb4824048bf653cd9779825414d9fbaea5046c72e28%}',
-        CustomerIdentifier_CustomerCode: '{% Settings.GetValue("KDA_CreditCard_Code", string.Empty) |(user)michal.machacek@actum.cz|(hash)77ffd9b7d66b28a302e17ec9904b4bce8f07fe61eed7082a4ce54176bbcf02d9%}',
-        TerminalIdentifier_LocationCode: '{% Settings.GetValue("KDA_CreditCard_TerminalIdentifier_LocationCode", string.Empty) |(user)michal.machacek@actum.cz|(hash)1abdfb77697f41e421b949fb68afb3005f9682509b84164f479913a9734c7c85%}', 
-        TerminalIdentifier_TerminalCode: '{% Settings.GetValue("KDA_CreditCard_TerminalIdentifier_TerminalCode", string.Empty) |(user)michal.machacek@actum.cz|(hash)06ae384ab07f8bdb6fe886c9a4b8b8296d3d9cf81a9305859445a2a182bab99f%}', 
-        TerminalIdentifier_MerchantCode: '{% Settings.GetValue("KDA_CreditCard_TerminalIdentifier_MerchantCode", string.Empty) |(user)michal.machacek@actum.cz|(hash)73431169390f08f4e68658bb8065d00877348d8db4d9cc6f53cd329d668aec64%}',
-        CreditCard_BillingAddress_AddressLine1: '{% Settings.GetValue("KDA_CreditCard_BillingAddress_AddressLine1", string.Empty) |(user)michal.machacek@actum.cz|(hash)4543df764ce0865dc5ccde3ce62325636c995ce532923029650ce7d617c79039%}',
-        CreditCard_BillingAddress_PostalCode: '{% Settings.GetValue("KDA_CreditCard_BillingAddress_PostalCode", string.Empty) |(user)michal.machacek@actum.cz|(hash)c874c97118b536ec86741f0a946b005f439284f4f6e953812ad15fbbebe611b3%}',
+        CustomerIdentifier_MerchantCode: '{% Settings.GetValue("KDA_CreditCard_MerchantCode", string.Empty) |(user)administrator|(hash)ef12f8df0c2787a0ee726ce9a82b0afb69bb781016006f5a49fe99f8af915f64%}', 
+        CustomerIdentifier_LocationCode: '{% Settings.GetValue("KDA_CreditCard_LocationCode", string.Empty) |(user)administrator|(hash)c62567c434c84bab056830cf4b94959d76839093cb691d0c7cfb57e672184088%}',
+        CustomerIdentifier_CustomerCode: '{% Settings.GetValue("KDA_CreditCard_Code", string.Empty) |(user)administrator|(hash)0a6746334deb4b8a4274eecfd3c56a680113e78d18e83f74e5828edf8059416c%}',
+        TerminalIdentifier_LocationCode: '{% Settings.GetValue("KDA_CreditCard_TerminalIdentifier_LocationCode", string.Empty) |(user)administrator|(hash)39e446162bf5049610e65dfd1e1908bd6012c0c6b3e58d59e92a28114334cba0%}', 
+        TerminalIdentifier_TerminalCode: '{% Settings.GetValue("KDA_CreditCard_TerminalIdentifier_TerminalCode", string.Empty) |(user)administrator|(hash)a3093ec823276f0e7404686fba50b2bbedb34edf39b518273a367cfa6b84ea11%}', 
+        TerminalIdentifier_MerchantCode: '{% Settings.GetValue("KDA_CreditCard_TerminalIdentifier_MerchantCode", string.Empty) |(user)administrator|(hash)ae7fab446923c7c2c90f06990834d4449c990bfa2840818ff8fde2969724337c%}',
+        CreditCard_BillingAddress_AddressLine1: '{% Settings.GetValue("KDA_CreditCard_BillingAddress_AddressLine1", string.Empty) |(user)administrator|(hash)819ae86b913f47e75868c8707aa02aaca77226b582747a8b924844cc9fe73ed8%}',
+        CreditCard_BillingAddress_PostalCode: '{% Settings.GetValue("KDA_CreditCard_BillingAddress_PostalCode", string.Empty) |(user)administrator|(hash)d989fe61dee385afb61cde4693c33cef941da6cc245e02bbb9d4e7d37eaf192f%}',
         saveToProfile:{
-          exists: {%Settings.GetValue("KDA_CreditCard_EnableSaveCard", "false").ToLower()|(user)michal.machacek@actum.cz|(hash)126a3429442500e9d24251ab8e08b4adec74681794e7c5c7e2339be532b08221%},
+          exists: {%Settings.GetValue("KDA_CreditCard_EnableSaveCard", "false").ToLower()|(user)administrator|(hash)ec2c2883d8e360b91de530e873654c116e2fd7fca66badc1b7c7ea95d4626fa5%},
           label: '{$Kadena.CreditCard.SaveCardLabel$}',
           url: '/api/3dsi/saveCard'
         }
@@ -290,7 +290,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty |(user)michal.machacek@actum.cz|(hash)ff867895da2b5b628922aa2c39039994a38f838338f9a73c2c453995ecdf89a9%}]]>
+            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty|(user)administrator|(hash)95ebceee10f40317dc794cc24a0cccc7de70c540ef159457185d13a9ec0d037a%}]]>
           </property>
         </properties>
       </webpartzone>
@@ -318,7 +318,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty |(user)michal.machacek@actum.cz|(hash)ff867895da2b5b628922aa2c39039994a38f838338f9a73c2c453995ecdf89a9%}]]>
+            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty|(user)administrator|(hash)95ebceee10f40317dc794cc24a0cccc7de70c540ef159457185d13a9ec0d037a%}]]>
           </property>
         </properties>
       </webpartzone>

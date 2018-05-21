@@ -88,45 +88,45 @@
           <property name="inlinescript">
 <![CDATA[
 config.localization.registration = {
-            title: '{%JSEscape(GetResourceString("Kadena.Signup.Header"))|(user)rostyslav.diachenko@actum.cz|(hash)254f55ec9e58b96395d918e96b8514432d9cea448e0cc9245071eefbe939f855%}',
+            title: '{%JSEscape(GetResourceString("Kadena.Signup.Header"))|(user)administrator|(hash)861d5f14208f80503e5d47649c068fb2822837e0def6d89455a3f6fd12c53363%}',
             labels:
             {
-              firstName: '{%JSEscape(GetResourceString("Kadena.Signup.FirstName"))|(user)rostyslav.diachenko@actum.cz|(hash)578571c4f1bf463f2e3346b443f7161ee31d2351fbf6fb8993b4e30822bc37df%}',
-              lastName: '{%JSEscape(GetResourceString("Kadena.Signup.LastName"))|(user)rostyslav.diachenko@actum.cz|(hash)855be60752f6984f2d6f70b42659a6b1ea382667edfc0666d5c592a3f2c26690%}',
-              email: '{%JSEscape(GetResourceString("Kadena.Signup.Email"))|(user)rostyslav.diachenko@actum.cz|(hash)1e2532dd205843d77cd895bd7792fcea36ada81dd913a704627625c601da1fc0%}',
-              password: '{%JSEscape(GetResourceString("Kadena.Signup.Password"))|(user)rostyslav.diachenko@actum.cz|(hash)97ef5f2d58085c0d4cf28afe64c78a39ff1d4589909d2cefe0539a956c511bde%}',
-              confirmPassword: '{%JSEscape(GetResourceString("Kadena.Signup.ConfirmPassword"))|(user)rostyslav.diachenko@actum.cz|(hash)dd08e1afcb8131bc00855ba510b586843b2cb3fd93990dce1d9ce6ffc87f0abd%}',
-              button: '{%JSEscape(GetResourceString("Kadena.Signup.ButtonText"))|(user)rostyslav.diachenko@actum.cz|(hash)1fdade6036cb979e849e762258e5aed53d916ddae66bda38dbb71116b7ee07fa%}'
+              firstName: '{%JSEscape(GetResourceString("Kadena.Signup.FirstName"))|(user)administrator|(hash)6c291cfd5337f66bef14e851b27e112f3627f1bce49778726f969eb9cf54b513%}',
+              lastName: '{%JSEscape(GetResourceString("Kadena.Signup.LastName"))|(user)administrator|(hash)eac2e2843625bf25cf5df91e17603c62be0bb626dd814fd022c2109d76d7fbc6%}',
+              email: '{%JSEscape(GetResourceString("Kadena.Signup.Email"))|(user)administrator|(hash)48523a2403001ec7b7a7624c0201ccd027281eb5fccce29b5dd981bde70666fe%}',
+              password: '{%JSEscape(GetResourceString("Kadena.Signup.Password"))|(user)administrator|(hash)3691600a31924e1a518ff274079034c48539548e2d4068060f6c1d08d3868833%}',
+              confirmPassword: '{%JSEscape(GetResourceString("Kadena.Signup.ConfirmPassword"))|(user)administrator|(hash)499b29af6fcb0ec2c0a2ff5f134aca1f073326463b983b2b40559e8e5be6439c%}',
+              button: '{%JSEscape(GetResourceString("Kadena.Signup.ButtonText"))|(user)administrator|(hash)7fc15bbc64d493e66ac509258b37de494e15fe4fc015824e29fffa50ab20d92e%}'
             },
             errors:
             {
-              required: '{%JSEscape(GetResourceString("Kadena.Field.RequiredMessage"))|(user)rostyslav.diachenko@actum.cz|(hash)d4eb9376f1d2ec01229945a039c00d1f138f5916e3d8fa411828ccc02a57974f%}',
-              email: '{%JSEscape(GetResourceString("Kadena.Signup.InvalidEmail"))|(user)rostyslav.diachenko@actum.cz|(hash)5120b1bca9a3eb2dc03ddc5413ba86b22c951c4c1bef101ec9b160366c7b16bf%}',
-              confirmPassword: '{%JSEscape(GetResourceString("Kadena.InitialPasswordSetting.PasswordsAreNotTheSame"))|(user)rostyslav.diachenko@actum.cz|(hash)030ae155435da6a0a28121110fe6acf32fce076e6d31d5213b55b8005371a217%}'
+              required: '{%JSEscape(GetResourceString("Kadena.Field.RequiredMessage"))|(user)administrator|(hash)d3e874ff51d827f483dfbb232f8a2e9544b7b7bd729b03d7c8d9d5bbdcc07fce%}',
+              email: '{%JSEscape(GetResourceString("Kadena.Signup.InvalidEmail"))|(user)administrator|(hash)12470c8c26f2b67936ede0d0dae5f1edf248aefd4e03d6095595298ba43983f8%}',
+              confirmPassword: '{%JSEscape(GetResourceString("Kadena.InitialPasswordSetting.PasswordsAreNotTheSame"))|(user)administrator|(hash)fc903d367c78421302b583cc6ec1b967c1912b8065a06ec5e91f5b44c1e908fb%}'
             },
             url: '/api/user/register',
             toLogin:
             {
-              url: '{% Settings.CMSSecuredAreasLogonPage |(user)rostyslav.diachenko@actum.cz|(hash)335487d6a5e60d210443bd4d8e529d28759b2dfb184721e1a27f638e2fa28f20%}',
-              text: '{%JSEscape(GetResourceString("Kadena.Signup.LoginText"))|(user)rostyslav.diachenko@actum.cz|(hash)b0ae1b72b91b8f9f0daf08994dafd4f179f5864299e13fa122ddcae00721e945%}'
+              url: '{% Settings.CMSSecuredAreasLogonPage |(user)administrator|(hash)3543fb50d623fec0f48bb88bf353012ca2c05f80fedfdb2826a06863ebe4d5ec%}',
+              text: '{%JSEscape(GetResourceString("Kadena.Signup.LoginText"))|(user)administrator|(hash)d5430d784fe8e5a8e2c2835d07dd5fb6364a500c972420cf74d6d64fc0417ce4%}'
             },
             strength:
             {
-              minLength: {% Settings.CMSPolicyMinimalLength |(user)rostyslav.diachenko@actum.cz|(hash)bb91b6f3fc0d1a08a8f7cd3f39bc36e8cad4c849b1f4f59c63448e2e541452e7%},
+              minLength: {% Settings.CMSPolicyMinimalLength |(user)administrator|(hash)23464a726db2cedd499f84dfa89a647cf9f002ba7fdb8b1747f353d6941d4c2e%},
               preferedLength: 12,
-              minNonAlphaNumChars: {% Settings.CMSPolicyNumberOfNonAlphaNumChars |(user)rostyslav.diachenko@actum.cz|(hash)cc2e5781ec79105c1b47cc954f948d55569bef57fdd973ff24b80c280e968d86%},
+              minNonAlphaNumChars: {% Settings.CMSPolicyNumberOfNonAlphaNumChars |(user)administrator|(hash)36d851b18a3a567cba2d98d61dca2d2f7aad30edfaf1f3701de62b372888f1e3%},
               preferedNonAlphaNumChars: 2,
-              regularExpression: '{%  JSEscape(Settings.CMSPolicyRegularExpression) |(user)rostyslav.diachenko@actum.cz|(hash)5c2d60e50f9c9983ecb9db67f9c930e22ce4fa2605af07a36c9b9d206c94269b%}',
+              regularExpression: '{%  JSEscape(Settings.CMSPolicyRegularExpression) |(user)administrator|(hash)3e0f25a33a0830e3a0bf432d1120e9de07709413f9d4491e676692fcb786e1d4%}',
               policyStrings: [
-                '{%JSEscape(GetResourceString("Kadena.Password.NotAccepted"))|(user)rostyslav.diachenko@actum.cz|(hash)634aad7f101d029cbb7d8acfbfea9dd67f9164e996d013ae7569766567ba0311%}', 
-                '{%JSEscape(GetResourceString("Kadena.Password.Weak"))|(user)rostyslav.diachenko@actum.cz|(hash)9ec6ba4c4a12f74fe5ba659c813134947eb87a584aa31a3ca7500d1d5c640a4c%}',
-                '{%JSEscape(GetResourceString("Kadena.Password.Acceptable"))|(user)rostyslav.diachenko@actum.cz|(hash)ec6d2fb15155e8f6e9ec1bf9a776516ed890c18395ff5726f1fab627f9ff7285%}',
-                '{%JSEscape(GetResourceString("Kadena.Password.Average"))|(user)rostyslav.diachenko@actum.cz|(hash)b6390fc2959e20a55709b6a0732ad3db83c26bf5e9af7e0324aaa1025a20c9ec%}',
-                '{%JSEscape(GetResourceString("Kadena.Password.Strong"))|(user)rostyslav.diachenko@actum.cz|(hash)7c31274036fd299f2b2cbd8c5701b09e28beb908491e3fd99144ce88fefb7a66%}',
-                '{%JSEscape(GetResourceString("Kadena.Password.Excellent"))|(user)rostyslav.diachenko@actum.cz|(hash)fd121bea1c6cdbe4d69505b4f41d653266840f079a5772c0f65f390eb785228b%}'
+                '{%JSEscape(GetResourceString("Kadena.Password.NotAccepted"))|(user)administrator|(hash)ec4450230597a79c09215615e0b59a46635d2f68f464ba900d7fd32147e6d195%}', 
+                '{%JSEscape(GetResourceString("Kadena.Password.Weak"))|(user)administrator|(hash)9dcfa0fc147693d3c526e73801332c468abc105f857115cdebbe781006d99cf2%}',
+                '{%JSEscape(GetResourceString("Kadena.Password.Acceptable"))|(user)administrator|(hash)714c46f582fa0efe4391c3a773a20acb482c1b607428f5f77bc354b91e865f44%}',
+                '{%JSEscape(GetResourceString("Kadena.Password.Average"))|(user)administrator|(hash)a65e7620f8e1d709cb778fd0e48842f5d32ceb2620df3bb0d65efe4e645bcefa%}',
+                '{%JSEscape(GetResourceString("Kadena.Password.Strong"))|(user)administrator|(hash)bb41696c6972cd267aa26460444759e793fa4ac84447193e4bcb7426f8e11d19%}',
+                '{%JSEscape(GetResourceString("Kadena.Password.Excellent"))|(user)administrator|(hash)09a983841dd643dc7bbfae4c56ba8598e32b4c40caa44231478d4a857a415f85%}'
               ],
-              usePolicy: {% Settings.CMSUsePasswordPolicy.ToLower() |(user)rostyslav.diachenko@actum.cz|(hash)31542c1b89fde39b58601e12de8b3a3f25af5d7f6ac06a31096bc40c1eff0e22%},
-              info: '{%JSEscape(GetResourceString("Kadena.Common.PasswordTooltipText"))|(user)rostyslav.diachenko@actum.cz|(hash)a6032372e149f0e7f7adcde3d0b79097ca2a8809151a932f28454283a9558056%}'
+              usePolicy: {% Settings.CMSUsePasswordPolicy.ToLower() |(user)administrator|(hash)06e70c8de1e153dfd8833f1e997f32538b230ffe45464e591f00631bfbbef641%},
+              info: '{%JSEscape(GetResourceString("Kadena.Common.PasswordTooltipText"))|(user)administrator|(hash)37684934dabda706ab1f89909496d586b35e1a1c5434fb9b3ad9dfe0c9d19789%}'
             }
       };
 ]]>

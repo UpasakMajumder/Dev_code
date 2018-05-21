@@ -27,7 +27,7 @@ frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></ifram
   <param name="url" value="{%GetAbsoluteUrl(MediaLibraryPath)%}" />
   <param name="cms_type" value="audiovideo" />
   </object>
-{%}|(user)cvoqa2@gmail.com|(hash)22734526adb7b4d698ddc726c53775b4a800a6ea7a3062faf5af73a57aa9670f%}
+{%}|(user)administrator|(hash)6f7e16c5bf1af10b12d09d545001fadd53ac58a2253250873eccfb2aabaeea00%}
  </td>
 </tr>
 ]]>

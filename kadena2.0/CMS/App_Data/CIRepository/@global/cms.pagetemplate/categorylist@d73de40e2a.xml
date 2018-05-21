@@ -162,7 +162,7 @@
 ProductCategoryTitle LIKE '%{?searchtext?}%' OR 
 ProductCategoryDescription LIKE '%{?searchtext?}%'
 )
-{%}|(handlesqlinjection)false|(user)cvoqa2@gmail.com|(hash)12678d59d42193ec92807219b33f10090015afa1ad96ec4f0786a190391e6e0d%}
+{%}|(handlesqlinjection)false |(user)administrator|(hash)3cb4c05127b67120b221be03c15c49e29aa4ca86ffc266f4eb7bcb6ea22e0c91%}
 ]]>
           </property>
         </webpart>
@@ -189,10 +189,10 @@ function DeleteCategory(categoryID) {
       dataType: "json",
       data: params,
       success: function (data) {
-         window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=deleted");
+         window.location.replace("{%CurrentDocument.AbsoluteURL |(user)administrator|(hash)1c02f0838d9a106fc0cbac312e23d536690989a97caeec5262488f098c696cfb%}?status=deleted");
       },
       error: function (xhr, ajaxOptions, thrownError) { 
-       window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
+       window.location.replace("{%CurrentDocument.AbsoluteURL |(user)administrator|(hash)1c02f0838d9a106fc0cbac312e23d536690989a97caeec5262488f098c696cfb%}?status=error");
       }
     });
   }
@@ -378,8 +378,8 @@ function DeleteCategory(categoryID) {
           <property name="showfordocumenttypes"></property>
           <property name="text" ismacro="true">
 <![CDATA[
-<a class="btn-action" href='{% Settings.KDA_CategoryCreatePageUrl |(user)cvoqa2@gmail.com|(hash)5a6674606e2b6d62760303938a8352a5b9a087ebf2020d41205dc1e579462d03%}
-'><i class="fa fa-plus" aria-hidden="true"></i>{% GetResourceString("Kadena.Category.NewButtonText") |(user)cvoqa2@gmail.com|(hash)09c683f4df6a0d09373333cfa10133a3d01af8c7b0046543c3e728eeefbbcca3%}</a>
+<a class="btn-action" href='{% Settings.KDA_CategoryCreatePageUrl|(user)administrator|(hash)77de7b9b24171618485f91c943124efdbb5d773d6bd3c81f38f17861b0f6ffbb%}
+'><i class="fa fa-plus" aria-hidden="true"></i>{% GetResourceString("Kadena.Category.NewButtonText")|(user)administrator|(hash)ff86ffc9c309ae4654e1efc1430201d11e40e1818f58bb0409928618d45d8a23%}</a>
 
 ]]>
           </property>
@@ -483,14 +483,14 @@ function DeleteCategory(categoryID) {
           <property name="text">
 <![CDATA[
  {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)25a38b3f17c6468d659e8f65b22b9d82b2decede46871dc160947145a720db8e%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
