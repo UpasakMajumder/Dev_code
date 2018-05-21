@@ -274,3 +274,12 @@ kadena2.0/CMS/App_Data/Persistent
 kadena2.0/CMS/CMSSiteUtils
 kadena2.0/CMS/App_Data/AmazonCache
 kadena2.0/CMS/App_Data/AmazonTemp
+
+#Kentico sites
+kadena2.0/CMS/KDA
+kadena2.0/CMS/CommunitySite
+kadena2.0/CMS/CorporateSite
+kadena2.0/CMS/DancingGoat
+kadena2.0/CMS/EcommerceSite
+kadena2.0/CMS/IntranetPortal
+kadena2.0/CMS/PersonalSite
