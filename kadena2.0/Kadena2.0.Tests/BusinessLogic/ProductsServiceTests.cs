@@ -153,10 +153,10 @@ namespace Kadena.Tests.BusinessLogic
             Setup<IKenticoResourceService, string>(r => r.GetResourceString(It.IsAny<string>(), It.IsAny<string>()), "value");
 
             // Act
-            var result = Sut.GetAvailableProductsString(productType, 10, "cz", 10, "igelitka");
+            var result = Sut.GetInventoryProductAvailability(productType, 10, "cz", 10, "igelitka");
 
             // Assert
-            Assert.Equal(string.Empty, result);
+            Assert.Null(result);
         }
 
 
@@ -174,10 +174,10 @@ namespace Kadena.Tests.BusinessLogic
             Setup<IKenticoUnitOfMeasureProvider, UnitOfMeasure>(r => r.GetUnitOfMeasure(unit), new UnitOfMeasure {LocalizationString = unit });
 
             // Act
-            var result = Sut.GetAvailableProductsString("KDA.InventoryProduct", numberOfAvailableProducts, culture, numberOfStockProducts, unit);
+            var result = Sut.GetInventoryProductAvailability("KDA.InventoryProduct", numberOfAvailableProducts, culture, numberOfStockProducts, unit);
 
             // Assert
-            Assert.Equal(expectedResult, result);
+            Assert.Equal(expectedResult, result.Text);
         }
 
 

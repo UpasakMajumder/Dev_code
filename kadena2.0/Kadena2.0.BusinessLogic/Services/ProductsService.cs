@@ -71,7 +71,7 @@ namespace Kadena.BusinessLogic.Services
             return productsPage;
         }
 
-        public string GetAvailableProductsString(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasureCode)
+        string GetAvailableProductsString(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasureCode)
         {
             string formattedValue = string.Empty;
 
