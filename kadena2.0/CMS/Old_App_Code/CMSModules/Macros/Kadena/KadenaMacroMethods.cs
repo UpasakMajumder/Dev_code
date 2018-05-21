@@ -513,20 +513,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return isApprover;
         }
 
-        [Obsolete]
-        [MacroMethod(typeof(string), "Returns file name from media attachment url.", 1)]
-        [MacroMethodParam(0, "url", typeof(string), "Url")]
-        public static object GetFilenameFromMediaUrl(EvaluationContext context, params object[] parameters)
-        {
-            if (parameters.Length != 1)
-            {
-                throw new NotSupportedException();
-            }
-            var url = parameters[0] as string;
-            var filename = MediaMultiField.ParseFrom(url).Name;
-            return filename;
-        }
-
         [MacroMethod(typeof(string), "Returns localized url of the document for current culture.", 1)]
         [MacroMethodParam(0, "aliasPath", typeof(string), "Alias path of the document.")]
         public static object GetLocalizedDocumentUrl(EvaluationContext context, params object[] parameters)
