@@ -100,6 +100,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             var isWaitingForApproval = data.StatusId == (int)OrderStatus.WaitingForApproval;
             var canCurrentUserApproveOrder = IsCurrentUserApproverFor(customer);
             var showApprovalButtons = isWaitingForApproval && canCurrentUserApproveOrder;
+            var approvalMessages = data.Approvals?.Select(a => a.Note) ?? Enumerable.Empty<string>();
 
             var orderDetail = new OrderDetail()
             {
@@ -154,10 +155,11 @@ namespace Kadena.BusinessLogic.Services.Orders
                         Title = resources.GetResourceString("Kadena.Order.ShippingDatePrefix"),
                         Value = data.ShippingInfo?.ShippingDate
                     },
-                    Status = new TitleValuePair<string>
+                    Status = new OrderStatusInfo
                     {
                         Title = resources.GetResourceString("Kadena.Order.StatusPrefix"),
-                        Value = genericStatus
+                        Value = genericStatus,
+                        Note = string.Join(", ", approvalMessages)
                     },
                     TotalCost = new TitleValuePair<string>
                     {

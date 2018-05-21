@@ -1,8 +1,8 @@
 .tile-bar {
-  @extend %flex--center--default;
+  @extend %flex--start--default;
 
   &__item {
-    @extend %flex--center--start;
+    @extend %flex--default--start;
 
     @include rem(padding, 13px 10px);
     float: left;
@@ -11,11 +11,13 @@
 
     .icon-tile {
       @include rem(margin-right, 8px);
+      flex-shrink: 0;
     }
   }
 
   &__title,
-  &__description {
+  &__description,
+  &__note {
     margin-bottom: 0;
   }
 
@@ -27,5 +29,11 @@
   &__description {
     @extend .weight--bold;
     font-size: $font-s;
+  }
+
+  &__note {
+    &--red {
+      color: $brand-dangerous;
+    }
   }
 }

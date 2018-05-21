@@ -135,14 +135,14 @@
           <property name="text" ismacro="true">
 <![CDATA[
 {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)25a38b3f17c6468d659e8f65b22b9d82b2decede46871dc160947145a720db8e%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -176,7 +176,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="defaulttext" ismacro="true">
 <![CDATA[
 {% if (QueryString.itemID !=null) {  GetResourceString("Kadena.BusinessUnit.EditHeader")  } 
-else{GetResourceString("Kadena.BusinessUnit.HeaderText")  }  |(user)cvoqa2@gmail.com|(hash)5edf468f729e3a9990fb6631884362a6506d4d0f067c7d4f1c5496d7f137ab0d%}
+else{GetResourceString("Kadena.BusinessUnit.HeaderText")  }|(user)administrator|(hash)6ff31e3e4c9016b0667be5983cf508bc6b5c57f4322c81a445c7413431264a07%}
 ]]>
           </property>
           <property name="dialogheight"></property>

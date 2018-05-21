@@ -30,7 +30,7 @@
                Product heading
                 </h1>
             </div>
-     {%}|(user)cvoqa2@gmail.com|(hash)3630e1c7ae34d326961136c4c0d270db58c2642a216d23b5ce978fbc6f0c9a8d%}
+     {%}|(user)administrator|(hash)8f582c68763376cbc36c3067c4abe4c0f1e3aed15bf176a39fcee130958f4fda%}
             <div style="width: 20%; float: left;">
                 <div style="width: 234px;height: auto;margin: 0 auto;">
                     <img src='http://default.kadenatest.com:8090/TWE/media/InventoryProduct/{% SKUImagePath%}' style="width: 230px; padding: 30px 0;">
@@ -111,7 +111,7 @@
   </div>
  {%If(!IsFirst){ %}
   <hr style="border-bottom: 1px solid #000;" class="linesep noprint Notdisplay">
-  {% } |(user)cvoqa2@gmail.com|(hash)b507a506669997e3ab9d3f9011894a1294ef68a393bbefd4139028dffd307915%}
+  {% } |(user)administrator|(hash)d2911105b0614ccbc23f5c1fdb5004669697e1a10b47f8ff4c9d8bb9efa84d6a%}
 ]]>
   </TransformationCode>
   <TransformationCSS />

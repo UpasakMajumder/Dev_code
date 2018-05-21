@@ -244,7 +244,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% DocumentContext.CurrentDocument.GetValue("SKUApprovalRequired").ToString() == "True" |(user)michal.machacek@actum.cz|(hash)87f85b4b39e78ea4328e5be16b41bc2084763caa3ada2d282173317185337f09%}]]>
+            <![CDATA[{% DocumentContext.CurrentDocument.GetValue("SKUApprovalRequired").ToString() == "True"|(user)administrator|(hash)cfbcc3df4327e19e5ad68bc6d0b2aa5f21c595239ab3c955795c4a06b4a4cd19%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>
@@ -290,7 +290,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<img style='border:{% (Settings.KDA_ProductThumbnailBorderEnabled && !ProductThumbnailBorderDisabled) ? Settings.KDA_ProductThumbnailBorderStyle : ""|(user)michal.machacek@actum.cz|(hash)babce78fae2ef9e22019ce8193ed9fc4263439add052534e6997be4156185e0e%}' src='{% KadenaNamespace.GetThumbnailLink(ProductImage) |(user)rostyslav.diachenko@actum.cz|(hash)4c47002d599359e5a73e7ae25c705f821044dc58c47fc66970fb2674c8b68c6f%}'>]]>
+            <![CDATA[<img style='border:{% (Settings.KDA_ProductThumbnailBorderEnabled && !ProductThumbnailBorderDisabled) ? Settings.KDA_ProductThumbnailBorderStyle : "" |(user)administrator|(hash)af763defed57a7cdb97930869c5392ef4285722f42c030d1ca623f2c13a0e316%}' src='{% KadenaNamespace.GetThumbnailLink(ProductImage)|(user)administrator|(hash)d8522f72aa3ab7b9a2456e928dac85447c986ac81e831fca3fedd828da3c12b2%}'>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -385,7 +385,7 @@ iteratedDocument = iteratedDocument.Parent;
 <![CDATA[
 <div class="product-view__info">
   <div class="product-view__info-description">
-    <span>{$Kadena.Product.ProductAdded$}: {% KadenaNamespace.FormatDate(DocumentCreatedWhen) |(user)michal.machacek@actum.cz|(hash)048c71002e4ca196f80f9db8796d648abbe8b1161bdccdfc387c953fba2b34f1%}</span>
+    <span>{$Kadena.Product.ProductAdded$}: {% KadenaNamespace.FormatDate(DocumentCreatedWhen)|(user)administrator|(hash)e7aeb08f2ca17c7c7dae8bdabf2198885870229867c275f848dded4eb8e7ab06%}</span>
     <span {% ProductCustomerReferenceNumber == "" ? "style='display:none;'" : "" %}>{$Kadena.Product.ProductCode$}: {%ProductCustomerReferenceNumber%}</span>
   </div>
 </div>
@@ -402,7 +402,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
+          <property name="cat_open_visibility">False</property>
           <property name="container"></property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
@@ -435,16 +435,16 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="preservepartialcacheonpostback">False</property>
           <property name="priceelementname">price-element</property>
           <property name="priceurl" ismacro="true">
-            <![CDATA[/api/products/getprice/{%NodeSKU.ID|(user)rostyslav.diachenko@actum.cz|(hash)42f88f9b6db2780805374060a91a7000b5197b41c6b4b7c78aaf31ddd42475f0%}]]>
+            <![CDATA[/api/products/getprice/{%NodeSKU.ID |(user)administrator|(hash)196992259153c5795bc9ab040b553916f8e04d82e8653bcae9f7084433736838%}]]>
           </property>
           <property name="showfordocumenttypes"></property>
           <property name="skuid" ismacro="true">
-            <![CDATA[{% NodeSKU.ID |(user)rostyslav.diachenko@actum.cz|(hash)a3655ec25597a1ea8eff79bb69cb20bff3bba2544814702657d8e5839cef3575%}]]>
+            <![CDATA[{% NodeSKU.ID|(user)administrator|(hash)eb2ec51e16404267fca27b22d1ce619ce0a2b446d09724385640ba94aadbfd10%}]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% NodeSKU.HasVariants |(user)rostyslav.diachenko@actum.cz|(hash)3cf13697f98b7879f7f57692a6d5dbce06f6325bb2a28bfefca1c5d32f9a8275%}]]>
+            <![CDATA[{% NodeSKU.HasVariants|(user)administrator|(hash)1a23dd57c112feebef6b9cd311d899461f1678fe201e72f767d1e14b167f1a93%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">Kadena_ProductOptions</property>
@@ -582,7 +582,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="tag"></property>
           <property name="text" ismacro="true">
 <![CDATA[
-<div class="{%KadenaNamespace.GetAppropriateCssClassOfAvailability(DocumentContext.CurrentDocument.GetValue("SKUAvailableItems"),DocumentContext.CurrentDocument.GetValue("ProductType").ToString(), ECommerceContext.CurrentProduct.SKUAvailableItems)|(user)jiri.draska@actum.cz|(hash)17ea3250d0ff095dd953c7cc9ad5cca95402d56b4d3f274c350ac2f8c4a08fdb%}">
+<div class="{%KadenaNamespace.GetAppropriateCssClassOfAvailability(DocumentContext.CurrentDocument.GetValue("SKUAvailableItems"),DocumentContext.CurrentDocument.GetValue("ProductType").ToString(), ECommerceContext.CurrentProduct.SKUAvailableItems) |(user)administrator|(hash)97666b909ec6f64f1f6d952a705c290055d7d3597530b4608ea54e5b249cdbb1%}">
  {% if ( DocumentContext.CurrentDocument.GetValue("ProductType").ToString().Contains("KDA.InventoryProduct")) { %}
     <svg class="icon icon-stock icon-stock--available">
     <use xlink:href="/gfx/svg/sprites/icons.svg#stock--available"></use>
@@ -593,14 +593,14 @@ iteratedDocument = iteratedDocument.Parent;
   <svg class="icon icon-stock icon-stock--out">
     <use xlink:href="/gfx/svg/sprites/icons.svg#stock--out"></use>
   </svg>
-  {% }|(user)michal.machacek@actum.cz|(hash)1453b9ca594d1544c1e49d8d53b8ece0c39e14dbbf8243bd1b515ac3ef1832dd%} 
+  {% } |(user)administrator|(hash)c508b5bbfda56cc415ad30cd011b07b8f934bb73a50b807ffed3b4e61574c12f%} 
 
 
 {%KadenaNamespace.GetAvailableProductsString(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),
   DocumentContext.CurrentDocument.GetValue("SKUAvailableItems") , 
   LocalizationContext.CurrentCulture.CultureCode, 
   ECommerceContext.CurrentProduct.SKUAvailableItems,
-  ECommerceContext.CurrentProduct.SKUUnitOfMeasure)|(user)michal.machacek@actum.cz|(hash)cf97c95955a8739b5216eb7b4970a98d7ba6a5b948d1cd8c2d3e08b7d4cf48bd%} 
+  ECommerceContext.CurrentProduct.SKUUnitOfMeasure) |(user)administrator|(hash)f03a45460fe3b466d7fbe7d37f3480331f5a5ecf69994deed99480ba4daade39%} 
 </div>
 
 ]]>
@@ -653,12 +653,13 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<span class="add-to-cart__info" {% (ECommerceContext.CurrentProduct.SKUNumberOfItemsInPackage == "0" || ECommerceContext.CurrentProduct.SKUNumberOfItemsInPackage == "1") ? "style=display:none;" : "" |(user)michal.machacek@actum.cz|(hash)17c3113a6f182e15caabd685eddb50fa77876c1b08afd55243e5981d18af4708%}>
-  {% KadenaNamespace.GetPackagingString(
+<span class="add-to-cart__info" {% (ECommerceContext.CurrentProduct.SKUNumberOfItemsInPackage == "0" || ECommerceContext.CurrentProduct.SKUNumberOfItemsInPackage == "1") ? "style=display:none;" : ""|(user)administrator|(hash)f12d541f69b7835d5d9d1cf28eda5f1cb72c556a0675b16ded7b7d257f6aebd3%}>
+  {% 
+    KadenaNamespace.GetPackagingString(
     ECommerceContext.CurrentProduct.SKUNumberOfItemsInPackage,
     SKUUnitOfMeasure,
     LocalizationContext.CurrentCulture.CultureCode) 
-  |(user)michal.machacek@actum.cz|(hash)22f4a9f14ab49c0d8d7532a03d5a7e8588f8de8d4433b0421ab7abe8e81bfbc7%}
+  |(user)administrator|(hash)b87808eff247db4ba8c215539da2a8073d2ce68623c013a8f91826c97344d1c4%}
 </span>
 ]]>
           </property>
@@ -733,7 +734,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% KadenaNamespace.CanDisplayAddToCartButton(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),DocumentContext.CurrentDocument.GetValue("SKUAvailableItems"),ECommerceContext.CurrentProduct.SKUSellOnlyAvailable)&&(ECommerceContext.CurrentCustomer != null)|(user)michal.machacek@actum.cz|(hash)2a93d7bb9f20e67af33ab462a0a192e3b08593121bce85c7439fd0966853fa19%}]]>
+            <![CDATA[{% KadenaNamespace.CanDisplayAddToCartButton(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),DocumentContext.CurrentDocument.GetValue("SKUAvailableItems"),ECommerceContext.CurrentProduct.SKUSellOnlyAvailable)&&(ECommerceContext.CurrentCustomer != null) |(user)administrator|(hash)9e866232e0cbafe29e1e55ec3f10d52b07e30fc52abe43326249b47a7a0493dd%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">AddToCartButton</property>
@@ -775,10 +776,10 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="partialcacheminutes"></property>
           <property name="preservepartialcacheonpostback">True</property>
           <property name="producteditorurl" ismacro="true">
-            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_Templating_ProductEditorUrl) |(user)rostyslav.diachenko@actum.cz|(hash)b3448a120ede99ccb62f1e9796861692c6989cdb5a570a32885e684443163ff5%}]]>
+            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_Templating_ProductEditorUrl) |(user)administrator|(hash)d43d353e14e7b12ba22e687826b982f118966868553e8ea77d33233dc2472443%}]]>
           </property>
           <property name="selectmailinglisturl" ismacro="true">
-            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_Templating_SelectListPageUrl) |(user)rostyslav.diachenko@actum.cz|(hash)551325b52de5aad8091b6f6d0ef7f8140ec6f6219de8dfcc2bdd537f89792562%}]]>
+            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_Templating_SelectListPageUrl) |(user)administrator|(hash)6f63cdaf828c5b9c1eff4a4705ebec931f8cf6b4e346925a60c47721076da844%}]]>
           </property>
           <property name="showfordocumenttypes"></property>
           <property name="timezonetype">inherit</property>
@@ -798,11 +799,11 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% ProductType.Contains("KDA.MailingProduct") || ProductType.Contains("KDA.TemplatedProduct") |(user)tomas.rucki@actum.cz|(hash)206df50d2b77318bfc597b18adb258e1e4787142d3f4ae2703c032248b6e6e65%}]]>
+            <![CDATA[{% ProductType.Contains("KDA.MailingProduct") || ProductType.Contains("KDA.TemplatedProduct")|(user)administrator|(hash)4d077b8d60f21434a3d5c29f5c274aa45ca3395b8c39d97db8d72632dd948e94%}]]>
           </property>
         </properties>
         <webpart controlid="Javascript1" guid="191ed7f8-e8ee-43ea-b1e6-76354d5ca629" type="javascript" v="1">
-          <property name="cat_open_behavior"></property>
+          <property name="cat_open_behavior">False</property>
           <property name="cat_open_performance"></property>
           <property name="controlid">Javascript1</property>
           <property name="disablemacros">False</property>
@@ -813,7 +814,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="inlinescript">
 <![CDATA[
 config.localization.manageProducts = {
-    templatesUrl: '/api/products/{% CurrentDocument.DocumentID |(user)rostyslav.diachenko@actum.cz|(hash)fb290f67ac64f5c81e14e9a2babd62d76606ddf8c1cf880b36160bd3e9f4b88c%}/templates'
+    templatesUrl: '/api/products/{% CurrentDocument.DocumentID|(user)administrator|(hash)27d9c739e21f39395d072ac1a09140d9e7a5024680ab212688710d81191534d3%}/templates'
 };
 ]]>
           </property>
@@ -1059,7 +1060,7 @@ config.localization.manageProducts = {
           <property name="text">
 <![CDATA[
 <div class="btn-group btn-group--right"> 
-  <a href="{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KitRequestPageUrl) |(user)rostyslav.diachenko@actum.cz|(hash)cc1868533600339f5f9015453ce385edbf591f8a4b13169fd7d63c81dcc5201b%}?n={%NodeID%}" class="btn-action btn-action--secondary">
+  <a href="{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KitRequestPageUrl)|(user)administrator|(hash)460bc43b7dcfda61cd8c8d8c50be9afdec5f94bd7aa683cf4c538bee6c3e5dec%}?n={%NodeID%}" class="btn-action btn-action--secondary">
     {$Kadena.Product.RequestKit$}
   </a>  
 </div>
@@ -1072,7 +1073,7 @@ config.localization.manageProducts = {
 {% (ProductType.Contains("KDA.InventoryProduct") || ProductType.Contains("KDA.POD") || ProductType.Contains("KDA.StaticProduct")) 
    && Settings.KDA_NewKitRequestEnabledOnSite 
    && !ProductRequestKitButtonDisabled
-   |(user)michal.machacek@actum.cz|(hash)27352d3e53c8712f844d397efd548bbdccfbccbb0c69d19dee52ac26792b81fd%}
+|(user)administrator|(hash)3a905d09fe3525085b82646de0546bf0f427725512e2010ae21f70d7eb9f4e2b%}
 ]]>
           </property>
           <property name="webparttitle"></property>
@@ -1146,7 +1147,7 @@ config.localization.manageProducts = {
       <span>{% KadenaNamespace.GetFilenameFromMediaUrl(item) %}</span>
     </a>
   </li>
-  {% } |(user)tomas.rucki@actum.cz|(hash)73b6f50ea75ae6e3f1cb06368f8e35f3855706de57e9c97b46efef0cb734ae5b%}
+  {% }|(user)administrator|(hash)07d537af82e80f04e51b327e4972d1e9934113d8f6d881bb5bc96af613c45a57%}
 </ul>
 ]]>
           </property>
@@ -1212,7 +1213,7 @@ config.localization.manageProducts = {
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% !String.IsNullOrWhiteSpace(ProductImage) |(user)rostyslav.diachenko@actum.cz|(hash)515c926b7c4efa6fc67410b245417088853f12bd746e9ee77435c2a8fb4ec9cc%}]]>
+            <![CDATA[{% !String.IsNullOrWhiteSpace(ProductImage)|(user)administrator|(hash)c2f0c41b3f0b274afea9ad33373b3a10dedbf9ad278bb4dd72fb558a4143f582%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>
@@ -1272,12 +1273,12 @@ config.localization.manageProducts = {
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[{% CurrentDocument.DocumentSKUDescription |(user)tomas.rucki@actum.cz|(hash)30527aa615056ebe4f3881063d2ea8b1a5aeb2ad4e65807eef1af6284be5e7a4%}]]>
+            <![CDATA[{% CurrentDocument.DocumentSKUDescription|(user)administrator|(hash)861229fdf02f6a825236021dd13a0ee26218d5095dd82ca6fde72fcd5ef65dd9%}]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% !String.IsNullOrWhiteSpace(CurrentDocument.DocumentSKUDescription) |(user)tomas.rucki@actum.cz|(hash)a9117ce6664d62122ef53bc380d0554ca14288d550b4d22cfb2f937849cf964e%}]]>
+            <![CDATA[{% !String.IsNullOrWhiteSpace(CurrentDocument.DocumentSKUDescription)|(user)administrator|(hash)257e472ae5137219f8d4816a658c540b6ba55e4d67e4d70b18ab126391cb0fa7%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>

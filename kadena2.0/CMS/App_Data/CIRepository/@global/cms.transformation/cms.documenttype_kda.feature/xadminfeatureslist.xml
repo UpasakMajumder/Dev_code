@@ -10,7 +10,7 @@
 <div class="product__block col-sm-3"> 
   {% If(HeaderTextOne.ToLower().Contains("pre-buy")) {%}
   {% If(KadenaMacroMethods.IsCampaignOpen()) {%} <a href='{%TargetURL%}' target='{%TargetPage%}' class="js-modal" id="{%FeatureID%}"> {% } else { %}<a href='#' class="js-modal" id="{%FeatureID%}">{%}%}
-    {%} else { %}  <a href='{%TargetURL%}' target='{%TargetPage%}' class="js-modal" id="{%FeatureID%}">  {%}|(user)cvoqa2@gmail.com|(hash)3eae4475418fe192cbb2d100413a14a9160642994473c18f320cc6bafc0b419c%}      
+    {%} else { %}  <a href='{%TargetURL%}' target='{%TargetPage%}' class="js-modal" id="{%FeatureID%}">  {%}|(user)administrator|(hash)f9a196d6502a9e04659385ea7191b90fa0d2caca50436bdf999279da7ee8cc88%}      
       <img src="{%DisplayImage%}" alt="{%FeatureName%}"/>
       <h5>{%FeatureName%}</h5></a>
     </div>

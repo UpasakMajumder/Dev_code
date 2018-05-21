@@ -205,7 +205,7 @@
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<div class="new-login__bg new-login__bg--stretch" style="background-image: url(/CMSPages/GetFile.aspx?guid={% (MenuItemTeaserImage == null && CurrentDocument.Parent != null && CurrentDocument.Parent.MenuItemTeaserImage != null) ? CurrentDocument.Parent.MenuItemTeaserImage : MenuItemTeaserImage |(user)rostyslav.diachenko@actum.cz|(hash)f5357ab6bd5dbd65bba98b33afbe4c1455bb4e732a49ed157d707e15735c148d%}); opacity: {% (MenuItemTeaserImage == null && CurrentDocument.Parent != null && CurrentDocument.Parent.MenuItemTeaserImageOpacity != null) ? CurrentDocument.Parent.MenuItemTeaserImageOpacity : MenuItemTeaserImageOpacity|(user)rostyslav.diachenko@actum.cz|(hash)7fd0dcb56564cd285a33c34f86a0bcc57d7a3f65ecbcf0649bc4d175f7d263a9%}"></div>]]>
+            <![CDATA[<div class="new-login__bg new-login__bg--stretch" style="background-image: url(/CMSPages/GetFile.aspx?guid={% (MenuItemTeaserImage == null && CurrentDocument.Parent != null && CurrentDocument.Parent.MenuItemTeaserImage != null) ? CurrentDocument.Parent.MenuItemTeaserImage : MenuItemTeaserImage|(user)administrator|(hash)2ef9294f690b20bc629e5dc32461f44446bf1d7e4f0c38b80224d2f8e7b4e3af%}); opacity: {% (MenuItemTeaserImage == null && CurrentDocument.Parent != null && CurrentDocument.Parent.MenuItemTeaserImageOpacity != null) ? CurrentDocument.Parent.MenuItemTeaserImageOpacity : MenuItemTeaserImageOpacity |(user)administrator|(hash)54f0db322656bbf2bc89ddc0382abee080f8c05ab1f7e3fb2b48e288d9ecd514%}"></div>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -234,7 +234,7 @@ config.localization.tac = {
     submitText: '{$Kadena.TermsAndConditions.Accept$}',
     acceptTaCUrl: '/api/user/accepttac',
     checkTaCUrl: '/api/user/checktac',
-    iframeUrl: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_TermsAndConditionPage) |(user)rostyslav.diachenko@actum.cz|(hash)d3da338f27c0ef291ffe93fda5fd5fd555a0650fdb5e673861e4f4284f570b7d%}'
+    iframeUrl: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_TermsAndConditionPage)|(user)administrator|(hash)e994358e78f9c46170b4f82e490bf9ac61d96bceaedc26c7fb2cbd69e6927522%}'
   };
   
 ]]>
@@ -263,8 +263,8 @@ config.localization.tac = {
 <![CDATA[
 config.localization.notification = {
     serverNotAvailable: {
-      title: '{%JSEscape(GetResourceString("Kadena.ServerNotAvailable.ErrorTitle"))|(user)rostyslav.diachenko@actum.cz|(hash)23fc75d25994f08dfd7330dbd8a75bb36e9d383cb8e3e09392c5b2a25a00e3c5%}',
-      text: '{%JSEscape(GetResourceString("Kadena.ServerNotAvailable.ErrorText"))|(user)rostyslav.diachenko@actum.cz|(hash)9fc9d0a71167f163cdf8065975676d2ba67cdd89f562fa5bf4fd0182f12bfe89%}'
+      title: '{%JSEscape(GetResourceString("Kadena.ServerNotAvailable.ErrorTitle")) |(user)administrator|(hash)f5f8b8ee5d5df39d630a2697cb40ed8b8c216bfc20d7e10ab34fa69894df6247%}',
+      text: '{%JSEscape(GetResourceString("Kadena.ServerNotAvailable.ErrorText")) |(user)administrator|(hash)0291c37a3550d83ed64d1569be6672862ab61918eead7d1763884f7a9aa9854d%}'
     }
   };
 ]]>
@@ -293,12 +293,12 @@ config.localization.notification = {
 <![CDATA[
 config.localization.staticFields = {
     validation: {
-      requiredMessage: '{%JSEscape(GetResourceString("Kadena.Field.RequiredMessage"))|(user)rostyslav.diachenko@actum.cz|(hash)d4eb9376f1d2ec01229945a039c00d1f138f5916e3d8fa411828ccc02a57974f%}',
-      optionalLabel: '{%JSEscape(GetResourceString("Kadena.Field.Optional"))|(user)rostyslav.diachenko@actum.cz|(hash)76a69f8b7509599b0184c46011468afc9905e954566919564cc678baea6e2d45%}'
+      requiredMessage: '{%JSEscape(GetResourceString("Kadena.Field.RequiredMessage")) |(user)administrator|(hash)27d3adc15192cde44d2a479fe57a54ab0457a65baaa113363e9e1129fb65812a%}',
+      optionalLabel: '{%JSEscape(GetResourceString("Kadena.Field.Optional")) |(user)administrator|(hash)e452351c8d2061700d592d81126a9590f98a0d3d5c9d57799325109c2a330f44%}'
       },
     password: {
-      show: '{%JSEscape(GetResourceString("Kadena.Field.Show"))|(user)rostyslav.diachenko@actum.cz|(hash)a72cd75bbddfcbe9e3077b350cfeb45086b6de2b1146d6435ca7f40818bd7d23%}',
-      hide: '{%JSEscape(GetResourceString("Kadena.Field.Hide"))|(user)rostyslav.diachenko@actum.cz|(hash)6e716e8668071c88e21f9ff746926e4798f5632731a8b439db900e5d04f6861a%}'
+      show: '{%JSEscape(GetResourceString("Kadena.Field.Show")) |(user)administrator|(hash)11ce99096a970927048ff0ffc684dad1cb690384c46fe60ec907687a373f8e1b%}',
+      hide: '{%JSEscape(GetResourceString("Kadena.Field.Hide")) |(user)administrator|(hash)9b4fcff407a6d23c39d98f946fdd107416cb6e7e828476701b013fc17818cfa8%}'
       }
   };
 ]]>

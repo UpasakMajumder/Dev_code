@@ -761,7 +761,11 @@ module.exports.detail =  {
   },
   reject: {
     success: true,
-    payload: false,
-    errorMessage: 'No'
+    payload: {
+      title: 'Yeahoo! 😡',
+      text: 'The order has been rejected',
+      newStatus: 'Rejected'
+    },
+    errorMessage: ''
   }
 };

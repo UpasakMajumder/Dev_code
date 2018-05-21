@@ -35,11 +35,8 @@ namespace Kadena.MicroserviceClients.Contracts
         /// <summary>
         /// Assign specified container to specified template.
         /// </summary>
-        /// <param name="containerId">Id of container.</param>
-        /// <param name="templateId">Id of template.</param>
-        /// <param name="workspaceId">Id of template workspace</param>
         /// <returns>Url to Chili's editor.</returns>
-        Task<BaseResponseDto<string>> SetMailingList(string containerId, string templateId, string workSpaceId, bool use3d);
+        Task<BaseResponseDto<string>> SetMailingList(SetMailingListRequestDTO request);
 
         Task<BaseResponseDto<string>> GetPreview(Guid templateId, Guid settingId);
     }

@@ -84,14 +84,14 @@
           <property name="text">
 <![CDATA[
  {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)25a38b3f17c6468d659e8f65b22b9d82b2decede46871dc160947145a720db8e%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -143,7 +143,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[ <h1 class="content-header__page-name">{%GetResourceString("Kadena.Inbound.HeaderText")|(user)cvoqa2@gmail.com|(hash)69baa899e51c432205555c0d1b4bb6500da419b1333d77f0806d846d3d91683b%}</h1>]]>
+            <![CDATA[ <h1 class="content-header__page-name">{%GetResourceString("Kadena.Inbound.HeaderText") |(user)administrator|(hash)d4b72fbc7264697cddc53ec01711dc7e26c08de1289f298d6205d15e4d1376c2%}</h1>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>

@@ -156,7 +156,6 @@ namespace Kadena.WebAPI.KenticoProviders
                 },
                 
                 Artwork = i.GetValue("ArtworkLocation", string.Empty),
-                MailingListGuid = i.GetValue("MailingListGuid", Guid.Empty),
                 UnitPrice = (decimal)i.UnitPrice,
                 UnitOfMeasureErpCode = units.GetUnitOfMeasure(unitOfMeasure).ErpCode,
                 ProductType = i.GetValue("ProductType", string.Empty),
@@ -166,6 +165,14 @@ namespace Kadena.WebAPI.KenticoProviders
                 RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false),
                 Options = GetItemOptions(i)
             };
+
+            if (ProductTypes.IsOfType(orderCartItem.ProductType, ProductTypes.MailingProduct))
+            {
+                orderCartItem.MailingList = new MailingList
+                {
+                    MailingListID = i.GetValue("MailingListGuid", Guid.Empty)
+                };
+            }
 
             if (ProductTypes.IsOfType(orderCartItem.ProductType, ProductTypes.TemplatedProduct))
             {
@@ -283,6 +290,8 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItemInfo.SetValue("ArtworkLocation", item.ArtworkLocation);
             cartItemInfo.SetValue("SendPriceToErp", item.SendPriceToErp);
             cartItemInfo.SetValue("UnitOfMeasure", item.UnitOfMeasure);
+            cartItemInfo.SetValue("MailingListName", item.MailingListName);
+            cartItemInfo.SetValue("MailingListGuid", item.MailingListGuid);
 
             ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItemInfo);
 

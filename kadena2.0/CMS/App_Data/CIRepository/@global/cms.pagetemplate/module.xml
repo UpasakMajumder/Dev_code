@@ -142,14 +142,14 @@
           <property name="text">
 <![CDATA[
 {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)jiri.draska@actum.cz|(hash)a88a98efc1041c466227da483c7429466600f352143c5010ea4194b293ebe296%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)25a38b3f17c6468d659e8f65b22b9d82b2decede46871dc160947145a720db8e%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -170,10 +170,10 @@ iteratedDocument = iteratedDocument.Parent;
 <![CDATA[
 {%
 (CurrentDocument.ClassName == "KDA.ProofingModule" && CurrentUser.IsAuthorizedPerResource("Kadena_K-Proof", "KDA_ContentEnabled"))
-  || (CurrentDocument.ClassName == "KDA.DAMModule" && CurrentUser.IsAuthorizedPerResource("Kadena_K-DAM", "KDA_ContentEnabled"))
-  || (CurrentDocument.ClassName == "KDA.SourcingModule" && CurrentUser.IsAuthorizedPerResource("Kadena_K-Source", "KDA_ContentEnabled"))
-  || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor) 
-|(user)rostyslav.diachenko@actum.cz|(hash)150e52d132e46967e544beb6339a163874886c91bd785f4785a69faebba45b5e%}
+|| (CurrentDocument.ClassName == "KDA.DAMModule" && CurrentUser.IsAuthorizedPerResource("Kadena_K-DAM", "KDA_ContentEnabled"))
+|| (CurrentDocument.ClassName == "KDA.SourcingModule" && CurrentUser.IsAuthorizedPerResource("Kadena_K-Source", "KDA_ContentEnabled"))
+|| CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor) 
+|(user)administrator|(hash)5ec2c71d7b5c4e4b524c41e484c5df85ad3ff97a8e3bcd8fea68eb1d9358bdf9%}
 ]]>
           </property>
         </properties>
@@ -199,10 +199,10 @@ iteratedDocument = iteratedDocument.Parent;
 <![CDATA[
 {%
 (CurrentDocument.ClassName == "KDA.ProofingModule" && CurrentUser.IsAuthorizedPerResource("Kadena_K-Proof", "KDA_ContentEnabled"))
-  || (CurrentDocument.ClassName == "KDA.DAMModule" && CurrentUser.IsAuthorizedPerResource("Kadena_K-DAM", "KDA_ContentEnabled"))
-  || (CurrentDocument.ClassName == "KDA.SourcingModule" && CurrentUser.IsAuthorizedPerResource("Kadena_K-Source", "KDA_ContentEnabled"))
-  || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor) 
-|(user)rostyslav.diachenko@actum.cz|(hash)150e52d132e46967e544beb6339a163874886c91bd785f4785a69faebba45b5e%}
+|| (CurrentDocument.ClassName == "KDA.DAMModule" && CurrentUser.IsAuthorizedPerResource("Kadena_K-DAM", "KDA_ContentEnabled"))
+|| (CurrentDocument.ClassName == "KDA.SourcingModule" && CurrentUser.IsAuthorizedPerResource("Kadena_K-Source", "KDA_ContentEnabled"))
+|| CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor) 
+|(user)administrator|(hash)5ec2c71d7b5c4e4b524c41e484c5df85ad3ff97a8e3bcd8fea68eb1d9358bdf9%}
 ]]>
           </property>
         </properties>
@@ -350,10 +350,10 @@ iteratedDocument = iteratedDocument.Parent;
 <![CDATA[
 {% 
 (CurrentDocument.ClassName == "KDA.ProofingModule" && !CurrentUser.IsAuthorizedPerResource("Kadena_K-Proof", "KDA_ContentEnabled"))
-  || (CurrentDocument.ClassName == "KDA.DAMModule" && !CurrentUser.IsAuthorizedPerResource("Kadena_K-DAM", "KDA_ContentEnabled"))
-  || (CurrentDocument.ClassName == "KDA.SourcingModule" && !CurrentUser.IsAuthorizedPerResource("Kadena_K-Source", "KDA_ContentEnabled"))
-  || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor) 
-|(user)rostyslav.diachenko@actum.cz|(hash)7d9922f8dab2edeca10644d05249d7bd06bae62218e01ba5f1c5e8f0e7948f3c%}
+|| (CurrentDocument.ClassName == "KDA.DAMModule" && !CurrentUser.IsAuthorizedPerResource("Kadena_K-DAM", "KDA_ContentEnabled"))
+|| (CurrentDocument.ClassName == "KDA.SourcingModule" && !CurrentUser.IsAuthorizedPerResource("Kadena_K-Source", "KDA_ContentEnabled"))
+|| CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor) 
+|(user)administrator|(hash)00f37aedd1b34e4b59b0788a8fa772991ffd89845efd3b49985b306ee2ec28cb%}
 ]]>
           </property>
         </properties>
