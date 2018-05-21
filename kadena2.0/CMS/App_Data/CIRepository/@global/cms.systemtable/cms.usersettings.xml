@@ -609,7 +609,7 @@ CMS_User
 WHERE
 UserID IN 
 (
-SELECT UserID FROM CMS_UserRole WHERE RoleID=(SELECT TOP 1 RoleID FROM CMS_Role WHERE RoleName='KDA.TradeMarketingManager' AND SiteID={%CurrentSite.ID|(user)twe_admin|(hash)ae86ecbf2a2fd90fe8aeeec2587029ad98deb7f3773ce10cf7f9d049c6b5df36%}) AND UserID IN (Select UserID From CMS_UserSite Where SiteID={%CurrentSite.ID|(user)twe_admin|(hash)ae86ecbf2a2fd90fe8aeeec2587029ad98deb7f3773ce10cf7f9d049c6b5df36%})
+SELECT UserID FROM CMS_UserRole WHERE RoleID=(SELECT TOP 1 RoleID FROM CMS_Role WHERE RoleName='KDA.TradeMarketingManager' AND SiteID={%CurrentSite.ID |(user)administrator|(hash)015efb55d982988e9c1a5fac114c96108d74def97e120cb2b399b08fa6ed69e9%}) AND UserID IN (Select UserID From CMS_UserSite Where SiteID={%CurrentSite.ID |(user)administrator|(hash)015efb55d982988e9c1a5fac114c96108d74def97e120cb2b399b08fa6ed69e9%})
 )
 AND
 UserEnabled=1

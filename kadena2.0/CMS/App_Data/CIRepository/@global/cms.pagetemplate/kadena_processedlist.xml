@@ -136,15 +136,15 @@
           <property name="text" ismacro="true">
 <![CDATA[
 {%
-result = "<a href='" + Documents[Settings.KDA_KListNewPageURL].AbsoluteURL + "'>" + Documents[Settings.KDA_KListNewPageURL].DocumentName + "</a>";
-iteratedDocument = Documents[Settings.KDA_KListNewPageURL].Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-result = String.FormatString("{0}{1}", "<a href='"+ RootDocument.AbsoluteURL +"'>{$ Kadena.BreadcrumbsHome $}</a>", result);
-result
-|(user)tomas.rucki@actum.cz|(hash)ba925a5c955dc1523a4032c7790f41a107ca4ec8e1e3e269104d05464e50c75a%}
+  result = "<a href='" + Documents[Settings.KDA_KListNewPageURL].AbsoluteURL + "'>" + Documents[Settings.KDA_KListNewPageURL].DocumentName + "</a>";
+  iteratedDocument = Documents[Settings.KDA_KListNewPageURL].Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  result = String.FormatString("{0}{1}", "<a href='"+ RootDocument.AbsoluteURL +"'>{$ Kadena.BreadcrumbsHome $}</a>", result);
+  result
+|(user)administrator|(hash)004a846d24b77ec8cd76e05f08aed10d8bca0b1db78ca28ea6995e6c48f95c24%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -162,7 +162,7 @@ result
           <property name="cat_open_time zones"></property>
           <property name="cat_open_visibility"></property>
           <property name="confirmedpageurl" ismacro="true">
-            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KListProcessingPageURL) |(user)tomas.rucki@actum.cz|(hash)10b64f2ad890c882ddb85fa82a56d5fcfe3e7758e600d9e639215d78bdde2291%} ]]>
+            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KListProcessingPageURL)|(user)administrator|(hash)c637aef77a5fd6ec1e2790fc91f7568098098e2872796f8c5f99685bfccaa951%} ]]>
           </property>
           <property name="container"></property>
           <property name="containercssclass"></property>
@@ -196,7 +196,7 @@ result
           <property name="partialcacheminutes"></property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="reuploadlistpageurl" ismacro="true">
-            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KListNewPageURL) |(user)tomas.rucki@actum.cz|(hash)3538ee0eb092610309b0be1df916b0b95ea6c9f466915bcd7a3156b199455157%}]]>
+            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KListNewPageURL)|(user)administrator|(hash)f32543814f720f327c4e306d502224a9c3663b3941173fac7a26d6108b5857a3%}]]>
           </property>
           <property name="showfordocumenttypes"></property>
           <property name="timezonetype">inherit</property>
@@ -346,7 +346,7 @@ result
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<a href="~{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KListPageURL) |(user)tomas.rucki@actum.cz|(hash)d75159a60a4b579a51fc87f38afdb3e87d92ce770b72b3956ae69c013ef4b122%}?saved=1" class="btn-action"> 
+<a href="~{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KListPageURL)|(user)administrator|(hash)9daf767fb89340865bd04c598e8e251a9441d6fee04cdc74623e810b39eb413b%}?saved=1" class="btn-action"> 
   {$Kadena.MailingList.SaveList$}
 </a>
 ]]>

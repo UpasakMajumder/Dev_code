@@ -258,7 +258,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<a href="{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_ProductRequestPageUrl) |(user)rostyslav.diachenko@actum.cz|(hash)e68186fc1a2f9e7108c50b5d3786d1273feb3eb35e883c5e0637844e95758aaa%}" class="content-header__btn js-tooltip"
+<a href="{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_ProductRequestPageUrl)|(user)administrator|(hash)6561ac9a542a85b9c71192fbac81b76f53f1c6dc2c081d90f029c20db8eb659b%}" class="content-header__btn js-tooltip"
    data-tooltip-placement="right"
    title="{$Kadena.Product.RequestNew$}">
     <svg class="icon icon-modal">
@@ -270,7 +270,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% Settings.KDA_NewProductRequest_Enabled && (CurrentUser.IsAuthorizedPerResource("Kadena_Products", "KDA_ContentEnabled") || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor)) |(user)michal.machacek@actum.cz|(hash)00f4b254e74f720d899b5897ef5f0f9bd7618b3fd834a3a6e8422d4ef66e238e%}]]>
+            <![CDATA[{% Settings.KDA_NewProductRequest_Enabled && (CurrentUser.IsAuthorizedPerResource("Kadena_Products", "KDA_ContentEnabled") || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor))|(user)administrator|(hash)3560cdfde245fcba0ddf0e999bb0bc612254bdd3140aa4fafd9b5982caebee12%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>

@@ -70,7 +70,7 @@
         </settings>
         <rules>
           <rule errormsg="You exceed the maximum length">
-            <![CDATA[{%Rule("(Value.Length <= 140)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>140</t><v>140</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)1e270dc53831ea29308397207a28ce6d86c05b2646fd9b1720b2e477d612af13%}]]>
+            <![CDATA[{%Rule("(Value.Length <= 140)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>140</t><v>140</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)ee987784418980f40db0c7b8ba695cd65151dd3fd30bfc017718f4cdbf59c7a3%}]]>
           </rule>
         </rules>
       </field>

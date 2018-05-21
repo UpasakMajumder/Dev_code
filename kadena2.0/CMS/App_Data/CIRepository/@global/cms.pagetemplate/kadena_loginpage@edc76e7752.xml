@@ -167,7 +167,7 @@
           <property name="controlid">ForgotPasswordWithHint</property>
           <property name="customtimezone"></property>
           <property name="defaulttargeturl" ismacro="true">
-            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl("/login") |(user)cvoqa2@gmail.com|(hash)67172a38f70113ebbd715b467416ceef309c1ab78bb4cfaba79c64e5997aface%}]]>
+            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl("/login")|(user)administrator|(hash)bc71fc5f7310436f1d6e00828bd14db6199382a41a08dbb4ea3fdf5b0ad551f5%}]]>
           </property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
@@ -191,23 +191,23 @@
           </property>
           <property name="partialcacheminutes"></property>
           <property name="passwordhinttext" ismacro="true">
-            <![CDATA[ {% GetResourceString("Kadena.LogonForm.PasswordHintText") |(user)cvoqa2@gmail.com|(hash)044e6ceccdfad1dd8cdb907a56783437eb754a306b925ab903019aa89549f0ae%}]]>
+            <![CDATA[ {% GetResourceString("Kadena.LogonForm.PasswordHintText")|(user)administrator|(hash)7a128e857b834af1645add57f0efd490b754eb86d48c77459a3cf00501c77d7d%}]]>
           </property>
           <property name="preservepartialcacheonpostback">False</property>
           <property name="resetpasswordurl"></property>
           <property name="sendemailfrom"></property>
           <property name="showfordocumenttypes"></property>
           <property name="showpasswordlink" ismacro="true">
-            <![CDATA[{% Settings.EnablePasswordHint|(user)cvoqa2@gmail.com|(hash)ae494ace6f5925358a09d79455a11bdd15b0da9247efa090a11912d11e0c03b9%}]]>
+            <![CDATA[{% Settings.EnablePasswordHint |(user)administrator|(hash)d50d52fc1b98aab4244ed5d62a47af4adbba5551bb1a35925fb7aae19c4c3956%}]]>
           </property>
           <property name="showsignuplink" ismacro="true">
-            <![CDATA[{% Settings.KDA_EnableRegistration |(user)rostyslav.diachenko@actum.cz|(hash)aa361173447e5135a7afc5e5eacf03c75eeabd54fd8942b6f413de2b3146a1df%}]]>
+            <![CDATA[{% Settings.KDA_EnableRegistration|(user)administrator|(hash)6dfc29283e4465196f206409bfa36583dd86a0b3985bbe1643ef186ecc5a1f1e%}]]>
           </property>
           <property name="signuplinktext" ismacro="true">
-            <![CDATA[{% GetResourceString("Kadena.Login.SignupText") |(user)rostyslav.diachenko@actum.cz|(hash)0ffaa9f5400533a1889e0f1a6ac62f1bf6ed1fc0405e82e54b15e19f70c37b21%}]]>
+            <![CDATA[{% GetResourceString("Kadena.Login.SignupText")|(user)administrator|(hash)e953e98f11b6aadef0a89d0bc04ba017ce8bc4956d96d2a0a9bea2a41d57cfd5%}]]>
           </property>
           <property name="signuppageurl" ismacro="true">
-            <![CDATA[{% Settings.KDA_RegistrationPageUrl |(user)rostyslav.diachenko@actum.cz|(hash)709ce9083d585f27518d5f5782a861b3b701df7e41a49192872f3abd5c7f0f88%}]]>
+            <![CDATA[{% Settings.KDA_RegistrationPageUrl|(user)administrator|(hash)ab4faa4a8a7524218179637e5f5957efde431925da0d0741804dd46dbb05c8c0%}]]>
           </property>
           <property name="skinid"></property>
           <property name="timezonetype">inherit</property>
@@ -228,16 +228,16 @@
           <property name="inlinescript">
 <![CDATA[
   config.localization.login = {
-        email: '{%JSEscape(GetResourceString("Kadena.Login.Email"))|(user)rostyslav.diachenko@actum.cz|(hash)453329e98f3480e68b5977302c556a471f0d90b443629579c1a786d45d99be70%}',
-        emailPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.EmailPlaceholder"))|(user)rostyslav.diachenko@actum.cz|(hash)859bccb8292861e5cf0f2c2e0f77d955bd78f194193e1b13f48298adb75a268d%}',
-        emailValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.EmailValidationMessage"))|(user)rostyslav.diachenko@actum.cz|(hash)2cb171350548e3ca599bdf6ff01d0e3eb1b3394f7ca71ea1c14cdb8ee904e81c%}',
-        password: '{%JSEscape(GetResourceString("Kadena.Login.Password"))|(user)rostyslav.diachenko@actum.cz|(hash)5bc6d048c3cef603936df01fecbe28072597752c2bc9c2924f20e8e58710ecca%}',
-        passwordPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.PasswordPlaceholder"))|(user)rostyslav.diachenko@actum.cz|(hash)334d8e54256d779d83f50e7921f0563ade2cf117e4076b3ccc0cf08a7d14ba7e%}',
-        passwordShow: '{%JSEscape(GetResourceString("Kadena.Login.PasswordShow"))|(user)rostyslav.diachenko@actum.cz|(hash)75e698970d1db9911ec92b0a495019afa8940e23580f5f40410ea0ea36be793b%}',
-        passwordHide: '{%JSEscape(GetResourceString("Kadena.Login.PasswordHide"))|(user)rostyslav.diachenko@actum.cz|(hash)7c14d1ed8c95fc404cbd1458304805fbde018bd8a6910ccd33b36d6cd1ffc8d2%}',
-        passwordValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.PasswordValidationMessage"))|(user)rostyslav.diachenko@actum.cz|(hash)8d9f6c82e0db6d819cd5cbb74a3ab746213866b439d2b815e989a304f002d164%}',
-        keepMeLoggedIn: '{%JSEscape(GetResourceString("Kadena.Login.KeepMeLoggedIn"))|(user)rostyslav.diachenko@actum.cz|(hash)1066b4be6ab27a89e38361fd3774c7c49ae7868d316ca6258e3ea7aed32ddc3f%}',
-        login: '{%JSEscape(GetResourceString("Kadena.Login.LoginButtonText"))|(user)rostyslav.diachenko@actum.cz|(hash)e5e720403bb0259b4ca0d629bfdeb22c5fbf902c56862c3eb85798b858c607e2%}',
+        email: '{%JSEscape(GetResourceString("Kadena.Login.Email"))|(user)administrator|(hash)b85d2701eb43e00a0f599802b49263eae4b099df2b88fbaa442f9ea430220dc1%}',
+        emailPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.EmailPlaceholder"))|(user)administrator|(hash)10eaa914d934056458d92f4302a9178945091fab55f38d0e6950fad411ad7047%}',
+        emailValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.EmailValidationMessage"))|(user)administrator|(hash)cd85786537b70307fb0c209589613ad3c9a0e27f436286e6f3a5a5d8e0a51af0%}',
+        password: '{%JSEscape(GetResourceString("Kadena.Login.Password"))|(user)administrator|(hash)a22b4f0cc65d0b41a1c2cc422eba582784febc2e3b218c331dd0b177838545ca%}',
+        passwordPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.PasswordPlaceholder"))|(user)administrator|(hash)a0403b144a44a100d1162502fd2a394082d80a3f4959cfa950e37627afaed8f8%}',
+        passwordShow: '{%JSEscape(GetResourceString("Kadena.Login.PasswordShow"))|(user)administrator|(hash)4c0f39a588fcf4a952ba2ea4bb4b2cd29893a2de282af616d482d4ff2ef3581d%}',
+        passwordHide: '{%JSEscape(GetResourceString("Kadena.Login.PasswordHide"))|(user)administrator|(hash)565d693bb82f475dd78b0003b78ddd33d18fc47d389efd15408100b7089d0e14%}',
+        passwordValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.PasswordValidationMessage"))|(user)administrator|(hash)238eee9be35d8230ca1b17a4d5d744c314aa7909388ef4a0d381f700de5aee5a%}',
+        keepMeLoggedIn: '{%JSEscape(GetResourceString("Kadena.Login.KeepMeLoggedIn"))|(user)administrator|(hash)5debfee01e321a82ee23fe41ddd2256b7ee2a27781a8f9f9f2dd031035d648ac%}',
+        login: '{%JSEscape(GetResourceString("Kadena.Login.LoginButtonText"))|(user)administrator|(hash)ac38af960eb42388514afac07e26dc4d6265db216f70385204de0f27861e86f4%}',
         loginUrl:'/api/login'
       };
   

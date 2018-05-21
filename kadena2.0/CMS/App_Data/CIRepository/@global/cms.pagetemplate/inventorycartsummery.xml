@@ -61,8 +61,8 @@
           <property name="contentbefore" ismacro="true">
 <![CDATA[
 <div class="itemcount">
-  <label>{$ KDA.DistributorCart.CartItemsCountStartText $} {%KadenaMacroMethods.GetCartCountByInventoryType(CurrentUser.UserID,1,KadenaMacroMethods.OpenCampaignID())|(user)cvoqa2@gmail.com|(hash)6d42e77c1b75eeb41dc30607525c0f0f5cb45556bc52d8bd23c811d5627e6f68%} {$ KDA.DistributorCart.CartItemsCountEndText $}</label>
-  <label>{$ KDA.DistributorCart.CartTotalPrice $} : {% Formatprice(KadenaMacroMethods.GetCartTotalByInventoryType(CurrentUser.UserID,1,KadenaMacroMethods.OpenCampaignID()))|(user)cvoqa2@gmail.com|(hash)e6399a0aaba9c9870604da6b6b6f6a998c299a99fc6a7804d9a7251c37bd5ae1%}</label>
+  <label>{$ KDA.DistributorCart.CartItemsCountStartText $} {%KadenaMacroMethods.GetCartCountByInventoryType(CurrentUser.UserID,1,KadenaMacroMethods.OpenCampaignID()) |(user)administrator|(hash)65501451e3f7deb7aa1a09f43219f1e40217ea7eb4b59ec821f924b574f623b8%} {$ KDA.DistributorCart.CartItemsCountEndText $}</label>
+  <label>{$ KDA.DistributorCart.CartTotalPrice $} : {% Formatprice(KadenaMacroMethods.GetCartTotalByInventoryType(CurrentUser.UserID,1,KadenaMacroMethods.OpenCampaignID())) |(user)administrator|(hash)56da8eb6a33c6307b9268f300181ff7c2e294b9a09c07a6fdaaa8b09e9ce0511%}</label>
 </div>
 ]]>
           </property>
@@ -114,7 +114,7 @@
           <property name="webparttitle"></property>
           <property name="webparttype">queryrepeater</property>
           <property name="wherecondition" ismacro="true">
-            <![CDATA[ShoppingCartUserID={% CurrentUser.UserID |(user)cvoqa2@gmail.com|(hash)77ec86f07b172b78715c47205a47e068d2f315366fe5e368d91ccb69ec7271db%} AND ShoppingCartInventoryType=1 AND ShoppingCartSiteID={%CurrentSite.SiteID|(user)cvoqa2@gmail.com|(hash)7cfc90a7531eb28cb1698bcc36ccdc6093504c59ab4a8814d9ecdfe6eb948648%}]]>
+            <![CDATA[ShoppingCartUserID={% CurrentUser.UserID |(user)administrator|(hash)1d6069558c23c4dbeaee51469df5cd7acac768ecdcfa228bb3e94d1264ad0bf0%} AND ShoppingCartInventoryType=1 AND ShoppingCartSiteID={%CurrentSite.SiteID |(user)administrator|(hash)6dbf545a518cc6d917c1d163b8a0180c44aaf9240f91c6f470dafc422310dbcb%}]]>
           </property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[
@@ -157,7 +157,7 @@
          }
       });
       function UpdateItem(id,qty,box){
-        var request= {CartItemId: id,ItemQuantity:qty,UserID:{%CurrentUser.UserID|(user)cvoqa2@gmail.com|(hash)151ea260d45cbb40b6b460c3d41821d9e9dbc03b916f839032f8f77203b978ef%},InventoryType:1}
+        var request= {CartItemId: id,ItemQuantity:qty,UserID:{%CurrentUser.UserID |(user)administrator|(hash)fe392052a62d37b869a75f3f8c9cdce9d9f5d81bff70416632d46f46cc409ffc%},InventoryType:1}
             $.ajax({
               type: "POST",
               data :JSON.stringify(request),

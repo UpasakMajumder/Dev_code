@@ -14,17 +14,17 @@
           <validationerrormessage>{$Kadena.Brand.BrandCodeRequired$}</validationerrormessage>
         </properties>
       </field>
-      <field column="BrandName" guid="342dca97-2875-4142-990c-0b2867ec607c" reftype="Required">
+      <field column="BrandName" guid="342dca97-2875-4142-990c-0b2867ec607c">
         <properties>
           <controlcssclass>input__text js_brandName</controlcssclass>
           <validationerrormessage>{$Kadena.Brand.BrandNameRequired$}</validationerrormessage>
         </properties>
         <rules>
           <rule errormsg="Brand Name should be at least 1 character">
-            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
+            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)efc157ede6fb5c7f650a4178bfc9d60a8c59d242b012125bfc266cd241686a4a%}]]>
           </rule>
           <rule errormsg="{$Kadena.Brand.BrandNameMax50Error$}">
-            <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)twe_admin|(hash)aa1c47be6b3b102cfcfc7f2030088b8ec4ce41821d64f9001bbde9bc64e2bd2a%}]]>
+            <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)5fdd1b472b919c1f4b774fa2cb5a6b34e5e13b72404e21f9b6a6e043ba0165b9%}]]>
           </rule>
         </rules>
       </field>
@@ -39,22 +39,22 @@
         </properties>
         <rules>
           <rule errormsg="{$Kadena.Brands.BrandDescMinLength$}">
-            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
+            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)efc157ede6fb5c7f650a4178bfc9d60a8c59d242b012125bfc266cd241686a4a%}]]>
           </rule>
           <rule errormsg="{$Kadena.Brands.BrandDescMaxLength$}">
-            <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)2a2f4705cdec2abbbe1cb46f9a1b25ee25f87cf5beb950f79eedfab3d39719de%}]]>
+            <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)5fdd1b472b919c1f4b774fa2cb5a6b34e5e13b72404e21f9b6a6e043ba0165b9%}]]>
           </rule>
         </rules>
       </field>
-      <field column="Status" guid="881fbe4c-44ff-49d4-a8f5-d48d0f8f7d83">
+      <field column="Status" guid="881fbe4c-44ff-49d4-a8f5-d48d0f8f7d83" reftype="Required">
         <settings>
           <controlname>DropDownListControl</controlname>
           <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
           <EditText>False</EditText>
           <Options>
 <![CDATA[
-1;{% GetResourceString("KDA.Common.Status.Active") |(user)cvoqa2@gmail.com|(hash)6e1056d7412cc044f75b5ea15ebbefa7257cec6f418721caebf0471368bb06b4%}
-0;{% GetResourceString("KDA.Common.Status.Inactive") |(user)cvoqa2@gmail.com|(hash)7b7ce893bea52bed64c64863ced63f007764aee0ba45ac275cd72ed01cb916d6%}
+1;{% GetResourceString("KDA.Common.Status.Active")|(user)administrator|(hash)ddeb0f6c3227d75d89c9365204a29e4cbc20878fc346c2c494cbe8782c749650%}
+0;{% GetResourceString("KDA.Common.Status.Inactive")|(user)administrator|(hash)f2db01892e0f17106e046e9146fff90fb3b04b3f351742232afd78b4b38f8be3%}
 ]]>
           </Options>
           <SortItems>False</SortItems>

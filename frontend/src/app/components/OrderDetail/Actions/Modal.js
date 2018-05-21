@@ -79,7 +79,10 @@ class Modal extends Component {
         this.props.handleProceed();
         toastr.success(payload.title, payload.text);
         this.props.closeDialog();
-        this.props.changeStatus(payload.newStatus);
+        this.props.changeStatus({
+          status: payload.newStatus,
+          note: this.state.input
+        });
       }
     } catch (e) {
       window.store.dispatch({
