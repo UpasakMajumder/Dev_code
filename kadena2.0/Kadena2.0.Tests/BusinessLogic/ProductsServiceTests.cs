@@ -7,6 +7,9 @@ using Moq;
 using System;
 using Kadena.Models.Site;
 using Kadena.Models.SiteSettings;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena.Models.SiteSettings.Permissions;
+using System.Linq;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -370,5 +373,95 @@ namespace Kadena.Tests.BusinessLogic
         {
             Assert.Throws<ArgumentException>(() => Sut.GetPrice(0, options));
         }
+
+        [Fact(DisplayName = "ProductsService.GetMinMaxItemsString() | Unlimited")]
+        public void GetMinMaxItemsStringTest_Unlimited()
+        {
+            var result = Sut.GetMinMaxItemsString(0, 0);
+
+            Assert.Empty(result);
+        }
+
+        [Fact(DisplayName = "ProductsService.GetMinMaxItemsString() | MinMax")]
+        public void GetMinMaxItemsStringTest_MinMax()
+        {
+            Setup<IKenticoResourceService, string>(r => r.GetResourceString("Kadena.Product.MinMaxInfo.MinMax"), "you can {0} - {1}");
+
+            var result = Sut.GetMinMaxItemsString(10, 20);
+
+            Assert.Equal("you can 10 - 20", result);
+        }
+
+        [Fact(DisplayName = "ProductsService.GetMinMaxItemsString() | Min")]
+        public void GetMinMaxItemsStringTest_Min()
+        {
+            Setup<IKenticoResourceService, string>(r => r.GetResourceString("Kadena.Product.MinMaxInfo.Min"), "you have to at least {0}");
+
+            var result = Sut.GetMinMaxItemsString(10, 0);
+
+            Assert.Equal("you have to at least 10", result);
+        }
+
+
+        [Fact(DisplayName = "ProductsService.GetMinMaxItemsString() | Max")]
+        public void GetMinMaxItemsStringTest_Max()
+        {
+            Setup<IKenticoResourceService, string>(r => r.GetResourceString("Kadena.Product.MinMaxInfo.Max"), "you can upto {0}");
+
+            var result = Sut.GetMinMaxItemsString(0, 20);
+
+            Assert.Equal("you can upto 20", result);
+        }
+
+
+        [Fact(DisplayName = "ProductsService.GetProductEstimationsTest() | CanSeePrices")]
+        public void GetProductEstimationsTest_CanSeePrices()
+        {
+            const int productId = 123;
+            const string productionTime = "minute";
+            const string shipTime = "day";
+            const string shippingCost = "1usd";
+            const bool canSeePrices = true;
+            
+            Setup<IKenticoResourceService, string, string>(r => r.GetResourceString(It.IsAny<string>()), s => "localized-" + s);
+            Setup<IKenticoProductsProvider, Product>(p => p.GetProductByDocumentId(productId), new Product { ProductionTime = productionTime, ShipTime = shipTime, ShippingCost = shippingCost });
+            Setup<IKenticoPermissionsProvider, bool>(p => p.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.SeePrices), canSeePrices);
+
+            var result = Sut.GetProductEstimations(productId)?.ToArray();
+
+            Assert.NotNull(result);
+            Assert.Equal(3, result.Length);
+            Assert.Equal("localized-Kadena.Product.ProductionTime", result[0].Key);
+            Assert.Equal("minute", result[0].Value);
+            Assert.Equal("localized-Kadena.Product.ShipTime", result[1].Key);
+            Assert.Equal("day", result[1].Value);
+            Assert.Equal("localized-Kadena.Product.ShippingCost", result[2].Key);
+            Assert.Equal("1usd", result[2].Value);
+        }
+
+        [Fact(DisplayName = "ProductsService.GetProductEstimationsTest() | CannotSeePrices")]
+        public void GetProductEstimationsTest_CannotSeePrices()
+        {
+            const int productId = 123;
+            const string productionTime = "minute";
+            const string shipTime = "day";
+            const string shippingCost = "1usd";
+            const bool canSeePrices = false;
+
+            Setup<IKenticoResourceService, string, string>(r => r.GetResourceString(It.IsAny<string>()), s => "localized-" + s);
+            Setup<IKenticoProductsProvider, Product>(p => p.GetProductByDocumentId(productId), new Product { ProductionTime = productionTime, ShipTime = shipTime, ShippingCost = shippingCost });
+            Setup<IKenticoPermissionsProvider, bool>(p => p.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.SeePrices), canSeePrices);
+
+            var result = Sut.GetProductEstimations(productId)?.ToArray();
+
+            Assert.NotNull(result);
+            Assert.Equal(2, result.Length);
+            Assert.Equal("localized-Kadena.Product.ProductionTime", result[0].Key);
+            Assert.Equal("minute", result[0].Value);
+            Assert.Equal("localized-Kadena.Product.ShipTime", result[1].Key);
+            Assert.Equal("day", result[1].Value);
+            Assert.Null(result.FirstOrDefault(r => r.Key == "localized-Kadena.Product.ShippingCost"));
+        }
+
     }
 }

@@ -224,7 +224,7 @@ namespace Kadena.BusinessLogic.Services
                 estimates.Add(new ProductEstimation
                 {
                     Key = resources.GetResourceString("Kadena.Product.ShippingCost"),
-                    Value = product.ShipTime
+                    Value = product.ShippingCost
                 });
             }
 
