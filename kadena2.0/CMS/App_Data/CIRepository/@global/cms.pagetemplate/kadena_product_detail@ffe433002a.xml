@@ -454,10 +454,10 @@ config.localization.manageProducts = {
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
 <![CDATA[
-{% (ProductType.Contains("KDA.InventoryProduct") || ProductType.Contains("KDA.POD") || ProductType.Contains("KDA.StaticProduct")) 
+{% (ProductType.Contains("KDA.InventoryProduct") || ProductType.Contains("KDA.POD") || ProductType.Contains("KDA.StaticProduct"))
    && Settings.KDA_NewKitRequestEnabledOnSite 
    && !ProductRequestKitButtonDisabled
-|(user)administrator|(hash)3a905d09fe3525085b82646de0546bf0f427725512e2010ae21f70d7eb9f4e2b%}
+|(user)administrator|(hash)80b6a7deafcd8338cf9bea4fbe928962f6f80d3da0fd9f590bb8831755811c42%}
 ]]>
           </property>
           <property name="webparttitle"></property>
@@ -480,45 +480,45 @@ config.localization.manageProducts = {
 <![CDATA[
 config.localization.productDetail = {
     thumbnail: {
-      image: '{% KadenaNamespace.GetThumbnailLink(ProductImage) |(user)michal.machacek@actum.cz|(hash)d3dd6e072e730386dddefb3cb9662c29ab30b3ca0cdffaa4482f729d46edfe61%}',
-      border: '{% (Settings.KDA_ProductThumbnailBorderEnabled && !ProductThumbnailBorderDisabled) ? Settings.KDA_ProductThumbnailBorderStyle : "" |(user)michal.machacek@actum.cz|(hash)2690ccf44a2b85edb42e55dfbfba5d211291f4013f137743ba134c3ec0d2c062%}',
-      magnifyImage: '{% KadenaNamespace.GetThumbnailLink(ProductImage) |(user)michal.machacek@actum.cz|(hash)d3dd6e072e730386dddefb3cb9662c29ab30b3ca0cdffaa4482f729d46edfe61%}'
+      image: '{%KadenaNamespace.GetThumbnailLink(ProductImage)|(user)administrator|(hash)510d05980a8991e1017751d5fd4480b494327b344272ed3749b99b767f8f8634%}',
+      border: '{%(Settings.KDA_ProductThumbnailBorderEnabled && !ProductThumbnailBorderDisabled) ? Settings.KDA_ProductThumbnailBorderStyle : "" |(user)administrator|(hash)edc876da41e80e88f652b22a7840c1ac6c7bdaaac04171d7492e337ca4eb1017%}',
+      magnifyImage: '{% KadenaNamespace.GetThumbnailLink(ProductImage)|(user)administrator|(hash)d8522f72aa3ab7b9a2456e928dac85447c986ac81e831fca3fedd828da3c12b2%}'
     },
     requiresApproval: {
-      exists: {% DocumentContext.CurrentDocument.GetValue("SKUApprovalRequired").ToString() == "True" ? "true" : "false"|(user)michal.machacek@actum.cz|(hash)d76b7bba99d51ede1efaca9b29c944322cd67f952627cc36aead3002b48eec13%},
+      exists: {%DocumentContext.CurrentDocument.GetValue("SKUApprovalRequired").ToString() == "True" ? "true" : "false"|(user)administrator|(hash)0aa7eb9fed1377cdc574685eed4ad75c693353603d863aca81ed7395de3e4f4c%},
       text: '{$Kadena.Product.RequiresApproval$}'
     },
-    attachments: {% KadenaNamespace.GetProductAttachments(ProductAttachments) |(user)michal.machacek@actum.cz|(hash)605c8842e68b8e9693f25f2a2e4411e0880609292263d245f5cdfa9926494930%},
+    attachments: {% KadenaNamespace.GetProductAttachments(ProductAttachments) |(user)administrator|(hash)e40a8edbb4bceda80b92a7687db7ab7b31730ba0da8f35b72cf83f23a5d82875%},
     info: { 
-      createdDate: '{$Kadena.Product.ProductAdded$}: {% KadenaNamespace.FormatDate(DocumentCreatedWhen) |(user)michal.machacek@actum.cz|(hash)048c71002e4ca196f80f9db8796d648abbe8b1161bdccdfc387c953fba2b34f1%}',
-      code: '{% ProductCustomerReferenceNumber == "" ? "" : String.FormatString("{0}: {1}",  GetResourceString("Kadena.Product.ProductCode"), ProductCustomerReferenceNumber) |(user)michal.machacek@actum.cz|(hash)55b9e9d00409bead0de0a451a093c2b8b834f6092e0bbc98014f3784aa1f303a%}'
+      createdDate: '{$Kadena.Product.ProductAdded$}: {% KadenaNamespace.FormatDate(DocumentCreatedWhen) |(user)administrator|(hash)92484b8dd82fd13a6d510965f3fa2ea206b3d2e4c512372482011654765afd2e%}',
+      code: '{% ProductCustomerReferenceNumber == "" ? "" : String.FormatString("{0}: {1}",  GetResourceString("Kadena.Product.ProductCode"), ProductCustomerReferenceNumber) |(user)administrator|(hash)2d70e5fd0b80de889426e3352fd222ed2b25cab629d19e3ddb749a3cbe352ede%}'
     },
     estimates: {
       header: '{$Kadena.Product.Estimates$}',
-      body: {% KadenaNamespace.GetProductEstimates(DocumentContext.CurrentDocument.DocumentID ) |(user)michal.machacek@actum.cz|(hash)a9fde25549de773075560893a5f39c4d5898c4ea5c03eea51ddbd9546d0e496c%}
+      body: {% KadenaNamespace.GetProductEstimates(DocumentContext.CurrentDocument.DocumentID ) |(user)administrator|(hash)5e1ac2a1bd04043f76c8b5a35a7bb78f0a9311bc7cd5ee6baedbb9bed9f3a838%}
     },
     dynamicPrices: {
       header: '{$Kadena.Product.UnitPrice$}',
-      body: {% KadenaNamespace.GetProductPricings(DocumentContext.CurrentDocument.DocumentID, SKUUnitOfMeasure |(user)michal.machacek@actum.cz|(hash)e06bdf46ef20df0a9624cfdaae708501caf2581911096340157538146a36d0f7%}
+      body: {% KadenaNamespace.GetProductPricings(DocumentContext.CurrentDocument.DocumentID, SKUUnitOfMeasure |(user)administrator|(hash)0c7f90634a553b7a85bf479e746c509d365d8a8dcd5296640046799cfae93e27%}
     },
     availability: {% KadenaNamespace.GetAvailability(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),
                         DocumentContext.CurrentDocument.GetValue("SKUAvailableItems") , 
                         LocalizationContext.CurrentCulture.CultureCode, 
                         ECommerceContext.CurrentProduct.SKUAvailableItems,
-                        ECommerceContext.CurrentProduct.SKUUnitOfMeasure)|(user)michal.machacek@actum.cz|(hash)73ba942cb2686e83f00fde6dc2ef8ebaae864263c6fe43927cdecb3768e14a9f%},
-    packagingInfo: '{% KadenaNamespace.GetPackagingString(ProductNumberOfItemsInPackage, SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode)|(user)michal.machacek@actum.cz|(hash)3885007b07556b5e19906efa1497e8407f3b4ecd920e2c42717a520279bc4369%}',
+                        ECommerceContext.CurrentProduct.SKUUnitOfMeasure) |(user)administrator|(hash)4117b64895d4327ff6c8b8d6122c487dbb9735151c63b7337ece60cdcec2492d%},
+    packagingInfo: '{% KadenaNamespace.GetPackagingString(ProductNumberOfItemsInPackage, SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)administrator|(hash)d2bd820f97df79f94438952adabf96fb2c5531a62a9e96a6b03ca07cab210995%}',
     productOptions:{
           priceElementId: "option-price",
-          priceUrl: '/api/products/getprice/{%NodeSKU.ID|(user)michal.machacek@actum.cz|(hash)bcef10f415a2354c4810ec862a0471de9276dda4620c639e041ca603f3977dac%}',
-          categories: {% KadenaNamespace.GetProductOptions(NodeSKU.ID) |(user)michal.machacek@actum.cz|(hash)b8c8e779b4fb8e921b101939ec8aec929d24a48523724241aab85ce8deb532a0%}
+          priceUrl: '/api/products/getprice/{%NodeSKU.ID |(user)administrator|(hash)196992259153c5795bc9ab040b553916f8e04d82e8653bcae9f7084433736838%}',
+          categories: {% KadenaNamespace.GetProductOptions(NodeSKU.ID) |(user)administrator|(hash)e15fa684b9778653c74272699abf518b4bcd02dd7480837cfd6ee1bf1dd078e6%}
       },   
     description: {
       title: '{$Kadena.Product.Description$}',
-      text: '{% CurrentDocument.DocumentSKUDescription |(user)michal.machacek@actum.cz|(hash)e40003aeef3d2e59d6f30e4de4ad129d64d4d0d66ff5813b532f231bc55d88b4%}'
+      text: '{% CurrentDocument.DocumentSKUDescription |(user)administrator|(hash)20082ae9712fba35c7db75955cb4d76178acf545398a7fff6fd6447187fc8765%}'
     },
-    quantityText: '{% KadenaNamespace.GetMinMaxString(ECommerceContext.CurrentProduct.SKUMinItemsInOrder, ECommerceContext.CurrentProduct.SKUMaxItemsInOrder) |(user)michal.machacek@actum.cz|(hash)c7a3da11632d2a2a98adc3aa1f001d1c7fa360773a7d373d98fb456c7a89169a%}',
+    quantityText: '{% KadenaNamespace.GetMinMaxString(ECommerceContext.CurrentProduct.SKUMinItemsInOrder, ECommerceContext.CurrentProduct.SKUMaxItemsInOrder) |(user)administrator|(hash)80b08b883005ff7aaf115de09ea25f2961b1ac8df33f23ee6fcf5338afbdd8ff%}',
     relatedProducts: null
-  }
+  };
 
 ]]>
           </property>
@@ -543,14 +543,14 @@ config.localization.productDetail = {
           <property name="inlinescript">
 <![CDATA[
 config.localization.productDetail.addToCart = {
-      documentId: {% DocumentContext.CurrentDocument.ID |(user)michal.machacek@actum.cz|(hash)675ce3265c0c9a49ada0cb3f12865aa9fb6b6abd5a788c6eb2a89fc4bd526517%},
+      documentId: {% DocumentContext.CurrentDocument.ID |(user)administrator|(hash)40fa8d1b5a495f6c5fc8f4655ea64254d2279c847d8df809a45c4a98c4495ca2%},
       url: '/api/shoppingcart/addtocart',
       text: '{$Kadena.Product.AddToCart$}',
-      unit: '{% KadenaNamespace.LocalizeUom(SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)michal.machacek@actum.cz|(hash)115d25e0652c40fb0a00619487721cfd2dd72f5c2fcfed0d4042cf7ff3764ed9%}',
+      unit: '{% KadenaNamespace.LocalizeUom(SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)administrator|(hash)1ece51502e479631d7796d73c8f6b6cd99b37272bab64cb63e8c845d33807c82%}',
       quantity: 1,
-      minQuantity: '{% ECommerceContext.CurrentProduct.SKUMinItemsInOrder |(user)michal.machacek@actum.cz|(hash)3fc28bb914d325f49e76372da98b6a6e09f444cb409a2311c3c480abb0469f8b%}',
-      maxQuantity: '{% ECommerceContext.CurrentProduct.SKUMaxItemsInOrder |(user)michal.machacek@actum.cz|(hash)7905a3f40b71aa268e8e6bf42c8edd368eeb3d0b67abd8c3e2f04a669ede334f%}'      
-    };
+      minQuantity: '{% ECommerceContext.CurrentProduct.SKUMinItemsInOrder |(user)administrator|(hash)1c5905cfc566d60f0d40983e2cd8be12cdf9ae8fada7672e05434607409b0840%}',
+      maxQuantity: '{% ECommerceContext.CurrentProduct.SKUMaxItemsInOrder |(user)administrator|(hash)c0037174074c1356b30d49cfb524efd97b63d71be1554a39435d684bd10bf550%}'      
+   };
 ]]>
           </property>
           <property name="inlinescriptpagelocation">Inline</property>
@@ -561,9 +561,9 @@ config.localization.productDetail.addToCart = {
           <property name="visible" ismacro="true">
 <![CDATA[
 {% KadenaNamespace.CanDisplayAddToCartButton(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),
-                                          DocumentContext.CurrentDocument.GetValue("SKUAvailableItems"),
+                                         DocumentContext.CurrentDocument.GetValue("SKUAvailableItems"),
                                           ECommerceContext.CurrentProduct.SKUSellOnlyAvailable) 
-                                          &&(ECommerceContext.CurrentCustomer != null) |(user)michal.machacek@actum.cz|(hash)d9200c048c53c0945dc4495788194b9ae92cecfc97decbcb7797122172356ae7%}
+                                          &&(ECommerceContext.CurrentCustomer != null) |(user)administrator|(hash)daa2d8125730903642557399a32d630cb9a3e1097c2dc2b4bfb078a31a5a6f02%}
 ]]>
           </property>
           <property name="webparttitle"></property>
@@ -581,11 +581,11 @@ config.localization.productDetail.addToCart = {
           <property name="inlinescript">
 <![CDATA[
 config.localization.productDetail.openTemplate = { 
-    url: '{% KadenaNamespace.TemplatedProductEditorUrl(DocumentContext.CurrentDocument.ID, 
+     url: '{% KadenaNamespace.TemplatedProductEditorUrl(DocumentContext.CurrentDocument.ID, 
                                                        ProductType,
                                                        ProductChiliTemplateID,
                                                        ProductChiliWorkgroupID,
-                                                       ProductChili3dEnabled)|(user)michal.machacek@actum.cz|(hash)cec1b7b72ea0a878da0e8c7124540f3628a55248e7c9cb8150efa6a1b337bddc%}',
+                                                       ProductChili3dEnabled)|(user)administrator|(hash)55edea20cb79db1d5c29cdffcdb5e97445fb7e613ce62cb07e0de4d12419be8e%}',
     text: '{$Kadena.Product.OpenTemplateInDesign$}'
   }
 ]]>
@@ -596,7 +596,7 @@ config.localization.productDetail.openTemplate = {
           <property name="linkedfilepagelocation">Header</property>
           <property name="showfordocumenttypes"></property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% ProductType.Contains("KDA.MailingProduct") || ProductType.Contains("KDA.TemplatedProduct") |(user)michal.machacek@actum.cz|(hash)53b2a71b3423def25006abed544e182782c5a1be45fe6c33c779ccdfca59c160%}]]>
+            <![CDATA[{%  ProductType.Contains("KDA.MailingProduct") || ProductType.Contains("KDA.TemplatedProduct") |(user)administrator|(hash)63e539c4579080952eb7cf8274a0b5862553c788c48579ed5cf382bd902c81c6%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">javascript</property>
