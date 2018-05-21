@@ -10,6 +10,8 @@ using Kadena.Models.Product;
 using System.Collections.Generic;
 using Kadena.Dto.TemplatedProduct.MicroserviceResponses;
 using Kadena.Models.Membership;
+using Kadena.Models.SiteSettings;
+using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 
 namespace Kadena.Tests.WebApi
 {
@@ -175,15 +177,32 @@ namespace Kadena.Tests.WebApi
             Assert.Equal(expectedResult, actualResult);
         }
 
-
-        public async Task TemplatedProductEditorUrl_BasicTest()
+        [Theory]
+        [InlineData("KDA.TemplatedProduct", "/editorurl?documentId=1230&templateId=newtemplateid&workspaceid=80208ba7-99ea-6f19-3b07-35428e89aa4c&use3d=False")]
+        [InlineData("KDA.TemplatedProduct|KDA.MailingProduct", "/selectlisturl?url=%2feditorurl%3fdocumentId%3d1230%26templateId%3dnewtemplateid%26workspaceid%3d80208ba7-99ea-6f19-3b07-35428e89aa4c%26use3d%3dFalse")]
+        public async Task TemplatedProductEditorUrl_TemplatedTest(string productType, string expectedResult)
         {
-            //const int documentId = 1230;
-            //const int userId = 45;
+            const int documentId = 1230;
+            const int userId = 45;
+            const string masterTemplateId = "70208ba7-58ea-4f19-8b07-87628e89113b";
+            const string workspaceId = "80208ba7-99ea-6f19-3b07-35428e89aa4c";
+            const bool use3d = false;
 
-            //var result = await Sut.TemplatedProductEditorUrl(documentId, userId, ProductTypes.TemplatedProduct, Guid.Empty, Guid.Empty, false);
+            Setup<IKenticoResourceService, string>(r => r.GetSiteSettingsKey(Settings.KDA_Templating_ProductEditorUrl), "editorurl");
+            Setup<IKenticoResourceService, string>(r => r.GetSiteSettingsKey(Settings.KDA_Templating_SelectListPageUrl), "selectlisturl");
+            Setup<IKenticoDocumentProvider, string, bool, string>(d => d.GetDocumentUrl(It.IsAny<string>(), use3d), (s,b) => "/"+s);
 
-            //Assert.Equal("expected link", result)
+            Setup<ITemplatedClient, Task<BaseResponseDto<string>>>(t => t.CreateNewTemplate(It.IsAny<NewTemplateRequestDto>()),
+                Task.FromResult(new BaseResponseDto<string> { Success = true, Payload = "http://chili.com/template?q=1&v=2&doc=newtemplateid" }));
+
+            var result = await Sut.TemplatedProductEditorUrl(documentId, 
+                                                             userId,
+                                                             productType, 
+                                                             Guid.Parse(masterTemplateId),
+                                                             Guid.Parse(workspaceId),
+                                                             false);
+
+            Assert.Equal(expectedResult, result);
         }
     }
 }
