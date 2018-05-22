@@ -76,7 +76,7 @@
           <Query>
 <![CDATA[
 select ShippingOptionID as value,ShippingOptionDisplayName as text from COM_ShippingOption
-where ShippingOptionSiteID={%CurrentSite.ID|(user)cvoqa2@gmail.com|(hash)bd1ae4e27dbe1e2a368414c4ebfbc3913c59531047bbe5fb2d0e56619febd3b2%} and ShippingOptionEnabled=1
+where ShippingOptionSiteID={%CurrentSite.ID |(user)administrator|(hash)015efb55d982988e9c1a5fac114c96108d74def97e120cb2b399b08fa6ed69e9%} and ShippingOptionEnabled=1
 ]]>
           </Query>
           <SortItems>True</SortItems>

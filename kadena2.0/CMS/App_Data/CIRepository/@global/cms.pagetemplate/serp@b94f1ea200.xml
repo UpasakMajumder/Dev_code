@@ -142,12 +142,7 @@
           <property name="outputfixlowercase">False</property>
           <property name="outputfixselfclose">False</property>
           <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
+          <property name="partialcachedependencies">##DEFAULT##</property>
           <property name="partialcacheminutes"></property>
           <property name="positionleft"></property>
           <property name="positiontop"></property>
@@ -156,7 +151,7 @@
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[{$ Kadena.Search.Results $} «{% QueryString.phrase |(user)michal.machacek@actum.cz|(hash)9394a84bcfeb90eed43921aefe697c0e71417011c3e3df76317c336c0884637a%}»]]>
+            <![CDATA[{$ Kadena.Search.Results $} «{% QueryString.phrase|(user)administrator|(hash)9b98b21df57d616b1dae1222126a1ae916e4b54d4dccf7850be7e35ba2c6a1cd%}»]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -235,7 +230,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty |(user)michal.machacek@actum.cz|(hash)ff867895da2b5b628922aa2c39039994a38f838338f9a73c2c453995ecdf89a9%}]]>
+            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty|(user)administrator|(hash)95ebceee10f40317dc794cc24a0cccc7de70c540ef159457185d13a9ec0d037a%}]]>
           </property>
         </properties>
       </webpartzone>
@@ -263,7 +258,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty |(user)michal.machacek@actum.cz|(hash)ff867895da2b5b628922aa2c39039994a38f838338f9a73c2c453995ecdf89a9%}]]>
+            <![CDATA[{% !ECommerceContext.CurrentShoppingCart.IsEmpty|(user)administrator|(hash)95ebceee10f40317dc794cc24a0cccc7de70c540ef159457185d13a9ec0d037a%}]]>
           </property>
         </properties>
       </webpartzone>

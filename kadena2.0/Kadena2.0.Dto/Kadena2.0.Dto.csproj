@@ -57,6 +57,7 @@
     <Compile Include="Approval\MicroserviceRequests\CustomerDto.cs" />
     <Compile Include="Approval\MicroserviceResponses\ApprovalResponseDto.cs" />
     <Compile Include="Approval\Requests\ApprovalRequestDto.cs" />
+    <Compile Include="Approval\Responses\ApprovalResultDto.cs" />
     <Compile Include="Brands\BrandDto.cs" />
     <Compile Include="BusinessUnits\BusinessUnitDto.cs" />
     <Compile Include="Checkout\Responses\ChangeDeliveryAddressResponseDto.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="SubmitOrder\MicroserviceRequests\NotificationInfoDto.cs" />
     <Compile Include="SubmitOrder\MicroserviceRequests\TotalsDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceRequests\NewTemplateRequestDto.cs" />
+    <Compile Include="TemplatedProduct\MicroserviceRequests\SetMailingListRequestDTO.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateMetaData.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentMailingList.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\TemplateServiceDocumentResponse.cs" />
@@ -197,6 +199,7 @@
     <Compile Include="TemplatedProduct\Responses\ProductTemplateDTO.cs" />
     <Compile Include="TemplatedProduct\Responses\ProductTemplatesHeaderDTO.cs" />
     <Compile Include="TemplatedProduct\Responses\ProductTemplatesDTO.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\ApprovalDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\GetOrderByOrderIdResponseDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceRequests\GetOrderByOrderIdRequestDTO.cs" />
     <Compile Include="SubmitOrder\Requests\PaymentMethodDto.cs" />
@@ -232,9 +235,12 @@
     <Compile Include="ViewOrder\MicroserviceResponses\ShippingInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\AddressDto.cs" />
     <Compile Include="ViewOrder\Responses\CommonInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderActionsDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderDetailDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemsDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderStatusInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\PaymentInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\PricingInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\PricingInfoItemDTO.cs" />
@@ -242,6 +248,8 @@
     <Compile Include="ViewOrder\Responses\TitleValuePairDto.cs" />
     <Compile Include="ViewOrder\Responses\TrackingDTO.cs" />
     <Compile Include="_Attributes\StringListValidationAttribute.cs" />
+    <Compile Include="_Common\DialogButtonDTO.cs" />
+    <Compile Include="_Common\DialogDTO.cs" />
     <Compile Include="_Common\PaginationDto.cs" />
     <Compile Include="_Common\TableViewDto.cs" />
     <Compile Include="_Common\TableRowDto.cs" />

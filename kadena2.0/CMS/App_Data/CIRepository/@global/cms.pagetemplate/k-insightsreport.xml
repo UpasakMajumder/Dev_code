@@ -83,7 +83,7 @@
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<script src="{% Settings.KDA_Spotfire_GetJavaScriptApiURL |(user)tomas.rucki@actum.cz|(hash)02c8163331042bc6944ae566606eed7ce58372548d36c5cc457f12222d2f193f%}">
+<script src="{% Settings.KDA_Spotfire_GetJavaScriptApiURL|(user)administrator|(hash)272b969de12410626de410a16f7938cadfd1fd3e0b3af4c36d6ddc550b5621a3%}">
 </script>
 ]]>
           </property>
@@ -139,9 +139,9 @@
   var config = {
     localization: {      
       spotfire: {
-        serverUrl: '{% Settings.KDA_Spotfire_ServerURL |(user)tomas.rucki@actum.cz|(hash)2660aa71a2c9288070026376faa9277289432d9c6aea86f6e8370114ffae4bdc%}',
-        url: '{% QueryString.url |(user)tomas.rucki@actum.cz|(hash)4361dd6eb9f1cd78a5c796168ad245a06031635d7d03d919b07143ec73927bf4%}',
-        customerId: '{% Settings.KDA_Spotfire_CustomerID |(user)tomas.rucki@actum.cz|(hash)978919fc606d42c9d391643704391e91c11cddc89394b5ee49b2f8f172d06b12%}'
+        serverUrl: '{% Settings.KDA_Spotfire_ServerURL|(user)administrator|(hash)05fb7412b8c101258bb3070c2b70947cddf1b0ef6564af4e72ab2c577676e61b%}',
+        url: '{% QueryString.url|(user)administrator|(hash)4c9adc87286c2a78cb8e1acb4fc167c18f109487087d6aa5131de2836ba032db%}',
+        customerId: '{% Settings.KDA_Spotfire_CustomerID|(user)administrator|(hash)a84fb05f562efd2a462d4983092cf96e756a0f742c0f83b6e30f56ec3a5faaf4%}'
       }
     }
   };

@@ -2,10 +2,12 @@ using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Helpers;
+using Kadena.Helpers.Routes;
 using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Common;
 using Kadena.Models.OrderDetail;
+using Kadena.Models.Orders;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
@@ -36,7 +38,6 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IImageService imageService;
         private readonly IPdfService pdfService;
         private readonly IKenticoUnitOfMeasureProvider units;
-
 
         public OrderDetailService(IMapper mapper,
             IOrderViewClient orderViewClient,
@@ -95,9 +96,52 @@ namespace Kadena.BusinessLogic.Services.Orders
                 businessUnitName = businessUnits.GetBusinessUnitName(bun);
             }
 
+            var customer = kenticoCustomers.GetCustomer(data.ClientId) ?? Customer.Unknown;
+            var isWaitingForApproval = data.StatusId == (int)OrderStatus.WaitingForApproval;
+            var canCurrentUserApproveOrder = IsCurrentUserApproverFor(customer);
+            var showApprovalButtons = isWaitingForApproval && canCurrentUserApproveOrder;
+            var approvalMessages = data.Approvals?.Select(a => a.Note) ?? Enumerable.Empty<string>();
+
             var orderDetail = new OrderDetail()
             {
                 DateTimeNAString = resources.GetResourceString("Kadena.Order.ItemShippingDateNA"),
+
+                General = new OrderInfo
+                {
+                    OrderId = orderId,
+                    CustomerId = customer.Id,
+                    CustomerName = customer.FullName
+                },
+
+                Actions = showApprovalButtons
+                    ? new OrderActions
+                    {
+                        Accept = new DialogButton
+                        {
+                            Button = resources.GetResourceString("Kadena.Order.ButtonAccept"),
+                            Dialog = new Dialog
+                            {
+                                CancelButton = resources.GetResourceString("Kadena.Order.DialogAccept.Cancel"),
+                                ProceedButton = resources.GetResourceString("Kadena.Order.DialogAccept.Proceed"),
+                                ProceedUrl = '/' + Routes.Order.Approve,
+                                Text = resources.GetResourceString("Kadena.Order.DialogAccept.Message"),
+                                Title = resources.GetResourceString("Kadena.Order.DialogAccept.Title")
+                            }
+                        },
+                        Reject = new DialogButton
+                        {
+                            Button = resources.GetResourceString("Kadena.Order.ButtonReject"),
+                            Dialog = new Dialog
+                            {
+                                CancelButton = resources.GetResourceString("Kadena.Order.DialogReject.Cancel"),
+                                ProceedButton = resources.GetResourceString("Kadena.Order.DialogReject.Proceed"),
+                                ProceedUrl = '/' + Routes.Order.Reject,
+                                Text = resources.GetResourceString("Kadena.Order.DialogReject.Message"),
+                                Title = resources.GetResourceString("Kadena.Order.DialogReject.Title")
+                            }
+                        }
+                    }
+                    : null,
 
                 CommonInfo = new CommonInfo()
                 {
@@ -111,10 +155,11 @@ namespace Kadena.BusinessLogic.Services.Orders
                         Title = resources.GetResourceString("Kadena.Order.ShippingDatePrefix"),
                         Value = data.ShippingInfo?.ShippingDate
                     },
-                    Status = new TitleValuePair<string>
+                    Status = new OrderStatusInfo
                     {
                         Title = resources.GetResourceString("Kadena.Order.StatusPrefix"),
-                        Value = genericStatus
+                        Value = genericStatus,
+                        Note = string.Join(", ", approvalMessages)
                     },
                     TotalCost = new TitleValuePair<string>
                     {
@@ -204,21 +249,26 @@ namespace Kadena.BusinessLogic.Services.Orders
             return orderDetail;
         }
 
+        private bool IsCurrentUserApproverFor(Customer customer)
+        {
+            var currentUserId = kenticoCustomers.GetCurrentCustomer().UserID;
+            return currentUserId == customer.ApproverUserId;
+        }
+
         private string GetPdfUrl(string orderId, Dto.ViewOrder.MicroserviceResponses.OrderItemDTO orderItem, Product orderedProduct)
         {
             if (orderItem.Type.Contains(OrderItemTypeDTO.TemplatedProduct.ToString()) ||
                 orderItem.Type.Contains(OrderItemTypeDTO.Mailing.ToString()))
             {
-
-                if (orderedProduct.HiResPdfDownloadEnabled)
-                {
-                    return pdfService.GetHiresPdfUrl(orderId, orderItem.LineNumber);
-                }
-
                 if (orderedProduct == null)
                 {
                     kenticoLog.LogError("GetPdfUrl", $"Couldn't find product for item line {orderItem.LineNumber} from order {orderId}");
                     return string.Empty;
+                }
+
+                if (orderedProduct.HiResPdfDownloadEnabled)
+                {
+                    return pdfService.GetHiresPdfUrl(orderId, orderItem.LineNumber);
                 }
 
                 return pdfService.GetLowresPdfUrl(orderItem.TemplateId, orderedProduct.TemplateLowResSettingId);
@@ -277,9 +327,6 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             return orderedItems;
         }
-
-
-        
 
         private async Task SetMailingListNames(List<OrderedItem> orderedItems)
         {

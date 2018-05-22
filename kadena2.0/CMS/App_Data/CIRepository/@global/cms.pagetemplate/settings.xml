@@ -156,15 +156,15 @@
           <property name="text" ismacro="true">
 <![CDATA[
 {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-result = String.FormatString("{0}{1}", "<a href='"+ RootDocument.AbsoluteURL +"'>{$ Kadena.BreadcrumbsHome $}</a>", result);
-result
-|(user)michal.machacek@actum.cz|(hash)97d7e9acc725220281a55c74700c4cc589482a9fbbb71e0a2959bf1cacf5ac1b%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  result = String.FormatString("{0}{1}", "<a href='"+ RootDocument.AbsoluteURL +"'>{$ Kadena.BreadcrumbsHome $}</a>", result);
+  result
+|(user)administrator|(hash)3e5a75c8f69fa72e1f54f80fbf87153a0542e45b2e78e8ecdb91c272a328f708%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>

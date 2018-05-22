@@ -68,6 +68,9 @@
     <Compile Include="ModuleAccess\KnownPermissions.cs" />
     <Compile Include="ModuleAccess\KadenaModuleState.cs" />
     <Compile Include="ModuleAccess\KnownPageTypes.cs" />
+    <Compile Include="OrderDetail\OrderActions.cs" />
+    <Compile Include="OrderDetail\OrderInfo.cs" />
+    <Compile Include="OrderDetail\OrderStatusInfo.cs" />
     <Compile Include="Orders\Failed\FailedOrder.cs" />
     <Compile Include="Orders\OrderFilter.cs" />
     <Compile Include="Orders\OrderReport.cs" />
@@ -122,6 +125,7 @@
     <Compile Include="SiteSettings\Settings.Microservices.cs" />
     <Compile Include="SiteSettings\Settings.OrderDetails.cs" />
     <Compile Include="Site\ModuleMapping.cs" />
+    <Compile Include="SubmitOrder\MailingList.cs" />
     <Compile Include="SubmitOrder\OrderCartItem.cs" />
     <Compile Include="SubmitOrder\OrderItemSku.cs" />
     <Compile Include="TemplatedProduct\EmailProofRequest.cs" />
@@ -167,6 +171,8 @@
     <Compile Include="Site\KenticoSite.cs" />
     <Compile Include="Mailing\MailingAddress.cs" />
     <Compile Include="Mailing\MailingList.cs" />
+    <Compile Include="_Common\Dialog.cs" />
+    <Compile Include="_Common\DialogButton.cs" />
     <Compile Include="_Common\FileResult.cs" />
     <Compile Include="_Common\MailTemplate.cs" />
     <Compile Include="RecentOrders\Order.cs" />

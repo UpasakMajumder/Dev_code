@@ -94,7 +94,7 @@
       <th>{$KDA.ProgramsList.Status$}</th>
         {% if (MembershipContext.AuthenticatedUser.IsInRole("TWEGlobalAdmin",false)) { %}
       <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
-      {%}|(user)cvoqa2@gmail.com|(hash)ab45dd9810092ceb3c807708b0f49f5ae954fc2c3a61d7b4f1fd94fd66a26b2d%}
+      {%} |(user)administrator|(hash)363d79cd4a5847835dea5fe8b34897c159109318a8da0fefca5992c8811ce703%}
     </tr>
 ]]>
           </property>
@@ -158,7 +158,7 @@ ProgramDescription LIKE '%{?searchtext?}%' OR
 BrandName LIKE '%{?searchtext?}%' OR
 Name LIKE '%{?searchtext?}%'
 )
-{%}|(handlesqlinjection)false|(user)cvoqa2@gmail.com|(hash)8581306ddd6d15da5925a4fd77eee99c94d5c5485b0cdf6f989fae51c3ebb443%}
+{%}|(handlesqlinjection)false |(user)administrator|(hash)5e306b99694bf34f543ad3fd62707455ef3547f3f1a29d56b4e81d1d10ad5ce6%}
 ]]>
           </property>
           <property name="zerorowstext" ismacro="true">
@@ -195,13 +195,13 @@ function deleteProgram(programID) {
                 dataType: "json",
                 success: function (data) {
                     if (data.d==true) {
-                       window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=deleted");
+                       window.location.replace("{%CurrentDocument.AbsoluteURL |(user)administrator|(hash)1c02f0838d9a106fc0cbac312e23d536690989a97caeec5262488f098c696cfb%}?status=deleted");
                     } else {
-                      window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
+                      window.location.replace("{%CurrentDocument.AbsoluteURL |(user)administrator|(hash)1c02f0838d9a106fc0cbac312e23d536690989a97caeec5262488f098c696cfb%}?status=error");
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    window.location.replace("{%CurrentDocument.AbsoluteURL|(user)cvoqa2@gmail.com|(hash)cfb6a0a457e18a42c181403ac76d8aadc85a68d88048776e0ceb5d890fcae646%}?status=error");
+                    window.location.replace("{%CurrentDocument.AbsoluteURL |(user)administrator|(hash)1c02f0838d9a106fc0cbac312e23d536690989a97caeec5262488f098c696cfb%}?status=error");
                 }
             });
     }
@@ -386,7 +386,7 @@ function deleteProgram(programID) {
           <property name="text">
 <![CDATA[
 <div class="add__btn">
-      <a class="btn-action" href="{% Settings.KDA_CreateProgramURL |(user)cvoqa2@gmail.com|(hash)72ca8ff86960817e3ce040d6ce89e39e0b6e84627c53c20794824ad0da26fd99%}"><i class="fa fa-plus" aria-hidden="true"></i>{$Kadena.Programs.AddNewText$}</a>
+      <a class="btn-action" href="{% Settings.KDA_CreateProgramURL|(user)administrator|(hash)14512700f5dd2801e65f626dcfd6490d64571c037b0183a895a693cbed6388ea%}"><i class="fa fa-plus" aria-hidden="true"></i>{$Kadena.Programs.AddNewText$}</a>
     </div>
 ]]>
           </property>
@@ -493,7 +493,7 @@ function deleteProgram(programID) {
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[ <h1 class="content-header__page-name">{%CurrentDocument.DocumentName|(user)cvoqa2@gmail.com|(hash)76becbc016492b55eb7136c1b6b4a6327ceacc520fadb46d5e9f6da566e5a6ed%}</h1>]]>
+            <![CDATA[ <h1 class="content-header__page-name">{%CurrentDocument.DocumentName |(user)administrator|(hash)44c67b1cc4a3472a0ba83693abcc8fecf71585800e60f5459d71f2eec5825674%}</h1>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -546,14 +546,14 @@ function deleteProgram(programID) {
           <property name="text">
 <![CDATA[
  {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)25a38b3f17c6468d659e8f65b22b9d82b2decede46871dc160947145a720db8e%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>

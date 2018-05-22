@@ -7,7 +7,6 @@ namespace Kadena.BusinessLogic.Contracts
     {
         ProductsPage GetProducts(string path);
         Price GetPrice(int skuId, Dictionary<string, int> skuOptions = null);
-        string GetAvailableProductsString(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasure);
         bool CanDisplayAddToCartButton(string productType, int? numberOfAvailableProducts, bool sellOnlyIfAvailable);
         string GetPackagingString(int numberOfItemsInPackage, string unitOfMeasure, string cultureCode);
         string GetUnitOfMeasure(string unitOfMeasure, string cultureCode);
@@ -15,5 +14,6 @@ namespace Kadena.BusinessLogic.Contracts
         IEnumerable<ProductEstimation> GetProductEstimations(int documentId);
         IEnumerable<ProductPricingInfo> GetProductPricings(int documentId, string unitOfMeasure, string cultureCode);
         ProductAvailability GetInventoryProductAvailability(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasureCode);
+        string GetMinMaxItemsString(int min, int max);
     }
 }

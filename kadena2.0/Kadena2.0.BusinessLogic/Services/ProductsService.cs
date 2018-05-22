@@ -71,7 +71,7 @@ namespace Kadena.BusinessLogic.Services
             return productsPage;
         }
 
-        public string GetAvailableProductsString(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasureCode)
+        string GetAvailableProductsString(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasureCode)
         {
             string formattedValue = string.Empty;
 
@@ -224,7 +224,7 @@ namespace Kadena.BusinessLogic.Services
                 estimates.Add(new ProductEstimation
                 {
                     Key = resources.GetResourceString("Kadena.Product.ShippingCost"),
-                    Value = product.ShipTime
+                    Value = product.ShippingCost
                 });
             }
 
@@ -255,6 +255,29 @@ namespace Kadena.BusinessLogic.Services
             }
 
             return pricings;
+        }
+
+        public string GetMinMaxItemsString(int min, int max)
+        {
+            if (min > 0 && max > 0)
+            {
+                var format = resources.GetResourceString("Kadena.Product.MinMaxInfo.MinMax");
+                return string.Format(format, min, max);
+            }
+
+            if (min > 0)
+            {
+                var format = resources.GetResourceString("Kadena.Product.MinMaxInfo.Min");
+                return string.Format(format, min);
+            }
+
+            if (max > 0)
+            {
+                var format = resources.GetResourceString("Kadena.Product.MinMaxInfo.Max");
+                return string.Format(format, max);
+            }
+
+            return string.Empty;
         }
     }
 }

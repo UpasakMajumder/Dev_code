@@ -30,10 +30,10 @@
         </settings>
         <rules>
           <rule errormsg="{$Kadena.BusinessUnit.BUNumberMinLength$}">
-            <![CDATA[{%Rule("(Value.Length >= 8)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>8</t><v>8</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)979ecc88cd7b0732e8a5dcde09a9892f44944d4d0992b2dca867a2e83e8c1521%}]]>
+            <![CDATA[{%Rule("(Value.Length >= 8)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>8</t><v>8</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)825ad7543d678a964c4926ec25d5382fd9bdb56290798498cdd3f8f8c0ac86ca%}]]>
           </rule>
           <rule errormsg="{$Kadena.BusinessUnit.BUNumberMaxLength$}">
-            <![CDATA[{%Rule("(Value.Length <= 10)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>10</t><v>10</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)da907b838cf06b64a69a0602218ca3b767df93f22870bfd118f781cc99e16d4a%}]]>
+            <![CDATA[{%Rule("(Value.Length <= 10)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>10</t><v>10</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)8f1cd73ae306dc8d98b1907134638a2eeed1809126b3dcddd1faab41904e4832%}]]>
           </rule>
         </rules>
       </field>
@@ -51,10 +51,10 @@
         </settings>
         <rules>
           <rule errormsg="{$Kadena.BusinessUnit.BUNameMinLength$}">
-            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)e737b4f4bd78c9ec6cc56470a40af00881439acae55230259441d0292010b297%}]]>
+            <![CDATA[{%Rule("(Value.Length >= 1)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MinLength\" ><p n=\"minlength\"><t>1</t><v>1</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)efc157ede6fb5c7f650a4178bfc9d60a8c59d242b012125bfc266cd241686a4a%}]]>
           </rule>
           <rule errormsg="{$Kadena.BusinessUnit.BUNameMaxLength$}">
-            <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)2a2f4705cdec2abbbe1cb46f9a1b25ee25f87cf5beb950f79eedfab3d39719de%}]]>
+            <![CDATA[{%Rule("(Value.Length <= 50)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>50</t><v>50</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)5fdd1b472b919c1f4b774fa2cb5a6b34e5e13b72404e21f9b6a6e043ba0165b9%}]]>
           </rule>
         </rules>
       </field>

@@ -3,6 +3,8 @@ using CMS.Ecommerce;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kadena.WebAPI.KenticoProviders.Providers
 {
@@ -53,6 +55,16 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             customerInfo.CustomerPhone = customer.Phone;
             customerInfo.CustomerCompany = customer.Company;
             customerInfo.Update();
+        }
+
+        public IEnumerable<Customer> GetCustomersByApprover(int approverUserId)
+        {
+            var customers = CustomerInfoProvider.GetCustomers()
+                .WhereEquals("CustomerApproverUserID", approverUserId)
+                .ToArray();
+            return customers
+                .Select(c => _mapper.Map<Customer>(c));
+
         }
     }
 }

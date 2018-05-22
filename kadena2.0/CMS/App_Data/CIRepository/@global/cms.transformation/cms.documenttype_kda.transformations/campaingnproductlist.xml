@@ -16,10 +16,9 @@
   <td>{%FormatDate(SKUValidUntil)%}</td>
   <td>
     <div class="text-center">
-      <a href="{%Settings.KDA_InventoryProductEditPageUrl|(user)cvoqa2@gmail.com|(hash)d6f157f9e9dd2b5191bf4a957a47e55263db0373820a6c35fdd5201918709932%}?ID={%CampaignsProductID%}" class="edit_btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+      <a href="{%Settings.KDA_InventoryProductEditPageUrl|(user)administrator|(hash)42d444bd85e88fd082688cf1f400c1d7a0689ed9e3aa57316e9b1149615b6094%}?ID={%CampaignsProductID%}" class="edit_btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
     </div>
   </td>
-  
 ]]>
   </TransformationCode>
   <TransformationCSS />

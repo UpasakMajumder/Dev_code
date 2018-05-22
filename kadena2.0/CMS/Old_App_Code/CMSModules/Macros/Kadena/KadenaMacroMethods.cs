@@ -283,6 +283,24 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 .GetPackagingString(numberOfItemsInPackage, unitOfmeasure, cultureCode);
         }
 
+        [MacroMethod(typeof(string), "Gets formated and localized Min Max string.", 1)]
+        [MacroMethodParam(0, "min", typeof(int), "Minimal items")]
+        [MacroMethodParam(1, "max", typeof(string), "Maximal items")]
+        public static object GetMinMaxString(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 2)
+            {
+                throw new NotSupportedException();
+            }
+
+            var min = ValidationHelper.GetInteger(parameters[0], 0);
+            var max = ValidationHelper.GetInteger(parameters[1], 0);
+
+
+            return DIContainer.Resolve<IProductsService>()
+                .GetMinMaxItemsString(min, max);
+        }
+
         [MacroMethod(typeof(string), "Gets localized UOM name.", 1)]
         [MacroMethodParam(0, "unitOfMeasure", typeof(string), "Unit of measure")]
         [MacroMethodParam(1, "cultureCode", typeof(string), "Current culture code")]
@@ -390,20 +408,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 new CacheSettings(TimeSpan.FromMinutes(20).TotalMinutes, cacheKey));
         }
 
-        [Obsolete]
-        [MacroMethod(typeof(string[]), "Returns array of parsed urls items.", 1)]
-        [MacroMethodParam(0, "fieldValue", typeof(string), "Value stored MediaMultiField field")]
-        public static object GetUrlsFromMediaMultiField(EvaluationContext context, params object[] parameters)
-        {
-            if (parameters.Length != 1)
-            {
-                throw new NotSupportedException();
-            }
-            var fieldValue = parameters[0] as string;
-            var urls = MediaMultiField.GetValues(fieldValue);
-            return urls;
-        }
-
         [MacroMethod(typeof(string), "Returns json of product attachments", 1)]
         [MacroMethodParam(0, "fieldValue", typeof(string), "Value stored MediaMultiField field")]
         public static object GetProductAttachments(EvaluationContext context, params object[] parameters)
@@ -497,20 +501,16 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 .Select(u => $"{u.UserId};{u.UserName} ({u.Email})");
 
             return none.Concat(approvers).ToArray();
-         }
+        }
 
-        [Obsolete]
-        [MacroMethod(typeof(string), "Returns file name from media attachment url.", 1)]
-        [MacroMethodParam(0, "url", typeof(string), "Url")]
-        public static object GetFilenameFromMediaUrl(EvaluationContext context, params object[] parameters)
+        [MacroMethod(typeof(bool), "Checks whether current user is an approver", 1)]
+        public static object IsCurrentUserApprover(EvaluationContext context, params object[] parameters)
         {
-            if (parameters.Length != 1)
-            {
-                throw new NotSupportedException();
-            }
-            var url = parameters[0] as string;
-            var filename = MediaMultiField.ParseFrom(url).Name;
-            return filename;
+            var isApprover = DIContainer
+                .Resolve<IApproverService>()
+                .IsApprover(MembershipContext.AuthenticatedUser.UserID);
+
+            return isApprover;
         }
 
         [MacroMethod(typeof(string), "Returns localized url of the document for current culture.", 1)]

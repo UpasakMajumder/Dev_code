@@ -65,42 +65,42 @@
   var config = {
     localization: {
       login: {
-        email: '{%JSEscape(GetResourceString("Kadena.Login.Email"))|(user)cvoqa2@gmail.com|(hash)0b1ba2e1340a1365e7fdf41aa11e0b2f89d7eff40e81b5ee9de254b3aff9a756%}',
-        emailPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.EmailPlaceholder"))|(user)cvoqa2@gmail.com|(hash)29d3325fbf9472216f5d6c80339f4660506515f4d63fa71a9c55954971180238%}',
-        emailValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.EmailValidationMessage"))|(user)cvoqa2@gmail.com|(hash)262ca1cc724a33bced9f80cf55dd5a78b9748ca1ef0567c1d6aefabc1a2e2256%}',
-        password: '{%JSEscape(GetResourceString("Kadena.Login.Password"))|(user)cvoqa2@gmail.com|(hash)1b184e9be5667cc27e71ad49dc0dc411a5781af3fad95247d00531c11cae49c6%}',
-        passwordPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.PasswordPlaceholder"))|(user)cvoqa2@gmail.com|(hash)195facb692a8d74f82df9abf37aed2cb07c372075013d1e7645671d031dc2762%}',
-        passwordShow: '{%JSEscape(GetResourceString("Kadena.Login.PasswordShow"))|(user)cvoqa2@gmail.com|(hash)620efeb0d38cc69afb776b3c844dac6beaf6e1a197be0490268bb9d27112bfaa%}',
-        passwordHide: '{%JSEscape(GetResourceString("Kadena.Login.PasswordHide"))|(user)cvoqa2@gmail.com|(hash)606870f883ef69021b0422906bb21207a9c64993ac7801baeb9f610be8446a9c%}',
-        passwordValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.PasswordValidationMessage"))|(user)cvoqa2@gmail.com|(hash)a2fe3d7395d21d7bf0943f1d3a6e0f8f58bdedc8627fdedf5700b27cd3729157%}',
-        keepMeLoggedIn: '{%JSEscape(GetResourceString("Kadena.Login.KeepMeLoggedIn"))|(user)cvoqa2@gmail.com|(hash)3adc3b5a1e0bce1109fe0256a86f1e650486c1c65d8ba81d350d1b56115d3645%}',
-        login: '{%JSEscape(GetResourceString("Kadena.Login.LoginButtonText"))|(user)cvoqa2@gmail.com|(hash)812e63b02a5b0862674a421d31c9684c64f56502fc048551ee209804549228c6%}'
+        email: '{%JSEscape(GetResourceString("Kadena.Login.Email"))|(user)administrator|(hash)b85d2701eb43e00a0f599802b49263eae4b099df2b88fbaa442f9ea430220dc1%}',
+        emailPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.EmailPlaceholder"))|(user)administrator|(hash)10eaa914d934056458d92f4302a9178945091fab55f38d0e6950fad411ad7047%}',
+        emailValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.EmailValidationMessage"))|(user)administrator|(hash)cd85786537b70307fb0c209589613ad3c9a0e27f436286e6f3a5a5d8e0a51af0%}',
+        password: '{%JSEscape(GetResourceString("Kadena.Login.Password"))|(user)administrator|(hash)a22b4f0cc65d0b41a1c2cc422eba582784febc2e3b218c331dd0b177838545ca%}',
+        passwordPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.PasswordPlaceholder"))|(user)administrator|(hash)a0403b144a44a100d1162502fd2a394082d80a3f4959cfa950e37627afaed8f8%}',
+        passwordShow: '{%JSEscape(GetResourceString("Kadena.Login.PasswordShow"))|(user)administrator|(hash)4c0f39a588fcf4a952ba2ea4bb4b2cd29893a2de282af616d482d4ff2ef3581d%}',
+        passwordHide: '{%JSEscape(GetResourceString("Kadena.Login.PasswordHide"))|(user)administrator|(hash)565d693bb82f475dd78b0003b78ddd33d18fc47d389efd15408100b7089d0e14%}',
+        passwordValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.PasswordValidationMessage"))|(user)administrator|(hash)238eee9be35d8230ca1b17a4d5d744c314aa7909388ef4a0d381f700de5aee5a%}',
+        keepMeLoggedIn: '{%JSEscape(GetResourceString("Kadena.Login.KeepMeLoggedIn"))|(user)administrator|(hash)5debfee01e321a82ee23fe41ddd2256b7ee2a27781a8f9f9f2dd031035d648ac%}',
+        login: '{%JSEscape(GetResourceString("Kadena.Login.LoginButtonText"))|(user)administrator|(hash)ac38af960eb42388514afac07e26dc4d6265db216f70385204de0f27861e86f4%}'
       }
     }
   };
   config.localization.staticFields = {
     validation: {
-      requiredMessage: '{%JSEscape(GetResourceString("Kadena.Field.RequiredMessage"))|(user)cvoqa2@gmail.com|(hash)771bb0abd631ea03a543b6d08ae2a47c2ca05f9232cca4f33f88783308f61675%}',
-      optionalLabel: '{%JSEscape(GetResourceString("Kadena.Field.Optional"))|(user)cvoqa2@gmail.com|(hash)6976e0ca210e8d8c2ca725be6f044566ae82a67571820078c3aa11c957b8e1ce%}'
+      requiredMessage: '{%JSEscape(GetResourceString("Kadena.Field.RequiredMessage"))|(user)administrator|(hash)d3e874ff51d827f483dfbb232f8a2e9544b7b7bd729b03d7c8d9d5bbdcc07fce%}',
+      optionalLabel: '{%JSEscape(GetResourceString("Kadena.Field.Optional"))|(user)administrator|(hash)33352f00bb78e7e607c2e6656b7607adee3f4d280e8117f9ababfab0ff969a4c%}'
     },
     password: {
-      show: '{%JSEscape(GetResourceString("Kadena.Field.Show"))|(user)cvoqa2@gmail.com|(hash)a88aa9fbbe0c3ef094b71a9b47dd748f202152825a047225a864b13dce6b9345%}',
-      hide: '{%JSEscape(GetResourceString("Kadena.Field.Hide"))|(user)cvoqa2@gmail.com|(hash)9ed498a85936806c9383fee5f5cbf2bff0db87bcd0f527e194c59e7ae67de9cb%}'
+      show: '{%JSEscape(GetResourceString("Kadena.Field.Show"))|(user)administrator|(hash)59825942b07cfc6e2b13a944dd219d4f4b2848962c674ceab8eb15d275490eef%}',
+      hide: '{%JSEscape(GetResourceString("Kadena.Field.Hide"))|(user)administrator|(hash)fe4f62c61c7c7ad409e28dc509c9bf3ef15de10572d118bef87d3d68ad24356a%}'
     }
   };
   config.localization.smarty= {
     url:'https://us-street.api.smartystreets.com/street-address',
-    key:''+{%Settings.SmartyKey|(user)cvoqa2@gmail.com|(hash)a77d611b45b63cc6503e12eeb400db9b1e2784045fe6804814a3a33ca8121f7b%}+'',
-    errorLabel: '{% GetResourceString("Kadena.Smarty.ErrorText") |(user)cvoqa2@gmail.com|(hash)a9a8782099ca4650ca3480ba8d5ce95117c83299b1959d22ed90d62c57a7a74b%}',
-    reqErrorLabel:'{% GetResourceString("Kadena.Smarty.ReqErrorText") |(user)cvoqa2@gmail.com|(hash)ca9ebd29bbebcb697ec62abfbabf702e8de1847351558a427cff70089b24ba4a%}',
-    missingInputLabel:'{% GetResourceString("Kadena.Smarty.MissingInputText") |(user)cvoqa2@gmail.com|(hash)9a457ca9af15a5aeef79d5a1b50ac2f5db53af5bd70c893ab941fcdfb2e6fe89%}',
-    certifyMessageLabel:'{% GetResourceString("Kadena.Smarty.CertifyMessageText") |(user)cvoqa2@gmail.com|(hash)147df896af8e772fc4dc5c227d3e971c646b2403131f716649772bee0732724e%}',
-    autoCompleteCount:'{% GetResourceString("Kadena.Smarty.AutoCompleteCount") |(user)cvoqa2@gmail.com|(hash)5c224d0a48af68ac29ae2fa02133c3e1426a93fd3562803dfae02728c1633862%}',
-    candidateCount:'{% GetResourceString("Kadena.Smarty.CandidateCount") |(user)cvoqa2@gmail.com|(hash)99c9daa20c4dbd36e7af5cc0610f6c41738ee28e9dd0ae761b720c344ebd026e%}'    
+    key:''+{%Settings.SmartyKey|(user)administrator|(hash)8e40f6aac718904244677c018c1f6aa2bf18ad779c1080defa79b51b751a2e1f%}+'',
+    errorLabel: '{% GetResourceString("Kadena.Smarty.ErrorText") |(user)administrator|(hash)1e7c081df4e9501e916bd8d803aaffb01fe1a9d071c2c27306f7fe87bf4fc448%}',
+    reqErrorLabel:'{% GetResourceString("Kadena.Smarty.ReqErrorText") |(user)administrator|(hash)aa6f8c56c5001f8f42822377db8aaa9548486a20793254716d2d0f56a7dcb00d%}',
+    missingInputLabel:'{% GetResourceString("Kadena.Smarty.MissingInputText") |(user)administrator|(hash)ba4e0ee050fe16415190530f60e286b7524b5de76c2ce7f08e8e3eedc4aba78c%}',
+    certifyMessageLabel:'{% GetResourceString("Kadena.Smarty.CertifyMessageText") |(user)administrator|(hash)0678f41428104742f9ca71c57a9f423a6cac304ddb2505f56bdecdda488f9921%}',
+    autoCompleteCount:'{% GetResourceString("Kadena.Smarty.AutoCompleteCount") |(user)administrator|(hash)24abeb42151c475bae7d569276aec277d6bf99c232ba95784e33fbf75c3f9ee3%}',
+    candidateCount:'{% GetResourceString("Kadena.Smarty.CandidateCount") |(user)administrator|(hash)c23a35f7c0905d3fdb67d69cb594ed29baadf4d40c62322daa34b210d5bbe9d6%}'    
   };  
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-{%Settings.KDA_EnableSmartyStreet ? "<script src='//d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/4.1/jquery.liveaddress.min.js'></script><script src='~/CMSScripts/Custom/Kadena/SmartyStreet.js'></script>" : ""|(user)cvoqa2@gmail.com|(hash)74f45a1668f557914ae7fcc25425f86cc90c7b68ac81fb244fac1882a5eb4ced%}
+{%Settings.KDA_EnableSmartyStreet ? "<script src='//d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/4.1/jquery.liveaddress.min.js'></script><script src='~/CMSScripts/Custom/Kadena/SmartyStreet.js'></script>" : ""|(user)administrator|(hash)583f21b8d9831d38fede835b5dee42f6325d8c33217b58a6d49b2a083d87b531%}
 <script>  
   $('.js-tabMyAccount').on("click",function(){
     $('.smarty-ui').css('display','block');                      

@@ -140,15 +140,15 @@
           <property name="text" ismacro="true">
 <![CDATA[
 {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-result = String.FormatString("{0}{1}", "<a href='"+ RootDocument.AbsoluteURL +"'>{$ Kadena.BreadcrumbsHome $}</a>", result);
-result
-|(user)michal.machacek@actum.cz|(hash)97d7e9acc725220281a55c74700c4cc589482a9fbbb71e0a2959bf1cacf5ac1b%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  result = String.FormatString("{0}{1}", "<a href='"+ RootDocument.AbsoluteURL +"'>{$ Kadena.BreadcrumbsHome $}</a>", result);
+  result
+|(user)administrator|(hash)3e5a75c8f69fa72e1f54f80fbf87153a0542e45b2e78e8ecdb91c272a328f708%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -261,7 +261,7 @@ result
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="viewlisturl" ismacro="true">
-            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KListProcessedPageURL) |(user)tomas.rucki@actum.cz|(hash)865355cf02fcfc9102db0f7eb0fb9ae68de00bfd7ce4c217fabcfa01c360aba0%}]]>
+            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KListProcessedPageURL)|(user)administrator|(hash)7f6b2308e9a2cd5f591e74dda4759b3c14f425a082aaf87a35080ff038a74810%}]]>
           </property>
           <property name="visible">True</property>
           <property name="webparttitle"></property>
@@ -557,7 +557,7 @@ result
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<a href='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KListNewPageURL) |(user)tomas.rucki@actum.cz|(hash)3538ee0eb092610309b0be1df916b0b95ea6c9f466915bcd7a3156b199455157%}' class="content-header__btn js-tooltip" data-tooltip-placement="right" title="{$Kadena.MailingList.AddNew$}"> 
+<a href='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KListNewPageURL)|(user)administrator|(hash)f32543814f720f327c4e306d502224a9c3663b3941173fac7a26d6108b5857a3%}' class="content-header__btn js-tooltip" data-tooltip-placement="right" title="{$Kadena.MailingList.AddNew$}"> 
   <svg class="icon icon-modal">
     <use xlink:href="/gfx/svg/sprites/icons.svg#plus" />
   </svg>

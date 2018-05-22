@@ -68,14 +68,16 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.PriceValue, opt => opt.MapFrom(src => src.Value));
 
             CreateMap<OrderItemSku, SKUDTO>();
-                    
+
+            CreateMap<Models.SubmitOrder.MailingList, MailingListDTO>();
+
             CreateMap<OrderCartItem, OrderItemDTO>()
                 .ForMember(dest => dest.UnitCount, opt => opt.MapFrom(src => src.Quantity))
                 .ForMember(dest => dest.Attributes, opt => opt.MapFrom(src => src.Options.ToDictionary(i => i.Name, i => i.Value)))
                 .ForMember(dest => dest.DesignFileKey, opt => opt.MapFrom(src => src.Artwork))
                 .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.UnitOfMeasureErpCode))
-                .ForMember(dest => dest.Type, opt => opt.Ignore())
-                .ForMember(dest => dest.MailingList, opt => opt.Ignore());
+                .ForMember(dest => dest.Type, opt => opt.Ignore());
+                
 
             CreateMap<CustomerData, CustomerDataDTO>();
             CreateMap<Approver, ApproverDto>();
@@ -167,7 +169,7 @@ namespace Kadena.Container.Default
             CreateMap<DeliveryAddress, IdDto>();
             CreateMap<PageButton, PageButtonDto>();
             CreateMap<AddressList, AddressListDto>();
-            CreateMap<DialogButton, DialogButtonDto>();
+            CreateMap<Models.Settings.DialogButton, DialogButtonDto>();
             CreateMap<DialogType, DialogTypeDto>();
             CreateMap<DialogField, DialogFieldDto>();
             CreateMap<Models.Settings.AddressDialog, Dto.Settings.AddressDialogDto>();
@@ -178,6 +180,11 @@ namespace Kadena.Container.Default
             CreateMap<OrderedItems, OrderedItemsDTO>();
             CreateMap<OrderDetail, OrderDetailDTO>();
             CreateMap<CommonInfo, CommonInfoDTO>();
+            CreateMap<OrderStatusInfo, OrderStatusInfoDTO>();
+            CreateMap<OrderInfo, OrderInfoDTO>();
+            CreateMap<OrderActions, OrderActionsDTO>();
+            CreateMap<Models.Common.DialogButton, DialogButtonDTO>();
+            CreateMap<Dialog, DialogDTO>();
             CreateMap(typeof(TitleValuePair<>), typeof(TitleValuePairDto<>));
             CreateMap<ShippingInfo, ShippingInfoDTO>();
             CreateMap<PaymentInfo, PaymentInfoDTO>();
@@ -242,7 +249,7 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.ErrorMessage, opt => opt.Ignore());
             CreateMap<CartItemsPreview, CartItemsPreviewDTO>();
             CreateMap<CartPrice, CartPriceDTO>();
-            CreateMap<MailingListDataDTO, MailingList>();
+            CreateMap<MailingListDataDTO, Models.MailingList>();
             CreateMap<NewCartItemDto, NewCartItem>();
             CreateMap<AddToCartResult, AddToCartResultDto>();
             CreateMap<RequestResult, RequestResultDto>();

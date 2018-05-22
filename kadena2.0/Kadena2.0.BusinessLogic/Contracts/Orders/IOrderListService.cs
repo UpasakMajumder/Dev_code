@@ -1,5 +1,4 @@
-﻿using Kadena.Dto.Order;
-using Kadena.Models.RecentOrders;
+﻿using Kadena.Models.RecentOrders;
 using System.Threading.Tasks;
 
 namespace Kadena.BusinessLogic.Contracts
@@ -9,6 +8,8 @@ namespace Kadena.BusinessLogic.Contracts
         string PageCapacityKey { get; set; }
 
         bool EnablePaging { get; set; }
+
+        Task<OrderHead> GetOrdersToApprove();
 
         Task<OrderHead> GetHeaders();
 
