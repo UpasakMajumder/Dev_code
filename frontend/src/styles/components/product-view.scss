@@ -52,7 +52,6 @@
   }
 
   &__block {
-    overflow: hidden;
     flex: 1;
 
     & > div {
@@ -139,6 +138,12 @@
   &__proceed {
     @extend %flex--center--default;
     margin-left: auto;
+
+    .input__error {
+      position: absolute;
+      left: 0;
+      top: 100%;
+    }
   }
 
   &__proceed-input {
