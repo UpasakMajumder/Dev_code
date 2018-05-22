@@ -23,7 +23,7 @@ const getMaxLength = (maximumLength) => {
 const TextInput = (props) => {
   const { label, error, disabled, isOptional, className, maximumLength } = props;
 
-  const inputProps = removeProps(props, ['label', 'error', 'isOptional', 'isSelect', 'options', 'className']);
+  const inputProps = removeProps(props, ['label', 'error', 'isOptional', 'isSelect', 'options', 'className', 'maximumLength']);
 
   const labelElement = label ? <span className="input__label">{label}</span> : null;
   const selector = disabled ? 'input__wrapper input__wrapper--disabled' : 'input__wrapper';
@@ -48,7 +48,8 @@ const TextInput = (props) => {
 };
 
 TextInput.defaultProps = {
-  maximumLength: 50
+  maximumLength: 50,
+  type: 'text'
 };
 
 TextInput.propTypes = {
@@ -57,7 +58,8 @@ TextInput.propTypes = {
   error: PropTypes.string,
   disabled: PropTypes.bool,
   isOptional: PropTypes.bool,
-  maximumLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  maximumLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  type: PropTypes.string
 };
 
 export default TextInput;

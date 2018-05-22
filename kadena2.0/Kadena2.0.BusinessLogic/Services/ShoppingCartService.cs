@@ -386,6 +386,21 @@ namespace Kadena.BusinessLogic.Services
             return preview;
         }
 
+        void CheckMinMaxQuantity(CartItemEntity cartitem, int totalAmountAfterAdding)
+        {
+            var sku = shoppingCart.GetSKU(cartitem.SKUID);
+
+            if (sku.MinItemsInOrder > 0 && totalAmountAfterAdding < sku.MinItemsInOrder)
+            {
+                throw new Exception("Cannot order less than minimal count of items");
+            }
+
+            if (sku.MaxItemsInOrder > 0 && totalAmountAfterAdding > sku.MaxItemsInOrder)
+            {
+                throw new Exception("Cannot order more than maximal count of items");
+            }
+        }
+
         public async Task<AddToCartResult> AddToCart(NewCartItem newItem)
         {
             var addedAmount = newItem.Quantity;
@@ -395,9 +410,7 @@ namespace Kadena.BusinessLogic.Services
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
 
-            var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);
-
-
+            var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);            
 
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.InventoryProduct))
             {
@@ -414,8 +427,17 @@ namespace Kadena.BusinessLogic.Services
             // do this before calculating dynamic price
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))
             {
+                CheckMinMaxQuantity(cartItem, newItem.Quantity);
                 cartItem.SKUUnits = newItem.Quantity;
             }
+            else if(!ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.MailingProduct))
+            {
+                var totalQuantity = cartItem.SKUUnits + newItem.Quantity;
+                CheckMinMaxQuantity(cartItem, totalQuantity);
+                cartItem.SKUUnits = totalQuantity;
+            }
+
+            
 
             SetDynamicPrice(cartItem, newItem.DocumentId);
 
