@@ -308,25 +308,29 @@ module.exports.addToCart = {
       "items": [
         {
           "id": 33,
-          "image": "",
+          "image": "http://satyr.io/50-200x100-300/1",
           "template": "Template",
+          "templatePrefix": "💚",
           "isMailingList": false,
           "mailingList": "Mailing list",
           "pricePrefix": "$",
           "price": "112.2",
+          "unitOfMeasure": "pc",
           "quantityPrefix": "Quantity:",
           "quantity": 11
         },
         {
-          "id": 31,
-          "image": "http://satyr.io/50-200x100-300?2",
+          "id": 34,
+          "image": "http://satyr.io/50-200x100-300/2",
           "template": "Template",
-          "isMailingList": false,
+          "templatePrefix": "👌",
+          "isMailingList": true,
           "mailingList": "Mailing list",
           "pricePrefix": "$",
           "price": "112.2",
+          "unitOfMeasure": "pc",
           "quantityPrefix": "Quantity:",
-          "quantity": 11
+          "quantity": 15
         }
       ]
     },

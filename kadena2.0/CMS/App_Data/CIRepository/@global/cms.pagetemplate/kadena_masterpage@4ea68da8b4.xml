@@ -233,7 +233,6 @@
     iframeUrl: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_TermsAndConditionPage)|(user)administrator|(hash)e994358e78f9c46170b4f82e490bf9ac61d96bceaedc26c7fb2cbd69e6927522%}'
   };
 </script>
-
 <script src="/js/common.min.js"></script>
 <script src="/js/app.min.js"></script>
 <script src="/CMSScripts/Custom/Kadena/custom.js?v=0.1"></script>
@@ -1595,62 +1594,6 @@ config.localization.languages = {
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
         </properties>
-        <webpart controlid="ProductImageLarge" guid="c3945710-450b-445e-b612-54fda2b16a7e" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter"></property>
-          <property name="cat_open_performance"></property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility">False</property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">ProductImageLarge</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">c3945710-450b-445e-b612-54fda2b16a7e</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">True</property>
-          <property name="outputfixhtml5">True</property>
-          <property name="outputfixjavascript">True</property>
-          <property name="outputfixlowercase">True</property>
-          <property name="outputfixselfclose">True</property>
-          <property name="outputresolveurls">True</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">False</property>
-          <property name="resolvedynamiccontrols">True</property>
-          <property name="showfordocumenttypes">KDA.Product</property>
-          <property name="tag"></property>
-          <property name="text">
-<![CDATA[
-<div class="product-view__preview js-product-preview js-collapse">
-  <img src="" data-src="{% ProductImage %}" alt="{% DocumentName %}" class="js-product-preview-image">
-  <div class="product-view__preview-wrapper js-toggle"></div>
-</div>
-]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible" ismacro="true">
-            <![CDATA[{% !String.IsNullOrWhiteSpace(ProductImage)|(user)administrator|(hash)c2f0c41b3f0b274afea9ad33373b3a10dedbf9ad278bb4dd72fb558a4143f582%}]]>
-          </property>
-          <property name="webparttitle">Product large image</property>
-          <property name="webparttype">statictext</property>
-        </webpart>
       </webpartzone>
     </page>
   </PageTemplateWebParts>

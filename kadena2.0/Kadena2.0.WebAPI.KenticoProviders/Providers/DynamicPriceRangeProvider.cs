@@ -16,11 +16,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
 
         public DynamicPriceRangeProvider(IKenticoResourceService resources)
         {
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            this.resources = resources;
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
         }
 
 
@@ -30,6 +26,13 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             var ranges = GetDynamicPricingRanges(document?.GetStringValue("ProductDynamicPricing", string.Empty));
             return GetDynamicPrice(quantity, ranges);
         }
+
+        public IEnumerable<DynamicPricingRange> GetDynamicRanges(int documentId)
+        {
+            var document = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser)) as SKUTreeNode;
+            return GetDynamicPricingRanges(document?.GetStringValue("ProductDynamicPricing", string.Empty));
+        }
+
 
         public decimal GetDynamicPrice(int quantity, string rangesJson)
         {
