@@ -515,7 +515,7 @@ config.localization.productDetail = {
       },   
     description: {
       title: '{$Kadena.Product.Description$}',
-      text: '{% CurrentDocument.DocumentSKUDescription |(user)administrator|(hash)20082ae9712fba35c7db75955cb4d76178acf545398a7fff6fd6447187fc8765%}'
+      text: '{% CurrentDocument.DocumentSKUDescription.Replace("\r\n","\n").Replace("\n","<br />") |(user)administrator|(hash)717cf60f8fdbfbe67420b59a94ded580e9965fb4686c187770cd4428ecf5fb32%}'
     },
     quantityText: '{% KadenaNamespace.GetMinMaxString(ECommerceContext.CurrentProduct.SKUMinItemsInOrder, ECommerceContext.CurrentProduct.SKUMaxItemsInOrder) |(user)administrator|(hash)80b08b883005ff7aaf115de09ea25f2961b1ac8df33f23ee6fcf5338afbdd8ff%}',
     relatedProducts: null

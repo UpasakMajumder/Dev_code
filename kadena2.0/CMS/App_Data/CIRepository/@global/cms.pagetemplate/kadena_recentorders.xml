@@ -216,7 +216,7 @@
   </ul>
   <div>
     <div class="css-tabs__content js-tab-orders">
-      <div data-react='{ "initURL": "/api/recentorders/getheaders" }' class="r-recent-orders"></div>
+      <div data-react='{ "initURL": "/api/recentorders/getheaders", "getPageItemsURL": "/api/recentorders/getbody" }' class="r-recent-orders"></div>
     </div>
     {% if(KadenaNamespace.IsCurrentUserApprover()) { %}
     <div class="css-tabs__content js-tab-requiring-approval">

@@ -124,7 +124,12 @@
   }
 
   &__footer {
-    @extend %flex--center--default;
+    @extend %flex--center--between;
+    flex-wrap: wrap;
+
+    & > * {
+      margin-bottom: 10px;
+    }
 
     .stock {
       @include rem(font-size, 16px);
@@ -132,7 +137,7 @@
   }
 
   &__proceed {
-    @extend %flex--center--between;
+    @extend %flex--center--default;
     margin-left: auto;
   }
 

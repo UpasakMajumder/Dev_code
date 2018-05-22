@@ -234,11 +234,6 @@
         nextLabel: "Next",
         backLabel: "Previous"
       },
-      recentOrders: {
-        getHeaders: PATH + 'order/recent/ui',
-        getPageItems: PATH + 'order/recent/page',
-        getRequiringApproval: PATH + 'order/recent/requiring-approval'
-      },
       ordersReports: {
         headings: [
           {
