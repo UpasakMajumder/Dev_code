@@ -180,7 +180,6 @@
     <Compile Include="OrderDetail\PricingInfo.cs" />
     <Compile Include="OrderDetail\PricingInfoItem.cs" />
     <Compile Include="OrderDetail\ShippingInfo.cs" />
-    <Compile Include="OrderDetail\Tracking.cs" />
     <Compile Include="RecentOrders\OrderList.cs" />
     <Compile Include="Checkout\PaymentMethod.cs" />
     <Compile Include="Product\ProductCategoryLink.cs" />

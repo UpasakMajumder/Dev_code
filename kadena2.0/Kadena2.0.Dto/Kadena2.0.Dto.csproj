@@ -247,7 +247,6 @@
     <Compile Include="ViewOrder\Responses\PricingInfoItemDTO.cs" />
     <Compile Include="ViewOrder\Responses\ShippingInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\TitleValuePairDto.cs" />
-    <Compile Include="ViewOrder\Responses\TrackingDTO.cs" />
     <Compile Include="_Attributes\StringListValidationAttribute.cs" />
     <Compile Include="_Common\DialogButtonDTO.cs" />
     <Compile Include="_Common\DialogDTO.cs" />

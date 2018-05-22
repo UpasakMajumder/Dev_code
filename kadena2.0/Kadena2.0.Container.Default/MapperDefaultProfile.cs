@@ -214,7 +214,6 @@ namespace Kadena.Container.Default
             CreateMap<ShippingInfo, ShippingInfoDTO>();
             CreateMap<PaymentInfo, PaymentInfoDTO>();
             CreateMap<PricingInfo, PricingInfoDTO>();
-            CreateMap<Tracking, TrackingDTO>();
             CreateMap<PricingInfoItem, PricingInfoItemDTO>();
             CreateMap<SearchResultPage, SearchResultPageResponseDTO>();
             CreateMap<ResultItemPage, PageDTO>();
