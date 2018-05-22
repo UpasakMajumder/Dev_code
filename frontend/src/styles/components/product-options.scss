@@ -2,7 +2,7 @@
   $select-width: 170px;
 
   @mixin position($space) {
-    @extend .flex--default--default;
+    display: flex !important; // bcz tooltip
 
     @each $direction in row, column {
       &--#{$direction} {
@@ -20,6 +20,14 @@
   }
 
   @include position(4);
+
+  &--top {
+    align-items: flex-start;
+  }
+
+  &--center {
+    align-items: center;
+  }
 
   &__input {
     & > * {
