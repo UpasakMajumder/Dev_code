@@ -91,7 +91,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             _documents = documents ?? throw new ArgumentNullException(nameof(documents));
         }
 
-        public Task<OrderHead> GetOrdersToApprove()
+        public async Task<OrderHead> GetOrdersToApprove()
         {
             var siteName = _site.GetKenticoSite().Name;
             var isApprover = _permissions.CurrentUserHasPermission(
@@ -118,7 +118,10 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
 
             var filter = CreateFilterForOrdersToApprove();
-            return GetHeaders(filter, WhereCurrentUserIsApprover);
+            var orderHeaders = await GetHeaders(filter, WhereCurrentUserIsApprover);
+            orderHeaders.PageInfo = Pagination.Empty;
+
+            return orderHeaders;
         }
 
         private OrderListFilter CreateFilterForOrdersToApprove()
