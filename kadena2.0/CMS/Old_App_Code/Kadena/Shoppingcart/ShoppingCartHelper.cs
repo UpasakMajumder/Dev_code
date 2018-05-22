@@ -463,7 +463,8 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                             SKUNumber = item.SKU.SKUNumber
                         },
                         UnitCount = item.CartItemUnits,
-                        UnitOfMeasure = SKUMeasuringUnits.EA,
+                        UnitOfMeasure = item.SKU.GetStringValue("SKUUnitOfMeasure", SKUMeasuringUnits.EA),
+                        RequiresApproval = item.SKU.GetBooleanValue("SKUApprovalRequired", false),
                         UnitPrice = ValidationHelper.GetDecimal(item.UnitPrice, default(decimal)),
                         TotalPrice = ValidationHelper.GetDecimal(item.TotalPrice, default(decimal))
                     });
