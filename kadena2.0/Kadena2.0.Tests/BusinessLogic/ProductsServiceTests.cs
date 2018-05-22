@@ -10,6 +10,7 @@ using Kadena.Models.SiteSettings;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.SiteSettings.Permissions;
 using System.Linq;
+using Kadena.Models;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -463,5 +464,28 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Null(result.FirstOrDefault(r => r.Key == "localized-Kadena.Product.ShippingCost"));
         }
 
+        [Fact(DisplayName = "ProductsService.GetProductPricings() | No dynamic ranges")]
+        public void GetProductPricingTest_NoDynamic()
+        {
+            const int productId = 123;
+            const string uomCode = "bag";
+            const string uomLocalizationString = "bagstring";
+            const string uomCodeLocalized = "locbag";
+            const string culture = "cz-CZ";
+            const string price = "price";
+            const string dollar = "$1";
+
+            Setup<IDynamicPriceRangeProvider, IEnumerable<DynamicPricingRange>>(r => r.GetDynamicRanges(productId), new List<DynamicPricingRange>() );
+            Setup<IKenticoUnitOfMeasureProvider, UnitOfMeasure>(u => u.GetUnitOfMeasure(uomCode), new UnitOfMeasure { LocalizationString = uomLocalizationString });
+            Setup<IKenticoProductsProvider, ProductPricingInfo>(p => p.GetDefaultVariantPricing(productId, uomCodeLocalized), new ProductPricingInfo { Id = "id", Key = price, Value = dollar });
+            Setup<IKenticoResourceService, string>(r => r.GetResourceString(uomLocalizationString, culture), uomCodeLocalized);
+
+            var result = Sut.GetProductPricings(productId, uomCode, "cz-CZ")?.ToArray();
+
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.Equal(price, result[0].Key);
+            Assert.Equal(dollar, result[0].Value);
+        }
     }
 }
