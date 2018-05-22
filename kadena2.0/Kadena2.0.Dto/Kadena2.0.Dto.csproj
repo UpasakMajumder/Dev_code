@@ -179,6 +179,7 @@
     <Compile Include="Settings\LocalizationDto.cs" />
     <Compile Include="Settings\PageButtonDto.cs" />
     <Compile Include="Settings\SettingsAddressesDto.cs" />
+    <Compile Include="Shipping\TrackingInfoDto.cs" />
     <Compile Include="Site\Responses\ArtworkFtpResponseDto.cs" />
     <Compile Include="Site\Requests\SiteDataRequestDto.cs" />
     <Compile Include="Site\Responses\FtpCredentialsDto.cs" />

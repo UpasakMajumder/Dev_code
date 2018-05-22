@@ -297,7 +297,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 oi.MailingListPrefix = resources.GetResourceString("Kadena.Order.MailingListPrefix");
                 oi.ShippingDatePrefix = resources.GetResourceString("Kadena.Order.ItemShippingDatePrefix");
                 oi.TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix");
-                oi.TrackingIdPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix");
+                oi.Tracking.Prefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix");
                 oi.ProductStatusPrefix = resources.GetResourceString("Kadena.Order.ProductStatusPrefix");
                 oi.ProductStatus = products.GetProductStatus(i.SkuId);
                 oi.Preview = new Button

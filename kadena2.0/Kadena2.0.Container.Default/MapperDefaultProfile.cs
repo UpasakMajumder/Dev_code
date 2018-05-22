@@ -21,6 +21,7 @@ using Kadena.Dto.Product.Responses;
 using Kadena.Dto.RecentOrders;
 using Kadena.Dto.Search.Responses;
 using Kadena.Dto.Settings;
+using Kadena.Dto.Shipping;
 using Kadena.Dto.Site.Responses;
 using Kadena.Dto.SSO;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
@@ -47,6 +48,7 @@ using Kadena.Models.Product;
 using Kadena.Models.RecentOrders;
 using Kadena.Models.Search;
 using Kadena.Models.Settings;
+using Kadena.Models.Shipping;
 using Kadena.Models.Site;
 using Kadena.Models.SubmitOrder;
 using Kadena.Models.TemplatedProduct;
@@ -59,6 +61,8 @@ namespace Kadena.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<TrackingInfo, TrackingInfoDto>();
+
             CreateMap<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO, OrderedItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.SkuId))
                 .ForMember(dest => dest.Image, opt => opt.Ignore())
@@ -69,7 +73,7 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.MailingList, opt => opt.MapFrom(src => src.MailingList == Guid.Empty.ToString() ? string.Empty : src.MailingList))
                 .ForMember(dest => dest.ShippingDatePrefix, opt => opt.Ignore())
                 .ForMember(dest => dest.ShippingDate, opt => opt.UseValue(string.Empty))
-                .ForMember(dest => dest.TrackingIdPrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.Tracking, opt => opt.MapFrom(src => new TrackingInfo { Id = src.TrackingId }))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => string.Format("$ {0:#,0.00}", src.TotalPrice)))
                 .ForMember(dest => dest.QuantityPrefix, opt => opt.Ignore())
                 .ForMember(dest => dest.QuantityShippedPrefix, opt => opt.Ignore())
@@ -197,6 +201,7 @@ namespace Kadena.Container.Default
             CreateMap<DefaultAddress, DefaultAddressDto>();
             CreateMap<SettingsAddresses, SettingsAddressesDto>();
             CreateMap<OrderedItem, OrderedItemDTO>();
+
             CreateMap<OrderedItems, OrderedItemsDTO>();
             CreateMap<OrderDetail, OrderDetailDTO>();
             CreateMap<CommonInfo, CommonInfoDTO>();
