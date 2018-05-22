@@ -269,7 +269,7 @@ class ProductDetail extends Component {
     const quantityTextComponent = ui.get('quantityText')
       ? (
         <div className={`block ${this.state.quanityError ? 'block--vibrate' : ''}`}>
-          <h2 className="block__heading text--danger pt-4 pb-2">{ui.get('quantityText')}</h2>
+          <h2 className="block__heading text--warning pt-4 pb-2">{ui.get('quantityText')}</h2>
         </div>
       ) : null;
 
