@@ -50,6 +50,7 @@ using Kadena.Models.Settings;
 using Kadena.Models.Site;
 using Kadena.Models.SubmitOrder;
 using Kadena.Models.TemplatedProduct;
+using System;
 using System.Linq;
 
 namespace Kadena.Container.Default
@@ -58,6 +59,26 @@ namespace Kadena.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO, OrderedItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.SkuId))
+                .ForMember(dest => dest.Image, opt => opt.Ignore())
+                .ForMember(dest => dest.DownloadPdfURL, opt => opt.Ignore())
+                .ForMember(dest => dest.TemplatePrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.Template, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.MailingListPrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.MailingList, opt => opt.MapFrom(src => src.MailingList == Guid.Empty.ToString() ? string.Empty : src.MailingList))
+                .ForMember(dest => dest.ShippingDatePrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.ShippingDate, opt => opt.UseValue(string.Empty))
+                .ForMember(dest => dest.TrackingIdPrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => string.Format("$ {0:#,0.00}", src.TotalPrice)))
+                .ForMember(dest => dest.QuantityPrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.QuantityShippedPrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.ProductStatusPrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.ProductStatus, opt => opt.Ignore())
+                .ForMember(dest => dest.Preview, opt => opt.Ignore())
+                .ForMember(dest => dest.EmailProof, opt => opt.Ignore())
+                .ForMember(dest => dest.Options, opt => opt.UseValue(Enumerable.Empty<ItemOption>()));
+
             CreateMap<RegistrationDto, Registration>();
 
             CreateMap<ChiliProcess, ChiliProcessDto>();
@@ -77,7 +98,6 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.DesignFileKey, opt => opt.MapFrom(src => src.Artwork))
                 .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.UnitOfMeasureErpCode))
                 .ForMember(dest => dest.Type, opt => opt.Ignore());
-                
 
             CreateMap<CustomerData, CustomerDataDTO>();
             CreateMap<Approver, ApproverDto>();
