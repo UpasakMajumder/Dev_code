@@ -12,7 +12,7 @@
     flex-wrap: wrap;
 
     & > div {
-      @include rem(margin-bottom, 30px);
+      @include rem(margin-bottom, 40px);
       flex-shrink: 0;
 
       & > * + * {
@@ -34,10 +34,6 @@
 
     .input__wrapper {
       float: left;
-
-      input[type="number"] {
-        width: $product-bar-input;
-      }
     }
   }
 
