@@ -510,7 +510,8 @@ config.localization.productDetail = {
     productOptions:{
           priceElementId: "option-price",
           priceUrl: '/api/products/getprice/{%NodeSKU.ID |(user)administrator|(hash)196992259153c5795bc9ab040b553916f8e04d82e8653bcae9f7084433736838%}',
-          categories: {% KadenaNamespace.GetProductOptions(NodeSKU.ID) |(user)administrator|(hash)e15fa684b9778653c74272699abf518b4bcd02dd7480837cfd6ee1bf1dd078e6%}
+          categories: {% KadenaNamespace.GetProductOptions(NodeSKU.ID) |(user)administrator|(hash)e15fa684b9778653c74272699abf518b4bcd02dd7480837cfd6ee1bf1dd078e6%},
+          validationMessage: '{$Kadena.Product.OptionsValidation$}'
       },   
     description: {
       title: '{$Kadena.Product.Description$}',
