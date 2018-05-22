@@ -36,7 +36,6 @@ const Order = ({
   template,
   mailingList,
   shippingDate,
-  trackingId,
   price,
   quantityPrefix,
   quantity,
@@ -45,7 +44,7 @@ const Order = ({
   quantityShipped,
   mailingListPrefix,
   shippingDatePrefix,
-  trackingIdPrefix,
+  tracking,
   templatePrefix,
   productStatusPrefix,
   productStatus,
@@ -72,14 +71,26 @@ const Order = ({
     </div>
     : null;
 
-  const trackingElement = trackingId
-    ? <div className="cart-product__tracking">
-      <p>
-        <SVG name="location"/>
-        <span>{trackingIdPrefix}: <strong>{trackingId}</strong></span>
-      </p>
-    </div>
-    : null;
+  const getTrackingElement = () => {
+    if (!tracking) return null;
+    if (!tracking.id) return null;
+
+    let id;
+    if (tracking.url) {
+      id = <a target="_blank" href={tracking.url} className="link" >{tracking.id}</a>;
+    } else {
+      id = tracking.id;
+    }
+
+    return (
+      <div className="cart-product__tracking">
+        <p>
+          <SVG name="location"/>
+          <span>{tracking.prefix}: <strong>{id}</strong></span>
+        </p>
+      </div>
+    );
+  };
 
   const shippingElement = shippingDate
     ? <div className="cart-product__tracking">
@@ -126,7 +137,7 @@ const Order = ({
         </div>
 
         {mailingListElement}
-        {trackingElement}
+        {getTrackingElement()}
         {shippingElement}
         {shippingElementFixed}
 
@@ -158,10 +169,13 @@ Order.propTypes = {
   downloadPdfURL: PropTypes.string,
   shippingDate: PropTypes.string,
   mailingList: PropTypes.string,
-  trackingId: PropTypes.string,
+  tracking: PropTypes.shape({
+    id: PropTypes.string,
+    url: PropTypes.string,
+    prefix: PropTypes.string.isRequired
+  }),
   mailingListPrefix: PropTypes.string.isRequired,
   shippingDatePrefix: PropTypes.string.isRequired,
-  trackingIdPrefix: PropTypes.string.isRequired,
   templatePrefix: PropTypes.string.isRequired,
   productStatusPrefix: PropTypes.string.isRequired,
   productStatus: PropTypes.string.isRequired,

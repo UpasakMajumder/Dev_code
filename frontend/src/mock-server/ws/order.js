@@ -655,10 +655,13 @@ module.exports.detail =  {
             "template": "Information letter lamp post Mar 30 3017",
             "mailingList": "Mailing",
             "shippingDate": "2017-08-07T09:12:08.108892Z",
-            "trackingId": "",
+            "tracking": {
+              "id": "",
+              "prefix": "Tracking ID",
+              "url": ""
+            },
             "mailingListPrefix": "Mailing list",
             "shippingDatePrefix": "Shipping date",
-            "trackingIdPrefix": "Tracking ID",
             "templatePrefix": "Shipping date",
             "price": "$ 112.2",
             "quantityPrefix": "Quantity:", // Addresses/Quantity,
@@ -695,10 +698,13 @@ module.exports.detail =  {
             "template": "Information letter lamp post Mar 30 3017",
             "mailingList": "",
             "shippingDate": "2017-08-07T09:12:08.108892Z",
-            "trackingId": "",
+            "tracking": {
+              "id": "501213",
+              "prefix": "Tracking ID",
+              "url": "#"
+            },
             "mailingListPrefix": "Mailing list",
-            "shippingDatePrefix": "Tracking ID",
-            "trackingIdPrefix": "Shipping date",
+            "shippingDatePrefix": "Shipping date",
             "templatePrefix": "Shipping date",
             "price": "$ 112.2",
             "quantityPrefix": "Quantity:", // Addresses/Quantity,
