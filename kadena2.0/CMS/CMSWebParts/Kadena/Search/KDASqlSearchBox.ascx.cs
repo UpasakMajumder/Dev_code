@@ -258,6 +258,11 @@ public partial class CMSWebParts_Kadena_Search_KDASqlSearchBox : CMSAbstractWebP
                 btnImageButton.SkinID = skinId;
             }
         }
+
+        if (IsPostBack)
+        {
+            Search();
+        }
     }
 
     /// <summary>
@@ -279,7 +284,7 @@ public partial class CMSWebParts_Kadena_Search_KDASqlSearchBox : CMSAbstractWebP
     /// </summary>
     protected void btnGo_Click(object sender, EventArgs e)
     {
-        Search();
+        //Search();
     }
 
     /// <summary>
@@ -287,7 +292,7 @@ public partial class CMSWebParts_Kadena_Search_KDASqlSearchBox : CMSAbstractWebP
     /// </summary>
     protected void btnImageButton_Click(object sender, ImageClickEventArgs e)
     {
-        Search();
+        //Search();
     }
 
     /// <summary>
