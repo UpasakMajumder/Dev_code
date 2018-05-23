@@ -53,7 +53,7 @@ namespace Kadena.WebAPI.Controllers
         [Route(Routes.Order.GetCampaignOrdersToApprove)]
         public async Task<IHttpActionResult> GetCampaignOrdersToApprove(string orderType)
         {
-            var orders = await _orderService.GetOrdersToApprove();
+            var orders = await _orderService.GetCampaignOrdersToApprove(orderType, 0);
             var result = _mapper.Map<OrderHeadBlockDto>(orders);
             return ResponseJson(result);
         }

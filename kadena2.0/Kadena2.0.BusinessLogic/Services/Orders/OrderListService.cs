@@ -102,7 +102,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         private Func<OrderListDto, OrderListDto> GetApproverFilter()
         {
-            var siteName = _site.GetKenticoSite().Name;
+            var siteName = _site.GetCurrentSiteCodeName();
             var isApprover = _permissions.CurrentUserHasPermission(
                 ModulePermissions.KadenaOrdersModule,
                 ModulePermissions.KadenaOrdersModule.ApproveOrders,
@@ -117,8 +117,13 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 var currentUser = _kenticoCustomers.GetCurrentCustomer();
                 var approvingCustomers = _kenticoCustomers
-                    .GetCustomersByApprover(currentUser.UserID)
-                    .ToList();
+                    .GetCustomersByApprover(currentUser.UserID);
+
+                if (approvingCustomers == null || orders?.Orders == null)
+                {
+                    return orders;
+                }
+
                 orders.Orders = orders.Orders
                     .Where(o => approvingCustomers.Any(c => c.Id == o.CustomerId))
                     .ToList();
@@ -242,16 +247,18 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var orders = new OrderListDto();
 
-            if (!(response?.Success ?? false))
+            if (response?.Success ?? false)
             {
-                _logger.LogError("OrderListService - GetOrders", response?.Error?.Message);
+                orders = response.Payload;
             }
-
-            orders = response.Payload;
+            else
+            {
+                _logger.LogError("OrderListService - GetOrders", response?.ErrorMessages);
+            }
 
             if (afterFilter != null)
             {
-                orders = afterFilter(response.Payload);
+                orders = afterFilter(orders);
             }
 
             var orderList = _mapper.Map<OrderList>(orders);
@@ -364,6 +371,18 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             var _addressBookList = _kenticoAddressBook.GetAddressNames();
             return _addressBookList.TryGetValue(distributorID, out var name) ? name : string.Empty;
+        }
+
+        public async Task<OrderHeadBlock> GetCampaignOrdersToApprove(string orderType, int campaignID)
+        {
+            var postFilter = GetApproverFilter();
+
+            var filter = CreateFilterForOrdersToApprove();
+            filter.CampaignId = campaignID;
+            filter.OrderType = orderType;
+            var orderHeaders = await GetCampaignHeaders(filter, postFilter);
+            orderHeaders.PageInfo = Pagination.Empty;
+            return orderHeaders;
         }
     }
 }
