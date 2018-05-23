@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 /* helpers */
 import timeFormat from 'app.helpers/time';
 /* components */
+import Spinner from 'app.dump/Spinner';
 import Dialog from '../Dialog';
 
 class Orders extends Component {
@@ -17,7 +18,7 @@ class Orders extends Component {
           url: PropTypes.string
         })).isRequired
       }))
-    }).isRequired
+    })
   }
 
   state = {
@@ -79,6 +80,7 @@ class Orders extends Component {
   };
 
   render() {
+    if (!Object.keys(this.props.orders).length) return <Spinner />;
     return (
       <div>
         {this.getDialog()}

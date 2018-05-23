@@ -2,39 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class Tabs extends Component {
-  static defaultProps = {
-    tabs: [
-      {
-        id: 0,
-        text: 'Orders requiring approval',
-        tabFn: () => console.log(1)
-      },
-      {
-        id: 1,
-        text: 'Orders',
-        tabFn: () => console.log(2)
-      }
-    ],
-    content: [
-      {
-        id: 0,
-        content: () => <div>Hi</div>
-      },
-      {
-        id: 1,
-        content: () => <div>Hello</div>
-      }
-    ]
-  };
-
   static propTypes = {
     tabs: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       text: PropTypes.string.isRequired
-    }).isRequired).isRequired,
-    content: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      content: PropTypes.func.isRequired // React component is a function
     }).isRequired).isRequired
   }
 
@@ -46,11 +17,6 @@ class Tabs extends Component {
     this.state = {
       activeTabId: tabs ? tabs[0].id : 0
     };
-  }
-
-  componentDidMount() {
-    const defaultTabFn = this.props.tabs[0].tabFn;
-    defaultTabFn && defaultTabFn();
   }
 
   handleChangeTab = (activeTabId, tabFn) => {
@@ -71,9 +37,6 @@ class Tabs extends Component {
       );
     });
 
-    const ActiveElement = this.props.content.find(element => element.id === this.state.activeTabId).content;
-    const acriveElementProps = this.props.tabs.find(tab => tab.id === this.state.activeTabId);
-
     return (
       <div className="css-tabs__container js-tabs">
         <ul className="css-tabs__list">
@@ -81,7 +44,7 @@ class Tabs extends Component {
         </ul>
         <div>
           <div className="css-tabs__content active show">
-            <ActiveElement {...acriveElementProps} />
+            {this.props.children}
           </div>
         </div>
       </div>
