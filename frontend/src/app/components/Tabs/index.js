@@ -7,12 +7,12 @@ class Tabs extends Component {
       {
         id: 0,
         text: 'Orders requiring approval',
-        url: '#1'
+        tabFn: () => console.log(1)
       },
       {
         id: 1,
         text: 'Orders',
-        url: '#1'
+        tabFn: () => console.log(2)
       }
     ],
     content: [
@@ -48,7 +48,15 @@ class Tabs extends Component {
     };
   }
 
-  handleChangeTab = activeTabId => this.setState({ activeTabId });
+  componentDidMount() {
+    const defaultTabFn = this.props.tabs[0].tabFn;
+    defaultTabFn && defaultTabFn();
+  }
+
+  handleChangeTab = (activeTabId, tabFn) => {
+    this.setState({ activeTabId });
+    tabFn && tabFn();
+  };
 
   render() {
     const tabs = this.props.tabs.map((tab) => {
@@ -56,7 +64,7 @@ class Tabs extends Component {
         <li
           key={tab.id}
           className={`css-tabs__tab js-tab-recent-orders ${this.state.activeTabId === tab.id ? 'active' : ''}`}
-          onClick={() => this.handleChangeTab(tab.id)}
+          onClick={() => this.handleChangeTab(tab.id, tab.tabFn)}
         >
           {tab.text}
         </li>
