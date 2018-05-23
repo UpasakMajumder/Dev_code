@@ -550,7 +550,8 @@ config.localization.productDetail.addToCart = {
       unit: '{% KadenaNamespace.LocalizeUom(SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)administrator|(hash)1ece51502e479631d7796d73c8f6b6cd99b37272bab64cb63e8c845d33807c82%}',
       quantity: 1,
       minQuantity: '{% ECommerceContext.CurrentProduct.SKUMinItemsInOrder |(user)administrator|(hash)1c5905cfc566d60f0d40983e2cd8be12cdf9ae8fada7672e05434607409b0840%}',
-      maxQuantity: '{% ECommerceContext.CurrentProduct.SKUMaxItemsInOrder |(user)administrator|(hash)c0037174074c1356b30d49cfb524efd97b63d71be1554a39435d684bd10bf550%}'      
+      maxQuantity: '{% ECommerceContext.CurrentProduct.SKUMaxItemsInOrder |(user)administrator|(hash)c0037174074c1356b30d49cfb524efd97b63d71be1554a39435d684bd10bf550%}',
+      quantityErrorText: '{$Kadena.Product.QuantityErrorText$}'
    };
 ]]>
           </property>
