@@ -4,12 +4,14 @@ using Kadena.Dto.RecentOrders;
 using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Helpers.Routes;
 using Kadena.WebAPI.Infrastructure;
+using Kadena.WebAPI.Infrastructure.Filters;
 using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
 {
+    [CustomerAuthorizationFilter]
     public class RecentOrdersController : ApiControllerBase
     {
         private readonly IOrderDetailService orderDetailService;
