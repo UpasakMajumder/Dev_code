@@ -50,6 +50,15 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route(Routes.Order.GetCampaignOrdersToApprove)]
+        public async Task<IHttpActionResult> GetCampaignOrdersToApprove(string orderType)
+        {
+            var orders = await _orderService.GetOrdersToApprove();
+            var result = _mapper.Map<OrderHeadBlockDto>(orders);
+            return ResponseJson(result);
+        }
+
+        [HttpGet]
         [Route("api/recentorders/getheaders")]
         public async Task<IHttpActionResult> GetHeaders()
         {
