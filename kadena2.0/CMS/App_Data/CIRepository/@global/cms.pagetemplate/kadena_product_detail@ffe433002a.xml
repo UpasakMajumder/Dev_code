@@ -482,7 +482,7 @@ config.localization.productDetail = {
     thumbnail: {
       image: '{%KadenaNamespace.GetThumbnailLink(ProductImage)|(user)administrator|(hash)510d05980a8991e1017751d5fd4480b494327b344272ed3749b99b767f8f8634%}',
       border: '{%(Settings.KDA_ProductThumbnailBorderEnabled && !ProductThumbnailBorderDisabled) ? Settings.KDA_ProductThumbnailBorderStyle : "" |(user)administrator|(hash)edc876da41e80e88f652b22a7840c1ac6c7bdaaac04171d7492e337ca4eb1017%}',
-      magnifyImage: '{% KadenaNamespace.GetThumbnailLink(ProductImage)|(user)administrator|(hash)d8522f72aa3ab7b9a2456e928dac85447c986ac81e831fca3fedd828da3c12b2%}'
+      magnifyImage: '{% ProductImage %}'
     },
     requiresApproval: {
       exists: {%DocumentContext.CurrentDocument.GetValue("SKUApprovalRequired").ToString() == "True" ? "true" : "false"|(user)administrator|(hash)0aa7eb9fed1377cdc574685eed4ad75c693353603d863aca81ed7395de3e4f4c%},
