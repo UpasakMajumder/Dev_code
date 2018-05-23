@@ -646,7 +646,7 @@
           title: 'Description',
           text: '<p>Hello </p><p>How are you?</p>' // html
         },
-        quantityText: '😡 🔥 🥇', // not required
+        quantityText: 'Quantity Text', // not required
         addToCart: { // null props
           documentId: 'documentId',
           url: PATH + 'products/add-to-cart', // TODO: Call
