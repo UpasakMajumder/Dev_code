@@ -67,7 +67,7 @@ class Orders extends Component {
           cell = <td key={j} className="show-table__text-appear">{item.value}</td>;
         } else if (item.type === 'hover-hide') {
           cell = <td key={j} className="show-table__will-hide">{item.value}</td>;
-        } else if (!isNaN(Date.parse(item.value)) && isNaN(Date.UTC(item.value) && Date.parseInvariant(item.value) != null)) {
+        } else if (!isNaN(Date.parse(item.value)) && isNaN(Date.UTC(item.value))) {
           cell = <td key={j}>{timeFormat(item.value)}</td>;
         }
 

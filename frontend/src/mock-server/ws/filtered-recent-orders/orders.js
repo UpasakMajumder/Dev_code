@@ -73,7 +73,7 @@ module.exports = {
           },
           {
             value: "Track via FedEx",
-            type: "link",
+            type: "longtext",
             url: "#"
           },
           {
