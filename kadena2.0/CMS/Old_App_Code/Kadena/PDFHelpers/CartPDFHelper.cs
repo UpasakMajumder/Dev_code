@@ -159,7 +159,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                                            .Replace("{SKUNUMBER}", ValidationHelper.GetString(row["SKUProductCustomerReferenceNumber"], "&nbsp"))
                                            .Replace("{SKUUNITS}", ValidationHelper.GetString(row["SKUUnits"], "&nbsp"))
                                            .Replace("{BUNDLECOST}", inventoryType == Convert.ToInt32(ProductType.GeneralInventory) ? ($"{CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(row["SKUPrice"], default(double)), SiteContext.CurrentSiteID, true)}"): ($"{CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(product.EstimatedPrice, default(double)), SiteContext.CurrentSiteID, true)}"))
-                                           .Replace("{BUNDLEQUANTITY}", ValidationHelper.GetString(product.SKU.GetValue("SKUNumberOfItemsInPackage"),"&nbsp"))
+                                           .Replace("{BUNDLEQUANTITY}", ValidationHelper.GetString(row["SKUNumberOfItemsInPackage"],"&nbsp"))
                                            .Replace("{IMAGEURL}", GetThumbnailImageAbsolutePath(product.ProductImage))
                                            .Replace("{VALIDSTATES}", ValidationHelper.GetString(states?.States, "&nbsp"))
                                            .Replace("{EXPIREDATE}", skuValidity != default(DateTime) ? skuValidity.ToString("MMM dd, yyyy") : "&nbsp")
