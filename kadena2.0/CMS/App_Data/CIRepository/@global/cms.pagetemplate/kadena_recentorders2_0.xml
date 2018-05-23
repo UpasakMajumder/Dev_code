@@ -8,8 +8,7 @@
   </PageTemplateCategoryID>
   <PageTemplateCloneAsAdHoc>False</PageTemplateCloneAsAdHoc>
   <PageTemplateCodeName>Kadena_RecentOrders2_0</PageTemplateCodeName>
-  <PageTemplateDescription />
-  <PageTemplateDisplayName>Recent Orders 2.0</PageTemplateDisplayName>
+  <PageTemplateDisplayName>Recent Orders Filtered</PageTemplateDisplayName>
   <PageTemplateFile />
   <PageTemplateForAllPages>True</PageTemplateForAllPages>
   <PageTemplateGUID>334610b3-3654-40f7-90fe-f1411d78f3d9</PageTemplateGUID>
