@@ -9,4 +9,5 @@
   <div class="recent-orders">
     <div class="r-filtered-recent-orders"></div>
   </div>
+  <div class="r-tabs"></div>
 {% endblock %}
