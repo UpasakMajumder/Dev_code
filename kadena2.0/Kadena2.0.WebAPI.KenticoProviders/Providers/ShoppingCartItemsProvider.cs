@@ -257,7 +257,7 @@ namespace Kadena.WebAPI.KenticoProviders
             if (productType.Contains(ProductTypes.InventoryProduct) && item.SKU.SKUSellOnlyAvailable && quantity > item.SKU.SKUAvailableItems)
             {
                 throw new Exception(string.Format(
-                    ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemID));
+                    ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemText));
             }
 
             var min = item.SKU?.SKUMinItemsInOrder ?? 0;
@@ -266,7 +266,7 @@ namespace Kadena.WebAPI.KenticoProviders
             if ((min > 0 && quantity < min) || (max > 0 && quantity > max))
             {
                 throw new Exception(string.Format(
-                    ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemID));
+                    ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemText));
             }
 
 
