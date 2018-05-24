@@ -1331,7 +1331,6 @@
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSNumber.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\ProductItemSpecs.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\StatesGroup.generated.cs" />
-    <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingRawData.cs" />
     <Compile Include="Old_App_Code\Kadena\EmailNotifications\ProductEmailNotifications.cs" />
     <Compile Include="Old_App_Code\Kadena\Email\EmailService.cs" />
     <Compile Include="Old_App_Code\Kadena\Enums\ProductType.cs" />
@@ -1550,6 +1549,7 @@
   <ItemGroup>
     <Content Include="ConnectionStrings.config" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
