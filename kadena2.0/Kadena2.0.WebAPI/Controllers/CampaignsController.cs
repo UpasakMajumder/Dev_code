@@ -2,11 +2,13 @@
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.RecentOrders;
 using Kadena.WebAPI.Infrastructure;
+using Kadena.WebAPI.Infrastructure.Filters;
 using System;
 using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
 {
+    [CustomerAuthorizationFilter]
     public class CampaignsController : ApiControllerBase
     {
         private readonly ICampaignsService campaignsService;

@@ -17,6 +17,7 @@ using System.Linq;
 using System.Reflection;
 using CMS.Ecommerce;
 using Kadena.Models.Membership;
+using CMS.Helpers;
 
 namespace Kadena.Old_App_Code.Kadena.EmailNotifications
 {
@@ -109,19 +110,26 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                         {
                             CustomerId = key,
                             User = userProvider.GetUserByUserId(customerProvider.GetCustomer(key)?.UserID ?? 0),
-                            Orders = value.Select(ord => new
+                            Orders = value.Select(ord =>
                             {
-                                ord.TotalPrice,
-                                ord.ShippingDate,
-                                CampaignId = ord.Campaign.ID,
-                                Items = ord.Items.Select(i => new
+                                var skus = SKUInfoProvider.GetSKUs()
+                                    .WhereIn(nameof(SKUInfo.SKUNumber), ord.Items.Select(i => i.SKUNumber).ToList())
+                                    .Columns("SKUProductCustomerReferenceNumber", nameof(SKUInfo.SKUEnabled), nameof(SKUInfo.SKUNumber));
+                                return new
                                 {
-                                    i.SKUNumber,
-                                    i.Name,
-                                    i.Quantity,
-                                    Price = i.UnitPrice,
-                                    PosNumber = GetPosNum(i.SKUNumber)
-                                })
+                                    ord.TotalPrice,
+                                    ord.ShippingDate,
+                                    CampaignId = ord.Campaign.ID,
+                                    Items = ord.Items.GroupJoin(skus, i => i.SKUNumber, s => s.SKUNumber, (i, sks) => new
+                                    {
+                                        i.SKUNumber,
+                                        i.Name,
+                                        i.Quantity,
+                                        Price = i.UnitPrice,
+                                        PosNumber = GetPosNum(sks.DefaultIfEmpty().FirstOrDefault()),
+                                        Status = GetStatus(sks.DefaultIfEmpty().FirstOrDefault())
+                                    })
+                                };
                             }).ToList()
                         })
                         .ToList();
@@ -155,22 +163,28 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
         {
             if (user?.Email != null)
             {
-                var cartItems = ordersDTO.Items.Select(item =>
-                {
-                    return new
+                var skus = SKUInfoProvider.GetSKUs()
+                    .WhereIn(nameof(SKUInfo.SKUID), ordersDTO.Items.Select(i => i.SKU.KenticoSKUID).ToList())
+                    .Columns("SKUProductCustomerReferenceNumber", nameof(SKUInfo.SKUEnabled), nameof(SKUInfo.SKUID));
+                var cartItems = ordersDTO.Items.GroupJoin(skus, i => i.SKU.KenticoSKUID, s => s.SKUID, (item, sks) =>
                     {
-                        SKUNumber = item.SKU.SKUNumber,
-                        Name = item.SKU.Name,
-                        Quantity = item.UnitCount,
-                        Price = item.TotalPrice,
-                        PosNumber = GetPosNum(item.SKU.KenticoSKUID)
-                    };
-                }).ToList();
-                Dictionary<string, object> orderDetails = new Dictionary<string, object>();
-                orderDetails.Add("name", user.FirstName);
-                orderDetails.Add("totalprice", ordersDTO.Totals.Price);
-                orderDetails.Add("totalshipping", ordersDTO.Totals.Shipping);
-                orderDetails.Add("campaignid", ordersDTO.Totals.Shipping);
+                        return new
+                        {
+                            SKUNumber = item.SKU.SKUNumber,
+                            Name = item.SKU.Name,
+                            Quantity = item.UnitCount,
+                            Price = item.TotalPrice,
+                            PosNumber = GetPosNum(sks.DefaultIfEmpty().FirstOrDefault()),
+                            Status = GetStatus(sks.DefaultIfEmpty().FirstOrDefault()),
+                        };
+                    }).ToList();
+                var orderDetails = new Dictionary<string, object>
+                {
+                    { "name", user.FirstName },
+                    { "totalprice", ordersDTO.Totals.Price },
+                    { "totalshipping", ordersDTO.Totals.Shipping },
+                    { "campaignid", ordersDTO.Totals.Shipping }
+                };
                 SendEmailNotification(orderTemplateSettingKey, user.Email, cartItems, "orderitems", orderDetails);
             }
         }
@@ -195,22 +209,18 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
             return dataTable;
         }
 
-        public static string GetPosNum(int SkuId)
+        private static string GetPosNum(SKUInfo sku)
         {
-            var skuData = SKUInfoProvider.GetSKUs()
-                .WhereEquals("SKUID", SkuId)
-                .Columns("SKUProductCustomerReferenceNumber")
-                .FirstOrDefault();
-            return skuData != null ? skuData.GetValue("SKUProductCustomerReferenceNumber", string.Empty) : string.Empty;
-        }
-        public static string GetPosNum(string skuNumber)
-        {
-            var skuData = SKUInfoProvider.GetSKUs()
-                .WhereEquals(nameof(SKUInfo.SKUNumber), skuNumber)
-                .Columns("SKUProductCustomerReferenceNumber")
-                .FirstOrDefault();
-            return skuData != null ? skuData.GetValue("SKUProductCustomerReferenceNumber", string.Empty) : string.Empty;
+            return sku != null ?
+                sku.GetValue("SKUProductCustomerReferenceNumber", string.Empty)
+                : string.Empty;
         }
 
+        private static string GetStatus(SKUInfo sku)
+        {
+            return (sku?.SKUEnabled ?? false) ?
+                ResHelper.GetString("KDA.Common.Status.Active")
+                : ResHelper.GetString("KDA.Common.Status.Inactive");
+        }
     }
 }

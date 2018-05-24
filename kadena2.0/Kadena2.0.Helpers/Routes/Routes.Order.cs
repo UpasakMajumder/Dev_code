@@ -8,6 +8,7 @@
             public const string GetToApprove = "api/orders/toApprove";
             public const string Approve = "api/order/approve";
             public const string Reject = "api/order/reject";
+            public const string GetCampaignOrdersToApprove = "api/orders/toapprove/{orderType}";
         }
     }
 }
