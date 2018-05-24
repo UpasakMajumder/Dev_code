@@ -302,22 +302,36 @@
         }
       },
       filteredRecentOrders: {
-        orderTypes: {
-          placeholder: 'Order Type',
-          items: [
-            {
-              id: '0',
-              name: 'Pre-But Orders',
-              campaigns: true
-            },
-            {
-              id: '1',
-              name: 'General Inventory Orders'
-            }
+        placeholder: 'Order Type',
+        filterItems: [
+              {
+                  name: 'Pre-But Orders',
+                  getCampaignsUrl: PATH + 'order/recent/filtered/campaigns',
+                  tabs: [
+                    {
+                      text: 'Orders requiring approval',
+                      getOrdersUrl: PATH + 'order/recent/filtered/orders/4' // /companyId = 0
+                    },
+                    {
+                      text: 'Orders',
+                      getOrdersUrl: PATH + 'order/recent/filtered/orders/5' // /companyId = 1
+                    }
+                  ]
+              },
+              {
+                name: 'General Inventory Orders',
+                tabs: [
+                  {
+                    text: 'Orders requiring approval',
+                    getOrdersUrl: PATH + 'order/recent/filtered/orders/2',
+                  },
+                  {
+                    text: 'Orders',
+                    getOrdersUrl: PATH + 'order/recent/filtered/orders/3',
+                  }
+                ]
+              }
           ]
-        },
-        getCampaignsUrl: PATH + 'order/recent/filtered/campaigns',
-        getOrdersUrl: PATH + 'order/recent/filtered/orders'
       },
       modifyMailingList: {
         errorList: {
