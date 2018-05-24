@@ -16,7 +16,8 @@ namespace Kadena.Models.OrderDetail
         public string MailingList { get; set; }
         public string ShippingDatePrefix { get; set; }
         public string ShippingDate { get; set; }
-        public TrackingInfo Tracking { get; set; }
+        public string TrackingPrefix { get; set; }
+        public IEnumerable<TrackingInfo> Tracking { get; set; }
         public string Price { get; set; }
         public string QuantityPrefix { get; set; }
         public string QuantityShippedPrefix { get; set; }

@@ -15,7 +15,8 @@ namespace Kadena.Dto.ViewOrder.Responses
         public string MailingList { get; set; }
         public string ShippingDatePrefix { get; set; }
         public string ShippingDate { get; set; }
-        public TrackingInfoDto Tracking { get; set; }
+        public string TrackingPrefix { get; set; }
+        public IEnumerable<TrackingInfoDto> Tracking { get; set; }
         public string Price { get; set; }
         public string QuantityPrefix { get; set; }
         public string QuantityShippedPrefix { get; set; }

@@ -61,6 +61,7 @@ namespace Kadena.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<Dto.ViewOrder.MicroserviceResponses.TrackingInfoDto, TrackingInfo>();
             CreateMap<TrackingInfo, TrackingInfoDto>();
 
             CreateMap<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO, OrderedItem>()
@@ -73,7 +74,8 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.MailingList, opt => opt.MapFrom(src => src.MailingList == Guid.Empty.ToString() ? string.Empty : src.MailingList))
                 .ForMember(dest => dest.ShippingDatePrefix, opt => opt.Ignore())
                 .ForMember(dest => dest.ShippingDate, opt => opt.UseValue(string.Empty))
-                .ForMember(dest => dest.Tracking, opt => opt.MapFrom(src => new TrackingInfo { Id = src.TrackingId }))
+                .ForMember(dest => dest.TrackingPrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.Tracking, opt => opt.MapFrom(src => src.TrackingInfoList))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => string.Format("$ {0:#,0.00}", src.TotalPrice)))
                 .ForMember(dest => dest.QuantityPrefix, opt => opt.Ignore())
                 .ForMember(dest => dest.QuantityShippedPrefix, opt => opt.Ignore())

@@ -1,4 +1,4 @@
-﻿namespace Kadena.Dto.Shipping
+﻿namespace Kadena.Dto.ViewOrder.MicroserviceResponses
 {
     public class TrackingInfoDto
     {
