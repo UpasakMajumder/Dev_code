@@ -51,6 +51,14 @@
           <controlname>DynamicPricingSelector</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="ProductTieredPricing" columntype="longtext" guid="0d2a5e09-535a-4f28-854d-b28e5f1fb03e" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Tiered pricing</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>TieredPricingSelector</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="ProductThumbnailBorderDisabled" columntype="boolean" guid="ad1051c3-59b4-4e56-87e7-3976d05e9571" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Thumbnail border Disabled</fieldcaption>

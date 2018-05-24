@@ -8,7 +8,7 @@ namespace Kadena.Models
         public int Quantity { get; set; }
         public decimal Price { get; set; }
 
-        public bool Validate(List<string> errors)
+        bool Validate(List<string> errors)
         {
             bool isValid = true;
             if (Quantity <= 0)
