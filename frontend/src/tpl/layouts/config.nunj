@@ -667,6 +667,7 @@
           text: 'Add to cart',
           unit: 'pack of 50 (50)',
           quantity: 1, // state
+          quantityErrorText: 'Invalid Quantity Here',
           minQuantity: 1, // not required
           maxQuantity: 10 // not required
         }

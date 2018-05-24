@@ -107,7 +107,7 @@ class ProductDetail extends Component {
     // check min max
     if (minQuantity && maxQuantity) {
       if (quantity < minQuantity || quantity > maxQuantity) {
-        this.vibrateQuantityText();
+        this.setState({ quanityError: true });
         return false;
       }
     // check min
@@ -115,7 +115,7 @@ class ProductDetail extends Component {
 
     if (minQuantity) {
       if (quantity < minQuantity) {
-        this.vibrateQuantityText();
+        this.setState({ quanityError: true });
         return false;
       }
     // check max
@@ -123,18 +123,18 @@ class ProductDetail extends Component {
 
     if (maxQuantity) {
       if (quantity > maxQuantity) {
-        this.vibrateQuantityText();
+        this.setState({ quanityError: true });
         return false;
       }
     }
 
     if (quantity < 1) {
-      this.vibrateQuantityText();
+      this.setState({ quanityError: true });
       return false;
     }
 
     if (isNaN(+quantity)) {
-      this.vibrateQuantityText();
+      this.setState({ quanityError: true });
       return false;
     }
 
@@ -210,15 +210,12 @@ class ProductDetail extends Component {
       });
   };
 
-  vibrateQuantityText = () => {
+  handleChangeQuantity = (quantity) => {
     this.setState({
-      quanityError: true
-    }, () => {
-      setTimeout(() => this.setState({ quanityError: false }), 1000);
+      quantity,
+      quanityError: false
     });
   };
-
-  handleChangeQuantity = quantity => this.setState({ quantity });
 
   handleChangeOptions = (name, value) => {
     const options = this.state.options.set(name, value);
@@ -268,8 +265,8 @@ class ProductDetail extends Component {
 
     const quantityTextComponent = ui.get('quantityText')
       ? (
-        <div className={`block ${this.state.quanityError ? 'block--vibrate' : ''}`}>
-          <h2 className="block__heading text--warning pt-4 pb-2">{ui.get('quantityText')}</h2>
+        <div className="block">
+          <h2 className="block__heading text--danger pt-4 pb-2">{ui.get('quantityText')}</h2>
         </div>
       ) : null;
 
@@ -316,6 +313,7 @@ class ProductDetail extends Component {
                 quantity={this.state.quantity}
                 proceedProduct={this.proceedProduct}
                 isLoading={this.state.isLoading}
+                quanityError={this.state.quanityError}
               />
             </div>
           </div>
