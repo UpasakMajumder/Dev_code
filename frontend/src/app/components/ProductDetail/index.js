@@ -38,7 +38,8 @@ class ProductDetail extends Component {
         minQuantity: PropTypes.number,
         maxQuantity: PropTypes.number,
         documentId: PropTypes.string.isRequired,
-        url: PropTypes.string.isRequired
+        url: PropTypes.string.isRequired,
+        quantityErrorText: PropTypes.string.isRequired
       }),
       openTemplate: ImmutablePropTypes.map,
       description: ImmutablePropTypes.mapContains({
@@ -78,7 +79,7 @@ class ProductDetail extends Component {
       quantity: this.props.ui.getIn(['addToCart', 'quantity'], 1),
       isLoading: false,
       optionsError: false,
-      quanityError: false
+      quanityError: ''
     };
   }
 
@@ -107,7 +108,7 @@ class ProductDetail extends Component {
     // check min max
     if (minQuantity && maxQuantity) {
       if (quantity < minQuantity || quantity > maxQuantity) {
-        this.setState({ quanityError: true });
+        this.setState({ quanityError: ui.getIn(['addToCart', 'quantityErrorText']) });
         return false;
       }
     // check min
@@ -115,7 +116,7 @@ class ProductDetail extends Component {
 
     if (minQuantity) {
       if (quantity < minQuantity) {
-        this.setState({ quanityError: true });
+        this.setState({ quanityError: ui.getIn(['addToCart', 'quantityErrorText']) });
         return false;
       }
     // check max
@@ -123,18 +124,18 @@ class ProductDetail extends Component {
 
     if (maxQuantity) {
       if (quantity > maxQuantity) {
-        this.setState({ quanityError: true });
+        this.setState({ quanityError: ui.getIn(['addToCart', 'quantityErrorText']) });
         return false;
       }
     }
 
     if (quantity < 1) {
-      this.setState({ quanityError: true });
+      this.setState({ quanityError: ui.getIn(['addToCart', 'quantityErrorText']) });
       return false;
     }
 
     if (isNaN(+quantity)) {
-      this.setState({ quanityError: true });
+      this.setState({ quanityError: ui.getIn(['addToCart', 'quantityErrorText']) });
       return false;
     }
 
@@ -168,10 +169,7 @@ class ProductDetail extends Component {
         const { payload, success, errorMessage } = response.data;
 
         if (!success) {
-          window.store.dispatch({
-            type: FAILURE,
-            alert: errorMessage
-          });
+          this.setState({ quanityError: errorMessage });
           return;
         }
 
@@ -213,7 +211,7 @@ class ProductDetail extends Component {
   handleChangeQuantity = (quantity) => {
     this.setState({
       quantity,
-      quanityError: false
+      quanityError: ''
     });
   };
 
