@@ -10,7 +10,7 @@ import { getCampaigns, getOrders } from 'app.ac/filteredRecentOrders';
 /* consts */
 import { FAILURE } from 'app.consts';
 /* components */
-import Tabs from 'app.smart/Tabs';
+import Tabs from 'app.dump/Tabs';
 import Select from 'app.dump/Form/Select';
 import Spinner from 'app.dump/Spinner';
 import Orders from './Orders';
@@ -31,38 +31,23 @@ class FilteredRecentOrders extends Component {
   };
 
   state = {
-    isFetching: false,
-    orderTypeId: null,
-    showContent: false,
+    orders: null,
+    activeTabId: '',
+    orderTypeId: '',
     campaignFilter: {
-      placeholder: '',
+      value: '',
       items: [],
-      value: ''
-    },
-    orders: {}
+      placeholder: ''
+    }
   }
 
-  // methodsToggler = (value) => {
-  //   const valueObj = FILTERED_RECENT_ORDERS.orderTypes.items.filter(item => item.id === value)[0];
-  //   valueObj.campaigns ? this.getCampaigns(value) : this.getOrders(null, value);
-  // }
-
-  // getOrders = (selectedCampaign, selectedOrderType) => {
-  //   const url = FILTERED_RECENT_ORDERS.getOrdersUrl;
-  //   this.props.getOrders(url, selectedOrderType || this.props.filteredRecentOrders.orderType, selectedCampaign);
-  // };
-
-  // getCampaigns = (selectedOrderType) => {
-  //   const url = FILTERED_RECENT_ORDERS.getCampaignsUrl;
-  //   this.props.getCampaigns(url, selectedOrderType);
-  // };
-
-  // getOrdersElement = () => {
-  //   const { orders, isFetching } = this.props.filteredRecentOrders;
-  //   if (isFetching) return <Spinner />;
-  //   if (!Object.keys(orders).length) return null;
-  //   return <Orders orders={orders} />;
-  // };
+  handleChangeTab = (activeTabId) => {
+    this.setState({ activeTabId }, () => {
+      let url = this.props.filterItems[this.state.orderTypeId].tabs[activeTabId].getOrdersUrl;
+      if (this.state.campaignFilter.value) url += `/${this.state.campaignFilter.value}`;
+      this.fetchOrders(url);
+    });
+  };
 
   fetchOrders = (url) => {
     axios
@@ -71,9 +56,7 @@ class FilteredRecentOrders extends Component {
         const { payload, success, errorMessage } = response.data;
 
         if (success) {
-          this.setState({
-            orders: payload
-          });
+          this.setState({ orders: payload });
         } else {
           window.store.dispatch({
             type: FAILURE,
@@ -81,39 +64,42 @@ class FilteredRecentOrders extends Component {
           });
         }
       })
-      .catch(() => {
+      .catch((e) => {
         window.store.dispatch({ type: FAILURE });
       });
   }
 
   getOrdersElement = () => {
-    if (!this.state.showContent) return null;
+    if (!this.state.orders) return null;
 
     const tabList = this.props.filterItems[this.state.orderTypeId].tabs;
+    let tabs = null;
 
-    const tabs = tabList.map((tab, id) => {
-      const url = `${tab.getOrdersUrl}/${this.state.campaignFilter.value}`;
-      const tabFn = () => this.fetchOrders(url);
-      if (!Object.keys(this.state.orders).length && id === 0) tabFn();
-      return { ...tab, tabFn, id };
-    });
+    if (tabList.length > 1) {
+      tabs = tabList.map((tab, id) => {
+        return {
+          id,
+          text: tab.text,
+          onClick: () => this.handleChangeTab(id)
+        };
+      });
+    }
 
     return (
       <Tabs
         tabs={tabs}
+        activeTabId={this.state.activeTabId}
       >
         <Orders orders={this.state.orders} />
       </Tabs>
     );
-
   };
 
   getCampaignElement = () => {
-    const { campaignFilter, isFetching } = this.state;
+    const { campaignFilter } = this.state;
     if (!campaignFilter.items.length) return null;
     return (
       <Select
-        disabled={isFetching}
         options={campaignFilter.items}
         onChange={this.handleChangeCampaign}
         value={campaignFilter.value}
@@ -122,7 +108,7 @@ class FilteredRecentOrders extends Component {
     );
   };
 
-  getCampaigns = (url) => {
+  getCampaigns = (url, orderTypeId) => {
     axios
       .get(url)
       .then((response) => {
@@ -131,6 +117,7 @@ class FilteredRecentOrders extends Component {
         if (success) {
           this.setState({
             campaignFilter: {
+              ...this.setState.campaignFilter,
               placeholder: payload.placeholder,
               items: payload.items
             }
@@ -148,13 +135,15 @@ class FilteredRecentOrders extends Component {
   };
 
   handleChangeCampaign = (event) => {
+    const campaignValue = event.target.value;
     this.setState({
-      showContent: true,
-      orders: {},
       campaignFilter: {
         ...this.state.campaignFilter,
-        value: event.target.value
-      }
+        value: campaignValue
+      },
+      activeTabId: 0
+    }, () => {
+      this.fetchOrders(`${this.props.filterItems[this.state.orderTypeId].tabs[0].getOrdersUrl}/${campaignValue}`);
     });
   };
 
@@ -164,21 +153,32 @@ class FilteredRecentOrders extends Component {
     const activeFilter = this.props.filterItems[orderTypeId];
     const { getCampaignsUrl } = activeFilter;
 
-    this.setState({
-      orderTypeId,
-      campaignFilter: {
-        placeholder: '',
-        items: [],
-        value: ''
-      },
-      showContent: !getCampaignsUrl,
-      orders: {}
-    }, () => {
-
-      if (getCampaignsUrl) {
-        this.getCampaigns(getCampaignsUrl);
-      }
-    });
+    if (getCampaignsUrl) {
+      this.setState({
+        orderTypeId,
+        orders: null,
+        activeTabId: '',
+        campaignFilter: {
+          value: '',
+          items: [],
+          placeholder: ''
+        }
+      });
+      this.getCampaigns(getCampaignsUrl);
+    } else {
+      this.setState({
+        orderTypeId,
+        activeTabId: 0,
+        orders: null,
+        campaignFilter: {
+          value: '',
+          items: [],
+          placeholder: ''
+        }
+      }, () => {
+        this.fetchOrders(this.props.filterItems[orderTypeId].tabs[0].getOrdersUrl);
+      });
+    }
   };
 
   render() {
@@ -187,7 +187,6 @@ class FilteredRecentOrders extends Component {
         <div className="filtered-recent-orders">
           <div className="filtered-recent-orders__input">
             <Select
-              disabled={this.state.isFetching}
               options={this.props.filterItems.map((item, id) => ({ ...item, id }))}
               onChange={this.handleChangeOrderType}
               value={this.state.orderTypeId}

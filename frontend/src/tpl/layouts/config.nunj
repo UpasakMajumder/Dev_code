@@ -310,11 +310,11 @@
                   tabs: [
                     {
                       text: 'Orders requiring approval',
-                      getOrdersUrl: PATH + 'order/recent/filtered/orders' // /companyId
+                      getOrdersUrl: PATH + 'order/recent/filtered/orders' // /companyId = 0
                     },
                     {
                       text: 'Orders',
-                      getOrdersUrl: PATH + 'order/recent/filtered/orders' // /companyId
+                      getOrdersUrl: PATH + 'order/recent/filtered/orders' // /companyId = 1
                     }
                   ]
               },
@@ -323,11 +323,11 @@
                 tabs: [
                   {
                     text: 'Orders requiring approval',
-                    getOrdersUrl: PATH + 'order/recent/filtered/orders?1',
+                    getOrdersUrl: PATH + 'order/recent/filtered/orders/2',
                   },
                   {
                     text: 'Orders',
-                    getOrdersUrl: PATH + 'order/recent/filtered/orders?2',
+                    getOrdersUrl: PATH + 'order/recent/filtered/orders/3',
                   }
                 ]
               }

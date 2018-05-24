@@ -4,33 +4,20 @@ import PropTypes from 'prop-types';
 class Tabs extends Component {
   static propTypes = {
     tabs: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      text: PropTypes.string.isRequired
-    }).isRequired).isRequired
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+      text: PropTypes.string.isRequired,
+      onClick: PropTypes.func.isRequired
+    }).isRequired),
+    activeTabId: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
   }
-
-  constructor(props) {
-    super(props);
-
-    const { tabs } = props;
-
-    this.state = {
-      activeTabId: tabs ? tabs[0].id : 0
-    };
-  }
-
-  handleChangeTab = (activeTabId, tabFn) => {
-    this.setState({ activeTabId });
-    tabFn && tabFn();
-  };
 
   render() {
-    const tabs = this.props.tabs.map((tab) => {
+    const tabs = this.props.tabs && this.props.tabs.map((tab) => {
       return (
         <li
           key={tab.id}
-          className={`css-tabs__tab js-tab-recent-orders ${this.state.activeTabId === tab.id ? 'active' : ''}`}
-          onClick={() => this.handleChangeTab(tab.id, tab.tabFn)}
+          className={`css-tabs__tab js-tab-recent-orders ${this.props.activeTabId === tab.id ? 'active' : ''}`}
+          onClick={tab.onClick}
         >
           {tab.text}
         </li>

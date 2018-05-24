@@ -33,7 +33,10 @@ module.exports.reports = {
 module.exports.recent = {
   filtered: {
     campaigns: (req, res) => res.json(campaign),
-    orders: (req, res) => res.json(filteredOrders)
+    orders: (req, res) => {
+      filteredOrders.payload.rows[0].items[1].value = req.params.id;
+      res.json(filteredOrders);
+    }
   },
   requiringApproval: (req, res) => res.json(order.recent.requiringApproval),
   ui: (req, res) => res.json(order.recent.ui),
