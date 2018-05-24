@@ -27,7 +27,7 @@ const Proceed = ({
           value={quantity}
           onChange={e => handleChangeQuantity(e.target.value)}
           className="product-view__proceed-input"
-          error={quanityError ? addToCart.get('quantityErrorText') : ''}
+          error={quanityError}
         />
         <span className="mx-2">{addToCart.get('unit')}</span>
         <Button
@@ -56,8 +56,7 @@ const Proceed = ({
 Proceed.propTypes = {
   addToCart: ImmutablePropTypes.mapContains({
     text: PropTypes.string.isRequired,
-    unit: PropTypes.string.isRequired,
-    quantityErrorText: PropTypes.string.isRequired
+    unit: PropTypes.string.isRequired
   }),
   openTemplate: ImmutablePropTypes.mapContains({
     url: PropTypes.string.isRequired,
@@ -67,7 +66,7 @@ Proceed.propTypes = {
   proceedProduct: PropTypes.func.isRequired,
   quantity: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   isLoading: PropTypes.bool.isRequired,
-  quanityError: PropTypes.bool.isRequired
+  quanityError: PropTypes.string.isRequired
 };
 
 export default Proceed;
