@@ -38,11 +38,18 @@ class FilteredRecentOrders extends Component {
       value: '',
       items: [],
       placeholder: ''
-    }
+    },
+    isDisabled: false,
+    isOpacity: false,
+    isFetching: false
   }
 
   handleChangeTab = (activeTabId) => {
-    this.setState({ activeTabId }, () => {
+    this.setState({
+      activeTabId,
+      isDisabled: true,
+      isOpacity: true
+    }, () => {
       let url = this.props.filterItems[this.state.orderTypeId].tabs[activeTabId].getOrdersUrl;
       if (this.state.campaignFilter.value) url += `/${this.state.campaignFilter.value}`;
       this.fetchOrders(url);
@@ -56,7 +63,12 @@ class FilteredRecentOrders extends Component {
         const { payload, success, errorMessage } = response.data;
 
         if (success) {
-          this.setState({ orders: payload });
+          this.setState({
+            orders: payload,
+            isDisabled: false,
+            isOpacity: false,
+            isFetching: false
+          });
         } else {
           window.store.dispatch({
             type: FAILURE,
@@ -70,6 +82,7 @@ class FilteredRecentOrders extends Component {
   }
 
   getOrdersElement = () => {
+    if (this.state.isFetching) return <Spinner />;
     if (!this.state.orders) return null;
 
     const tabList = this.props.filterItems[this.state.orderTypeId].tabs;
@@ -90,16 +103,17 @@ class FilteredRecentOrders extends Component {
         tabs={tabs}
         activeTabId={this.state.activeTabId}
       >
-        <Orders orders={this.state.orders} />
+        <Orders isOpacity={this.state.isOpacity} orders={this.state.orders} />
       </Tabs>
     );
   };
 
   getCampaignElement = () => {
-    const { campaignFilter } = this.state;
+    const { campaignFilter, isDisabled } = this.state;
     if (!campaignFilter.items.length) return null;
     return (
       <Select
+        disabled={isDisabled}
         options={campaignFilter.items}
         onChange={this.handleChangeCampaign}
         value={campaignFilter.value}
@@ -120,7 +134,8 @@ class FilteredRecentOrders extends Component {
               ...this.setState.campaignFilter,
               placeholder: payload.placeholder,
               items: payload.items
-            }
+            },
+            isDisabled: false
           });
         } else {
           window.store.dispatch({
@@ -141,7 +156,9 @@ class FilteredRecentOrders extends Component {
         ...this.state.campaignFilter,
         value: campaignValue
       },
-      activeTabId: 0
+      activeTabId: 0,
+      isDisabled: true,
+      isFetching: true
     }, () => {
       this.fetchOrders(`${this.props.filterItems[this.state.orderTypeId].tabs[0].getOrdersUrl}/${campaignValue}`);
     });
@@ -162,7 +179,8 @@ class FilteredRecentOrders extends Component {
           value: '',
           items: [],
           placeholder: ''
-        }
+        },
+        isDisabled: true
       });
       this.getCampaigns(getCampaignsUrl);
     } else {
@@ -174,7 +192,9 @@ class FilteredRecentOrders extends Component {
           value: '',
           items: [],
           placeholder: ''
-        }
+        },
+        isDisabled: true,
+        isFetching: true
       }, () => {
         this.fetchOrders(this.props.filterItems[orderTypeId].tabs[0].getOrdersUrl);
       });
@@ -187,6 +207,7 @@ class FilteredRecentOrders extends Component {
         <div className="filtered-recent-orders">
           <div className="filtered-recent-orders__input">
             <Select
+              disabled={this.state.isDisabled}
               options={this.props.filterItems.map((item, id) => ({ ...item, id }))}
               onChange={this.handleChangeOrderType}
               value={this.state.orderTypeId}

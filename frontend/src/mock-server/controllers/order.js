@@ -32,10 +32,10 @@ module.exports.reports = {
 
 module.exports.recent = {
   filtered: {
-    campaigns: (req, res) => res.json(campaign),
+    campaigns: (req, res) => setTimeout(() => res.json(campaign), 2000),
     orders: (req, res) => {
-      filteredOrders.payload.rows[0].items[1].value = req.params.id;
-      res.json(filteredOrders);
+      filteredOrders.payload.rows[0].items[1].value = req.params.id + (req.params.campaign || 0);
+      setTimeout(() => res.json(filteredOrders), 2000);
     }
   },
   requiringApproval: (req, res) => res.json(order.recent.requiringApproval),

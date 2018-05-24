@@ -8,6 +8,7 @@ import Dialog from '../Dialog';
 
 class Orders extends Component {
   static propTypes = {
+    isOpacity: PropTypes.bool,
     orders: PropTypes.shape({
       headers: PropTypes.arrayOf(PropTypes.string.isRequired),
       rows: PropTypes.arrayOf(PropTypes.shape({
@@ -84,7 +85,7 @@ class Orders extends Component {
     return (
       <div>
         {this.getDialog()}
-        <table className="show-table">
+        <table className={`show-table ${this.props.isOpacity ? 'show-table--opacity' : ''}`}>
           <tbody>
             {this.getTableHeader()}
             {this.getTableRows()}

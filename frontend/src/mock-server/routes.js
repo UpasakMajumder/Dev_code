@@ -20,7 +20,7 @@ apiRouter.use((req, res, next) => {
 });
 
 apiRouter.get('/order/recent/filtered/campaigns', Orders.recent.filtered.campaigns);
-apiRouter.get('/order/recent/filtered/orders/:id*?', Orders.recent.filtered.orders);
+apiRouter.get('/order/recent/filtered/orders/:id*?/:campaign*?', Orders.recent.filtered.orders);
 
 apiRouter.post('/login', Login);
 apiRouter.get('/accepttac', AcceptTaC);
