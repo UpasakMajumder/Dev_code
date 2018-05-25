@@ -661,38 +661,23 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                         }
                     }
                 }
+
                 var pdfClosingDivs = SettingsKeyInfoProvider.GetValue(Settings.PdfEndingTags, CurrentSite.SiteID);
-                var contentHtml = pdfProductsContentWithBrands + pdfClosingDivs;
+                var contentHtml = $"{pdfProductsContentWithBrands}{pdfClosingDivs}";
                 var coverHtml = string.Empty;
+                var fileName = string.Empty;
                 if (TypeOfProduct == (int)ProductsType.PreBuy)
                 {
+                    fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.PrebuyFileName"), string.Empty) + ".pdf";
                     coverHtml = $"{htmlTextheader}{programsContent}{closingDiv}";
                 }
                 else
                 {
                     coverHtml = $"{generalInventory}{closingDiv}";
-                }
-                var fileName = string.Empty;
-                if (TypeOfProduct == (int)ProductsType.PreBuy)
-                {
-                    fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.PrebuyFileName"), string.Empty) + ".pdf";
-                }
-                else
-                {
                     fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.GeneralInventory"), string.Empty) + ".pdf";
                 }
 
-                var PDFConverter = new HtmlToPdfConverter();
-                PDFConverter.License.SetLicenseKey(SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoOwner, CurrentSite.SiteID), SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoKey, CurrentSite.SiteID));
-                PDFConverter.LowQuality = SettingsKeyInfoProvider.GetBoolValue(Settings.KDA_NRecoLowQuality, CurrentSite.SiteID);
-                pdfByte = PDFConverter.GeneratePdf(contentHtml, coverHtml);
-                Response.Clear();
-                var ms = new MemoryStream(pdfByte);
-                Response.ContentType = "application/pdf";
-                Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
-                Response.Buffer = true;
-                ms.WriteTo(Response.OutputStream);
-                Response.End();
+                RespondWithPdf(contentHtml, coverHtml, fileName);
             }
             else
             {
@@ -704,6 +689,21 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         {
             EventLogProvider.LogException("creating html", ex.Message, ex);
         }
+    }
+
+    private void RespondWithPdf(string contentHtml, string coverHtml, string fileName)
+    {
+        var PDFConverter = new HtmlToPdfConverter();
+        PDFConverter.License.SetLicenseKey(SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoOwner, CurrentSite.SiteID), SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoKey, CurrentSite.SiteID));
+        PDFConverter.LowQuality = SettingsKeyInfoProvider.GetBoolValue(Settings.KDA_NRecoLowQuality, CurrentSite.SiteID);
+        var pdfByte = PDFConverter.GeneratePdf(contentHtml, coverHtml);
+        Response.Clear();
+        var ms = new MemoryStream(pdfByte);
+        Response.ContentType = "application/pdf";
+        Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
+        Response.Buffer = true;
+        ms.WriteTo(Response.OutputStream);
+        Response.End();
     }
 
     /// <summary>
