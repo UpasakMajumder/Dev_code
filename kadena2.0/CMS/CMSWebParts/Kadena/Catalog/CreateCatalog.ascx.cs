@@ -542,10 +542,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 var programsContent = string.Empty;
                 if (TypeOfProduct == (int)ProductsType.PreBuy && OpenCampaign != null)
                 {
-                    foreach (var program in programs)
-                    {
-                        brands.Add(program.BrandID);
-                    }
+                    brands = programs.Select(p => p.BrandID).ToList();
                 }
                 else
                 {
@@ -557,36 +554,32 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     var inventoryList = productItems
                         .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.BrandID, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber })
                         .ToList();
-                    foreach (var giProducts in inventoryList)
-                    {
-                        brands.Add(giProducts.BrandID);
-                    }
+                    brands = inventoryList.Select(p => p.BrandID).ToList();
                 }
-                var brandData = brands.Distinct();
-                brands = CustomTableItemProvider
-                    .GetItems(BrandItem.CLASS_NAME)
-                    .WhereIn(nameof(CustomTableItem.ItemID), brandData.ToList())
-                    .Columns(nameof(CustomTableItem.ItemID))
+                var brandData = CustomTableItemProvider
+                    .GetItems<BrandItem>()
+                    .Distinct()
+                    .WhereIn(nameof(BrandItem.ItemID), brands)
+                    .Columns(nameof(BrandItem.ItemID), nameof(BrandItem.BrandName))
                     .OrderBy(nameof(BrandItem.BrandName))
-                    .Select(x => x.Field<int>(nameof(CustomTableItem.ItemID)))
                     .ToList();
                 var pdfProductsContentWithBrands = string.Empty;
                 var closingDiv = SettingsKeyInfoProvider.GetValue(Settings.ClosingDIV, CurrentSite.SiteID).ToString();
                 if (!DataHelper.DataSourceIsEmpty(selectedProducts))
                 {
-                    foreach (var brand in brands.Distinct())
+                    foreach (var brand in brandData)
                     {
                         var productBrandHeader = SettingsKeyInfoProvider.GetValue(Settings.PDFBrand, CurrentSite.SiteID);
                         if (TypeOfProduct == (int)ProductsType.PreBuy)
                         {
                             productBrandHeader = productBrandHeader
-                                .Replace("^PROGRAMNAME^", programs.Where(x => x.BrandID == brand).Select(y => y.ProgramName).FirstOrDefault())
-                                .Replace("^BrandName^", GetBrandName(brand));
+                                .Replace("^PROGRAMNAME^", programs.Where(x => x.BrandID == brand.ItemID).Select(y => y.ProgramName).FirstOrDefault())
+                                .Replace("^BrandName^", brand.BrandName);
                         }
                         else if (TypeOfProduct == (int)ProductsType.GeneralInventory)
                         {
                             productBrandHeader = productBrandHeader
-                                .Replace("^BrandName^", GetBrandName(brand))
+                                .Replace("^BrandName^", brand.BrandName)
                                 .Replace("^PROGRAMNAME^", string.Empty);
                         }
                         var productItems = new List<CampaignsProduct>();
@@ -627,7 +620,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                                   cp.ProductImage,
                                                   sku.SKUValidUntil
                                               })
-                                        .Where(x => x.BrandID == brand)
+                                        .Where(x => x.BrandID == brand.ItemID)
                                         .ToList();
                         if (catalogList != null && TypeOfProduct == (int)ProductsType.PreBuy)
                         {
