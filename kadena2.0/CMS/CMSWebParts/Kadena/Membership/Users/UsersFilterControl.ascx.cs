@@ -88,25 +88,25 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersFilterControl : CM
 
     #endregion
 
+    private string CurrentQuery => txtValue.Text.Trim();
+    private string PreviousQuery
+    {
+        get => ViewState["FilterCondition"]?.ToString() ?? string.Empty;
+        set => ViewState["FilterCondition"] = value;
+    }
+
+    private bool HasQueryChanged() => CurrentQuery != PreviousQuery;
 
     /// <summary>
     /// OnLoad override - check wheter filter is set.
     /// </summary>
     protected override void OnLoad(EventArgs e)
     {
-        // Set filter only if it is not filter request
-        if (Request.Form[btnSelect.UniqueID] == null)
+        if (HasQueryChanged())
         {
-            // Try to get where condition
-            string wherePart = ValidationHelper.GetString(ViewState["FilterCondition"], string.Empty);
-            if (!string.IsNullOrEmpty(wherePart))
-            {
-                // Set where condition and raise OnFilter change event
-                WhereCondition = GenerateWhereCondition(wherePart);
-                // Raise event
-                RaiseOnFilterChanged();
-            }
+            Search();
         }
+
         if ((Request.Form[lnkSortByActivity.UniqueID] == null) && (Request.Form[lnkSortByUserName.UniqueID] == null))
         {
             string orderByPart = ValidationHelper.GetString(ViewState["OrderClause"], string.Empty);
@@ -126,19 +126,10 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersFilterControl : CM
         base.OnLoad(e);
     }
 
-
-    /// <summary>
-    /// Select button handler.
-    /// </summary>
-    /// <param name="sender">Sender</param>
-    /// <param name="e">EventArgs</param>
-    protected void btnSelect_Click(object sender, EventArgs e)
+    private void Search()
     {
-        // Set where condition
-        WhereCondition = GenerateWhereCondition(txtValue.Text.Trim());
-        // Save filter condition
-        ViewState["FilterCondition"] = txtValue.Text;
-        // Raise OnFilterChange event
+        PreviousQuery = CurrentQuery;
+        WhereCondition = GenerateWhereCondition(CurrentQuery);
         RaiseOnFilterChanged();
     }
 
