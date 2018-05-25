@@ -624,7 +624,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                         : ($"{CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(product.SKUPrice, default(double)), CurrentSite.SiteID, true)}"))
                                     .Replace("PRODUCTBUNDLEQUANTITY", product?.QtyPerPack.ToString() ?? string.Empty)
                                     .Replace("PRODUCTEXPIRYDATE", product?.SKUValidUntil != default(DateTime) ? product?.SKUValidUntil.ToString("MMM dd, yyyy") : string.Empty ?? string.Empty);
-                                selectedProducts.Remove(product.SKUNumber);
                             }
 
                             var productListHeaderHtml = SettingsKeyInfoProvider.GetValue(Settings.PDFBrand, CurrentSite.SiteID);
