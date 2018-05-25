@@ -516,7 +516,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                         .GetSKUs()
                         .WhereIn(nameof(SKUInfo.SKUID), selectedProducts)
                         .ToList();
-                    var brands = new List<int>();
+
                     var programs = ProgramProvider
                         .GetPrograms()
                         .Columns(nameof(Program.ProgramName), nameof(Program.BrandID), nameof(Program.DeliveryDateToDistributors))
@@ -527,7 +527,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
 
                     if (TypeOfProduct == (int)ProductsType.PreBuy && OpenCampaign != null)
                     {
-                        brands = programs.Select(p => p.BrandID).ToList();
                         products = CampaignsProductProvider
                             .GetCampaignsProducts()
                             .WhereNotNull(nameof(CampaignsProduct.ProgramID))
@@ -543,12 +542,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                             .Where(new WhereCondition().WhereNull(nameof(CampaignsProduct.ProgramID))
                                 .Or().WhereEquals(nameof(CampaignsProduct.ProgramID), 0))
                             .ToList();
-                        var inventoryList = products
-                            .Join(selectedSkus, x => x.NodeSKUID, y => y.SKUID,
-                                (x, y) => new { x.BrandID, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber })
-                            .ToList();
-                        brands = inventoryList.Select(p => p.BrandID).ToList();
                     }
+
                     var catalogList = products
                         .Join(selectedSkus,
                             cp => cp.NodeSKUID,
@@ -570,10 +565,11 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                 sku.SKUValidUntil
                             })
                         .ToList();
+
                     var brandData = CustomTableItemProvider
                         .GetItems<BrandItem>()
                         .Distinct()
-                        .WhereIn(nameof(BrandItem.ItemID), brands)
+                        .WhereIn(nameof(BrandItem.ItemID), catalogList.Select(i => i.BrandID).ToList())
                         .Columns(nameof(BrandItem.ItemID), nameof(BrandItem.BrandName))
                         .OrderBy(nameof(BrandItem.BrandName))
                         .ToList();
