@@ -6,7 +6,7 @@ import { removeProps } from 'app.helpers/object';
 export default function CheckboxInput(props) {
   const { error, label, inputClass, disabled, type } = props;
 
-  const inputProps = removeProps(props, ['error', 'label', 'inputClass']);
+  const inputProps = removeProps(props, ['error', 'key', 'label', 'inputClass']);
 
   const labelElement = label ? <label dangerouslySetInnerHTML={{ __html: label }} htmlFor={props.id} className={`input__label input__label--${type}`} /> : null;
   const wrapClass = disabled
@@ -26,7 +26,7 @@ export default function CheckboxInput(props) {
 }
 
 CheckboxInput.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   label: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   name: PropTypes.string,
@@ -34,5 +34,5 @@ CheckboxInput.propTypes = {
   error: PropTypes.string,
   inputClass: PropTypes.string,
   defaultChecked: PropTypes.bool,
-  value: PropTypes.bool
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool])
 };

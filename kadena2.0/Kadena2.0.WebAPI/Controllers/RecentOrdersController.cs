@@ -4,12 +4,14 @@ using Kadena.Dto.RecentOrders;
 using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Helpers.Routes;
 using Kadena.WebAPI.Infrastructure;
+using Kadena.WebAPI.Infrastructure.Filters;
 using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
 {
+    [CustomerAuthorizationFilter]
     public class RecentOrdersController : ApiControllerBase
     {
         private readonly IOrderDetailService orderDetailService;
@@ -50,6 +52,15 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route(Routes.Order.GetCampaignOrdersToApprove)]
+        public async Task<IHttpActionResult> GetCampaignOrdersToApprove(string orderType)
+        {
+            var orders = await _orderService.GetCampaignOrdersToApprove(orderType, 0);
+            var result = _mapper.Map<OrderHeadBlockDto>(orders);
+            return ResponseJson(result);
+        }
+
+        [HttpGet]
         [Route("api/recentorders/getheaders")]
         public async Task<IHttpActionResult> GetHeaders()
         {
@@ -62,7 +73,7 @@ namespace Kadena.WebAPI.Controllers
         [Route("api/recentorders/getheaders/{orderType}")]
         public async Task<IHttpActionResult> GetHeaders(string orderType)
         {
-            var orderHead = await _orderService.GetHeaders(orderType, 0);
+            var orderHead = await _orderService.GetCampaignHeaders(orderType, 0);
             var result = _mapper.Map<OrderHeadBlockDto>(orderHead);
             return ResponseJson(result);
         }
@@ -71,7 +82,7 @@ namespace Kadena.WebAPI.Controllers
         [Route("api/recentorders/getheaders/{orderType}/{campaignID}")]
         public async Task<IHttpActionResult> GetHeaders(string orderType, int campaignID)
         {
-            var orderHead = await _orderService.GetHeaders(orderType, campaignID);
+            var orderHead = await _orderService.GetCampaignHeaders(orderType, campaignID);
             var result = _mapper.Map<OrderHeadBlockDto>(orderHead);
             return ResponseJson(result);
         }

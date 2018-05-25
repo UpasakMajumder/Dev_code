@@ -2,8 +2,11 @@
 {
     public class ProductAvailability
     {
-        public static string OutOfStock => "OutOfStock";
-        public static string Unavailable => "Unavailable";
-        public static string Available => "Available";
+        public static string OutOfStock => "outofstock";
+        public static string Unavailable => "unavailable";
+        public static string Available => "available";
+
+        public string Type { get; set; }
+        public string Text { get; set; }
     }
 }

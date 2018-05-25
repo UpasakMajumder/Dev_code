@@ -20,6 +20,7 @@ import cardPayment from './card-payment';
 import languageSelector from './languageSelector';
 import filteredRecentOrders from './filteredRecentOrders';
 import emailProof from './emailProof';
+import thumbnailPreview from './thumbnailPreview';
 
 const rootReducer = combineReducers({
   tac,
@@ -41,7 +42,8 @@ const rootReducer = combineReducers({
   languageSelector,
   filteredRecentOrders,
   recentOrders,
-  emailProof
+  emailProof,
+  thumbnailPreview
 });
 
 export default rootReducer;

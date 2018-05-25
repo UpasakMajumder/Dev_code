@@ -1,5 +1,5 @@
-﻿using CMS.CustomTables;
-using Kadena.Models.Product;
+﻿using Kadena.Models.Product;
+using Kadena.Models.ProductOptions;
 using System;
 using System.Collections.Generic;
 
@@ -30,6 +30,9 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         bool ProductHasValidSKUNumber(int skuid);
         CampaignsProduct GetCampaignProduct(int skuid);
         string GetProductImagePath(int productPageId);
+        IEnumerable<ProductCategory> GetProductCategories(int skuid);
+
+        ProductPricingInfo GetDefaultVariantPricing(int documentId, string uomLocalized);
 
         Uri GetProductArtworkUri(int productPageId);
     }

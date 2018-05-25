@@ -45,8 +45,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
         }
 
-        private Dictionary<int, string> _addressBookList;
-
         public string PageCapacityKey { get; set; }
 
         public bool EnablePaging { get; set; }
@@ -74,9 +72,20 @@ namespace Kadena.BusinessLogic.Services.Orders
             _documents = documents ?? throw new ArgumentNullException(nameof(documents));
         }
 
-        public Task<OrderHead> GetOrdersToApprove()
+        public async Task<OrderHead> GetOrdersToApprove()
         {
-            var siteName = _site.GetKenticoSite().Name;
+            var postFilter = GetApproverFilter();
+
+            var filter = CreateFilterForOrdersToApprove();
+            var orderHeaders = await GetHeaders(filter, postFilter);
+            orderHeaders.PageInfo = Pagination.Empty;
+
+            return orderHeaders;
+        }
+
+        private Func<OrderListDto, OrderListDto> GetApproverFilter()
+        {
+            var siteName = _site.GetCurrentSiteCodeName();
             var isApprover = _permissions.CurrentUserHasPermission(
                 ModulePermissions.KadenaOrdersModule,
                 ModulePermissions.KadenaOrdersModule.ApproveOrders,
@@ -91,8 +100,13 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 var currentUser = _kenticoCustomers.GetCurrentCustomer();
                 var approvingCustomers = _kenticoCustomers
-                    .GetCustomersByApprover(currentUser.UserID)
-                    .ToList();
+                    .GetCustomersByApprover(currentUser.UserID);
+
+                if (approvingCustomers == null || orders?.Orders == null)
+                {
+                    return orders;
+                }
+
                 orders.Orders = orders.Orders
                     .Where(o => approvingCustomers.Any(c => c.Id == o.CustomerId))
                     .ToList();
@@ -100,8 +114,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 return orders;
             }
 
-            var filter = CreateFilterForOrdersToApprove();
-            return GetHeaders(filter, WhereCurrentUserIsApprover);
+            return WhereCurrentUserIsApprover;
         }
 
         private OrderListFilter CreateFilterForOrdersToApprove()
@@ -140,14 +153,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         private async Task<OrderHead> GetHeaders(OrderListFilter filter, Func<OrderListDto, OrderListDto> afterFilter = null)
         {
-            var orders = await GetOrders(filter);
-            if (afterFilter != null)
-            {
-                orders = afterFilter(orders);
-            }
-
-            var orderList = _mapper.Map<OrderList>(orders);
-            MapOrdersStatusToGeneric(orderList?.Orders);
+            var orderList = await GetOrders(filter, afterFilter);
             var pages = CalculateNumberOfPages(orderList.TotalCount);
             return new OrderHead
             {
@@ -176,8 +182,9 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public async Task<OrderBody> GetBody(int pageNumber)
         {
-            var orderList = _mapper.Map<OrderList>(await GetOrders(pageNumber));
-            MapOrdersStatusToGeneric(orderList?.Orders);
+            var filter = CreateFilterForRecentOrders(pageNumber);
+            var orderList = await GetOrders(filter);
+
             return new OrderBody
             {
                 Rows = orderList.Orders.Select(o =>
@@ -197,21 +204,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 o.Status = _order.MapOrderStatus(o.Status);
             }
-        }
-
-        private Task<OrderListDto> GetOrders(int pageNumber)
-        {
-            var filter = CreateFilterForRecentOrders(pageNumber);
-            return GetOrders(filter);
-        }
-
-        private Task<OrderListDto> GetCampaignOrders(int pageNumber, int campaignID, string orderType)
-        {
-            var filter = CreateFilterForRecentOrders(pageNumber);
-            filter.CampaignId = campaignID;
-            filter.OrderType = orderType;
-
-            return GetOrders(filter);
         }
 
         private OrderListFilter CreateFilterForRecentOrders(int pageNumber)
@@ -236,28 +228,43 @@ namespace Kadena.BusinessLogic.Services.Orders
             return filter;
         }
 
-        private async Task<OrderListDto> GetOrders(OrderListFilter filter)
+        private async Task<OrderList> GetOrders(OrderListFilter filter, Func<OrderListDto, OrderListDto> afterFilter = null)
         {
             var response = await _orderClient.GetOrders(filter);
 
-            if (response?.Success == true)
+            var orders = new OrderListDto();
+
+            if (response?.Success ?? false)
             {
-                return response.Payload;
+                orders = response.Payload;
             }
             else
             {
-                _logger.LogError("OrderListService - GetOrders", response?.Error?.Message);
+                _logger.LogError("OrderListService - GetOrders", response?.ErrorMessages);
             }
 
-            return new OrderListDto();
+            if (afterFilter != null)
+            {
+                orders = afterFilter(orders);
+            }
+
+            var orderList = _mapper.Map<OrderList>(orders);
+            MapOrdersStatusToGeneric(orderList?.Orders);
+            return orderList;
         }
 
-        public async Task<OrderHeadBlock> GetHeaders(string orderType, int campaignID)
+        public async Task<OrderHeadBlock> GetCampaignHeaders(string orderType, int campaignID)
         {
-            var pageCapacity = _kenticoResources.GetSiteSettingsKey<int>(PageCapacityKey);
-            _addressBookList = _kenticoAddressBook.GetAddressNames();
-            var orderList = _mapper.Map<OrderList>(await GetCampaignOrders(1, campaignID, orderType));
-            MapOrdersStatusToGeneric(orderList?.Orders);
+            var filter = CreateFilterForRecentOrders(1);
+            filter.CampaignId = campaignID;
+            filter.OrderType = orderType;
+            return await GetCampaignHeaders(filter);
+        }
+
+        private async Task<OrderHeadBlock> GetCampaignHeaders(OrderListFilter filter, Func<OrderListDto, OrderListDto> afterFilter = null)
+        {
+            var orderList = await GetOrders(filter, afterFilter);
+
             var pages = CalculateNumberOfPages(orderList.TotalCount);
             return new OrderHeadBlock
             {
@@ -272,7 +279,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 PageInfo = new Pagination
                 {
                     RowsCount = orderList.TotalCount,
-                    RowsOnPage = pageCapacity,
+                    RowsOnPage = _kenticoResources.GetSiteSettingsKey<int>(PageCapacityKey),
                     PagesCount = pages
                 },
                 NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems"),
@@ -348,6 +355,21 @@ namespace Kadena.BusinessLogic.Services.Orders
         }
 
         private string GetDistributorName(int distributorID)
-            => _addressBookList.TryGetValue(distributorID, out var name) ? name : string.Empty;
+        {
+            var _addressBookList = _kenticoAddressBook.GetAddressNames();
+            return _addressBookList.TryGetValue(distributorID, out var name) ? name : string.Empty;
+        }
+
+        public async Task<OrderHeadBlock> GetCampaignOrdersToApprove(string orderType, int campaignID)
+        {
+            var postFilter = GetApproverFilter();
+
+            var filter = CreateFilterForOrdersToApprove();
+            filter.CampaignId = campaignID;
+            filter.OrderType = orderType;
+            var orderHeaders = await GetCampaignHeaders(filter, postFilter);
+            orderHeaders.PageInfo = Pagination.Empty;
+            return orderHeaders;
+        }
     }
 }

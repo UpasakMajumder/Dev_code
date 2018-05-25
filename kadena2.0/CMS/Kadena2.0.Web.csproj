@@ -1246,33 +1246,12 @@
     <Compile Include="CMSWebParts\Kadena\Product\ProductInventory.ascx.designer.cs">
       <DependentUpon>ProductInventory.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\ProductOptions.ascx.cs">
-      <DependentUpon>ProductOptions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\ProductOptions.ascx.designer.cs">
-      <DependentUpon>ProductOptions.ascx</DependentUpon>
-    </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx.cs">
       <DependentUpon>RichCartItemRemove.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx.designer.cs">
       <DependentUpon>RichCartItemRemove.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx.cs">
-      <DependentUpon>DynamicPricingTable.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx.designer.cs">
-      <DependentUpon>DynamicPricingTable.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx.cs">
-      <DependentUpon>EstimatesTable.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx.designer.cs">
-      <DependentUpon>EstimatesTable.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\SwapSKUNumberToCRN.ascx.cs">
       <DependentUpon>SwapSKUNumberToCRN.ascx</DependentUpon>
@@ -1540,7 +1519,6 @@
     <Content Include="CMSWebParts\Kadena\Product\InventoryProductFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\MailingListSelector.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\ProductInventory.ascx" />
-    <Content Include="CMSWebParts\Kadena\Product\ProductOptions.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\RichCartItemRemove.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\SwapSKUNumberToCRN.ascx" />
     <Content Include="CMSWebParts\Kadena\Programs\AddNewProgram.ascx" />
@@ -1562,8 +1540,6 @@
     <Content Include="CMSWebParts\Kadena\Chili\ChiliIframe.ascx" />
     <Content Include="CMSWebParts\Kadena\Chili\OpenTemplatedProductButton.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx" />
-    <Content Include="CMSWebParts\Kadena\Product\DynamicPricingTable.ascx" />
-    <Content Include="CMSWebParts\Kadena\Product\EstimatesTable.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSPages\Kadena\SubmitBid.ashx" />

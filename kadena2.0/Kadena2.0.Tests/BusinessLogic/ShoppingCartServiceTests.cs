@@ -121,9 +121,11 @@ namespace Kadena.Tests.BusinessLogic
             var originalCartItemEntity = new CartItemEntity
             {
                 ProductType = ProductTypes.StaticProduct,
-                SKUUnits = 3
+                SKUUnits = 3,
+                SKUID = 123
             };
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
+            Setup<IShoppingCartProvider, Sku>(p => p.GetSKU(123), new Sku { });
             Setup<IDynamicPriceRangeProvider, decimal>(dp => dp.GetDynamicPrice(It.IsAny<int>(), It.IsAny<int>()), 12.34m);
 
             // Act
@@ -145,9 +147,11 @@ namespace Kadena.Tests.BusinessLogic
             {
                 CartItemText = Name,
                 ProductType = ProductTypes.StaticProduct,
-                SKUUnits = 3
+                SKUUnits = 3,
+                SKUID = 123
             };
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
+            Setup<IShoppingCartProvider, Sku>(p => p.GetSKU(123), new Sku { });
 
             // Act
             var result = await Sut.AddToCart(newCartItem);
@@ -157,7 +161,7 @@ namespace Kadena.Tests.BusinessLogic
             VerifyNoOtherCalls<IKListService>();
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
                     e => e.CartItemText == Name &&
-                    e.SKUUnits == 3)
+                    e.SKUUnits == 5)
                 ), Times.Once);
         }
 
@@ -172,9 +176,11 @@ namespace Kadena.Tests.BusinessLogic
             {
                 CartItemText = Name,
                 ProductType = ProductTypes.TemplatedProduct,
-                SKUUnits = 10
+                SKUUnits = 10,
+                SKUID = 123
             };
 
+            Setup<IShoppingCartProvider, Sku>(p => p.GetSKU(123), new Sku { });
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
 
             // Act
@@ -204,6 +210,7 @@ namespace Kadena.Tests.BusinessLogic
 
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
             Setup<IShoppingCartProvider, Sku>(cp => cp.GetSKU(originalCartItemEntity.SKUID), new Sku { AvailableItems = 100 });
+            Setup<IShoppingCartProvider, Sku>(p => p.GetSKU(6654), new Sku { });
 
             // Act
             var result = await Sut.AddToCart(newCartItem);
@@ -214,7 +221,7 @@ namespace Kadena.Tests.BusinessLogic
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
                     e => e.CartItemText == Name &&
                          e.SKUID == 6654 &&
-                         e.SKUUnits == 3)
+                         e.SKUUnits == 5)
                 ), Times.Once);
         }
 
@@ -254,9 +261,11 @@ namespace Kadena.Tests.BusinessLogic
             {
                 CartItemText = Name,
                 ProductType = ProductTypes.MailingProduct,
-                SKUUnits = 3
+                SKUUnits = 3,
+                SKUID = 123
             };
 
+            Setup<IShoppingCartProvider, Sku>(p => p.GetSKU(123), new Sku { });
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
             Setup<IKListService, Task<MailingList>>(m => m.GetMailingList(containerId)
                 , Task.FromResult(new MailingList { AddressCount = quantity, Id = containerId.ToString() }));

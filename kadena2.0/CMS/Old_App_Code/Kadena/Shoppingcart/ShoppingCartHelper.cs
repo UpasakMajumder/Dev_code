@@ -449,11 +449,19 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// <returns></returns>
         private static List<OrderItemDTO> GetCartItems()
         {
+            var uomProvider = DIContainer.Resolve<IKenticoUnitOfMeasureProvider>();
+
             List<OrderItemDTO> items = new List<OrderItemDTO>();
             try
             {
                 Cart.CartItems.ForEach(item =>
                 {
+                    var uom = item.SKU.GetStringValue("SKUUnitOfMeasure", string.Empty);
+                    if (string.IsNullOrEmpty(uom))
+                    {
+                        uom = SKUUnitOfMeasure.Default;
+                    }
+
                     items.Add(new OrderItemDTO
                     {
                         SKU = new SKUDTO
@@ -463,7 +471,8 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                             SKUNumber = item.SKU.SKUNumber
                         },
                         UnitCount = item.CartItemUnits,
-                        UnitOfMeasure = SKUMeasuringUnits.EA,
+                        UnitOfMeasure =  uomProvider.GetUnitOfMeasure(uom).ErpCode,
+                        RequiresApproval = item.SKU.GetBooleanValue("SKUApprovalRequired", false),
                         UnitPrice = ValidationHelper.GetDecimal(item.UnitPrice, default(decimal)),
                         TotalPrice = ValidationHelper.GetDecimal(item.TotalPrice, default(decimal))
                     });
