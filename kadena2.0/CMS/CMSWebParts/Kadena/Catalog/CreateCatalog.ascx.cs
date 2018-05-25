@@ -601,10 +601,10 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                         {
                             if (TypeOfProduct == (int)ProductsType.PreBuy)
                             {
-                                var programList = catalogList.GroupBy(p => p.ProgramID).ToList();
-                                foreach (var programId in programList)
+                                var programIds = catalogList.Select(p => p.ProgramID).Distinct();
+                                foreach (var programId in programIds)
                                 {
-                                    var program = ProgramProvider.GetPrograms().Where(x => x.ProgramID == programId.Key).FirstOrDefault();
+                                    var program = ProgramProvider.GetPrograms().Where(x => x.ProgramID == programId).FirstOrDefault();
                                     var programContent = SettingsKeyInfoProvider.GetValue(Settings.ProgramsContent, CurrentSite.SiteID);
                                     programContent = programContent
                                         .Replace("^ProgramName^", program?.ProgramName)
