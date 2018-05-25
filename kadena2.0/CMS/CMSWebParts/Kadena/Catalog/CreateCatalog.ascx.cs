@@ -549,6 +549,27 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                             .ToList();
                         brands = inventoryList.Select(p => p.BrandID).ToList();
                     }
+                    var catalogList = products
+                        .Join(selectedSkus,
+                            cp => cp.NodeSKUID,
+                            sku => sku.SKUID,
+                            (cp, sku) => new
+                            {
+                                cp.ProductName,
+                                cp.EstimatedPrice,
+                                cp.BrandID,
+                                cp.ProgramID,
+                                QtyPerPack = sku.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
+                                cp.State,
+                                sku.SKUPrice,
+                                sku.SKUNumber,
+                                cp.Product.SKUProductCustomerReferenceNumber,
+                                sku.SKUDescription,
+                                sku.SKUShortDescription,
+                                cp.ProductImage,
+                                sku.SKUValidUntil
+                            })
+                        .ToList();
                     var brandData = CustomTableItemProvider
                         .GetItems<BrandItem>()
                         .Distinct()
@@ -559,33 +580,12 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
 
                     foreach (var brand in brandData)
                     {
-                        var catalogList = products
-                                        .Join(selectedSkus,
-                                              cp => cp.NodeSKUID,
-                                              sku => sku.SKUID,
-                                              (cp, sku) => new
-                                              {
-                                                  cp.ProductName,
-                                                  cp.EstimatedPrice,
-                                                  cp.BrandID,
-                                                  cp.ProgramID,
-                                                  QtyPerPack = sku.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
-                                                  cp.State,
-                                                  sku.SKUPrice,
-                                                  sku.SKUNumber,
-                                                  cp.Product.SKUProductCustomerReferenceNumber,
-                                                  sku.SKUDescription,
-                                                  sku.SKUShortDescription,
-                                                  cp.ProductImage,
-                                                  sku.SKUValidUntil
-                                              })
-                                        .Where(x => x.BrandID == brand.ItemID)
-                                        .ToList();
-                        if (!DataHelper.DataSourceIsEmpty(catalogList))
+                        var brandCatalogList = catalogList.Where(x => x.BrandID == brand.ItemID);
+                        if (!DataHelper.DataSourceIsEmpty(brandCatalogList))
                         {
                             if (TypeOfProduct == (int)ProductsType.PreBuy)
                             {
-                                var programIds = catalogList.Select(p => p.ProgramID).Distinct();
+                                var programIds = brandCatalogList.Select(p => p.ProgramID).Distinct();
                                 foreach (var programId in programIds)
                                 {
                                     var program = ProgramProvider.GetPrograms().Where(x => x.ProgramID == programId).FirstOrDefault();
@@ -600,7 +600,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                     .Replace("PROGRAMFOOTERTEXT", ResHelper.GetString("Kadena.Catalog.ProgramFooterText"));
                             }
                             var productListContentHtml = string.Empty;
-                            foreach (var product in catalogList)
+                            foreach (var product in brandCatalogList)
                             {
                                 var stateInfo = CustomTableItemProvider.GetItem<StatesGroupItem>(product.State);
                                 productListContentHtml += SettingsKeyInfoProvider.GetValue(Settings.PDFInnerHTML, CurrentSite.SiteID)
