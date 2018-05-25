@@ -517,29 +517,12 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 var skuDetails = SKUInfoProvider.GetSKUs()
                                             .WhereIn(nameof(SKUInfo.SKUID), selectedProducts)
                                             .ToList();
-                var htmlTextheader = SettingsKeyInfoProvider.GetValue(Settings.ProductsPDFHeader, CurrentSite.SiteID);
-                var programFooterText = SettingsKeyInfoProvider.GetValue(Settings.KDA_ProgramFooterText, CurrentSite.SiteID);
-                if (TypeOfProduct == (int)ProductsType.PreBuy && OpenCampaign != null)
-                {
-                    htmlTextheader = htmlTextheader
-                        .Replace("CAMPAIGNNAME", OpenCampaign?.Name)
-                        .Replace("OrderStartDate",
-                            OpenCampaign.StartDate == default(DateTime) ? string.Empty : OpenCampaign.StartDate.ToString("MMM dd, yyyy"))
-                        .Replace("OrderEndDate",
-                            OpenCampaign.EndDate == default(DateTime) ? string.Empty : OpenCampaign.EndDate.ToString("MMM dd, yyyy"));
-                }
-                var generalInventory = string.Empty;
-                if (TypeOfProduct == (int)ProductsType.GeneralInventory)
-                {
-                    generalInventory = SettingsKeyInfoProvider.GetValue(Settings.KDA_GeneralInventoryCover, CurrentSite.SiteID);
-                }
                 var brands = new List<int>();
                 var programs = ProgramProvider
                     .GetPrograms()
                     .Columns(string.Join(",", nameof(Program.ProgramName), nameof(Program.BrandID), nameof(Program.DeliveryDateToDistributors)))
                     .WhereEquals(nameof(Program.CampaignID), OpenCampaign?.CampaignID ?? default(int))
                     .ToList();
-                var programsContent = string.Empty;
                 if (TypeOfProduct == (int)ProductsType.PreBuy && OpenCampaign != null)
                 {
                     brands = programs.Select(p => p.BrandID).ToList();
@@ -565,6 +548,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     .ToList();
                 var pdfProductsContentWithBrands = string.Empty;
                 var closingDiv = SettingsKeyInfoProvider.GetValue(Settings.ClosingDIV, CurrentSite.SiteID).ToString();
+                var programsContent = string.Empty;
                 if (!DataHelper.DataSourceIsEmpty(selectedProducts))
                 {
                     foreach (var brand in brandData)
@@ -637,7 +621,9 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                 programsContent += programContent;
                                 programContent = string.Empty;
                             }
-                            programsContent += programFooterText.Replace("PROGRAMFOOTERTEXT", ResHelper.GetString("Kadena.Catalog.ProgramFooterText"));
+                            programsContent += SettingsKeyInfoProvider
+                                .GetValue(Settings.KDA_ProgramFooterText, CurrentSite.SiteID)
+                                .Replace("PROGRAMFOOTERTEXT", ResHelper.GetString("Kadena.Catalog.ProgramFooterText"));
                         }
                         var pdfProductsContent = string.Empty;
                         if (!DataHelper.DataSourceIsEmpty(catalogList))
@@ -653,8 +639,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                     .Replace("PRODUCTSHORTDESCRIPTION", product?.ProductName ?? string.Empty)
                                     .Replace("PRODUCTDESCRIPTION", product?.SKUDescription ?? string.Empty)
                                     .Replace("PRODUCTVALIDSTATES", stateInfo?.States.Replace(",", ", ") ?? string.Empty)
-                                    .Replace("PRODUCTCOSTBUNDLE", TypeOfProduct == (int)ProductsType.PreBuy ? 
-                                        ($"{CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(product.EstimatedPrice, default(double)), CurrentSite.SiteID, true)}") 
+                                    .Replace("PRODUCTCOSTBUNDLE", TypeOfProduct == (int)ProductsType.PreBuy ?
+                                        ($"{CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(product.EstimatedPrice, default(double)), CurrentSite.SiteID, true)}")
                                         : ($"{CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(product.SKUPrice, default(double)), CurrentSite.SiteID, true)}"))
                                     .Replace("PRODUCTBUNDLEQUANTITY", product?.QtyPerPack.ToString() ?? string.Empty)
                                     .Replace("PRODUCTEXPIRYDATE", product?.SKUValidUntil != default(DateTime) ? product?.SKUValidUntil.ToString("MMM dd, yyyy") : string.Empty ?? string.Empty);
@@ -674,11 +660,23 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 var fileName = string.Empty;
                 if (TypeOfProduct == (int)ProductsType.PreBuy)
                 {
+                    var htmlTextheader = SettingsKeyInfoProvider.GetValue(Settings.ProductsPDFHeader, CurrentSite.SiteID);
+                    if (OpenCampaign != null)
+                    {
+                        htmlTextheader = htmlTextheader
+                            .Replace("CAMPAIGNNAME", OpenCampaign?.Name)
+                            .Replace("OrderStartDate",
+                                OpenCampaign.StartDate == default(DateTime) ? string.Empty : OpenCampaign.StartDate.ToString("MMM dd, yyyy"))
+                            .Replace("OrderEndDate",
+                                OpenCampaign.EndDate == default(DateTime) ? string.Empty : OpenCampaign.EndDate.ToString("MMM dd, yyyy"));
+                    }
+
                     fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.PrebuyFileName"), string.Empty) + ".pdf";
                     coverHtml = $"{htmlTextheader}{programsContent}{closingDiv}";
                 }
                 else
                 {
+                    var generalInventory = SettingsKeyInfoProvider.GetValue(Settings.KDA_GeneralInventoryCover, CurrentSite.SiteID);
                     coverHtml = $"{generalInventory}{closingDiv}";
                     fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.GeneralInventory"), string.Empty) + ".pdf";
                 }
