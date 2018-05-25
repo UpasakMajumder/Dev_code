@@ -623,7 +623,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                     .Replace("ProgramDate", program.DeliveryDateToDistributors == default(DateTime) ?
                                         string.Empty : program.DeliveryDateToDistributors.ToString("MMM dd, yyyy"));
                                 programsContent += programContent;
-                                programContent = string.Empty;
                             }
                             programsContent += SettingsKeyInfoProvider
                                 .GetValue(Settings.KDA_ProgramFooterText, CurrentSite.SiteID)
@@ -649,11 +648,9 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                     .Replace("PRODUCTBUNDLEQUANTITY", product?.QtyPerPack.ToString() ?? string.Empty)
                                     .Replace("PRODUCTEXPIRYDATE", product?.SKUValidUntil != default(DateTime) ? product?.SKUValidUntil.ToString("MMM dd, yyyy") : string.Empty ?? string.Empty);
                                 pdfProductsContent += pdfProductContent;
-                                pdfProductContent = string.Empty;
                                 selectedProducts.Remove(product.SKUNumber);
                             }
                             pdfProductsContentWithBrands += productBrandHeader + pdfProductsContent + closingDiv;
-                            productBrandHeader = string.Empty;
                         }
                     }
                 }
