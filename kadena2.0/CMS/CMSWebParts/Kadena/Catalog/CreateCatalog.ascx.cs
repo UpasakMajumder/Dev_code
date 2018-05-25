@@ -557,19 +557,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
 
                     foreach (var brand in brandData)
                     {
-                        var productBrandHeader = SettingsKeyInfoProvider.GetValue(Settings.PDFBrand, CurrentSite.SiteID);
-                        if (TypeOfProduct == (int)ProductsType.PreBuy)
-                        {
-                            productBrandHeader = productBrandHeader
-                                .Replace("^PROGRAMNAME^", programs.Where(x => x.BrandID == brand.ItemID).Select(y => y.ProgramName).FirstOrDefault())
-                                .Replace("^BrandName^", brand.BrandName);
-                        }
-                        else if (TypeOfProduct == (int)ProductsType.GeneralInventory)
-                        {
-                            productBrandHeader = productBrandHeader
-                                .Replace("^BrandName^", brand.BrandName)
-                                .Replace("^PROGRAMNAME^", string.Empty);
-                        }
                         var productItems = new List<CampaignsProduct>();
                         if (TypeOfProduct == (int)ProductsType.PreBuy)
                         {
@@ -650,7 +637,21 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                 pdfProductsContent += pdfProductContent;
                                 selectedProducts.Remove(product.SKUNumber);
                             }
-                            pdfProductsContentWithBrands += productBrandHeader + pdfProductsContent + closingDiv;
+
+                            var productBrandHeader = SettingsKeyInfoProvider.GetValue(Settings.PDFBrand, CurrentSite.SiteID);
+                            if (TypeOfProduct == (int)ProductsType.PreBuy)
+                            {
+                                productBrandHeader = productBrandHeader
+                                    .Replace("^PROGRAMNAME^", programs.Where(x => x.BrandID == brand.ItemID).Select(y => y.ProgramName).FirstOrDefault())
+                                    .Replace("^BrandName^", brand.BrandName);
+                            }
+                            else if (TypeOfProduct == (int)ProductsType.GeneralInventory)
+                            {
+                                productBrandHeader = productBrandHeader
+                                    .Replace("^BrandName^", brand.BrandName)
+                                    .Replace("^PROGRAMNAME^", string.Empty);
+                            }
+                            pdfProductsContentWithBrands += $"{productBrandHeader}{pdfProductsContent}{closingDiv}";
                         }
                     }
                 }
