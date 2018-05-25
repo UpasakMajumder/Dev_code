@@ -662,18 +662,15 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     }
                 }
                 var pdfClosingDivs = SettingsKeyInfoProvider.GetValue(Settings.PdfEndingTags, CurrentSite.SiteID);
-                var html = pdfProductsContentWithBrands + pdfClosingDivs;
-                var pdfByte = default(byte[]);
-                var PDFConverter = new HtmlToPdfConverter();
-                PDFConverter.License.SetLicenseKey(SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoOwner, CurrentSite.SiteID), SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoKey, CurrentSite.SiteID));
-                PDFConverter.LowQuality = SettingsKeyInfoProvider.GetBoolValue(Settings.KDA_NRecoLowQuality, CurrentSite.SiteID);
+                var contentHtml = pdfProductsContentWithBrands + pdfClosingDivs;
+                var coverHtml = string.Empty;
                 if (TypeOfProduct == (int)ProductsType.PreBuy)
                 {
-                    pdfByte = PDFConverter.GeneratePdf(html, htmlTextheader + programsContent + closingDiv);
+                    coverHtml = $"{htmlTextheader}{programsContent}{closingDiv}";
                 }
                 else
                 {
-                    pdfByte = PDFConverter.GeneratePdf(html, generalInventory + closingDiv);
+                    coverHtml = $"{generalInventory}{closingDiv}";
                 }
                 var fileName = string.Empty;
                 if (TypeOfProduct == (int)ProductsType.PreBuy)
@@ -684,6 +681,11 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 {
                     fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.GeneralInventory"), string.Empty) + ".pdf";
                 }
+
+                var PDFConverter = new HtmlToPdfConverter();
+                PDFConverter.License.SetLicenseKey(SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoOwner, CurrentSite.SiteID), SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoKey, CurrentSite.SiteID));
+                PDFConverter.LowQuality = SettingsKeyInfoProvider.GetBoolValue(Settings.KDA_NRecoLowQuality, CurrentSite.SiteID);
+                pdfByte = PDFConverter.GeneratePdf(contentHtml, coverHtml);
                 Response.Clear();
                 var ms = new MemoryStream(pdfByte);
                 Response.ContentType = "application/pdf";
