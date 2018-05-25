@@ -519,7 +519,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
 
                     var programs = ProgramProvider
                         .GetPrograms()
-                        .Columns(nameof(Program.ProgramName), nameof(Program.BrandID), nameof(Program.DeliveryDateToDistributors))
+                        .Columns(nameof(Program.ProgramID), nameof(Program.ProgramName), nameof(Program.BrandID), nameof(Program.DeliveryDateToDistributors))
                         .WhereEquals(nameof(Program.CampaignID), OpenCampaign?.CampaignID ?? default(int))
                         .ToList();
 
@@ -584,10 +584,10 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                 var programIds = brandCatalogList.Select(p => p.ProgramID).Distinct();
                                 foreach (var programId in programIds)
                                 {
-                                    var program = ProgramProvider.GetPrograms().Where(x => x.ProgramID == programId).FirstOrDefault();
+                                    var program = programs.Where(x => x.ProgramID == programId).FirstOrDefault();
                                     programListCoverHtml += SettingsKeyInfoProvider.GetValue(Settings.ProgramsContent, CurrentSite.SiteID)
                                         .Replace("^ProgramName^", program?.ProgramName)
-                                        .Replace("^ProgramBrandName^", GetBrandName(program.BrandID))
+                                        .Replace("^ProgramBrandName^", brand.BrandName)
                                         .Replace("ProgramDate", program.DeliveryDateToDistributors == default(DateTime) ?
                                             string.Empty : program.DeliveryDateToDistributors.ToString("MMM dd, yyyy"));
                                 }
