@@ -514,43 +514,47 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             {
                 lblNoProducts.Visible = false;
                 var selectedProducts = selectedValues.Split(',').ToList();
-                var skuDetails = SKUInfoProvider.GetSKUs()
-                                            .WhereIn(nameof(SKUInfo.SKUID), selectedProducts)
-                                            .ToList();
-                var brands = new List<int>();
-                var programs = ProgramProvider
-                    .GetPrograms()
-                    .Columns(string.Join(",", nameof(Program.ProgramName), nameof(Program.BrandID), nameof(Program.DeliveryDateToDistributors)))
-                    .WhereEquals(nameof(Program.CampaignID), OpenCampaign?.CampaignID ?? default(int))
-                    .ToList();
-                if (TypeOfProduct == (int)ProductsType.PreBuy && OpenCampaign != null)
-                {
-                    brands = programs.Select(p => p.BrandID).ToList();
-                }
-                else
-                {
-                    var productItems = CampaignsProductProvider
-                        .GetCampaignsProducts()
-                        .WhereEquals(nameof(CampaignsProduct.NodeSiteID), CurrentSite.SiteID)
-                        .Where(new WhereCondition().WhereEquals(nameof(CampaignsProduct.ProgramID), null).Or().WhereEquals(nameof(CampaignsProduct.ProgramID), 0))
-                        .ToList();
-                    var inventoryList = productItems
-                        .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.BrandID, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber })
-                        .ToList();
-                    brands = inventoryList.Select(p => p.BrandID).ToList();
-                }
-                var brandData = CustomTableItemProvider
-                    .GetItems<BrandItem>()
-                    .Distinct()
-                    .WhereIn(nameof(BrandItem.ItemID), brands)
-                    .Columns(nameof(BrandItem.ItemID), nameof(BrandItem.BrandName))
-                    .OrderBy(nameof(BrandItem.BrandName))
-                    .ToList();
+
                 var pdfProductsContentWithBrands = string.Empty;
                 var closingDiv = SettingsKeyInfoProvider.GetValue(Settings.ClosingDIV, CurrentSite.SiteID).ToString();
                 var programsContent = string.Empty;
+
                 if (!DataHelper.DataSourceIsEmpty(selectedProducts))
                 {
+                    var skuDetails = SKUInfoProvider.GetSKUs()
+                                            .WhereIn(nameof(SKUInfo.SKUID), selectedProducts)
+                                            .ToList();
+                    var brands = new List<int>();
+                    var programs = ProgramProvider
+                        .GetPrograms()
+                        .Columns(string.Join(",", nameof(Program.ProgramName), nameof(Program.BrandID), nameof(Program.DeliveryDateToDistributors)))
+                        .WhereEquals(nameof(Program.CampaignID), OpenCampaign?.CampaignID ?? default(int))
+                        .ToList();
+                    if (TypeOfProduct == (int)ProductsType.PreBuy && OpenCampaign != null)
+                    {
+                        brands = programs.Select(p => p.BrandID).ToList();
+                    }
+                    else
+                    {
+                        var productItems = CampaignsProductProvider
+                            .GetCampaignsProducts()
+                            .WhereEquals(nameof(CampaignsProduct.NodeSiteID), CurrentSite.SiteID)
+                            .Where(new WhereCondition().WhereEquals(nameof(CampaignsProduct.ProgramID), null).Or().WhereEquals(nameof(CampaignsProduct.ProgramID), 0))
+                            .ToList();
+                        var inventoryList = productItems
+                            .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.BrandID, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber })
+                            .ToList();
+                        brands = inventoryList.Select(p => p.BrandID).ToList();
+                    }
+                    var brandData = CustomTableItemProvider
+                        .GetItems<BrandItem>()
+                        .Distinct()
+                        .WhereIn(nameof(BrandItem.ItemID), brands)
+                        .Columns(nameof(BrandItem.ItemID), nameof(BrandItem.BrandName))
+                        .OrderBy(nameof(BrandItem.BrandName))
+                        .ToList();
+
+
                     foreach (var brand in brandData)
                     {
                         var productBrandHeader = SettingsKeyInfoProvider.GetValue(Settings.PDFBrand, CurrentSite.SiteID);
