@@ -522,19 +522,28 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                         .Columns(nameof(Program.ProgramName), nameof(Program.BrandID), nameof(Program.DeliveryDateToDistributors))
                         .WhereEquals(nameof(Program.CampaignID), OpenCampaign?.CampaignID ?? default(int))
                         .ToList();
+
+                    var products = new List<CampaignsProduct>();
+
                     if (TypeOfProduct == (int)ProductsType.PreBuy && OpenCampaign != null)
                     {
                         brands = programs.Select(p => p.BrandID).ToList();
+                        products = CampaignsProductProvider
+                            .GetCampaignsProducts()
+                            .WhereNotNull(nameof(CampaignsProduct.ProgramID))
+                            .WhereEquals(nameof(CampaignsProduct.NodeSiteID), CurrentSite.SiteID)
+                            .WhereIn(nameof(CampaignsProduct.ProgramID), GetProgramIDs())
+                            .ToList();
                     }
                     else
                     {
-                        var productItems = CampaignsProductProvider
+                        products = CampaignsProductProvider
                             .GetCampaignsProducts()
                             .WhereEquals(nameof(CampaignsProduct.NodeSiteID), CurrentSite.SiteID)
                             .Where(new WhereCondition().WhereNull(nameof(CampaignsProduct.ProgramID))
                                 .Or().WhereEquals(nameof(CampaignsProduct.ProgramID), 0))
                             .ToList();
-                        var inventoryList = productItems
+                        var inventoryList = products
                             .Join(selectedSkus, x => x.NodeSKUID, y => y.SKUID,
                                 (x, y) => new { x.BrandID, y.SKUNumber, x.Product.SKUProductCustomerReferenceNumber })
                             .ToList();
@@ -550,24 +559,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
 
                     foreach (var brand in brandData)
                     {
-                        var products = new List<CampaignsProduct>();
-                        if (TypeOfProduct == (int)ProductsType.PreBuy)
-                        {
-                            products = CampaignsProductProvider
-                                .GetCampaignsProducts()
-                                .WhereNotNull(nameof(CampaignsProduct.ProgramID))
-                                .WhereEquals(nameof(CampaignsProduct.NodeSiteID), CurrentSite.SiteID)
-                                .WhereIn(nameof(CampaignsProduct.ProgramID), GetProgramIDs())
-                                .ToList();
-                        }
-                        else if (TypeOfProduct == (int)ProductsType.GeneralInventory)
-                        {
-                            products = CampaignsProductProvider
-                                .GetCampaignsProducts()
-                                .Where(new WhereCondition().WhereNull(nameof(CampaignsProduct.ProgramID))
-                                    .Or().WhereEquals(nameof(CampaignsProduct.ProgramID), 0))
-                                .WhereEquals(nameof(CampaignsProduct.NodeSiteID), CurrentSite.SiteID).ToList();
-                        }
                         var catalogList = products
                                         .Join(selectedSkus,
                                               cp => cp.NodeSKUID,
