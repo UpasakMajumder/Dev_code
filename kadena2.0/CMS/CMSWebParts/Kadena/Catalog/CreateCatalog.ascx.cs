@@ -597,27 +597,27 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                               })
                                         .Where(x => x.BrandID == brand.ItemID)
                                         .ToList();
-                        if (catalogList != null && TypeOfProduct == (int)ProductsType.PreBuy)
-                        {
-                            var programList = catalogList.GroupBy(p => p.ProgramID).ToList();
-                            foreach (var product in programList)
-                            {
-                                var program = ProgramProvider.GetPrograms().Where(x => x.ProgramID == product.Key).FirstOrDefault();
-                                var programContent = SettingsKeyInfoProvider.GetValue(Settings.ProgramsContent, CurrentSite.SiteID);
-                                programContent = programContent
-                                    .Replace("^ProgramName^", program?.ProgramName)
-                                    .Replace("^ProgramBrandName^", GetBrandName(program.BrandID))
-                                    .Replace("ProgramDate", program.DeliveryDateToDistributors == default(DateTime) ?
-                                        string.Empty : program.DeliveryDateToDistributors.ToString("MMM dd, yyyy"));
-                                programsContent += programContent;
-                            }
-                            programsContent += SettingsKeyInfoProvider
-                                .GetValue(Settings.KDA_ProgramFooterText, CurrentSite.SiteID)
-                                .Replace("PROGRAMFOOTERTEXT", ResHelper.GetString("Kadena.Catalog.ProgramFooterText"));
-                        }
-                        var pdfProductsContent = string.Empty;
                         if (!DataHelper.DataSourceIsEmpty(catalogList))
                         {
+                            if (TypeOfProduct == (int)ProductsType.PreBuy)
+                            {
+                                var programList = catalogList.GroupBy(p => p.ProgramID).ToList();
+                                foreach (var product in programList)
+                                {
+                                    var program = ProgramProvider.GetPrograms().Where(x => x.ProgramID == product.Key).FirstOrDefault();
+                                    var programContent = SettingsKeyInfoProvider.GetValue(Settings.ProgramsContent, CurrentSite.SiteID);
+                                    programContent = programContent
+                                        .Replace("^ProgramName^", program?.ProgramName)
+                                        .Replace("^ProgramBrandName^", GetBrandName(program.BrandID))
+                                        .Replace("ProgramDate", program.DeliveryDateToDistributors == default(DateTime) ?
+                                            string.Empty : program.DeliveryDateToDistributors.ToString("MMM dd, yyyy"));
+                                    programsContent += programContent;
+                                }
+                                programsContent += SettingsKeyInfoProvider
+                                    .GetValue(Settings.KDA_ProgramFooterText, CurrentSite.SiteID)
+                                    .Replace("PROGRAMFOOTERTEXT", ResHelper.GetString("Kadena.Catalog.ProgramFooterText"));
+                            }
+                            var pdfProductsContent = string.Empty;
                             foreach (var product in catalogList)
                             {
                                 var stateInfo = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereEquals(nameof(CustomTableItem.ItemID), product.State).FirstOrDefault();
