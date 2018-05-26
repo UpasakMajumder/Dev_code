@@ -57,7 +57,7 @@
     function OnEditorEvent(type) {
       switch (type) {
         case 'DocumentSaved':
-          window.saveChiliTemplate();
+          window.chiliCallback();
           break;
       }
     }
