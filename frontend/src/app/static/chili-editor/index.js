@@ -39,12 +39,11 @@ class ChiliEditor {
     const newDomain = getSecondLevelDomain();
     if (newDomain) document.domain = newDomain;
 
-    window.chiliCallback = this.chiliCallback;
-
     // init editor and init actions
     frame.addEventListener('load', () => {
       this.initEditor(frame);
       this.initActions();
+      window.OnEditorEvent = this.chiliCallback;
     });
 
     this.showMessageClass = 'input--error';
@@ -104,12 +103,13 @@ class ChiliEditor {
     }
   }
 
-  // callback from HTML `product-editor.nunj`
   // callback method for Chili editor save action
-  chiliCallback = async () => {
-    await this.saveChiliTemplateCallback();
-    if (this.chiliEventType !== 'add') return;
-    await this.addToCartCallback();
+  chiliCallback = async (type) => {
+    if (type === 'DocumentSaved') {
+      await this.saveChiliTemplateCallback();
+      if (this.chiliEventType !== 'add') return;
+      await this.addToCartCallback();
+    }
   }
 
   getBody = () => {

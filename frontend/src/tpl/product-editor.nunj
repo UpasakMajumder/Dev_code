@@ -52,14 +52,4 @@
       </div>
     </div>
   </div>
-
-  <script>
-    function OnEditorEvent(type) {
-      switch (type) {
-        case 'DocumentSaved':
-          window.chiliCallback();
-          break;
-      }
-    }
-  </script>
 {% endblock %}
