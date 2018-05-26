@@ -44,6 +44,7 @@ const Order = ({
   quantityShipped,
   mailingListPrefix,
   shippingDatePrefix,
+  trackingPrefix,
   tracking,
   templatePrefix,
   productStatusPrefix,
@@ -72,22 +73,26 @@ const Order = ({
     : null;
 
   const getTrackingElement = () => {
-    if (!tracking) return null;
-    if (!tracking.id) return null;
+    if (!tracking || !tracking.length) return null;
 
-    let id;
-    if (tracking.url) {
-      id = <a target="_blank" href={tracking.url} className="link" >{tracking.id}</a>;
-    } else {
-      id = tracking.id;
-    }
+
+    const tracks = tracking.map((track, index) => {
+      const prefix = index === 0 ? ' ' : ', '
+      let id;
+      if (track.url) {
+        id = <a target="_blank" href={track.url} className="link" >{track.id}</a>;
+      } else {
+        id = track.id;
+      }
+
+      return <strong key={index}>{prefix}{id}</strong>;
+    });
+
 
     return (
       <div className="cart-product__tracking">
-        <p>
-          <SVG name="location"/>
-          <span>{tracking.prefix}: <strong>{id}</strong></span>
-        </p>
+        <SVG name="location"/>
+        <span>{trackingPrefix}: {tracks}</span>
       </div>
     );
   };
@@ -169,11 +174,11 @@ Order.propTypes = {
   downloadPdfURL: PropTypes.string,
   shippingDate: PropTypes.string,
   mailingList: PropTypes.string,
-  tracking: PropTypes.shape({
+  trackingPrefix: PropTypes.string.isRequired,
+  tracking: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
-    url: PropTypes.string,
-    prefix: PropTypes.string.isRequired
-  }),
+    url: PropTypes.string
+  })),
   mailingListPrefix: PropTypes.string.isRequired,
   shippingDatePrefix: PropTypes.string.isRequired,
   templatePrefix: PropTypes.string.isRequired,

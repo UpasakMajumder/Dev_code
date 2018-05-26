@@ -607,10 +607,8 @@ module.exports.detail =  {
           "state": "MN",
           "zip": "55379"
         },
-        "tracking": { // null
-          "text": "Track your packages",
-          "url": "#"
-        }
+        "trackingPrefix": "Track your packages",
+        "tracking": null
       },
       "paymentInfo": {
         "title": "Payment",
@@ -655,11 +653,8 @@ module.exports.detail =  {
             "template": "Information letter lamp post Mar 30 3017",
             "mailingList": "Mailing",
             "shippingDate": "2017-08-07T09:12:08.108892Z",
-            "tracking": {
-              "id": "",
-              "prefix": "Tracking ID",
-              "url": ""
-            },
+            "trackingPrefix": "Tracking ID",
+            "tracking": [],
             "mailingListPrefix": "Mailing list",
             "shippingDatePrefix": "Shipping date",
             "templatePrefix": "Shipping date",
@@ -698,11 +693,47 @@ module.exports.detail =  {
             "template": "Information letter lamp post Mar 30 3017",
             "mailingList": "",
             "shippingDate": "2017-08-07T09:12:08.108892Z",
-            "tracking": {
-              "id": "501213",
-              "prefix": "Tracking ID",
-              "url": "#"
-            },
+            "trackingPrefix": "Tracking ID",
+            "tracking": [
+              {
+                "id": "501213",
+                "url": "#"
+              },
+              {
+                "id": "5012114",
+                "url": "#"
+              },
+              {
+                "id": "5014214",
+                "url": "#"
+              },
+              {
+                "id": "5012214",
+                "url": "#"
+              },
+              {
+                "id": "5041214",
+                "url": "#"
+              },
+              {
+                "id": "5051214",
+                "url": "#"
+              },
+              {
+                "id": "5016214"
+              },
+              {
+                "id": "501214-501214-501214",
+                "url": "#"
+              },
+              {
+                "id": "501214501214"
+              },
+              {
+                "id": "50122214",
+                "url": "#"
+              }
+            ],
             "mailingListPrefix": "Mailing list",
             "shippingDatePrefix": "Shipping date",
             "templatePrefix": "Shipping date",
