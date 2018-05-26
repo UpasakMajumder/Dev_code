@@ -77,7 +77,7 @@ const Order = ({
 
 
     const tracks = tracking.map((track, index) => {
-      const prefix = index === 0 ? ' ' : ', '
+      const prefix = index === 0 ? ' ' : ', ';
       let id;
       if (track.url) {
         id = <a target="_blank" href={track.url} className="link" >{track.id}</a>;
