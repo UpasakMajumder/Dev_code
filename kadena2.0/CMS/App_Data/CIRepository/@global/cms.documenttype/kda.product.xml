@@ -60,6 +60,9 @@
       <field allowempty="true" column="ProductDynamicPricing" columntype="longtext" guid="0b3a73e5-b384-4363-b8b8-e09ec231f125" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Dymanic pricing and Quantity</fieldcaption>
+          <visiblemacro ismacro="true">
+            <![CDATA[{% ProductPricingModel == "Dynamic" %}]]>
+          </visiblemacro>
         </properties>
         <settings>
           <controlname>DynamicPricingSelector</controlname>
@@ -68,6 +71,9 @@
       <field allowempty="true" column="ProductTieredPricing" columntype="longtext" guid="0d2a5e09-535a-4f28-854d-b28e5f1fb03e" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Tiered pricing</fieldcaption>
+          <visiblemacro ismacro="true">
+            <![CDATA[{%ProductPricingModel == "Tiered"%}]]>
+          </visiblemacro>
         </properties>
         <settings>
           <controlname>TieredPricingSelector</controlname>
