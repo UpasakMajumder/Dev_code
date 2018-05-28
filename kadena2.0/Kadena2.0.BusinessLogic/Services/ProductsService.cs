@@ -233,6 +233,22 @@ namespace Kadena.BusinessLogic.Services
             return estimates;
         }
 
+        public IEnumerable<int> GetProductTiers(int documentId)
+        {
+            var product = products.GetProductByDocumentId(documentId);
+            var pricingModel = product?.PricingModel;
+
+            if (pricingModel == PricingModel.Tiered)
+            {
+                return tieredRanges
+                    .GetTieredRanges(documentId)
+                    .Select(tr => tr.Quantity)
+                    .ToList();
+            }
+
+            return new List<int>();
+        }
+
         public IEnumerable<ProductPricingInfo> GetProductPricings(int documentId, string pricingModel, string unitOfMeasure, string cultureCode)
         {
             var pricings = new List<ProductPricingInfo>();

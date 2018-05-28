@@ -447,6 +447,22 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return JsonConvert.SerializeObject(estimates, CamelCaseSerializer);
         }
 
+        [MacroMethod(typeof(string), "Returns json of product pricing tiers", 1)]
+        [MacroMethodParam(0, "documentId", typeof(int), "document ID")]
+        public static object GetProductTiers(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+
+            var documentId = Convert.ToInt32(parameters[0]);
+
+            var estimates = DIContainer.Resolve<IProductsService>().GetProductTiers(documentId);
+
+            return JsonConvert.SerializeObject(estimates, CamelCaseSerializer);
+        }
+
         [MacroMethod(typeof(string), "Returns json of product pricings", 1)]
         [MacroMethodParam(0, "documentId", typeof(int), "document ID")]
         [MacroMethodParam(1, "uom", typeof(string), "UOM")]
