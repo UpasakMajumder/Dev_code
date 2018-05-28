@@ -123,6 +123,7 @@ class AddressDialog extends Component {
         address2: '',
         city: '',
         state: '',
+        counry: '',
         zip: '',
         email: '',
         phone: '',
@@ -134,9 +135,20 @@ class AddressDialog extends Component {
   submitForm = (data) => {
     const { addDataAddress, changeDataAddress, isModifyingDialog, dialog } = this.props;
     const { fieldValues } = this.state;
-    const requiredFields = dialog.fields.filter(field => !field.isOptional).map(field => field.id);
-    this.countryHasState(fieldValues.country) && requiredFields.push('state');
-    const inValidFields = requiredFields.filter(requiredFiled => !fieldValues[requiredFiled]);
+
+    const inValidFields = [];
+
+    dialog.fields.forEach((data) => {
+      if (!data.isOptional) {
+        if (!fieldValues[data.id]) {
+          if (data.id === 'state') {
+            this.countryHasState(fieldValues.country) && inValidFields.push(data.id);
+          } else {
+            inValidFields.push(data.id);
+          }
+        }
+      }
+    });
 
     if (!inValidFields.length) {
       isModifyingDialog ? changeDataAddress(data) : addDataAddress(data);
@@ -154,21 +166,24 @@ class AddressDialog extends Component {
     const { dialog, isModifyingDialog } = this.props;
     const { fieldValues, fields } = this.state;
 
-    const footer = <div className="btn-group btn-group--right">
-      <button onClick={this.closeDialog}
-              type="button"
-              className="btn-action btn-action--secondary"
-      >
-        {dialog.buttons.discard}
-      </button>
-
-      <button onClick={() => { this.submitForm(fieldValues); }}
-              type="button"
-              className="btn-action"
-      >
-        {dialog.buttons.save}
-      </button>
-    </div>;
+    const footer = (
+      <div className="btn-group btn-group--right">
+        <button
+          onClick={this.closeDialog}
+          type="button"
+          className="btn-action btn-action--secondary"
+        >
+          {dialog.buttons.discard}
+        </button>
+        <button
+          onClick={() => { this.submitForm(fieldValues); }}
+          type="button"
+          className="btn-action"
+        >
+          {dialog.buttons.save}
+        </button>
+      </div>
+    );
 
 
     const row1 = [];
@@ -226,11 +241,15 @@ class AddressDialog extends Component {
 
     const title = isModifyingDialog ? dialog.types.edit : dialog.types.add;
 
-    return <Dialog closeDialog={this.closeDialog}
-                   hasCloseBtn={true}
-                   title={title}
-                   body={body}
-                   footer={footer}/>;
+    return (
+      <Dialog
+        closeDialog={this.closeDialog}
+        hasCloseBtn={true}
+        title={title}
+        body={body}
+        footer={footer}
+      />
+    );
   }
 }
 
