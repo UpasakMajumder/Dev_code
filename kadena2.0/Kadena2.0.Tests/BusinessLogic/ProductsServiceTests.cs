@@ -480,7 +480,7 @@ namespace Kadena.Tests.BusinessLogic
             Setup<IKenticoProductsProvider, ProductPricingInfo>(p => p.GetDefaultVariantPricing(productId, uomCodeLocalized), new ProductPricingInfo { Id = "id", Key = price, Value = dollar });
             Setup<IKenticoResourceService, string>(r => r.GetResourceString(uomLocalizationString, culture), uomCodeLocalized);
 
-            var result = Sut.GetProductPricings(productId, uomCode, "cz-CZ")?.ToArray();
+            var result = Sut.GetProductPricings(productId, PricingModel.Standard, uomCode, "cz-CZ")?.ToArray();
 
             Assert.NotNull(result);
             Assert.Single(result);

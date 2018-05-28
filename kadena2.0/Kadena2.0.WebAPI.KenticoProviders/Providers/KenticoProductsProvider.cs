@@ -172,7 +172,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 TemplateLowResSettingId = doc.GetValue("ProductChiliLowResSettingId", Guid.Empty),
                 ProductionTime = doc.GetStringValue("ProductProductionTime", string.Empty),
                 ShipTime = doc.GetStringValue("ProductShipTime", string.Empty),
-                ShippingCost = doc.GetStringValue("ProductShippingCost", string.Empty)
+                ShippingCost = doc.GetStringValue("ProductShippingCost", string.Empty),
+                PricingModel = doc.GetStringValue("ProductPricingModel", PricingModel.GetDefault()),
             };
 
             if (product.IsTemplateLowResSettingMissing)

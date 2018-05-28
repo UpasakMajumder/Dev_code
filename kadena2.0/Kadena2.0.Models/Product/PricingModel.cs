@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Kadena.Models.Product
 {
@@ -15,6 +16,11 @@ namespace Kadena.Models.Product
                 .Select(p => p.GetValue(null))
                 .Cast<string>()
                 .ToArray();
+        }
+
+        public static string GetDefault()
+        {
+            return Standard;
         }
     }
 }

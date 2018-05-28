@@ -147,6 +147,7 @@ namespace Kadena.Container.Default
             container.Register<IKenticoRoleProvider, KenticoRoleProvider>();
             container.Register<IKenticoUnitOfMeasureProvider, KenticoUnitOfMeasureProvider>();
             container.Register<IKenticoMediaProvider, KenticoMediaProvider>();
+            container.Register<ITieredPriceRangeProvider, TieredPriceRangeProvider>();
             return container;
         }
 

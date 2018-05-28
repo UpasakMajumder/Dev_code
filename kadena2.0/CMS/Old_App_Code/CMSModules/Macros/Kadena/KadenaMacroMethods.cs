@@ -260,7 +260,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         }
 
         [MacroMethod(typeof(string), "Gets formated and localized product availability string.", 1)]
-        [MacroMethodParam(0, "numberOfAvailableProducts", typeof(int), "NumberOfAvailableProducts")]
+        [MacroMethodParam(0, "numberOfItemsInPackage", typeof(int), "numberOfItemsInPackage")]
         [MacroMethodParam(1, "unitOfMeasure", typeof(string), "Unit of measure")]
         [MacroMethodParam(2, "cultureCode", typeof(string), "Current culture code")]
         public static object GetPackagingString(EvaluationContext context, params object[] parameters)
@@ -450,22 +450,29 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         [MacroMethod(typeof(string), "Returns json of product pricings", 1)]
         [MacroMethodParam(0, "documentId", typeof(int), "document ID")]
         [MacroMethodParam(1, "uom", typeof(string), "UOM")]
+        [MacroMethodParam(2, "pricingModel", typeof(string), "Pricing model")]
         public static object GetProductPricings(EvaluationContext context, params object[] parameters)
         {
-            if (parameters.Length != 2)
+            if (parameters.Length != 3)
             {
                 throw new NotSupportedException();
             }
 
             var documentId = Convert.ToInt32(parameters[0]);
             var unitOfmeasure = (string)parameters[1];
+            var pricingModel = (string)parameters[2];
 
             if (string.IsNullOrEmpty(unitOfmeasure))
             {
                 unitOfmeasure = UnitOfMeasure.DefaultUnit;
             }
 
-            var estimates = DIContainer.Resolve<IProductsService>().GetProductPricings(documentId, unitOfmeasure, LocalizationContext.CurrentCulture.CultureCode);
+            if (string.IsNullOrEmpty(pricingModel))
+            {
+                pricingModel = PricingModel.GetDefault();
+            }
+
+            var estimates = DIContainer.Resolve<IProductsService>().GetProductPricings(documentId, pricingModel, unitOfmeasure, LocalizationContext.CurrentCulture.CultureCode);
 
             return JsonConvert.SerializeObject(estimates, CamelCaseSerializer);
         }

@@ -499,14 +499,14 @@ config.localization.productDetail = {
     },
     dynamicPrices: {
       header: '{$Kadena.Product.UnitPrice$}',
-      body: {% KadenaNamespace.GetProductPricings(DocumentContext.CurrentDocument.DocumentID, SKUUnitOfMeasure |(user)administrator|(hash)0c7f90634a553b7a85bf479e746c509d365d8a8dcd5296640046799cfae93e27%}
+      body: {% KadenaNamespace.GetProductPricings(DocumentContext.CurrentDocument.DocumentID, SKUUnitOfMeasure, ProductPricingModel |(user)administrator|(hash)ad46af8ffdf54c215f4634b6e9dfdeaac5338e95e8f09b1c9d65ba5746c4678c%}
     },
     availability: {% KadenaNamespace.GetAvailability(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),
                         DocumentContext.CurrentDocument.GetValue("SKUAvailableItems") , 
                         LocalizationContext.CurrentCulture.CultureCode, 
                         ECommerceContext.CurrentProduct.SKUAvailableItems,
                         ECommerceContext.CurrentProduct.SKUUnitOfMeasure) |(user)administrator|(hash)4117b64895d4327ff6c8b8d6122c487dbb9735151c63b7337ece60cdcec2492d%},
-    packagingInfo: '{% KadenaNamespace.GetPackagingString(ProductNumberOfItemsInPackage, SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)administrator|(hash)d2bd820f97df79f94438952adabf96fb2c5531a62a9e96a6b03ca07cab210995%}',
+    packagingInfo: '{% KadenaNamespace.GetPackagingString(SKUNumberOfItemsInPackage, SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)administrator|(hash)bf2793a33609eb827d2c68f67d526613ec4dcdf7297778424c3e75ca49a338e3%}',
     productOptions:{
           priceElementId: "option-price",
           priceUrl: '/api/products/getprice/{%NodeSKU.ID |(user)administrator|(hash)196992259153c5795bc9ab040b553916f8e04d82e8653bcae9f7084433736838%}',
