@@ -135,16 +135,16 @@ const deliveryAddresses = {
         "type": "text"
       },
       {
-        "id": "zip",
-        "label": "Postal Code",
-        "values": [],
-        "type": "text"
-      },
-      {
         "id": "state",
         "label": "State",
         "values": [],
         "type": "select"
+      },
+      {
+        "id": "zip",
+        "label": "Postal Code",
+        "values": [],
+        "type": "text"
       },
       {
         "id": "country",
