@@ -210,7 +210,10 @@ const deliveryAddresses = {
       "zip": "38017",
       "id": 1,
       "checked": true,
-      "country": "3"
+      "country": "3",
+      "phone": "776 884 228",
+      "email": "lol@gmail.com",
+      "customerName": "Andrei"
     },
     {
       "address1": "Test Address line 1",

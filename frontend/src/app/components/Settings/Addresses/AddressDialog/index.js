@@ -123,15 +123,18 @@ class AddressDialog extends Component {
         address2: '',
         city: '',
         state: '',
-        zip: ''
+        zip: '',
+        email: '',
+        phone: '',
+        customerName: ''
       }
     });
   };
 
   submitForm = (data) => {
-    const { addDataAddress, changeDataAddress, isModifyingDialog } = this.props;
+    const { addDataAddress, changeDataAddress, isModifyingDialog, dialog } = this.props;
     const { fieldValues } = this.state;
-    const requiredFields = ['address1', 'city', 'country', 'zip'];
+    const requiredFields = dialog.fields.filter(field => !field.isOptional).map(field => field.id);
     this.countryHasState(fieldValues.country) && requiredFields.push('state');
     const inValidFields = requiredFields.filter(requiredFiled => !fieldValues[requiredFiled]);
 
@@ -168,10 +171,13 @@ class AddressDialog extends Component {
     </div>;
 
 
-    const bodyContent = fields.map((field) => {
+    const row1 = [];
+    const row2 = [];
+
+    fields.forEach((field, i) => {
       const { label, values, type, id, isOptional } = field;
 
-      let input = {};
+      let input = null;
 
       if (type === 'text') {
         input = (
@@ -194,15 +200,13 @@ class AddressDialog extends Component {
             onChange={(e) => { this.handleChange(e.target.value, id); }}
           />
         );
-      } else {
-        return null;
       }
 
-      return (
-        <td style={{ width: `${100 / dialog.fields.length}%` }} key={id}>
-          {input}
-        </td>
-      );
+      if (i + 1 <= Math.ceil(fields.length / 2)) {
+        row1.push(<td key={id}>{input}</td>);
+      } else {
+        row2.push(<td key={id}>{input}</td>);
+      }
     });
 
     const userNotification = dialog.userNotification ? <Alert type="info" text={dialog.userNotification}/> : null;
@@ -213,9 +217,8 @@ class AddressDialog extends Component {
 
         <table className="cart__dialog-table">
           <tbody>
-          <tr>
-            {bodyContent}
-          </tr>
+            <tr>{row1}</tr>
+            <tr>{row2}</tr>
           </tbody>
         </table>
       </div>

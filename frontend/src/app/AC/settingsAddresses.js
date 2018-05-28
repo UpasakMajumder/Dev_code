@@ -110,13 +110,14 @@ export const addAddress = (data, fromCheckout) => {
         const { success, payload } = responseCheckout.data;
 
         const checkedItems = payload.deliveryAddresses.items.filter(item => item.checked);
+        const checkedIdByDefault = checkedItems[0] ? checkedItems[0].id : '';
 
         if (success) {
           dispatch({
             type: SAVE_NEW_ADDRESS + SUCCESS,
             payload: {
               deliveryAddresses: payload.deliveryAddresses,
-              checkedId: data.temporary ? id : checkedItems[0].id
+              checkedId: data.temporary ? id : checkedIdByDefault
             }
           });
 
