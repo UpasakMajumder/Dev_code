@@ -215,6 +215,8 @@ class AddressDialog extends Component {
             onChange={(e) => { this.handleChange(e.target.value, id); }}
           />
         );
+      } else {
+        return null;
       }
 
       if (i + 1 <= Math.ceil(fields.length / 2)) {
@@ -222,6 +224,8 @@ class AddressDialog extends Component {
       } else {
         row2.push(<td key={id}>{input}</td>);
       }
+
+      return null;
     });
 
     const userNotification = dialog.userNotification ? <Alert type="info" text={dialog.userNotification}/> : null;
