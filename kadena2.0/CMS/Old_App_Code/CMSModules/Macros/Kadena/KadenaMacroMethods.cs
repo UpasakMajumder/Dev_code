@@ -470,6 +470,17 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return JsonConvert.SerializeObject(estimates, CamelCaseSerializer);
         }
 
+        [MacroMethod(typeof(string[]), "Returns product pricing models", 1)]
+        public static object GetProductPricingModels(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 0)
+            {
+                throw new NotSupportedException();
+            }
+
+            return PricingModel.GetAll();
+        }
+
 
         [MacroMethod(typeof(string), "Returns product options config.", 1)]
         [MacroMethodParam(0, "skuid", typeof(int), "SKU ID")]
