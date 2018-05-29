@@ -54,7 +54,7 @@ namespace Kadena.BusinessLogic.Services
                     {
                         Id = "state",
                         Label = resources.GetResourceString("Kadena.Settings.Addresses.State"),
-                        IsOptional = true,
+                        IsOptional = false,
                         Type = "select",
                         Values = new List<object>()
                     },
