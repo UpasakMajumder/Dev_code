@@ -674,13 +674,15 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         PDFConverter.License.SetLicenseKey(SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoOwner, CurrentSite.SiteID), SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoKey, CurrentSite.SiteID));
         PDFConverter.LowQuality = SettingsKeyInfoProvider.GetBoolValue(Settings.KDA_NRecoLowQuality, CurrentSite.SiteID);
         var pdfByte = PDFConverter.GeneratePdf(contentHtml, coverHtml);
-        Response.Clear();
-        var ms = new MemoryStream(pdfByte);
-        Response.ContentType = "application/pdf";
-        Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
-        Response.Buffer = true;
-        ms.WriteTo(Response.OutputStream);
-        Response.End();
+        using (var ms = new MemoryStream(pdfByte))
+        {
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
+            Response.Buffer = true;
+            ms.WriteTo(Response.OutputStream);
+            Response.End();
+        }
     }
 
     /// <summary>
