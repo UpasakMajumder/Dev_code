@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Kadena.Models.SiteSettings;
+using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -181,6 +182,43 @@ namespace Kadena.BusinessLogic.Services
                 return null;
             }
             return new Uri(url.Payload);
+        }
+
+
+        public async Task<string> TemplatedProductEditorUrl(int documentId, int userId, string productType,  Guid masterTemplateID, Guid workspaceId, bool use3d)
+        {
+            var productEditorUrl = _documents.GetDocumentUrl(_resources.GetSiteSettingsKey(Settings.KDA_Templating_ProductEditorUrl));
+            var selectMailingListUrl = _documents.GetDocumentUrl(_resources.GetSiteSettingsKey(Settings.KDA_Templating_SelectListPageUrl));
+
+            var requestBody = new NewTemplateRequestDto
+            {
+                User = userId.ToString(),
+                TemplateId = masterTemplateID.ToString(),
+                WorkSpaceId = workspaceId.ToString(),
+                UseHtmlEditor = false,
+                Use3d = use3d
+            };
+
+            var newTemplateUrl = await _templateClient.CreateNewTemplate(requestBody).ConfigureAwait(false);
+
+            if (!newTemplateUrl.Success || string.IsNullOrEmpty(newTemplateUrl.Payload))
+            {
+                throw new Exception("Failed to create new template : " + newTemplateUrl.ErrorMessages);
+            }
+            
+            var uri = new Uri(newTemplateUrl.Payload);
+            var newTemplateID = HttpUtility.ParseQueryString(uri.Query).Get("doc");
+            var destinationUrl = $"{productEditorUrl}?documentId={documentId}&templateId={newTemplateID}&workspaceid={workspaceId}&use3d={use3d}";
+
+            if (ProductTypes.IsOfType(productType, ProductTypes.MailingProduct) && ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct))
+            {
+                var encodedUrl = HttpUtility.UrlEncode(destinationUrl);
+                return $"{selectMailingListUrl}?url={encodedUrl}";
+            }
+            else
+            {
+                return destinationUrl;
+            }
         }
     }
 }

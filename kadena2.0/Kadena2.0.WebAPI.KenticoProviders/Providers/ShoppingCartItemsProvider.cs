@@ -257,8 +257,18 @@ namespace Kadena.WebAPI.KenticoProviders
             if (productType.Contains(ProductTypes.InventoryProduct) && item.SKU.SKUSellOnlyAvailable && quantity > item.SKU.SKUAvailableItems)
             {
                 throw new Exception(string.Format(
-                    ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemID));
+                    ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemText));
             }
+
+            var min = item.SKU?.SKUMinItemsInOrder ?? 0;
+            var max = item.SKU?.SKUMaxItemsInOrder ?? 0;
+
+            if ((min > 0 && quantity < min) || (max > 0 && quantity > max))
+            {
+                throw new Exception(string.Format(
+                    ResHelper.GetString("Kadena.Product.SetQuantityForItemError", LocalizationContext.CurrentCulture.CultureCode), quantity, item.CartItemText));
+            }
+
 
             var documentId = item.GetIntegerValue("ProductPageID", 0);
             var price = dynamicPrices.GetDynamicPrice(quantity, documentId);
@@ -363,6 +373,10 @@ namespace Kadena.WebAPI.KenticoProviders
             var cart = ECommerceContext.CurrentShoppingCart;
             ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
             var cartItemInfo = cart.SetShoppingCartItem(parameters);
+
+            // To return cart item with original quantity :
+            var quantity = cartItemInfo.GetIntegerValue("SKUUnits", newItem.Quantity);
+            cartItemInfo.SetValue("SKUUnits", quantity - newItem.Quantity );
 
             cartItemInfo.CartItemText = cartItemInfo.SKU.SKUName;
             cartItemInfo.CartItemPrice = cartItemInfo.SKU.SKUPrice;

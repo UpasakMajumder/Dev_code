@@ -75,12 +75,17 @@
     <Compile Include="Orders\OrderFilter.cs" />
     <Compile Include="Orders\OrderReport.cs" />
     <Compile Include="Orders\OrderStatus.cs" />
+    <Compile Include="ProductOptions\ProductCategory.cs" />
+    <Compile Include="ProductOptions\ProductOption.cs" />
+    <Compile Include="ProductOptions\ProductOptions.cs" />
     <Compile Include="Product\Border.cs" />
     <Compile Include="Product\CampaignsProduct.cs" />
     <Compile Include="Product\Price.cs" />
     <Compile Include="Checkout\ItemOption.cs" />
     <Compile Include="Product\OptionCategory.cs" />
     <Compile Include="Product\ProductAvailability.cs" />
+    <Compile Include="Product\ProductPricingInfo.cs" />
+    <Compile Include="Product\ProductEstimation.cs" />
     <Compile Include="Product\UnitOfMeasure.cs" />
     <Compile Include="Program\CampaignProgram.cs" />
     <Compile Include="RecentOrdersWithFilters\OrderDailogLabel.cs" />

@@ -313,6 +313,26 @@ $arrow-width: 10px;
       background-color: transparent;
     }
   }
+
+  &.danger-theme {
+    color: $white !important;
+    box-shadow: 0 3px 7px 1px rgba($brand-dangerous, 0.2) !important;
+    background-color: lighten($brand-dangerous, 20%) !important;
+    border: 1px solid $brand-dangerous !important;
+
+    [x-circle] {
+      background-color: #f3f6f9;
+    }
+
+    [x-arrow] {
+      background-color: lighten($brand-dangerous, 20%);
+      border-color: transparent transparent $brand-dangerous $brand-dangerous;
+    }
+
+    &[data-animatefill] {
+      background-color: transparent;
+    }
+  }
 }
 
 // Fix for iOS animateFill circle

@@ -19,7 +19,7 @@
           <div data-react='{ "initURL": "http://localhost:3000/api/order/recent/requiring-approval" }' class="r-recent-orders"></div>
         </div>
         <div class="css-tabs__content js-tab-orders">
-          <div data-react='{ "initURL": "http://localhost:3000/api/order/recent/ui" }' class="r-recent-orders"></div>
+          <div data-react='{ "initURL": "http://localhost:3000/api/order/recent/ui", "getPageItemsURL": "http://localhost:3000/api/order/recent/page" }' class="r-recent-orders"></div>
         </div>
       </div>
     </div>

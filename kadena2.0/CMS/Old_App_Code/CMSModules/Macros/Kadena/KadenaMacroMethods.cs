@@ -25,7 +25,8 @@ using System.Linq;
 using static Kadena.Helpers.SerializerConfig;
 using Kadena.Models.ModuleAccess;
 using Kadena.BusinessLogic.Contracts.Approval;
-using CMS.PortalEngine.Web.UI;
+using Newtonsoft.Json;
+using Kadena.Helpers;
 
 [assembly: CMS.RegisterExtension(typeof(KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 
@@ -86,6 +87,32 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
             return true;
         }
+
+
+        
+        [MacroMethod(typeof(string), "Gets URL of editor for mailing or templated product", 1)]
+        [MacroMethodParam(0, "documentId", typeof(int), "Product types piped string")]
+        [MacroMethodParam(1, "productType", typeof(string), "Product types piped string")]
+        [MacroMethodParam(2, "masterTemplateId", typeof(string), "Product types piped string")]
+        [MacroMethodParam(3, "workspaceId", typeof(string), "Product types piped string")]
+        [MacroMethodParam(4, "use3d", typeof(bool), "Product types piped string")]
+        public static object TemplatedProductEditorUrl(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 5)
+            {
+                throw new NotSupportedException();
+            }
+
+            var documentId = Convert.ToInt32(parameters[0]);
+            var userId = MembershipContext.AuthenticatedUser.UserID;
+            var productType = (string)parameters[1];
+            Guid masterTemplateId = Guid.Parse((string)parameters[2]);
+            Guid workspaceId = Guid.Parse((string)parameters[3]);
+            bool use3d = Convert.ToBoolean(parameters[4]);
+
+            return DIContainer.Resolve<ITemplateService>().TemplatedProductEditorUrl(documentId, userId, productType, masterTemplateId, workspaceId, use3d).Result;
+        }
+
 
         [MacroMethod(typeof(bool), "Checks if related product is of templated type", 1)]
         [MacroMethodParam(0, "skuid", typeof(int), "SKU ID")]
@@ -203,7 +230,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         [MacroMethodParam(2, "cultureCode", typeof(string), "Current culture code")]
         [MacroMethodParam(3, "numberOfAvailableProductsHelper", typeof(int), "NumberOfAvailableProducts of ECommerce")]
         [MacroMethodParam(4, "unitOfMeasure", typeof(string), "Unit of measure")]
-        public static object GetAvailableProductsString(EvaluationContext context, params object[] parameters)
+        public static object GetAvailability(EvaluationContext context, params object[] parameters)
         {
             if (parameters.Length != 5)
             {
@@ -221,8 +248,15 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 unitOfmeasure = UnitOfMeasure.DefaultUnit;
             }
 
-            return DIContainer.Resolve<IProductsService>()
-                .GetAvailableProductsString(productType, numberOfAvailableProducts, cultureCode, numberOfStockProducts, unitOfmeasure);
+            var availability = DIContainer.Resolve<IProductsService>()
+                .GetInventoryProductAvailability(productType, numberOfAvailableProducts, cultureCode, numberOfStockProducts, unitOfmeasure);
+
+            if (availability == null)
+            {
+                return "null";
+            }
+
+            return JsonConvert.SerializeObject(availability, CamelCaseSerializer);
         }
 
         [MacroMethod(typeof(string), "Gets formated and localized product availability string.", 1)]
@@ -249,38 +283,46 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 .GetPackagingString(numberOfItemsInPackage, unitOfmeasure, cultureCode);
         }
 
-
-        [MacroMethod(typeof(string), "Gets appropriate css class for label that holds amount of products in stock", 1)]
-        [MacroMethodParam(0, "numberOfAvailableProducts", typeof(object), "NumberOfAvailableProducts")]
-        [MacroMethodParam(1, "productType", typeof(string), "Current product type")]
-        [MacroMethodParam(2, "numberOfAvailableProductsHelper", typeof(object), "NumberOfAvailableProducts of ECommerce")]
-        public static object GetAppropriateCssClassOfAvailability(EvaluationContext context, params object[] parameters)
+        [MacroMethod(typeof(string), "Gets formated and localized Min Max string.", 1)]
+        [MacroMethodParam(0, "min", typeof(int), "Minimal items")]
+        [MacroMethodParam(1, "max", typeof(string), "Maximal items")]
+        public static object GetMinMaxString(EvaluationContext context, params object[] parameters)
         {
-            if (parameters.Length != 3)
+            if (parameters.Length != 2)
             {
                 throw new NotSupportedException();
             }
 
-            var numberOfAvailableProducts = (int?)parameters[0];
-            var productType = (string)parameters[1];
-            var numberOfStockProducts = (int)parameters[2];
+            var min = ValidationHelper.GetInteger(parameters[0], 0);
+            var max = ValidationHelper.GetInteger(parameters[1], 0);
 
-            var availability = DIContainer.Resolve<IProductsService>().GetInventoryProductAvailability(productType, numberOfAvailableProducts, numberOfStockProducts);
 
-            var mappingCssDictionary = new Dictionary<string, string>()
+            return DIContainer.Resolve<IProductsService>()
+                .GetMinMaxItemsString(min, max);
+        }
+
+        [MacroMethod(typeof(string), "Gets localized UOM name.", 1)]
+        [MacroMethodParam(0, "unitOfMeasure", typeof(string), "Unit of measure")]
+        [MacroMethodParam(1, "cultureCode", typeof(string), "Current culture code")]
+        public static object LocalizeUom(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 2)
             {
-                { ProductAvailability.Unavailable, "stock stock--unavailable" },
-                { ProductAvailability.Available, "stock stock--available" },
-                { ProductAvailability.OutOfStock, "stock stock--out" },
-            };
-
-            if (mappingCssDictionary.TryGetValue(availability, out string cssClass))
-            {
-                return cssClass;
+                throw new NotSupportedException();
             }
 
-            return string.Empty;
+            var unitOfmeasure = (string)parameters[0];
+            var cultureCode = (string)parameters[1];
+
+            if (string.IsNullOrEmpty(unitOfmeasure))
+            {
+                unitOfmeasure = UnitOfMeasure.DefaultUnit;
+            }
+
+            return DIContainer.Resolve<IProductsService>()
+                .TranslateUnitOfMeasure(unitOfmeasure, cultureCode);
         }
+
 
         [MacroMethod(typeof(string), "Returns html (set) of products, that could be in a kit with particular product (for particular user).", 1)]
         [MacroMethodParam(0, "nodeID", typeof(int), "ID of Node, that represents the base product")]
@@ -366,17 +408,87 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 new CacheSettings(TimeSpan.FromMinutes(20).TotalMinutes, cacheKey));
         }
 
-        [MacroMethod(typeof(string[]), "Returns array of parsed urls items.", 1)]
+        [MacroMethod(typeof(string), "Returns json of product attachments", 1)]
         [MacroMethodParam(0, "fieldValue", typeof(string), "Value stored MediaMultiField field")]
-        public static object GetUrlsFromMediaMultiField(EvaluationContext context, params object[] parameters)
+        public static object GetProductAttachments(EvaluationContext context, params object[] parameters)
         {
             if (parameters.Length != 1)
             {
                 throw new NotSupportedException();
             }
             var fieldValue = parameters[0] as string;
+
             var urls = MediaMultiField.GetValues(fieldValue);
-            return urls;
+
+            var attachments = urls.Select(url => new
+            {
+                url,
+                text = MediaMultiField.ParseFrom(url).Name
+            }
+            );
+
+            return JsonConvert.SerializeObject(attachments, CamelCaseSerializer);
+        }
+
+
+        [MacroMethod(typeof(string), "Returns json of product estimates", 1)]
+        [MacroMethodParam(0, "documentId", typeof(int), "document ID")]
+        public static object GetProductEstimates(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+
+            var documentId = Convert.ToInt32(parameters[0]);
+
+            var estimates = DIContainer.Resolve<IProductsService>().GetProductEstimations(documentId);
+
+            return JsonConvert.SerializeObject(estimates, CamelCaseSerializer);
+        }
+
+        [MacroMethod(typeof(string), "Returns json of product pricings", 1)]
+        [MacroMethodParam(0, "documentId", typeof(int), "document ID")]
+        [MacroMethodParam(1, "uom", typeof(string), "UOM")]
+        public static object GetProductPricings(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 2)
+            {
+                throw new NotSupportedException();
+            }
+
+            var documentId = Convert.ToInt32(parameters[0]);
+            var unitOfmeasure = (string)parameters[1];
+
+            if (string.IsNullOrEmpty(unitOfmeasure))
+            {
+                unitOfmeasure = UnitOfMeasure.DefaultUnit;
+            }
+
+            var estimates = DIContainer.Resolve<IProductsService>().GetProductPricings(documentId, unitOfmeasure, LocalizationContext.CurrentCulture.CultureCode);
+
+            return JsonConvert.SerializeObject(estimates, CamelCaseSerializer);
+        }
+
+
+        [MacroMethod(typeof(string), "Returns product options config.", 1)]
+        [MacroMethodParam(0, "skuid", typeof(int), "SKU ID")]
+        public static object GetProductOptions(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+
+            var sku = Convert.ToInt32(parameters[0]);
+
+            var options = DIContainer.Resolve<IKenticoProductsProvider>()
+                .GetProductCategories(sku);
+
+
+            return (options == null || options.Count() == 0)
+                   ? "null"
+                   : JsonConvert.SerializeObject(options, SerializerConfig.CamelCaseSerializer);
         }
 
         [MacroMethod(typeof(string[]), "Returns approver users", 1)]
@@ -401,19 +513,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return isApprover;
         }
 
-        [MacroMethod(typeof(string), "Returns file name from media attachment url.", 1)]
-        [MacroMethodParam(0, "url", typeof(string), "Url")]
-        public static object GetFilenameFromMediaUrl(EvaluationContext context, params object[] parameters)
-        {
-            if (parameters.Length != 1)
-            {
-                throw new NotSupportedException();
-            }
-            var url = parameters[0] as string;
-            var filename = MediaMultiField.ParseFrom(url).Name;
-            return filename;
-        }
-
         [MacroMethod(typeof(string), "Returns localized url of the document for current culture.", 1)]
         [MacroMethodParam(0, "aliasPath", typeof(string), "Alias path of the document.")]
         public static object GetLocalizedDocumentUrl(EvaluationContext context, params object[] parameters)
@@ -435,7 +534,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
                 var kenticoLocalization = DIContainer.Resolve<IKenticoLocalizationProvider>();
-                return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoLocalization.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
+                return JsonConvert.SerializeObject(kenticoLocalization.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
             }
             return string.Empty;
         }

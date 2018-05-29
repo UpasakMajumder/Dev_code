@@ -13,6 +13,7 @@ using AutoMapper;
 using CMS.DataEngine;
 using CMS.CustomTables;
 using Kadena.Models.SiteSettings;
+using Kadena.Models.ProductOptions;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -168,7 +169,10 @@ namespace Kadena.WebAPI.KenticoProviders
                 ProductType = doc.GetValue("ProductType", string.Empty),
                 ProductMasterTemplateID = doc.GetValue<Guid>("ProductChiliTemplateID", Guid.Empty),
                 ProductChiliWorkgroupID = doc.GetValue<Guid>("ProductChiliWorkgroupID", Guid.Empty),
-                TemplateLowResSettingId = doc.GetValue("ProductChiliLowResSettingId", Guid.Empty)
+                TemplateLowResSettingId = doc.GetValue("ProductChiliLowResSettingId", Guid.Empty),
+                ProductionTime = doc.GetStringValue("ProductProductionTime", string.Empty),
+                ShipTime = doc.GetStringValue("ProductShipTime", string.Empty),
+                ShippingCost = doc.GetStringValue("ProductShippingCost", string.Empty)
             };
 
             if (product.IsTemplateLowResSettingMissing)
@@ -345,6 +349,115 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 return null;
             }
+        }
+
+        public IEnumerable<ProductCategory> GetProductCategories(int skuid)
+        {
+            var categories = new List<ProductCategory>();
+
+            var skuCategories = SKUOptionCategoryInfoProvider
+                .GetSKUOptionCategories()
+                .Columns(nameof(SKUOptionCategoryInfo.CategoryID))
+                .WhereEquals(nameof(SKUOptionCategoryInfo.SKUID), skuid)
+                .OrderByDefault();
+
+            foreach (var cat in skuCategories)
+            {
+                var category = OptionCategoryInfoProvider.GetOptionCategoryInfo(cat.CategoryID);
+                if (category.CategoryType != OptionCategoryTypeEnum.Attribute
+                    || !category.CategoryEnabled)
+                {
+                    continue;
+                }
+                var optionSkus = SKUInfoProvider.GetSKUOptionsForProduct(skuid, cat.CategoryID, true);
+
+                var categoryModel = new ProductCategory
+                {
+                    Name = category.CategoryName,
+                    Selector = category.CategorySelectionType.ToString(),
+                    Options = GetCategoryOptions(category, optionSkus)
+                };
+
+                categories.Add(categoryModel);
+            }
+
+            return categories;
+        }
+
+        IList<ProductOption> GetCategoryOptions(OptionCategoryInfo category, IEnumerable<SKUInfo> skus)
+        {
+            var options = new List<ProductOption>();
+
+            if (category.CategorySelectionType == OptionCategorySelectionTypeEnum.Dropdownlist)
+            {
+                options.Add(new ProductOption
+                {
+                    Name = category.CategoryDefaultRecord,
+                    Disabled = true,
+                    Selected = (category.CategoryDefaultRecord == category.CategoryDefaultOptions)
+                });
+            }
+
+            foreach (var sku in skus)
+            {
+                options.Add(new ProductOption
+                {
+                    Name = sku.SKUName,
+                    Id = sku.SKUID,
+                    Selected = (sku.SKUID.ToString() == category.CategoryDefaultOptions),
+                    Disabled = false
+                });
+            }
+
+            return options;
+        }
+
+        public ProductPricingInfo GetDefaultVariantPricing(int documentId, string uomLocalized)
+        {
+            var document = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+
+            var skuCategories = SKUOptionCategoryInfoProvider
+                .GetSKUOptionCategories()
+                .Columns(nameof(SKUOptionCategoryInfo.CategoryID))
+                .WhereEquals(nameof(SKUOptionCategoryInfo.SKUID), document.NodeSKUID);
+            var optionCategories = OptionCategoryInfoProvider
+                .GetOptionCategories()
+                .Columns(nameof(OptionCategoryInfo.CategoryDefaultOptions))
+                .WhereIn(nameof(OptionCategoryInfo.CategoryID), skuCategories)
+                .And()
+                .WhereEquals(nameof(OptionCategoryInfo.CategoryType), OptionCategoryTypeEnum.Attribute.ToStringRepresentation())
+                .And()
+                .WhereEquals(nameof(OptionCategoryInfo.CategoryEnabled), true)
+                .ToList();
+
+            SKUInfo variant = null;
+
+            if (optionCategories.Count > 0)
+            {
+                variant = VariantHelper.GetProductVariant(document.NodeSKUID,
+                    new ProductAttributeSet(optionCategories.Select(c =>
+                    {
+                        int.TryParse(c.CategoryDefaultOptions, out int id);
+                        return id;
+                    })));
+            }
+
+            var basePrice = variant?.SKUPrice ?? document.GetDoubleValue("SKUPrice", 0);
+
+            var key = string.Format("{0} {1}",
+                    ResHelper.GetString("Kadena.Product.BasePriceTitle", LocalizationContext.CurrentCulture.CultureCode), // 1+
+                    uomLocalized);
+
+            var value = string.Format( "{0} {1}",
+                    ResHelper.GetString("Kadena.Checkout.ItemPricePrefix",LocalizationContext.CurrentCulture.CultureCode), // $
+                    basePrice.ToString("N2"));
+
+            return new ProductPricingInfo
+            {
+                Id = "option-price",
+                Key = key,
+                Value = value
+            };
         }
     }
 }

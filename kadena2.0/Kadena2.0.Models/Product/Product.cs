@@ -24,5 +24,9 @@ namespace Kadena.Models.Product
         }
 
         public bool IsTemplateLowResSettingMissing => HasProductTypeFlag(ProductTypes.TemplatedProduct) && TemplateLowResSettingId == Guid.Empty;
+
+        public string ProductionTime { get; set; }
+        public string ShipTime { get; set; }
+        public string ShippingCost { get; set; }
     }
 }

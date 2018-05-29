@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 /* constants */
 import { FAILURE, APP_LOADING, START, FINISH } from 'app.consts';
-/* globals */
-import { RECENT_ORDERS } from 'app.globals';
 /* components */
 import Alert from 'app.dump/Alert';
 import Pagination from 'app.dump/Pagination';
@@ -23,12 +21,13 @@ class RecentOrders extends Component {
   };
 
   static propTypes = {
-    initURL: PropTypes.string.isRequired
+    initURL: PropTypes.string.isRequired,
+    getPageItemsURL: PropTypes.string
   };
 
   changePage = ({ selected }) => {
     if (selected === this.state.currPage) return;
-    axios.get(`${RECENT_ORDERS.getPageItems}/${selected + 1}`)
+    axios.get(`${this.props.getPageItemsURL}/${selected + 1}`)
       .then((response) => {
         const { payload, success, errorMessage } = response.data;
         window.store.dispatch({ type: APP_LOADING + START });
