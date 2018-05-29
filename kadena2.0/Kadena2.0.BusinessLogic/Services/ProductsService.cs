@@ -13,6 +13,7 @@ namespace Kadena.BusinessLogic.Services
     public class ProductsService : IProductsService
     {
         private readonly IKenticoProductsProvider products;
+        private readonly IKenticoSkuProvider skus;
         private readonly IKenticoFavoritesProvider favorites;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoUnitOfMeasureProvider units;
@@ -20,9 +21,17 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoPermissionsProvider permissions;
         private readonly IDynamicPriceRangeProvider dynamicRanges;
 
-        public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources, IKenticoUnitOfMeasureProvider units, IImageService imageService, IKenticoPermissionsProvider permissions, IDynamicPriceRangeProvider dynamicRanges)
+        public ProductsService(IKenticoProductsProvider products,
+                               IKenticoSkuProvider skus,
+                               IKenticoFavoritesProvider favorites, 
+                               IKenticoResourceService resources, 
+                               IKenticoUnitOfMeasureProvider units, 
+                               IImageService imageService, 
+                               IKenticoPermissionsProvider permissions, 
+                               IDynamicPriceRangeProvider dynamicRanges)
         {
             this.products = products ?? throw new ArgumentNullException(nameof(products));
+            this.skus = skus ?? throw new ArgumentNullException(nameof(skus));
             this.favorites = favorites ?? throw new ArgumentNullException(nameof(favorites));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
@@ -35,15 +44,15 @@ namespace Kadena.BusinessLogic.Services
         {
             if ((skuOptions?.Count ?? 0) == 0)
             {
-                return products.GetSkuPrice(skuId);
+                return skus.GetSkuPrice(skuId);
             }
 
-            var selectedVariant = products.GetVariant(skuId, new HashSet<int>(skuOptions.Values.Distinct()));
+            var selectedVariant = skus.GetVariant(skuId, new HashSet<int>(skuOptions.Values.Distinct()));
             if (selectedVariant == null)
             {
                 throw new ArgumentException("Product Variant for specified SKU and Options not found.");
             }
-            return products.GetSkuPrice(selectedVariant.SkuId);
+            return skus.GetSkuPrice(selectedVariant.SkuId);
         }
 
         public ProductsPage GetProducts(string path)
@@ -71,7 +80,7 @@ namespace Kadena.BusinessLogic.Services
             return productsPage;
         }
 
-        string GetAvailableProductsString(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasureCode)
+        string GetAvailableProductsString(string productType, int? numberOfAvailableProducts, string unitOfMeasureCode)
         {
             string formattedValue = string.Empty;
 
@@ -82,23 +91,44 @@ namespace Kadena.BusinessLogic.Services
 
             if (!numberOfAvailableProducts.HasValue)
             {
-                formattedValue = resources.GetResourceString("Kadena.Product.Unavailable", cultureCode);
+                formattedValue = resources.GetResourceString("Kadena.Product.Unavailable");
             }
-            else if (numberOfStockProducts == 0)
+            else if (numberOfAvailableProducts.Value == 0)
             {
-                formattedValue = resources.GetResourceString("Kadena.Product.OutOfStock", cultureCode);
+                formattedValue = resources.GetResourceString("Kadena.Product.OutOfStock");
             }
             else
             {
-                var baseString = resources.GetResourceString("Kadena.Product.NumberOfAvailableProducts", cultureCode);
-                var uomDisplayName = resources.GetResourceString(units.GetUnitOfMeasure(unitOfMeasureCode).LocalizationString, cultureCode);
-                formattedValue = string.Format(baseString, numberOfStockProducts, uomDisplayName);
+                var baseString = resources.GetResourceString("Kadena.Product.NumberOfAvailableProducts");
+                var uomDisplayName = resources.GetResourceString(units.GetUnitOfMeasure(unitOfMeasureCode).LocalizationString);
+                formattedValue = string.Format(baseString, numberOfAvailableProducts, uomDisplayName);
             }
 
             return formattedValue;
         }
 
-        public ProductAvailability GetInventoryProductAvailability(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasureCode)
+        public ProductAvailability GetInventoryProductAvailability(int documentId)
+        {
+            var product = products.GetProductByDocumentId(documentId);
+
+            if (product == null)
+            {
+                return null;
+            }
+
+            var sku = skus.GetSKU(product.SkuId);
+
+            if (sku == null)
+            {
+                return null;
+            }
+
+            return GetInventoryProductAvailability(product.ProductType,
+                                                   sku.AvailableItems,
+                                                   sku.UnitOfMeasure);
+        }
+
+        public ProductAvailability GetInventoryProductAvailability(string productType, int? numberOfAvailableProducts, string unitOfMeasureCode)
         {
             if (ProductTypes.IsOfType(productType, ProductTypes.InventoryProduct))
             {
@@ -108,7 +138,7 @@ namespace Kadena.BusinessLogic.Services
                 {
                     availability.Type = ProductAvailability.Unavailable;
                 }
-                else if (numberOfStockProducts == 0)
+                else if (numberOfAvailableProducts.Value == 0)
                 {
                     availability.Type = ProductAvailability.OutOfStock;
                 }
@@ -117,7 +147,7 @@ namespace Kadena.BusinessLogic.Services
                     availability.Type = ProductAvailability.Available;
                 }
 
-                availability.Text = GetAvailableProductsString(productType, numberOfAvailableProducts, cultureCode, numberOfStockProducts, unitOfMeasureCode);
+                availability.Text = GetAvailableProductsString(productType, numberOfAvailableProducts, unitOfMeasureCode);
                 return availability;
             }
 

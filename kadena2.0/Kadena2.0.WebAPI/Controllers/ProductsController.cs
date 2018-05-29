@@ -18,18 +18,8 @@ namespace Kadena.WebAPI.Controllers
 
         public ProductsController(IProductsService products, IMapper mapper)
         {
-            if (products == null)
-            {
-                throw new ArgumentNullException(nameof(products));
-            }
-
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-
-            this.products = products;
-            this.mapper = mapper;
+            this.products = products ?? throw new ArgumentNullException(nameof(products));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
 
@@ -50,6 +40,15 @@ namespace Kadena.WebAPI.Controllers
             var price = products.GetPrice(skuId, options);
             var result = mapper.Map<PriceDto>(price);
             return ResponseJson(result);
+        }
+
+        [HttpGet]
+        [Route("api/products/availability/{skuId:int}")]
+        public IHttpActionResult GetAvailability([FromUri]int skuid)
+        {
+            var result = products.GetInventoryProductAvailability(skuid);
+            var resultDto = mapper.Map<ProductAvailabilityDto>(result);
+            return ResponseJson(resultDto);
         }
     }
 }

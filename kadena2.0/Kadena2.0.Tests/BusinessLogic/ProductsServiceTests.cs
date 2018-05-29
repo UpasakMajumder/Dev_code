@@ -157,7 +157,7 @@ namespace Kadena.Tests.BusinessLogic
             Setup<IKenticoResourceService, string>(r => r.GetResourceString(It.IsAny<string>(), It.IsAny<string>()), "value");
 
             // Act
-            var result = Sut.GetInventoryProductAvailability(productType, 10, "cz", 10, "igelitka");
+            var result = Sut.GetInventoryProductAvailability(productType, 10, "igelitka");
 
             // Assert
             Assert.Null(result);
@@ -165,20 +165,19 @@ namespace Kadena.Tests.BusinessLogic
 
 
         [Theory(DisplayName = "ProductsService.GetAvailableProductsString() | Inventory type")]
-        [InlineData(null, 0, "Kadena.Product.Unavailable")]
-        [InlineData(0, 0, "Kadena.Product.OutOfStock")]
-        [InlineData(5, 10, "10 plasticbags in stock")]
-        public void GetAvailableProductStringTest_Inventory(int? numberOfAvailableProducts, int numberOfStockProducts, string expectedResult)
+        [InlineData(null,  "Kadena.Product.Unavailable")]
+        [InlineData(0, "Kadena.Product.OutOfStock")]
+        [InlineData(10, "10 plasticbags in stock")]
+        public void GetAvailableProductStringTest_Inventory(int? numberOfAvailableProducts, string expectedResult)
         {
             // Arrange
-            const string culture = "cz-CZ";
             const string unit = "plasticbags";
-            Setup<IKenticoResourceService, string, string, string>(r => r.GetResourceString(It.IsAny<string>(), culture), (a, b) => a);
-            Setup<IKenticoResourceService, string>(r => r.GetResourceString("Kadena.Product.NumberOfAvailableProducts", culture), "{0} {1} in stock");
+            Setup<IKenticoResourceService, string, string>(r => r.GetResourceString(It.IsAny<string>()), a => a);
+            Setup<IKenticoResourceService, string>(r => r.GetResourceString("Kadena.Product.NumberOfAvailableProducts"), "{0} {1} in stock");
             Setup<IKenticoUnitOfMeasureProvider, UnitOfMeasure>(r => r.GetUnitOfMeasure(unit), new UnitOfMeasure {LocalizationString = unit });
 
             // Act
-            var result = Sut.GetInventoryProductAvailability("KDA.InventoryProduct", numberOfAvailableProducts, culture, numberOfStockProducts, unit);
+            var result = Sut.GetInventoryProductAvailability("KDA.InventoryProduct", numberOfAvailableProducts, unit);
 
             // Assert
             Assert.Equal(expectedResult, result.Text);
@@ -269,27 +268,26 @@ namespace Kadena.Tests.BusinessLogic
         public void GetInventoryProductAvailablity_NonInventory(string productType)
         {
             // Act
-            var result = Sut.GetInventoryProductAvailability(productType, 10, "cs-CZ", 10, "carton");
+            var result = Sut.GetInventoryProductAvailability(productType, 10, "carton");
 
             // Assert
             Assert.Null(result);
         }
 
         [Theory(DisplayName = "ProductsService.GetInventoryProductAvailability() | Inventory type")]
-        [InlineData(0, 0, "outofstock")]
-        [InlineData(null, 0, "unavailable")]
-        [InlineData(1, 1, "available")]
-        public void GetInventoryProductAvailablity(int? numberOfAvailableProducts, int numberOfStockProducts, string expectedResult)
+        [InlineData(0, "outofstock")]
+        [InlineData(null, "unavailable")]
+        [InlineData(1, "available")]
+        public void GetInventoryProductAvailablity(int? numberOfAvailableProducts, string expectedResult)
         {
             // Arrange
-            const string culture = "cz-CZ";
             const string unit = "carton";
             Setup<IKenticoUnitOfMeasureProvider, UnitOfMeasure>(r => r.GetUnitOfMeasure(unit), new UnitOfMeasure { LocalizationString = unit });
-            Setup<IKenticoResourceService, string, string, string>(r => r.GetResourceString(It.IsAny<string>(), culture), (a, b) => a);
-            Setup<IKenticoResourceService, string>(r => r.GetResourceString("Kadena.Product.NumberOfAvailableProducts", culture), "{0} {1} in stock");
+            Setup<IKenticoResourceService, string, string>(r => r.GetResourceString(It.IsAny<string>()), a => a);
+            Setup<IKenticoResourceService, string>(r => r.GetResourceString("Kadena.Product.NumberOfAvailableProducts"), "{0} {1} in stock");
 
             // Act
-            var result = Sut.GetInventoryProductAvailability("KDA.InventoryProduct", numberOfAvailableProducts, culture, numberOfStockProducts, unit);
+            var result = Sut.GetInventoryProductAvailability("KDA.InventoryProduct", numberOfAvailableProducts, unit);
 
             // Assert
             Assert.NotNull(expectedResult);
@@ -361,7 +359,7 @@ namespace Kadena.Tests.BusinessLogic
         [MemberData(nameof(GetOptions))]
         public void GetPrice(Dictionary<string, int> options)
         {
-            Setup<IKenticoProductsProvider, Sku>(p => p.GetVariant(It.IsAny<int>(), It.IsAny<IEnumerable<int>>()), new Sku());
+            Setup<IKenticoSkuProvider, Sku>(p => p.GetVariant(It.IsAny<int>(), It.IsAny<IEnumerable<int>>()), new Sku());
 
             var result = Sut.GetPrice(0, options);
 

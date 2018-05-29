@@ -227,21 +227,17 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         [MacroMethod(typeof(string), "Gets formated and localized product availability string.", 1)]
         [MacroMethodParam(0, "productType", typeof(string), "Current product type")]
         [MacroMethodParam(1, "numberOfAvailableProducts", typeof(int), "NumberOfAvailableProducts")]
-        [MacroMethodParam(2, "cultureCode", typeof(string), "Current culture code")]
-        [MacroMethodParam(3, "numberOfAvailableProductsHelper", typeof(int), "NumberOfAvailableProducts of ECommerce")]
-        [MacroMethodParam(4, "unitOfMeasure", typeof(string), "Unit of measure")]
+        [MacroMethodParam(2, "unitOfMeasure", typeof(string), "Unit of measure")]
         public static object GetAvailability(EvaluationContext context, params object[] parameters)
         {
-            if (parameters.Length != 5)
+            if (parameters.Length != 3)
             {
                 throw new NotSupportedException();
             }
 
             var productType = (string)parameters[0];
             var numberOfAvailableProducts = (int?)parameters[1];
-            var cultureCode = (string)parameters[2];
-            var numberOfStockProducts = (int)parameters[3];
-            var unitOfmeasure = (string)parameters[4];
+            var unitOfmeasure = (string)parameters[2];
 
             if (string.IsNullOrEmpty(unitOfmeasure))
             {
@@ -249,7 +245,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
 
             var availability = DIContainer.Resolve<IProductsService>()
-                .GetInventoryProductAvailability(productType, numberOfAvailableProducts, cultureCode, numberOfStockProducts, unitOfmeasure);
+                .GetInventoryProductAvailability(productType, numberOfAvailableProducts, unitOfmeasure);
 
             if (availability == null)
             {

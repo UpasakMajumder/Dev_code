@@ -13,7 +13,8 @@ namespace Kadena.BusinessLogic.Contracts
         string TranslateUnitOfMeasure(string unitOfMeasure, string cultureCode);
         IEnumerable<ProductEstimation> GetProductEstimations(int documentId);
         IEnumerable<ProductPricingInfo> GetProductPricings(int documentId, string unitOfMeasure, string cultureCode);
-        ProductAvailability GetInventoryProductAvailability(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasureCode);
+        ProductAvailability GetInventoryProductAvailability(string productType, int? numberOfAvailableProducts, string unitOfMeasureCode);
+        ProductAvailability GetInventoryProductAvailability(int skuId);
         string GetMinMaxItemsString(int min, int max);
     }
 }

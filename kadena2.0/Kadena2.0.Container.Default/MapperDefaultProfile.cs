@@ -353,6 +353,7 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.AddressPersonalName, opt => opt.Ignore())
                 .ForMember(dest => dest.CompanyName, opt => opt.Ignore());
             CreateMap<EmailProofRequestDto, EmailProofRequest>();
+            CreateMap<ProductAvailability, ProductAvailabilityDto>();
         }
     }
 }

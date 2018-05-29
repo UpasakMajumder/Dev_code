@@ -263,7 +263,9 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.HiResPdfDownloadEnabled, opt => opt.MapFrom(src => src.GetBooleanValue("SKUHiResPdfDownloadEnabled", false)))
                 .ForMember(dest => dest.ApprovalRequired, opt => opt.MapFrom(src => src.GetBooleanValue("SKUApprovalRequired", false)))
                 .ForMember(dest => dest.MinItemsInOrder, opt => opt.MapFrom(src => src.SKUMinItemsInOrder))
-                .ForMember(dest => dest.MaxItemsInOrder, opt => opt.MapFrom(src => src.SKUMaxItemsInOrder));
+                .ForMember(dest => dest.MaxItemsInOrder, opt => opt.MapFrom(src => src.SKUMaxItemsInOrder))
+                .ForMember(dest => dest.ProductType , opt => opt.MapFrom(src => src.SKUProductType))
+                .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.GetStringValue("SKUUnitOfMeasure", UnitOfMeasure.DefaultUnit)));
 
             CreateMap<User, UserInfo>()
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
