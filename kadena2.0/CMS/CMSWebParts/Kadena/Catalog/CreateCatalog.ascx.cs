@@ -589,9 +589,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                     .Replace("ProgramDate", program.DeliveryDateToDistributors == default(DateTime) ?
                                         string.Empty : program.DeliveryDateToDistributors.ToString("MMM dd, yyyy"));
                             }
-                            programListCoverHtml += SettingsKeyInfoProvider
-                                .GetValue(Settings.KDA_ProgramFooterText, CurrentSite.SiteID)
-                                .Replace("PROGRAMFOOTERTEXT", ResHelper.GetString("Kadena.Catalog.ProgramFooterText"));
                         }
                         var productListContentHtml = string.Empty;
                         foreach (var product in brandCatalogList)
@@ -627,7 +624,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                         productContentHtml += $"{productListHeaderHtml}{productListContentHtml}{closingDiv}";
                     }
                 }
-
                 var pdfClosingDivs = SettingsKeyInfoProvider.GetValue(Settings.PdfEndingTags, CurrentSite.SiteID);
                 var contentHtml = $"{productContentHtml}{pdfClosingDivs}";
                 var coverHtml = string.Empty;
@@ -645,7 +641,11 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                 OpenCampaign.EndDate == default(DateTime) ? string.Empty : OpenCampaign.EndDate.ToString("MMM dd, yyyy"));
                     }
                     fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.PrebuyFileName"), string.Empty) + ".pdf";
-                    coverHtml = $"{campaignHeaderHtml}{programListCoverHtml}{closingDiv}";
+                    var programListFooterHtml = SettingsKeyInfoProvider
+                                .GetValue(Settings.KDA_ProgramFooterText, CurrentSite.SiteID)
+                                .Replace("PROGRAMFOOTERTEXT", ResHelper.GetString("Kadena.Catalog.ProgramFooterText"));
+
+                    coverHtml = $"{campaignHeaderHtml}{programListCoverHtml}{programListFooterHtml}{closingDiv}";
                 }
                 else
                 {
