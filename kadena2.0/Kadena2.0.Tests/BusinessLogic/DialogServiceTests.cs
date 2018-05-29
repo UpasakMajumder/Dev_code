@@ -11,11 +11,11 @@ namespace Kadena.Tests.BusinessLogic
     {
         public static IEnumerable<object[]> GetDependencies()
         {
-            yield return new[] {
+            yield return new object[] {
                 null,
                 new Mock<IKenticoLocalizationProvider>().Object
             };
-            yield return new[] {
+            yield return new object[] {
                 new Mock<IKenticoResourceService>().Object,
                 null
             };
