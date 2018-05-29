@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 /* component */
 import Button from 'app.dump/Button';
 import Input from 'app.dump/Form/TextInput';
+import Select from 'app.dump/Form/Select';
 
 const Proceed = ({
   addToCart,
@@ -17,10 +18,12 @@ const Proceed = ({
 }) => {
   if (!addToCart && !openTemplate) return null;
 
-  if (addToCart) {
-    return (
-      <div className="product-view__proceed">
+  const getInput = () => {
+    const items = addToCart.getIn(['tiers', 'items']);
+    if (!addToCart.get('tiers') || !items || !items.count()) {
+      return [
         <Input
+          key={0}
           min={addToCart.get('minQuantity')}
           max={addToCart.get('maxQuantity')}
           type="number"
@@ -28,8 +31,53 @@ const Proceed = ({
           onChange={e => handleChangeQuantity(e.target.value)}
           className="product-view__proceed-input"
           error={quanityError ? addToCart.get('quantityErrorText') : ''}
-        />
-        <span className="mx-2">{addToCart.get('unit')}</span>
+        />,
+        <span key={1} className="mx-2">{addToCart.get('unit')}</span>
+      ];
+    }
+
+    const options = [
+      <option
+        key={0}
+        disabled
+        value={0}
+      >
+        {addToCart.getIn(['tiers', 'placeholder'])}
+      </option>
+    ];
+
+    items.forEach((item) => {
+      options.push(
+        <option
+          key={item}
+          value={item}
+        >
+          {item}
+        </option>
+      );
+    });
+
+    const errorElement = quanityError ? <span className="input__error input__error--noborder">{addToCart.get('quantityErrorText')}</span> : null;
+
+    return (
+      <div className="input__wrapper product-options__input mr-3">
+        <div className={`input__select ${quanityError ? 'input--error' : ''}`}>
+          <select
+            value={quantity}
+            onChange={e => handleChangeQuantity(e.target.value)}
+          >
+            {options}
+          </select>
+        </div>
+        {errorElement}
+      </div>
+    );
+  };
+
+  if (addToCart) {
+    return (
+      <div className="product-view__proceed">
+        {getInput()}
         <Button
           type="action"
           isLoading={false}
@@ -57,7 +105,11 @@ Proceed.propTypes = {
   addToCart: ImmutablePropTypes.mapContains({
     text: PropTypes.string.isRequired,
     unit: PropTypes.string.isRequired,
-    quantityErrorText: PropTypes.string.isRequired
+    quantityErrorText: PropTypes.string.isRequired,
+    tiers: ImmutablePropTypes.mapContains({
+      placeholder: PropTypes.string.isRequired,
+      items: ImmutablePropTypes.listOf(PropTypes.number)
+    })
   }),
   openTemplate: ImmutablePropTypes.mapContains({
     url: PropTypes.string.isRequired,
