@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Kadena.Dto.AddToCart;
+using Kadena.Dto.Approval.Responses;
 using Kadena.Dto.Brands;
 using Kadena.Dto.BusinessUnits;
 using Kadena.Dto.Checkout;
@@ -58,6 +59,8 @@ namespace Kadena.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<ApprovalResult, ApprovalResultDto>();
+
             CreateMap<RegistrationDto, Registration>();
 
             CreateMap<ChiliProcess, ChiliProcessDto>();

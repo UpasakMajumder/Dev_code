@@ -1,8 +1,8 @@
 ﻿using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.Dto.Approval.MicroserviceRequests;
 using Kadena.Dto.Approval.MicroserviceResponses;
-using Kadena.Dto.Approval.Responses;
 using Kadena.Helpers;
+using Kadena.Models.Approval;
 using Kadena.Models.Orders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
@@ -43,14 +43,14 @@ namespace Kadena.BusinessLogic.Services.Approval
             this.kenticoResource = kenticoResource ?? throw new ArgumentNullException(nameof(kenticoResource));
         }
 
-        public async Task<ApprovalResultDto> ApproveOrder(string orderId, int customerId, string customerName)
+        public async Task<ApprovalResult> ApproveOrder(string orderId, int customerId, string customerName)
         {
             CheckIsCustomersApprover(customerId, customerName);
             var approveRequest = GetApprovalData(orderId, customerId, customerName, ApprovalState.Approved);
             var response = await CallApprovalService(approveRequest, "ApproveOrder", ApprovalResponseDto.Approved);
             if (response.Success)
             {
-                return new ApprovalResultDto
+                return new ApprovalResult
                 {
                     Title = kenticoResource.GetResourceString("Kadena.Order.Approve.Success.ToastTitle"),
                     Text = kenticoResource.GetResourceString("Kadena.Order.Approve.Success.ToastMessage"),
@@ -63,14 +63,14 @@ namespace Kadena.BusinessLogic.Services.Approval
             }
         }
 
-        public async Task<ApprovalResultDto> RejectOrder(string orderId, int customerId, string customerName, string rejectionNote = "")
+        public async Task<ApprovalResult> RejectOrder(string orderId, int customerId, string customerName, string rejectionNote = "")
         {
             CheckIsCustomersApprover(customerId, customerName);
             var approveRequest = GetApprovalData(orderId, customerId, customerName, ApprovalState.Rejected, rejectionNote);
             var response = await CallApprovalService(approveRequest, "RejectOrder", ApprovalResponseDto.Rejected);
             if (response.Success)
             {
-                return new ApprovalResultDto
+                return new ApprovalResult
                 {
                     Title = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastTitle"),
                     Text = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastMessage"),

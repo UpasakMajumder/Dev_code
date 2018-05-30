@@ -10,6 +10,9 @@ using System.Web.Http.Results;
 using Kadena.WebAPI.Infrastructure.Communication;
 using Kadena.Dto.Approval.Responses;
 using Kadena.Dto.Approval.Requests;
+using AutoMapper;
+using Kadena.Container.Default;
+using Kadena.Models.Approval;
 
 namespace Kadena.Tests.WebApi
 {
@@ -19,15 +22,21 @@ namespace Kadena.Tests.WebApi
         {
             yield return new object[]
                 {
-                    null
+                    null,
+                    new Mock<IMapper>().Object,
+                };
+            yield return new object[]
+                {
+                    new Mock<IApprovalService>().Object,
+                    null,
                 };
         }
 
         [Theory(DisplayName = "ApprovalController()")]
         [MemberData(nameof(GetDependencies))]
-        public void ApprovalController(IApprovalService approvalService)
+        public void ApprovalController(IApprovalService approvalService, IMapper mapper)
         {
-            Assert.Throws<ArgumentNullException>(() => new ApprovalController(approvalService));
+            Assert.Throws<ArgumentNullException>(() => new ApprovalController(approvalService, mapper));
         }
 
         [Fact(DisplayName = "ApprovalController.Approve()")]
