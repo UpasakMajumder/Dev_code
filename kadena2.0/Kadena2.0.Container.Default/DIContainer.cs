@@ -148,6 +148,7 @@ namespace Kadena.Container.Default
             container.Register<IKenticoUnitOfMeasureProvider, KenticoUnitOfMeasureProvider>();
             container.Register<IKenticoMediaProvider, KenticoMediaProvider>();
             container.Register<ITieredPriceRangeProvider, TieredPriceRangeProvider>();
+            container.Register<IOrderCartItemsProvider, OrderCartItemsProvider>();
             return container;
         }
 

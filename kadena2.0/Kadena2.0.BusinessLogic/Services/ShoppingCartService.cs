@@ -318,7 +318,48 @@ namespace Kadena.BusinessLogic.Services
 
         public CartItems ChangeItemQuantity(int id, int quantity)
         {
-            shoppingCartItems.SetCartItemQuantity(id, quantity);
+            var item = shoppingCartItems.GetCartItemEntity(id);
+
+            if (item == null)
+            {
+                throw new ArgumentOutOfRangeException(string.Format( 
+                    resources.GetResourceString("Kadena.Product.ItemInCartNotFound"),id));
+            }
+
+            if (quantity < 1)
+            {
+                throw new ArgumentOutOfRangeException(string.Format(
+                    resources.GetResourceString("Kadena.Product.NegativeQuantityError"), quantity));
+            }
+
+            if (!item.ProductType.Contains(ProductTypes.InventoryProduct) && !item.ProductType.Contains(ProductTypes.POD) && !item.ProductType.Contains(ProductTypes.StaticProduct))
+            {
+                throw new Exception(resources.GetResourceString("Kadena.Product.QuantityForTypeError"));
+            }
+
+            var itemSku = shoppingCart.GetSKU(item.SKUID);
+
+            if (item.ProductType.Contains(ProductTypes.InventoryProduct) && itemSku.SellOnlyIfAvailable && quantity > itemSku.AvailableItems)
+            {
+                throw new Exception(string.Format(
+                    resources.GetResourceString("Kadena.Product.SetQuantityForItemError"), quantity, item.CartItemText));
+            }
+
+            var min = itemSku?.MinItemsInOrder ?? 0;
+            var max = itemSku?.MaxItemsInOrder ?? 0;
+
+            if ((min > 0 && quantity < min) || (max > 0 && quantity > max))
+            {
+                throw new Exception(string.Format(
+                    resources.GetResourceString("Kadena.Product.SetQuantityForItemError"), quantity, item.CartItemText));
+            }
+
+            item.SKUUnits = quantity;
+
+            SetPriceByCustomModel(item, item.ProductPageID);
+
+            shoppingCartItems.SetCartItemQuantity(item, quantity);
+
             return GetCartItems();
         }
 

@@ -129,6 +129,7 @@
     <Compile Include="Contracts\IKenticoSettingsProvider.cs" />
     <Compile Include="Contracts\IKenticoUnitOfMeasureProvider.cs" />
     <Compile Include="Contracts\IkenticoUserBudgetProvider.cs" />
+    <Compile Include="Contracts\IOrderCartItemsProvider.cs" />
     <Compile Include="Contracts\IShoppingCartItemsProvider.cs" />
     <Compile Include="Contracts\ITieredPriceRangeProvider.cs" />
     <Compile Include="Contracts\KadenaSettings\IShippingEstimationSettings.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Contracts\ISubmissionIdProvider.cs" />
     <Compile Include="KenticoModelMappingsProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\OrderCartItemsProvider.cs" />
     <Compile Include="Providers\TieredPriceRangeProvider.cs" />
     <Compile Include="Providers\DynamicPriceRangeProvider.cs" />
     <Compile Include="Providers\FailedOrderStatusProvider.cs" />
