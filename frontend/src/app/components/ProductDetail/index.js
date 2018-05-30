@@ -57,6 +57,7 @@ class ProductDetail extends Component {
 
     const options = {};
     const categories = props.ui.getIn(['productOptions', 'categories']);
+    const tiersItems = props.ui.getIn(['addToCart', 'tiers', 'items']);
 
     if (categories) {
       categories.forEach((category) => {
@@ -72,10 +73,12 @@ class ProductDetail extends Component {
       });
     }
 
+    const quantity = (tiersItems && tiersItems.count()) ? '' : this.props.ui.getIn(['addToCart', 'quantity'], 1);
+
     this.state = {
       options: Immutable.Map(options),
       optionsPrice: null,
-      quantity: this.props.ui.getIn(['addToCart', 'quantity'], 1),
+      quantity,
       isLoading: false,
       optionsError: false,
       quanityError: false

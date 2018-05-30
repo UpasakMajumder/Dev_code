@@ -668,7 +668,7 @@
           unit: 'pack of 50 (50)',
           /*tiers: {
             placeholder: 'Hello 🏋️',
-            items: [1, 2, 3, 10, 100]
+            items: [5, 10, 15, 20, 25]
           },*/
           quantity: 1, // state
           quantityErrorText: 'Invalid Quantity Here',

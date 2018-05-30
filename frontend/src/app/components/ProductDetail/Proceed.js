@@ -20,7 +20,7 @@ const Proceed = ({
 
   const getInput = () => {
     const items = addToCart.getIn(['tiers', 'items']);
-    if (!addToCart.get('tiers') || !items || !items.count()) {
+    if (!items || !items.count()) {
       return [
         <Input
           key={0}
@@ -40,7 +40,7 @@ const Proceed = ({
       <option
         key={0}
         disabled
-        value={0}
+        value=""
       >
         {addToCart.getIn(['tiers', 'placeholder'])}
       </option>
