@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Kadena.Models.Product
 {
     public class PricingModel
     {
-        public static string Standard  => "Standard";
         public static string Dynamic => "Dynamic";
         public static string Tiered => "Tiered";
 
@@ -20,7 +18,7 @@ namespace Kadena.Models.Product
 
         public static string GetDefault()
         {
-            return Standard;
+            return Dynamic;
         }
     }
 }

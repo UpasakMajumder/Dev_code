@@ -23,7 +23,35 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
         {
             var document = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser)) as SKUTreeNode;
             var rawJson = document?.GetStringValue("ProductTieredPricing", string.Empty);
+            return ParseJson(rawJson);
+        }
+
+        private IEnumerable<TieredPricingRange> ParseJson(string rawJson)
+        {
             return JsonConvert.DeserializeObject<List<TieredPricingRange>>(rawJson);
+        }
+
+        public decimal GetTieredPrice(int quantity, string rawJson)
+        {
+            var ranges = ParseJson(rawJson);
+            return GetTieredPrice(quantity, ranges);
+        }
+
+        private decimal GetTieredPrice(int quantity, IEnumerable<TieredPricingRange> ranges)
+        {
+            if (ranges != null && ranges.Count() > 0)
+            {
+                var matchingRange = ranges.FirstOrDefault(i => i.Quantity == quantity);
+                if (matchingRange != null)
+                {
+                    return matchingRange.Price;
+                }
+                else
+                {
+                    throw new ArgumentException(resources.GetResourceString("Kadena.Product.QuantityOutOfRange"));
+                }
+            }
+            return decimal.MinusOne;
         }
     }
 }

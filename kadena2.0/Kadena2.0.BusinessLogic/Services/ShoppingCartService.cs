@@ -36,6 +36,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoProductsProvider productsProvider;
         private readonly IKenticoBusinessUnitsProvider businessUnitsProvider;
         private readonly IDynamicPriceRangeProvider dynamicPrices;
+        private readonly ITieredPriceRangeProvider tieredPrices;
         private readonly IImageService imageService;
 
         public ShoppingCartService(IKenticoSiteProvider kenticoSite,
@@ -56,6 +57,7 @@ namespace Kadena.BusinessLogic.Services
                                    IKenticoProductsProvider productsProvider,
                                    IKenticoBusinessUnitsProvider businessUnitsProvider,
                                    IDynamicPriceRangeProvider dynamicPrices,
+                                   ITieredPriceRangeProvider tieredPrices,
                                    IImageService imageService)
         {
             this.kenticoSite = kenticoSite ?? throw new ArgumentNullException(nameof(kenticoSite));
@@ -76,6 +78,7 @@ namespace Kadena.BusinessLogic.Services
             this.productsProvider = productsProvider ?? throw new ArgumentNullException(nameof(productsProvider));
             this.businessUnitsProvider = businessUnitsProvider ?? throw new ArgumentNullException(nameof(businessUnitsProvider));
             this.dynamicPrices = dynamicPrices ?? throw new ArgumentNullException(nameof(dynamicPrices));
+            this.tieredPrices = tieredPrices ?? throw new ArgumentNullException(nameof(tieredPrices));
             this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
         }
 
@@ -436,10 +439,8 @@ namespace Kadena.BusinessLogic.Services
                 CheckMinMaxQuantity(cartItem, totalQuantity);
                 cartItem.SKUUnits = totalQuantity;
             }
-
             
-
-            SetDynamicPrice(cartItem, newItem.DocumentId);
+            SetPriceByCustomModel(cartItem, newItem.DocumentId);
 
             if (!string.IsNullOrEmpty(newItem.CustomProductName))
             {
@@ -459,9 +460,26 @@ namespace Kadena.BusinessLogic.Services
             return result;
         }
 
-        private void SetDynamicPrice(CartItemEntity cartItem, int documentId)
+        private void SetPriceByCustomModel(CartItemEntity cartItem, int documentId)
         {
-            var price = dynamicPrices.GetDynamicPrice(cartItem.SKUUnits, documentId);
+            var product = productsProvider.GetProductByDocumentId(documentId);
+
+            if (product == null)
+            {
+                return;
+            }
+
+            var price = decimal.MinusOne;
+
+            if (product.PricingModel == PricingModel.Dynamic)
+            {
+                price = dynamicPrices.GetDynamicPrice(cartItem.SKUUnits, product.DynamicPricingJson);
+            }
+            else if (product.PricingModel == PricingModel.Tiered)
+            {
+                price = tieredPrices.GetTieredPrice(cartItem.SKUUnits, product.TieredPricingJson);
+            }
+
             if (price > decimal.MinusOne)
             {
                 cartItem.CartItemPrice = price;

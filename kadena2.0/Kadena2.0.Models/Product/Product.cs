@@ -29,5 +29,7 @@ namespace Kadena.Models.Product
         public string ShipTime { get; set; }
         public string ShippingCost { get; set; }
         public string PricingModel { get; set; }
+        public string TieredPricingJson { get; set; }
+        public string DynamicPricingJson { get; set; }
     }
 }

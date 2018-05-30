@@ -254,12 +254,8 @@ namespace Kadena.BusinessLogic.Services
             var pricings = new List<ProductPricingInfo>();
             var localizedUom = TranslateUnitOfMeasure(unitOfMeasure, cultureCode);
             var currencySymbol = "$";
-
-            if (pricingModel == PricingModel.Standard)
-            {
-                pricings.Add(products.GetDefaultVariantPricing(documentId, localizedUom));
-            }
-            else if (pricingModel == PricingModel.Dynamic)
+            
+            if (pricingModel == PricingModel.Dynamic)
             {
                 FillDynamicPrices(pricings, documentId, localizedUom, currencySymbol);
             }
@@ -275,6 +271,11 @@ namespace Kadena.BusinessLogic.Services
         {
             var dynamicRanges = this.dynamicRanges.GetDynamicRanges(documentId);
 
+            if((dynamicRanges?.Count() ?? 0) == 0)
+            {
+                pricings.Add(products.GetDefaultVariantPricing(documentId, localizedUom));
+            }
+
             foreach (var r in dynamicRanges)
             {
                 pricings.Add(new ProductPricingInfo
@@ -288,6 +289,11 @@ namespace Kadena.BusinessLogic.Services
         private void FillTieredPrices(List<ProductPricingInfo> pricings, int documentId, string localizedUom, string currencySymbol)
         {
             var tieredRanges = this.tieredRanges.GetTieredRanges(documentId);
+
+            if ((tieredRanges?.Count() ?? 0) == 0)
+            {
+                pricings.Add(products.GetDefaultVariantPricing(documentId, localizedUom));
+            }
 
             foreach (var r in tieredRanges)
             {
