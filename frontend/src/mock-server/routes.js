@@ -55,6 +55,7 @@ apiRouter.put('/products/favourite/:id', Products.setFavourite);
 apiRouter.put('/products/unfavourite/:id', Products.setFavourite);
 apiRouter.post('/products/add-to-cart', Products.addToCart);
 apiRouter.post('/products/options', Products.options);
+apiRouter.get('/products/availability', Products.availability);
 
 apiRouter.get('/order/recent/ui', Orders.recent.ui);
 apiRouter.get('/order/recent/requiring-approval', Orders.recent.requiringApproval);

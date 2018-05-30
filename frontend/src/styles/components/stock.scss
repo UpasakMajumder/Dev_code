@@ -19,4 +19,13 @@
   &--outofstock {
     color: $error-mark;
   }
+
+  &__spinner {
+    height: 20px;
+
+    & > * {
+      height: 100%;
+      margin: 0;
+    }
+  }
 }

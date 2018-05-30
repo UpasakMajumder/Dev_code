@@ -292,6 +292,15 @@ module.exports.managed = {
   }
 };
 
+module.exports.availability = {
+  success: true,
+  errorMessage: null,
+  payload: {
+    type: 'available', // unavailable, outofstock, available
+    text: 'Out of stock'
+  }
+}
+
 module.exports.addToCart = {
   success: false,
   errorMessage: 'Error',

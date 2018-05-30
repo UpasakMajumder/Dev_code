@@ -30,7 +30,7 @@ class ProductDetail extends Component {
       info: ImmutablePropTypes.map,
       estimates: ImmutablePropTypes.map,
       dynamicPrices: ImmutablePropTypes.map,
-      availability: ImmutablePropTypes.map,
+      availability: PropTypes.string,
       packagingInfo: PropTypes.string,
       quantityText: PropTypes.string,
       addToCart: ImmutablePropTypes.mapContains({
@@ -79,7 +79,11 @@ class ProductDetail extends Component {
       quantity: this.props.ui.getIn(['addToCart', 'quantity'], 1),
       isLoading: false,
       optionsError: false,
-      quanityError: ''
+      quanityError: '',
+      availability: Immutable.Map({
+        type: '',
+        text: ''
+      })
     };
   }
 
@@ -301,7 +305,7 @@ class ProductDetail extends Component {
             </div>
             <div className="product-view__footer">
               <Stock
-                availability={ui.get('availability')}
+                availability={this.state.availability}
               />
               {packagingInfoComponent}
               <Proceed

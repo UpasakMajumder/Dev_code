@@ -4,27 +4,36 @@ import Immutable from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 /* component */
 import SVG from 'app.dump/SVG';
+import Spinner from 'app.dump/Spinner';
 
-const Table = ({ availability }) => {
+const Stock = ({ availability }) => {
   if (!availability) return null;
   const type = availability.get('type');
+  let content = <div className="stock__spinner"><Spinner /></div>;
 
-  return (
-    <div className={`stock mr-3 stock--${type}`}>
+  if (type) {
+    content = [
       <SVG
         name={`stock--${type}`}
         className="icon-stock"
-      />
-      {availability.get('text')}
+        key={0}
+      />,
+      <span key={1}>availability.get('text')</span>
+    ]
+  }
+
+  return (
+    <div className={`stock mr-3 stock--${type}`}>
+      {content}
     </div>
   );
 };
 
-Table.propTypes = {
+Stock.propTypes = {
   availability: ImmutablePropTypes.mapContains({
-    type: PropTypes.oneOf(['unavailable', 'outofstock', 'available']).isRequired,
-    text: PropTypes.string.isRequired
+    type: PropTypes.oneOf(['unavailable', 'outofstock', 'available']),
+    text: PropTypes.string
   })
 };
 
-export default Table;
+export default Stock;
