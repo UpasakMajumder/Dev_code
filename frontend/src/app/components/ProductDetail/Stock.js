@@ -18,8 +18,8 @@ const Stock = ({ availability }) => {
         className="icon-stock"
         key={0}
       />,
-      <span key={1}>availability.get('text')</span>
-    ]
+      <span key={1}>{availability.get('text')}</span>
+    ];
   }
 
   return (
@@ -31,7 +31,7 @@ const Stock = ({ availability }) => {
 
 Stock.propTypes = {
   availability: ImmutablePropTypes.mapContains({
-    type: PropTypes.oneOf(['unavailable', 'outofstock', 'available']),
+    type: PropTypes.oneOf(['unavailable', 'outofstock', 'available', '']),
     text: PropTypes.string
   })
 };

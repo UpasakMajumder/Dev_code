@@ -80,12 +80,43 @@ class ProductDetail extends Component {
       isLoading: false,
       optionsError: false,
       quanityError: '',
-      availability: Immutable.Map({
-        type: '',
-        text: ''
-      })
+      availability: null
     };
   }
+
+  componentDidMount() {
+    const getAvailabilityUrl = this.props.ui.get('availability');
+    if (getAvailabilityUrl) {
+      this.setState({
+        availability: Immutable.Map({ type: '', text: '' })
+      }, () => {
+        this.getAvailability(getAvailabilityUrl);
+      });
+    }
+  }
+
+  getAvailability = async () => {
+    try {
+      const availability = this.state.availability
+          .set('type', '')
+          .set('text', '');
+      this.setState({ availability, isLoading: true });
+      const response = await axios.get(this.props.ui.get('availability'));
+      const { success, payload, errorMessage } = response.data;
+      if (success) {
+        const availability = this.state.availability
+          .set('type', payload.type)
+          .set('text', payload.text);
+        this.setState({ availability });
+      } else {
+        window.store.dispatch({ type: FAILURE, alert: errorMessage });
+      }
+    } catch (e) {
+      window.store.dispatch({ type: FAILURE });
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  };
 
   isValid = () => {
     const { ui } = this.props;
@@ -205,6 +236,7 @@ class ProductDetail extends Component {
 
         // show notification
         toggleDialogAlert(true, confirmation.alertMessage, closeDialog, confirmBtn);
+        this.getAvailability();
       })
       .catch(() => {
         window.store.dispatch({ type: CART_PREVIEW_CHANGE_ITEMS + FAILURE });

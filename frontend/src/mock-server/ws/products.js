@@ -302,59 +302,59 @@ module.exports.availability = {
 }
 
 module.exports.addToCart = {
-  success: false,
+  success: true,
   errorMessage: 'Error',
-  // payload: {
-  //   "cartPreview": {
-  //     "summaryPrice": {
-  //       "pricePrefix": "$",
-  //       "price": "500.0"
-  //     },
-  //     "cart": {
-  //       "label": "Proceed to checkout",
-  //       "url": "/checkout"
-  //     },
-  //     "items": [
-  //       {
-  //         "id": 33,
-  //         "image": "http://satyr.io/50-200x100-300/1",
-  //         "template": "Template",
-  //         "templatePrefix": "💚",
-  //         "isMailingList": false,
-  //         "mailingList": "Mailing list",
-  //         "pricePrefix": "$",
-  //         "price": "112.2",
-  //         "unitOfMeasure": "pc",
-  //         "quantityPrefix": "Quantity:",
-  //         "quantity": 11
-  //       },
-  //       {
-  //         "id": 34,
-  //         "image": "http://satyr.io/50-200x100-300/2",
-  //         "template": "Template",
-  //         "templatePrefix": "👌",
-  //         "isMailingList": true,
-  //         "mailingList": "Mailing list",
-  //         "pricePrefix": "$",
-  //         "price": "112.2",
-  //         "unitOfMeasure": "pc",
-  //         "quantityPrefix": "Quantity:",
-  //         "quantity": 15
-  //       }
-  //     ]
-  //   },
-  //   "confirmation": {
-  //     "alertMessage": "Your selected product(s) have been added to the shopping cart. Please select an option below",
-  //     "btns": {
-  //       "cancel": {
-  //         "text": "Continue Shopping",
-  //         "url": "/product"
-  //       },
-  //       "checkout": {
-  //         "text": "Checkout",
-  //         "url": "/checkout"
-  //       }
-  //     }
-  //   }
-  // }
+  payload: {
+    "cartPreview": {
+      "summaryPrice": {
+        "pricePrefix": "$",
+        "price": "500.0"
+      },
+      "cart": {
+        "label": "Proceed to checkout",
+        "url": "/checkout"
+      },
+      "items": [
+        {
+          "id": 33,
+          "image": "http://satyr.io/50-200x100-300/1",
+          "template": "Template",
+          "templatePrefix": "💚",
+          "isMailingList": false,
+          "mailingList": "Mailing list",
+          "pricePrefix": "$",
+          "price": "112.2",
+          "unitOfMeasure": "pc",
+          "quantityPrefix": "Quantity:",
+          "quantity": 11
+        },
+        {
+          "id": 34,
+          "image": "http://satyr.io/50-200x100-300/2",
+          "template": "Template",
+          "templatePrefix": "👌",
+          "isMailingList": true,
+          "mailingList": "Mailing list",
+          "pricePrefix": "$",
+          "price": "112.2",
+          "unitOfMeasure": "pc",
+          "quantityPrefix": "Quantity:",
+          "quantity": 15
+        }
+      ]
+    },
+    "confirmation": {
+      "alertMessage": "Your selected product(s) have been added to the shopping cart. Please select an option below",
+      "btns": {
+        "cancel": {
+          "text": "Continue Shopping",
+          "url": "/product"
+        },
+        "checkout": {
+          "text": "Checkout",
+          "url": "/checkout"
+        }
+      }
+    }
+  }
 };
