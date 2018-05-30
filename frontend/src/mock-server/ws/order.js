@@ -729,23 +729,19 @@ module.exports.detail =  {
       "actions": {
         "accept": {
           "button": "Accept Order",
-          "dialog": {
-            "title": "Confirm Order",
-            "text": "You selected 'Accept Order' click 'Accept Order' if you wish to process the order.",
-            "cancelButton": "Cancel",
-            "proceedButton": "Accept Order",
-            "proceedUrl": "http://localhost:3000/api/order/detail/accept"
-          }
+          "proceedUrl": "http://localhost:3000/api/order/detail/accept"
         },
         "reject": {
           "button": "Reject Order",
+          "proceedUrl": "http://localhost:3000/api/order/detail/reject",
           "dialog": {
-            "title": "Reject Order",
-            "text": "Type in your explanation for denial (optional)",
+            "title": "Are you sure?",
             "cancelButton": "Cancel",
-            "proceedButton": "Reject Order",
-            "proceedUrl": "http://localhost:3000/api/order/detail/reject"
+            "proceedButton": "Reject Order"
           }
+        },
+        "comment": {
+          "title": "Comment"
         }
       }
     }
