@@ -7,6 +7,7 @@ using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Models;
+using System.Linq;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -14,8 +15,8 @@ namespace Kadena.Tests.BusinessLogic
     {
         public static IEnumerable<object[]> GetDependencies()
         {
-            yield return new object[] {
-                null,
+            var dependencies = new object[] {
+                new Mock<IKenticoPermissionsProvider>().Object,
                 new Mock<IKenticoLocalizationProvider>().Object,
                 new Mock<IKenticoSiteProvider>().Object,
                 new Mock<IKenticoUserProvider>().Object,
@@ -24,76 +25,20 @@ namespace Kadena.Tests.BusinessLogic
                 new Mock<IKenticoAddressBookProvider>().Object,
                 new Mock<IDialogService>().Object,
             };
-            yield return new object[] {
-                new Mock<IKenticoPermissionsProvider>().Object,
-                null,
-                new Mock<IKenticoSiteProvider>().Object,
-                new Mock<IKenticoUserProvider>().Object,
-                new Mock<IKenticoCustomerProvider>().Object,
-                new Mock<IKenticoResourceService>().Object,
-                new Mock<IKenticoAddressBookProvider>().Object,
-                new Mock<IDialogService>().Object,
-            };
-            yield return new object[] {
-                new Mock<IKenticoPermissionsProvider>().Object,
-                new Mock<IKenticoLocalizationProvider>().Object,
-                null,
-                new Mock<IKenticoUserProvider>().Object,
-                new Mock<IKenticoCustomerProvider>().Object,
-                new Mock<IKenticoResourceService>().Object,
-                new Mock<IKenticoAddressBookProvider>().Object,
-                new Mock<IDialogService>().Object,
-            };
-            yield return new object[] {
-                new Mock<IKenticoPermissionsProvider>().Object,
-                new Mock<IKenticoLocalizationProvider>().Object,
-                new Mock<IKenticoSiteProvider>().Object,
-                null,
-                new Mock<IKenticoCustomerProvider>().Object,
-                new Mock<IKenticoResourceService>().Object,
-                new Mock<IKenticoAddressBookProvider>().Object,
-                new Mock<IDialogService>().Object,
-            };
-            yield return new object[] {
-                new Mock<IKenticoPermissionsProvider>().Object,
-                new Mock<IKenticoLocalizationProvider>().Object,
-                new Mock<IKenticoSiteProvider>().Object,
-                new Mock<IKenticoUserProvider>().Object,
-                null,
-                new Mock<IKenticoResourceService>().Object,
-                new Mock<IKenticoAddressBookProvider>().Object,
-                new Mock<IDialogService>().Object,
-            };
-            yield return new object[] {
-                new Mock<IKenticoPermissionsProvider>().Object,
-                new Mock<IKenticoLocalizationProvider>().Object,
-                new Mock<IKenticoSiteProvider>().Object,
-                new Mock<IKenticoUserProvider>().Object,
-                new Mock<IKenticoCustomerProvider>().Object,
-                null,
-                new Mock<IKenticoAddressBookProvider>().Object,
-                new Mock<IDialogService>().Object,
-            };
-            yield return new object[] {
-                new Mock<IKenticoPermissionsProvider>().Object,
-                new Mock<IKenticoLocalizationProvider>().Object,
-                new Mock<IKenticoSiteProvider>().Object,
-                new Mock<IKenticoUserProvider>().Object,
-                new Mock<IKenticoCustomerProvider>().Object,
-                new Mock<IKenticoResourceService>().Object,
-                null,
-                new Mock<IDialogService>().Object,
-            };
-            yield return new object[] {
-                new Mock<IKenticoPermissionsProvider>().Object,
-                new Mock<IKenticoLocalizationProvider>().Object,
-                new Mock<IKenticoSiteProvider>().Object,
-                new Mock<IKenticoUserProvider>().Object,
-                new Mock<IKenticoCustomerProvider>().Object,
-                new Mock<IKenticoResourceService>().Object,
-                new Mock<IKenticoAddressBookProvider>().Object,
-                null,
-            };
+
+            foreach (var dep in dependencies)
+            {
+                yield return dependencies
+                    .Select(d =>
+                    {
+                        if (d.Equals(dep))
+                        {
+                            return null;
+                        }
+                        return d;
+                    })
+                    .ToArray();
+            }
         }
 
         [Theory(DisplayName = "SettingsService()")]

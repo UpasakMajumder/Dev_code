@@ -6,6 +6,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
 using Kadena.Models;
 using Kadena.BusinessLogic.Contracts;
+using System.Linq;
 
 namespace Kadena.Tests.BusinessLogic.Factories.Checkout
 {
@@ -13,30 +14,26 @@ namespace Kadena.Tests.BusinessLogic.Factories.Checkout
     {
         public static IEnumerable<object[]> GetDependencies()
         {
-            yield return new object[] {
-                null,
+            var dependencies = new object[] {
+                new Mock<IKenticoResourceService>().Object,
                 new Mock<IKenticoDocumentProvider>().Object,
                 new Mock<IKenticoLocalizationProvider>().Object,
                 new Mock<IDialogService>().Object,
             };
-            yield return new object[] {
-                new Mock<IKenticoResourceService>().Object,
-                null,
-                new Mock<IKenticoLocalizationProvider>().Object,
-                new Mock<IDialogService>().Object,
-            };
-            yield return new object[] {
-                new Mock<IKenticoResourceService>().Object,
-                new Mock<IKenticoDocumentProvider>().Object,
-                null,
-                new Mock<IDialogService>().Object,
-            };
-            yield return new object[] {
-                new Mock<IKenticoResourceService>().Object,
-                new Mock<IKenticoDocumentProvider>().Object,
-                new Mock<IKenticoLocalizationProvider>().Object,
-                null,
-            };
+
+            foreach (var dep in dependencies)
+            {
+                yield return dependencies
+                    .Select(d =>
+                    {
+                        if (d.Equals(dep))
+                        {
+                            return null;
+                        }
+                        return d;
+                    })
+                    .ToArray();
+            }
         }
 
         [Theory(DisplayName = "CheckoutPageFactory()")]

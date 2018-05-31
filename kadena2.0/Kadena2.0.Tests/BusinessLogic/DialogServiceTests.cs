@@ -3,6 +3,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Kadena.Tests.BusinessLogic
@@ -11,14 +12,24 @@ namespace Kadena.Tests.BusinessLogic
     {
         public static IEnumerable<object[]> GetDependencies()
         {
-            yield return new object[] {
-                null,
+            var dependencies = new object[] {
+                new Mock<IKenticoResourceService>().Object,
                 new Mock<IKenticoLocalizationProvider>().Object
             };
-            yield return new object[] {
-                new Mock<IKenticoResourceService>().Object,
-                null
-            };
+
+            foreach (var dep in dependencies)
+            {
+                yield return dependencies
+                    .Select(d =>
+                    {
+                        if (d.Equals(dep))
+                        {
+                            return null;
+                        }
+                        return d;
+                    })
+                    .ToArray();
+            }
         }
 
         [Theory(DisplayName = "DialogService()")]
