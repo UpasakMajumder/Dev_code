@@ -13,13 +13,6 @@ namespace Kadena.BusinessLogic.Services.Approval
 {
     public class ApprovalService : IApprovalService
     {
-        struct ApprovalServiceCallResult
-        {
-            public bool Success;
-            public string Error;
-            public string NewStatus;
-        }
-
         private readonly IApproverService approvers;
         private readonly IApprovalServiceClient approvalClient;
         private readonly IKenticoUserProvider users;
@@ -46,43 +39,29 @@ namespace Kadena.BusinessLogic.Services.Approval
         {
             CheckIsCustomersApprover(customerId, customerName);
             var approveRequest = GetApprovalData(orderId, customerId, customerName, ApprovalState.Approved, note);
-            var response = await CallApprovalService(approveRequest, ApprovalState.Approved);
-            if (response.Success)
+            await CallApprovalService(approveRequest, ApprovalState.Approved);
+            return new ApprovalResult
             {
-                return new ApprovalResult
-                {
-                    Title = kenticoResource.GetResourceString("Kadena.Order.Approve.Success.ToastTitle"),
-                    Text = kenticoResource.GetResourceString("Kadena.Order.Approve.Success.ToastMessage"),
-                    NewStatus = kenticoOrderProvider.MapOrderStatus(OrderStatus.Approved.GetDisplayName())
-                };
-            }
-            else
-            {
-                throw new ApprovalServiceException(response.Error);
-            }
+                Title = kenticoResource.GetResourceString("Kadena.Order.Approve.Success.ToastTitle"),
+                Text = kenticoResource.GetResourceString("Kadena.Order.Approve.Success.ToastMessage"),
+                NewStatus = kenticoOrderProvider.MapOrderStatus(OrderStatus.Approved.GetDisplayName())
+            };
         }
 
         public async Task<ApprovalResult> RejectOrder(string orderId, int customerId, string customerName, string rejectionNote = "")
         {
             CheckIsCustomersApprover(customerId, customerName);
             var approveRequest = GetApprovalData(orderId, customerId, customerName, ApprovalState.ApprovalRejected, rejectionNote);
-            var response = await CallApprovalService(approveRequest, ApprovalState.ApprovalRejected);
-            if (response.Success)
+            await CallApprovalService(approveRequest, ApprovalState.ApprovalRejected);
+            return new ApprovalResult
             {
-                return new ApprovalResult
-                {
-                    Title = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastTitle"),
-                    Text = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastMessage"),
-                    NewStatus = kenticoOrderProvider.MapOrderStatus(OrderStatus.ApprovalRejected.GetDisplayName())
-                };
-            }
-            else
-            {
-                throw new ApprovalServiceException(response.Error);
-            }
+                Title = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastTitle"),
+                Text = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastMessage"),
+                NewStatus = kenticoOrderProvider.MapOrderStatus(OrderStatus.ApprovalRejected.GetDisplayName())
+            };
         }
 
-        async Task<ApprovalServiceCallResult> CallApprovalService(ApprovalRequestDto request, ApprovalState approvalState)
+        async Task CallApprovalService(ApprovalRequestDto request, ApprovalState approvalState)
         {
             var microserviceResult = await approvalClient.Approval(request).ConfigureAwait(false);
 
@@ -90,22 +69,20 @@ namespace Kadena.BusinessLogic.Services.Approval
             {
                 var message = $"Error processing order '{request?.OrderId}' - Failed to call approval microservice. {microserviceResult.ErrorMessages}";
                 log.LogError(approvalState.GetDisplayName(), message);
-                return new ApprovalServiceCallResult { Success = false, Error = message };
+                throw new ApprovalServiceException(message);
             }
 
             if (microserviceResult.Payload != approvalState.ToString())
             {
                 var message = $"Error processing order '{request?.OrderId}' - Approval microservice returned unexpected state {microserviceResult.Payload}";
                 log.LogError(approvalState.GetDisplayName(), message);
-                return new ApprovalServiceCallResult { Success = false, Error = message };
+                throw new ApprovalServiceException(message);
             }
 
             var note = request.Approvals?[0]?.Note;
             var noteLog = string.IsNullOrEmpty(note) ? null : $"Approver's note: {note}";
 
             log.LogInfo(approvalState.GetDisplayName(), "Info", $"Order '{request.OrderId}' successfully processed, approval status : {microserviceResult.Payload}. {noteLog}");
-
-            return new ApprovalServiceCallResult { Success = true, NewStatus = microserviceResult.Payload };
         }
 
         void CheckIsCustomersApprover(int customerId, string customerName)
