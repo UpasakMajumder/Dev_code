@@ -179,6 +179,7 @@
     <Compile Include="Settings\LocalizationDto.cs" />
     <Compile Include="Settings\PageButtonDto.cs" />
     <Compile Include="Settings\SettingsAddressesDto.cs" />
+    <Compile Include="Shipping\TrackingInfoDto.cs" />
     <Compile Include="Site\Responses\ArtworkFtpResponseDto.cs" />
     <Compile Include="Site\Requests\SiteDataRequestDto.cs" />
     <Compile Include="Site\Responses\FtpCredentialsDto.cs" />
@@ -233,6 +234,7 @@
     <Compile Include="ViewOrder\MicroserviceResponses\OrderItemDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\PaymentInfoDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\ShippingInfoDTO.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\TrackingInfoDto.cs" />
     <Compile Include="ViewOrder\Responses\AddressDto.cs" />
     <Compile Include="ViewOrder\Responses\CommonInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderActionsDTO.cs" />
@@ -246,7 +248,6 @@
     <Compile Include="ViewOrder\Responses\PricingInfoItemDTO.cs" />
     <Compile Include="ViewOrder\Responses\ShippingInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\TitleValuePairDto.cs" />
-    <Compile Include="ViewOrder\Responses\TrackingDTO.cs" />
     <Compile Include="_Attributes\StringListValidationAttribute.cs" />
     <Compile Include="_Common\DialogButtonDTO.cs" />
     <Compile Include="_Common\DialogDTO.cs" />

@@ -36,7 +36,6 @@ const Order = ({
   template,
   mailingList,
   shippingDate,
-  trackingId,
   price,
   quantityPrefix,
   quantity,
@@ -45,7 +44,8 @@ const Order = ({
   quantityShipped,
   mailingListPrefix,
   shippingDatePrefix,
-  trackingIdPrefix,
+  trackingPrefix,
+  tracking,
   templatePrefix,
   productStatusPrefix,
   productStatus,
@@ -72,14 +72,30 @@ const Order = ({
     </div>
     : null;
 
-  const trackingElement = trackingId
-    ? <div className="cart-product__tracking">
-      <p>
+  const getTrackingElement = () => {
+    if (!tracking || !tracking.length) return null;
+
+
+    const tracks = tracking.map((track, index) => {
+      const prefix = index === 0 ? ' ' : ', ';
+      let id;
+      if (track.url) {
+        id = <a target="_blank" href={track.url} className="link" >{track.id}</a>;
+      } else {
+        id = track.id;
+      }
+
+      return <strong key={index}>{prefix}{id}</strong>;
+    });
+
+
+    return (
+      <div className="cart-product__tracking">
         <SVG name="location"/>
-        <span>{trackingIdPrefix}: <strong>{trackingId}</strong></span>
-      </p>
-    </div>
-    : null;
+        <span>{trackingPrefix}: {tracks}</span>
+      </div>
+    );
+  };
 
   const shippingElement = shippingDate
     ? <div className="cart-product__tracking">
@@ -126,7 +142,7 @@ const Order = ({
         </div>
 
         {mailingListElement}
-        {trackingElement}
+        {getTrackingElement()}
         {shippingElement}
         {shippingElementFixed}
 
@@ -158,10 +174,13 @@ Order.propTypes = {
   downloadPdfURL: PropTypes.string,
   shippingDate: PropTypes.string,
   mailingList: PropTypes.string,
-  trackingId: PropTypes.string,
+  trackingPrefix: PropTypes.string.isRequired,
+  tracking: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    url: PropTypes.string
+  })),
   mailingListPrefix: PropTypes.string.isRequired,
   shippingDatePrefix: PropTypes.string.isRequired,
-  trackingIdPrefix: PropTypes.string.isRequired,
   templatePrefix: PropTypes.string.isRequired,
   productStatusPrefix: PropTypes.string.isRequired,
   productStatus: PropTypes.string.isRequired,
