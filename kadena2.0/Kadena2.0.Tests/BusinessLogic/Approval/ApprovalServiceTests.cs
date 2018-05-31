@@ -34,7 +34,7 @@ namespace Kadena.Tests.BusinessLogic.Approval
             Verify<IApprovalServiceClient>(s => s.Approval(It.Is<ApprovalRequestDto>(req => req.ApproversCount == 1 &&
                                                                                             req.OrderId == orderId &&
                                                                                             req.Approvals.Length == 1 &&
-                                                                                            req.Approvals[0].State == ApprovalState.Approved &&
+                                                                                            req.Approvals[0].State == (int)ApprovalState.Approved &&
                                                                                             req.Approvals[0].Customer.Id == customerId &&
                                                                                             req.Approvals[0].Customer.Name == customerName
                                                                                             )), Times.Once);
@@ -104,7 +104,7 @@ namespace Kadena.Tests.BusinessLogic.Approval
             Verify<IApprovalServiceClient>(s => s.Approval(It.Is<ApprovalRequestDto>(req => req.ApproversCount == 1 &&
                                                                                             req.OrderId == orderId &&
                                                                                             req.Approvals.Length == 1 &&
-                                                                                            req.Approvals[0].State == ApprovalState.Rejected &&
+                                                                                            req.Approvals[0].State == (int)ApprovalState.Rejected &&
                                                                                             req.Approvals[0].Customer.Id == customerId &&
                                                                                             req.Approvals[0].Customer.Name == customerName &&
                                                                                             req.Approvals[0].Note == rejectNote

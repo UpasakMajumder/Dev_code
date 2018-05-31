@@ -29,8 +29,8 @@ namespace Kadena.BusinessLogic.Services.Approval
         private readonly IKenticoResourceService kenticoResource;
 
         public ApprovalService(IApproverService approvers,
-                               IApprovalServiceClient approvalClient, 
-                               IKenticoUserProvider users, 
+                               IApprovalServiceClient approvalClient,
+                               IKenticoUserProvider users,
                                IKenticoLogger log,
                                IKenticoOrderProvider kenticoOrderProvider,
                                IKenticoResourceService kenticoResource)
@@ -104,7 +104,7 @@ namespace Kadena.BusinessLogic.Services.Approval
             var note = request.Approvals?[0]?.Note;
             var noteLog = string.IsNullOrEmpty(note) ? null : $"Approver's note: {note}";
 
-            log.LogInfo(operationName,"Info", $"Order '{request.OrderId}' successfully processed, approval status : {microserviceResult.Payload}. {noteLog}");
+            log.LogInfo(operationName, "Info", $"Order '{request.OrderId}' successfully processed, approval status : {microserviceResult.Payload}. {noteLog}");
 
             return new ApprovalServiceCallResult { Success = true, NewStatus = microserviceResult.Payload };
         }
@@ -119,7 +119,7 @@ namespace Kadena.BusinessLogic.Services.Approval
             }
         }
 
-        private ApprovalRequestDto GetApprovalData(string orderId, int customerId, string customerName, int state, string rejectionNote)
+        private ApprovalRequestDto GetApprovalData(string orderId, int customerId, string customerName, ApprovalState state, string rejectionNote)
         {
             return new ApprovalRequestDto
             {
@@ -135,7 +135,7 @@ namespace Kadena.BusinessLogic.Services.Approval
                             Name = customerName,
                         },
                         Note = rejectionNote,
-                        State = state
+                        State = (int)state
                     }
                 }
             };
