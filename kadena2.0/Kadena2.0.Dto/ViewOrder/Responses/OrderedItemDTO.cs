@@ -1,5 +1,6 @@
 ﻿using Kadena.Dto.Checkout;
 using Kadena.Dto.Common;
+using Kadena.Dto.Shipping;
 using System.Collections.Generic;
 
 namespace Kadena.Dto.ViewOrder.Responses
@@ -14,8 +15,8 @@ namespace Kadena.Dto.ViewOrder.Responses
         public string MailingList { get; set; }
         public string ShippingDatePrefix { get; set; }
         public string ShippingDate { get; set; }
-        public string TrackingIdPrefix { get; set; }
-        public string TrackingId { get; set; }
+        public string TrackingPrefix { get; set; }
+        public IEnumerable<TrackingInfoDto> Tracking { get; set; }
         public string Price { get; set; }
         public string QuantityPrefix { get; set; }
         public string QuantityShippedPrefix { get; set; }
