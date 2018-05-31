@@ -10,7 +10,7 @@ namespace Kadena.Dto.ViewOrder.MicroserviceResponses
         public int Quantity { get; set; }
         public int QuantityShipped { get; set; }
         public string UnitOfMeasure { get; set; }
-        public string TrackingId { get; set; }
+        public IEnumerable<TrackingInfoDto> TrackingInfoList { get; set; }
         public string Name { get; set; }
         public string MailingList { get; set; }
         public string FileKey { get; set; }
