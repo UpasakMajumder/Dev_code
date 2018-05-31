@@ -2,7 +2,6 @@
 using System;
 using Xunit;
 using Moq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Kadena.BusinessLogic.Contracts.Approval;
@@ -11,8 +10,7 @@ using Kadena.WebAPI.Infrastructure.Communication;
 using Kadena.Dto.Approval.Responses;
 using Kadena.Dto.Approval.Requests;
 using AutoMapper;
-using Kadena.Container.Default;
-using Kadena.Models.Approval;
+using System.Linq;
 
 namespace Kadena.Tests.WebApi
 {
@@ -20,16 +18,17 @@ namespace Kadena.Tests.WebApi
     {
         public static IEnumerable<object[]> GetDependencies()
         {
-            yield return new object[]
-                {
-                    null,
-                    new Mock<IMapper>().Object,
-                };
-            yield return new object[]
-                {
-                    new Mock<IApprovalService>().Object,
-                    null,
-                };
+            var dependencies = new object[] {
+                new Mock<IApprovalService>().Object,
+                new Mock<IMapper>().Object
+            };
+
+            foreach (var dep in dependencies)
+            {
+                yield return dependencies
+                    .Select(d => d.Equals(dep) ? null : dep)
+                    .ToArray();
+            }
         }
 
         [Theory(DisplayName = "ApprovalController()")]

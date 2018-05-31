@@ -10,31 +10,26 @@ using AutoMapper;
 using System;
 using System.Collections.Generic;
 using Kadena.Dto.ViewOrder.Responses;
+using System.Linq;
 
 namespace Kadena.Tests.WebApi
 {
-    public class RecentOrdersControllerTests: KadenaUnitTest<RecentOrdersController>
+    public class RecentOrdersControllerTests : KadenaUnitTest<RecentOrdersController>
     {
         public static IEnumerable<object[]> GetDependencies()
         {
-            yield return new object[]
-                {
-                    null,
-                    new Mock<IOrderListServiceFactory>().Object,
-                    new Mock<IMapper>().Object
-                };
-            yield return new object[]
-                {
-                    new Mock<IOrderDetailService>().Object,
-                    null,
-                    new Mock<IMapper>().Object
-                };
-            yield return new object[]
-                {
-                    new Mock<IOrderDetailService>().Object,
-                    new Mock<IOrderListServiceFactory>().Object,
-                    null,
-                };
+            var dependencies = new object[] {
+                new Mock<IOrderDetailService>().Object,
+                new Mock<IOrderListServiceFactory>().Object,
+                new Mock<IMapper>().Object
+            };
+
+            foreach (var dep in dependencies)
+            {
+                yield return dependencies
+                    .Select(d => d.Equals(dep) ? null : dep)
+                    .ToArray();
+            }
         }
 
         [Theory(DisplayName = "RecentOrdersController()")]
