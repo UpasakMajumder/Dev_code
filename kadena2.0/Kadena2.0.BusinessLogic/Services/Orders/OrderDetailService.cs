@@ -131,6 +131,10 @@ namespace Kadena.BusinessLogic.Services.Orders
                                 ProceedButton = resources.GetResourceString("Kadena.Order.DialogReject.Proceed"),
                                 Title = resources.GetResourceString("Kadena.Order.DialogReject.Title")
                             }
+                        },
+                        Comment = new TitleValuePair<string>
+                        {
+                            Title = resources.GetResourceString("Kadena.Order.Comment.Title")
                         }
                     }
                     : null,
