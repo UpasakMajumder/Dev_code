@@ -62,7 +62,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.kenticoOrder = kenticoOrder ?? throw new ArgumentNullException(nameof(kenticoOrder));
             this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
             this.products = products ?? throw new ArgumentNullException(nameof(products));
-            this.kenticoCustomers = kenticoCustomers?? throw new ArgumentNullException(nameof(kenticoCustomers));
+            this.kenticoCustomers = kenticoCustomers ?? throw new ArgumentNullException(nameof(kenticoCustomers));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.mailingClient = mailingClient ?? throw new ArgumentNullException(nameof(mailingClient));
             this.kenticoLog = kenticoLog ?? throw new ArgumentNullException(nameof(kenticoLog));
@@ -119,24 +119,16 @@ namespace Kadena.BusinessLogic.Services.Orders
                         Accept = new DialogButton
                         {
                             Button = resources.GetResourceString("Kadena.Order.ButtonAccept"),
-                            Dialog = new Dialog
-                            {
-                                CancelButton = resources.GetResourceString("Kadena.Order.DialogAccept.Cancel"),
-                                ProceedButton = resources.GetResourceString("Kadena.Order.DialogAccept.Proceed"),
-                                ProceedUrl = '/' + Routes.Order.Approve,
-                                Text = resources.GetResourceString("Kadena.Order.DialogAccept.Message"),
-                                Title = resources.GetResourceString("Kadena.Order.DialogAccept.Title")
-                            }
+                            ProceedUrl = '/' + Routes.Order.Approve,
                         },
                         Reject = new DialogButton
                         {
                             Button = resources.GetResourceString("Kadena.Order.ButtonReject"),
+                            ProceedUrl = '/' + Routes.Order.Reject,
                             Dialog = new Dialog
                             {
                                 CancelButton = resources.GetResourceString("Kadena.Order.DialogReject.Cancel"),
                                 ProceedButton = resources.GetResourceString("Kadena.Order.DialogReject.Proceed"),
-                                ProceedUrl = '/' + Routes.Order.Reject,
-                                Text = resources.GetResourceString("Kadena.Order.DialogReject.Message"),
                                 Title = resources.GetResourceString("Kadena.Order.DialogReject.Title")
                             }
                         }
@@ -289,7 +281,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 {
                     Id = i.SkuId,
                     Image = imageService.GetThumbnailLink(products.GetSkuImageUrl(i.SkuId)),
-                    DownloadPdfURL =  GetPdfUrl(orderId, i, templatedProduct),
+                    DownloadPdfURL = GetPdfUrl(orderId, i, templatedProduct),
                     MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
                     Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
                     UnitOfMeasure = units.GetDisplaynameByCode(i.UnitOfMeasure),

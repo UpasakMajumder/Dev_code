@@ -27,7 +27,7 @@ namespace Kadena.Tests.WebApi
             foreach (var dep in dependencies)
             {
                 yield return dependencies
-                    .Select(d => d.Equals(dep) ? null : dep)
+                    .Select(d => d.Equals(dep) ? null : d)
                     .ToArray();
             }
         }

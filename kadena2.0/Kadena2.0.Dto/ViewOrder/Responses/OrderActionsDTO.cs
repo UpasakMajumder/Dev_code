@@ -6,5 +6,6 @@ namespace Kadena.Dto.ViewOrder.Responses
     {
         public DialogButtonDTO Accept { get; set; }
         public DialogButtonDTO Reject { get; set; }
+        public TitleValuePairDto<string> Comment { get; set; }
     }
 }
