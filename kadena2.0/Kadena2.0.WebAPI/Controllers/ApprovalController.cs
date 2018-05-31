@@ -27,7 +27,7 @@ namespace Kadena.WebAPI.Controllers
         [Route(Routes.Order.Approve)]
         public async Task<IHttpActionResult> Approve([FromBody]ApprovalRequestDto request)
         {
-            var approveResult = await service.ApproveOrder(request.OrderId, request.CustomerId, request.CustomerName);
+            var approveResult = await service.ApproveOrder(request.OrderId, request.CustomerId, request.CustomerName, request.RejectionNote);
             var result = mapper.Map<ApprovalResultDto>(approveResult);
             return ResponseJson(result);
         }

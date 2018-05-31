@@ -8,7 +8,7 @@ namespace Kadena.BusinessLogic.Contracts.Approval
     /// </summary>
     public interface IApprovalService
     {
-        Task<ApprovalResult> ApproveOrder(string orderId, int customerId, string customerName);
+        Task<ApprovalResult> ApproveOrder(string orderId, int customerId, string customerName, string note = "");
         Task<ApprovalResult> RejectOrder(string orderId, int customerId, string customerName, string rejectionNote = "");
     }
 }

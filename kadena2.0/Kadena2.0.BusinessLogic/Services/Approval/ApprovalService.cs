@@ -43,10 +43,10 @@ namespace Kadena.BusinessLogic.Services.Approval
             this.kenticoResource = kenticoResource ?? throw new ArgumentNullException(nameof(kenticoResource));
         }
 
-        public async Task<ApprovalResult> ApproveOrder(string orderId, int customerId, string customerName)
+        public async Task<ApprovalResult> ApproveOrder(string orderId, int customerId, string customerName, string note = "")
         {
             CheckIsCustomersApprover(customerId, customerName);
-            var approveRequest = GetApprovalData(orderId, customerId, customerName, ApprovalState.Approved);
+            var approveRequest = GetApprovalData(orderId, customerId, customerName, ApprovalState.Approved, note);
             var response = await CallApprovalService(approveRequest, "ApproveOrder", ApprovalResponseDto.Approved);
             if (response.Success)
             {
@@ -119,7 +119,7 @@ namespace Kadena.BusinessLogic.Services.Approval
             }
         }
 
-        private ApprovalRequestDto GetApprovalData(string orderId, int customerId, string customerName, int state, string rejectionNote = "")
+        private ApprovalRequestDto GetApprovalData(string orderId, int customerId, string customerName, int state, string rejectionNote)
         {
             return new ApprovalRequestDto
             {
@@ -140,6 +140,5 @@ namespace Kadena.BusinessLogic.Services.Approval
                 }
             };
         }
-
     }
 }
