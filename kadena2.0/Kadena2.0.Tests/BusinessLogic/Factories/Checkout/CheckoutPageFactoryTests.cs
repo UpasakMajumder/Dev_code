@@ -24,14 +24,7 @@ namespace Kadena.Tests.BusinessLogic.Factories.Checkout
             foreach (var dep in dependencies)
             {
                 yield return dependencies
-                    .Select(d =>
-                    {
-                        if (d.Equals(dep))
-                        {
-                            return null;
-                        }
-                        return d;
-                    })
+                    .Select(d => d.Equals(dep) ? null : d)
                     .ToArray();
             }
         }
