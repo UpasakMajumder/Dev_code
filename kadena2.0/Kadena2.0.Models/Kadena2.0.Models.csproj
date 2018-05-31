@@ -73,6 +73,7 @@
     <Compile Include="OrderDetail\OrderStatusInfo.cs" />
     <Compile Include="Orders\Failed\FailedOrder.cs" />
     <Compile Include="Orders\OrderFilter.cs" />
+    <Compile Include="Orders\OrderNumber.cs" />
     <Compile Include="Orders\OrderReport.cs" />
     <Compile Include="Orders\OrderStatus.cs" />
     <Compile Include="ProductOptions\ProductCategory.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Checkout\SubmitButton.cs" />
     <Compile Include="Checkout\Total.cs" />
     <Compile Include="Checkout\Totals.cs" />
+    <Compile Include="Shipping\TrackingInfo.cs" />
     <Compile Include="SiteSettings\Permissions\PermissionModules.cs" />
     <Compile Include="SiteSettings\Permissions\ModulePermissions.cs" />
     <Compile Include="SiteSettings\Settings.General.cs" />
@@ -185,7 +187,6 @@
     <Compile Include="OrderDetail\PricingInfo.cs" />
     <Compile Include="OrderDetail\PricingInfoItem.cs" />
     <Compile Include="OrderDetail\ShippingInfo.cs" />
-    <Compile Include="OrderDetail\Tracking.cs" />
     <Compile Include="RecentOrders\OrderList.cs" />
     <Compile Include="Checkout\PaymentMethod.cs" />
     <Compile Include="Product\ProductCategoryLink.cs" />
