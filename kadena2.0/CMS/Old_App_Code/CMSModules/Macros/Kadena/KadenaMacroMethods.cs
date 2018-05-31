@@ -224,36 +224,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return DIContainer.Resolve<IProductsService>().CanDisplayAddToCartButton(productType, numberOfAvailableProducts, sellOnlyIfAvailable);
         }
 
-        [MacroMethod(typeof(string), "Gets formated and localized product availability string.", 1)]
-        [MacroMethodParam(0, "productType", typeof(string), "Current product type")]
-        [MacroMethodParam(1, "numberOfAvailableProducts", typeof(int), "NumberOfAvailableProducts")]
-        [MacroMethodParam(2, "unitOfMeasure", typeof(string), "Unit of measure")]
-        public static object GetAvailability(EvaluationContext context, params object[] parameters)
-        {
-            if (parameters.Length != 3)
-            {
-                throw new NotSupportedException();
-            }
-
-            var productType = (string)parameters[0];
-            var numberOfAvailableProducts = (int?)parameters[1];
-            var unitOfmeasure = (string)parameters[2];
-
-            if (string.IsNullOrEmpty(unitOfmeasure))
-            {
-                unitOfmeasure = UnitOfMeasure.DefaultUnit;
-            }
-
-            var availability = DIContainer.Resolve<IProductsService>()
-                .GetInventoryProductAvailability(productType, numberOfAvailableProducts, unitOfmeasure);
-
-            if (availability == null)
-            {
-                return "null";
-            }
-
-            return JsonConvert.SerializeObject(availability, CamelCaseSerializer);
-        }
 
         [MacroMethod(typeof(string), "Gets formated and localized product availability string.", 1)]
         [MacroMethodParam(0, "numberOfAvailableProducts", typeof(int), "NumberOfAvailableProducts")]

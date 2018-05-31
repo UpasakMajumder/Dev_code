@@ -538,7 +538,7 @@ config.localization.productDetail = {
           <property name="generatescripttags">True</property>
           <property name="hideonsubpages">False</property>
           <property name="inlinescript">
-            <![CDATA[config.localization.productDetail.availability = '/api/products/availability/{%DocumentID%}';]]>
+            <![CDATA[config.localization.productDetail.availability = '/api/products/availability/{%SKUID%}';]]>
           </property>
           <property name="inlinescriptpagelocation">Inline</property>
           <property name="instanceguid">5183328a-ac83-4eb6-a15d-509ee477f063</property>

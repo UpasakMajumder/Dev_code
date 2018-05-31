@@ -2,7 +2,6 @@
 {
     public class Sku
     {
-        public string ProductType { get; set; }
         public int SkuId { get; set; }
         public double Weight { get; set; }
         public bool NeedsShipping { get; set; }

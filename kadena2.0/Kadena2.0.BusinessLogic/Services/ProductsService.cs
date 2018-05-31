@@ -80,14 +80,9 @@ namespace Kadena.BusinessLogic.Services
             return productsPage;
         }
 
-        string GetAvailableProductsString(string productType, int? numberOfAvailableProducts, string unitOfMeasureCode)
+        string GetAvailableProductsString(int? numberOfAvailableProducts, string unitOfMeasureCode)
         {
             string formattedValue = string.Empty;
-
-            if (!ProductTypes.IsOfType(productType, ProductTypes.InventoryProduct))
-            {
-                return formattedValue;
-            }
 
             if (!numberOfAvailableProducts.HasValue)
             {
@@ -107,51 +102,36 @@ namespace Kadena.BusinessLogic.Services
             return formattedValue;
         }
 
-        public ProductAvailability GetInventoryProductAvailability(int documentId)
+        string GetAvailabilityType(int? availableItems)
         {
-            var product = products.GetProductByDocumentId(documentId);
-
-            if (product == null)
+            if (!availableItems.HasValue)
             {
-                return null;
+                return ProductAvailability.Unavailable;
             }
+            else if (availableItems.Value == 0)
+            {
+                return ProductAvailability.OutOfStock;
+            }
+            else
+            {
+                return ProductAvailability.Available;
+            }
+        }
 
-            var sku = skus.GetSKU(product.SkuId);
+        public ProductAvailability GetInventoryProductAvailability(int skuId)
+        {
+            var sku = skus.GetSKU(skuId);
 
             if (sku == null)
             {
                 return null;
             }
 
-            return GetInventoryProductAvailability(product.ProductType,
-                                                   sku.AvailableItems,
-                                                   sku.UnitOfMeasure);
-        }
-
-        public ProductAvailability GetInventoryProductAvailability(string productType, int? numberOfAvailableProducts, string unitOfMeasureCode)
-        {
-            if (ProductTypes.IsOfType(productType, ProductTypes.InventoryProduct))
+            return new ProductAvailability
             {
-                var availability = new ProductAvailability();
-
-                if (!numberOfAvailableProducts.HasValue)
-                {
-                    availability.Type = ProductAvailability.Unavailable;
-                }
-                else if (numberOfAvailableProducts.Value == 0)
-                {
-                    availability.Type = ProductAvailability.OutOfStock;
-                }
-                else
-                {
-                    availability.Type = ProductAvailability.Available;
-                }
-
-                availability.Text = GetAvailableProductsString(productType, numberOfAvailableProducts, unitOfMeasureCode);
-                return availability;
-            }
-
-            return null;
+                Text = GetAvailableProductsString(sku.AvailableItems, sku.UnitOfMeasure),
+                Type = GetAvailabilityType(sku.AvailableItems)
+            };
         }
 
         public bool CanDisplayAddToCartButton(string productType, int? numberOfAvailableProducts, bool sellOnlyIfAvailable)
