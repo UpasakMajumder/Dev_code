@@ -237,16 +237,18 @@ namespace Kadena.BusinessLogic.Services
         {
             var product = products.GetProductByDocumentId(documentId);
             var pricingModel = product?.PricingModel;
+            var tiers = new List<int>();
 
             if (pricingModel == PricingModel.Tiered)
             {
-                return tieredRanges
-                    .GetTieredRanges(documentId)
-                    .Select(tr => tr.Quantity)
-                    .ToList();
+                var ranges = tieredRanges.GetTieredRanges(documentId);
+                if (ranges != null)
+                {
+                    tiers.AddRange(ranges.Select(tr => tr.Quantity));
+                }
             }
 
-            return new List<int>();
+            return tiers;
         }
 
         public IEnumerable<ProductPricingInfo> GetProductPricings(int documentId, string pricingModel, string unitOfMeasure, string cultureCode)
@@ -274,6 +276,7 @@ namespace Kadena.BusinessLogic.Services
             if((dynamicRanges?.Count() ?? 0) == 0)
             {
                 pricings.Add(products.GetDefaultVariantPricing(documentId, localizedUom));
+                return;
             }
 
             foreach (var r in dynamicRanges)
@@ -293,6 +296,7 @@ namespace Kadena.BusinessLogic.Services
             if ((tieredRanges?.Count() ?? 0) == 0)
             {
                 pricings.Add(products.GetDefaultVariantPricing(documentId, localizedUom));
+                return;
             }
 
             foreach (var r in tieredRanges)
