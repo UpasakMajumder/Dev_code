@@ -20,7 +20,7 @@ namespace Kadena.Tests.Dto.Approval.MicroserviceRequests
         {
             var expectedResult = 300;
 
-            var actualResult = (int)ApprovalState.Rejected;
+            var actualResult = (int)ApprovalState.ApprovalRejected;
 
             Assert.Equal(expectedResult, actualResult);
         }

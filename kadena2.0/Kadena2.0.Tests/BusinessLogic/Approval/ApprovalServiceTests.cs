@@ -1,7 +1,6 @@
 ﻿using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.BusinessLogic.Services.Approval;
 using Kadena.Dto.Approval.MicroserviceRequests;
-using Kadena.Dto.Approval.MicroserviceResponses;
 using Kadena.Dto.General;
 using Kadena.Models.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -27,7 +26,7 @@ namespace Kadena.Tests.BusinessLogic.Approval
             Setup<IKenticoUserProvider, User>(u => u.GetCurrentUser(), new User { UserId = approverUserId });
             Setup<IApproverService, bool>(a => a.IsCustomersApprover(approverUserId, customerId), true);
             Setup<IApprovalServiceClient, Task<BaseResponseDto<string>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
-                Task.FromResult(new BaseResponseDto<string>() { Success = true, Payload = ApprovalResponseDto.Approved }));
+                Task.FromResult(new BaseResponseDto<string>() { Success = true, Payload = ApprovalState.Approved.ToString() }));
 
             await Sut.ApproveOrder(orderId, customerId, customerName);
 
@@ -40,7 +39,7 @@ namespace Kadena.Tests.BusinessLogic.Approval
                                                                                             )), Times.Once);
             
             Verify<IKenticoLogger>(l => l.LogInfo("ApproveOrder", "Info", It.Is<string>(s => s.Contains(orderId) && 
-                                                                                             s.Contains(ApprovalResponseDto.Approved))), Times.Once);
+                                                                                             s.Contains(ApprovalState.Approved.ToString()))), Times.Once);
             VerifyNoOtherCalls<IKenticoLogger>();
         }
 
@@ -97,21 +96,21 @@ namespace Kadena.Tests.BusinessLogic.Approval
             Setup<IKenticoUserProvider, User>(u => u.GetCurrentUser(), new User { UserId = approverUserId });
             Setup<IApproverService, bool>(a => a.IsCustomersApprover(approverUserId, customerId), true);
             Setup<IApprovalServiceClient, Task<BaseResponseDto<string>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
-                Task.FromResult(new BaseResponseDto<string>() { Success = true, Payload = ApprovalResponseDto.Rejected }));
+                Task.FromResult(new BaseResponseDto<string>() { Success = true, Payload = ApprovalState.ApprovalRejected.ToString() }));
 
             await Sut.RejectOrder(orderId, customerId, customerName, rejectNote);
 
             Verify<IApprovalServiceClient>(s => s.Approval(It.Is<ApprovalRequestDto>(req => req.ApproversCount == 1 &&
                                                                                             req.OrderId == orderId &&
                                                                                             req.Approvals.Length == 1 &&
-                                                                                            req.Approvals[0].State == (int)ApprovalState.Rejected &&
+                                                                                            req.Approvals[0].State == (int)ApprovalState.ApprovalRejected &&
                                                                                             req.Approvals[0].Customer.Id == customerId &&
                                                                                             req.Approvals[0].Customer.Name == customerName &&
                                                                                             req.Approvals[0].Note == rejectNote
                                                                                             )), Times.Once);
             
             Verify<IKenticoLogger>(l => l.LogInfo("RejectOrder", "Info", It.Is<string>(s => s.Contains(orderId) &&
-                                                                                            s.Contains(ApprovalResponseDto.Rejected) &&
+                                                                                            s.Contains(ApprovalState.ApprovalRejected.ToString()) &&
                                                                                             s.Contains(rejectNote))), Times.Once);
             VerifyNoOtherCalls<IKenticoLogger>();
         }

@@ -1,6 +1,5 @@
 ﻿using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.Dto.Approval.MicroserviceRequests;
-using Kadena.Dto.Approval.MicroserviceResponses;
 using Kadena.Helpers;
 using Kadena.Models.Approval;
 using Kadena.Models.Orders;
@@ -47,7 +46,7 @@ namespace Kadena.BusinessLogic.Services.Approval
         {
             CheckIsCustomersApprover(customerId, customerName);
             var approveRequest = GetApprovalData(orderId, customerId, customerName, ApprovalState.Approved, note);
-            var response = await CallApprovalService(approveRequest, "ApproveOrder", ApprovalResponseDto.Approved);
+            var response = await CallApprovalService(approveRequest, ApprovalState.Approved);
             if (response.Success)
             {
                 return new ApprovalResult
@@ -66,8 +65,8 @@ namespace Kadena.BusinessLogic.Services.Approval
         public async Task<ApprovalResult> RejectOrder(string orderId, int customerId, string customerName, string rejectionNote = "")
         {
             CheckIsCustomersApprover(customerId, customerName);
-            var approveRequest = GetApprovalData(orderId, customerId, customerName, ApprovalState.Rejected, rejectionNote);
-            var response = await CallApprovalService(approveRequest, "RejectOrder", ApprovalResponseDto.Rejected);
+            var approveRequest = GetApprovalData(orderId, customerId, customerName, ApprovalState.ApprovalRejected, rejectionNote);
+            var response = await CallApprovalService(approveRequest, ApprovalState.ApprovalRejected);
             if (response.Success)
             {
                 return new ApprovalResult
@@ -83,28 +82,28 @@ namespace Kadena.BusinessLogic.Services.Approval
             }
         }
 
-        async Task<ApprovalServiceCallResult> CallApprovalService(ApprovalRequestDto request, string operationName, string expectedResult)
+        async Task<ApprovalServiceCallResult> CallApprovalService(ApprovalRequestDto request, ApprovalState approvalState)
         {
             var microserviceResult = await approvalClient.Approval(request).ConfigureAwait(false);
 
             if (!microserviceResult.Success)
             {
                 var message = $"Error processing order '{request?.OrderId}' - Failed to call approval microservice. {microserviceResult.ErrorMessages}";
-                log.LogError(operationName, message);
+                log.LogError(approvalState.GetDisplayName(), message);
                 return new ApprovalServiceCallResult { Success = false, Error = message };
             }
 
-            if (microserviceResult.Payload != expectedResult)
+            if (microserviceResult.Payload != approvalState.ToString())
             {
                 var message = $"Error processing order '{request?.OrderId}' - Approval microservice returned unexpected state {microserviceResult.Payload}";
-                log.LogError(operationName, message);
+                log.LogError(approvalState.GetDisplayName(), message);
                 return new ApprovalServiceCallResult { Success = false, Error = message };
             }
 
             var note = request.Approvals?[0]?.Note;
             var noteLog = string.IsNullOrEmpty(note) ? null : $"Approver's note: {note}";
 
-            log.LogInfo(operationName, "Info", $"Order '{request.OrderId}' successfully processed, approval status : {microserviceResult.Payload}. {noteLog}");
+            log.LogInfo(approvalState.GetDisplayName(), "Info", $"Order '{request.OrderId}' successfully processed, approval status : {microserviceResult.Payload}. {noteLog}");
 
             return new ApprovalServiceCallResult { Success = true, NewStatus = microserviceResult.Payload };
         }
