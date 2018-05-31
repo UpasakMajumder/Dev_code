@@ -73,7 +73,7 @@ namespace Kadena.BusinessLogic.Services.Approval
                 {
                     Title = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastTitle"),
                     Text = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastMessage"),
-                    NewStatus = kenticoOrderProvider.MapOrderStatus(OrderStatus.Rejected.GetDisplayName())
+                    NewStatus = kenticoOrderProvider.MapOrderStatus(OrderStatus.ApprovalRejected.GetDisplayName())
                 };
             }
             else
