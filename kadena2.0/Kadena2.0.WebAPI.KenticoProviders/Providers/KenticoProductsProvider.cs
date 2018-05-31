@@ -265,7 +265,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public CampaignsProduct GetCampaignProduct(int skuid)
         {
-            var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "Node|ID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
+            var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
             SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
             if (sku != null && document != null)
             {
