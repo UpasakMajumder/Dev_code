@@ -77,7 +77,7 @@
 
             $cmsj.each(data, function (index, value) {
                 var item = $cmsj(".j-tiered-pricing-table-model").find("tr").clone();
-                $cmsj(item).find("input[data-attr='qty']").val(value.minVal);
+                $cmsj(item).find("input[data-attr='qty']").val(value.quantity);
                 $cmsj(item).find("input[data-attr='price']").val(value.price);
 
                 $cmsj(item).find(".j-tiered-pricing-input").keyup(function (e) {
