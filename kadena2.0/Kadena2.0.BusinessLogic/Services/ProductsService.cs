@@ -315,7 +315,7 @@ namespace Kadena.BusinessLogic.Services
                 pricings.Add(new ProductPricingInfo
                 {
                     Key = $"{r.Quantity} {localizedUom}",
-                    Value = $"{currencySymbol}{r.Price}"
+                    Value = $"{currencySymbol}{r.Price.ToString("N2")}"
                 });
             }
         }
