@@ -2,7 +2,6 @@
 using Kadena.Models.Settings;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using System.Collections.Generic;
 using System.Linq;
 using System;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
@@ -18,7 +17,8 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoUserProvider _kenticoUsers;
         private readonly IKenticoCustomerProvider _kenticoCustomers;
         private readonly IKenticoResourceService _resources;
-        private readonly IKenticoAddressBookProvider  _addresses;
+        private readonly IKenticoAddressBookProvider _addresses;
+        private readonly IDialogService _dialogService;
 
         public SettingsService(IKenticoPermissionsProvider permissions,
                                IKenticoLocalizationProvider localization,
@@ -26,7 +26,8 @@ namespace Kadena.BusinessLogic.Services
                                IKenticoUserProvider kenticoUsers,
                                IKenticoCustomerProvider kenticoCustomers,
                                IKenticoResourceService resources,
-                               IKenticoAddressBookProvider addresses)
+                               IKenticoAddressBookProvider addresses,
+                               IDialogService dialogService)
         {
             _permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             _localization = localization ?? throw new ArgumentNullException(nameof(localization));
@@ -35,6 +36,7 @@ namespace Kadena.BusinessLogic.Services
             _kenticoCustomers = kenticoCustomers ?? throw new ArgumentNullException(nameof(kenticoCustomers));
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));
             _addresses = addresses ?? throw new ArgumentNullException(nameof(addresses));
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
         public SettingsAddresses GetAddresses()
@@ -63,7 +65,6 @@ namespace Kadena.BusinessLogic.Services
             {
                 maxShippingAddresses = int.Parse(maxShippingAddressesSetting);
             }
-
 
             return new SettingsAddresses
             {
@@ -122,49 +123,7 @@ namespace Kadena.BusinessLogic.Services
                         Discard = _resources.GetResourceString("Kadena.Settings.Addresses.DiscardChanges"),
                         Save = _resources.GetResourceString("Kadena.Settings.Addresses.SaveAddress")
                     },
-                    Fields = new List<DialogField> {
-                        new DialogField {
-                            Id = "address1",
-                            Label = _resources.GetResourceString("Kadena.Settings.Addresses.AddressLine1"),
-                            Type = "text"},
-                        new DialogField {
-                            Id = "address2",
-                            Label = _resources.GetResourceString("Kadena.Settings.Addresses.AddressLine2"),
-                            Type = "text",
-                            IsOptional = true
-                        },
-                        new DialogField {
-                            Id = "city",
-                            Label = _resources.GetResourceString("Kadena.Settings.Addresses.City"),
-                            Type = "text"
-                        },
-                        new DialogField {
-                            Id = "state",
-                            Label = _resources.GetResourceString("Kadena.Settings.Addresses.State"),
-                            Type = "select",
-                            Values = new List<object>()
-                        },
-                        new DialogField {
-                            Id = "zip",
-                            Label = _resources.GetResourceString("Kadena.Settings.Addresses.Zip"),
-                            Type = "text"
-                        } ,
-                        new DialogField {
-                            Id = "country",
-                            Label = "Country",
-                            Values = countries
-                                .GroupJoin(states, c => c.Id, s => s.CountryId, (c, sts) => (object) new
-                                {
-                                    Id = c.Id.ToString(),
-                                    Name = c.Name,
-                                    Values = sts.Select(s => new
-                                    {
-                                        Id = s.Id.ToString(),
-                                        Name = s.StateDisplayName
-                                    }).ToArray()
-                                }).ToList()
-                        }
-                    }
+                    Fields = _dialogService.GetAddressFields().ToList()
                 }
             };
         }

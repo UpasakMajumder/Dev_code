@@ -127,6 +127,7 @@
     <Compile Include="Contracts\IKenticoModuleMappingProvider.cs" />
     <Compile Include="Contracts\IKenticoRoleProvider.cs" />
     <Compile Include="Contracts\IKenticoSettingsProvider.cs" />
+    <Compile Include="Contracts\IKenticoSkuProvider.cs" />
     <Compile Include="Contracts\IKenticoUnitOfMeasureProvider.cs" />
     <Compile Include="Contracts\IkenticoUserBudgetProvider.cs" />
     <Compile Include="Contracts\IOrderCartItemsProvider.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Providers\KenticoCustomerProvider.cs" />
     <Compile Include="Providers\KenticoLocalizationProvider.cs" />
     <Compile Include="Providers\KenticoMediaProvider.cs" />
+    <Compile Include="Providers\KenticoSkuProvider.cs" />
     <Compile Include="Providers\KenticoUnitOfMeasureProvider.cs" />
     <Compile Include="Providers\KenticoModuleMappingProvider.cs" />
     <Compile Include="Providers\KenticoRoleProvider.cs" />

@@ -69,20 +69,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 ParentPath = (p.Parent == null ? null : p.Parent.NodeAliasPath)
             }
             ).ToList();
-        }
-
-        public void UpdateSku(Sku sku)
-        {
-            var skuInfo = GetSku(sku.SkuId);
-            if (skuInfo == null)
-            {
-                return;
-            }
-
-            skuInfo.SKUWeight = sku.Weight;
-            skuInfo.SKUNeedsShipping = sku.NeedsShipping;
-            skuInfo.Update();
-        }
+        }        
 
         private DocumentQuery GetDocuments(string path, string className, PathTypeEnum pathType)
         {
@@ -104,7 +91,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 return string.Empty;
             }
 
-            var sku = GetSku(skuid);
+            var sku = SKUInfoProvider.GetSKUInfo(skuid);
             var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
             var imgurl = document?.GetStringValue("ProductImage", string.Empty) ?? string.Empty;
 
@@ -124,20 +111,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             return URLHelper.GetAbsoluteUrl(imagePath);
         }
-
-        public void SetSkuAvailableQty(string skunumber, int availableItems)
-        {
-            var sku = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", skunumber).FirstOrDefault();
-
-            if (sku != null)
-            {
-                sku.SKUAvailableItems = availableItems;
-                sku.SubmitChanges(false);
-                sku.MakeComplete(true);
-                sku.Update();
-            }
-        }
-
+       
         public Product GetProductByNodeId(int nodeId)
         {
             var doc = DocumentHelper.GetDocument(nodeId, LocalizationContext.CurrentCulture.CultureCode,
@@ -158,7 +132,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 return null;
             }
 
-            var sku = GetSku(doc.NodeSKUID);
+            var sku = SKUInfoProvider.GetSKUInfo(doc.NodeSKUID);
 
             var product = new Product()
             {
@@ -176,6 +150,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 PricingModel = doc.GetStringValue("ProductPricingModel", PricingModel.GetDefault()),
                 DynamicPricingJson = doc.GetStringValue("ProductDynamicPricing", string.Empty),
                 TieredPricingJson = doc.GetStringValue("ProductTieredPricing", string.Empty),
+                SkuId = doc.NodeSKUID
             };
 
             if (product.IsTemplateLowResSettingMissing)
@@ -196,50 +171,17 @@ namespace Kadena.WebAPI.KenticoProviders
             return product;
         }
 
-        private static SKUInfo GetSku(int skuId)
-        {
-            return SKUInfoProvider.GetSKUInfo(skuId);
-        }
-
         public string GetProductStatus(int skuid)
         {
             if (!SettingsKeyInfoProvider.GetBoolValue("KDA_OrderDetailsShowProductStatus", SiteContext.CurrentSiteID) || skuid <= 0)
                 return string.Empty;
 
-            SKUInfo sku = GetSku(skuid);
+            SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
             return sku != null ? (sku.SKUEnabled ? ResHelper.GetString("KDA.Common.Status.Active") : ResHelper.GetString("KDA.Common.Status.Inactive")) : string.Empty;
         }
 
-        public Price GetSkuPrice(int skuId)
-        {
-            var sku = GetSku(skuId);
-            if (sku == null)
-            {
-                return null;
-            }
+        
 
-            return new Price
-            {
-                Value = Convert.ToDecimal(sku.SKUPrice),
-                Prefix = ResHelper.GetString("Kadena.Checkout.ItemPricePrefix", LocalizationContext.CurrentCulture.CultureCode)
-            };
-        }
-
-        public Sku GetVariant(int skuId, IEnumerable<int> optionIds)
-        {
-            var attributeSet = new ProductAttributeSet(optionIds);
-            var variant = VariantHelper.GetProductVariant(skuId, attributeSet);
-            return mapper.Map<Sku>(variant);
-        }
-        public void SetSkuAvailableQty(int skuid, int qty)
-        {
-            SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
-            if (sku != null)
-            {
-                sku.SKUAvailableItems = sku.SKUAvailableItems - qty;
-                sku.Update();
-            }
-        }
         public int GetAllocatedProductQuantityForUser(int productID, int userID)
         {
             CustomTableItem allocatedItem = CustomTableItemProvider.GetItems(CustomTableName)
@@ -311,13 +253,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             return null;
         }
-
-        public int GetSkuAvailableQty(int skuid)
-        {
-            SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
-            return sku != null ? sku.SKUAvailableItems : 0;
-        }
-
+        
         public int GetCampaignProductIDBySKUID(int skuid)
         {
             var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));

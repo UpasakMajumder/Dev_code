@@ -38,6 +38,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IDynamicPriceRangeProvider dynamicPrices;
         private readonly ITieredPriceRangeProvider tieredPrices;
         private readonly IImageService imageService;
+        private readonly IKenticoSkuProvider skus;
 
         public ShoppingCartService(IKenticoSiteProvider kenticoSite,
                                    IKenticoLocalizationProvider localization,
@@ -59,6 +60,7 @@ namespace Kadena.BusinessLogic.Services
                                    IDynamicPriceRangeProvider dynamicPrices,
                                    ITieredPriceRangeProvider tieredPrices,
                                    IImageService imageService)
+                                   IKenticoSkuProvider skus)
         {
             this.kenticoSite = kenticoSite ?? throw new ArgumentNullException(nameof(kenticoSite));
             this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
@@ -80,6 +82,7 @@ namespace Kadena.BusinessLogic.Services
             this.dynamicPrices = dynamicPrices ?? throw new ArgumentNullException(nameof(dynamicPrices));
             this.tieredPrices = tieredPrices ?? throw new ArgumentNullException(nameof(tieredPrices));
             this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
+            this.skus = skus ?? throw new ArgumentNullException(nameof(skus));
         }
 
         public async Task<CheckoutPage> GetCheckoutPage()
@@ -432,7 +435,7 @@ namespace Kadena.BusinessLogic.Services
 
         void CheckMinMaxQuantity(CartItemEntity cartitem, int totalAmountAfterAdding)
         {
-            var sku = shoppingCart.GetSKU(cartitem.SKUID);
+            var sku = skus.GetSKU(cartitem.SKUID);
 
             if (sku.MinItemsInOrder > 0 && totalAmountAfterAdding < sku.MinItemsInOrder)
             {
@@ -547,7 +550,7 @@ namespace Kadena.BusinessLogic.Services
 
         private void EnsureInventoryAmount(CartItemEntity item, int addedQuantity, int resultedQuantity)
         {
-            var sku = shoppingCart.GetSKU(item.SKUID);
+            var sku = skus.GetSKU(item.SKUID);
 
             if (sku == null)
             {
@@ -598,7 +601,7 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new Exception(resources.GetResourceString("KDA.Cart.InvalidProduct"));
             }
-            int availableQty = inventoryType == 1 ? productsProvider.GetSkuAvailableQty(skuID) : -1;
+            int availableQty = inventoryType == 1 ? skus.GetSkuAvailableQty(skuID) : -1;
             if (availableQty == 0)
             {
                 throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));

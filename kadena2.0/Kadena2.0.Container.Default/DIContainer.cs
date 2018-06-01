@@ -109,6 +109,7 @@ namespace Kadena.Container.Default
             container.Register<IImageService, ImageService>();
             container.Register<IApproverService, ApproverService>();
             container.Register<IApprovalService, ApprovalService>();
+            container.Register<IDialogService, DialogService>();
             return container;
         }
 
@@ -149,6 +150,7 @@ namespace Kadena.Container.Default
             container.Register<IKenticoMediaProvider, KenticoMediaProvider>();
             container.Register<ITieredPriceRangeProvider, TieredPriceRangeProvider>();
             container.Register<IOrderCartItemsProvider, OrderCartItemsProvider>();
+            container.Register<IKenticoSkuProvider, KenticoSkuProvider>();
             return container;
         }
 

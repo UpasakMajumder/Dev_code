@@ -119,7 +119,7 @@ Proceed.propTypes = {
   proceedProduct: PropTypes.func.isRequired,
   quantity: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   isLoading: PropTypes.bool.isRequired,
-  quanityError: PropTypes.bool.isRequired
+  quanityError: PropTypes.string.isRequired
 };
 
 export default Proceed;
