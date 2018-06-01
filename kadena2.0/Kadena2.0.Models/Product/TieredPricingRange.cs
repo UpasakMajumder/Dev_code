@@ -21,6 +21,17 @@ namespace Kadena.Models
                 isValid = false;
                 errors.Add("Price must be > 0");
             }
+
+            decimal unitPrice = (decimal)((float)Price / Quantity);
+
+            var priceCheck = unitPrice * Quantity;
+
+            if (Price != priceCheck)
+            {
+                isValid = false;
+                errors.Add($"Rounding problem when computing unit price. {Price} cannot be precisely divided by {Quantity}");
+            }
+
             return isValid;
         }   
 
