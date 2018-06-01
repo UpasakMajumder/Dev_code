@@ -599,7 +599,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var product = DIContainer.Resolve<IKenticoProductsProvider>();
+                var product = DIContainer.Resolve<IKenticoSkuProvider>();
                 cart.CartItems.ForEach(cartItem =>
                 {
                     product.SetSkuAvailableQty(cartItem.SKUID, cartItem.CartItemUnits);

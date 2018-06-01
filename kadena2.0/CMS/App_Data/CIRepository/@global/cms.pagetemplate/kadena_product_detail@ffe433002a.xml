@@ -501,11 +501,7 @@ config.localization.productDetail = {
       header: '{$Kadena.Product.UnitPrice$}',
       body: {% KadenaNamespace.GetProductPricings(DocumentContext.CurrentDocument.DocumentID, SKUUnitOfMeasure |(user)administrator|(hash)0c7f90634a553b7a85bf479e746c509d365d8a8dcd5296640046799cfae93e27%}
     },
-    availability: {% KadenaNamespace.GetAvailability(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),
-                        DocumentContext.CurrentDocument.GetValue("SKUAvailableItems") , 
-                        LocalizationContext.CurrentCulture.CultureCode, 
-                        ECommerceContext.CurrentProduct.SKUAvailableItems,
-                        ECommerceContext.CurrentProduct.SKUUnitOfMeasure) |(user)administrator|(hash)4117b64895d4327ff6c8b8d6122c487dbb9735151c63b7337ece60cdcec2492d%},
+    availability: null,
     packagingInfo: '{% KadenaNamespace.GetPackagingString(ProductNumberOfItemsInPackage, SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)administrator|(hash)d2bd820f97df79f94438952adabf96fb2c5531a62a9e96a6b03ca07cab210995%}',
     productOptions:{
           priceElementId: "option-price",
@@ -529,6 +525,29 @@ config.localization.productDetail = {
           <property name="linkedfilepagelocation">Header</property>
           <property name="showfordocumenttypes"></property>
           <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
+        <webpart controlid="javascriptInventoryAMountCall" guid="5183328a-ac83-4eb6-a15d-509ee477f063" type="javascript" v="1">
+          <property name="cat_open_behavior">False</property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">javascriptInventoryAMountCall</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+            <![CDATA[config.localization.productDetail.availability = '/api/products/availability/{%SKUID%}';]]>
+          </property>
+          <property name="inlinescriptpagelocation">Inline</property>
+          <property name="instanceguid">5183328a-ac83-4eb6-a15d-509ee477f063</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible" ismacro="true">
+            <![CDATA[{%ProductType.Contains("KDA.InventoryProduct")|(user)administrator|(hash)0162778f0be9dbdfe2accf80a9adc6df38cde762f111ffcf90478821c68be643%}]]>
+          </property>
           <property name="webparttitle"></property>
           <property name="webparttype">javascript</property>
         </webpart>

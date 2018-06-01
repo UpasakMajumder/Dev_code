@@ -27,11 +27,6 @@ const AddressCard = (props) => {
     );
   }
 
-  const createAddressElement = (content) => {
-    if (content) return <span>{content}</span>;
-    return null;
-  };
-
   const setDefaultElement = () => {
     const isDefault = address.id === defaultAddress.id;
 
@@ -82,6 +77,9 @@ const AddressCard = (props) => {
         state={state && state.name}
         zip={address.zip}
         country={country.name}
+        phone={address.phone}
+        email={address.email}
+        customerName={address.customerName}
       />
 
       <div className="address-card__btn-block">
@@ -103,7 +101,10 @@ AddressCard.propTypes = {
     address1: PropTypes.string,
     address2: PropTypes.string,
     zip: PropTypes.string,
-    country: PropTypes.string
+    country: PropTypes.string,
+    phone: PropTypes.string,
+    email: PropTypes.string,
+    customerName: PropTypes.string
   }),
   defaultAddress: PropTypes.shape({
     id: PropTypes.number,

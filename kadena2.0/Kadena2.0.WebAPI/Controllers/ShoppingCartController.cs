@@ -31,9 +31,9 @@ namespace Kadena.WebAPI.Controllers
         private readonly ISubmitOrderService submitOrderService;
 
         public ShoppingCartController(
-            IShoppingCartService service, 
-            IMapper mapper, 
-            IShoppingCartProvider provider, 
+            IShoppingCartService service,
+            IMapper mapper,
+            IShoppingCartProvider provider,
             ISubmitOrderService submitOrderService)
         {
             this.service = service ?? throw new ArgumentNullException(nameof(service));
@@ -65,7 +65,7 @@ namespace Kadena.WebAPI.Controllers
         [HttpPost]
         [Route("api/shoppingcart/savetemporaryaddress")]
         [CustomerAuthorizationFilter]
-        public IHttpActionResult SaveTemporaryAddress([FromBody] DeliveryAddressDTO postedAddress)
+        public IHttpActionResult SaveTemporaryAddress([FromBody] AddressDto postedAddress)
         {
             var address = mapper.Map<DeliveryAddress>(postedAddress);
             var addressId = service.SaveTemporaryAddress(address);
