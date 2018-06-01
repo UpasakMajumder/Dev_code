@@ -488,13 +488,7 @@ namespace Kadena.WebAPI.KenticoProviders
                                                 .Where(x => x.ShoppingCartID.Equals(shoppingCartID) && x.SKUID.Equals(SKUID))
                                                 .Sum(x => x.CartItemUnits);
         }
-
-        public Sku GetSKU(int skuId)
-        {
-            var skuInfo = SKUInfoProvider.GetSKUInfo(skuId);
-            return mapper.Map<Sku>(skuInfo);
-        }
-
+        
         public void RemoveCurrentItemsFromStock(int shoppingCartId = 0)
         {
             var shoppingCart = GetShoppingCart(shoppingCartId);

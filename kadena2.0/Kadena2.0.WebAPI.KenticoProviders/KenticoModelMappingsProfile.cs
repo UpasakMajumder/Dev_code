@@ -257,12 +257,13 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.SkuId, opt => opt.MapFrom(src => src.SKUID))
                 .ForMember(dest => dest.NeedsShipping, opt => opt.MapFrom(src => src.SKUNeedsShipping))
                 .ForMember(dest => dest.SellOnlyIfAvailable, opt => opt.MapFrom(src => src.SKUSellOnlyAvailable))
-                .ForMember(dest => dest.AvailableItems, opt => opt.MapFrom(src => src.SKUAvailableItems))
+                .ForMember(dest => dest.AvailableItems, opt => opt.MapFrom(src => (int?)src.GetValue("SKUAvailableItems")))
                 .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.SKUWeight))
                 .ForMember(dest => dest.HiResPdfDownloadEnabled, opt => opt.MapFrom(src => src.GetBooleanValue("SKUHiResPdfDownloadEnabled", false)))
                 .ForMember(dest => dest.ApprovalRequired, opt => opt.MapFrom(src => src.GetBooleanValue("SKUApprovalRequired", false)))
                 .ForMember(dest => dest.MinItemsInOrder, opt => opt.MapFrom(src => src.SKUMinItemsInOrder))
-                .ForMember(dest => dest.MaxItemsInOrder, opt => opt.MapFrom(src => src.SKUMaxItemsInOrder));
+                .ForMember(dest => dest.MaxItemsInOrder, opt => opt.MapFrom(src => src.SKUMaxItemsInOrder))
+                .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.GetStringValue("SKUUnitOfMeasure", UnitOfMeasure.DefaultUnit)));
 
             CreateMap<User, UserInfo>()
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
