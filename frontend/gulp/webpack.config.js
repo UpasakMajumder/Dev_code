@@ -128,7 +128,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.jsx?$/,
                 exclude: /node_modules/,
                 include: [path.resolve(process.cwd(), config.JS_BASE)],
                 loaders: ['happypack/loader?id=js']
@@ -165,6 +165,7 @@ module.exports = {
         ]
     },
     resolve: {
+        extensions: ['.js', '.jsx'],
         alias: {
             'app.dump': path.resolve(process.cwd(), `${config.JS_BASE}/components/_dump`),
             'app.smart': path.resolve(process.cwd(), `${config.JS_BASE}/components`),

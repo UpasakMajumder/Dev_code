@@ -10,12 +10,12 @@ const USAddress = (props) => {
   return (
     <div>
       {createAddressElement(props.customerName)}
-      {createAddressElement(props.email)}
       <p>{props.address1}</p>
       {createAddressElement(props.address2)}
       <p>{props.city}, {props.state} {props.zip}</p>
       {createAddressElement(props.country)}
       {createAddressElement(props.phone)}
+      {createAddressElement(props.email)}
     </div>
   );
 };
