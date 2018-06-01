@@ -22,7 +22,15 @@ namespace Kadena.BusinessLogic.Services
         private readonly IDynamicPriceRangeProvider dynamicRanges;
         private readonly ITieredPriceRangeProvider tieredRanges;
 
-        public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources, IKenticoUnitOfMeasureProvider units, IImageService imageService, IKenticoPermissionsProvider permissions, IDynamicPriceRangeProvider dynamicRanges, ITieredPriceRangeProvider tieredRanges)
+        public ProductsService(IKenticoProductsProvider products,
+                               IKenticoSkuProvider skus,
+                               IKenticoFavoritesProvider favorites, 
+                               IKenticoResourceService resources, 
+                               IKenticoUnitOfMeasureProvider units, 
+                               IImageService imageService, 
+                               IKenticoPermissionsProvider permissions, 
+                               IDynamicPriceRangeProvider dynamicRanges, 
+                               ITieredPriceRangeProvider tieredRanges)
         {
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.skus = skus ?? throw new ArgumentNullException(nameof(skus));

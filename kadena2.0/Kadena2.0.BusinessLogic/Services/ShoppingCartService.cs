@@ -59,7 +59,7 @@ namespace Kadena.BusinessLogic.Services
                                    IKenticoBusinessUnitsProvider businessUnitsProvider,
                                    IDynamicPriceRangeProvider dynamicPrices,
                                    ITieredPriceRangeProvider tieredPrices,
-                                   IImageService imageService)
+                                   IImageService imageService,
                                    IKenticoSkuProvider skus)
         {
             this.kenticoSite = kenticoSite ?? throw new ArgumentNullException(nameof(kenticoSite));
@@ -340,7 +340,7 @@ namespace Kadena.BusinessLogic.Services
                 throw new Exception(resources.GetResourceString("Kadena.Product.QuantityForTypeError"));
             }
 
-            var itemSku = shoppingCart.GetSKU(item.SKUID);
+            var itemSku = skus.GetSKU(item.SKUID);
 
             if (item.ProductType.Contains(ProductTypes.InventoryProduct) && itemSku.SellOnlyIfAvailable && quantity > itemSku.AvailableItems)
             {
