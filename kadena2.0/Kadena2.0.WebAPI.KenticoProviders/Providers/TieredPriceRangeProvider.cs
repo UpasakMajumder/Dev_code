@@ -44,7 +44,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 var matchingRange = ranges.FirstOrDefault(i => i.Quantity == quantity);
                 if (matchingRange != null)
                 {
-                    return matchingRange.Price;
+                    return matchingRange.Price / (decimal)matchingRange.Quantity;
                 }
                 else
                 {
