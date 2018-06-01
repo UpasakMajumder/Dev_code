@@ -592,7 +592,7 @@
             }
           ]
         },
-        availability: PATH + 'products/availability',
+        // availability: PATH + 'products/availability',
         packagingInfo: 'These come in pack 50 pcs', // props
         productOptions: {
           priceElementId: "option-price",
