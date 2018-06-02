@@ -13,6 +13,7 @@ using Kadena2.MicroserviceClients.Contracts;
 using System.Collections.Generic;
 using Kadena.Models.AddToCart;
 using Kadena.Models.SiteSettings;
+using Kadena.Infrastructure.Exceptions;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -438,12 +439,12 @@ namespace Kadena.BusinessLogic.Services
 
             if (min > 0 && totalAmountAfterAdding < min)
             {
-                throw new Exception("Cannot order less than minimal count of items");
+                throw new NotLoggedException("Cannot order less than minimal count of items");
             }
 
             if (max > 0 && totalAmountAfterAdding > max)
             {
-                throw new Exception("Cannot order more than maximal count of items");
+                throw new NotLoggedException("Cannot order more than maximal count of items");
             }
         }
 
