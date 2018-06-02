@@ -342,20 +342,18 @@ namespace Kadena.BusinessLogic.Services
 
             var itemSku = skus.GetSKU(item.SKUID);
 
+            if (itemSku == null)
+            {
+                throw new Exception($"SKU with SKUID {item.SKUID} not found");
+            }
+
             if (item.ProductType.Contains(ProductTypes.InventoryProduct) && itemSku.SellOnlyIfAvailable && quantity > itemSku.AvailableItems)
             {
                 throw new Exception(string.Format(
                     resources.GetResourceString("Kadena.Product.SetQuantityForItemError"), quantity, item.CartItemText));
             }
 
-            var min = itemSku?.MinItemsInOrder ?? 0;
-            var max = itemSku?.MaxItemsInOrder ?? 0;
-
-            if ((min > 0 && quantity < min) || (max > 0 && quantity > max))
-            {
-                throw new Exception(string.Format(
-                    resources.GetResourceString("Kadena.Product.SetQuantityForItemError"), quantity, item.CartItemText));
-            }
+            CheckMinMaxQuantity(itemSku, quantity);
 
             item.SKUUnits = quantity;
 
@@ -433,16 +431,17 @@ namespace Kadena.BusinessLogic.Services
             return preview;
         }
 
-        void CheckMinMaxQuantity(CartItemEntity cartitem, int totalAmountAfterAdding)
+        void CheckMinMaxQuantity(Sku sku, int totalAmountAfterAdding)
         {
-            var sku = skus.GetSKU(cartitem.SKUID);
+            var min = sku?.MinItemsInOrder ?? 0;
+            var max = sku?.MaxItemsInOrder ?? 0;
 
-            if (sku.MinItemsInOrder > 0 && totalAmountAfterAdding < sku.MinItemsInOrder)
+            if (min > 0 && totalAmountAfterAdding < min)
             {
                 throw new Exception("Cannot order less than minimal count of items");
             }
 
-            if (sku.MaxItemsInOrder > 0 && totalAmountAfterAdding > sku.MaxItemsInOrder)
+            if (max > 0 && totalAmountAfterAdding > max)
             {
                 throw new Exception("Cannot order more than maximal count of items");
             }
@@ -474,13 +473,15 @@ namespace Kadena.BusinessLogic.Services
             // do this before calculating dynamic price
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))
             {
-                CheckMinMaxQuantity(cartItem, newItem.Quantity);
+                CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID),
+                                    newItem.Quantity);
                 cartItem.SKUUnits = newItem.Quantity;
             }
             else if(!ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.MailingProduct))
             {
                 var totalQuantity = cartItem.SKUUnits + newItem.Quantity;
-                CheckMinMaxQuantity(cartItem, totalQuantity);
+                CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID),
+                                    totalQuantity);
                 cartItem.SKUUnits = totalQuantity;
             }
             

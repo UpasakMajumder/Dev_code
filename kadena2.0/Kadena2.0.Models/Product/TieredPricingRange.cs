@@ -15,6 +15,7 @@ namespace Kadena.Models
             {
                 isValid = false;
                 errors.Add("Quantity must be > 0");
+                return false;
             }
             if (Price < 0)
             {

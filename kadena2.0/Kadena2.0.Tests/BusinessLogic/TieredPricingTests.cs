@@ -57,7 +57,7 @@ namespace Kadena.Tests.BusinessLogic
         {
             var data = new List<TieredPricingRange>
             {
-                new TieredPricingRange{ Quantity = 1212, Price = 131 }
+                new TieredPricingRange{ Quantity = 100, Price = 1000 }
             };
 
             var errors = new List<string>();
@@ -66,6 +66,22 @@ namespace Kadena.Tests.BusinessLogic
 
             Assert.True(result);
             Assert.Empty(errors);
+        }
+
+        [Fact]
+        public void TestOverlaping_RoundingCheck()
+        {
+            var data = new List<TieredPricingRange>
+            {
+                new TieredPricingRange{ Quantity = 3, Price = 10 }
+            };
+
+            var errors = new List<string>();
+
+            var result = TieredPricingRange.ValidateRanges(data, errors, true);
+
+            Assert.False(result);
+            Assert.Single(errors);
         }
 
         [Fact]

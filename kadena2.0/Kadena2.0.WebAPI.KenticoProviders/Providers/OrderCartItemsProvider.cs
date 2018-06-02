@@ -23,7 +23,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return ECommerceContext.CurrentShoppingCart.CartItems
                      .Where(cartItem => !cartItem.IsProductOption)
-                     .Select(cartItem => MapOrderCartItem(cartItem))
+                     .Select(MapOrderCartItem)
                      .ToArray();
         }
 

@@ -315,8 +315,10 @@ namespace Kadena.Tests.BusinessLogic
         {
             // Arrange
             SetupBase();
-            var cartItem = new CartItemEntity { CartItemID = 1, ProductType = ProductTypes.POD };
+            const int skuid = 456;
+            var cartItem = new CartItemEntity { CartItemID = 1, ProductType = ProductTypes.POD, SKUID = skuid };
             Setup<IShoppingCartItemsProvider, CartItemEntity>(m => m.GetCartItemEntity(1), cartItem);
+            Setup<IKenticoSkuProvider, Sku>(m => m.GetSKU(skuid), new Sku {  });
 
             // Act
             var result = Sut.ChangeItemQuantity(1, 100);
