@@ -301,35 +301,6 @@
         </webpart>
       </webpartzone>
       <webpartzone id="zoneChiliActionButtons" v="1">
-        <webpart controlid="ChilisSavedEvent" guid="86c68b68-d446-480e-90b9-865e71c58d5d" type="javascript" v="1">
-          <property name="cat_open_behavior"></property>
-          <property name="cat_open_performance"></property>
-          <property name="controlid">ChilisSavedEvent</property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="generatescripttags">True</property>
-          <property name="hideonsubpages">False</property>
-          <property name="inlinescript">
-<![CDATA[
-function OnEditorEvent(type) {
-  switch (type) {
-     case 'DocumentSaved':
-          window.saveChiliTemplate();
-          break;
-  }
-}
-]]>
-          </property>
-          <property name="inlinescriptpagelocation">Header</property>
-          <property name="instanceguid">86c68b68-d446-480e-90b9-865e71c58d5d</property>
-          <property name="linkedfile"></property>
-          <property name="linkedfilepagelocation">Header</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">javascript</property>
-        </webpart>
         <webpart controlid="DiscardChangesButton" guid="c21ed0c2-b811-43f0-915c-650b6848ee3d" type="statictext" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter">False</property>
