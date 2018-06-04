@@ -24,7 +24,7 @@ const
   /* JavaScript */
   JS_BASE = `${DEVELOPMENT_BASE}/app`,
   JS_MAIN_FILENAME = 'app.js';
-JS_ENTRY = `${JS_BASE}/${JS_MAIN_FILENAME}`,
+  JS_ENTRY = `${JS_BASE}/${JS_MAIN_FILENAME}`,
   JS_ALL = `${JS_BASE}/**/*.js`,
   JS_VENDOR_ALL = `${JS_BASE}/vendor/**/*.js`,
   JS_BUILD = `${BUILD_BASE}/js`,

@@ -115,16 +115,21 @@ namespace Kadena.Tests.BusinessLogic
         public async Task AddToCart_DynamicPrice()
         {
             // Arrange 
+            const decimal dynamicPrice = 12.34m;
+            const int cartItemId = 456;
             var newCartItem = CreateNewCartItem();
             var originalCartItemEntity = new CartItemEntity
             {
                 ProductType = ProductTypes.StaticProduct,
                 SKUUnits = 3,
-                SKUID = 123
+                SKUID = 123,
+                CartItemID = cartItemId
             };
+            
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
             Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku { });
-            Setup<IDynamicPriceRangeProvider, decimal>(dp => dp.GetDynamicPrice(It.IsAny<int>(), It.IsAny<int>()), 12.34m);
+            Setup<IDynamicPriceRangeProvider, decimal>(dp => dp.GetDynamicPrice(5, null), dynamicPrice);
+            Setup<IKenticoProductsProvider, Product>(p => p.GetProductByDocumentId(1123), new Product { PricingModel = PricingModel.Dynamic });
 
             // Act
             var result = await Sut.AddToCart(newCartItem);
@@ -132,7 +137,8 @@ namespace Kadena.Tests.BusinessLogic
             // Assert
             Assert.NotNull(result);
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
-                    e => e.CartItemPrice == 12.34m)
+                    e => e.CartItemPrice == dynamicPrice &&
+                         e.CartItemID == cartItemId)
                 ), Times.Once);
         }
 
@@ -309,16 +315,17 @@ namespace Kadena.Tests.BusinessLogic
         {
             // Arrange
             SetupBase();
-            var cartItems = new[] { CreateCartitem(1), CreateCartitem(2) };
-            Setup<IShoppingCartProvider, ShoppingCartTotals>(m => m.GetShoppingCartTotals()
-                , new ShoppingCartTotals() { TotalItemsPrice = 1, TotalShipping = 2, TotalTax = 3 });
+            const int skuid = 456;
+            var cartItem = new CartItemEntity { CartItemID = 1, ProductType = ProductTypes.POD, SKUID = skuid };
+            Setup<IShoppingCartItemsProvider, CartItemEntity>(m => m.GetCartItemEntity(1), cartItem);
+            Setup<IKenticoSkuProvider, Sku>(m => m.GetSKU(skuid), new Sku {  });
 
             // Act
             var result = Sut.ChangeItemQuantity(1, 100);
 
             // Assert
             Assert.NotNull(result);
-            Verify<IShoppingCartItemsProvider>(m => m.SetCartItemQuantity(1, 100), Times.Once);
+            Verify<IShoppingCartItemsProvider>(m => m.SetCartItemQuantity(It.Is<CartItemEntity>(e => e.CartItemID == 1) , 100), Times.Once);
         }
 
 

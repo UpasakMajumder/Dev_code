@@ -499,7 +499,7 @@ config.localization.productDetail = {
     },
     dynamicPrices: {
       header: '{$Kadena.Product.UnitPrice$}',
-      body: {% KadenaNamespace.GetProductPricings(DocumentContext.CurrentDocument.DocumentID, SKUUnitOfMeasure |(user)administrator|(hash)0c7f90634a553b7a85bf479e746c509d365d8a8dcd5296640046799cfae93e27%}
+      body: {% KadenaNamespace.GetProductPricings(DocumentContext.CurrentDocument.DocumentID, SKUUnitOfMeasure, ProductPricingModel |(user)administrator|(hash)ad46af8ffdf54c215f4634b6e9dfdeaac5338e95e8f09b1c9d65ba5746c4678c%}
     },
     availability: null,
     packagingInfo: '{% KadenaNamespace.GetPackagingString(ProductNumberOfItemsInPackage, SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)administrator|(hash)d2bd820f97df79f94438952adabf96fb2c5531a62a9e96a6b03ca07cab210995%}',
@@ -567,6 +567,10 @@ config.localization.productDetail.addToCart = {
       url: '/api/shoppingcart/addtocart',
       text: '{$Kadena.Product.AddToCart$}',
       unit: '{% KadenaNamespace.LocalizeUom(SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)administrator|(hash)1ece51502e479631d7796d73c8f6b6cd99b37272bab64cb63e8c845d33807c82%}',
+      tiers: {
+          placeholder: '{$Kadena.Product.SelectPriceTier$}',
+          items: {% KadenaNamespace.GetProductTiers(DocumentContext.CurrentDocument.ID) |(user)administrator|(hash)14dd5fdbef63c4e75a95fed3e348ab740d79737fac8e595e6d77797d794eefe5%}
+      },
       quantity: 1,
       minQuantity: 1,
       maxQuantity: '{% ECommerceContext.CurrentProduct.SKUMaxItemsInOrder |(user)administrator|(hash)c0037174074c1356b30d49cfb524efd97b63d71be1554a39435d684bd10bf550%}',

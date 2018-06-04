@@ -25,9 +25,9 @@ namespace Kadena.Models
             return isValid;
         }   
 
-        public static bool ValidateRanges(List<DynamicPricingRange> ranges, List<string> errors, bool requireAscendentOrder = false)
+        public static bool ValidateRanges(List<DynamicPricingRange> ranges, List<string> errors, bool allowEmptyRanges = false, bool requireAscendentOrder = false)
         {
-            if (ranges == null || ranges.Count == 0)
+            if ((ranges == null || ranges.Count == 0) && !allowEmptyRanges)
             {
                 errors.Add("No Dynamic pricing ranges specified");
                 return false;
