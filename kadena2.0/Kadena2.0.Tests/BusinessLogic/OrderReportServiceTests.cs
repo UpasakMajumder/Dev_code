@@ -12,6 +12,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -56,9 +57,7 @@ namespace Kadena.Tests.BusinessLogic
             };
 
             var tableView = new TableView();
-            var reportView = new OrderReportView();
-            Setup<IOrderReportFactory, OrderReportView>(orf => orf.CreateReportView(orders.Data), reportView);
-            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(reportView), tableView);
+            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<IEnumerable<OrderReportViewItem>>()), tableView);
 
             var actual = Sut.ConvertOrdersToView(orders);
 
@@ -275,7 +274,7 @@ namespace Kadena.Tests.BusinessLogic
             };
             SetupOrderViewClientReturning(orders);
             var actualResult = new Table();
-            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<OrderReportView>()), expected);
+            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<IEnumerable<OrderReportViewItem>>()), expected);
             Setup<IExcelConvert, Table, byte[]>(ec => ec.Convert(It.IsAny<Table>()), t =>
               {
                   actualResult = t;

@@ -26,14 +26,14 @@ namespace Kadena.BusinessLogic.Factories
         /// </summary>
         /// <param name="reportDto"></param>
         /// <returns></returns>
-        TableView CreateTableView(OrderReportView reportDto);
+        TableView CreateTableView(IEnumerable<OrderReportViewItem> reportDto);
 
         /// <summary>
         /// Map order report to typed report view
         /// </summary>
         /// <param name="orderReports"></param>
         /// <returns></returns>
-        OrderReportView CreateReportView(IEnumerable<OrderReport> orderReports);
+        IEnumerable<OrderReportViewItem> CreateReportView(IEnumerable<OrderReport> orderReports);
     }
 
     public class OrderReportFactory : IOrderReportFactory
@@ -69,7 +69,7 @@ namespace Kadena.BusinessLogic.Factories
             this.kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
             this.kenticoDocumentProvider = kenticoDocumentProvider ?? throw new ArgumentNullException(nameof(kenticoDocumentProvider));
         }
-        public OrderReport Create(RecentOrderDto orderDto) => 
+        public OrderReport Create(RecentOrderDto orderDto) =>
             new OrderReport
             {
                 Items = orderDto.Items.Select(it => new ReportLineItem
@@ -89,32 +89,30 @@ namespace Kadena.BusinessLogic.Factories
                 User = FormatCustomer(kenticoCustomerProvider.GetCustomer(orderDto.CustomerId))
             };
 
-        public OrderReportView CreateReportView(IEnumerable<OrderReport> orderReports) =>
-            new OrderReportView
-            {
-                Items = orderReports
-                    .SelectMany(o => o.Items.Select(it => new OrderReportViewItem
-                    {
-                        Url = o.Url,
-                        Site = o.Site,
-                        Number = o.Number,
-                        OrderingDate = FormatDate(o.OrderingDate),
-                        User = o.User,
-                        Name = it.Name,
-                        SKU = it.SKU,
-                        Quantity = it.Quantity,
-                        Price = it.Price,
-                        Status = o.Status,
-                        ShippingDate = FormatDate(o.ShippingDate),
-                        TrackingNumber = it.TrackingNumber
-                    }))
-                    .ToArray()
-            };
-        
-        public TableView CreateTableView(OrderReportView reportDto) => 
+        public IEnumerable<OrderReportViewItem> CreateReportView(IEnumerable<OrderReport> orderReports) =>
+             orderReports
+                .SelectMany(o => o.Items.Select(it => new OrderReportViewItem
+                {
+                    Url = o.Url,
+                    Site = o.Site,
+                    Number = o.Number,
+                    OrderingDate = FormatDate(o.OrderingDate),
+                    User = o.User,
+                    Name = it.Name,
+                    SKU = it.SKU,
+                    Quantity = it.Quantity,
+                    Price = it.Price,
+                    Status = o.Status,
+                    ShippingDate = FormatDate(o.ShippingDate),
+                    TrackingNumber = it.TrackingNumber
+                }))
+                .ToArray();
+
+
+        public TableView CreateTableView(IEnumerable<OrderReportViewItem> reportDto) =>
             new TableView
             {
-                Rows = reportDto.Items.Select(it => new TableRow
+                Rows = reportDto.Select(it => new TableRow
                 {
                     Url = it.Url,
                     Items = new object[]
@@ -164,10 +162,10 @@ namespace Kadena.BusinessLogic.Factories
             return customer.Email;
         }
 
-        public string FormatDetailUrl(RecentOrderDto order) => 
+        public string FormatDetailUrl(RecentOrderDto order) =>
             $"{OrderDetailUrl}?orderID={order.Id}";
 
-        public string FormatOrderStatus(string status) => 
+        public string FormatOrderStatus(string status) =>
             kenticoOrderProvider.MapOrderStatus(status);
 
         public string FormatDate(DateTime? date) =>

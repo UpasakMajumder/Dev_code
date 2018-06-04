@@ -1,12 +1,5 @@
-﻿using System.Collections.Generic;
-
-namespace Kadena.Dto.Order
+﻿namespace Kadena.Dto.Order
 {
-    public class OrderReportView
-    {
-        public IEnumerable<OrderReportViewItem> Items { get; set; }
-    }
-
     public class OrderReportViewItem
     {
         public string Url { get; set; }

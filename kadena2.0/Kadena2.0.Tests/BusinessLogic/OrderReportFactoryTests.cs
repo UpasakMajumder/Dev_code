@@ -85,7 +85,7 @@ namespace Kadena.Tests.BusinessLogic
         }
 
         public static IEnumerable<object[]> GetTestDataFor_FormatDate_ShouldUseFormatter =>
-            new[] 
+            new[]
             {
                 new object[] { new DateTime(), "formatted" },
                 new object[] { null, string.Empty }
@@ -105,9 +105,7 @@ namespace Kadena.Tests.BusinessLogic
         [Fact]
         public void CreateTableView_ShouldMapReportViewToTableView()
         {
-            var report = new OrderReportView
-            {
-                Items = new[]
+            var report = new[]
                 {
                     new OrderReportViewItem
                     {
@@ -124,9 +122,8 @@ namespace Kadena.Tests.BusinessLogic
                         Url = "url",
                         User = "user"
                     }
-                }
-            };
-            var expected = report.Items.First();
+                };
+            var expected = report.First();
 
             var actualView = Sut.CreateTableView(report);
             var actual = actualView.Rows[0];
@@ -170,7 +167,7 @@ namespace Kadena.Tests.BusinessLogic
 
             var actual = Sut.CreateReportView(new[] { report });
 
-            var firstActualItem = actual.Items.First();
+            var firstActualItem = actual.First();
             Assert.Equal(report.Url, firstActualItem.Url);
             Assert.Equal(report.Site, firstActualItem.Site);
             Assert.Equal(report.Number, firstActualItem.Number);

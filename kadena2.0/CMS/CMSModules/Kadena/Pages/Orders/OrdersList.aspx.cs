@@ -144,7 +144,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
 
                 var ordersReport = OrderReportFactory.CreateReportView(orders.Data);
 
-                var source = new DataView(ordersReport.Items.ToDataSet().Tables[0]);
+                var source = new DataView(ordersReport.ToDataSet().Tables[0]);
                 ordersDatagrid.DataSource = source;
                 ordersDatagrid.DataBind();
 
