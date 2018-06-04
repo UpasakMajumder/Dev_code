@@ -1,18 +1,24 @@
 ﻿using CMS.DocumentEngine;
+using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Container.Default;
 using Kadena.Models.Product;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.IO;
+using System.Linq;
 using System.Web.UI;
+using System.Web.UI.WebControls;
+using TreeNode = CMS.DocumentEngine.TreeNode;
 
 namespace Kadena.CMSWebParts.Kadena.Product
 {
-    public partial class AddToCartButton : CMSAbstractWebPart
+    public partial class AddTemplatedToCartButton : CMSAbstractWebPart
     {
         private TreeNode _productDocument;
+        private bool _hasTieredPricing;
 
         public override void OnContentLoaded()
         {
@@ -30,16 +36,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
             SetupDocument();
             SetupQuantity();
 
-            if (IsProductTemplatedType())
-            {
-                btnAddToCart.Attributes.Add("class", "btn-action js-chili-addtocart");
-                btnAddToCart.Disabled = true;
-            }
-            else
-            {
-                btnAddToCart.Attributes.Add("class", "btn-action js-add-to-cart");
-            }
+            selNumberOfItems.Visible = _hasTieredPricing;
+            inpNumberOfItems.Visible = !_hasTieredPricing;
 
+            btnAddToCart.Disabled = true;
+            
             Controls.Add(new LiteralControl(GetHiddenInput("documentId", _productDocument.DocumentID.ToString())));
             if (!string.IsNullOrWhiteSpace(Request.QueryString["templateId"]))
             {
@@ -91,22 +92,27 @@ namespace Kadena.CMSWebParts.Kadena.Product
             return ProductTypes.IsOfType(productType, ProductTypes.MailingProduct);
         }
 
-        private bool IsProductTemplatedType()
-        {
-            var productType = _productDocument.GetStringValue("ProductType", string.Empty);
-            return ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct);
-        }
-
         private void SetupDocument()
         {
-            var documentId = Request.QueryString["documentId"];
-            if (string.IsNullOrWhiteSpace(documentId))
+            if(!int.TryParse(Request.QueryString["documentId"], out int documentId))
             {
                 _productDocument = DocumentContext.CurrentDocument;
             }
             else
             {
-                _productDocument = DocumentHelper.GetDocument(int.Parse(documentId), new TreeProvider(MembershipContext.AuthenticatedUser));
+                _productDocument = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
+            }
+
+            if (_productDocument.GetStringValue("ProductPricingModel", PricingModel.GetDefault()) == PricingModel.Tiered)
+            {
+                _hasTieredPricing = true;
+
+                var ranges = DIContainer.Resolve<ITieredPriceRangeProvider>().GetTieredRanges(documentId).ToList();
+
+                selNumberOfItems.Items.Clear();
+                selNumberOfItems.Items.Add( new ListItem( ResHelper.GetString("Kadena.Product.SelectPriceTier") , "0", false));
+
+                ranges.ForEach(r => selNumberOfItems.Items.Add(r.Quantity.ToString()));
             }
         }
     }

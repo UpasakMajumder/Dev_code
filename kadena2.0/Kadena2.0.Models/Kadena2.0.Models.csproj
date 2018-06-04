@@ -82,6 +82,8 @@
     <Compile Include="ProductOptions\ProductOptions.cs" />
     <Compile Include="Product\Border.cs" />
     <Compile Include="Product\CampaignsProduct.cs" />
+    <Compile Include="Product\PricingModel.cs" />
+    <Compile Include="Product\TieredPricingRange.cs" />
     <Compile Include="Product\Price.cs" />
     <Compile Include="Checkout\ItemOption.cs" />
     <Compile Include="Product\OptionCategory.cs" />

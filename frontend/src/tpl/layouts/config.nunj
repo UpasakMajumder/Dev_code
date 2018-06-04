@@ -592,7 +592,7 @@
             }
           ]
         },
-        availability: PATH + 'products/availability',
+        // availability: PATH + 'products/availability',
         packagingInfo: 'These come in pack 50 pcs', // props
         productOptions: {
           priceElementId: "option-price",
@@ -663,6 +663,10 @@
           url: PATH + 'products/add-to-cart', // TODO: Call
           text: 'Add to cart',
           unit: 'pack of 50 (50)',
+          tiers: {
+            placeholder: 'Hello 🏋️',
+            items: [5, 10, 15, 20, 25]
+          },
           quantity: 1, // state
           quantityErrorText: 'Invalid Quantity Here',
           minQuantity: 1, // not required

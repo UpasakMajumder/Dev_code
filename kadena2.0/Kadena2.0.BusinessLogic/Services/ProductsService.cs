@@ -20,6 +20,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IImageService imageService;
         private readonly IKenticoPermissionsProvider permissions;
         private readonly IDynamicPriceRangeProvider dynamicRanges;
+        private readonly ITieredPriceRangeProvider tieredRanges;
 
         public ProductsService(IKenticoProductsProvider products,
                                IKenticoSkuProvider skus,
@@ -28,7 +29,8 @@ namespace Kadena.BusinessLogic.Services
                                IKenticoUnitOfMeasureProvider units, 
                                IImageService imageService, 
                                IKenticoPermissionsProvider permissions, 
-                               IDynamicPriceRangeProvider dynamicRanges)
+                               IDynamicPriceRangeProvider dynamicRanges, 
+                               ITieredPriceRangeProvider tieredRanges)
         {
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.skus = skus ?? throw new ArgumentNullException(nameof(skus));
@@ -38,6 +40,7 @@ namespace Kadena.BusinessLogic.Services
             this.units = units ?? throw new ArgumentNullException(nameof(units));
             this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             this.dynamicRanges = dynamicRanges ?? throw new ArgumentNullException(nameof(dynamicRanges));
+            this.tieredRanges = tieredRanges ?? throw new ArgumentNullException(nameof(tieredRanges));
         }
 
         public Price GetPrice(int skuId, Dictionary<string, int> skuOptions = null)
@@ -241,31 +244,82 @@ namespace Kadena.BusinessLogic.Services
             return estimates;
         }
 
-        public IEnumerable<ProductPricingInfo> GetProductPricings(int documentId, string unitOfMeasure, string cultureCode)
+        public IEnumerable<int> GetProductTiers(int documentId)
         {
-            var ranges = dynamicRanges.GetDynamicRanges(documentId);
-            var localizedUom = TranslateUnitOfMeasure(unitOfMeasure, cultureCode);
-            var pricings = new List<ProductPricingInfo>();
-            var currencySymbol = "$";
+            var product = products.GetProductByDocumentId(documentId);
+            var pricingModel = product?.PricingModel;
+            var tiers = new List<int>();
 
-            if (ranges == null || ranges.Count() == 0)
+            if (pricingModel == PricingModel.Tiered)
             {
-                pricings.Add(products.GetDefaultVariantPricing(documentId, localizedUom));
-            }
-            else
-            {
-                foreach (var r in ranges)
+                var ranges = tieredRanges.GetTieredRanges(documentId);
+                if (ranges != null)
                 {
-                    pricings.Add(new ProductPricingInfo
-                    {
-                        Key = $"{r.MinVal}-{r.MaxVal} {localizedUom}",
-                        Value = $"{currencySymbol}{r.Price}"
-                    });
+                    tiers.AddRange(ranges.Select(tr => tr.Quantity));
                 }
+            }
+
+            return tiers;
+        }
+
+        public IEnumerable<ProductPricingInfo> GetProductPricings(int documentId, string pricingModel, string unitOfMeasure, string cultureCode)
+        {
+            var pricings = new List<ProductPricingInfo>();
+            var localizedUom = TranslateUnitOfMeasure(unitOfMeasure, cultureCode);
+            var currencySymbol = "$";
+            
+            if (pricingModel == PricingModel.Dynamic)
+            {
+                FillDynamicPrices(pricings, documentId, localizedUom, currencySymbol);
+            }
+            else if (pricingModel == PricingModel.Tiered)
+            {
+                FillTieredPrices(pricings, documentId, localizedUom, currencySymbol);
             }
 
             return pricings;
         }
+
+        private void FillDynamicPrices(List<ProductPricingInfo> pricings, int documentId, string localizedUom, string currencySymbol)
+        {
+            var dynamicRanges = this.dynamicRanges.GetDynamicRanges(documentId);
+
+            if((dynamicRanges?.Count() ?? 0) == 0)
+            {
+                pricings.Add(products.GetDefaultVariantPricing(documentId, localizedUom));
+                return;
+            }
+
+            foreach (var r in dynamicRanges)
+            {
+                pricings.Add(new ProductPricingInfo
+                {
+                    Key = $"{r.MinVal}-{r.MaxVal} {localizedUom}",
+                    Value = $"{currencySymbol}{r.Price}"
+                });
+            }
+        }
+
+        private void FillTieredPrices(List<ProductPricingInfo> pricings, int documentId, string localizedUom, string currencySymbol)
+        {
+            var tieredRanges = this.tieredRanges.GetTieredRanges(documentId);
+
+            if ((tieredRanges?.Count() ?? 0) == 0)
+            {
+                pricings.Add(products.GetDefaultVariantPricing(documentId, localizedUom));
+                return;
+            }
+
+            foreach (var r in tieredRanges)
+            {
+                pricings.Add(new ProductPricingInfo
+                {
+                    Key = $"{r.Quantity} {localizedUom}",
+                    Value = $"{currencySymbol}{r.Price.ToString("N2")}"
+                });
+            }
+        }
+
 
         public string GetMinMaxItemsString(int min, int max)
         {
