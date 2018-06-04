@@ -126,26 +126,22 @@ namespace Kadena.BusinessLogic.Services.Orders
                         Accept = new DialogButton
                         {
                             Button = resources.GetResourceString("Kadena.Order.ButtonAccept"),
-                            Dialog = new Dialog
-                            {
-                                CancelButton = resources.GetResourceString("Kadena.Order.DialogAccept.Cancel"),
-                                ProceedButton = resources.GetResourceString("Kadena.Order.DialogAccept.Proceed"),
-                                ProceedUrl = '/' + Routes.Order.Approve,
-                                Text = resources.GetResourceString("Kadena.Order.DialogAccept.Message"),
-                                Title = resources.GetResourceString("Kadena.Order.DialogAccept.Title")
-                            }
+                            ProceedUrl = '/' + Routes.Order.Approve,
                         },
                         Reject = new DialogButton
                         {
                             Button = resources.GetResourceString("Kadena.Order.ButtonReject"),
+                            ProceedUrl = '/' + Routes.Order.Reject,
                             Dialog = new Dialog
                             {
                                 CancelButton = resources.GetResourceString("Kadena.Order.DialogReject.Cancel"),
                                 ProceedButton = resources.GetResourceString("Kadena.Order.DialogReject.Proceed"),
-                                ProceedUrl = '/' + Routes.Order.Reject,
-                                Text = resources.GetResourceString("Kadena.Order.DialogReject.Message"),
                                 Title = resources.GetResourceString("Kadena.Order.DialogReject.Title")
                             }
+                        },
+                        Comment = new TitleValuePair<string>
+                        {
+                            Title = resources.GetResourceString("Kadena.Order.Comment.Title")
                         }
                     }
                     : null,
