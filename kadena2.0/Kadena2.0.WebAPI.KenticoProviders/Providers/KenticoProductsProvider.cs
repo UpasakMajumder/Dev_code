@@ -147,6 +147,9 @@ namespace Kadena.WebAPI.KenticoProviders
                 ProductionTime = doc.GetStringValue("ProductProductionTime", string.Empty),
                 ShipTime = doc.GetStringValue("ProductShipTime", string.Empty),
                 ShippingCost = doc.GetStringValue("ProductShippingCost", string.Empty),
+                PricingModel = doc.GetStringValue("ProductPricingModel", PricingModel.GetDefault()),
+                DynamicPricingJson = doc.GetStringValue("ProductDynamicPricing", string.Empty),
+                TieredPricingJson = doc.GetStringValue("ProductTieredPricing", string.Empty),
                 SkuId = doc.NodeSKUID
             };
 
