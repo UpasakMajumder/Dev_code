@@ -13,41 +13,20 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
         private readonly IConfigurationProvider configurationProvider;
         private readonly IInventoryUpdateClient microserviceInventory;
         private readonly IKenticoSiteProvider kenticoSite;
-        private readonly IKenticoProductsProvider productsProvider;
+        private readonly IKenticoSkuProvider skuProvider;
         private readonly IKenticoLogger kenticoLog;
 
         public UpdateInventoryDataService(IConfigurationProvider configurationProvider, 
                                           IInventoryUpdateClient microserviceInventory,
                                           IKenticoSiteProvider kenticoSite,
-                                          IKenticoProductsProvider productsProvider,
+                                          IKenticoSkuProvider skuProvider,
                                           IKenticoLogger kenticoLog)
         {
-            if (configurationProvider == null)
-            {
-                throw new ArgumentOutOfRangeException(nameof(configurationProvider));
-            }
-            if (microserviceInventory == null)
-            {
-                throw new ArgumentOutOfRangeException(nameof(microserviceInventory));
-            }
-            if (kenticoSite == null)
-            {
-                throw new ArgumentOutOfRangeException(nameof(kenticoSite));
-            }
-            if (productsProvider == null)
-            {
-                throw new ArgumentNullException(nameof(productsProvider));
-            }
-            if (kenticoLog == null)
-            {
-                throw new ArgumentOutOfRangeException(nameof(kenticoLog));
-            }
-
-            this.configurationProvider = configurationProvider;
-            this.microserviceInventory = microserviceInventory;
-            this.kenticoSite = kenticoSite;
-            this.productsProvider = productsProvider;
-            this.kenticoLog = kenticoLog;
+            this.configurationProvider = configurationProvider ?? throw new ArgumentOutOfRangeException(nameof(configurationProvider));
+            this.microserviceInventory = microserviceInventory ?? throw new ArgumentOutOfRangeException(nameof(microserviceInventory));
+            this.kenticoSite = kenticoSite ?? throw new ArgumentOutOfRangeException(nameof(kenticoSite));
+            this.skuProvider = skuProvider ?? throw new ArgumentNullException(nameof(skuProvider));
+            this.kenticoLog = kenticoLog ?? throw new ArgumentOutOfRangeException(nameof(kenticoLog));
         }
 
         public async Task<string> UpdateInventoryData()
@@ -85,7 +64,7 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
 
             foreach (var product in products.Payload.Where(p => p.ClientId == customerErpId))
             {
-                productsProvider.SetSkuAvailableQty(product.Id, (int)product.AvailableQty);
+                skuProvider.SetSkuAvailableQty(product.Id, (int)product.AvailableQty);
             }
 
             return $"Customer with ErpId {customerErpId} done successfully";

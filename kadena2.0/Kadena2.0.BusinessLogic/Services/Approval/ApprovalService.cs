@@ -1,8 +1,7 @@
 ﻿using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.Dto.Approval.MicroserviceRequests;
-using Kadena.Dto.Approval.MicroserviceResponses;
-using Kadena.Dto.Approval.Responses;
 using Kadena.Helpers;
+using Kadena.Models.Approval;
 using Kadena.Models.Orders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
@@ -14,13 +13,6 @@ namespace Kadena.BusinessLogic.Services.Approval
 {
     public class ApprovalService : IApprovalService
     {
-        struct ApprovalServiceCallResult
-        {
-            public bool Success;
-            public string Error;
-            public string NewStatus;
-        }
-
         private readonly IApproverService approvers;
         private readonly IApprovalServiceClient approvalClient;
         private readonly IKenticoUserProvider users;
@@ -29,8 +21,8 @@ namespace Kadena.BusinessLogic.Services.Approval
         private readonly IKenticoResourceService kenticoResource;
 
         public ApprovalService(IApproverService approvers,
-                               IApprovalServiceClient approvalClient, 
-                               IKenticoUserProvider users, 
+                               IApprovalServiceClient approvalClient,
+                               IKenticoUserProvider users,
                                IKenticoLogger log,
                                IKenticoOrderProvider kenticoOrderProvider,
                                IKenticoResourceService kenticoResource)
@@ -43,70 +35,52 @@ namespace Kadena.BusinessLogic.Services.Approval
             this.kenticoResource = kenticoResource ?? throw new ArgumentNullException(nameof(kenticoResource));
         }
 
-        public async Task<ApprovalResultDto> ApproveOrder(string orderId, int customerId, string customerName)
+        public async Task<ApprovalResult> ApproveOrder(string orderId, int customerId, string customerName, string note = "")
         {
-            CheckIsCustomersApprover(customerId, customerName);
-            var approveRequest = GetApprovalData(orderId, customerId, customerName, ApprovalState.Approved);
-            var response = await CallApprovalService(approveRequest, "ApproveOrder", ApprovalResponseDto.Approved);
-            if (response.Success)
+            await CallApprovalService(orderId, customerId, customerName, note, ApprovalState.Approved);
+            return new ApprovalResult
             {
-                return new ApprovalResultDto
-                {
-                    Title = kenticoResource.GetResourceString("Kadena.Order.Approve.Success.ToastTitle"),
-                    Text = kenticoResource.GetResourceString("Kadena.Order.Approve.Success.ToastMessage"),
-                    NewStatus = kenticoOrderProvider.MapOrderStatus(OrderStatus.Approved.GetDisplayName())
-                };
-            }
-            else
-            {
-                throw new ApprovalServiceException(response.Error);
-            }
+                Title = kenticoResource.GetResourceString("Kadena.Order.Approve.Success.ToastTitle"),
+                Text = kenticoResource.GetResourceString("Kadena.Order.Approve.Success.ToastMessage"),
+                NewStatus = kenticoOrderProvider.MapOrderStatus(OrderStatus.Approved.GetDisplayName())
+            };
         }
 
-        public async Task<ApprovalResultDto> RejectOrder(string orderId, int customerId, string customerName, string rejectionNote = "")
+        public async Task<ApprovalResult> RejectOrder(string orderId, int customerId, string customerName, string rejectionNote = "")
         {
-            CheckIsCustomersApprover(customerId, customerName);
-            var approveRequest = GetApprovalData(orderId, customerId, customerName, ApprovalState.Rejected, rejectionNote);
-            var response = await CallApprovalService(approveRequest, "RejectOrder", ApprovalResponseDto.Rejected);
-            if (response.Success)
+            await CallApprovalService(orderId, customerId, customerName, rejectionNote, ApprovalState.ApprovalRejected);
+            return new ApprovalResult
             {
-                return new ApprovalResultDto
-                {
-                    Title = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastTitle"),
-                    Text = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastMessage"),
-                    NewStatus = kenticoOrderProvider.MapOrderStatus(OrderStatus.Rejected.GetDisplayName())
-                };
-            }
-            else
-            {
-                throw new ApprovalServiceException(response.Error);
-            }
+                Title = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastTitle"),
+                Text = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastMessage"),
+                NewStatus = kenticoOrderProvider.MapOrderStatus(OrderStatus.ApprovalRejected.GetDisplayName())
+            };
         }
 
-        async Task<ApprovalServiceCallResult> CallApprovalService(ApprovalRequestDto request, string operationName, string expectedResult)
+        async Task CallApprovalService(string orderId, int customerId, string customerName, string note, ApprovalState approvalState)
         {
-            var microserviceResult = await approvalClient.Approval(request).ConfigureAwait(false);
+            CheckIsCustomersApprover(customerId, customerName);
+            var approveRequest = GetApprovalData(orderId, customerId, customerName, approvalState, note);
+
+            var microserviceResult = await approvalClient.Approval(approveRequest).ConfigureAwait(false);
 
             if (!microserviceResult.Success)
             {
-                var message = $"Error processing order '{request?.OrderId}' - Failed to call approval microservice. {microserviceResult.ErrorMessages}";
-                log.LogError(operationName, message);
-                return new ApprovalServiceCallResult { Success = false, Error = message };
+                var message = $"Error processing order '{approveRequest?.OrderId}' - Failed to call approval microservice. {microserviceResult.ErrorMessages}";
+                log.LogError(approvalState.GetDisplayName(), message);
+                throw new ApprovalServiceException(message);
             }
 
-            if (microserviceResult.Payload != expectedResult)
+            if (microserviceResult.Payload != approvalState.ToString())
             {
-                var message = $"Error processing order '{request?.OrderId}' - Approval microservice returned unexpected state {microserviceResult.Payload}";
-                log.LogError(operationName, message);
-                return new ApprovalServiceCallResult { Success = false, Error = message };
+                var message = $"Error processing order '{approveRequest?.OrderId}' - Approval microservice returned unexpected state {microserviceResult.Payload}";
+                log.LogError(approvalState.GetDisplayName(), message);
+                throw new ApprovalServiceException(message);
             }
 
-            var note = request.Approvals?[0]?.Note;
             var noteLog = string.IsNullOrEmpty(note) ? null : $"Approver's note: {note}";
 
-            log.LogInfo(operationName,"Info", $"Order '{request.OrderId}' successfully processed, approval status : {microserviceResult.Payload}. {noteLog}");
-
-            return new ApprovalServiceCallResult { Success = true, NewStatus = microserviceResult.Payload };
+            log.LogInfo(approvalState.GetDisplayName(), "Info", $"Order '{approveRequest.OrderId}' successfully processed, approval status : {microserviceResult.Payload}. {noteLog}");
         }
 
         void CheckIsCustomersApprover(int customerId, string customerName)
@@ -119,7 +93,7 @@ namespace Kadena.BusinessLogic.Services.Approval
             }
         }
 
-        private ApprovalRequestDto GetApprovalData(string orderId, int customerId, string customerName, int state, string rejectionNote = "")
+        private ApprovalRequestDto GetApprovalData(string orderId, int customerId, string customerName, ApprovalState state, string rejectionNote)
         {
             return new ApprovalRequestDto
             {
@@ -135,11 +109,10 @@ namespace Kadena.BusinessLogic.Services.Approval
                             Name = customerName,
                         },
                         Note = rejectionNote,
-                        State = state
+                        State = (int)state
                     }
                 }
             };
         }
-
     }
 }

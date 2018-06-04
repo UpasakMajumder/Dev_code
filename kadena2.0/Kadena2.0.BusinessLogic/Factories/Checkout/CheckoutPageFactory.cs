@@ -1,4 +1,5 @@
-﻿using Kadena.Models;
+﻿using Kadena.BusinessLogic.Contracts;
+using Kadena.Models;
 using Kadena.Models.Checkout;
 using Kadena.Models.Settings;
 using Kadena.Models.SiteSettings;
@@ -14,12 +15,15 @@ namespace Kadena.BusinessLogic.Factories.Checkout
         private readonly IKenticoResourceService resources;
         private readonly IKenticoDocumentProvider documents;
         private readonly IKenticoLocalizationProvider kenticoLocalization;
+        private readonly IDialogService dialogService;
 
-        public CheckoutPageFactory(IKenticoResourceService resources, IKenticoDocumentProvider documents, IKenticoLocalizationProvider kenticoLocalization)
+        public CheckoutPageFactory(IKenticoResourceService resources, IKenticoDocumentProvider documents, 
+            IKenticoLocalizationProvider kenticoLocalization, IDialogService dialogService)
         {
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
             this.kenticoLocalization = kenticoLocalization ?? throw new ArgumentNullException(nameof(kenticoLocalization));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
         public CartEmptyInfo CreateCartEmptyInfo()
@@ -78,7 +82,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
                 Title = resources.GetResourceString("Kadena.Checkout.DeliveryAddress.Title"),
                 Description = resources.GetResourceString("Kadena.Checkout.DeliveryDescription"),
                 EmptyMessage = resources.GetResourceString("Kadena.Checkout.NoAddressesMessage"),
-                items = addresses.ToList(),
+                items = addresses,
                 DialogUI = GetOtherAddressDialog(),
                 Bounds = new DeliveryAddressesBounds
                 {
@@ -89,11 +93,8 @@ namespace Kadena.BusinessLogic.Factories.Checkout
             };
         }
 
-        public Models.Checkout.AddressDialog GetOtherAddressDialog()
+        private Models.Checkout.AddressDialog GetOtherAddressDialog()
         {
-            var countries = kenticoLocalization.GetCountries();
-            var states = kenticoLocalization.GetStates();
-            var defaultCountryId = resources.GetSiteSettingsKey<int>(Settings.KDA_AddressDefaultCountry);
             return new Models.Checkout.AddressDialog
             {
                 Title = resources.GetResourceString("Kadena.Checkout.NewAddress"),
@@ -101,78 +102,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
                 SubmitBtnLabel = resources.GetResourceString("Kadena.Settings.Addresses.SaveAddress"),
                 RequiredErrorMessage = resources.GetResourceString("Kadena.Settings.RequiredField"),
                 SaveAddressCheckbox = resources.GetResourceString("Kadena.Checkout.PersistAddressCheckbox"),
-                Fields = new[] {
-                    new DialogField
-                    {
-                        Id = "customerName",
-                        Label = resources.GetResourceString("Kadena.Settings.CustomerName"),
-                        Type = "text"
-                    },
-                    new DialogField
-                    {
-                        Id = "address1",
-                        Label = resources.GetResourceString("Kadena.Settings.Addresses.AddressLine1"),
-                        Type = "text"
-                    },
-                    new DialogField
-                    {
-                        Id = "address2",
-                        Label = resources.GetResourceString("Kadena.Settings.Addresses.AddressLine2"),
-                        IsOptional = true,
-                        Type = "text"
-                    },
-                    new DialogField
-                    {
-                        Id = "city",
-                        Label = resources.GetResourceString("Kadena.Settings.Addresses.City"),
-                        Type = "text"
-                    },
-                    new DialogField
-                    {
-                        Id = "state",
-                        Label = resources.GetResourceString("Kadena.Settings.Addresses.State"),
-                        IsOptional = true,
-                        Type = "select",
-                        Values = new List<object>()
-                    },
-                    new DialogField
-                    {
-                        Id = "zip",
-                        Label = resources.GetResourceString("Kadena.Settings.Addresses.Zip"),
-                        Type = "text"
-                    },
-                    new DialogField
-                    {
-                        Id = "country",
-                        Label = resources.GetResourceString("Kadena.Settings.Addresses.Country"),
-                        Type = "select",
-                        Values = countries
-                                .GroupJoin(states, c => c.Id, s => s.CountryId, (c, sts) => (object) new
-                                {
-                                    Id = c.Id.ToString(),
-                                    Name = c.Name,
-                                    IsDefault = (c.Id == defaultCountryId),
-                                    Values = sts.Select(s => new
-                                    {
-                                        Id = s.Id.ToString(),
-                                        Name = s.StateDisplayName
-                                    }).ToArray()
-                                }).ToList()
-                    },
-                    new DialogField
-                    {
-                        Id = "phone",
-                        Label = resources.GetResourceString("Kadena.ContactForm.Phone"),
-                        IsOptional = true,
-                        Type = "text"
-                    },
-                    new DialogField
-                    {
-                        Id = "email",
-                        Label = resources.GetResourceString("Kadena.ContactForm.Email"),
-                        Type = "text"
-                    }
-                }
+                Fields = dialogService.GetAddressFields()
             };
         }
 

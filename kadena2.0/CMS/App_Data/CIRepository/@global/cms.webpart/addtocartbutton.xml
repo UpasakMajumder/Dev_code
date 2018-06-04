@@ -11,14 +11,14 @@
   <WebPartDefaultValues>
     <form />
   </WebPartDefaultValues>
-  <WebPartDescription />
   <WebPartDisplayName>_Add to Cart Button</WebPartDisplayName>
-  <WebPartFileName>Kadena/Product/AddToCartButton.ascx</WebPartFileName>
+  <WebPartFileName>Kadena/Product/AddTemplatedToCartButton.ascx</WebPartFileName>
   <WebPartGUID>354b8948-4394-435a-a712-299b9c770dff</WebPartGUID>
   <WebPartLoadGeneration>0</WebPartLoadGeneration>
   <WebPartName>AddToCartButton</WebPartName>
   <WebPartProperties>
     <form />
   </WebPartProperties>
+  <WebPartSkipInsertProperties>False</WebPartSkipInsertProperties>
   <WebPartType>0</WebPartType>
 </cms.webpart>

@@ -1,6 +1,7 @@
 ﻿using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.Membership;
+using Kadena.Infrastructure.Exceptions;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Newtonsoft.Json;
@@ -51,7 +52,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 }
                 else
                 {
-                    throw new ArgumentException(resources.GetResourceString("Kadena.Product.QuantityOutOfRange"));
+                    throw new NotLoggedException(resources.GetResourceString("Kadena.Product.QuantityOutOfRange"));
                 }
             }
             return decimal.MinusOne;

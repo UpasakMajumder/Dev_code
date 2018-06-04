@@ -17,7 +17,7 @@ namespace Kadena.Models.Product
         public Guid TemplateLowResSettingId { get; set; }
         public double Weight { get; set; }
         public bool HiResPdfDownloadEnabled { get; set; }
-
+        public int SkuId { get; set; }
         public bool HasProductTypeFlag(string productType)
         {
             return ProductTypes.IsOfType(ProductType, productType);
@@ -28,5 +28,8 @@ namespace Kadena.Models.Product
         public string ProductionTime { get; set; }
         public string ShipTime { get; set; }
         public string ShippingCost { get; set; }
+        public string PricingModel { get; set; }
+        public string TieredPricingJson { get; set; }
+        public string DynamicPricingJson { get; set; }
     }
 }
