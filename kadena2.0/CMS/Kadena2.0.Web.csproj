@@ -1211,12 +1211,12 @@
     <Compile Include="CMSWebParts\Kadena\Product\AddInventoryProduct.ascx.designer.cs">
       <DependentUpon>AddInventoryProduct.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.cs">
-      <DependentUpon>AddToCartButton.ascx</DependentUpon>
+    <Compile Include="CMSWebParts\Kadena\Product\AddTemplatedToCartButton.ascx.cs">
+      <DependentUpon>AddTemplatedToCartButton.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.designer.cs">
-      <DependentUpon>AddToCartButton.ascx</DependentUpon>
+    <Compile Include="CMSWebParts\Kadena\Product\AddTemplatedToCartButton.ascx.designer.cs">
+      <DependentUpon>AddTemplatedToCartButton.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx.cs">
       <DependentUpon>CustomerShipToAddress.ascx</DependentUpon>
@@ -1543,7 +1543,7 @@
     <Content Include="CMSScripts\Custom\Kadena\custom.js" />
     <Content Include="CMSWebParts\Kadena\Chili\ChiliIframe.ascx" />
     <Content Include="CMSWebParts\Kadena\Chili\OpenTemplatedProductButton.ascx" />
-    <Content Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx" />
+    <Content Include="CMSWebParts\Kadena\Product\AddTemplatedToCartButton.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSPages\Kadena\SubmitBid.ashx" />
