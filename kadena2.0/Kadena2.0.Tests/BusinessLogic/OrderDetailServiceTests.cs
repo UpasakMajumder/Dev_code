@@ -168,7 +168,7 @@ namespace Kadena.Tests.BusinessLogic
             const int skuid = 123;
             var orderResponse = CreateOrderDetailDtoOK(new[]
             {
-                new OrderItemDTO { Type = Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString(), TemplateId = templateId, SkuId = skuid }
+                new OrderItemDTO { Type = Kadena.Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString(), TemplateId = templateId, SkuId = skuid }
             });
             Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId(orderId), Task.FromResult(orderResponse));
             Setup<IKenticoProductsProvider, Product>(p => p.GetProductBySkuId(skuid), new Product { });
@@ -190,7 +190,7 @@ namespace Kadena.Tests.BusinessLogic
             const int skuid = 123;
             var orderResponse = CreateOrderDetailDtoOK(new[]
             {
-                new OrderItemDTO { Type = Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString(), TemplateId = templateId, SkuId = skuid }
+                new OrderItemDTO { Type = Kadena.Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString(), TemplateId = templateId, SkuId = skuid }
             });
             Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId(orderId), Task.FromResult(orderResponse));
             Setup<IKenticoProductsProvider, Product>(p => p.GetProductBySkuId(skuid), new Product { });

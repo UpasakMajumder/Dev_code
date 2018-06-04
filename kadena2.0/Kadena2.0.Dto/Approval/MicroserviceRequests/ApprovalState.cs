@@ -1,8 +1,13 @@
-﻿namespace Kadena.Dto.Approval.MicroserviceRequests
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Kadena.Dto.Approval.MicroserviceRequests
 {
-    public static class ApprovalState
+    public enum ApprovalState
     {
-        public static int Approved => 200;
-        public static int Rejected => 300;
+        [Display(Name = "ApproveOrder")]
+        Approved = 200,
+
+        [Display(Name = "RejectOrder")]
+        ApprovalRejected = 300
     }
 }

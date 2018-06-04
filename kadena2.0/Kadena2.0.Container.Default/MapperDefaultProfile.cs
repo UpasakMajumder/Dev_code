@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Kadena.Dto.AddToCart;
+using Kadena.Dto.Approval.Responses;
 using Kadena.Dto.Brands;
 using Kadena.Dto.BusinessUnits;
 using Kadena.Dto.Checkout;
@@ -84,6 +85,8 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.Preview, opt => opt.Ignore())
                 .ForMember(dest => dest.EmailProof, opt => opt.Ignore())
                 .ForMember(dest => dest.Options, opt => opt.UseValue(Enumerable.Empty<ItemOption>()));
+
+            CreateMap<ApprovalResult, ApprovalResultDto>();
 
             CreateMap<RegistrationDto, Registration>();
 

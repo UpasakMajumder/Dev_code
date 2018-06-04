@@ -50,6 +50,7 @@
     <Compile Include="AddToCart\DistributorCart.cs" />
     <Compile Include="AddToCart\DistributorCartItem.cs" />
     <Compile Include="Address\BillingAddress.cs" />
+    <Compile Include="Approval\ApprovalResult.cs" />
     <Compile Include="Approval\Approver.cs" />
     <Compile Include="Brand\Brand.cs" />
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
@@ -81,6 +82,8 @@
     <Compile Include="ProductOptions\ProductOptions.cs" />
     <Compile Include="Product\Border.cs" />
     <Compile Include="Product\CampaignsProduct.cs" />
+    <Compile Include="Product\PricingModel.cs" />
+    <Compile Include="Product\TieredPricingRange.cs" />
     <Compile Include="Product\Price.cs" />
     <Compile Include="Checkout\ItemOption.cs" />
     <Compile Include="Product\OptionCategory.cs" />
