@@ -436,24 +436,6 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::System.Web.UI.WebControls.Image imgProduct;
         
         /// <summary>
-        /// lblSKUNumber control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.LocalizedLabel lblSKUNumber;
-        
-        /// <summary>
-        /// txtSKUNumber control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.CMSTextBox txtSKUNumber;
-        
-        /// <summary>
         /// lblProductAllcation control.
         /// </summary>
         /// <remarks>
@@ -479,6 +461,24 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater RepSelectedUser;
+        
+        /// <summary>
+        /// lblSKUNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.LocalizedLabel lblSKUNumber;
+        
+        /// <summary>
+        /// txtSKUNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.CMSTextBox txtSKUNumber;
         
         /// <summary>
         /// btnSave control.
