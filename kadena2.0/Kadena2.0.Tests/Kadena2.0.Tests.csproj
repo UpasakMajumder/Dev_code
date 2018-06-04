@@ -521,6 +521,7 @@
     <Compile Include="WebApi\BusinessUnitsControllerTests.cs" />
     <Compile Include="WebApi\CampaignsContollerTests.cs" />
     <Compile Include="WebApi\LoginControllerTest.cs" />
+    <Compile Include="WebApi\OrderReportControllerTests.cs" />
     <Compile Include="WebApi\ProductsControllerTest.cs" />
     <Compile Include="BusinessLogic\OrderReportServiceTests.cs" />
     <Compile Include="BusinessLogic\ProductsServiceTests.cs" />
