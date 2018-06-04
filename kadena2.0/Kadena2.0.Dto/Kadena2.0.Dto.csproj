@@ -160,7 +160,7 @@
     <Compile Include="Search\Responses\SearchResultPageResponseDTO.cs" />
     <Compile Include="Search\Responses\StockDTO.cs" />
     <Compile Include="Search\Responses\UseTemplateBtnDTO.cs" />
-    <Compile Include="Order\OrderDto.cs" />
+    <Compile Include="Order\RecentOrderDto.cs" />
     <Compile Include="Order\OrderListDto.cs" />
     <Compile Include="Order\OrderItemDto.cs" />
     <Compile Include="Common\ButtonDto.cs" />
