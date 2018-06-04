@@ -1,4 +1,4 @@
-﻿namespace Kadena.Dto.Order
+﻿namespace Kadena.Models.Orders
 {
     public class OrderReportViewItem
     {
