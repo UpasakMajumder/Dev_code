@@ -85,7 +85,7 @@ namespace Kadena.Tests.BusinessLogic
         {
             var invalidPageNumber = OrderReportService.FirstPageNumber - 1;
 
-            Task action() => Sut.GetOrderReportViews("test_site", invalidPageNumber, new OrderFilter());
+            Task action() => Sut.GetOrdersForSite("test_site", invalidPageNumber, new OrderFilter());
 
             await Assert.ThrowsAsync<ArgumentException>("page", action);
         }
@@ -95,7 +95,7 @@ namespace Kadena.Tests.BusinessLogic
         {
             var someInvalidFilter = GetInvalidDateFilter();
 
-            Task action() => Sut.GetOrderReportViews("test_site", OrderReportService.FirstPageNumber
+            Task action() => Sut.GetOrdersForSite("test_site", OrderReportService.FirstPageNumber
                  , someInvalidFilter);
 
             await Assert.ThrowsAsync<ArgumentException>("filter", action);
@@ -159,7 +159,7 @@ namespace Kadena.Tests.BusinessLogic
                 OrderByDescending = true
             };
 
-            await sut.GetOrderReportViews(currentSite, page, filter);
+            await sut.GetOrdersForSite(currentSite, page, filter);
 
             Assert.Equal(expectedOrderListFilter, actualFilter);
         }

@@ -70,7 +70,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        private async Task<PagedData<OrderReport>> GetOrdersForSite(string site, int page, OrderFilter filter)
+        public async Task<PagedData<OrderReportViewItem>> GetOrdersForSite(string site, int page, OrderFilter filter)
         {
             var orderFilter = CreateOrderListFilter(filter, site, page);
             var ordersDto = await orderViewClient.GetOrders(orderFilter).ConfigureAwait(false);
@@ -84,7 +84,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     pagesCount++;
                 }
 
-                return new PagedData<OrderReport>
+                return new PagedData<OrderReportViewItem>
                 {
                     Pagination = new Pagination
                     {
@@ -93,22 +93,21 @@ namespace Kadena.BusinessLogic.Services.Orders
                         RowsOnPage = OrdersPerPage,
                         PagesCount = pagesCount
                     },
-                    Data = orders
-                        .Select(o => orderReportFactory.Create(o))
+                    Data = orderReportFactory
+                        .CreateReportView(orders.Select(o => orderReportFactory.Create(o)).ToList())
                         .ToList()
                 };
             }
 
-            return PagedData<OrderReport>.Empty();
+            return PagedData<OrderReportViewItem>.Empty();
         }
 
         public async Task<TableView> ConvertOrdersToView(int page, OrderFilter filter)
         {
             var currentSite = kenticoSiteProvider.GetCurrentSiteCodeName();
             var orders = await GetOrdersForSite(currentSite, page, filter);
-            
-            var report = orderReportFactory.CreateReportView(orders.Data);
-            var table = orderReportFactory.CreateTableView(report);
+
+            var table = orderReportFactory.CreateTableView(orders.Data);
             table.Pagination = orders.Pagination;
 
             return table;
@@ -206,17 +205,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 throw new ArgumentException($"Invalid values for date. 'From date' must be smaller than 'To date'", nameof(filter));
             }
-        }
-
-        public async Task<PagedData<OrderReportViewItem>> GetOrderReportViews(string site, int page, OrderFilter filter)
-        {
-            var orders = await GetOrdersForSite(site, page, filter).ConfigureAwait(false);
-
-            return new PagedData<OrderReportViewItem>
-            {
-                Pagination = orders.Pagination,
-                Data = orderReportFactory.CreateReportView(orders.Data).ToList()
-            };
         }
     }
 }

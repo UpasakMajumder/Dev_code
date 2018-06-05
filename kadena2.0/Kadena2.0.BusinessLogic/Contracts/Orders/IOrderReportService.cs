@@ -14,6 +14,6 @@ namespace Kadena.BusinessLogic.Contracts.Orders
 
         Task<FileResult> GetOrdersExportForSite(string site, OrderFilter filter);
 
-        Task<PagedData<OrderReportViewItem>> GetOrderReportViews(string site, int page, OrderFilter filter);
+        Task<PagedData<OrderReportViewItem>> GetOrdersForSite(string site, int page, OrderFilter filter);
     }
 }
