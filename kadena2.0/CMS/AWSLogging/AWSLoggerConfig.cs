@@ -42,16 +42,7 @@ namespace Kadena.AWSLogging
         /// </para>
         /// </summary>
         public string ProfilesLocation { get; set; }
-
-        /// <summary>
-        /// Gets and sets the Credentials property. These are the AWS credentials used by the AWS SDK for .NET to make service calls.
-        /// <para>
-        /// For understanding how credentials are determine view the top level documentation for AWSLoggerConfig class.
-        /// </para>
-        /// </summary>
-        public AWSCredentials Credentials { get; set; }
-
-
+        
         public RegionEndpoint RegionEndpoint { get; set; }
 
         /// <summary>
