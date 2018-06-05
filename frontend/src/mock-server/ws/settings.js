@@ -106,6 +106,7 @@ const address = {
               {
                 id: "2",
                 name: "USA",
+                isDefault: true,
                 values: [
                   {
                     id: "21",
