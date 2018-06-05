@@ -70,12 +70,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        private Task<PagedData<OrderReport>> GetOrders(int page, OrderFilter filter)
-        {
-            var currentSite = kenticoSiteProvider.GetCurrentSiteCodeName();
-            return GetOrdersForSite(currentSite, page, filter);
-        }
-
         private async Task<PagedData<OrderReport>> GetOrdersForSite(string site, int page, OrderFilter filter)
         {
             var orderFilter = CreateOrderListFilter(filter, site, page);
@@ -110,7 +104,8 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public async Task<TableView> ConvertOrdersToView(int page, OrderFilter filter)
         {
-            var orders = await GetOrders(page, filter);
+            var currentSite = kenticoSiteProvider.GetCurrentSiteCodeName();
+            var orders = await GetOrdersForSite(currentSite, page, filter);
             
             var report = orderReportFactory.CreateReportView(orders.Data);
             var table = orderReportFactory.CreateTableView(report);
