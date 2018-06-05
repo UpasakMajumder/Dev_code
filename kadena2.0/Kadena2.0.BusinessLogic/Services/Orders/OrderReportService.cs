@@ -78,7 +78,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             return new PagedData<OrderReportViewItem>
             {
                 Pagination = orders.Pagination,
-                Data = orders.Data.SelectMany(o => orderReportFactory.CreateReportView(o)).ToList()
+                Data = orderReportFactory.CreateReportView(orders.Data).ToList()
             };
         }
 
@@ -104,7 +104,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             var orderFilter = CreateOrderListFilter(filter, site);
             var orders = await GetOrders(orderFilter);
 
-            var report = orders.Data.SelectMany(o => orderReportFactory.CreateReportView(o));
+            var report = orderReportFactory.CreateReportView(orders.Data);
             var tableView = orderReportFactory.CreateTableView(report);
 
             var fileDataTable = mapper.Map<Table>(tableView);

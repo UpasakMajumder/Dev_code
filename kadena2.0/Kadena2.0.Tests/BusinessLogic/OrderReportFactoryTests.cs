@@ -56,7 +56,7 @@ namespace Kadena.Tests.BusinessLogic
             Setup<IDateTimeFormatter, string>(dtf => dtf.Format(It.IsAny<DateTime>()), "formatted");
             var orderDto = OrderReportTestHelper.CreateTestRecentOrder(1, 1);
 
-            var actual = Sut.CreateReportView(orderDto);
+            var actual = Sut.CreateReportView(new[] { orderDto });
 
             var firstActualItem = actual.First();
             Assert.Equal(orderDto.SiteName, firstActualItem.Site);

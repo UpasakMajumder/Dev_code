@@ -21,7 +21,7 @@ namespace Kadena.BusinessLogic.Factories
         /// <returns></returns>
         TableView CreateTableView(IEnumerable<OrderReportViewItem> reportDto);
 
-        IEnumerable<OrderReportViewItem> CreateReportView(RecentOrderDto recentOrder);
+        IEnumerable<OrderReportViewItem> CreateReportView(IEnumerable<RecentOrderDto> recentOrder);
     }
 
     public class OrderReportFactory : IOrderReportFactory
@@ -58,23 +58,25 @@ namespace Kadena.BusinessLogic.Factories
             this.kenticoDocumentProvider = kenticoDocumentProvider ?? throw new ArgumentNullException(nameof(kenticoDocumentProvider));
         }
 
-        public IEnumerable<OrderReportViewItem> CreateReportView(RecentOrderDto recentOrder) =>
-            recentOrder.Items
-                .Select(o => new OrderReportViewItem
-                {
-                    Url = FormatDetailUrl(recentOrder),
-                    Site = recentOrder.SiteName,
-                    Number = recentOrder.Id,
-                    OrderingDate = FormatDate(recentOrder.CreateDate),
-                    User = FormatCustomer(kenticoCustomerProvider.GetCustomer(recentOrder.CustomerId)),
-                    Name = o.Name,
-                    SKU = o.SKUNumber,
-                    Quantity = o.Quantity,
-                    Price = o.UnitPrice,
-                    Status = FormatOrderStatus(recentOrder.Status),
-                    ShippingDate = FormatDate(o.ShippingDate),
-                    TrackingNumber = o.TrackingNumber
-                });
+        public IEnumerable<OrderReportViewItem> CreateReportView(IEnumerable<RecentOrderDto> recentOrder) =>
+            recentOrder
+                .SelectMany(r => r.Items
+                    .Select(i => new OrderReportViewItem
+                    {
+                        Url = FormatDetailUrl(r),
+                        Site = r.SiteName,
+                        Number = r.Id,
+                        OrderingDate = FormatDate(r.CreateDate),
+                        User = FormatCustomer(kenticoCustomerProvider.GetCustomer(r.CustomerId)),
+                        Name = i.Name,
+                        SKU = i.SKUNumber,
+                        Quantity = i.Quantity,
+                        Price = i.UnitPrice,
+                        Status = FormatOrderStatus(r.Status),
+                        ShippingDate = FormatDate(i.ShippingDate),
+                        TrackingNumber = i.TrackingNumber
+                    })
+                );
 
 
         public TableView CreateTableView(IEnumerable<OrderReportViewItem> reportDto) =>
