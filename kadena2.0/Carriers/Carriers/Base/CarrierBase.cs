@@ -21,8 +21,6 @@ namespace Kadena2.Carriers
         private readonly IMicroProperties _properties;
         private readonly ShippingCostServiceClient microserviceClient;
 
-        protected string ServiceUrl { get; set; }
-
         protected string ProviderApiKey { get; set; }
 
         public string CarrierProviderName
@@ -34,8 +32,7 @@ namespace Kadena2.Carriers
         {
             var resources = new KenticoResourceService();
             _properties = new MicroProperties(resources, new KenticoSiteProvider( MapperBuilder.MapperInstance, new KadenaSettings(resources)  ));
-            microserviceClient = new ShippingCostServiceClient(_properties);
-            ServiceUrl = _properties.GetServiceUrl("KDA_ShippingCostServiceUrl");
+            microserviceClient = new ShippingCostServiceClient(_properties);            
         }
 
         public Guid GetConfigurationUIElementGUID()
@@ -48,13 +45,13 @@ namespace Kadena2.Carriers
             return Guid.Empty;
         }
 
-        protected BaseResponseDto<EstimateDeliveryPricePayloadDto> CallEstimationService(EstimateDeliveryPriceRequestDto requestBody)
+        protected BaseResponseDto<EstimateDeliveryPricePayloadDto[]> CallEstimationService(EstimateDeliveryPriceRequestDto[] requestBody)
         {
             var response = microserviceClient.EstimateShippingCost(requestBody).Result;
 
             if (!response.Success || response.Payload == null)
             {
-                EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from '{CarrierProviderName}' provider to service URL '{ServiceUrl}' resulted with error {response.Error?.Message ?? string.Empty}");
+                EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from '{CarrierProviderName}' provider resulted with error {response.Error?.Message ?? string.Empty}");
             }
 
             return response;
@@ -68,7 +65,7 @@ namespace Kadena2.Carriers
 
             var requestObject = new EstimatePriceRequestFactory().Create(delivery, ProviderApiKey, delivery.ShippingOption.ShippingOptionCarrierServiceName);
             var requestString = microserviceClient.GetRequestString(requestObject);
-            string cacheKey = $"estimatedeliveryprice|{ServiceUrl}|{requestString}";
+            string cacheKey = $"estimatedeliveryprice|{requestString}";
             var result = CacheHelper.Cache(() => CallEstimationService(requestObject), new CacheSettings(5, cacheKey));
             return result.Success;
         }
@@ -77,9 +74,9 @@ namespace Kadena2.Carriers
         {
             var requestObject = new EstimatePriceRequestFactory().Create(delivery, ProviderApiKey, delivery.ShippingOption.ShippingOptionCarrierServiceName);
             var requestString = microserviceClient.GetRequestString(requestObject);
-            string cacheKey = $"estimatedeliveryprice|{ServiceUrl}|{requestString}";
+            string cacheKey = $"estimatedeliveryprice|{requestString}";
             var result = CacheHelper.Cache(() => CallEstimationService(requestObject), new CacheSettings(5, cacheKey));
-            return result.Success ? (decimal)result.Payload?.Cost : 0.0m;
+            return result.Success ? (decimal)result.Payload?[0]?.Cost : 0.0m;
         }
 
         public abstract List<KeyValuePair<string, string>> GetServices();

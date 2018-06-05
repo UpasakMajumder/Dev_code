@@ -22,5 +22,7 @@ namespace Kadena.Models.Checkout
         public Guid ProductChiliPdfGeneratorSettingsId { get; set; }
         public string ProductShipTime { get; set; }
         public string ProductProductionTime { get; set; }
+        public bool SendPriceToErp { get; set; }
+        public string UnitOfMeasure { get; set; }
     }
 }

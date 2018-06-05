@@ -8,5 +8,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
     {
         decimal GetDynamicPrice(int quantity, int documentId);
         decimal GetDynamicPrice(int quantity, string rangesJson);
+        IEnumerable<DynamicPricingRange> GetDynamicRanges(int documentId);
     }
 }

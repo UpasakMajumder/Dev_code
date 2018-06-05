@@ -1,9 +1,9 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Catalog_CreateCatalog" CodeBehind="~/CMSWebParts/Kadena/Catalog/CreateCatalog.ascx.cs" %>
 <div class="custom__block" runat="server" id="catalogControls">
     <div class="custom__select clearfix">
-        <asp:DropDownList ID="ddlPrograms" runat="server" OnSelectedIndexChanged="ddlPrograms_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
-        <asp:DropDownList ID="ddlBrands" runat="server" OnSelectedIndexChanged="ddlBrands_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
-        <asp:DropDownList ID="ddlProductTypes" runat="server" OnSelectedIndexChanged="ddlProductTypes_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+        <asp:DropDownList ID="ddlPrograms" runat="server" OnSelectedIndexChanged="ddlPrograms_SelectedIndexChanged" AutoPostBack="true" style="max-width:200px;"></asp:DropDownList>
+        <asp:DropDownList ID="ddlBrands" runat="server" OnSelectedIndexChanged="ddlBrands_SelectedIndexChanged" AutoPostBack="true" style="max-width:200px;"></asp:DropDownList>
+        <asp:DropDownList ID="ddlProductTypes" runat="server" OnSelectedIndexChanged="ddlProductTypes_SelectedIndexChanged" AutoPostBack="true" style="max-width:200px;"></asp:DropDownList>
         <label id="errorLabel"></label>
     </div>
     <div class="search__block" id="searchDiv" runat="server">
@@ -21,6 +21,8 @@
         <cms:LocalizedLinkButton runat="server" ID="llbSaveSelection" CssClass="saveSelection btn-action login__login-button btn--no-shadow" ResourceString="KDA.CustomCatalog.Filters.SaveSelection" OnClick="llbSaveSelection_Click"></cms:LocalizedLinkButton>
         <cms:LocalizedLinkButton runat="server" ID="llbSaveFull" CssClass="btn-action login__login-button btn--no-shadow saveAllCatalog" ResourceString="KDA.CustomCatalog.Filters.SaveFull" OnClick="llbSaveFull_Click"></cms:LocalizedLinkButton>
         <cms:LocalizedLabel runat="server" ID="lblNoProducts" CssClass="input__label" ResourceString="KDA.CustomCatalog.SelectProducts" Visible="false"></cms:LocalizedLabel>
+        <cms:LocalizedLinkButton runat="server" ID="llbExportFull" CssClass="btn-action login__login-button btn--no-shadow" ResourceString="KDA.CustomCatalog.ExportFull" OnClick="llbExportFull_Click"></cms:LocalizedLinkButton>
+        <cms:LocalizedLinkButton runat="server" ID="llbExportSelection" CssClass="btn-action login__login-button btn--no-shadow" ResourceString="KDA.CustomCatalog.ExportSelection" OnClick="llbExportSelection_Click"></cms:LocalizedLinkButton>
     </div>
 </div>
 <div id="noData" runat="server" visible="false">
@@ -48,10 +50,10 @@
                 <div class="img__block">
                     <input type="checkbox" id="zoomCheck_<%# Eval("NodeSKUID")%>" />
                     <label for="zoomCheck_<%# Eval("NodeSKUID")%>">
-                        <img src='<%#GetProductThumbnailImage(Eval<string>("ProductImage"))%>' />
+                        <img src='<%#Kadena.Old_App_Code.Kadena.PDFHelpers.CartPDFHelper.GetThumbnailImageAbsolutePath(Eval<string>("ProductImage"))%>' />
                     </label>
                 </div>
-                 <div class="zoom__in"><a href="javascript:void(0);" onclick="ShowZoomEffect(this)"><svg class="icon"> <use xlink:href="/gfx/svg/sprites/icons.svg#search" xmlns:xlink="http://www.w3.org/1999/xlink"></use> </svg></a></div>
+                 <div class="zoom__in"><a href="javascript:void(0);" onclick='ShowZoomEffect("<%# Eval<string>("ProductImage")%>")'><svg class="icon"> <use xlink:href="/gfx/svg/sprites/icons.svg#search" xmlns:xlink="http://www.w3.org/1999/xlink"></use> </svg></a></div>
                 <div class="input__wrapper custom__blockin">
                     <h4><%= POSNumberText %> : <%# Eval("SKUProductCustomerReferenceNumber")%></h4>
                     <label for="dom" class="input__label "><%# TypeOfProduct == (int)ProductsType.GeneralInventory? GetBrandName(ValidationHelper.GetInteger(Eval("BrandID"), default(int))):""%></label>
@@ -65,6 +67,7 @@
 </div>
 <asp:HiddenField ID="hdncheckedValues" runat="server" ClientIDMode="Static" />
 <asp:HiddenField ID="hdnSaveFullCatalog" runat="server" ClientIDMode="Static" />
+<cms:CMSRepeater Visible="false" runat="server" ID="hdnrptExport"></cms:CMSRepeater>
 <%--Zoom EffectPopup--%>
 <div class="dialog" id="ImageZoomPopup">
     <div class="dialog__shadow"></div>

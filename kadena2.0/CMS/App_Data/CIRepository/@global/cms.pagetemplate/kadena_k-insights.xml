@@ -148,15 +148,15 @@
           <property name="text" ismacro="true">
 <![CDATA[
 {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-result = String.FormatString("{0}{1}", "<a href='"+ RootDocument.AbsoluteURL +"'>Home</a>", result);
-result
-|(user)rostyslav.diachenko@actum.cz|(hash)862a60f304cf15b97b1b1c795673d9d05b5969d0dc168586d17f992a799b7565%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  result = String.FormatString("{0}{1}", "<a href='"+ RootDocument.AbsoluteURL +"'>Home</a>", result);
+  result
+|(user)administrator|(hash)df465839c3183b21e17322f1b595302d2fe4106962e27299abb75bc0793de457%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -336,7 +336,7 @@ result
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<script src="{% Settings.KDA_Spotfire_GetJavaScriptApiURL |(user)tomas.rucki@actum.cz|(hash)02c8163331042bc6944ae566606eed7ce58372548d36c5cc457f12222d2f193f%}">
+<script src="{% Settings.KDA_Spotfire_GetJavaScriptApiURL|(user)administrator|(hash)272b969de12410626de410a16f7938cadfd1fd3e0b3af4c36d6ddc550b5621a3%}">
 </script>
 ]]>
           </property>
@@ -390,9 +390,9 @@ result
 <![CDATA[
 <script>
   config.localization.spotfire = {
-    serverUrl: '{% Settings.KDA_Spotfire_ServerURL |(user)tomas.rucki@actum.cz|(hash)2660aa71a2c9288070026376faa9277289432d9c6aea86f6e8370114ffae4bdc%}',
-    url: '{% Settings.KDA_Spotfire_InsightsMainPageURL |(user)tomas.rucki@actum.cz|(hash)e6c9221028cdcb951cd92a03cfe4a2f9c14d112f5b370f4dd05e4c4ae7d671cf%}',
-    customerId: '{% Settings.KDA_Spotfire_CustomerID |(user)tomas.rucki@actum.cz|(hash)978919fc606d42c9d391643704391e91c11cddc89394b5ee49b2f8f172d06b12%}'
+    serverUrl: '{% Settings.KDA_Spotfire_ServerURL|(user)administrator|(hash)05fb7412b8c101258bb3070c2b70947cddf1b0ef6564af4e72ab2c577676e61b%}',
+    url: '{% Settings.KDA_Spotfire_InsightsMainPageURL|(user)administrator|(hash)02b6b4b487b18f9e1e37cb6e94b5b018dbc52c6ef73e5351a9641047a76d5dab%}',
+    customerId: '{% Settings.KDA_Spotfire_CustomerID|(user)administrator|(hash)a84fb05f562efd2a462d4983092cf96e756a0f742c0f83b6e30f56ec3a5faaf4%}'
   };
 </script>
 ]]>

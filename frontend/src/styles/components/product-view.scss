@@ -33,6 +33,7 @@
   &__img {
     @include rem(margin-right, $product-blocks-gap);
     width: $product-img-size;
+    position: relative;
 
     img {
       @extend .mb-3;
@@ -44,41 +45,13 @@
     }
   }
 
-  &__preview {
-    display: none;
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10000;
-    background: rgba($brand-lightblue, .5);
-
-    img {
-      max-width: 1024px;
-      max-height: 800px;
-      z-index: 1;
-    }
-
-    &.isOpen {
-      @extend %flex--center--center;
-    }
-  }
-
-  &__preview-wrapper {
+  &__flag {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    top: 7px;
+    right: -3px;
   }
 
   &__block {
-    overflow: hidden;
     flex: 1;
 
     & > div {
@@ -151,9 +124,29 @@
 
   &__footer {
     @extend %flex--center--between;
+    flex-wrap: wrap;
+
+    & > * {
+      margin-bottom: 10px;
+    }
 
     .stock {
       @include rem(font-size, 16px);
     }
+  }
+
+  &__proceed {
+    @extend %flex--center--default;
+    margin-left: auto;
+
+    .input__error {
+      position: absolute;
+      left: 0;
+      top: 100%;
+    }
+  }
+
+  &__proceed-input {
+    width: 130px;
   }
 }

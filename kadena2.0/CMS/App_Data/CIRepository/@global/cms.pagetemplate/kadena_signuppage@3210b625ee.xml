@@ -12,160 +12,18 @@
   <PageTemplateFile />
   <PageTemplateForAllPages>True</PageTemplateForAllPages>
   <PageTemplateGUID>08597670-d7bd-4c14-8291-a31ac3f3a971</PageTemplateGUID>
-  <PageTemplateInheritPageLevels>/</PageTemplateInheritPageLevels>
   <PageTemplateInheritParentHeader>True</PageTemplateInheritParentHeader>
   <PageTemplateIsAllowedForProductSection>False</PageTemplateIsAllowedForProductSection>
   <PageTemplateIsLayout>False</PageTemplateIsLayout>
   <PageTemplateIsReusable>True</PageTemplateIsReusable>
-  <PageTemplateLayout>
-<![CDATA[
-<div class="container-fluid">
-  <div class="login signup__form">
-    <div class="login__form">
-      <div class="login__form-inner">
-        <div class="login__custom-logo mb-3">
-          {^WebPartZone|(id)zoneCustomersLogo^}
-        </div>
-        {^WebPartZone|(id)zoneLogin^}
-      </div>
-    </div>
-    {^WebPartZone|(id)zonePageBackgroud^}
-    <div class="login__kadena-logo">
-      {^WebPartZone|(id)zoneKadenaLogo^}
-    </div>
-  </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-<script>
-  var config = {
-    localization: {
-      login: {
-        email: '{%JSEscape(GetResourceString("Kadena.Login.Email"))|(user)administrator|(hash)b85d2701eb43e00a0f599802b49263eae4b099df2b88fbaa442f9ea430220dc1%}',
-        emailPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.EmailPlaceholder"))|(user)administrator|(hash)10eaa914d934056458d92f4302a9178945091fab55f38d0e6950fad411ad7047%}',
-        emailValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.EmailValidationMessage"))|(user)administrator|(hash)cd85786537b70307fb0c209589613ad3c9a0e27f436286e6f3a5a5d8e0a51af0%}',
-        password: '{%JSEscape(GetResourceString("Kadena.Login.Password"))|(user)administrator|(hash)a22b4f0cc65d0b41a1c2cc422eba582784febc2e3b218c331dd0b177838545ca%}',
-        passwordPlaceholder: '{%JSEscape(GetResourceString("Kadena.Login.PasswordPlaceholder"))|(user)administrator|(hash)a0403b144a44a100d1162502fd2a394082d80a3f4959cfa950e37627afaed8f8%}',
-        passwordShow: '{%JSEscape(GetResourceString("Kadena.Login.PasswordShow"))|(user)administrator|(hash)4c0f39a588fcf4a952ba2ea4bb4b2cd29893a2de282af616d482d4ff2ef3581d%}',
-        passwordHide: '{%JSEscape(GetResourceString("Kadena.Login.PasswordHide"))|(user)administrator|(hash)565d693bb82f475dd78b0003b78ddd33d18fc47d389efd15408100b7089d0e14%}',
-        passwordValidationMessage: '{%JSEscape(GetResourceString("Kadena.Login.PasswordValidationMessage"))|(user)administrator|(hash)238eee9be35d8230ca1b17a4d5d744c314aa7909388ef4a0d381f700de5aee5a%}',
-        keepMeLoggedIn: '{%JSEscape(GetResourceString("Kadena.Login.KeepMeLoggedIn"))|(user)administrator|(hash)5debfee01e321a82ee23fe41ddd2256b7ee2a27781a8f9f9f2dd031035d648ac%}',
-        login: '{%JSEscape(GetResourceString("Kadena.Login.LoginButtonText"))|(user)administrator|(hash)ac38af960eb42388514afac07e26dc4d6265db216f70385204de0f27861e86f4%}'
-      }
-    }
-};
-  config.localization.staticFields = {
-    validation: {
-      requiredMessage: '{%JSEscape(GetResourceString("Kadena.Field.RequiredMessage"))|(user)rostyslav.diachenko@actum.cz|(hash)d4eb9376f1d2ec01229945a039c00d1f138f5916e3d8fa411828ccc02a57974f%}',
-      optionalLabel: '{%JSEscape(GetResourceString("Kadena.Field.Optional"))|(user)rostyslav.diachenko@actum.cz|(hash)76a69f8b7509599b0184c46011468afc9905e954566919564cc678baea6e2d45%}'
-      },
-    password: {
-      show: '{%JSEscape(GetResourceString("Kadena.Field.Show"))|(user)rostyslav.diachenko@actum.cz|(hash)a72cd75bbddfcbe9e3077b350cfeb45086b6de2b1146d6435ca7f40818bd7d23%}',
-      hide: '{%JSEscape(GetResourceString("Kadena.Field.Hide"))|(user)rostyslav.diachenko@actum.cz|(hash)6e716e8668071c88e21f9ff746926e4798f5632731a8b439db900e5d04f6861a%}'
-      }
-  };
-  config.localization.smarty= {
-    url:'https://us-street.api.smartystreets.com/street-address',
-    key:''+{%Settings.SmartyKey|(user)cvoqa2@gmail.com|(hash)a77d611b45b63cc6503e12eeb400db9b1e2784045fe6804814a3a33ca8121f7b%}+'',
-    errorLabel: '{% GetResourceString("Kadena.Smarty.ErrorText") |(user)cvoqa2@gmail.com|(hash)a9a8782099ca4650ca3480ba8d5ce95117c83299b1959d22ed90d62c57a7a74b%}',
-    reqErrorLabel:'{% GetResourceString("Kadena.Smarty.ReqErrorText") |(user)cvoqa2@gmail.com|(hash)ca9ebd29bbebcb697ec62abfbabf702e8de1847351558a427cff70089b24ba4a%}',
-    missingInputLabel:'{% GetResourceString("Kadena.Smarty.MissingInputText") |(user)cvoqa2@gmail.com|(hash)9a457ca9af15a5aeef79d5a1b50ac2f5db53af5bd70c893ab941fcdfb2e6fe89%}',
-    certifyMessageLabel:'{% GetResourceString("Kadena.Smarty.CertifyMessageText") |(user)cvoqa2@gmail.com|(hash)147df896af8e772fc4dc5c227d3e971c646b2403131f716649772bee0732724e%}',
-    autoCompleteCount:'{% GetResourceString("Kadena.Smarty.AutoCompleteCount") |(user)cvoqa2@gmail.com|(hash)5c224d0a48af68ac29ae2fa02133c3e1426a93fd3562803dfae02728c1633862%}',
-    candidateCount:'{% GetResourceString("Kadena.Smarty.CandidateCount") |(user)cvoqa2@gmail.com|(hash)99c9daa20c4dbd36e7af5cc0610f6c41738ee28e9dd0ae761b720c344ebd026e%}'        
-  };
-</script>
-
-<script src="/js/common.min.js?v=0.2"></script>
-<script src="/js/app.min.js?v=0.2" async></script>
-<script src="/CMSScripts/Custom/Kadena/custom.js?v=0.2"></script>
-{%Settings.KDA_EnableSmartyStreet ? "<script src='//d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/4.1/jquery.liveaddress.min.js'></script><script src='~/CMSScripts/Custom/Kadena/SmartyStreet.js'></script>" : ""|(user)cvoqa2@gmail.com|(hash)74f45a1668f557914ae7fcc25425f86cc90c7b68ac81fb244fac1882a5eb4ced%}
-
-]]>
-  </PageTemplateLayout>
+  <PageTemplateLayout>{^WebPartZone|(id)zoneRegistration^}</PageTemplateLayout>
   <PageTemplateLayoutType>html</PageTemplateLayoutType>
   <PageTemplateShowAsMasterTemplate>False</PageTemplateShowAsMasterTemplate>
   <PageTemplateType>portal</PageTemplateType>
   <PageTemplateWebParts>
     <page>
-      <webpartzone id="zoneContent" v="1" />
-      <webpartzone id="zoneCustomersLogo" v="1">
-        <webpart controlid="CustomersLogo" guid="74d6a2eb-f9a5-4256-ab13-7234982ada9f" type="EditableImage" v="1">
-          <property name="alternatetext">logo</property>
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="checkpermissions">False</property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">CustomersLogo</property>
-          <property name="customtimezone"></property>
-          <property name="defaultimage"></property>
-          <property name="disablemacros">True</property>
-          <property name="disableviewstate">True</property>
-          <property name="displayselectortextbox">False</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="imageautoresize">
-<![CDATA[
-<AutoResize>
-  <autoresize>noresize</autoresize>
-  <autoresize_width />
-  <autoresize_height />
-  <autoresize_maxsidesize />
-</AutoResize>
-]]>
-          </property>
-          <property name="imagecssclass"></property>
-          <property name="imageheight"></property>
-          <property name="imagestyle"></property>
-          <property name="imagetitle">logo</property>
-          <property name="imagewidth"></property>
-          <property name="instanceguid">74d6a2eb-f9a5-4256-ab13-7234982ada9f</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="selectonlypublished">False</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="timezonetype">inherit</property>
-          <property name="useparentcontent">False</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">EditableImage</property>
-        </webpart>
-      </webpartzone>
-      <webpartzone id="zoneLogin" v="1">
-        <webpart controlid="CustomRegistrationForm" guid="c7055693-98b7-4fdb-9558-0946b60e3e6b" type="CustomRegistrationForm" v="1">
-          <property name="alternativeform">cms.user.KDA_UserRegistrationForm</property>
-          <property name="approvalpage">~/CMSPages/Dialogs/UserRegistration.aspx</property>
-          <property name="assigntoroles" ismacro="true">
-            <![CDATA[{%Settings.KDA_SignupDefaultRole|(user)cvoqa2@gmail.com|(hash)8ed96f1bcba133242c75996350660a4560772a2e8d76ffb528453610c78231de%}]]>
-          </property>
-          <property name="assigntosites">TWE</property>
-          <property name="buttoncss">btn-action j-submit-button </property>
-          <property name="buttontext">Sign Up</property>
+      <webpartzone id="zoneRegistration" v="1">
+        <webpart controlid="StaticText" guid="5eacb01b-ea8a-4498-9091-b26cce3a0117" type="statictext" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
@@ -178,23 +36,15 @@
           <property name="containertitle"></property>
           <property name="contentafter"></property>
           <property name="contentbefore"></property>
-          <property name="controlid">CustomRegistrationForm</property>
-          <property name="conversionvalue"></property>
+          <property name="controlid">StaticText</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
-          <property name="displaycaptcha">False</property>
-          <property name="displaycolons">True</property>
-          <property name="displaymessage"></property>
           <property name="displaytoroles"></property>
           <property name="enableoutputfilter">False</property>
-          <property name="enableuserafterregistration">True</property>
-          <property name="fieldlayout">default</property>
-          <property name="formlayout">Divs</property>
-          <property name="fromaddress"></property>
+          <property name="encodetext">False</property>
           <property name="hideonsubpages">False</property>
-          <property name="instanceguid">c7055693-98b7-4fdb-9558-0946b60e3e6b</property>
-          <property name="notifyadministrator">True</property>
+          <property name="instanceguid">5eacb01b-ea8a-4498-9091-b26cce3a0117</property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>
@@ -210,195 +60,85 @@
           </property>
           <property name="partialcacheminutes"></property>
           <property name="preservepartialcacheonpostback">False</property>
-          <property name="redirecttourl">~/login</property>
-          <property name="registrationerrormessage"></property>
-          <property name="resourceprefix"></property>
-          <property name="sendwelcomeemail">True</property>
+          <property name="resolvedynamiccontrols">True</property>
           <property name="showfordocumenttypes"></property>
-          <property name="startingaliaspath"></property>
+          <property name="tag"></property>
+          <property name="text">
+<![CDATA[
+<div class="registration__form new-login__form--abs new-login__form--bc">
+  <div class="login__form-content r-registration"></div>
+</div>
+]]>
+          </property>
           <property name="timezonetype">inherit</property>
-          <property name="toaddress"></property>
-          <property name="trackconversionname"></property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">CustomRegistrationForm</property>
+          <property name="webparttitle">Registration form</property>
+          <property name="webparttype">statictext</property>
         </webpart>
-        <webpart controlid="Javascript" guid="e1692798-0a2a-4bf5-8d27-fc3be1d66f00" type="javascript" v="1">
+        <webpart controlid="Javascript" guid="201bdca4-74b3-4ffc-9362-ab9262600c46" type="javascript" v="1">
           <property name="cat_open_behavior"></property>
           <property name="cat_open_performance"></property>
           <property name="controlid">Javascript</property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
-          <property name="generatescripttags">False</property>
+          <property name="generatescripttags">True</property>
           <property name="hideonsubpages">False</property>
           <property name="inlinescript">
 <![CDATA[
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-  $(document).ready(function(){ 
-    //confirm password 
-    $('.password-strength').children('input').addClass('input__text');
-    $('.ConfirmationSeparator').next().addClass('input__label').css('display','block').html('{$Kadena.Common.ConfirmPassword$}');
-    $('.ConfirmationSeparator').next().next().addClass('input__text');
-    $('.ConfirmationSeparator').next().next().addClass('js-cpwdtext')
-      $('.ConfirmationSeparator').next().addClass('js-cpwdlabel').css('display','block').html('{$Kadena.Common.ConfirmPassword$}')
-        
-        var regEx='{%Settings.KDA_Email_Validation|(user)cvoqa2@gmail.com|(hash)2c2de5d7f49b1b43fee586327be72f42cd93aaaa1ff9951a52a3bcf73a76d2aa%}';
-    $('[id$=btnRegister]').click(function(event){
-      if(regEx!=null ||regEx!='') {
-        var email=new RegExp(regEx);
-        var val=$('[id$=txtEmailInput]').val();
-        if(val=="")
-        {
-          event.preventDefault();
-          if($('[id$=Email_lbe]').text()!='')
-          {
-            $('[id$=Email_lbe]').text('Please enter valid Email');
-          }
-          else
-          {
-            if($('#emailError').text()=='')
-              $('[id$=ncpemail]').after('<span id="emailError" class="input__error">Please enter valid Email</span>');
-          }
-        }
-        if(val!='')
-        {
-          if(!email.test(val)){
-            if($('[id$=Email_lbe]').text()!='')
+config.localization.registration = {
+            title: '{%JSEscape(GetResourceString("Kadena.Signup.Header"))|(user)administrator|(hash)861d5f14208f80503e5d47649c068fb2822837e0def6d89455a3f6fd12c53363%}',
+            labels:
             {
-              $('[id$=Email_lbe]').text('Please enter valid Email');
-            }
-            else
+              firstName: '{%JSEscape(GetResourceString("Kadena.Signup.FirstName"))|(user)administrator|(hash)6c291cfd5337f66bef14e851b27e112f3627f1bce49778726f969eb9cf54b513%}',
+              lastName: '{%JSEscape(GetResourceString("Kadena.Signup.LastName"))|(user)administrator|(hash)eac2e2843625bf25cf5df91e17603c62be0bb626dd814fd022c2109d76d7fbc6%}',
+              email: '{%JSEscape(GetResourceString("Kadena.Signup.Email"))|(user)administrator|(hash)48523a2403001ec7b7a7624c0201ccd027281eb5fccce29b5dd981bde70666fe%}',
+              password: '{%JSEscape(GetResourceString("Kadena.Signup.Password"))|(user)administrator|(hash)3691600a31924e1a518ff274079034c48539548e2d4068060f6c1d08d3868833%}',
+              confirmPassword: '{%JSEscape(GetResourceString("Kadena.Signup.ConfirmPassword"))|(user)administrator|(hash)499b29af6fcb0ec2c0a2ff5f134aca1f073326463b983b2b40559e8e5be6439c%}',
+              button: '{%JSEscape(GetResourceString("Kadena.Signup.ButtonText"))|(user)administrator|(hash)7fc15bbc64d493e66ac509258b37de494e15fe4fc015824e29fffa50ab20d92e%}'
+            },
+            errors:
             {
-              if($('#emailError').text()=='')
-                $('[id$=ncpemail]').after('<span id="emailError" class="input__error">Please enter valid Email</span>');
+              required: '{%JSEscape(GetResourceString("Kadena.Field.RequiredMessage"))|(user)administrator|(hash)d3e874ff51d827f483dfbb232f8a2e9544b7b7bd729b03d7c8d9d5bbdcc07fce%}',
+              email: '{%JSEscape(GetResourceString("Kadena.Signup.InvalidEmail"))|(user)administrator|(hash)12470c8c26f2b67936ede0d0dae5f1edf248aefd4e03d6095595298ba43983f8%}',
+              confirmPassword: '{%JSEscape(GetResourceString("Kadena.InitialPasswordSetting.PasswordsAreNotTheSame"))|(user)administrator|(hash)fc903d367c78421302b583cc6ec1b967c1912b8065a06ec5e91f5b44c1e908fb%}'
+            },
+            url: '/api/user/register',
+            toLogin:
+            {
+              url: '{% Settings.CMSSecuredAreasLogonPage |(user)administrator|(hash)3543fb50d623fec0f48bb88bf353012ca2c05f80fedfdb2826a06863ebe4d5ec%}',
+              text: '{%JSEscape(GetResourceString("Kadena.Signup.LoginText"))|(user)administrator|(hash)d5430d784fe8e5a8e2c2835d07dd5fb6364a500c972420cf74d6d64fc0417ce4%}'
+            },
+            strength:
+            {
+              minLength: {% Settings.CMSPolicyMinimalLength |(user)administrator|(hash)23464a726db2cedd499f84dfa89a647cf9f002ba7fdb8b1747f353d6941d4c2e%},
+              preferedLength: 12,
+              minNonAlphaNumChars: {% Settings.CMSPolicyNumberOfNonAlphaNumChars |(user)administrator|(hash)36d851b18a3a567cba2d98d61dca2d2f7aad30edfaf1f3701de62b372888f1e3%},
+              preferedNonAlphaNumChars: 2,
+              regularExpression: '{%  JSEscape(Settings.CMSPolicyRegularExpression) |(user)administrator|(hash)3e0f25a33a0830e3a0bf432d1120e9de07709413f9d4491e676692fcb786e1d4%}',
+              policyStrings: [
+                '{%JSEscape(GetResourceString("Kadena.Password.NotAccepted"))|(user)administrator|(hash)ec4450230597a79c09215615e0b59a46635d2f68f464ba900d7fd32147e6d195%}', 
+                '{%JSEscape(GetResourceString("Kadena.Password.Weak"))|(user)administrator|(hash)9dcfa0fc147693d3c526e73801332c468abc105f857115cdebbe781006d99cf2%}',
+                '{%JSEscape(GetResourceString("Kadena.Password.Acceptable"))|(user)administrator|(hash)714c46f582fa0efe4391c3a773a20acb482c1b607428f5f77bc354b91e865f44%}',
+                '{%JSEscape(GetResourceString("Kadena.Password.Average"))|(user)administrator|(hash)a65e7620f8e1d709cb778fd0e48842f5d32ceb2620df3bb0d65efe4e645bcefa%}',
+                '{%JSEscape(GetResourceString("Kadena.Password.Strong"))|(user)administrator|(hash)bb41696c6972cd267aa26460444759e793fa4ac84447193e4bcb7426f8e11d19%}',
+                '{%JSEscape(GetResourceString("Kadena.Password.Excellent"))|(user)administrator|(hash)09a983841dd643dc7bbfae4c56ba8598e32b4c40caa44231478d4a857a415f85%}'
+              ],
+              usePolicy: {% Settings.CMSUsePasswordPolicy.ToLower() |(user)administrator|(hash)06e70c8de1e153dfd8833f1e997f32538b230ffe45464e591f00631bfbbef641%},
+              info: '{%JSEscape(GetResourceString("Kadena.Common.PasswordTooltipText"))|(user)administrator|(hash)37684934dabda706ab1f89909496d586b35e1a1c5434fb9b3ad9dfe0c9d19789%}'
             }
-            event.preventDefault();
-          }
-          
-        } 
-      }
-    });
-  });
-</script>
+      };
 ]]>
           </property>
           <property name="inlinescriptpagelocation">Beginning</property>
-          <property name="instanceguid">e1692798-0a2a-4bf5-8d27-fc3be1d66f00</property>
+          <property name="instanceguid">201bdca4-74b3-4ffc-9362-ab9262600c46</property>
           <property name="linkedfile"></property>
           <property name="linkedfilepagelocation">Header</property>
           <property name="showfordocumenttypes"></property>
           <property name="visible">True</property>
-          <property name="webparttitle"></property>
+          <property name="webparttitle">Registration config</property>
           <property name="webparttype">javascript</property>
-        </webpart>
-      </webpartzone>
-      <webpartzone id="zonePageBackgroud" v="1">
-        <webpart controlid="Backgroud" guid="06dc4d15-62e2-496c-850f-18e73ddc65b3" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">Backgroud</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">True</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">06dc4d15-62e2-496c-850f-18e73ddc65b3</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="resolvedynamiccontrols">False</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text">
-            <![CDATA[<div class="new-login__bg new-login__bg--stretch" style="background-image: url(/CMSPages/GetFile.aspx?guid={%MenuItemTeaserImage%}); opacity: {%MenuItemTeaserImageOpacity%}"></div>]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
-        </webpart>
-      </webpartzone>
-      <webpartzone id="zoneKadenaLogo" v="1">
-        <webpart controlid="KadenaLogo" guid="028bda11-e3eb-4758-b1f8-5f662837f698" type="statictext" v="1">
-          <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance"></property>
-          <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
-          <property name="container"></property>
-          <property name="containercssclass"></property>
-          <property name="containercustomcontent"></property>
-          <property name="containerhideonsubpages">False</property>
-          <property name="containertitle"></property>
-          <property name="contentafter"></property>
-          <property name="contentbefore"></property>
-          <property name="controlid">KadenaLogo</property>
-          <property name="customtimezone"></property>
-          <property name="disablemacros">True</property>
-          <property name="disableviewstate">True</property>
-          <property name="displaytoroles"></property>
-          <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
-          <property name="hideonsubpages">False</property>
-          <property name="instanceguid">028bda11-e3eb-4758-b1f8-5f662837f698</property>
-          <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
-          <property name="partialcachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="resolvedynamiccontrols">False</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text" ismacro="true">
-<![CDATA[
-<svg class="icon logo">
-  <use xlink:href="/gfx/svg/sprites/icons.svg#logo" />
-</svg>
-]]>
-          </property>
-          <property name="timezonetype">inherit</property>
-          <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
         </webpart>
       </webpartzone>
     </page>

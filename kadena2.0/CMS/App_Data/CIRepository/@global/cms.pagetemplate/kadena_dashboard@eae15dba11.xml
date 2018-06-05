@@ -215,7 +215,7 @@ config.localization.products = {
           <property name="checkpermissions">True</property>
           <property name="classnames">KDA.Product</property>
           <property name="columns">
-            <![CDATA[DocumentName, NodeAliasPath, DocumentUrlPath, SKUImagePath]]>
+            <![CDATA[DocumentName, NodeAliasPath, DocumentUrlPath, SKUImagePath, ProductImage]]>
           </property>
           <property name="combinewithdefaultculture"></property>
           <property name="container"></property>
@@ -279,7 +279,7 @@ config.localization.products = {
           </property>
           <property name="partialcacheminutes"></property>
           <property name="path">
-            <![CDATA[{% Settings.KDA_ProductsPageUrl |(user)tomas.rucki@actum.cz|(hash)45abd263d8fdf6dcb0a8e689f488f74652c20bc1772c997911d43da2e2ba4128%}/%]]>
+            <![CDATA[{% Settings.KDA_ProductsPageUrl|(user)administrator|(hash)432785ee875babc27eb603282112de172529786eabfe007dc9e22415834abd7a%}/%]]>
           </property>
           <property name="positionleft"></property>
           <property name="positiontop"></property>
@@ -303,12 +303,12 @@ config.localization.products = {
           <property name="transformationname">KDA.Product._Product_Listing</property>
           <property name="useupdatepanel">False</property>
           <property name="visible" ismacro="true">
-            <![CDATA[{%(Settings.KDA_ProductsModuleEnabled == "enabled" || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor)) && (CurrentUser.IsAuthorizedPerResource("Kadena_Products", "KDA_ContentEnabled") || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor))|(user)administrator|(hash)9903f3e7a5c258a563b70a92017fc4c896f89485c1402781d232ffcf9d0d9001%}]]>
+            <![CDATA[{% (Settings.KDA_ProductsModuleEnabled == "enabled" || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor)) && (CurrentUser.IsAuthorizedPerResource("Kadena_Products", "KDA_ContentEnabled") || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor))|(user)administrator|(hash)8bfba6d4c244c6e44b6d65842fab8109a79106189541c2b4d2a6ce12c81d347a%}]]>
           </property>
           <property name="webparttitle"></property>
           <property name="webparttype">repeater</property>
           <property name="wherecondition">
-            <![CDATA[(DATEDIFF(DAY, [DocumentCreatedWhen], GETDATE()) < {% Settings.KDA_Products_NewProductPeriod |(user)tomas.rucki@actum.cz|(hash)01fe05ecd901a25747ebefbc341fb6f19092aac2a80b48be61d94e2f986ff527%}) OR (([DocumentPublishFrom] IS NOT NULL) AND ((DATEDIFF(DAY, [DocumentPublishFrom], GETDATE()) < {% Settings.KDA_Products_NewProductPeriod |(user)tomas.rucki@actum.cz|(hash)01fe05ecd901a25747ebefbc341fb6f19092aac2a80b48be61d94e2f986ff527%})))]]>
+            <![CDATA[(DATEDIFF(DAY, [DocumentCreatedWhen], GETDATE()) < {% Settings.KDA_Products_NewProductPeriod|(user)administrator|(hash)77518ffd2cd8224124fd0de6e33ff4b44636a938fd2600a8c6e353f66f9644d8%}) OR (([DocumentPublishFrom] IS NOT NULL) AND ((DATEDIFF(DAY, [DocumentPublishFrom], GETDATE()) < {% Settings.KDA_Products_NewProductPeriod|(user)administrator|(hash)77518ffd2cd8224124fd0de6e33ff4b44636a938fd2600a8c6e353f66f9644d8%})))]]>
           </property>
           <property name="zerorowstext"></property>
         </webpart>
@@ -375,7 +375,7 @@ config.localization.products = {
 <![CDATA[
 {% CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor) 
   || (Settings.KDA_OrdersModuleEnabled == "enabled" 
-      && CurrentUser.IsAuthorizedPerResource("Kadena_RecentOrders", "KDA_ContentEnabled"))|(user)rostyslav.diachenko@actum.cz|(hash)06789a4e498fa3d5136c1caa2b3373f983b60f438f1bd09e75abcad68a3d9938%}
+      && CurrentUser.IsAuthorizedPerResource("Kadena_RecentOrders", "KDA_ContentEnabled")) |(user)administrator|(hash)605b1bcd9a58da829440cdabac1e7625f800d2ca1684a3846a0fd38503951931%}
 ]]>
           </property>
         </properties>
@@ -436,34 +436,6 @@ config.localization.products = {
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>
         </webpart>
-        <webpart controlid="javascript" guid="059fb77b-e5f5-4668-ba69-c4f43e67693d" type="javascript" v="1">
-          <property name="cat_open_behavior"></property>
-          <property name="cat_open_performance"></property>
-          <property name="controlid">javascript</property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="generatescripttags">True</property>
-          <property name="hideonsubpages">False</property>
-          <property name="inlinescript">
-<![CDATA[
-config.localization.recentOrders = {
-      getHeaders: '/api/dashboard/getorderheaders',
-      getPageItems: '/api/dashboard/getorderbody'
-  };
-]]>
-          </property>
-          <property name="inlinescriptpagelocation">Header</property>
-          <property name="instanceguid">059fb77b-e5f5-4668-ba69-c4f43e67693d</property>
-          <property name="linkedfile"></property>
-          <property name="linkedfilepagelocation">Header</property>
-          <property name="positionleft"></property>
-          <property name="positiontop"></property>
-          <property name="showfordocumenttypes"></property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">javascript</property>
-        </webpart>
         <webpart controlid="StaticText" guid="6b6d72b3-a8b8-40c3-8926-09ce97d66efc" type="statictext" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
@@ -507,7 +479,7 @@ config.localization.recentOrders = {
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<div class="r-recent-orders"></div>]]>
+            <![CDATA[<div data-react='{ "initURL": "/api/dashboard/getorderheaders" }' class="r-recent-orders"></div>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>

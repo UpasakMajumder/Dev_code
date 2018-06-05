@@ -70,11 +70,11 @@
         </settings>
         <rules>
           <rule errormsg="You exceed the maximum length">
-            <![CDATA[{%Rule("(Value.Length <= 140)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>140</t><v>140</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)cvoqa2@gmail.com|(hash)1e270dc53831ea29308397207a28ce6d86c05b2646fd9b1720b2e477d612af13%}]]>
+            <![CDATA[{%Rule("(Value.Length <= 140)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"MaxLength\" ><p n=\"maxlength\"><t>140</t><v>140</v><r>0</r><d></d><vt>integer</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)ee987784418980f40db0c7b8ba695cd65151dd3fd30bfc017718f4cdbf59c7a3%}]]>
           </rule>
         </rules>
       </field>
-      <field column="StartDate" columntype="date" guid="c9d56f67-d972-4630-b3ac-30f841116701" publicfield="false" visible="true">
+      <field column="StartDate" columnprecision="7" columntype="datetime" guid="c9d56f67-d972-4630-b3ac-30f841116701" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Start Date</fieldcaption>
           <validationerrormessage>{$Kadena.CampaignForm.StartDateRequired$}</validationerrormessage>
@@ -87,7 +87,7 @@
           <TimeZoneType>inherit</TimeZoneType>
         </settings>
       </field>
-      <field column="EndDate" columntype="date" guid="8923f367-0b3c-48dd-93d7-54470becd906" publicfield="false" visible="true">
+      <field column="EndDate" columnprecision="7" columntype="datetime" guid="8923f367-0b3c-48dd-93d7-54470becd906" publicfield="false" visible="true">
         <properties>
           <fieldcaption>End Date</fieldcaption>
           <validationerrormessage>{$Kadena.CampaignForm.EndDateRequired$}</validationerrormessage>

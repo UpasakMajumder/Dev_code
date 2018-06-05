@@ -1,42 +1,75 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-/* components */
+import axios from 'axios';
+// /* components */
 import Dialog from 'app.dump/Dialog';
-/* globals */
-import { TAC, LOGIN } from 'app.globals';
-/* ac */
-import { acceptTaC } from 'app.ac/login';
+// /* globals */
+import { TAC } from 'app.globals';
+// /* constants */
+import { FAILURE } from 'app.consts';
+// /* ac */
+import { closeTAC, openTaC } from 'app.ac/tac';
 
 class TaCDialog extends Component {
   static propTypes = {
-    acceptTaC: PropTypes.func.isRequired,
-    login: PropTypes.shape({
-      credentinals: PropTypes.shape({
-        loginEmail: PropTypes.string.isRequired,
-        password: PropTypes.string.isRequired
-      }).isRequired,
-      checkTaC: PropTypes.shape({
-        showTaC: PropTypes.bool.isRequired,
-        url: PropTypes.string.isRequired
-      }).isRequired
-    }).isRequired
+    show: PropTypes.bool.isRequired,
+    redirect: PropTypes.bool.isRequired,
+    returnurl: PropTypes.string.isRequired,
+    // func
+    closeTAC: PropTypes.func.isRequired,
+    openTaC: PropTypes.func.isRequired
   };
 
+  componentDidMount() {
+    if (TAC.show === true) { // can be undefined
+      this.props.openTaC({
+        redirect: false,
+        returnurl: ''
+      });
+    }
+  }
+
   submit = () => {
-    const { acceptTaCUrl } = LOGIN;
-    const { loginEmail, password } = this.props.login.credentinals;
-    this.props.acceptTaC(acceptTaCUrl, { loginEmail, password });
+    const {
+      redirect,
+      returnurl,
+      closeTAC
+    } = this.props;
+
+    const { acceptTaCUrl } = TAC;
+
+    axios.get(acceptTaCUrl)
+      .then((response) => {
+        const { success, errorMessage } = response.data;
+        if (success) {
+          if (redirect) {
+            location.assign(returnurl);
+          } else {
+            closeTAC();
+          }
+        } else {
+          window.store.dispatch({
+            type: FAILURE,
+            alert: errorMessage
+          });
+        }
+      })
+      .catch((e) => {
+        window.store.dispatch({
+          type: FAILURE,
+          alert: false
+        });
+      });
   };
 
   render() {
-    const { showTaC, url } = this.props.login.checkTaC;
-    const { title, submitTexT } = TAC;
+    const { title, submitText, iframeUrl } = TAC;
 
-    if (!showTaC) return null;
+    if (!this.props.show) return null;
 
     const body = (
-      <iframe src={url} width={900} height={450} />
+      <iframe src={iframeUrl} width={900} height={450} />
     );
 
     const footer = (
@@ -46,7 +79,7 @@ class TaCDialog extends Component {
           type="button"
           className="btn-action"
         >
-          {submitTexT}
+          {submitText}
         </button>
       </div>
     );
@@ -62,8 +95,9 @@ class TaCDialog extends Component {
 }
 
 export default connect((state) => {
-  const { login } = state;
-  return { login };
+  const { tac } = state;
+  return { ...tac };
 }, {
-  acceptTaC
+  closeTAC,
+  openTaC
 })(TaCDialog);

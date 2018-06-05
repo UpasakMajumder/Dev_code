@@ -31,8 +31,6 @@ namespace Kadena.AWSLogging
 
         private static AWSLoggerConfig CreateConfig()
         {
-            var accessKey = SettingsKeyInfoProvider.GetValue("KDA_AWS_AccessKey");
-            var accessSecret = SettingsKeyInfoProvider.GetValue("KDA_AWS_AccessSecret");
             var logGroup = SettingsKeyInfoProvider.GetValue("KDA_AWS_LogGroup");
             var regionSettingsKey = SettingsKeyInfoProvider.GetValue("KDA_AWS_RegionEndpoint");
             var region = RegionEndpoint.GetBySystemName(SettingsKeyInfoProvider.GetValue("KDA_AWS_RegionEndpoint"));
@@ -43,7 +41,6 @@ namespace Kadena.AWSLogging
 
             return new AWSLoggerConfig("kenticoLogs")
             {
-                Credentials = new BasicAWSCredentials(accessKey, accessSecret),
                 BatchPushInterval = TimeSpan.FromSeconds(10),
                 MonitorSleepTime = TimeSpan.FromSeconds(1),
                 BatchSizeInBytes = 50000,

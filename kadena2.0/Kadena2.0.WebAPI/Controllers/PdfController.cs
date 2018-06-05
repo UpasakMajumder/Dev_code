@@ -15,25 +15,23 @@ namespace Kadena.WebAPI.Controllers
 
         public PdfController(IPdfService service, IMapper mapper)
         {
-            if (service == null)
-            {
-                throw new ArgumentNullException(nameof(service));
-            }
-
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-
-            this.service = service;
-            this.mapper = mapper;
+            this.service = service ?? throw new ArgumentNullException(nameof(service));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet]
         [Route("api/pdf/hires/{orderid}/{line}")]
-        public async Task<RedirectResult> GetHiresPdf(string orderId, int line)
+        public async Task<RedirectResult> GetHiresPdf(string orderId, int line, [FromUri]string hash)
         {
-            var result = await service.GetHiresPdfLink(orderId, line);
+            var result = await service.GetHiresPdfRedirectLink(orderId, line, hash);
+            return Redirect(result);
+        }
+
+        [HttpGet]
+        [Route("api/pdf/lowres/{templateid}/{settingsid}")]
+        public async Task<RedirectResult> GetLowresPdf(Guid templateId, Guid settingsId, [FromUri]string hash)
+        {
+            var result = await service.GetLowresPdfRedirectLink(templateId, settingsId, hash);
             return Redirect(result);
         }
     }

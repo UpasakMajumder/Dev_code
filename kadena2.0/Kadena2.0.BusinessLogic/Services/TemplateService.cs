@@ -11,6 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using Kadena.Models.SiteSettings;
+using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -48,7 +50,7 @@ namespace Kadena.BusinessLogic.Services
             return result.Success;
         }
 
-        public async Task<ProductTemplates> GetTemplatesByProduct(int nodeId)
+        public async Task<ProductTemplates> GetTemplatesByProduct(int documentId)
         {
             var productTemplates = new ProductTemplates
             {
@@ -84,7 +86,7 @@ namespace Kadena.BusinessLogic.Services
                 Data = new ProductTemplate[0]
             };
 
-            var product = _products.GetProductByNodeId(nodeId);
+            var product = _products.GetProductByDocumentId(documentId);
             if (product != null && !product.HasProductTypeFlag(ProductTypes.TemplatedProduct))
             {
                 return productTemplates;
@@ -93,7 +95,7 @@ namespace Kadena.BusinessLogic.Services
             var requestResult = await _templateClient
                 .GetTemplates(_users.GetCurrentUser().UserId, product.ProductMasterTemplateID);
 
-            var productEditorUrl = _resources.GetSettingsKey("KDA_Templating_ProductEditorUrl")?.TrimStart('~');
+            var productEditorUrl = _resources.GetSiteSettingsKey(Settings.KDA_Templating_ProductEditorUrl)?.TrimStart('~');
             if (string.IsNullOrWhiteSpace(productEditorUrl))
             {
                 _logger.LogError("GET TEMPLATE LIST", "Product editor URL is not configured");
@@ -103,12 +105,12 @@ namespace Kadena.BusinessLogic.Services
                 productEditorUrl = _documents.GetDocumentUrl(productEditorUrl);
             }
 
-            Func<DateTime, DateTime, bool> IsNewTemplate = (created, updated) =>
+            bool IsNewTemplate(DateTime created, DateTime updated)
             {
                 var diff = updated - created;
                 var isNew = diff.TotalSeconds < 10;
                 return isNew;
-            };
+            }
 
             if (requestResult.Success)
             {
@@ -132,7 +134,7 @@ namespace Kadena.BusinessLogic.Services
 
                         return new ProductTemplate
                         {
-                            EditorUrl = BuildTemplateEditorUrl(productEditorUrl, nodeId, t.TemplateId.ToString(),
+                            EditorUrl = BuildTemplateEditorUrl(productEditorUrl, documentId, t.TemplateId.ToString(),
                                 product.ProductChiliWorkgroupID.ToString(), quantity, t.MailingList?.ContainerId, t.Name),
                             TemplateId = t.TemplateId,
                             CreatedDate = t.Created,
@@ -156,7 +158,7 @@ namespace Kadena.BusinessLogic.Services
             string containerId = null, string customName = null)
         {
             var argumentFormat = "&{0}={1}";
-            var url = new StringBuilder(productEditorBaseUrl + "?nodeId=" + nodeId)
+            var url = new StringBuilder(productEditorBaseUrl + "?documentId=" + nodeId)
                 .AppendFormat(argumentFormat, "templateId", templateId)
                 .AppendFormat(argumentFormat, "workspaceid", productChiliWorkgroupID)
                 .AppendFormat(argumentFormat, "quantity", mailingListRowCount);
@@ -180,6 +182,43 @@ namespace Kadena.BusinessLogic.Services
                 return null;
             }
             return new Uri(url.Payload);
+        }
+
+
+        public async Task<string> TemplatedProductEditorUrl(int documentId, int userId, string productType,  Guid masterTemplateID, Guid workspaceId, bool use3d)
+        {
+            var productEditorUrl = _documents.GetDocumentUrl(_resources.GetSiteSettingsKey(Settings.KDA_Templating_ProductEditorUrl));
+            var selectMailingListUrl = _documents.GetDocumentUrl(_resources.GetSiteSettingsKey(Settings.KDA_Templating_SelectListPageUrl));
+
+            var requestBody = new NewTemplateRequestDto
+            {
+                User = userId.ToString(),
+                TemplateId = masterTemplateID.ToString(),
+                WorkSpaceId = workspaceId.ToString(),
+                UseHtmlEditor = false,
+                Use3d = use3d
+            };
+
+            var newTemplateUrl = await _templateClient.CreateNewTemplate(requestBody).ConfigureAwait(false);
+
+            if (!newTemplateUrl.Success || string.IsNullOrEmpty(newTemplateUrl.Payload))
+            {
+                throw new Exception("Failed to create new template : " + newTemplateUrl.ErrorMessages);
+            }
+            
+            var uri = new Uri(newTemplateUrl.Payload);
+            var newTemplateID = HttpUtility.ParseQueryString(uri.Query).Get("doc");
+            var destinationUrl = $"{productEditorUrl}?documentId={documentId}&templateId={newTemplateID}&workspaceid={workspaceId}&use3d={use3d}";
+
+            if (ProductTypes.IsOfType(productType, ProductTypes.MailingProduct) && ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct))
+            {
+                var encodedUrl = HttpUtility.UrlEncode(destinationUrl);
+                return $"{selectMailingListUrl}?url={encodedUrl}";
+            }
+            else
+            {
+                return destinationUrl;
+            }
         }
     }
 }

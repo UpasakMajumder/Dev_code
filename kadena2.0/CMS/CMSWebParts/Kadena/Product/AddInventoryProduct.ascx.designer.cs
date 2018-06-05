@@ -13,33 +13,6 @@ namespace Kadena.CMSWebParts.Kadena.Product {
     public partial class AddInventoryProduct {
         
         /// <summary>
-        /// lblPosNumber control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.LocalizedLabel lblPosNumber;
-        
-        /// <summary>
-        /// ddlPosNo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CMS.Base.Web.UI.CMSDropDownList ddlPosNo;
-        
-        /// <summary>
-        /// rfvPosNo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPosNo;
-        
-        /// <summary>
         /// lblBrand control.
         /// </summary>
         /// <remarks>
@@ -67,31 +40,67 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvBrand;
         
         /// <summary>
-        /// lblLongDes control.
+        /// lblPosCategory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMS.Base.Web.UI.LocalizedLabel lblLongDes;
+        protected global::CMS.Base.Web.UI.LocalizedLabel lblPosCategory;
         
         /// <summary>
-        /// txtLongDes control.
+        /// ddlPosCategory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CMS.Base.Web.UI.CMSTextBox txtLongDes;
+        protected global::CMS.Base.Web.UI.CMSDropDownList ddlPosCategory;
         
         /// <summary>
-        /// rfvLongDes control.
+        /// rfvPosCategory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvLongDes;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPosCategory;
+        
+        /// <summary>
+        /// lblPosNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.LocalizedLabel lblPosNumber;
+        
+        /// <summary>
+        /// ddlPosNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.CMSDropDownList ddlPosNo;
+        
+        /// <summary>
+        /// txtPOSNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPOSNumber;
+        
+        /// <summary>
+        /// rfvPosNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPosNo;
         
         /// <summary>
         /// lblShortDes control.
@@ -119,6 +128,33 @@ namespace Kadena.CMSWebParts.Kadena.Product {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvShortDes;
+        
+        /// <summary>
+        /// lblLongDes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.LocalizedLabel lblLongDes;
+        
+        /// <summary>
+        /// txtLongDes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CMS.Base.Web.UI.CMSTextBox txtLongDes;
+        
+        /// <summary>
+        /// rfvLongDes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvLongDes;
         
         /// <summary>
         /// lblBundleQnt control.

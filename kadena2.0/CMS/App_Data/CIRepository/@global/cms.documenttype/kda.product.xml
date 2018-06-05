@@ -43,12 +43,40 @@
           <Trim>False</Trim>
         </settings>
       </field>
+      <field allowempty="true" column="ProductPricingModel" columnsize="200" columntype="text" guid="fc2202c1-d75f-4fea-8422-664c054fc4fe" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Pricing model</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Options>
+            <![CDATA[{% KadenaNamespace.GetProductPricingModels() |(user)administrator|(hash)7411d9843ca540a3c89fb8bce4caadaabf8c2cad5ae00a83c478ebc163152930%}]]>
+          </Options>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
       <field allowempty="true" column="ProductDynamicPricing" columntype="longtext" guid="0b3a73e5-b384-4363-b8b8-e09ec231f125" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Dymanic pricing and Quantity</fieldcaption>
+          <visiblemacro ismacro="true">
+            <![CDATA[{% ProductPricingModel == "Dynamic" %}]]>
+          </visiblemacro>
         </properties>
         <settings>
           <controlname>DynamicPricingSelector</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ProductTieredPricing" columntype="longtext" guid="0d2a5e09-535a-4f28-854d-b28e5f1fb03e" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Tiered pricing</fieldcaption>
+          <visiblemacro ismacro="true">
+            <![CDATA[{%ProductPricingModel == "Tiered"%}]]>
+          </visiblemacro>
+        </properties>
+        <settings>
+          <controlname>TieredPricingSelector</controlname>
         </settings>
       </field>
       <field allowempty="true" column="ProductThumbnailBorderDisabled" columntype="boolean" guid="ad1051c3-59b4-4e56-87e7-3976d05e9571" publicfield="false" visible="true">
@@ -66,7 +94,7 @@
             <![CDATA[If set to true, "Request kit" button will NOT be displayed even if it is enabled on site level]]>
           </fielddescription>
           <visiblemacro ismacro="true">
-            <![CDATA[{%ProductType.Contains("KDA.StaticProduct") || ProductType.Contains("KDA.InventoryProduct") || ProductType.Contains("KDA.POD")|(user)michal.machacek@actum.cz|(hash)4f0a5c6301ff149284112e42cf7c378a44325ef21153a1f9f6bbfaeef253875b%}]]>
+            <![CDATA[{%ProductType.Contains("KDA.StaticProduct") || ProductType.Contains("KDA.InventoryProduct") || ProductType.Contains("KDA.POD")|(user)administrator|(hash)2e7a532c5549ecdfde008a033ede3220d7aa21dc65f3cbb56a09d5d81d66649f%}]]>
           </visiblemacro>
         </properties>
         <settings>
@@ -213,29 +241,13 @@
         <properties>
           <fieldcaption>Artwork Location/Digital Printing</fieldcaption>
           <visiblemacro ismacro="true">
-            <![CDATA[{%ProductType.Contains("KDA.StaticProduct") || ProductType.Contains("KDA.POD")|(user)rostyslav.diachenko@actum.cz|(hash)3d645955acff13793a6946c9b89a0235da04d688a3ddd8604f41c8331bab792d%}]]>
+            <![CDATA[{%ProductType.Contains("KDA.StaticProduct") || ProductType.Contains("KDA.POD")|(user)administrator|(hash)a019c6bb7e602d017a8c28b495b5e56b432633d8813b73449dcef511b02b5f3f%}]]>
           </visiblemacro>
         </properties>
         <settings>
           <Allowed_Extensions>pdf;bmp;gif;jpg;jpeg;png</Allowed_Extensions>
           <controlname>DirectUploadControl</controlname>
           <Extensions>custom</Extensions>
-        </settings>
-      </field>
-      <field allowempty="true" column="ProductArtworkLocation" columnsize="200" columntype="text" dependsonanotherfield="true" guid="8371aa2b-ed56-4ae5-bc63-c891706af664" publicfield="false">
-        <properties>
-          <fieldcaption>Artwork Location</fieldcaption>
-          <visiblemacro ismacro="true">
-            <![CDATA[{%ProductType.Contains("KDA.StaticProduct") || ProductType.Contains("KDA.POD")|(user)rostyslav.diachenko@actum.cz|(hash)3d645955acff13793a6946c9b89a0235da04d688a3ddd8604f41c8331bab792d%}]]>
-          </visiblemacro>
-        </properties>
-        <settings>
-          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
-          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
-          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
-          <controlname>TextBoxControl</controlname>
-          <FilterMode>False</FilterMode>
-          <Trim>False</Trim>
         </settings>
       </field>
       <field allowempty="true" column="ProductRelatedSKUs" columnsize="500" columntype="text" guid="769aa7a5-56c2-49f4-bce4-28f671cef36c" hasdependingfields="true" publicfield="false" visible="true">
@@ -266,7 +278,7 @@
         <properties>
           <caption>Template settings</caption>
           <visible ismacro="true">
-            <![CDATA[{% ProductType.Contains("KDA.TemplatedProduct") |(user)rostyslav.diachenko@actum.cz|(hash)8566e825fa2b2fc6a1a8021932551d12d854be976a2a29c2c30f7568fbbb8922%}]]>
+            <![CDATA[{% ProductType.Contains("KDA.TemplatedProduct")|(user)administrator|(hash)6c6546de837aa751d88049ba4c444d549552984c6ba9448508fd687ced3031d3%}]]>
           </visible>
         </properties>
       </category>
@@ -315,7 +327,7 @@
       <field allowempty="true" column="ProductChiliLowResSettingId" columntype="guid" guid="3c45a29f-970b-45c7-b54c-a7d4d585b131" publicfield="false" visible="true">
         <properties>
           <defaultvalue ismacro="true">
-            <![CDATA[{% Settings.KDA_DefaultLowResSettingsId |(user)michal.machacek@actum.cz|(hash)5081d116d2fda43df1ae87654b32b430e041333d2bc930ed3c6c16e4d055b728%}]]>
+            <![CDATA[{% Settings.KDA_DefaultLowResSettingsId|(user)administrator|(hash)fb20229009f9be2ebac453488cbb5357ff0e2517f4ad298de6881e109e5647e5%}]]>
           </defaultvalue>
           <fieldcaption>Low resolution setting Id</fieldcaption>
           <fielddescription>
@@ -389,20 +401,6 @@
           <visible>True</visible>
         </properties>
       </category>
-      <field column="ProductNumberOfItemsInPackage" columntype="integer" guid="884ded84-31ab-4eed-a61c-a2062f6ed92e" publicfield="false" visible="true">
-        <properties>
-          <defaultvalue>1</defaultvalue>
-          <fieldcaption>Number of items in package</fieldcaption>
-        </properties>
-        <settings>
-          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
-          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
-          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
-          <controlname>TextBoxControl</controlname>
-          <FilterMode>False</FilterMode>
-          <Trim>False</Trim>
-        </settings>
-      </field>
       <category name="Shipping">
         <properties>
           <visible>True</visible>
@@ -413,7 +411,7 @@
           <defaultvalue>0</defaultvalue>
           <fieldcaption>Package weight</fieldcaption>
           <visiblemacro ismacro="true">
-            <![CDATA[{%KadenaNamespace.IsSKUWeightRequired(ProductType.Value)|(user)tomas.rucki@actum.cz|(hash)01424be3a5e05fbaff8944ca5893aa85a42b880d259354f574592bab36a8dc11%}]]>
+            <![CDATA[{%KadenaNamespace.IsSKUWeightRequired(ProductType.Value)|(user)administrator|(hash)6c0489739f1cb0d91a40e27d0adab727e4540139073747415bb62128ba28b4d0%}]]>
           </visiblemacro>
         </properties>
         <settings>
@@ -426,7 +424,7 @@
         </settings>
         <rules>
           <rule errormsg="SKU weight must be greater than 0 for product types: Inventory, POD, Static, Templated.">
-            <![CDATA[{%Rule("(KadenaNamespace.IsSKUWeightValid(ProductType.Value,ProductSKUWeight.Value)|(user)tomas.rucki@actum.cz|(hash)2990e5c4c8b2852c698c8a3e55d829ae1a646d7d861dbdc72812906668b19482)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"GeneralCondition\" ><p n=\"condition\"><t>KadenaNamespace.IsSKUWeightValid(ProductType.Value,ProductSKUWeight.Value)|(user)tomas.rucki@actum.cz|(hash)2990e5c4c8b2852c698c8a3e55d829ae1a646d7d861dbdc72812906668b19482</t><v>KadenaNamespace.IsSKUWeightValid(ProductType.Value,ProductSKUWeight.Value)|(user)tomas.rucki@actum.cz|(hash)2990e5c4c8b2852c698c8a3e55d829ae1a646d7d861dbdc72812906668b19482</v><r>0</r><d></d><vt>longtext</vt><tv>0</tv></p></r></rules>")|(user)tomas.rucki@actum.cz|(hash)5be047ec0687840d15c924dd2f7389f15e88bc23c7eed5e24dba78ab9491d924%}]]>
+            <![CDATA[{%Rule("(KadenaNamespace.IsSKUWeightValid(ProductType.Value, ProductSKUWeight.Value)|(user)administrator|(hash)a14cd46fcaa1df6edf5e007e332e1339caaefbd2de7a941697fcb17e4edec2f2)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"GeneralCondition\" ><p n=\"condition\"><t>KadenaNamespace.IsSKUWeightValid(ProductType.Value, ProductSKUWeight.Value)|(user)administrator|(hash)a14cd46fcaa1df6edf5e007e332e1339caaefbd2de7a941697fcb17e4edec2f2</t><v>KadenaNamespace.IsSKUWeightValid(ProductType.Value, ProductSKUWeight.Value)|(user)administrator|(hash)a14cd46fcaa1df6edf5e007e332e1339caaefbd2de7a941697fcb17e4edec2f2</v><r>0</r><d></d><vt>longtext</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)28036328f58462b27dde71dca639c58a36dc9f13dcb79ae73fef9a19071dcb08%}]]>
           </rule>
         </rules>
       </field>

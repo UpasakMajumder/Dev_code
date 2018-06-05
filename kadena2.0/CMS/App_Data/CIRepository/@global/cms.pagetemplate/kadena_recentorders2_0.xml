@@ -8,8 +8,7 @@
   </PageTemplateCategoryID>
   <PageTemplateCloneAsAdHoc>False</PageTemplateCloneAsAdHoc>
   <PageTemplateCodeName>Kadena_RecentOrders2_0</PageTemplateCodeName>
-  <PageTemplateDescription />
-  <PageTemplateDisplayName>Recent Orders 2.0</PageTemplateDisplayName>
+  <PageTemplateDisplayName>Recent Orders Filtered</PageTemplateDisplayName>
   <PageTemplateFile />
   <PageTemplateForAllPages>True</PageTemplateForAllPages>
   <PageTemplateGUID>334610b3-3654-40f7-90fe-f1411d78f3d9</PageTemplateGUID>
@@ -133,18 +132,18 @@
           <property name="text" ismacro="true">
 <![CDATA[
 {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-if (!iteratedDocument.DocumentMenuItemHideInNavigation) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-}
-iteratedDocument = iteratedDocument.Parent;
-};
-result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}", RootDocument.AbsoluteURL, result);
-
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)michal.machacek@actum.cz|(hash)8cda62a2a286510219a9295529a44ef338f699a3859e94cb27ad8d100a834f85%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  if (!iteratedDocument.DocumentMenuItemHideInNavigation) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  }
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}", RootDocument.AbsoluteURL, result);
+  
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)6a1e465a680c35e460d9265e9da9f0150739d0ee36c8c774b184d34c6b68fe61%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -165,10 +164,10 @@ result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}"
             <![CDATA[{%CurrentUser.IsAuthorizedPerResource("Kadena_RecentOrders", "KDA_ContentEnabled") || CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor) |(user)administrator|(hash)61acad41002f4836011449aacc66d77fb47ccadab6c12497185ae5e9f8d72c6a%}]]>
           </property>
         </properties>
-        <webpart controlid="javascript" guid="298d0267-2de7-42c7-aced-5838746a8b6b" type="javascript" v="1">
+        <webpart controlid="FilterConfig" guid="298d0267-2de7-42c7-aced-5838746a8b6b" type="javascript" v="1">
           <property name="cat_open_behavior"></property>
           <property name="cat_open_performance"></property>
-          <property name="controlid">javascript</property>
+          <property name="controlid">FilterConfig</property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
@@ -178,23 +177,35 @@ result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}"
 <![CDATA[
 <script>
   config.localization.filteredRecentOrders = {
-    getCampaignsUrl: '/api/getCampaigns',
-    getOrdersUrl: '/api/recentorders/getheaders',
-    orderTypes: {
-      placeholder: "{$Kadena.RecentOrder.Filter.OrderType$}",
-      items: [
-        {
-          id: "prebuy",
-          name: "Pre-Buy",
-          campaigns: true
-        },
-        {
-          id: "general",
-          name: "General Inventory",
-          campaigns: false
-        }
-      ]
-    }
+    placeholder: '{%JSEscape(GetResourceString("Kadena.RecentOrder.Filter.OrderType"))|(user)administrator|(hash)647db90a54bf7b2451ecae69077f14ed36ae156cc2a1a82e99f512eca4ca74a3%}',
+    filterItems: [
+      {
+        name: '{%JSEscape(GetResourceString("Kadena.RecentOrder.Filter.PreBuy"))|(user)administrator|(hash)b8f581ede23d77f38a6056d5eaa715c1ef03700b5f4a6bd62d0085c3566cc1c5%}',
+        getCampaignsUrl: '/api/getcampaigns/prebuy',
+        tabs: [
+          {
+            text: '{%JSEscape(GetResourceString("Kadena.RecentOrders.Tabs.RecentOrders.Title"))|(user)administrator|(hash)d2beb8b01c99744ab3cbf23fe1c36b2b86a81b9b9c7eadbacbac791d6d83906f%}',
+            getOrdersUrl: '/api/recentorders/getheaders/prebuy'
+          }
+        ]
+      },
+      {
+        name: '{%JSEscape(GetResourceString("Kadena.RecentOrder.Filter.GeneralInventory"))|(user)administrator|(hash)5a6b8a5c71c4fad9a0f7a853dddb3d6bc46a63d5a4bf6707c6496a8ec774f439%}',
+        tabs: [
+          {
+            text: '{%JSEscape(GetResourceString("Kadena.RecentOrders.Tabs.RecentOrders.Title"))|(user)administrator|(hash)d2beb8b01c99744ab3cbf23fe1c36b2b86a81b9b9c7eadbacbac791d6d83906f%}',
+            getOrdersUrl: '/api/recentorders/getheaders/general'
+          }
+          {% if(KadenaNamespace.IsCurrentUserApprover()) { %}
+          ,
+          {
+            text: '{%JSEscape(GetResourceString("Kadena.RecentOrders.Tabs.OrdersToApprove.Title"))#%}',
+            getOrdersUrl: '/api/orders/toapprove/general'
+          }
+          {% }|(user)administrator|(hash)ccd0dc4f6cda3121cc526476065580fabf4b9babc827bd71483887514ef9061d%}
+        ]
+      }
+    ]
   }
 </script>
 ]]>
@@ -207,7 +218,7 @@ result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}"
           <property name="positiontop"></property>
           <property name="showfordocumenttypes"></property>
           <property name="visible">True</property>
-          <property name="webparttitle"></property>
+          <property name="webparttitle">Filter config</property>
           <property name="webparttype">javascript</property>
         </webpart>
         <webpart controlid="StaticText" guid="6ec6caa6-b406-4a4d-92b2-a11d2bfa144a" type="statictext" v="1">

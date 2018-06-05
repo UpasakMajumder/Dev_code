@@ -37,10 +37,24 @@
           </div>
         </div>
         <div>
-          <div class="input__wrapper">
+          {# <div class="input__wrapper">
             <span class="input__label">Quantity</span>
-            <input type="number" class="input__text js-add-to-cart-error js-add-to-cart-quantity" value="1"/>
-            <span class="input__error input__error--noborder js-add-to-cart-message"/>Error</span>
+            <input type="number" class="input__text js-add-to-cart-error js-add-to-cart-quantity input--error" value="1"/>
+            <span class="input__error input__error--noborder js-add-to-cart-message"/>Cannot order less than minimal count of items</span>
+          </div> #}
+          <div class="input__wrapper product-options__input mr-3">
+            <span class="input__label">Quantity</span>
+            <div class="input__select input--error">
+              <select>
+                <option disabled="" value="">Hello 🏋️</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+              </select>
+            </div>
+            <span class="input__error input__error--noborder">Invalid Quantity Here</span>
           </div>
           <button type="button" disabled class="btn-action js-chili-addtocart">Add to cart</button>
         </div>
@@ -58,7 +72,6 @@
       switch (type) {
         case 'DocumentSaved':
           window.saveChiliTemplate();
-          if (window.addToCart) window.addToCartRequest(window.cartEvent);
           break;
       }
     }

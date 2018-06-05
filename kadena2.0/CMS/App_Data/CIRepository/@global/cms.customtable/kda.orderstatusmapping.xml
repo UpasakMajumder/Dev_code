@@ -46,6 +46,14 @@
           <Trim>False</Trim>
         </settings>
       </field>
+      <field column="ItemGUID" columnprecision="0" columntype="guid" guid="b0716c31-e817-49e3-93c6-81212ccb5999" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>GUID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
     </form>
   </ClassFormDefinition>
   <ClassGUID>bccfcb78-7ff4-46b3-a19b-c27b4beb2252</ClassGUID>
@@ -70,6 +78,7 @@
   </ClassSearchSettings>
   <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
   <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowColumns>ItemID;MicroserviceStatus;GenericStatus</ClassShowColumns>
   <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
   <ClassTableName>KDA_OrderStatusMapping</ClassTableName>
   <ClassUsePublishFromTo>False</ClassUsePublishFromTo>

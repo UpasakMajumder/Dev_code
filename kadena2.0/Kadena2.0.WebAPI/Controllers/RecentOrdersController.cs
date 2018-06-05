@@ -2,13 +2,16 @@
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.RecentOrders;
 using Kadena.Dto.ViewOrder.Responses;
+using Kadena.Helpers.Routes;
 using Kadena.WebAPI.Infrastructure;
+using Kadena.WebAPI.Infrastructure.Filters;
 using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Kadena.WebAPI.Controllers
 {
+    [CustomerAuthorizationFilter]
     public class RecentOrdersController : ApiControllerBase
     {
         private readonly IOrderDetailService orderDetailService;
@@ -20,27 +23,14 @@ namespace Kadena.WebAPI.Controllers
             IOrderListServiceFactory orderListServiceFactory, 
             IMapper mapper)
         {
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             if (orderListServiceFactory == null)
             {
                 throw new ArgumentNullException(nameof(orderListServiceFactory));
             }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
 
             _orderService = orderListServiceFactory.GetRecentOrders();
-            this.orderDetailService = orderDetailService;
-            _mapper = mapper;
-        }
-
-        [HttpGet]
-        [Route("api/recentorders/getheaders")]
-        public async Task<IHttpActionResult> GetHeaders()
-        {
-            var orderHead = await _orderService.GetHeaders();
-            var result = _mapper.Map<OrderHeadDto>(orderHead);
-            return ResponseJson(result);
+            this.orderDetailService = orderDetailService ?? throw new ArgumentNullException(nameof(orderDetailService));
         }
 
         [HttpGet]
@@ -53,10 +43,37 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route(Routes.Order.GetToApprove)]
+        public async Task<IHttpActionResult> GetOrdersToApprove()
+        {
+            var orders = await _orderService.GetOrdersToApprove();
+            var result = _mapper.Map<OrderHeadDto>(orders);
+            return ResponseJson(result);
+        }
+
+        [HttpGet]
+        [Route(Routes.Order.GetCampaignOrdersToApprove)]
+        public async Task<IHttpActionResult> GetCampaignOrdersToApprove(string orderType)
+        {
+            var orders = await _orderService.GetCampaignOrdersToApprove(orderType, 0);
+            var result = _mapper.Map<OrderHeadBlockDto>(orders);
+            return ResponseJson(result);
+        }
+
+        [HttpGet]
+        [Route("api/recentorders/getheaders")]
+        public async Task<IHttpActionResult> GetHeaders()
+        {
+            var orderHead = await _orderService.GetHeaders();
+            var result = _mapper.Map<OrderHeadDto>(orderHead);
+            return ResponseJson(result);
+        }
+
+        [HttpGet]
         [Route("api/recentorders/getheaders/{orderType}")]
         public async Task<IHttpActionResult> GetHeaders(string orderType)
         {
-            var orderHead = await _orderService.GetHeaders(orderType, 0);
+            var orderHead = await _orderService.GetCampaignHeaders(orderType, 0);
             var result = _mapper.Map<OrderHeadBlockDto>(orderHead);
             return ResponseJson(result);
         }
@@ -65,7 +82,7 @@ namespace Kadena.WebAPI.Controllers
         [Route("api/recentorders/getheaders/{orderType}/{campaignID}")]
         public async Task<IHttpActionResult> GetHeaders(string orderType, int campaignID)
         {
-            var orderHead = await _orderService.GetHeaders(orderType, campaignID);
+            var orderHead = await _orderService.GetCampaignHeaders(orderType, campaignID);
             var result = _mapper.Map<OrderHeadBlockDto>(orderHead);
             return ResponseJson(result);
         }

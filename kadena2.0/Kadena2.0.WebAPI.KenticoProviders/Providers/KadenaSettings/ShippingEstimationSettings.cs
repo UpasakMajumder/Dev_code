@@ -18,16 +18,16 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings
             this.resources = resources;
         }
 
-        public string SenderAddressLine1 => resources.GetSettingsKey("KDA_EstimateDeliveryPrice_SenderAddressLine1");
+        public string SenderAddressLine1 => resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderAddressLine1");
 
-        public string SenderAddressLine2 => resources.GetSettingsKey("KDA_EstimateDeliveryPrice_SenderAddressLine2");
+        public string SenderAddressLine2 => resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderAddressLine2");
 
-        public string SenderCountry => resources.GetSettingsKey("KDA_EstimateDeliveryPrice_SenderCountry");
+        public string SenderCountry => resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderCountry");
 
-        public string SenderState => resources.GetSettingsKey("KDA_EstimateDeliveryPrice_SenderState");
+        public string SenderState => resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderState");
 
-        public string SenderCity => resources.GetSettingsKey("KDA_EstimateDeliveryPrice_SenderCity");
+        public string SenderCity => resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderCity");
 
-        public string SenderPostal => resources.GetSettingsKey("KDA_EstimateDeliveryPrice_SenderPostal");
+        public string SenderPostal => resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderPostal");
     }
 }

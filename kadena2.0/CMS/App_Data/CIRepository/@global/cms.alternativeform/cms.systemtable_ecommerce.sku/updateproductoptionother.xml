@@ -182,6 +182,11 @@ ByProduct;{$general.yes$}
       <field column="SKUConversionValue" guid="870a3279-5120-4bc6-817c-318360a7fbb3" />
       <field column="SKUParentSKUID" guid="cfda202f-ccbf-47b8-9b24-d6feae3a470c" />
       <field column="SKUCustomerReferenceNumber" guid="1e97c520-5f56-4931-ae55-7663b4d2cb24" order="56" />
+      <field column="SKUDontSendPriceToERP" visible="false" />
+      <field column="SKUUnitOfMeasure" visible="false" />
+      <field column="SKUHiResPdfDownloadEnabled" visible="false" />
+      <field column="SKUApprovalRequired" visible="false" />
+      <field column="SKUNumberOfItemsInPackage" visible="false" />
     </form>
   </FormDefinition>
   <FormDisplayName>Option (Products) - Other properties</FormDisplayName>

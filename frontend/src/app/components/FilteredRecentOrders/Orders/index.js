@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 /* helpers */
 import timeFormat from 'app.helpers/time';
 /* components */
+import Spinner from 'app.dump/Spinner';
 import Dialog from '../Dialog';
 
 class Orders extends Component {
   static propTypes = {
+    isOpacity: PropTypes.bool,
     orders: PropTypes.shape({
       headers: PropTypes.arrayOf(PropTypes.string.isRequired),
       rows: PropTypes.arrayOf(PropTypes.shape({
@@ -17,7 +19,7 @@ class Orders extends Component {
           url: PropTypes.string
         })).isRequired
       }))
-    }).isRequired
+    })
   }
 
   state = {
@@ -50,7 +52,7 @@ class Orders extends Component {
         let cell = <td key={j}>{item.value}</td>;
 
         if (item.type === 'link') {
-          cell = <td key={j} className="show-table__will-appear"><a href={item.url} className="btn-action">{item.value}</a></td>;
+          cell = <td key={j} className="show-table__will-appear"><a href={item.url} target="_blank" className="btn-action">{item.value}</a></td>;
         } else if (item.type === 'button') {
           cell = (
             <td key={j} className="show-table__will-appear">
@@ -63,12 +65,12 @@ class Orders extends Component {
               </button>
             </td>
           );
+        } else if (item.type === 'longtext') {
+          cell = <td key={j} className="show-table__text-appear">{item.value}</td>;
+        } else if (item.type === 'hover-hide') {
+          cell = <td key={j} className="show-table__will-hide">{item.value}</td>;
         } else if (!isNaN(Date.parse(item.value)) && isNaN(Date.UTC(item.value))) {
           cell = <td key={j}>{timeFormat(item.value)}</td>;
-        } else if (item.type === 'longtext') {
-          cell = <td key={j} className="show-table__text-appear">{timeFormat(item.value)}</td>;
-        } else if (item.type === 'hover-hide') {
-          cell = <td key={j} className="show-table__will-hide">{timeFormat(item.value)}</td>;
         }
 
         return cell;
@@ -79,10 +81,11 @@ class Orders extends Component {
   };
 
   render() {
+    if (!Object.keys(this.props.orders).length) return <Spinner />;
     return (
       <div>
         {this.getDialog()}
-        <table className="show-table">
+        <table className={`show-table ${this.props.isOpacity ? 'show-table--opacity' : ''}`}>
           <tbody>
             {this.getTableHeader()}
             {this.getTableRows()}

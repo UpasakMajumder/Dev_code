@@ -83,7 +83,7 @@
           <property name="text">
 <![CDATA[
 <div class="content-header__inner">
-<h1 class="content-header__page-name">{%  GetResourceString("KDA.CustomCatalogGI.Filters.HeaderText") |(user)cvoqa2@gmail.com|(hash)11ebe4f513aaa9096c7ab606cdec8e346297cb02c4fdb844d301f4e39b747e09%}</h1>
+<h1 class="content-header__page-name">{%  GetResourceString("KDA.CustomCatalogGI.Filters.HeaderText")|(user)administrator|(hash)8efc03f40fbb04beaf2ab95e7dd08bb1658fdf542ded3e02f01c5fcfc009a6a4%}</h1>
 </div>
 
 
@@ -141,14 +141,14 @@
           <property name="text">
 <![CDATA[
 {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)25a38b3f17c6468d659e8f65b22b9d82b2decede46871dc160947145a720db8e%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -219,9 +219,8 @@ iteratedDocument = iteratedDocument.Parent;
             $('#hdncheckedValues').val(listVal);
         });
     }
-  function ShowZoomEffect(thisEle){
-    var imgsrc = $(thisEle).parents("#imagediv").find('img').attr('src').split('?');
-    $('#ZoomImage').attr('src', imgsrc[0]);
+  function ShowZoomEffect(imgsrc){
+    $('#ZoomImage').attr('src', imgsrc);
     $('#ImageZoomPopup').toggleClass('active');
   }
 </script>

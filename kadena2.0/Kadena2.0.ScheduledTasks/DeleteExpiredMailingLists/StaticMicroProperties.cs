@@ -22,5 +22,10 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
             string resourceKey = $"{site}.{urlLocationName}";
             return SettingsKeyInfoProvider.GetValue(resourceKey).TrimEnd('/');
         }
+
+        public int GetApiVersion(string apiVersionKeyName)
+        {
+            return SettingsKeyInfoProvider.GetIntValue($"{site}.{apiVersionKeyName}");
+        }
     }
 }

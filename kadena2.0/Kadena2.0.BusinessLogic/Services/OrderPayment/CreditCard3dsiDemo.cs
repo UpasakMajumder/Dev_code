@@ -1,4 +1,5 @@
-﻿using Kadena.Models.SubmitOrder;
+﻿using Kadena.Models.SiteSettings;
+using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
 using System;
@@ -27,7 +28,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
         public SubmitOrderResult PayByCard3dsi()
         {
-            var insertCardUrl = resources.GetSettingsKey("KDA_CreditCard_InsertCardDetailsURL");
+            var insertCardUrl = resources.GetSiteSettingsKey(Settings.KDA_CreditCard_InsertCardDetailsURL);
 
             return new SubmitOrderResult
             {

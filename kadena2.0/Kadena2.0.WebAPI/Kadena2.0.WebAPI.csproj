@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\MailController.cs" />
     <Compile Include="Controllers\OrderReportController.cs" />
     <Compile Include="Controllers\ProgramsController.cs" />
     <Compile Include="Controllers\AddressBookController.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Controllers\POSController.cs" />
     <Compile Include="Controllers\ProductCategoryController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\ApprovalController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\RecentOrdersController.cs" />
@@ -137,6 +139,7 @@
     <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\UserBudgetController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserSettingsController.cs" />
     <Compile Include="Infrastructure\ApiControllerBase.cs" />
     <Compile Include="Infrastructure\Communication\AuthenticationFailureResult.cs" />
@@ -153,12 +156,10 @@
     <Compile Include="Infrastructure\Filters\Helpers\FilterHelper.cs" />
     <Compile Include="Infrastructure\Filters\ModelStateValidationFilter.cs" />
     <Compile Include="App_Start\WebApiInitModule.cs" />
-    <Compile Include="Infrastructure\Routes.Order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Compile Include="Infrastructure\Routes.OrderReport.cs" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -185,6 +186,10 @@
     <ProjectReference Include="..\Kadena2.0.Helpers\Kadena2.0.Helpers.csproj">
       <Project>{6b1835f6-5564-40d8-8ab8-63b6adc56976}</Project>
       <Name>Kadena2.0.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Infrastructure\Kadena2.0.Infrastructure.csproj">
+      <Project>{21862471-4fce-4096-82cb-79b23fe63a22}</Project>
+      <Name>Kadena2.0.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj">
       <Project>{b1fcbfc9-fc06-4c02-8df4-9d1a66e44910}</Project>

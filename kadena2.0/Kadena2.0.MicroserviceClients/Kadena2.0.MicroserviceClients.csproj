@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\AddressValidationClient.cs" />
+    <Compile Include="Clients\ApprovalServiceClient.cs" />
     <Compile Include="Clients\Base\ClientBase.cs" />
     <Compile Include="Clients\Base\SignedClientBase.cs" />
     <Compile Include="Clients\BidClient.cs" />
@@ -60,6 +61,8 @@
     <Compile Include="Clients\CreditCardManagerClient.cs" />
     <Compile Include="Clients\ExportClient.cs" />
     <Compile Include="Clients\FileClient.cs" />
+    <Compile Include="Clients\OrderResubmitClient.cs" />
+    <Compile Include="Clients\NotificationClient.cs" />
     <Compile Include="Clients\UserDataServiceClient.cs" />
     <Compile Include="Clients\PaymentServiceClient.cs" />
     <Compile Include="Clients\MailingListClient.cs" />
@@ -74,10 +77,13 @@
     <Compile Include="Contracts\Base\IMicroProperties.cs" />
     <Compile Include="Contracts\Base\ISuppliantDomainClient.cs" />
     <Compile Include="Contracts\IAddressValidationClient.cs" />
+    <Compile Include="Contracts\IApprovalServiceClient.cs" />
     <Compile Include="Contracts\IBidClient.cs" />
     <Compile Include="Contracts\ICloudEventConfiguratorClient.cs" />
     <Compile Include="Contracts\ICreditCardManagerClient.cs" />
     <Compile Include="Contracts\IExportClient.cs" />
+    <Compile Include="Contracts\INotificationClient.cs" />
+    <Compile Include="Contracts\IOrderResubmitClient.cs" />
     <Compile Include="Contracts\IPaymentServiceClient.cs" />
     <Compile Include="Contracts\IUserDataServiceClient.cs" />
     <Compile Include="Contracts\IFileClient.cs" />
@@ -104,6 +110,10 @@
     <ProjectReference Include="..\Kadena2.0.Helpers\Kadena2.0.Helpers.csproj">
       <Project>{6b1835f6-5564-40d8-8ab8-63b6adc56976}</Project>
       <Name>Kadena2.0.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kadena2.0.Models\Kadena2.0.Models.csproj">
+      <Project>{918EBDFB-D345-4BE2-97A2-9D71513E0617}</Project>
+      <Name>Kadena2.0.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

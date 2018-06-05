@@ -128,18 +128,18 @@
           <property name="text">
 <![CDATA[
 {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-if (!iteratedDocument.DocumentMenuItemHideInNavigation) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-}
-iteratedDocument = iteratedDocument.Parent;
-};
-result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}", RootDocument.AbsoluteURL, result);
-
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)tomas.rucki@actum.cz|(hash)eab0b60086cd47a7057b6ccfba711424d509f8b8d0e8bd033a20e164d9c53222%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  if (!iteratedDocument.DocumentMenuItemHideInNavigation) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  }
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}", RootDocument.AbsoluteURL, result);
+  
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)6a1e465a680c35e460d9265e9da9f0150739d0ee36c8c774b184d34c6b68fe61%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>

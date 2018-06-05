@@ -80,7 +80,7 @@
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<div class="content-block j-new-kit-request-form" data-function="SubmitNewKitRequest" data-thank-you-page='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KitRequestSentPageUrl) |(user)rostyslav.diachenko@actum.cz|(hash)41cb457ff22106c7844790457e8391b7c28d483ce35deccdc61ae645c9f169b0%}'>
+<div class="content-block j-new-kit-request-form" data-function="SubmitNewKitRequest" data-thank-you-page='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KitRequestSentPageUrl)|(user)administrator|(hash)3a6ee8ade4e8e8d8cdea6b4eed2ad2cc843921cfcd4bcc6a0fa147092755aff7%}'>
     <div class="block">
         <h2 class="block__heading">
             {$Kadena.NewKitRequest.MainInformation$}
@@ -105,7 +105,7 @@
                     {$Kadena.NewKitRequest.SelectUpProductsText$}
                 </span>
                 <div class="input__select-area j-products">
-                    {% KadenaNamespace.GetKitProductsHtml(QueryString.n, "/products" |(user)administrator|(hash)b82eb3ba2ce55dfe60d3c34291a94aa788cf6ee16b6ce35238a5790a57182d71%}                
+                    {% KadenaNamespace.GetKitProductsHtml(QueryString.n, Settings.KDA_ProductsPageUrl |(user)administrator|(hash)3b3441177fa6ac58abcae55c6522cdab91df9fd2fb97587285de012a03ef4c97%}                
                 </div>
                 <span class="input__error input__error--noborder j-no-product-selected-error-message" style="display: none;">{$Kadena.NewKitRequest.NoProductSelected$}</span>
                 <span class="input__error input__error--noborder j-too-many-products-selected-error-message" style="display: none;">{$Kadena.NewKitRequest.ToManyProductsSelected$}</span>

@@ -11,7 +11,6 @@ using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.BusinessLogic.Contracts;
-using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Models.Product;
 using Kadena.Old_App_Code.CMSModules.Macros.Kadena;
 using Kadena.Old_App_Code.Kadena.Constants;
@@ -24,6 +23,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Kadena.Helpers.SerializerConfig;
+using Kadena.Models.ModuleAccess;
+using Kadena.BusinessLogic.Contracts.Approval;
+using Newtonsoft.Json;
+using Kadena.Helpers;
 
 [assembly: CMS.RegisterExtension(typeof(KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 
@@ -83,6 +86,57 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 }
             }
             return true;
+        }
+
+
+        
+        [MacroMethod(typeof(string), "Gets URL of editor for mailing or templated product", 1)]
+        [MacroMethodParam(0, "documentId", typeof(int), "Product types piped string")]
+        [MacroMethodParam(1, "productType", typeof(string), "Product types piped string")]
+        [MacroMethodParam(2, "masterTemplateId", typeof(string), "Product types piped string")]
+        [MacroMethodParam(3, "workspaceId", typeof(string), "Product types piped string")]
+        [MacroMethodParam(4, "use3d", typeof(bool), "Product types piped string")]
+        public static object TemplatedProductEditorUrl(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 5)
+            {
+                throw new NotSupportedException();
+            }
+
+            var documentId = Convert.ToInt32(parameters[0]);
+            var userId = MembershipContext.AuthenticatedUser.UserID;
+            var productType = (string)parameters[1];
+            Guid masterTemplateId = Guid.Parse((string)parameters[2]);
+            Guid workspaceId = Guid.Parse((string)parameters[3]);
+            bool use3d = Convert.ToBoolean(parameters[4]);
+
+            return DIContainer.Resolve<ITemplateService>().TemplatedProductEditorUrl(documentId, userId, productType, masterTemplateId, workspaceId, use3d).Result;
+        }
+
+
+        [MacroMethod(typeof(bool), "Checks if related product is of templated type", 1)]
+        [MacroMethodParam(0, "skuid", typeof(int), "SKU ID")]
+        public static object IsTemplatedProduct(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+
+            int skuid = ValidationHelper.GetInteger(parameters[0], 0);
+
+            if (skuid == 0)
+            {
+                return false;
+            }
+
+            TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
+            NodeSelectionParameters nsp = new NodeSelectionParameters();
+            nsp.Where = $"NodeSKUID = {skuid}";
+            nsp.ClassNames = "KDA.Product";
+            var node = tree.SelectSingleNode(nsp) as SKUTreeNode;
+            var productType = node?.GetStringValue("ProductType", string.Empty);
+            return ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct);
         }
 
         [MacroMethod(typeof(bool), "Validates combination of product types - inventory type variant.", 1)]
@@ -152,73 +206,89 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return true;
         }
 
-        [MacroMethod(typeof(string), "Validates whether product is an invertory product type.", 1)]
+        [MacroMethod(typeof(string), "Validates whether Add to cart button can be displayed.", 1)]
         [MacroMethodParam(0, "productType", typeof(string), "Current product type")]
-        [MacroMethodParam(1, "numberOfAvailableProducts", typeof(object), "NumberOfAvailableProducts")]
-        [MacroMethodParam(2, "cultureCode", typeof(string), "Current culture code")]
-        [MacroMethodParam(3, "numberOfAvailableProductsHelper", typeof(object), "NumberOfAvailableProducts of ECommerce")]
-        public static object GetAvailableProductsString(EvaluationContext context, params object[] parameters)
-        {
-            if (parameters.Length != 4)
-            {
-                throw new NotSupportedException();
-            }
-
-            if (!ValidationHelper.GetString(parameters[0], "").Contains(ProductTypes.InventoryProduct))
-            {
-                return string.Empty;
-            }
-            else
-            {
-                string formattedValue = string.Empty;
-
-                if (parameters[1] == null)
-                {
-                    formattedValue = ResHelper.GetString("Kadena.Product.Unavailable", ValidationHelper.GetString(parameters[2], ""));
-                }
-                else if ((int)parameters[3] == 0)
-                {
-                    formattedValue = ResHelper.GetString("Kadena.Product.OutOfStock", ValidationHelper.GetString(parameters[2], ""));
-                }
-                else
-                {
-                    formattedValue = string.Format(
-                    ResHelper.GetString("Kadena.Product.NumberOfAvailableProducts", ValidationHelper.GetString(parameters[3], "")),
-                    ValidationHelper.GetString(parameters[3], ""));
-                }
-
-                return formattedValue;
-            }
-        }
-
-        [MacroMethod(typeof(string), "Gets appropriate css class for label that holds amount of products in stock", 1)]
-        [MacroMethodParam(0, "numberOfAvailableProducts", typeof(object), "NumberOfAvailableProducts")]
-        [MacroMethodParam(1, "productType", typeof(string), "Current product type")]
-        [MacroMethodParam(2, "numberOfAvailableProductsHelper", typeof(object), "NumberOfAvailableProducts of ECommerce")]
-        public static object GetAppropriateCssClassOfAvailability(EvaluationContext context, params object[] parameters)
+        [MacroMethodParam(1, "numberOfAvailableProducts", typeof(int), "NumberOfAvailableProducts")]
+        [MacroMethodParam(2, "sellOnlyAvailable", typeof(string), "Sell only if available in stock")]
+        public static object CanDisplayAddToCartButton(EvaluationContext context, params object[] parameters)
         {
             if (parameters.Length != 3)
             {
                 throw new NotSupportedException();
             }
 
-            if (ValidationHelper.GetString(parameters[1], "").Contains(ProductTypes.InventoryProduct))
+            var productType = (string)parameters[0];
+            var numberOfAvailableProducts = (int?)parameters[1];
+            var sellOnlyIfAvailable = ValidationHelper.GetBoolean(parameters[2], false);
+
+            return DIContainer.Resolve<IProductsService>().CanDisplayAddToCartButton(productType, numberOfAvailableProducts, sellOnlyIfAvailable);
+        }
+
+
+        [MacroMethod(typeof(string), "Gets formated and localized product availability string.", 1)]
+        [MacroMethodParam(0, "numberOfItemsInPackage", typeof(int), "numberOfItemsInPackage")]
+        [MacroMethodParam(1, "unitOfMeasure", typeof(string), "Unit of measure")]
+        [MacroMethodParam(2, "cultureCode", typeof(string), "Current culture code")]
+        public static object GetPackagingString(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 3)
             {
-                if (parameters[0] == null)
-                {
-                    return "stock stock--unavailable";
-                }
-
-                if ((int)parameters[2] == 0)
-                {
-                    return "stock stock--out";
-                }
-
-                return "stock stock--available";
+                throw new NotSupportedException();
             }
 
-            return string.Empty;
+            var numberOfItemsInPackage = parameters[0] == null ? 1 : (int)parameters[0];
+            var unitOfmeasure = (string)parameters[1];
+            var cultureCode = (string)parameters[2];
+
+            if (string.IsNullOrEmpty(unitOfmeasure))
+            {
+                unitOfmeasure = UnitOfMeasure.DefaultUnit;
+            }
+
+            return DIContainer.Resolve<IProductsService>()
+                .GetPackagingString(numberOfItemsInPackage, unitOfmeasure, cultureCode);
         }
+
+        [MacroMethod(typeof(string), "Gets formated and localized Min Max string.", 1)]
+        [MacroMethodParam(0, "min", typeof(int), "Minimal items")]
+        [MacroMethodParam(1, "max", typeof(string), "Maximal items")]
+        public static object GetMinMaxString(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 2)
+            {
+                throw new NotSupportedException();
+            }
+
+            var min = ValidationHelper.GetInteger(parameters[0], 0);
+            var max = ValidationHelper.GetInteger(parameters[1], 0);
+
+
+            return DIContainer.Resolve<IProductsService>()
+                .GetMinMaxItemsString(min, max);
+        }
+
+        [MacroMethod(typeof(string), "Gets localized UOM name.", 1)]
+        [MacroMethodParam(0, "unitOfMeasure", typeof(string), "Unit of measure")]
+        [MacroMethodParam(1, "cultureCode", typeof(string), "Current culture code")]
+        public static object LocalizeUom(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 2)
+            {
+                throw new NotSupportedException();
+            }
+
+            var unitOfmeasure = (string)parameters[0];
+            var cultureCode = (string)parameters[1];
+
+            if (string.IsNullOrEmpty(unitOfmeasure))
+            {
+                unitOfmeasure = UnitOfMeasure.DefaultUnit;
+            }
+
+            return DIContainer.Resolve<IProductsService>()
+                .TranslateUnitOfMeasure(unitOfmeasure, cultureCode);
+        }
+
 
         [MacroMethod(typeof(string), "Returns html (set) of products, that could be in a kit with particular product (for particular user).", 1)]
         [MacroMethodParam(0, "nodeID", typeof(int), "ID of Node, that represents the base product")]
@@ -287,35 +357,160 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             {
                 throw new NotSupportedException();
             }
+
             var isForEnabledItems = ValidationHelper.GetBoolean(parameters[0], false);
-            string adminCacheKey = IsUserInKadenaAdminRole() ? "_admin" : string.Empty;
-            return CacheHelper.Cache(cs => GetMainNavigationWhereConditionInternal(isForEnabledItems), new CacheSettings(20, "Kadena.MacroMethods.GetMainNavigationWhereCondition" + adminCacheKey + "_" + SiteContext.CurrentSiteName + "|" + isForEnabledItems));
+
+            var moduleState = isForEnabledItems 
+                ? KadenaModuleState.enabled 
+                : KadenaModuleState.disabled;
+
+            var cacheKey = $@"Kadena.MacroMethods.GetMainNavigationWhereCondition_{
+                SiteContext.CurrentSiteName}_{
+                isForEnabledItems}_{
+                MembershipContext.AuthenticatedUser.UserName}";
+
+            return CacheHelper.Cache(
+                cs => DIContainer.Resolve<IModuleAccessService>().GetMainNavigationWhereCondition(moduleState),
+                new CacheSettings(TimeSpan.FromMinutes(20).TotalMinutes, cacheKey));
         }
 
-        [MacroMethod(typeof(string[]), "Returns array of parsed urls items.", 1)]
+        [MacroMethod(typeof(string), "Returns json of product attachments", 1)]
         [MacroMethodParam(0, "fieldValue", typeof(string), "Value stored MediaMultiField field")]
-        public static object GetUrlsFromMediaMultiField(EvaluationContext context, params object[] parameters)
+        public static object GetProductAttachments(EvaluationContext context, params object[] parameters)
         {
             if (parameters.Length != 1)
             {
                 throw new NotSupportedException();
             }
             var fieldValue = parameters[0] as string;
+
             var urls = MediaMultiField.GetValues(fieldValue);
-            return urls;
+
+            var attachments = urls.Select(url => new
+            {
+                url,
+                text = MediaMultiField.ParseFrom(url).Name
+            }
+            );
+
+            return JsonConvert.SerializeObject(attachments, CamelCaseSerializer);
         }
 
-        [MacroMethod(typeof(string), "Returns file name from media attachment url.", 1)]
-        [MacroMethodParam(0, "url", typeof(string), "Url")]
-        public static object GetFilenameFromMediaUrl(EvaluationContext context, params object[] parameters)
+
+        [MacroMethod(typeof(string), "Returns json of product estimates", 1)]
+        [MacroMethodParam(0, "documentId", typeof(int), "document ID")]
+        public static object GetProductEstimates(EvaluationContext context, params object[] parameters)
         {
             if (parameters.Length != 1)
             {
                 throw new NotSupportedException();
             }
-            var url = parameters[0] as string;
-            var filename = MediaMultiField.ParseFrom(url).Name;
-            return filename;
+
+            var documentId = Convert.ToInt32(parameters[0]);
+
+            var estimates = DIContainer.Resolve<IProductsService>().GetProductEstimations(documentId);
+
+            return JsonConvert.SerializeObject(estimates, CamelCaseSerializer);
+        }
+
+        [MacroMethod(typeof(string), "Returns json of product pricing tiers", 1)]
+        [MacroMethodParam(0, "documentId", typeof(int), "document ID")]
+        public static object GetProductTiers(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+
+            var documentId = Convert.ToInt32(parameters[0]);
+
+            var estimates = DIContainer.Resolve<IProductsService>().GetProductTiers(documentId);
+
+            return JsonConvert.SerializeObject(estimates, CamelCaseSerializer);
+        }
+
+        [MacroMethod(typeof(string), "Returns json of product pricings", 1)]
+        [MacroMethodParam(0, "documentId", typeof(int), "document ID")]
+        [MacroMethodParam(1, "uom", typeof(string), "UOM")]
+        [MacroMethodParam(2, "pricingModel", typeof(string), "Pricing model")]
+        public static object GetProductPricings(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 3)
+            {
+                throw new NotSupportedException();
+            }
+
+            var documentId = Convert.ToInt32(parameters[0]);
+            var unitOfmeasure = (string)parameters[1];
+            var pricingModel = (string)parameters[2];
+
+            if (string.IsNullOrEmpty(unitOfmeasure))
+            {
+                unitOfmeasure = UnitOfMeasure.DefaultUnit;
+            }
+
+            if (string.IsNullOrEmpty(pricingModel))
+            {
+                pricingModel = PricingModel.GetDefault();
+            }
+
+            var estimates = DIContainer.Resolve<IProductsService>().GetProductPricings(documentId, pricingModel, unitOfmeasure, LocalizationContext.CurrentCulture.CultureCode);
+
+            return JsonConvert.SerializeObject(estimates, CamelCaseSerializer);
+        }
+
+        [MacroMethod(typeof(string[]), "Returns product pricing models", 1)]
+        public static object GetProductPricingModels(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 0)
+            {
+                throw new NotSupportedException();
+            }
+
+            return PricingModel.GetAll();
+        }
+
+
+        [MacroMethod(typeof(string), "Returns product options config.", 1)]
+        [MacroMethodParam(0, "skuid", typeof(int), "SKU ID")]
+        public static object GetProductOptions(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+
+            var sku = Convert.ToInt32(parameters[0]);
+
+            var options = DIContainer.Resolve<IKenticoProductsProvider>()
+                .GetProductCategories(sku);
+
+
+            return (options == null || options.Count() == 0)
+                   ? "null"
+                   : JsonConvert.SerializeObject(options, SerializerConfig.CamelCaseSerializer);
+        }
+
+        [MacroMethod(typeof(string[]), "Returns approver users", 1)]
+        public static object GetApprovers(EvaluationContext context, params object[] parameters)
+        {
+            var none = new string[] { "0;none" };
+
+            var approvers = DIContainer.Resolve<IApproverService>()
+                .GetApprovers(SiteContext.CurrentSiteID)
+                .Select(u => $"{u.UserId};{u.UserName} ({u.Email})");
+
+            return none.Concat(approvers).ToArray();
+        }
+
+        [MacroMethod(typeof(bool), "Checks whether current user is an approver", 1)]
+        public static object IsCurrentUserApprover(EvaluationContext context, params object[] parameters)
+        {
+            var isApprover = DIContainer
+                .Resolve<IApproverService>()
+                .IsApprover(MembershipContext.AuthenticatedUser.UserID);
+
+            return isApprover;
         }
 
         [MacroMethod(typeof(string), "Returns localized url of the document for current culture.", 1)]
@@ -339,7 +534,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             if (!string.IsNullOrWhiteSpace(aliasPath))
             {
                 var kenticoLocalization = DIContainer.Resolve<IKenticoLocalizationProvider>();
-                return Newtonsoft.Json.JsonConvert.SerializeObject(kenticoLocalization.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
+                return JsonConvert.SerializeObject(kenticoLocalization.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
             }
             return string.Empty;
         }
@@ -358,74 +553,18 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return DIContainer.Resolve<IDateTimeFormatter>().GetFormatString();
         }
 
-        private static string GetMainNavigationWhereConditionInternal(bool isForEnabledItems)
+        [MacroMethod(typeof(bool), "Determines whether to show T&C confirmation popup or not.", 0)]
+        public static object ShowTaC(EvaluationContext context, params object[] parameters)
         {
-            var result = string.Empty;
-            var pageTypes = new List<string>();
-
-            var moduleSettingsMappingsDataClassInfo = DataClassInfoProvider.GetDataClassInfo("KDA.KadenaModuleAndPageTypeConnection");
-            if (moduleSettingsMappingsDataClassInfo != null)
-            {
-                var mappingItems = CustomTableItemProvider.GetItems("KDA.KadenaModuleAndPageTypeConnection");
-
-                if (mappingItems != null)
-                {
-                    foreach (var mappingItem in mappingItems)
-                    {
-                        var moduleState = SettingsKeyInfoProvider.GetValue($"{SiteContext.CurrentSiteName}.{mappingItem.GetStringValue("SettingsKeyCodeName", string.Empty)}");
-                        if ((isForEnabledItems && moduleState.ToLowerInvariant().Equals(KadenaModuleState.enabled.ToString())) || (!isForEnabledItems && moduleState.ToLowerInvariant().Equals(KadenaModuleState.disabled.ToString())))
-                        {
-                            pageTypes.Add(mappingItem.GetStringValue("PageTypeCodeName", string.Empty));
-                        }
-                    }
-                }
-            }
-            foreach (var pageType in pageTypes)
-            {
-                if (GetRoleBasedAdminAccessModuleStatus(pageType))
-                {
-                    result += $"ClassName = N'{pageType}' OR ";
-                }
-            }
-            if (result.Length > 0)
-            {
-                result = result.Substring(0, result.Length - 3);
-            }
-            else
-            {
-                result = "1 = 0";
-            }
-            return result;
+            return DIContainer.Resolve<IUserService>().CheckTaC().Show;
         }
 
-        private static bool GetRoleBasedAdminAccessModuleStatus(string className)
+        [MacroMethod(typeof(bool), "Gets link for thumbnail by specified link to media file", 0)]
+        [MacroMethodParam(0, "string", typeof(string), "Link to original media file")]
+        public static object GetThumbnailLink(EvaluationContext context, params object[] parameters)
         {
-            bool status = true;
-            if (className.ToLower().Equals("kda.adminmodule"))
-            {
-                status = IsUserInKadenaAdminRole();
-            }
-            return status;
-        }
-
-        private static bool IsUserInKadenaAdminRole()
-        {
-            bool isKadenaAdmin = false;
-            string adminRoles = SettingsKeyInfoProvider.GetValue("KDA_AdminRoles", SiteContext.CurrentSiteID);
-            UserInfo user = MembershipContext.AuthenticatedUser;
-            if (user != null && !string.IsNullOrWhiteSpace(adminRoles))
-            {
-                string[] roles = adminRoles.Split(';');
-                foreach (string role in roles)
-                {
-                    isKadenaAdmin = user.IsInRole(role, SiteContext.CurrentSiteName);
-                    if(isKadenaAdmin)
-                    {
-                        break;
-                    }
-                }
-            }
-            return isKadenaAdmin;
+            var originalFile = ValidationHelper.GetString(parameters[0], string.Empty);
+            return DIContainer.Resolve<IImageService>().GetThumbnailLink(originalFile);
         }
 
         #region TWE macro methods
@@ -623,16 +762,16 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 }
                 else
                 {
-                    var loggedInUSerCartIDs = ShoppingCartHelper.GetCartsByUserID(userID, ProductType.GeneralInventory,openCampaignID);
+                    var loggedInUSerCartIDs = ShoppingCartHelper.GetCartsByUserID(userID, ProductType.GeneralInventory, openCampaignID);
                     decimal cartTotal = 0;
                     loggedInUSerCartIDs.ForEach(cartID =>
                     {
                         var Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
                         if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
                         {
-                            EstimateDeliveryPriceRequestDto estimationdto = ShoppingCartHelper.GetEstimationDTO(Cart);
+                            var estimationdto = new[] { ShoppingCartHelper.GetEstimationDTO(Cart) };
                             var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
-                            cartTotal += ValidationHelper.GetDecimal(estimation?.Payload?.Cost, default(decimal));
+                            cartTotal += ValidationHelper.GetDecimal(estimation?.Payload?[0]?.Cost, default(decimal));
                         }
                     });
                     return ValidationHelper.GetDecimal(cartTotal, default(decimal));
@@ -766,13 +905,13 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         /// <param name="context"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        [MacroMethod(typeof(int), "Returns campaignid if any campaign is open",0)]
+        [MacroMethod(typeof(int), "Returns campaignid if any campaign is open", 0)]
         public static object OpenCampaignID(EvaluationContext context, params object[] parameters)
         {
             try
             {
                 var campaign = ShoppingCartHelper.GetOpenCampaign();
-                return campaign!=null? campaign.CampaignID:default(int);
+                return campaign != null ? campaign.CampaignID : default(int);
             }
             catch (Exception ex)
             {

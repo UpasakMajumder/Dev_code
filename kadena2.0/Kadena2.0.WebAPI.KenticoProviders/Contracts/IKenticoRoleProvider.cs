@@ -1,4 +1,4 @@
-﻿using Kadena.Models;
+﻿using Kadena.Models.Membership;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
@@ -9,5 +9,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         IEnumerable<Role> GetRoles(int siteId);
         void AssignUserRoles(string userName, int siteId, IEnumerable<string> roles);
         void RemoveUserRoles(string userName, int siteId, IEnumerable<string> roles);
+        IEnumerable<User> GetRoleUsers(string roleName, int siteId);
+        bool UserHasRole(int userId, string roleName);
     }
 }

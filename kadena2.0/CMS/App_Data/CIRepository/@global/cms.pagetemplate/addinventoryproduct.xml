@@ -161,7 +161,7 @@
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[{% if (QueryString.ID !=null) {  GetResourceString("Kadena.InventoryProduct.EditHeader")  } else{   GetResourceString("Kadena.InventoryProduct.CreateHeader")  }   |(user)cvoqa2@gmail.com|(hash)1ea49f65d143ba899cfcaed1361bfc59965ca967a181c129c611a4bf6962e96c%}]]>
+            <![CDATA[{% if (QueryString.ID !=null) {  GetResourceString("Kadena.InventoryProduct.EditHeader")  } else{   GetResourceString("Kadena.InventoryProduct.CreateHeader")  } |(user)administrator|(hash)7457c0f7702c3510b66a8738203949746ffa9997c43d2bc2e836a6914816f17d%}]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>

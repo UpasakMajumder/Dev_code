@@ -6,7 +6,8 @@
 <div class=" mt-2" id="Emptydata" runat="server" visible="false">
     <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen">
         <cms:LocalizedLabel ResourceString="Kadena.CampaignProduct.NoProgramfoundText" runat="server">
-        </cms:LocalizedLabel></div>
+        </cms:LocalizedLabel>
+    </div>
 </div>
 <div class="login__form-content js-login" runat="server" id="AddProductdiv">
     <div class="css-login">
@@ -15,9 +16,22 @@
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblProgramName"></span>
                     <div class="input__inner">
-                        <asp:DropDownList ID="ddlProgram" runat="server" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true" CssClass="input__select">
+                        <asp:DropDownList ID="ddlProgram" runat="server" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true">
                         </asp:DropDownList>
                         <asp:RequiredFieldValidator ID="rqProgram" runat="server" CssClass="EditingFormErrorLabel" ControlToValidate="ddlProgram" InitialValue="0"></asp:RequiredFieldValidator>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-2 form__block">
+                <div class="input__wrapper">
+                    <span class="input__label">
+                        <cms:LocalizedLabel ID="lblPosCategory" runat="server" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblPosCategory" />
+                    </span>
+                    <div class="input__inner">
+                        <cms:CMSDropDownList ID="ddlPosCategory" runat="server" AutoPostBack="true" EnableViewState="True" OnSelectedIndexChanged="ddlPosCategory_SelectedIndexChanged"></cms:CMSDropDownList>
+                        <asp:RequiredFieldValidator ID="rfvPosCategory"
+                            runat="server" CssClass="EditingFormErrorLabel" InitialValue="0" ControlToValidate="ddlPosCategory">
+                        </asp:RequiredFieldValidator>
                     </div>
                 </div>
             </div>
@@ -26,6 +40,7 @@
                     <span class="input__label" runat="server" id="lblPosNumber"></span>
                     <div class="input__inner">
                         <asp:DropDownList runat="server" ID="ddlPos" CssClass="input__select"></asp:DropDownList>
+                        <asp:TextBox runat="server" ID="txtPOSNumber" Visible="false" Enabled="false" CssClass="input__text form-control"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rqPOS" runat="server" CssClass="EditingFormErrorLabel" ControlToValidate="ddlPos" InitialValue="0"></asp:RequiredFieldValidator>
                     </div>
                 </div>
@@ -42,9 +57,18 @@
             <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblState"></span>
-                     <a href="#" class="state__link" onclick="$('#StateGroupInfoPopup').toggleClass('active');">State Group Information</a>
+                    <a href="#" class="state__link" onclick="$('#StateGroupInfoPopup').toggleClass('active');">State Group Information</a>
                     <div class="input__inner">
                         <asp:DropDownList runat="server" ID="ddlState" CssClass="input__select"></asp:DropDownList>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-2 form__block">
+                <div class="input__wrapper">
+                    <span class="input__label" runat="server" id="lblExpirationDate"></span>
+                    <div class="input__inner date_picker">
+                        <asp:TextBox runat="server" ID="txtExpireDate" EnableViewState="true" CssClass="input__text js-datepicker"></asp:TextBox>
+                        <asp:CompareValidator ID="compareDate" runat="server" CssClass="EditingFormErrorLabel" Operator="GreaterThanEqual" ControlToValidate="txtExpireDate" Type="date" />
                     </div>
                 </div>
             </div>
@@ -54,16 +78,6 @@
                     <div class="input__inner long__desc">
                         <asp:TextBox ID="txtLongDescription" runat="server" TextMode="MultiLine" Rows="5" Columns="5" CssClass="input__textarea"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="rqLongDescription" CssClass="EditingFormErrorLabel" runat="server" ControlToValidate="txtLongDescription"></asp:RequiredFieldValidator>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-2 form__block">
-                <div class="input__wrapper">
-                    <span class="input__label" runat="server" id="lblExpirationDate"></span>
-                    <div class="input__inner date_picker">
-                        <asp:TextBox runat="server" ID="txtExpireDate" EnableViewState="true" CssClass="input__text js-datepicker"></asp:TextBox>
-                         <asp:CompareValidator ID="compareDate" runat="server" CssClass="EditingFormErrorLabel"  Operator="GreaterThanEqual" ControlToValidate="txtExpireDate" Type="date"/>
                     </div>
                 </div>
             </div>
@@ -118,7 +132,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblItemSpecs"><%#ResHelper.GetString("Kadena.CampaignProduct.ItemSpecsText")%></span>
@@ -150,7 +164,7 @@
                     <div class="input__inner">
                         <asp:FileUpload ID="productImage" runat="server" class="input__file" EnableViewState="true" />
                         <div class="product-img">
-                            <asp:Image ID="imgProduct" runat="server" Visible="false" />
+                            <asp:Image ID="imgProduct" runat="server" Height="100" Visible="false" />
                         </div>
                     </div>
                 </div>

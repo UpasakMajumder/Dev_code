@@ -5,10 +5,25 @@ import { removeProps } from 'app.helpers/object';
 /* globals */
 import { STATIC_FIELDS } from 'app.globals';
 
-const TextInput = (props) => {
-  const { label, error, disabled, isOptional, className } = props;
+const getMaxLength = (maximumLength) => {
+  if (typeof maximumLength === 'number') {
+    return maximumLength;
+  } else if (typeof maximumLength === 'string') {
+    if (maximumLength === 'address1'
+      || maximumLength === 'address2'
+    ) {
+      return 35;
+    }
+  }
 
-  const inputProps = removeProps(props, ['label', 'error', 'isOptional', 'isSelect', 'options', 'className']);
+  return null;
+};
+
+
+const TextInput = (props) => {
+  const { label, error, disabled, isOptional, className, maximumLength } = props;
+
+  const inputProps = removeProps(props, ['label', 'error', 'isOptional', 'isSelect', 'options', 'className', 'maximumLength']);
 
   const labelElement = label ? <span className="input__label">{label}</span> : null;
   const selector = disabled ? 'input__wrapper input__wrapper--disabled' : 'input__wrapper';
@@ -24,7 +39,7 @@ const TextInput = (props) => {
       <input
         type="text"
         className={inputSelector}
-        maxLength="50"
+        maxLength={getMaxLength(maximumLength)}
         {...inputProps}
       />
       {errorElement}
@@ -32,12 +47,19 @@ const TextInput = (props) => {
   );
 };
 
+TextInput.defaultProps = {
+  maximumLength: 50,
+  type: 'text'
+};
+
 TextInput.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   error: PropTypes.string,
   disabled: PropTypes.bool,
-  isOptional: PropTypes.bool
+  isOptional: PropTypes.bool,
+  maximumLength: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  type: PropTypes.string
 };
 
 export default TextInput;

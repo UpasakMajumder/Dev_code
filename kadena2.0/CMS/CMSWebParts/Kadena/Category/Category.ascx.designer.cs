@@ -48,6 +48,15 @@ public partial class CMSWebParts_Kadena_Category {
     protected global::System.Web.UI.WebControls.RegularExpressionValidator revName;
     
     /// <summary>
+    /// cvCatName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.CustomValidator cvCatName;
+    
+    /// <summary>
     /// lblDecription control.
     /// </summary>
     /// <remarks>

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.UnitOfMeasure</CodeName>
+    <GUID>4f010742-9bc3-4116-b54a-03a93eafcd09</GUID>
+    <ObjectType>cms.customtable</ObjectType>
+  </ClassID>
+  <PermissionDescription>{$permissiondescription.customtable.delete$}</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>{$general.delete$}</PermissionDisplayName>
+  <PermissionGUID>7256e687-88ef-4ff1-be18-dc92aa80bdd1</PermissionGUID>
+  <PermissionName>Delete</PermissionName>
+  <PermissionOrder>4</PermissionOrder>
+</cms.classpermission>

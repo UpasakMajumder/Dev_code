@@ -16,5 +16,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetDocumentUrl(string aliasPath, string cultureCode, bool absoluteUrl = false);
 
         string GetDocumentUrl(Guid documentGUID);
+
+        DateTime GetTaCValidFrom();
     }
 }

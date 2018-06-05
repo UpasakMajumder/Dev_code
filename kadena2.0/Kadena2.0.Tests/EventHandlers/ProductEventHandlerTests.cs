@@ -9,21 +9,19 @@ using Xunit;
 
 namespace Kadena.Tests.EventHandlers
 {
-    public class ProductEventHandlerTests
+    public class ProductEventHandlerTests : KadenaUnitTest<ProductEventHandler>
     {
-        [Fact]
+        [Fact(DisplayName = "ProductEventHandler.CopyProductSKUFieldsToSKU_EventHandler()")]
         public void CopyProductSKUFieldsToSKU_ShouldDoNothing_WhenNodeIsNotProduct()
         {
-            var productProviderMock = new Mock<IKenticoProductsProvider>();
-            var sut = new ProductEventHandler();
-            sut.ProductsProvider = productProviderMock.Object;
+            var sut = Sut;
 
             sut.CopyProductSKUFieldsToSKU_EventHandler(sut, new DocumentEventArgs());
 
-            productProviderMock.Verify(p => p.UpdateSku(It.IsAny<Sku>()), Times.Never());
+            Verify<IKenticoSkuProvider>(p => p.UpdateSku(It.IsAny<Sku>()), Times.Never);
         }
 
-        [Fact]
+        [Fact(DisplayName = "ProductEventHandlerFake.CopyProductSKUFieldsToSKU_EventHandler()")]
         public void CopyProductSKUFieldsToSKU_ShouldCopyValues_WhenNodeIsProduct()
         {
             var product = new ProductClass
@@ -33,24 +31,24 @@ namespace Kadena.Tests.EventHandlers
                 SKUWeight = 2
             };
             var sut = new ProductEventHandlerFake() { Product = product };
-            var productProviderMock = new Mock<IKenticoProductsProvider>();
-            sut.ProductsProvider = productProviderMock.Object;
+            var skuProviderMock = new Mock<IKenticoSkuProvider>();
+            sut.SkuProvider = skuProviderMock.Object;
 
             sut.CopyProductSKUFieldsToSKU_EventHandler(sut, new DocumentEventArgs());
 
-            productProviderMock.Verify(p => p.UpdateSku(It.Is<Sku>(s
+            skuProviderMock.Verify(p => p.UpdateSku(It.Is<Sku>(s
                 => s.SkuId == product.NodeSKUID
                     && s.NeedsShipping == product.SKUNeedsShipping
                     && s.Weight == product.SKUWeight)));
         }
 
-        [Fact]
+        [Fact(DisplayName = "ProductEventHandlerFake.CopyProductSKUFieldsToSKU_EventHandler()")]
         public void CopyProductSKUFieldsToSKU_ShouldLogException_WhenProductProviderFails()
         {
             var sut = new ProductEventHandlerFake() { Product = new ProductClass() };
-            var productProviderStub = new Mock<IKenticoProductsProvider>();
-            productProviderStub.Setup(p => p.UpdateSku(It.IsAny<Sku>())).Throws(new Exception());
-            sut.ProductsProvider = productProviderStub.Object;
+            var skuProviderStub = new Mock<IKenticoSkuProvider>();
+            skuProviderStub.Setup(p => p.UpdateSku(It.IsAny<Sku>())).Throws(new Exception());
+            sut.SkuProvider = skuProviderStub.Object;
             var loggerMock = new Mock<IKenticoLogger>();
             sut.Logger = loggerMock.Object;
 

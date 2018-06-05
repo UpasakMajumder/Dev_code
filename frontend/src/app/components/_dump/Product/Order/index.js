@@ -15,12 +15,27 @@ const getPreviewLink = (preview) => {
   );
 };
 
+const getEmailProofLink = (emailProof, toogleEmailProof) => {
+  if (!emailProof) return null;
+  if (!emailProof.exists) return null;
+
+  const onClick = (e) => {
+    e.preventDefault();
+    toogleEmailProof(true, emailProof.url);
+  };
+
+  return (
+    <div className="cart-product__file">
+      <a onClick={onClick} className="link" href="#">{emailProof.text}</a>
+    </div>
+  );
+};
+
 const Order = ({
   image,
   template,
   mailingList,
   shippingDate,
-  trackingId,
   price,
   quantityPrefix,
   quantity,
@@ -29,18 +44,24 @@ const Order = ({
   quantityShipped,
   mailingListPrefix,
   shippingDatePrefix,
-  trackingIdPrefix,
+  trackingPrefix,
+  tracking,
   templatePrefix,
   productStatusPrefix,
   productStatus,
   options,
-  preview
+  preview,
+  unitOfMeasure,
+  // emailProof
+  emailProof,
+  toogleEmailProof
 }) => {
   const downloadPdfLink = downloadPdfURL
-    ? <div className="cart-product__file">
-      <a className="link" href={downloadPdfURL}>Download PDF</a>
-    </div>
-    : null;
+    ? (
+      <div className="cart-product__file">
+        <a className="link" target="_blank" href={downloadPdfURL}>Download PDF</a>
+      </div>
+    ) : null;
 
   const mailingListElement = mailingList
     ? <div className="cart-product__mlist">
@@ -51,14 +72,30 @@ const Order = ({
     </div>
     : null;
 
-  const trackingElement = trackingId
-    ? <div className="cart-product__tracking">
-      <p>
+  const getTrackingElement = () => {
+    if (!tracking || !tracking.length) return null;
+
+
+    const tracks = tracking.map((track, index) => {
+      const prefix = index === 0 ? ' ' : ', ';
+      let id;
+      if (track.url) {
+        id = <a target="_blank" href={track.url} className="link" >{track.id}</a>;
+      } else {
+        id = track.id;
+      }
+
+      return <strong key={index}>{prefix}{id}</strong>;
+    });
+
+
+    return (
+      <div className="cart-product__tracking">
         <SVG name="location"/>
-        <span>{trackingIdPrefix}: <strong>{trackingId}</strong></span>
-      </p>
-    </div>
-    : null;
+        <span>{trackingPrefix}: {tracks}</span>
+      </div>
+    );
+  };
 
   const shippingElement = shippingDate
     ? <div className="cart-product__tracking">
@@ -74,13 +111,13 @@ const Order = ({
   const quantityElement = mailingList
     ? (
       <div className="cart-product__optional">
-        <p>{quantityPrefix} {quantity}</p>
+        <p>{quantityPrefix} {quantity} {unitOfMeasure}</p>
       </div>
     )
     : (
       <div className="cart-product__optional">
-        <p>{quantityPrefix} {quantity}</p>
-        <p>{quantityShippedPrefix} {quantityShipped}</p>
+        <p>{quantityPrefix} {quantity} {unitOfMeasure}</p>
+        <p>{quantityShippedPrefix} {quantityShipped} {unitOfMeasure}</p>
       </div>
     );
 
@@ -105,7 +142,7 @@ const Order = ({
         </div>
 
         {mailingListElement}
-        {trackingElement}
+        {getTrackingElement()}
         {shippingElement}
         {shippingElementFixed}
 
@@ -121,6 +158,7 @@ const Order = ({
           {quantityElement}
           {downloadPdfLink}
           {getPreviewLink(preview)}
+          {getEmailProofLink(emailProof, toogleEmailProof)}
         </div>
       </div>
     </div>
@@ -136,14 +174,20 @@ Order.propTypes = {
   downloadPdfURL: PropTypes.string,
   shippingDate: PropTypes.string,
   mailingList: PropTypes.string,
-  trackingId: PropTypes.string,
+  trackingPrefix: PropTypes.string.isRequired,
+  tracking: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    url: PropTypes.string
+  })),
   mailingListPrefix: PropTypes.string.isRequired,
   shippingDatePrefix: PropTypes.string.isRequired,
-  trackingIdPrefix: PropTypes.string.isRequired,
   templatePrefix: PropTypes.string.isRequired,
   productStatusPrefix: PropTypes.string.isRequired,
   productStatus: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.object).isRequired
+  options: PropTypes.arrayOf(PropTypes.object).isRequired,
+  unitOfMeasure: PropTypes.string.isRequired,
+  emailProof: PropTypes.object.isRequired,
+  toogleEmailProof: PropTypes.func.isRequired
 };
 
 export default Order;

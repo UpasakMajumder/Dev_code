@@ -168,22 +168,22 @@
           <property name="text" ismacro="true">
 <![CDATA[
 {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-
-productDocument = Documents.Where("NodeID=" + QueryString.nodeId)[0];
-result = String.FormatString("{0}{1}", "<a href='" + productDocument.AbsoluteURL + "'>" + productDocument.DocumentName + "</a>", result);
-
-iteratedDocument = productDocument.Parent;
-
-while (iteratedDocument.Parent != null) {
-if (!iteratedDocument.DocumentMenuItemHideInNavigation) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-}
-iteratedDocument = iteratedDocument.Parent;
-};
-
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)rostyslav.diachenko@actum.cz|(hash)82477e78b43da926264512114b55eaa9d77b5a551fd7e50b6bc23a1e0bbf13aa%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  
+  productDocument = Documents.Where("DocumentID=" + QueryString.documentId)[0];
+  result = String.FormatString("{0}{1}", "<a href='" + productDocument.AbsoluteURL + "'>" + productDocument.DocumentName + "</a>", result);
+  
+  iteratedDocument = productDocument.Parent;
+  
+  while (iteratedDocument.Parent != null) {
+  if (!iteratedDocument.DocumentMenuItemHideInNavigation) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  }
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)ccde7e4ad5074b344f1968d659a0772e42bd8f85cbaf5cd1b300c2792be2c877%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -272,7 +272,7 @@ iteratedDocument = iteratedDocument.Parent;
           </property>
           <property name="partialcacheminutes"></property>
           <property name="path">
-            <![CDATA[{%Settings.KDA_ProductsPageUrl |(user)tomas.rucki@actum.cz|(hash)339a2cc5a145a0f8ced62328b479f434c1f984cffaa4383484e4b4849f9a72c9%}/%]]>
+            <![CDATA[{%Settings.KDA_ProductsPageUrl|(user)administrator|(hash)36c2555c94496093ee5fc6c3ed77e9e71bcc89d25b273f8730d5dd62becb02b2%}/%]]>
           </property>
           <property name="preservepartialcacheonpostback">True</property>
           <property name="querystringkey"></property>
@@ -296,7 +296,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="visible">True</property>
           <property name="webparttitle"></property>
           <property name="webparttype">repeater</property>
-          <property name="wherecondition">NodeID = {?nodeId?}</property>
+          <property name="wherecondition">DocumentID = {?documentId?}</property>
           <property name="zerorowstext">No data found</property>
         </webpart>
       </webpartzone>
@@ -316,7 +316,6 @@ function OnEditorEvent(type) {
   switch (type) {
      case 'DocumentSaved':
           window.saveChiliTemplate();
-          if (window.addToCart) window.addToCartRequest(window.cartEvent);
           break;
   }
 }

@@ -4,6 +4,7 @@ using CMS.Localization;
 using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
 using System.Collections.Generic;
 
@@ -12,15 +13,12 @@ namespace Kadena.WebAPI.KenticoProviders
     public class KenticoDocumentProvider : IKenticoDocumentProvider
     {
         private readonly IKenticoLogger logger;
+        private readonly IKadenaSettings kadenaSettings;
 
-        public KenticoDocumentProvider(IKenticoResourceService resources, IKenticoLogger logger, IMapper mapper)
+        public KenticoDocumentProvider(IKenticoLogger logger, IKadenaSettings kadenaSettings)
         {
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
-            this.logger = logger;
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.kadenaSettings = kadenaSettings ?? throw new ArgumentNullException(nameof(kadenaSettings));
         }
 
         /// <summary>
@@ -73,6 +71,7 @@ namespace Kadena.WebAPI.KenticoProviders
             var doc = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
             return doc?.AbsoluteURL ?? "#";
         }
+
         public List<string> GetBreadcrumbs(int documentId)
         {
             var breadcrubs = new List<string>();
@@ -86,6 +85,23 @@ namespace Kadena.WebAPI.KenticoProviders
 
             breadcrubs.Reverse();
             return breadcrubs;
+        }
+
+        public DateTime GetTaCValidFrom()
+        {
+            var tacNodeAliasPath = kadenaSettings.TermsAndConditionsPage;
+            var tacDocument = DocumentHelper.GetDocuments("KDA.TermsAndConditions")
+                .OnCurrentSite()
+                .Path(tacNodeAliasPath)
+                .Culture(LocalizationContext.CurrentUICulture.CultureCode)
+                .FirstObject;
+
+            if (tacDocument == null)
+            {
+                throw new Exception("Unable to find Terms and condition page");
+            }
+
+            return tacDocument.GetDateTimeValue("ValidFrom", DateTime.MinValue);
         }
     }
 }

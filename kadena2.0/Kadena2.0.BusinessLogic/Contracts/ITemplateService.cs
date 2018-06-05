@@ -9,5 +9,6 @@ namespace Kadena.BusinessLogic.Contracts
         Task<bool> UpdateTemplate(Guid templateId, string name, int quantity);
         Task<ProductTemplates> GetTemplatesByProduct(int documentId);
         Task<Uri> GetPreviewUri(Guid templateId, Guid settingId);
+        Task<string> TemplatedProductEditorUrl(int documentId, int userId, string productType, Guid masterTemplateID, Guid workspaceId, bool use3d);
     }
 }

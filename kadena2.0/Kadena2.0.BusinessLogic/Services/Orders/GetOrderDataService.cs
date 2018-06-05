@@ -3,7 +3,6 @@ using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models;
-using Kadena.Models.Checkout;
 using Kadena.Models.Product;
 using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -21,8 +20,8 @@ namespace Kadena2.BusinessLogic.Services.Orders
         private readonly IMapper mapper;
         private readonly IKenticoOrderProvider kenticoOrder;
         private readonly IShoppingCartProvider shoppingCart;
-        private readonly IShoppingCartItemsProvider shoppingCartItems;
-        private readonly IKenticoUserProvider kenticoUsers;
+        private readonly IOrderCartItemsProvider orderCartItems;
+        private readonly IKenticoCustomerProvider kenticoCustomer;
         private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxService;
         private readonly IKenticoSiteProvider siteProvider;
@@ -32,8 +31,8 @@ namespace Kadena2.BusinessLogic.Services.Orders
         public GetOrderDataService(IMapper mapper,
            IKenticoOrderProvider kenticoOrder,
            IShoppingCartProvider shoppingCart,
-           IShoppingCartItemsProvider shoppingCartItems,
-           IKenticoUserProvider kenticoUsers,
+           IOrderCartItemsProvider orderCartItems,
+           IKenticoCustomerProvider kenticoCustomer,
            IKenticoLogger kenticoLog,
            ITaxEstimationService taxService,
            IKenticoSiteProvider site,
@@ -44,8 +43,8 @@ namespace Kadena2.BusinessLogic.Services.Orders
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.kenticoOrder = kenticoOrder ?? throw new ArgumentNullException(nameof(kenticoOrder));
             this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
-            this.shoppingCartItems = shoppingCartItems ?? throw new ArgumentNullException(nameof(shoppingCartItems));
-            this.kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
+            this.orderCartItems = orderCartItems ?? throw new ArgumentNullException(nameof(orderCartItems));
+            this.kenticoCustomer = kenticoCustomer ?? throw new ArgumentNullException(nameof(kenticoCustomer));
             this.kenticoLog = kenticoLog ?? throw new ArgumentNullException(nameof(kenticoLog));
             this.taxService = taxService ?? throw new ArgumentNullException(nameof(taxService));
             this.siteProvider = site ?? throw new ArgumentNullException(nameof(site));
@@ -55,7 +54,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
 
         public async Task<OrderDTO> GetSubmitOrderData(SubmitOrderRequest request)
         {
-            Customer customer = kenticoUsers.GetCurrentCustomer();
+            Customer customer = kenticoCustomer.GetCurrentCustomer();
 
             var notificationEmails = request.EmailConfirmation.Union(new[] { customer.Email });
 
@@ -63,10 +62,20 @@ namespace Kadena2.BusinessLogic.Services.Orders
             var billingAddress = shoppingCart.GetDefaultBillingAddress();
             var site = siteProvider.GetKenticoSite();
             var paymentMethod = shoppingCart.GetPaymentMethod(request.PaymentMethod.Id);
-            var cartItems = shoppingCartItems.GetShoppingCartItems();
+            var cartItems = orderCartItems.GetOrderCartItems();
             var currency = siteProvider.GetSiteCurrency();
             var totals = shoppingCart.GetShoppingCartTotals();
             totals.TotalTax = await taxService.EstimateTotalTax(shippingAddress);
+
+            var pricedItemsTax = totals.TotalTax;
+            if (cartItems.Any(c => !c.SendPriceToErp))
+            {
+                var pricedItemsPrice = cartItems
+                    .Where(c => c.SendPriceToErp)
+                    .Sum(c => c.TotalPrice);
+
+                pricedItemsTax = await taxService.EstimatePricedItemsTax(shippingAddress, (double)pricedItemsPrice);
+            }
 
             if (string.IsNullOrWhiteSpace(customer.Company))
             {
@@ -96,9 +105,13 @@ namespace Kadena2.BusinessLogic.Services.Orders
                     KenticoOrderStatusID = kenticoOrder.GetOrderStatusId("Pending"),
                     OrderStatusName = "PENDING"
                 },
-                TotalPrice = totals.TotalItemsPrice,
-                TotalShipping = totals.TotalShipping,
-                TotalTax = totals.TotalTax,
+                Totals = new TotalsDto
+                {
+                    Price = totals.TotalItemsPrice,
+                    Shipping = totals.TotalShipping,
+                    Tax = totals.TotalTax,
+                    PricedItemsTax = pricedItemsTax
+                },
                 Items = cartItems.Select(item => MapCartItemTypeToOrderItemType(item)),
                 NotificationsData = notificationEmails.Select(e => new NotificationInfoDto
                 {
@@ -108,7 +121,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
             };
 
             // If only mailing list items in cart, we are not picking any delivery option
-            if (!cartItems.All(i => i.IsMailingList))
+            if (!cartItems.All( i => ProductTypes.IsOfType( i.ProductType, ProductTypes.MailingProduct)))
             {
                 var deliveryMethod = shoppingCart.GetShippingOption(request.DeliveryMethod);
                 orderDto.ShippingOption = new ShippingOptionDTO()
@@ -123,7 +136,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
             return orderDto;
         }
 
-        private OrderItemDTO MapCartItemTypeToOrderItemType(CartItem item)
+        private OrderItemDTO MapCartItemTypeToOrderItemType(OrderCartItem item)
         {
             var mappedItem = mapper.Map<OrderItemDTO>(item);
             mappedItem.Type = ConvertCartItemProductTypeToOrderItemProductType(item.ProductType);
