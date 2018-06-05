@@ -1,7 +1,5 @@
 ﻿using Kadena.Dto.Order;
-using Kadena.Models.Orders;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Kadena.Tests.BusinessLogic
