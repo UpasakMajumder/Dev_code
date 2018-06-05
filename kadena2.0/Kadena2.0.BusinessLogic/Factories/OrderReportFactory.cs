@@ -146,7 +146,7 @@ namespace Kadena.BusinessLogic.Factories
                 }
             };
 
-        public string FormatCustomer(Customer customer)
+        private string FormatCustomer(Customer customer)
         {
             if (customer == null)
             {
@@ -162,13 +162,13 @@ namespace Kadena.BusinessLogic.Factories
             return customer.Email;
         }
 
-        public string FormatDetailUrl(RecentOrderDto order) =>
+        private string FormatDetailUrl(RecentOrderDto order) =>
             $"{OrderDetailUrl}?orderID={order.Id}";
 
-        public string FormatOrderStatus(string status) =>
+        private string FormatOrderStatus(string status) =>
             kenticoOrderProvider.MapOrderStatus(status);
 
-        public string FormatDate(DateTime? date) =>
+        private string FormatDate(DateTime? date) =>
             date.HasValue
                 ? dateTimeFormatter.Format(date.Value)
                 : string.Empty;

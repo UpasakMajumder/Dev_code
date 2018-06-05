@@ -1,11 +1,8 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Factories;
-using Kadena.Dto.Order;
 using Kadena.Models;
 using Kadena.Models.Orders;
-using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -16,92 +13,6 @@ namespace Kadena.Tests.BusinessLogic
 {
     public class OrderReportFactoryTests : KadenaUnitTest<OrderReportFactory>
     {
-        [Fact]
-        public void FormatCustomer_ShouldBeEmpty_WhenCustomerNotFound()
-        {
-            var expected = string.Empty;
-
-            var actual = Sut.FormatCustomer(null);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void FormatCustomer_ShouldUseName_WhenNameAvailable()
-        {
-            var customer = new Customer
-            {
-                FirstName = "Bruce",
-                LastName = "Wayne"
-            };
-            var expected = "Bruce Wayne";
-
-            var actual = Sut.FormatCustomer(customer);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void FormatCustomer_ShouldUseEmail_WhenNameNotAvailable()
-        {
-            var customer = new Customer
-            {
-                Email = "bruce.wayne@therealbat.com"
-            };
-            var expected = "bruce.wayne@therealbat.com";
-
-            var actual = Sut.FormatCustomer(customer);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void FormatDetailUrl_ShouldGenerateUrl()
-        {
-            const string detailUrlBase = "test.com/product";
-            Setup<IKenticoResourceService, string>(res => res.GetSiteSettingsKey(Settings.KDA_OrderDetailUrl), detailUrlBase);
-            Setup<IKenticoDocumentProvider, string>(doc => doc.GetDocumentUrl(It.IsAny<string>(), It.IsAny<bool>()), detailUrlBase);
-            var order = new RecentOrderDto
-            {
-                Id = "1234"
-            };
-            var expectedUrl = $"{detailUrlBase}?orderID={order.Id}";
-
-            var actualUrl = Sut.FormatDetailUrl(order);
-
-            Assert.Equal(expectedUrl, actualUrl);
-        }
-
-        [Fact]
-        public void FormatOrderStatus_ShouldMapOrderStatus()
-        {
-            var microserviceStatus = "some micro status";
-            var mappedStatus = "some status";
-            Setup<IKenticoOrderProvider, string>(kop => kop.MapOrderStatus(microserviceStatus), mappedStatus);
-
-            var actualStatus = Sut.FormatOrderStatus(microserviceStatus);
-
-            Assert.Equal(mappedStatus, actualStatus);
-        }
-
-        public static IEnumerable<object[]> GetTestDataFor_FormatDate_ShouldUseFormatter =>
-            new[]
-            {
-                new object[] { new DateTime(), "formatted" },
-                new object[] { null, string.Empty }
-            };
-
-        [Theory]
-        [MemberData(nameof(GetTestDataFor_FormatDate_ShouldUseFormatter))]
-        public void FormatDate_ShouldUseFormatter(DateTime? date, string formatted)
-        {
-            Setup<IDateTimeFormatter, string>(dtf => dtf.Format(It.IsAny<DateTime>()), formatted);
-
-            var actual = Sut.FormatDate(date);
-
-            Assert.Equal(formatted, actual);
-        }
-
         [Fact]
         public void CreateTableView_ShouldMapReportViewToTableView()
         {
@@ -171,14 +82,12 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(report.Url, firstActualItem.Url);
             Assert.Equal(report.Site, firstActualItem.Site);
             Assert.Equal(report.Number, firstActualItem.Number);
-            Assert.Equal(Sut.FormatDate(report.OrderingDate), firstActualItem.OrderingDate);
             Assert.Equal(report.User, firstActualItem.User);
             Assert.Equal(report.Items[0].Name, firstActualItem.Name);
             Assert.Equal(report.Items[0].SKU, firstActualItem.SKU);
             Assert.Equal(report.Items[0].Quantity, firstActualItem.Quantity);
             Assert.Equal(report.Items[0].Price, firstActualItem.Price);
             Assert.Equal(report.Status, firstActualItem.Status);
-            Assert.Equal(Sut.FormatDate(report.ShippingDate), firstActualItem.ShippingDate);
             Assert.Equal(report.Items[0].TrackingNumber, firstActualItem.TrackingNumber);
         }
 
@@ -202,9 +111,6 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(orderDto.CreateDate, orderReport.OrderingDate);
             Assert.Equal(orderDto.ShippingDate, orderReport.ShippingDate);
             Assert.Equal(orderDto.SiteName, orderReport.Site);
-            Assert.Equal(sut.FormatOrderStatus(orderDto.Status), orderReport.Status);
-            Assert.Equal(sut.FormatDetailUrl(orderDto), orderReport.Url);
-            Assert.Equal(sut.FormatCustomer(customer), orderReport.User);
 
             // order items
             var firstItem = orderDto.Items.First();
