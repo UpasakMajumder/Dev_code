@@ -23,36 +23,6 @@ namespace Kadena.Tests.BusinessLogic
                 .Replace("-", "");
         }
 
-        public static OrderReport CreateTestOrder(int orderNumber, int itemsCount)
-        {
-            var order = new OrderReport
-            {
-                Number = orderNumber.ToString(),
-                OrderingDate = GetRandomDateTime(),
-                ShippingDate = GetRandomDateTime(),
-                Site = "test_site",
-                Status = "test_status",
-                User = "test_user",
-                Url = "http://test.com/this/is/test/url/",
-                Items = Enumerable.Range(1, itemsCount)
-                    .Select(itemNumber => CreateTestLineItem(itemNumber))
-                    .ToList()
-            };
-            return order;
-        }
-
-        public static ReportLineItem CreateTestLineItem(int itemNumber)
-        {
-            return new ReportLineItem
-            {
-                Name = "Product" + itemNumber,
-                SKU = "SKU" + itemNumber,
-                Quantity = random.Next(),
-                Price = random.Next() / 10,
-                TrackingNumber = random.Next(1, 1000000).ToString(),
-            };
-        }
-
         public static RecentOrderDto[] CreateTestRecentOrders(int ordersCount, int itemsPerOrderCount)
         {
             return Enumerable.Range(1, ordersCount)
@@ -84,13 +54,6 @@ namespace Kadena.Tests.BusinessLogic
                 Name = "order item " + itemNumber,
                 Quantity = random.Next(100)
             };
-        }
-
-        public static List<OrderReport> CreateTestOrders(int ordersCount, int itemsPerOrderCount)
-        {
-            return Enumerable.Range(1, ordersCount)
-                .Select(orderNumber => OrderReportTestHelper.CreateTestOrder(orderNumber, itemsPerOrderCount))
-                .ToList();
         }
     }
 }

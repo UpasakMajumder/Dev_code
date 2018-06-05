@@ -75,7 +75,7 @@
     <Compile Include="Orders\Failed\FailedOrder.cs" />
     <Compile Include="Orders\OrderFilter.cs" />
     <Compile Include="Orders\OrderNumber.cs" />
-    <Compile Include="Orders\OrderReport.cs" />
+    <Compile Include="Orders\ReportLineItem.cs" />
     <Compile Include="Orders\OrderReportViewItem.cs" />
     <Compile Include="Orders\OrderStatus.cs" />
     <Compile Include="ProductOptions\ProductCategory.cs" />
