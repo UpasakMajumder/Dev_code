@@ -73,31 +73,13 @@ namespace Kadena.BusinessLogic.Services.Orders
         public async Task<PagedData<OrderReportViewItem>> GetOrdersForSite(string site, int page, OrderFilter filter)
         {
             var orderFilter = CreateOrderListFilter(filter, site, page);
-            var ordersDto = await orderViewClient.GetOrders(orderFilter).ConfigureAwait(false);
-            var orders = ordersDto.Payload?.Orders ?? new List<RecentOrderDto>();
+            var orders = await GetOrders(orderFilter);
 
-            if (orders.Count() > 0)
+            return new PagedData<OrderReportViewItem>
             {
-                var pagesCount = ordersDto.Payload.TotalCount / OrdersPerPage;
-                if (ordersDto.Payload.TotalCount % OrdersPerPage > 0)
-                {
-                    pagesCount++;
-                }
-
-                return new PagedData<OrderReportViewItem>
-                {
-                    Pagination = new Pagination
-                    {
-                        CurrentPage = page,
-                        RowsCount = ordersDto.Payload.TotalCount,
-                        RowsOnPage = OrdersPerPage,
-                        PagesCount = pagesCount
-                    },
-                    Data = orders.SelectMany(o => orderReportFactory.CreateReportView(o)).ToList()
-                };
-            }
-
-            return PagedData<OrderReportViewItem>.Empty();
+                Pagination = orders.Pagination,
+                Data = orders.Data.SelectMany(o => orderReportFactory.CreateReportView(o)).ToList()
+            };
         }
 
         public async Task<TableView> ConvertOrdersToView(int page, OrderFilter filter)
@@ -120,10 +102,9 @@ namespace Kadena.BusinessLogic.Services.Orders
         public async Task<FileResult> GetOrdersExportForSite(string site, OrderFilter filter)
         {
             var orderFilter = CreateOrderListFilter(filter, site);
-            var ordersDto = await orderViewClient.GetOrders(orderFilter).ConfigureAwait(false);
-            var orders = ordersDto.Payload?.Orders ?? new List<RecentOrderDto>();
+            var orders = await GetOrders(orderFilter);
 
-            var report = orders.SelectMany(o => orderReportFactory.CreateReportView(o));
+            var report = orders.Data.SelectMany(o => orderReportFactory.CreateReportView(o));
             var tableView = orderReportFactory.CreateTableView(report);
 
             var fileDataTable = mapper.Map<Table>(tableView);
@@ -135,6 +116,38 @@ namespace Kadena.BusinessLogic.Services.Orders
             };
 
             return fileResult;
+        }
+
+        private async Task<PagedData<RecentOrderDto>> GetOrders(OrderListFilter orderFilter)
+        {
+            var ordersDto = await orderViewClient.GetOrders(orderFilter).ConfigureAwait(false);
+            var orders = ordersDto.Payload?.Orders ?? new List<RecentOrderDto>();
+
+            if (orders.Count() > 0)
+            {
+                var pagesCount = ordersDto.Payload.TotalCount / OrdersPerPage;
+                if (ordersDto.Payload.TotalCount % OrdersPerPage > 0)
+                {
+                    pagesCount++;
+                }
+
+                return new PagedData<RecentOrderDto>
+                {
+                    Pagination = new Pagination
+                    {
+                        CurrentPage = orderFilter.PageNumber ?? 0,
+                        RowsCount = ordersDto.Payload.TotalCount,
+                        RowsOnPage = OrdersPerPage,
+                        PagesCount = pagesCount
+                    },
+                    Data = orders.ToList()
+                };
+            }
+
+            return new PagedData<RecentOrderDto>
+            {
+                Data = orders.ToList()
+            };
         }
 
         private OrderListFilter CreateOrderListFilter(OrderFilter filter, string site, int page)
