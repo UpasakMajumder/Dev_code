@@ -170,6 +170,15 @@
             </div>
         </div>
         <div class="mb-2 form__block">
+            <div class="input__wrapper">
+                <cms:LocalizedLabel ID="lblSKUNumber" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblSKUNumber" />
+                <div class="input__inner">
+                    <cms:CMSTextBox ID="txtSKUNumber" runat="server" EnableViewState="false" CssClass="input__text" ReadOnly="true"></cms:CMSTextBox>
+                </div>
+            </div>
+        </div>
+        <div class="mb-2 form__block"></div>
+        <div class="mb-2 form__block">
             <div class="input__wrapper allocated__block ">
                 <cms:LocalizedLabel ID="lblProductAllcation" runat="server" EnableViewState="False" CssClass="input__label"
                     ResourceString="Kadena.InvProductForm.lblProductAllcation" />
@@ -211,14 +220,6 @@
                 </asp:UpdatePanel>
             </div>
 
-        </div>
-        <div class="mb-2 form__block">
-            <div class="input__wrapper">
-                <cms:LocalizedLabel ID="lblSKUNumber" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblSKUNumber" AssociatedControlID="txtSKUNumber" />
-                <div class="input__inner">
-                    <cms:CMSTextBox ID="txtSKUNumber" runat="server" EnableViewState="false" CssClass="input__text" ReadOnly="true"></cms:CMSTextBox>
-                </div>
-            </div>
         </div>
         <div class="clearfix"></div>
     </div>
