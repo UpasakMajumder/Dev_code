@@ -134,7 +134,7 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
         {
             try
             {
-                var ordersReport = ReportService.GetOrderReportViews(FilterSelectedSiteName, CurrentPage, Filter);
+                var ordersReport = ReportService.GetOrderReportViews(FilterSelectedSiteName, CurrentPage, Filter).Result;
 
                 var source = new DataView(ordersReport.Data.ToDataSet().Tables[0]);
                 ordersDatagrid.DataSource = source;

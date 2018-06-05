@@ -42,27 +42,21 @@ namespace Kadena.Tests.BusinessLogic
         }
 
         [Fact]
-        public void ConvertOrdersToView_ShouldThrow_WhenArgumentNull()
+        public async Task ConvertOrdersToView_ShouldMapOrdersToTableView()
         {
-            Assert.Throws<ArgumentNullException>(() => Sut.ConvertOrdersToView(null));
-        }
 
-        [Fact]
-        public void ConvertOrdersToView_ShouldMapOrdersToTableView()
-        {
-            var orders = new PagedData<OrderReport>
+            var tableView = new TableView
             {
-                Data = OrderReportTestHelper.CreateTestOrders(ordersCount: 1, itemsPerOrderCount: 1),
                 Pagination = new Pagination()
             };
-
-            var tableView = new TableView();
+            Setup<IOrderViewClient, Task<BaseResponseDto<OrderListDto>>>(s => s.GetOrders(It.IsAny<OrderListFilter>()),
+                Task.FromResult(new BaseResponseDto<OrderListDto>()));
             Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<IEnumerable<OrderReportViewItem>>()), tableView);
 
-            var actual = Sut.ConvertOrdersToView(orders);
+            var actual = await Sut.ConvertOrdersToView(1, new OrderFilter());
 
             Assert.Equal(tableView, actual);
-            Assert.Equal(orders.Pagination, actual.Pagination);
+            Assert.Equal(tableView.Pagination, actual.Pagination);
         }
 
         [Fact]
@@ -77,9 +71,10 @@ namespace Kadena.Tests.BusinessLogic
                     actualFilter = f;
                     return Task.FromResult(new BaseResponseDto<OrderListDto>());
                 });
+            Setup<IOrderReportFactory, TableView>(s => s.CreateTableView(It.IsAny<IEnumerable<OrderReportViewItem>>()), new TableView());
             var page = 2;
 
-            await Sut.GetOrders(page, new OrderFilter());
+            await Sut.ConvertOrdersToView(page, new OrderFilter());
 
             Assert.Equal(currentSite, actualFilter.SiteName);
             Assert.Equal(page, actualFilter.PageNumber);
@@ -90,7 +85,7 @@ namespace Kadena.Tests.BusinessLogic
         {
             var invalidPageNumber = OrderReportService.FirstPageNumber - 1;
 
-            Task action() => Sut.GetOrdersForSite("test_site", invalidPageNumber, new OrderFilter());
+            Task action() => Sut.GetOrderReportViews("test_site", invalidPageNumber, new OrderFilter());
 
             await Assert.ThrowsAsync<ArgumentException>("page", action);
         }
@@ -100,12 +95,12 @@ namespace Kadena.Tests.BusinessLogic
         {
             var someInvalidFilter = GetInvalidDateFilter();
 
-            Task action() => Sut.GetOrdersForSite("test_site", OrderReportService.FirstPageNumber
-                , someInvalidFilter);
+            Task action() => Sut.GetOrderReportViews("test_site", OrderReportService.FirstPageNumber
+                 , someInvalidFilter);
 
             await Assert.ThrowsAsync<ArgumentException>("filter", action);
         }
-        
+
         [Fact]
         public async Task GetOrdersForSite_ShouldConfigureDateFilterAsInclusive()
         {
@@ -164,7 +159,7 @@ namespace Kadena.Tests.BusinessLogic
                 OrderByDescending = true
             };
 
-            await sut.GetOrdersForSite(currentSite, page, filter);
+            await sut.GetOrderReportViews(currentSite, page, filter);
 
             Assert.Equal(expectedOrderListFilter, actualFilter);
         }
@@ -176,7 +171,7 @@ namespace Kadena.Tests.BusinessLogic
         {
             var filterWithInvalidSort = new OrderFilter { OrderByExpression = orderBy };
 
-            Task<PagedData<OrderReport>> action() => Sut.GetOrders(1, filterWithInvalidSort);
+            Task action() => Sut.ConvertOrdersToView(1, filterWithInvalidSort);
 
             await Assert.ThrowsAsync<ArgumentException>("filter", action);
         }
@@ -193,7 +188,7 @@ namespace Kadena.Tests.BusinessLogic
         {
             var filterWithInvalidDateRange = GetInvalidDateFilter();
 
-            Task action() => Sut.GetOrders(1, filterWithInvalidDateRange);
+            Task action() => Sut.ConvertOrdersToView(1, filterWithInvalidDateRange);
 
             await Assert.ThrowsAsync<ArgumentException>("filter", action);
         }

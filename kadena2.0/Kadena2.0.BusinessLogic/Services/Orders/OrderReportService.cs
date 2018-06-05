@@ -70,13 +70,13 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public Task<PagedData<OrderReport>> GetOrders(int page, OrderFilter filter)
+        private Task<PagedData<OrderReport>> GetOrders(int page, OrderFilter filter)
         {
             var currentSite = kenticoSiteProvider.GetCurrentSiteCodeName();
             return GetOrdersForSite(currentSite, page, filter);
         }
 
-        public async Task<PagedData<OrderReport>> GetOrdersForSite(string site, int page, OrderFilter filter)
+        private async Task<PagedData<OrderReport>> GetOrdersForSite(string site, int page, OrderFilter filter)
         {
             var orderFilter = CreateOrderListFilter(filter, site, page);
             var ordersDto = await orderViewClient.GetOrders(orderFilter).ConfigureAwait(false);
@@ -108,12 +108,10 @@ namespace Kadena.BusinessLogic.Services.Orders
             return PagedData<OrderReport>.Empty();
         }
 
-        public TableView ConvertOrdersToView(PagedData<OrderReport> orders)
+        public async Task<TableView> ConvertOrdersToView(int page, OrderFilter filter)
         {
-            if (orders == null)
-            {
-                throw new ArgumentNullException(nameof(orders));
-            }
+            var orders = await GetOrders(page, filter);
+            
             var report = orderReportFactory.CreateReportView(orders.Data);
             var table = orderReportFactory.CreateTableView(report);
             table.Pagination = orders.Pagination;
@@ -215,9 +213,9 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
         }
 
-        public PagedData<OrderReportViewItem> GetOrderReportViews(string site, int page, OrderFilter filter)
+        public async Task<PagedData<OrderReportViewItem>> GetOrderReportViews(string site, int page, OrderFilter filter)
         {
-            var orders = GetOrdersForSite(site, page, filter).Result;
+            var orders = await GetOrdersForSite(site, page, filter).ConfigureAwait(false);
 
             return new PagedData<OrderReportViewItem>
             {
