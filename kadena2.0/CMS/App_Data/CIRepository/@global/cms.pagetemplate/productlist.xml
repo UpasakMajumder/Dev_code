@@ -100,17 +100,29 @@
           <property name="contentbefore">
 <![CDATA[
 <div class="table__responsive">
-<table  id="reptable" class="show-table">
-  <tbody>
-    <tr>
-      <th>{$KDA.GIProductsList.POSNumber$}</th>
-      <th>{$KDA.GIProductsList.ProductName$}</th>
-      <th>{$KDA.GIProductsList.ShortDescription$}</th>
-      <th>{$KDA.GIProductsList.BrandName$}</th>
-      <th>{$KDA.GIProductsList.BundleQty$}</th>
-      <th>{$KDA.GIProductsList.ExpirationDate$}</th>
-      <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
-    </tr>
+  <table  id="reptable" class="show-table">
+    <tbody>
+      <tr>
+        <th>
+          <a href="#" class="link--no-blue">
+            <div class="icons-sort">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.GIProductsList.POSNumber$}</span>
+          </a>        
+        </th>
+        <th>{$KDA.GIProductsList.ProductName$}</th>
+        <th>{$KDA.GIProductsList.ShortDescription$}</th>
+        <th>{$KDA.GIProductsList.BrandName$}</th>
+        <th>{$KDA.GIProductsList.BundleQty$}</th>
+        <th>{$KDA.GIProductsList.ExpirationDate$}</th>
+        <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
+      </tr>
 ]]>
           </property>
           <property name="controlid">ProductList</property>
@@ -126,7 +138,7 @@
           <property name="instanceguid">4278eaf6-2ec1-48dc-9ad3-b7633b5a2543</property>
           <property name="itemseparator"></property>
           <property name="loadpagesindividually">False</property>
-          <property name="orderby"></property>
+          <property name="orderby">{? orderBy ?} {? orderByDirection ?}</property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>
@@ -218,7 +230,7 @@
           <property name="pagerlayout">KDA.Transformations.Kadena-PagerLayout</property>
           <property name="pages">KDA.Transformations.General-Pages</property>
           <property name="pageseparator">CMS.PagerTransformations.General-PageSeparator</property>
-          <property name="pagesize">25</property>
+          <property name="pagesize">2</property>
           <property name="pagingmode">querystring</property>
           <property name="partialcachedependencies">
 <![CDATA[
