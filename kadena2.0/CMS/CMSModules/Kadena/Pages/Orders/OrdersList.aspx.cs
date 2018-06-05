@@ -1,6 +1,5 @@
 ﻿using CMS.Ecommerce.Web.UI;
 using Kadena.BusinessLogic.Contracts.Orders;
-using Kadena.BusinessLogic.Factories;
 using Kadena.Container.Default;
 using Kadena.Helpers.Data;
 using Kadena.Models.Common;
@@ -22,9 +21,6 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
 
         public IKenticoSiteProvider KenticoSiteProvider { get; set; }
             = DIContainer.Resolve<IKenticoSiteProvider>();
-
-        public IOrderReportFactory OrderReportFactory { get; set; }
-            = DIContainer.Resolve<IOrderReportFactory>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -138,17 +134,13 @@ namespace Kadena.CMSModules.Kadena.Pages.Orders
         {
             try
             {
-                var orders = ReportService
-                    .GetOrdersForSite(FilterSelectedSiteName, CurrentPage, Filter)
-                    .Result;
+                var ordersReport = ReportService.GetOrderReportViews(FilterSelectedSiteName, CurrentPage, Filter);
 
-                var ordersReport = OrderReportFactory.CreateReportView(orders.Data);
-
-                var source = new DataView(ordersReport.ToDataSet().Tables[0]);
+                var source = new DataView(ordersReport.Data.ToDataSet().Tables[0]);
                 ordersDatagrid.DataSource = source;
                 ordersDatagrid.DataBind();
 
-                return orders.Pagination;
+                return ordersReport.Pagination;
             }
             catch (AggregateException ex)
             {

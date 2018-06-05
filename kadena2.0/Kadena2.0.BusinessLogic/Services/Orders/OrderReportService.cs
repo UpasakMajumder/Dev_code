@@ -214,5 +214,16 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new ArgumentException($"Invalid values for date. 'From date' must be smaller than 'To date'", nameof(filter));
             }
         }
+
+        public PagedData<OrderReportViewItem> GetOrderReportViews(string site, int page, OrderFilter filter)
+        {
+            var orders = GetOrdersForSite(site, page, filter).Result;
+
+            return new PagedData<OrderReportViewItem>
+            {
+                Pagination = orders.Pagination,
+                Data = orderReportFactory.CreateReportView(orders.Data).ToList()
+            };
+        }
     }
 }
