@@ -15,25 +15,13 @@ namespace Kadena.BusinessLogic.Factories
     public interface IOrderReportFactory
     {
         /// <summary>
-        /// Create report from regular order
-        /// </summary>
-        /// <param name="orderDto"></param>
-        /// <returns></returns>
-        OrderReport Create(RecentOrderDto orderDto);
-
-        /// <summary>
         /// Map typed report view to generic table view
         /// </summary>
         /// <param name="reportDto"></param>
         /// <returns></returns>
         TableView CreateTableView(IEnumerable<OrderReportViewItem> reportDto);
 
-        /// <summary>
-        /// Map order report to typed report view
-        /// </summary>
-        /// <param name="orderReports"></param>
-        /// <returns></returns>
-        IEnumerable<OrderReportViewItem> CreateReportView(IEnumerable<OrderReport> orderReports);
+        IEnumerable<OrderReportViewItem> CreateReportView(RecentOrderDto recentOrder);
     }
 
     public class OrderReportFactory : IOrderReportFactory
@@ -69,44 +57,24 @@ namespace Kadena.BusinessLogic.Factories
             this.kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
             this.kenticoDocumentProvider = kenticoDocumentProvider ?? throw new ArgumentNullException(nameof(kenticoDocumentProvider));
         }
-        public OrderReport Create(RecentOrderDto orderDto) =>
-            new OrderReport
-            {
-                Items = orderDto.Items.Select(it => new ReportLineItem
-                {
-                    Name = it.Name,
-                    Price = it.UnitPrice,
-                    Quantity = it.Quantity,
-                    SKU = it.SKUNumber,
-                    TrackingNumber = it.TrackingNumber,
-                }).ToList(),
-                Number = orderDto.Id,
-                OrderingDate = orderDto.CreateDate,
-                ShippingDate = orderDto.ShippingDate,
-                Site = orderDto.SiteName,
-                Status = FormatOrderStatus(orderDto.Status),
-                Url = FormatDetailUrl(orderDto),
-                User = FormatCustomer(kenticoCustomerProvider.GetCustomer(orderDto.CustomerId))
-            };
 
-        public IEnumerable<OrderReportViewItem> CreateReportView(IEnumerable<OrderReport> orderReports) =>
-             orderReports
-                .SelectMany(o => o.Items.Select(it => new OrderReportViewItem
+        public IEnumerable<OrderReportViewItem> CreateReportView(RecentOrderDto recentOrder) =>
+            recentOrder.Items
+                .Select(o => new OrderReportViewItem
                 {
-                    Url = o.Url,
-                    Site = o.Site,
-                    Number = o.Number,
-                    OrderingDate = FormatDate(o.OrderingDate),
-                    User = o.User,
-                    Name = it.Name,
-                    SKU = it.SKU,
-                    Quantity = it.Quantity,
-                    Price = it.Price,
-                    Status = o.Status,
+                    Url = FormatDetailUrl(recentOrder),
+                    Site = recentOrder.SiteName,
+                    Number = recentOrder.Id,
+                    OrderingDate = FormatDate(recentOrder.CreateDate),
+                    User = FormatCustomer(kenticoCustomerProvider.GetCustomer(recentOrder.CustomerId)),
+                    Name = o.Name,
+                    SKU = o.SKUNumber,
+                    Quantity = o.Quantity,
+                    Price = o.UnitPrice,
+                    Status = FormatOrderStatus(recentOrder.Status),
                     ShippingDate = FormatDate(o.ShippingDate),
-                    TrackingNumber = it.TrackingNumber
-                }))
-                .ToArray();
+                    TrackingNumber = o.TrackingNumber
+                });
 
 
         public TableView CreateTableView(IEnumerable<OrderReportViewItem> reportDto) =>

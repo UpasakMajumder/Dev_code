@@ -93,9 +93,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                         RowsOnPage = OrdersPerPage,
                         PagesCount = pagesCount
                     },
-                    Data = orderReportFactory
-                        .CreateReportView(orders.Select(o => orderReportFactory.Create(o)).ToList())
-                        .ToList()
+                    Data = orders.SelectMany(o => orderReportFactory.CreateReportView(o)).ToList()
                 };
             }
 
@@ -125,8 +123,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             var ordersDto = await orderViewClient.GetOrders(orderFilter).ConfigureAwait(false);
             var orders = ordersDto.Payload?.Orders ?? new List<RecentOrderDto>();
 
-            var ordersReport = orders.Select(o => orderReportFactory.Create(o));
-            var report = orderReportFactory.CreateReportView(ordersReport);
+            var report = orders.SelectMany(o => orderReportFactory.CreateReportView(o));
             var tableView = orderReportFactory.CreateTableView(report);
 
             var fileDataTable = mapper.Map<Table>(tableView);
