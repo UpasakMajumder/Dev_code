@@ -482,6 +482,7 @@
     <Compile Include="Dto\Approval\MicroserviceRequests\ApprovalStateTests.cs" />
     <Compile Include="Helpers\EnumHelperTests.cs" />
     <Compile Include="BusinessLogic\SettingsServiceTests.cs" />
+    <Compile Include="Helpers\UrlHelperTests.cs" />
     <Compile Include="Infrastructure\AutoMapperTests.cs" />
     <Compile Include="MicroserviceClients\StatisticsClientTests.cs" />
     <Compile Include="BusinessLogic\PdfLowresServiceTests.cs" />
@@ -512,6 +513,7 @@
     <Compile Include="BusinessLogic\OrderResubmissionServiceTests.cs" />
     <Compile Include="BusinessLogic\OrderReportFactoryTests.cs" />
     <Compile Include="BusinessLogic\OrderReportTestHelper.cs" />
+    <Compile Include="Models\TableSortingHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScheduledTasks\DeleteExpiredMailingListsServiceTests.cs" />
     <Compile Include="UserHierarchyTest.cs" />

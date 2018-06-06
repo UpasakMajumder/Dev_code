@@ -27,6 +27,7 @@ using Kadena.Models.ModuleAccess;
 using Kadena.BusinessLogic.Contracts.Approval;
 using Newtonsoft.Json;
 using Kadena.Helpers;
+using Kadena.Models.TableSorting;
 
 [assembly: CMS.RegisterExtension(typeof(KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 
@@ -89,7 +90,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         }
 
 
-        
+
         [MacroMethod(typeof(string), "Gets URL of editor for mailing or templated product", 1)]
         [MacroMethodParam(0, "documentId", typeof(int), "Product types piped string")]
         [MacroMethodParam(1, "productType", typeof(string), "Product types piped string")]
@@ -360,8 +361,8 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 
             var isForEnabledItems = ValidationHelper.GetBoolean(parameters[0], false);
 
-            var moduleState = isForEnabledItems 
-                ? KadenaModuleState.enabled 
+            var moduleState = isForEnabledItems
+                ? KadenaModuleState.enabled
                 : KadenaModuleState.disabled;
 
             var cacheKey = $@"Kadena.MacroMethods.GetMainNavigationWhereCondition_{
@@ -568,6 +569,25 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         }
 
         #region TWE macro methods
+
+        [MacroMethod(typeof(string), "Returns ORDER BY expression for table sorting", 0)]
+        [MacroMethodParam(0, "columns", typeof(string), "Comma separated list of columns")]
+        public static object TableSortingOrderBy(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+            var columns = ValidationHelper.GetString(parameters[0], string.Empty).Split(',');
+            var currentUrl = CMSHttpContext.Current.Request.Url.PathAndQuery;
+            
+            return TableSortingHelper.GetOrderBy(columns, currentUrl);
+        }
+
+
+
+
+
 
         /// <summary>
         /// Returns Division name based on Division ID

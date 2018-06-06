@@ -138,7 +138,9 @@
           <property name="instanceguid">4278eaf6-2ec1-48dc-9ad3-b7633b5a2543</property>
           <property name="itemseparator"></property>
           <property name="loadpagesindividually">False</property>
-          <property name="orderby">{? orderBy ?} {? orderByDirection ?}</property>
+          <property name="orderby" ismacro="true">
+            <![CDATA[{% KadenaNamespace.TableSortingOrderBy("SKUName,POSNumber,QtyPerPack,SKUValidUntil,BrandName,SKUDescription") |(user)administrator|(hash)766aa881c562233376f565ff126df6b1b2ec99c8c30d5c5c65e32f9fc60e66a8%}]]>
+          </property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>
