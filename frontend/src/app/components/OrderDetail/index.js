@@ -82,7 +82,7 @@ class OrderDetail extends Component {
 
         <div className="order-block">
           <Actions
-            ui={actions}
+            actions={actions}
             general={general}
             changeStatus={changeStatus}
           />
