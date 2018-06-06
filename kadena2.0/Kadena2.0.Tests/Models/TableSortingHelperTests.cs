@@ -43,5 +43,23 @@ namespace Kadena.Tests.Models
             var result = TableSortingHelper.GetOrderBy(validColumns, url);
             Assert.Equal(string.Empty, result);
         }
+
+        [Theory]
+        [InlineData("/some/url?orderby=col1&orderbydirection=desc", "desc")]
+        [InlineData("/some/url?orderby=col1&orderbydirection=asc", "asc")]
+        [InlineData("/some/url?orderby=col1", "asc")]
+        public void GetColumnDirection_ShouldReturnDirection_WhenGivenColumnIsCurrentlyUsed(string url, string direction)
+        {
+            var result = TableSortingHelper.GetColumnDirection("col1", url);
+            Assert.Equal(direction, result);
+        }
+
+        [Fact]
+        public void GetColumnDirection_ShouldEmptyDirection_WhenGivenColumnIsCurrentlyNotUsed()
+        {
+            const string url = "/some/url?orderby=col222";
+            var result = TableSortingHelper.GetColumnDirection("col1", url);
+            Assert.Equal("no", result);
+        }
     }
 }

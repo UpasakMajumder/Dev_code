@@ -584,7 +584,19 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return TableSortingHelper.GetOrderBy(columns, currentUrl);
         }
 
+        [MacroMethod(typeof(string), "Returns 'asc' or 'desc' when current sorting is for given column otherwise 'no'", 0)]
+        [MacroMethodParam(0, "column", typeof(string), "Column to test")]
+        public static object TableSortingColumnDirection(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+            var column = ValidationHelper.GetString(parameters[0], string.Empty);
+            var currentUrl = CMSHttpContext.Current.Request.Url.PathAndQuery;
 
+            return TableSortingHelper.GetColumnDirection(column, currentUrl);
+        }
 
 
 

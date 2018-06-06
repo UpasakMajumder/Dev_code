@@ -1,5 +1,5 @@
 ﻿using Kadena.Helpers;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 
 namespace Kadena.Models.TableSorting
@@ -11,6 +11,8 @@ namespace Kadena.Models.TableSorting
 
         public static string DirectionAscending = "asc";
         public static string DirectionDescending = "desc";
+        public static string DirectionEmpty = "no";
+
 
         public static string GetOrderBy(string[] columns, string currentUrl)
         {
@@ -37,6 +39,24 @@ namespace Kadena.Models.TableSorting
             }
 
             return new OrderBy(orderByColumn, orderByDirection);
+        }
+
+        public static string GetColumnDirection(string column, string currentUrl)
+        {
+            var orderBy = ExtractOrderByFromUrl(currentUrl.ToLower());
+            if (orderBy.Column == column.ToLower())
+            {
+                if (orderBy.Direction == DirectionDescending)
+                {
+                    return DirectionDescending;
+                }
+                else
+                {
+                    return DirectionAscending;
+                }
+            }
+
+            return DirectionEmpty;
         }
     }
 }

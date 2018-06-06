@@ -105,7 +105,7 @@
       <tr>
         <th>
           <a href="#" class="link--no-blue">
-            <div class="icons-sort">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("POSNumber") |(user)administrator|(hash)b92ca7a1598105383724ae0884faa1c3892a789d068b9f78669099c253e2580a%}">
               <svg class="icon icon-sort">
                 <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
               </svg>
@@ -116,11 +116,72 @@
             <span>{$KDA.GIProductsList.POSNumber$}</span>
           </a>        
         </th>
-        <th>{$KDA.GIProductsList.ProductName$}</th>
-        <th>{$KDA.GIProductsList.ShortDescription$}</th>
-        <th>{$KDA.GIProductsList.BrandName$}</th>
-        <th>{$KDA.GIProductsList.BundleQty$}</th>
-        <th>{$KDA.GIProductsList.ExpirationDate$}</th>
+        <th>
+          <a href="#" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("SKUName") |(user)administrator|(hash)5818bd6df0d3438f88481af87cec396d953025d10c57eae986727991ee76f369%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.GIProductsList.ProductName$}</span>
+          </a>        
+        </th>
+        <th>
+          <a href="#" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("SKUDescription") |(user)administrator|(hash)9e55a259cb64bb9a9585f20cc46e9a99dc565997df60b7759a2c975352206a15%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.GIProductsList.ShortDescription$}</span>
+          </a>        
+        </th>        
+        <th>
+          <a href="#" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("BrandName") |(user)administrator|(hash)517d57002e8c1c9398b038cfe03606aaed00e96e14da1a46b5dc10730a84093f%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.GIProductsList.BrandName$}</span>
+          </a>        
+        </th>         
+        <th>
+          <a href="#" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("QtyPerPack") |(user)administrator|(hash)d191fe00bcf78575d13bff1eacea95fab132e5fe9ab3cf15f690a7e924258832%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.GIProductsList.BundleQty$}</span>
+          </a>        
+        </th>         
+        <th>
+          <a href="#" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("SKUValidUntil") |(user)administrator|(hash)52b614e23a953826238a188779c8fa2ba0e6e1cbe102f81cbbbc7f9a28c7b83f%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.GIProductsList.ExpirationDate$}</span>
+          </a>        
+        </th>        
+       
         <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
       </tr>
 ]]>
