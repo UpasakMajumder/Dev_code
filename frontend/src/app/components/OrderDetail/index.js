@@ -28,7 +28,8 @@ class OrderDetail extends Component {
       pricingInfo: PropTypes.object,
       shippingInfo: PropTypes.object,
       actions: PropTypes.object,
-      general: PropTypes.object
+      general: PropTypes.object,
+      editOrders: PropTypes.object
     }).isRequired,
     emailProof: PropTypes.object.isRequired,
     toogleEmailProof: PropTypes.func.isRequired
@@ -55,7 +56,8 @@ class OrderDetail extends Component {
       orderedItems,
       dateTimeNAString,
       actions,
-      general
+      general,
+      editOrders
     } = ui;
 
     const shippingInfoEl = shippingInfo ? <div className="col-lg-4 mb-4"><ShippingInfo ui={shippingInfo} /></div> : null;
@@ -83,6 +85,7 @@ class OrderDetail extends Component {
         <div className="order-block">
           <Actions
             actions={actions}
+            editOrders={editOrders}
             general={general}
             changeStatus={changeStatus}
           />
