@@ -29,7 +29,7 @@ namespace Kadena.CMSWebParts.Kadena.Common
                 var breadcrumbs = new Dictionary<string, string>();
                 var doc = DocumentHelper.GetDocument(DocumentId, new TreeProvider(MembershipContext.AuthenticatedUser));
 
-                while (doc != null && doc.Parent != null)
+                while (doc?.Parent != null)
                 {
                     breadcrumbs.Add(doc.DocumentName, doc.AbsoluteURL);
                     doc = doc.Parent;
