@@ -134,7 +134,9 @@
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
-          <property name="contentafter"></property>
+          <property name="contentafter">
+            <![CDATA[{% "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>" |(user)administrator|(hash)f18d074e62375d08336d21cc77a25213b561913585faedf8cdeeb8649e46da8f%}]]>
+          </property>
           <property name="contentbefore"></property>
           <property name="controlid">Kadena_Breadcrumbs</property>
           <property name="customtimezone"></property>
