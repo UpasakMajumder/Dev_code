@@ -11,13 +11,13 @@
   }
 
   &--asc {
-    & > *:last-child {
+    & > *:first-child {
       opacity: 1;
     }
   }
 
   &--desc {
-    & > *:first-child {
+    & > *:last-child {
       opacity: 1;
     }
   }
