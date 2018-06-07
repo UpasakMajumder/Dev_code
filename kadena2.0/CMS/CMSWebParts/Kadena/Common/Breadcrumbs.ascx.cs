@@ -2,13 +2,9 @@
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
-using CMS.SiteProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Kadena.CMSWebParts.Kadena.Common
 {
@@ -26,18 +22,19 @@ namespace Kadena.CMSWebParts.Kadena.Common
         {
             if (!IsPostBack)
             {
-                var breadcrumbs = new Dictionary<string, string>();
+                var breadcrumbs = new List<KeyValuePair<string, string>>();
                 var doc = DocumentHelper.GetDocument(DocumentId, new TreeProvider(MembershipContext.AuthenticatedUser));
 
                 while (doc?.Parent != null)
                 {
-                    breadcrumbs.Add(doc.DocumentName, doc.AbsoluteURL);
+                    breadcrumbs.Add(new KeyValuePair<string, string>(doc.DocumentName, doc.AbsoluteURL));
                     doc = doc.Parent;
                 };
 
-                breadcrumbs.Add(GetString("Kadena.BreadcrumbsHome"), URLHelper.GetFullApplicationUrl());
+                breadcrumbs.Add(new KeyValuePair<string, string>(GetString("Kadena.BreadcrumbsHome"), URLHelper.GetFullApplicationUrl()));
+                breadcrumbs.Reverse();
 
-                ltBreadcrumbs.Text = string.Join("", breadcrumbs.Reverse().Select(kv => string.Format(markupFormat, kv.Value, kv.Key)));
+                ltBreadcrumbs.Text = string.Join("", breadcrumbs.Select(kv => string.Format(markupFormat, kv.Value, kv.Key)));
             }
         }
     }
