@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import { reducer as toastr } from 'react-redux-toastr';
-import login from './login';
+import tac from './tac';
 import checkout from './checkout';
 import isLoading from './isLoading';
 import settingsAddresses from './settingsAddresses';
@@ -19,9 +19,11 @@ import dialogAlert from './dialogAlert';
 import cardPayment from './card-payment';
 import languageSelector from './languageSelector';
 import filteredRecentOrders from './filteredRecentOrders';
+import emailProof from './emailProof';
+import thumbnailPreview from './thumbnailPreview';
 
 const rootReducer = combineReducers({
-  login,
+  tac,
   checkout,
   isLoading,
   settingsAddresses,
@@ -39,7 +41,9 @@ const rootReducer = combineReducers({
   cardPayment,
   languageSelector,
   filteredRecentOrders,
-  recentOrders
+  recentOrders,
+  emailProof,
+  thumbnailPreview
 });
 
 export default rootReducer;

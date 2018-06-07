@@ -5,6 +5,7 @@ using Kadena2.BusinessLogic.Contracts.OrderPayment;
 using System;
 using System.Threading.Tasks;
 using Kadena.BusinessLogic.Factories;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena2.BusinessLogic.Services.OrderPayment
 {
@@ -77,7 +78,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             var orderData = await orderDataProvider.GetSubmitOrderData(orderRequest);
             orderData.PaymentOption.TokenId = savedCardId;
-            orderData.PaymentOption.PaymentGatewayCustomerCode = resources.GetSettingsKey("KDA_CreditCard_Code");
+            orderData.PaymentOption.PaymentGatewayCustomerCode = resources.GetSiteSettingsKey(Settings.KDA_CreditCard_Code);
 
             var sendOrderResult = await sendOrder.SubmitOrderData(orderData);
 

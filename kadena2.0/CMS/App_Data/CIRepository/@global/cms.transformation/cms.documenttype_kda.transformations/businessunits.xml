@@ -10,10 +10,10 @@
 <tr>
   <td>{%BusinessUnitNumber%}</td>
   <td>{%BusinessUnitName%}</td>
-  <td>{%If(Status) {%}{$KDA.Common.Status.Active$}{%} else {%}{$KDA.Common.Status.Inactive$}{%}|(user)cvoqa2@gmail.com|(hash)d48ebefb8b5339888eaae0ecbabe491b3237f370b6a35ac07f51477832123ab2%}</td>
+  <td>{%If(Status) {%}{$KDA.Common.Status.Active$}{%} else {%}{$KDA.Common.Status.Inactive$}{%}|(user)administrator|(hash)0cbe731088e316d8f6bf0f7c0ade03a3b93a390228fde1bcf108a4b74c12369b%}</td>
   <td>
     <div class="text-center">
-      <a href="{%Settings.KDA_CreateBusinessUnitURL|(user)cvoqa2@gmail.com|(hash)d320e149ee40a72933d72562ac28d0aea4f773e64a3889c70a5f73bc0912b7e6%}?itemID={%ItemID%}" class="edit_btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+      <a href="{%Settings.KDA_CreateBusinessUnitURL|(user)administrator|(hash)e4e963bdf941c6fd7056ac3af1392826f5eac7c848e2bc906aa848dba7f9a1fb%}?itemID={%ItemID%}" class="edit_btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
     </div>
   </td>
 </tr>

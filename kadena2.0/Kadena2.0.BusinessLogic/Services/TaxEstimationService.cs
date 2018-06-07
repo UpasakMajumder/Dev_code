@@ -19,8 +19,6 @@ namespace Kadena.BusinessLogic.Services
         private readonly IShoppingCartProvider shoppingCart;
         private readonly ICache cache;
 
-        public string ServiceEndpoint => resources.GetSettingsKey("KDA_TaxEstimationServiceEndpoint");
-
         public TaxEstimationService(IKenticoLocalizationProvider kenticoLocalization,
                                    IKenticoResourceService resources,                                    
                                    ITaxEstimationServiceClient taxCalculator,
@@ -28,48 +26,36 @@ namespace Kadena.BusinessLogic.Services
                                    IShoppingCartProvider shoppingCart,
                                    ICache cache)
         {
-            if (kenticoLocalization == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoLocalization));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (taxCalculator == null)
-            {
-                throw new ArgumentNullException(nameof(taxCalculator));
-            }
-            if (kenticoLog == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoLog));
-            }
-            if (shoppingCart == null)
-            {
-                throw new ArgumentNullException(nameof(shoppingCart));
-            }
-            if (cache == null)
-            {
-                throw new ArgumentNullException(nameof(cache));
-            }
-
-            this.kenticoLocalization = kenticoLocalization;
-            this.resources = resources;            
-            this.taxCalculator = taxCalculator;            
-            this.kenticoLog = kenticoLog;
-            this.shoppingCart = shoppingCart;
-            this.cache = cache;
+            this.kenticoLocalization = kenticoLocalization ?? throw new ArgumentNullException(nameof(kenticoLocalization));
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));            
+            this.taxCalculator = taxCalculator ?? throw new ArgumentNullException(nameof(taxCalculator));            
+            this.kenticoLog = kenticoLog ?? throw new ArgumentNullException(nameof(kenticoLog));
+            this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
+            this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
 
         public async Task<decimal> EstimateTotalTax(DeliveryAddress deliveryAddress)
         {
-            var taxRequest = CreateTaxEstimationRequest(deliveryAddress);
+            double totalItemsPrice = shoppingCart.GetCurrentCartTotalItemsPrice();
+            double shippingCosts = shoppingCart.GetCurrentCartShippingCost();
 
-            var estimate = await EstimateTotalTax(ServiceEndpoint, taxRequest);
+            var taxRequest = CreateTaxEstimationRequest(deliveryAddress, totalItemsPrice, shippingCosts);
+
+            var estimate = await EstimateTotalTaxCachedCall(taxRequest);
             return estimate;
         }
 
-        private async Task<decimal> EstimateTotalTax(string serviceEndpoint, TaxCalculatorRequestDto taxRequest)
+        public async Task<decimal> EstimatePricedItemsTax(DeliveryAddress deliveryAddress, double pricedItemsPrice)
+        {
+            double shippingCosts = shoppingCart.GetCurrentCartShippingCost();
+
+            var taxRequest = CreateTaxEstimationRequest(deliveryAddress, pricedItemsPrice, shippingCosts);
+
+            var estimate = await EstimateTotalTaxCachedCall(taxRequest);
+            return estimate;
+        }
+
+        private async Task<decimal> EstimateTotalTaxCachedCall(TaxCalculatorRequestDto taxRequest)
         {
             if (taxRequest.TotalBasePrice == 0.0d && taxRequest.ShipCost == 0.0d)
             {
@@ -77,7 +63,7 @@ namespace Kadena.BusinessLogic.Services
                 return 0.0m;
             }
 
-            var cacheKey = $"DeliveryPriceEstimationClient|{serviceEndpoint}|{Newtonsoft.Json.JsonConvert.SerializeObject(taxRequest)}";
+            var cacheKey = $"TaxEstimationClient|{Newtonsoft.Json.JsonConvert.SerializeObject(taxRequest)}";
             var cachedResult = cache.Get(cacheKey);
             if (cachedResult != null)
             {
@@ -93,13 +79,16 @@ namespace Kadena.BusinessLogic.Services
             }
             else
             {
-                kenticoLog.LogError("TaxCalculatorClient", $"Call for tax estimation to service URL '{serviceEndpoint}' resulted with error {response.Error?.Message ?? string.Empty}");
+                kenticoLog.LogError("TaxCalculatorClient", $"Call for tax estimation resulted with error {response.Error?.Message ?? string.Empty}");
                 return 0.0m;
             }
         }
 
-        private TaxCalculatorRequestDto CreateTaxEstimationRequest(double totalItemsPrice, double shippingCosts, BillingAddress addressFrom, DeliveryAddress addressTo)
-        {
+        private TaxCalculatorRequestDto CreateTaxEstimationRequest(DeliveryAddress deliveryAddress, double totalItemsPrice, double shippingCosts)
+        {        
+            var addressTo = deliveryAddress ?? shoppingCart.GetCurrentCartShippingAddress();
+            var addressFrom = shoppingCart.GetDefaultBillingAddress();
+
             var taxRequest = new TaxCalculatorRequestDto()
             {
                 TotalBasePrice = totalItemsPrice,
@@ -123,17 +112,6 @@ namespace Kadena.BusinessLogic.Services
             }
 
             return taxRequest;
-        }
-
-        private TaxCalculatorRequestDto CreateTaxEstimationRequest(DeliveryAddress deliveryAddress)
-        {
-            double totalItemsPrice = shoppingCart.GetCurrentCartTotalItemsPrice();
-            double shippingCosts = shoppingCart.GetCurrentCartShippingCost();
-
-            var addressTo = deliveryAddress ?? shoppingCart.GetCurrentCartShippingAddress();
-            var addressFrom = shoppingCart.GetDefaultBillingAddress();
-
-            return CreateTaxEstimationRequest(totalItemsPrice, shippingCosts, addressFrom, addressTo);
         }
     }
 }

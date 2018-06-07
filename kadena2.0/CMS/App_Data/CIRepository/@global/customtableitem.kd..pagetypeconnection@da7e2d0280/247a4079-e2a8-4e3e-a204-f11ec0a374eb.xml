@@ -3,5 +3,5 @@
   <ItemGUID>247a4079-e2a8-4e3e-a204-f11ec0a374eb</ItemGUID>
   <ItemOrder>27</ItemOrder>
   <PageTypeCodeName>KDA.OrdersReportModule</PageTypeCodeName>
-  <SettingsKeyCodeName>KDA_OrdersReportModuleEnabled</SettingsKeyCodeName>
+  <SettingsKeyCodeName>KDA_OrdersModuleEnabled</SettingsKeyCodeName>
 </customtableitem.kda.kadenamoduleandpagetypeconnection>

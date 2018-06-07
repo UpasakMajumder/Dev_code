@@ -13,7 +13,7 @@ namespace Kadena.Old_App_Code.EventHandlers
 {
     public class ProductEventHandler : Module
     {
-        public virtual IKenticoProductsProvider ProductsProvider { get; set; } = DIContainer.Resolve<IKenticoProductsProvider>();
+        public virtual IKenticoSkuProvider SkuProvider { get; set; } = DIContainer.Resolve<IKenticoSkuProvider>();
         public virtual IKenticoLogger Logger { get; set; } = DIContainer.Resolve<IKenticoLogger>();
 
         public ProductEventHandler() : base(nameof(ProductEventHandler))
@@ -54,7 +54,7 @@ namespace Kadena.Old_App_Code.EventHandlers
                     NeedsShipping = product.SKUNeedsShipping,
                     Weight = product.SKUWeight
                 };
-                ProductsProvider.UpdateSku(sku);
+                SkuProvider.UpdateSku(sku);
             }
             catch (Exception ex)
             {

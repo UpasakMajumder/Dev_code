@@ -39,9 +39,15 @@ const products = {
       "quantityPrefix": "Quantity:",
       "quantity": 11,
       "stockQuantity": 15,
+      "unitOfMeasure": "pc",
       "isQuantityEditable": true,
       "productionTime": "Now",
       "shipTime": "Tomorrow",
+      "emailProof": {
+        "exists": true,
+        "text": "Email",
+        "url": "1"
+      },
       "preview": {
         "exists": true,
         "text": "Preview",
@@ -66,9 +72,15 @@ const products = {
       "quantityPrefix": "Quantity:",
       "quantity": 11,
       "stockQuantity": 15,
-      "isQuantityEditable": true,
+      "unitOfMeasure": "pc",
+      "isQuantityEditable": false,
       "productionTime": "",
       "shipTime": "Tomorrow",
+      "emailProof": {
+        "exists": true,
+        "text": "Email",
+        "url": "2"
+      },
       "preview": {
         "exists": false,
         "text": "Preview",
@@ -123,16 +135,16 @@ const deliveryAddresses = {
         "type": "text"
       },
       {
-        "id": "zip",
-        "label": "Postal Code",
-        "values": [],
-        "type": "text"
-      },
-      {
         "id": "state",
         "label": "State",
         "values": [],
         "type": "select"
+      },
+      {
+        "id": "zip",
+        "label": "Postal Code",
+        "values": [],
+        "type": "text"
       },
       {
         "id": "country",
@@ -198,7 +210,10 @@ const deliveryAddresses = {
       "zip": "38017",
       "id": 1,
       "checked": true,
-      "country": "3"
+      "country": "3",
+      "phone": "776 884 228",
+      "email": "lol@gmail.com",
+      "customerName": "Andrei"
     },
     {
       "address1": "Test Address line 1",

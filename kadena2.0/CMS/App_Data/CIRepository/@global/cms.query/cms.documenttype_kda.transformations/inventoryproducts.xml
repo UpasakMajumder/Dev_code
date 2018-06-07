@@ -14,12 +14,13 @@
   <QueryRequiresTransaction>False</QueryRequiresTransaction>
   <QueryText>
 <![CDATA[
-select p.CampaignsProductID,s.SKUName,s.SKUProductCustomerReferenceNumber as POSNumber,p.QtyPerPack,
+select p.CampaignsProductID,s.SKUName,s.SKUProductCustomerReferenceNumber as POSNumber, s.SKUNumberOfItemsInPackage as QtyPerPack,
 s.SKUValidUntil,b.BrandName as BrandName,s.SKUDescription
 from KDA_CampaignsProduct p  join View_CMS_Tree_joined t on p.CampaignsProductID=t.DocumentForeignKeyValue
 join COM_SKU s  on s.SKUID=t.NodeSKUID
- join KDA_Brand b on b.ItemID=p.BrandID 
- where  ##WHERE## 
+join KDA_Brand b on b.ItemID=p.BrandID 
+where  ##WHERE## 
+order by ##ORDERBY##
 ]]>
   </QueryText>
   <QueryTypeID>0</QueryTypeID>

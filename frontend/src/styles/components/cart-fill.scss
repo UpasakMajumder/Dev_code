@@ -55,19 +55,7 @@
   }
 }
 
-.cart__dialog-table,
-.checkout__dialog-table {
-  td {
-    vertical-align: top;
-  }
-}
-
+.checkout__dialog-table,
 .cart__dialog-table {
-  td:not(:first-child) {
-    @extend .pl-2;
-  }
-}
-
-.checkout__dialog-table {
   @include dialog-table(5);
 }

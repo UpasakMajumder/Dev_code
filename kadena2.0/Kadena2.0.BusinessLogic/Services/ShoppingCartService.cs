@@ -12,6 +12,8 @@ using Kadena.Models.CreditCard;
 using Kadena2.MicroserviceClients.Contracts;
 using System.Collections.Generic;
 using Kadena.Models.AddToCart;
+using Kadena.Models.SiteSettings;
+using Kadena.Infrastructure.Exceptions;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -21,6 +23,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoLocalizationProvider localization;
         private readonly IKenticoPermissionsProvider permissions;
         private readonly IKenticoUserProvider kenticoUsers;
+        private readonly IKenticoCustomerProvider kenticoCustomer;
         private readonly IKenticoAddressBookProvider kenticoAddresses;
         private readonly IKenticoResourceService resources;
         private readonly ITaxEstimationService taxCalculator;
@@ -34,11 +37,15 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoProductsProvider productsProvider;
         private readonly IKenticoBusinessUnitsProvider businessUnitsProvider;
         private readonly IDynamicPriceRangeProvider dynamicPrices;
+        private readonly ITieredPriceRangeProvider tieredPrices;
+        private readonly IImageService imageService;
+        private readonly IKenticoSkuProvider skus;
 
         public ShoppingCartService(IKenticoSiteProvider kenticoSite,
                                    IKenticoLocalizationProvider localization,
                                    IKenticoPermissionsProvider permissions,
                                    IKenticoUserProvider kenticoUsers,
+                                   IKenticoCustomerProvider kenticoCustomer,
                                    IKenticoAddressBookProvider addresses,
                                    IKenticoResourceService resources,
                                    ITaxEstimationService taxCalculator,
@@ -51,12 +58,16 @@ namespace Kadena.BusinessLogic.Services
                                    IKenticoAddressBookProvider addressBookProvider,
                                    IKenticoProductsProvider productsProvider,
                                    IKenticoBusinessUnitsProvider businessUnitsProvider,
-                                   IDynamicPriceRangeProvider dynamicPrices)
+                                   IDynamicPriceRangeProvider dynamicPrices,
+                                   ITieredPriceRangeProvider tieredPrices,
+                                   IImageService imageService,
+                                   IKenticoSkuProvider skus)
         {
             this.kenticoSite = kenticoSite ?? throw new ArgumentNullException(nameof(kenticoSite));
             this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
             this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             this.kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
+            this.kenticoCustomer= kenticoCustomer ?? throw new ArgumentNullException(nameof(kenticoCustomer));
             this.kenticoAddresses = addresses ?? throw new ArgumentNullException(nameof(addresses));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.taxCalculator = taxCalculator ?? throw new ArgumentNullException(nameof(taxCalculator));
@@ -70,13 +81,16 @@ namespace Kadena.BusinessLogic.Services
             this.productsProvider = productsProvider ?? throw new ArgumentNullException(nameof(productsProvider));
             this.businessUnitsProvider = businessUnitsProvider ?? throw new ArgumentNullException(nameof(businessUnitsProvider));
             this.dynamicPrices = dynamicPrices ?? throw new ArgumentNullException(nameof(dynamicPrices));
+            this.tieredPrices = tieredPrices ?? throw new ArgumentNullException(nameof(tieredPrices));
+            this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
+            this.skus = skus ?? throw new ArgumentNullException(nameof(skus));
         }
 
         public async Task<CheckoutPage> GetCheckoutPage()
         {
             var addresses = kenticoAddresses.GetCustomerAddresses(AddressType.Shipping);
             var paymentMethods = shoppingCart.GetPaymentMethods();
-            var emailConfirmationEnabled = resources.GetSettingsKey<bool>("KDA_UseNotificationEmailsOnCheckout");
+            var emailConfirmationEnabled = resources.GetSettingsKey<bool>(Settings.KDA_UseNotificationEmailsOnCheckout);
             var currentUserId = kenticoUsers.GetCurrentUser().UserId;
 
             var checkoutPage = new CheckoutPage()
@@ -100,7 +114,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var creditCardMethod = methods.Items.FirstOrDefault(pm => pm.ClassName == "KDA.PaymentMethods.CreditCard");
 
-            if (creditCardMethod != null && resources.GetSettingsKey("KDA_CreditCard_EnableSaveCard").ToLower() == "true")
+            if (creditCardMethod != null && resources.GetSiteSettingsKey<bool>(Settings.KDA_CreditCard_EnableSaveCard))
             {
                 var storedCardsResult = await userDataClient.GetValidCardTokens(userId);
 
@@ -131,7 +145,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var deliveryAddress = shoppingCart.GetCurrentCartShippingAddress();
 
-            var isShippingApplicable = shoppingCartItems.GetShoppingCartItems()
+            var isShippingApplicable = shoppingCartItems.GetCheckoutCartItems()
                 .Any(item => !item.IsMailingList);
             if (!isShippingApplicable)
             {
@@ -254,7 +268,7 @@ namespace Kadena.BusinessLogic.Services
             }
             else
             {
-                var defaultAddressId = kenticoUsers.GetCurrentCustomer().DefaultShippingAddressId;
+                var defaultAddressId = kenticoCustomer.GetCurrentCustomer().DefaultShippingAddressId;
                 if (defaultAddressId == 0 || shoppingCart.GetAddress(defaultAddressId) == null)
                 {
                     defaultAddressId = page.DeliveryAddresses.GetDefaultAddressId();
@@ -308,7 +322,46 @@ namespace Kadena.BusinessLogic.Services
 
         public CartItems ChangeItemQuantity(int id, int quantity)
         {
-            shoppingCartItems.SetCartItemQuantity(id, quantity);
+            var item = shoppingCartItems.GetCartItemEntity(id);
+
+            if (item == null)
+            {
+                throw new ArgumentOutOfRangeException(string.Format( 
+                    resources.GetResourceString("Kadena.Product.ItemInCartNotFound"),id));
+            }
+
+            if (quantity < 1)
+            {
+                throw new ArgumentOutOfRangeException(string.Format(
+                    resources.GetResourceString("Kadena.Product.NegativeQuantityError"), quantity));
+            }
+
+            if (!item.ProductType.Contains(ProductTypes.InventoryProduct) && !item.ProductType.Contains(ProductTypes.POD) && !item.ProductType.Contains(ProductTypes.StaticProduct))
+            {
+                throw new Exception(resources.GetResourceString("Kadena.Product.QuantityForTypeError"));
+            }
+
+            var itemSku = skus.GetSKU(item.SKUID);
+
+            if (itemSku == null)
+            {
+                throw new Exception($"SKU with SKUID {item.SKUID} not found");
+            }
+
+            if (item.ProductType.Contains(ProductTypes.InventoryProduct) && itemSku.SellOnlyIfAvailable && quantity > itemSku.AvailableItems)
+            {
+                throw new Exception(string.Format(
+                    resources.GetResourceString("Kadena.Product.SetQuantityForItemError"), quantity, item.CartItemText));
+            }
+
+            CheckMinMaxQuantity(itemSku, quantity);
+
+            item.SKUUnits = quantity;
+
+            SetPriceByCustomModel(item, item.ProductPageID);
+
+            shoppingCartItems.SetCartItemQuantity(item, quantity);
+
             return GetCartItems();
         }
 
@@ -326,10 +379,22 @@ namespace Kadena.BusinessLogic.Services
 
         public CartItems GetCartItems()
         {
-            var cartItems = shoppingCartItems.GetShoppingCartItems();
+            var cartItems = shoppingCartItems.GetCheckoutCartItems().ToList();
             var cartItemsTotals = shoppingCart.GetShoppingCartTotals();
-            var countOfItemsString = cartItems.Length == 1 ? resources.GetResourceString("Kadena.Checkout.ItemSingular") : resources.GetResourceString("Kadena.Checkout.ItemPlural");
+            var countOfItemsString = cartItems.Count == 1 ? resources.GetResourceString("Kadena.Checkout.ItemSingular") : resources.GetResourceString("Kadena.Checkout.ItemPlural");
+            cartItems.ForEach(i => i.Image = imageService.GetThumbnailLink(i.Image));
 
+            cartItems.ForEach(i => 
+                {
+                    i.Delivery = string.Empty;
+
+                    if (i.IsMailingList && i.IsTemplated)
+                    {
+                        var delivery = resources.GetResourceString("Kadena.Checkout.MailingDelivery");
+                        i.Delivery = string.Format(delivery, i.Quantity);
+                    }
+                }
+             );
             var products = checkoutfactory.CreateProducts(cartItems, cartItemsTotals, countOfItemsString);
 
             if (!permissions.UserCanSeePrices())
@@ -343,14 +408,15 @@ namespace Kadena.BusinessLogic.Services
         public CartItemsPreview ItemsPreview()
         {
             bool userCanSeePrices = permissions.UserCanSeePrices();
-            var cartItems = shoppingCartItems.GetShoppingCartItems(userCanSeePrices);
+            var cartItems = shoppingCartItems.GetCheckoutCartItems(userCanSeePrices).ToList();
+            cartItems.ForEach(i => i.Image = imageService.GetThumbnailLink(i.Image));
 
             var preview = new CartItemsPreview
             {
                 EmptyCartMessage = resources.GetResourceString("Kadena.Checkout.CartIsEmpty"),
                 SummaryPrice = new CartPrice(),
 
-                Items = cartItems.ToList()
+                Items = cartItems
             };
 
             if (userCanSeePrices)
@@ -366,6 +432,22 @@ namespace Kadena.BusinessLogic.Services
             return preview;
         }
 
+        void CheckMinMaxQuantity(Sku sku, int totalAmountAfterAdding)
+        {
+            var min = sku?.MinItemsInOrder ?? 0;
+            var max = sku?.MaxItemsInOrder ?? 0;
+
+            if (min > 0 && totalAmountAfterAdding < min)
+            {
+                throw new NotLoggedException("Cannot order less than minimal count of items");
+            }
+
+            if (max > 0 && totalAmountAfterAdding > max)
+            {
+                throw new NotLoggedException("Cannot order more than maximal count of items");
+            }
+        }
+
         public async Task<AddToCartResult> AddToCart(NewCartItem newItem)
         {
             var addedAmount = newItem.Quantity;
@@ -375,7 +457,7 @@ namespace Kadena.BusinessLogic.Services
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
 
-            var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);
+            var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);            
 
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.InventoryProduct))
             {
@@ -389,16 +471,26 @@ namespace Kadena.BusinessLogic.Services
 
             shoppingCartItems.SetArtwork(cartItem, newItem.DocumentId);
 
-            SetDynamicPrice(cartItem, newItem.DocumentId);
+            // do this before calculating dynamic price
+            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))
+            {
+                CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID),
+                                    newItem.Quantity);
+                cartItem.SKUUnits = newItem.Quantity;
+            }
+            else if(!ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.MailingProduct))
+            {
+                var totalQuantity = cartItem.SKUUnits + newItem.Quantity;
+                CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID),
+                                    totalQuantity);
+                cartItem.SKUUnits = totalQuantity;
+            }
+            
+            SetPriceByCustomModel(cartItem, newItem.DocumentId);
 
             if (!string.IsNullOrEmpty(newItem.CustomProductName))
             {
                 cartItem.CartItemText = newItem.CustomProductName;
-            }
-
-            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))
-            {
-                cartItem.SKUUnits = newItem.Quantity;
             }
 
             shoppingCartItems.SaveCartItem(cartItem);
@@ -414,16 +506,29 @@ namespace Kadena.BusinessLogic.Services
             return result;
         }
 
-        private void SetDynamicPrice(CartItemEntity cartItem, int documentId)
+        private void SetPriceByCustomModel(CartItemEntity cartItem, int documentId)
         {
-            var price = dynamicPrices.GetDynamicPrice(cartItem.SKUUnits, documentId);
+            var product = productsProvider.GetProductByDocumentId(documentId);
+
+            if (product == null)
+            {
+                return;
+            }
+
+            var price = decimal.MinusOne;
+
+            if (product.PricingModel == PricingModel.Dynamic)
+            {
+                price = dynamicPrices.GetDynamicPrice(cartItem.SKUUnits, product.DynamicPricingJson);
+            }
+            else if (product.PricingModel == PricingModel.Tiered)
+            {
+                price = tieredPrices.GetTieredPrice(cartItem.SKUUnits, product.TieredPricingJson);
+            }
+
             if (price > decimal.MinusOne)
             {
                 cartItem.CartItemPrice = price;
-            }
-            else
-            {
-                cartItem.CartItemPrice = null;
             }
         }
 
@@ -447,26 +552,36 @@ namespace Kadena.BusinessLogic.Services
 
         private void EnsureInventoryAmount(CartItemEntity item, int addedQuantity, int resultedQuantity)
         {
-            var availableQuantity = shoppingCart.GetStockQuantity(item.SKUID);
+            var sku = skus.GetSKU(item.SKUID);
 
-            if (addedQuantity > availableQuantity)
+            if (sku == null)
             {
-                throw new ArgumentException(resources.GetResourceString("Kadena.Product.LowerNumberOfAvailableProducts"));
+                throw new ArgumentException($"Unable to find SKU {item.SKUID}");
             }
-            
-            if (resultedQuantity > availableQuantity)
-            {
-                var errorText = string.Format(resources.GetResourceString("Kadena.Product.ItemsInCartExceeded"),
-                                              resultedQuantity - addedQuantity,
-                                              availableQuantity - resultedQuantity + addedQuantity);
 
-                throw new ArgumentException(errorText);
+            if (sku.SellOnlyIfAvailable)
+            {
+                var availableQuantity = sku.AvailableItems;
+
+                if (addedQuantity > availableQuantity)
+                {
+                    throw new ArgumentException(resources.GetResourceString("Kadena.Product.LowerNumberOfAvailableProducts"));
+                }
+
+                if (resultedQuantity > availableQuantity)
+                {
+                    var errorText = string.Format(resources.GetResourceString("Kadena.Product.ItemsInCartExceeded"),
+                                                  resultedQuantity - addedQuantity,
+                                                  availableQuantity - resultedQuantity + addedQuantity);
+
+                    throw new ArgumentException(errorText);
+                }
             }
         }
 
         private bool GetOtherAddressSettingsValue()
         {
-            var settingsKey = resources.GetSettingsKey("KDA_AllowCustomShippingAddress");
+            var settingsKey = resources.GetSiteSettingsKey(Settings.KDA_AllowCustomShippingAddress);
             bool otherAddressAvailable = false;
             bool.TryParse(settingsKey, out otherAddressAvailable);
             return otherAddressAvailable;
@@ -488,7 +603,7 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new Exception(resources.GetResourceString("KDA.Cart.InvalidProduct"));
             }
-            int availableQty = inventoryType == 1 ? productsProvider.GetSkuAvailableQty(skuID) : -1;
+            int availableQty = inventoryType == 1 ? skus.GetSkuAvailableQty(skuID) : -1;
             if (availableQty == 0)
             {
                 throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));

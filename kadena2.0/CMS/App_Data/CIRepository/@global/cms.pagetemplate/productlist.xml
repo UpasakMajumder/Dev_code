@@ -100,17 +100,90 @@
           <property name="contentbefore">
 <![CDATA[
 <div class="table__responsive">
-<table  id="reptable" class="show-table">
-  <tbody>
-    <tr>
-      <th>{$KDA.GIProductsList.POSNumber$}</th>
-      <th>{$KDA.GIProductsList.ProductName$}</th>
-      <th>{$KDA.GIProductsList.ShortDescription$}</th>
-      <th>{$KDA.GIProductsList.BrandName$}</th>
-      <th>{$KDA.GIProductsList.BundleQty$}</th>
-      <th>{$KDA.GIProductsList.ExpirationDate$}</th>
-      <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
-    </tr>
+  <table  id="reptable" class="show-table">
+    <tbody>
+      <tr>
+        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("POSNumber") |(user)administrator|(hash)aca980944bf230dc7e3cc04812f3892a26166f8ff384ea269fc474c7b654335a%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("POSNumber") |(user)administrator|(hash)b92ca7a1598105383724ae0884faa1c3892a789d068b9f78669099c253e2580a%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.GIProductsList.POSNumber$}</span>
+          </a>        
+        </th>
+        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("SKUName") |(user)administrator|(hash)ce2a1dee5cbbf4924910bafc2aa997513022ed76ff4cf79aefc7c006ef1b94b2%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("SKUName") |(user)administrator|(hash)5818bd6df0d3438f88481af87cec396d953025d10c57eae986727991ee76f369%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.GIProductsList.ProductName$}</span>
+          </a>        
+        </th>
+        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("SKUDescription") |(user)administrator|(hash)e07aef16dc8db5ba38e73a4a644140bb308c611766734eddfee793e878722053%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("SKUDescription") |(user)administrator|(hash)9e55a259cb64bb9a9585f20cc46e9a99dc565997df60b7759a2c975352206a15%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.GIProductsList.ShortDescription$}</span>
+          </a>        
+        </th>        
+        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("BrandName") |(user)administrator|(hash)49cabc097637dcd3f1a5045c39c711a73bf60f29ab5de60d82e56a96446b2310%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("BrandName") |(user)administrator|(hash)517d57002e8c1c9398b038cfe03606aaed00e96e14da1a46b5dc10730a84093f%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.GIProductsList.BrandName$}</span>
+          </a>        
+        </th>         
+        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("QtyPerPack") |(user)administrator|(hash)39a5c9fe8297541adbd8ff880aaf8a36ebb0b241db316a5ad10bae8c2c5f7936%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("QtyPerPack") |(user)administrator|(hash)d191fe00bcf78575d13bff1eacea95fab132e5fe9ab3cf15f690a7e924258832%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.GIProductsList.BundleQty$}</span>
+          </a>        
+        </th>         
+        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("SKUValidUntil") |(user)administrator|(hash)01aba9fdc8050ad928aa8953139dfef0c20cca763cedc62e1dc6dd8acae221e4%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("SKUValidUntil") |(user)administrator|(hash)52b614e23a953826238a188779c8fa2ba0e6e1cbe102f81cbbbc7f9a28c7b83f%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.GIProductsList.ExpirationDate$}</span>
+          </a>        
+        </th>        
+       
+        <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
+      </tr>
 ]]>
           </property>
           <property name="controlid">ProductList</property>
@@ -126,7 +199,9 @@
           <property name="instanceguid">4278eaf6-2ec1-48dc-9ad3-b7633b5a2543</property>
           <property name="itemseparator"></property>
           <property name="loadpagesindividually">False</property>
-          <property name="orderby"></property>
+          <property name="orderby" ismacro="true">
+            <![CDATA[{% KadenaNamespace.TableSortingOrderBy("SKUName,POSNumber,QtyPerPack,SKUValidUntil,BrandName,SKUDescription") |(user)administrator|(hash)766aa881c562233376f565ff126df6b1b2ec99c8c30d5c5c65e32f9fc60e66a8%}]]>
+          </property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>
@@ -165,7 +240,7 @@
           <property name="webparttitle"></property>
           <property name="webparttype">queryrepeater</property>
           <property name="wherecondition" ismacro="true">
-            <![CDATA[ [NodeSiteID]={%SiteContext.CurrentSiteID|(user)cvoqa2@gmail.com|(hash)0d8534ef2762873bc532c320eeacd1a901b9f0b3486cb97901fd8ae6dc3607f5%} AND isnull(ProgramID,0)<=0]]>
+            <![CDATA[ [NodeSiteID]={%SiteContext.CurrentSiteID |(user)administrator|(hash)81c748f4c208b78564a9ba7b75da2707da12dee474e2a672ed970bd552e557ba%} AND isnull(ProgramID,0)<=0]]>
           </property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[
@@ -218,7 +293,7 @@
           <property name="pagerlayout">KDA.Transformations.Kadena-PagerLayout</property>
           <property name="pages">KDA.Transformations.General-Pages</property>
           <property name="pageseparator">CMS.PagerTransformations.General-PageSeparator</property>
-          <property name="pagesize">25</property>
+          <property name="pagesize">2</property>
           <property name="pagingmode">querystring</property>
           <property name="partialcachedependencies">
 <![CDATA[
@@ -285,14 +360,14 @@
           <property name="text">
 <![CDATA[
  {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)cvoqa2@gmail.com|(hash)48f4291916f4b22d935de1a516180ac0498a0c3374d70ee74f65c42d4cf85c36%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)25a38b3f17c6468d659e8f65b22b9d82b2decede46871dc160947145a720db8e%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -344,7 +419,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[ <h1 class="content-header__page-name">{%GetResourceString("Kadena.Products.HeaderText")|(user)cvoqa2@gmail.com|(hash)2c82bb753643454a7fc4117c67d52fe5f5fa992e4133bec52eb49db2250a8a09%}</h1>]]>
+            <![CDATA[ <h1 class="content-header__page-name">{%GetResourceString("Kadena.Products.HeaderText") |(user)administrator|(hash)d9a1f9c6683077d68842e0f2c1837d9f3b08c49b4ed623c74405aa8e8b4cdb72%}</h1>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
@@ -395,7 +470,7 @@ iteratedDocument = iteratedDocument.Parent;
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
           <property name="text">
-            <![CDATA[<a class="btn-action" href="{% Settings.KDA_InventoryProductPageUrl |(user)cvoqa2@gmail.com|(hash)1000a7cabb4fc748a7d998b3fd443889b58f059bfa56f82da529000522aa4579%}"><i class="fa fa-plus" aria-hidden="true"></i>{$Kadena.Products.AddNewText$}</a>]]>
+            <![CDATA[<a class="btn-action" href="{% Settings.KDA_InventoryProductPageUrl|(user)administrator|(hash)766d707651622faecd33ef740a8e585760623d8815698e5fde5f87d6dfa983fd%}"><i class="fa fa-plus" aria-hidden="true"></i>{$Kadena.Products.AddNewText$}</a>]]>
           </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>

@@ -8,8 +8,10 @@
   <TransformationCode>
 <![CDATA[
 <div class="col-lg-4 col-xl-3">
-  <a href='{%Transformation.GetDocumentUrl()|(user)administrator|(hash)300ac8634e7214b7a2fcb5ee0c8a669749f76fa4644764dad9c42d9830d076fe%}' class="category">
-    <div class="category__picture" style="background-image: url('{% SKUImagePath %}')"></div>
+  <a href='{%Transformation.GetDocumentUrl() |(user)administrator|(hash)23be8f98f5eb6508a2f8c3028f868831f56ee90136e9088743c6e3386c6cec57%}' class="category">
+    <div class="category__picture">
+      <img src='{% KadenaNamespace.GetThumbnailLink(ProductImage)|(user)administrator|(hash)d8522f72aa3ab7b9a2456e928dac85447c986ac81e831fca3fedd828da3c12b2%}' />
+    </div>
     <div class="category__title">
       <h2>{%DocumentName%}</h2>
     </div>

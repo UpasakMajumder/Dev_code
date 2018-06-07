@@ -21,12 +21,8 @@ namespace Kadena.WebAPI.Controllers
             {
                 throw new ArgumentNullException(nameof(orderListServiceFactory));
             }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
 
-            _mapper = mapper;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _orderService = orderListServiceFactory.GetDashboard();
         }
 

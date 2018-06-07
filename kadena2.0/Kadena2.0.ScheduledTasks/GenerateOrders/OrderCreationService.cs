@@ -1,4 +1,5 @@
 ﻿using CMS.SiteProvider;
+using Kadena.Models.SiteSettings;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
@@ -47,9 +48,9 @@ namespace Kadena.ScheduledTasks.GenerateOrders
         public string GenerateOrder(int openCampaignID, int campaignClosingUserID)
         {
             var usersWithShoppingCartItems = shoppingCartProvider.GetUserIDsWithShoppingCart(openCampaignID, 1);
-            var orderTemplateSettingKey = kenticoresourceService.GetSettingsKey("KDA_OrderReservationEmailTemplate");
-            var failedOrderTemplateSettingKey = kenticoresourceService.GetSettingsKey("KDA_FailedOrdersEmailTemplate");
-            var failedOrdersUrl = kenticoresourceService.GetSettingsKey("KDA_FailedOrdersPageUrl");
+            var orderTemplateSettingKey = kenticoresourceService.GetSiteSettingsKey(Settings.KDA_OrderReservationEmailTemplate);
+            var failedOrderTemplateSettingKey = kenticoresourceService.GetSiteSettingsKey(Settings.KDA_FailedOrdersEmailTemplate);
+            var failedOrdersUrl = kenticoresourceService.GetSiteSettingsKey(Settings.KDA_FailedOrdersPageUrl);
             var unprocessedDistributorIDs = new List<Tuple<int, string>>();
             usersWithShoppingCartItems.ForEach(shoppingCartUser =>
             {

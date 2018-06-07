@@ -4,6 +4,31 @@
 
 <div class="css-login">
     <div class="form form__lg">
+    <div class="mb-2 form__block">
+        <div class="input__wrapper">
+            <cms:LocalizedLabel ID="lblBrand" CssClass="input__label" runat="server" EnableViewState="false" ResourceString="Kadena.InvProductForm.lblBrand" />
+            <div class="input__inner">
+                <cms:CMSDropDownList ID="ddlBrand" runat="server" EnableViewState="True" AutoPostBack="true" OnSelectedIndexChanged="ddlBrand_SelectedIndexChanged"></cms:CMSDropDownList>
+                <asp:RequiredFieldValidator ID="rfvBrand" runat="server" CssClass="EditingFormErrorLabel" InitialValue="0" ControlToValidate="ddlBrand">
+                </asp:RequiredFieldValidator>
+            </div>
+        </div>
+    </div>
+    <div class="mb-2 form__block">
+        <div class="input__wrapper">
+            <span class="input__label">
+                <cms:LocalizedLabel ID="lblPosCategory" runat="server" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblPosCategory" />
+            </span>
+            <div class="input__inner">
+                <cms:CMSDropDownList ID="ddlPosCategory" runat="server" AutoPostBack="true" EnableViewState="True" OnSelectedIndexChanged="ddlPosCategory_SelectedIndexChanged"></cms:CMSDropDownList>
+                <asp:RequiredFieldValidator ID="rfvPosCategory"
+                    runat="server" CssClass="EditingFormErrorLabel" InitialValue="0" ControlToValidate="ddlPosCategory">
+                </asp:RequiredFieldValidator>
+
+            </div>
+        </div>
+    </div>
+    
         <div class="mb-2 form__block">
             <div class="input__wrapper">
                 <span class="input__label">
@@ -11,29 +36,9 @@
                 </span>
                 <div class="input__inner">
                     <cms:CMSDropDownList ID="ddlPosNo" runat="server" AutoPostBack="true" EnableViewState="True" OnSelectedIndexChanged="ddlPosNo_SelectedIndexChanged" CssClass="input__select"></cms:CMSDropDownList>
+                    <asp:TextBox runat="server" ID="txtPOSNumber" Visible="false" Enabled="false" CssClass="input__text form-control"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="rfvPosNo"
                         runat="server" CssClass="EditingFormErrorLabel" InitialValue="0" ControlToValidate="ddlPosNo">
-                    </asp:RequiredFieldValidator>
-
-                </div>
-            </div>
-        </div>
-        <div class="mb-2 form__block">
-            <div class="input__wrapper">
-                <cms:LocalizedLabel ID="lblBrand" CssClass="input__label" runat="server" EnableViewState="false" ResourceString="Kadena.InvProductForm.lblBrand" />
-                <div class="input__inner">
-                    <cms:CMSDropDownList ID="ddlBrand" runat="server" EnableViewState="True" Enabled="false"></cms:CMSDropDownList>
-                    <asp:RequiredFieldValidator ID="rfvBrand" runat="server" CssClass="EditingFormErrorLabel" InitialValue="0" ControlToValidate="ddlBrand">
-                    </asp:RequiredFieldValidator>
-                </div>
-            </div>
-        </div>
-        <div class="mb-2 form__block">
-            <div class="input__wrapper">
-                <cms:LocalizedLabel ID="lblLongDes" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblLongDes" />
-                <div class="input__inner long__desc">
-                    <cms:CMSTextBox ID="txtLongDes" runat="server" EnableViewState="false" CssClass="input__text" Rows="5" Columns="5" TextMode="MultiLine"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvLongDes" CssClass="EditingFormErrorLabel" runat="server" ControlToValidate="txtLongDes">
                     </asp:RequiredFieldValidator>
                 </div>
             </div>
@@ -48,6 +53,17 @@
                 </div>
             </div>
         </div>
+        <div class="mb-2 form__block">
+            <div class="input__wrapper">
+                <cms:LocalizedLabel ID="lblLongDes" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblLongDes" />
+                <div class="input__inner long__desc">
+                    <cms:CMSTextBox ID="txtLongDes" runat="server" EnableViewState="false" CssClass="input__text" Rows="5" Columns="5" TextMode="MultiLine"></cms:CMSTextBox>
+                    <asp:RequiredFieldValidator ID="rfvLongDes" CssClass="EditingFormErrorLabel" runat="server" ControlToValidate="txtLongDes">
+                    </asp:RequiredFieldValidator>
+                </div>
+            </div>
+        </div>
+        
 
         <div class="mb-2 form__block">
             <div class="input__wrapper">
@@ -148,7 +164,7 @@
                 <div class="input__inner">
                     <asp:FileUpload ID="productImage" runat="server" CssClass="input__file" />
                     <div class="product-img">
-                        <asp:Image ID="imgProduct" runat="server" Height="100" Width="100" Visible="false" />
+                        <asp:Image ID="imgProduct" runat="server" Height="100" Visible="false" />
                     </div>
                 </div>
             </div>

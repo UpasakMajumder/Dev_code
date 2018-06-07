@@ -78,8 +78,8 @@ class OrdersReports extends Component {
     const data = {
       page: pagination.currentPage,
       sort: this.sort,
-      dateFrom: filter.orderDate.dateFrom,
-      dateTo: filter.orderDate.dateTo,
+      dateFrom: OrdersReports.getFormattedDate(filter.orderDate.dateFrom),
+      dateTo: OrdersReports.getFormattedDate(filter.orderDate.dateTo),
       ...args
     };
 
@@ -200,8 +200,6 @@ class OrdersReports extends Component {
   };
 
   applyDate = (dateTo, dateFrom) => {
-    if (!dateFrom) return;
-
     this.sort = OrdersReports.getSortId(this.props.store.sort.sortOrderAsc, this.props.store.sort.sortBy);
 
     const args = {

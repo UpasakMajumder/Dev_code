@@ -14,12 +14,8 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
 
         public ShippingOptionDTO ShippingOption { get; set; }
 
-        public decimal? TotalShipping { get; set; }
-
-        public decimal TotalPrice { get; set; }
-
-        public decimal TotalTax { get; set; }
-
+        public TotalsDto Totals { get; set; }
+        
         public DateTime OrderDate { get; set; }
 
         public OrderStatusDTO OrderStatus { get; set; }

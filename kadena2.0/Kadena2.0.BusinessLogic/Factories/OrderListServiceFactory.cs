@@ -13,7 +13,7 @@ namespace Kadena.BusinessLogic.Factories
     {
         private readonly IMapper _mapper;
         private readonly IOrderViewClient _orderClient;
-        private readonly IKenticoUserProvider _kenticoUser;
+        private readonly IKenticoCustomerProvider _kenticoCustomer;
         private readonly IKenticoResourceService _kenticoResources;
         private readonly IKenticoSiteProvider _site;
         private readonly IKenticoOrderProvider _order;
@@ -22,66 +22,32 @@ namespace Kadena.BusinessLogic.Factories
         private readonly IKenticoLogger _logger;
         private readonly IKenticoAddressBookProvider _kenticoAddressBook;
 
-        public OrderListServiceFactory(IMapper mapper, IOrderViewClient orderClient, IKenticoUserProvider kenticoUser,
-            IKenticoResourceService kenticoResources, IKenticoSiteProvider site, IKenticoOrderProvider order, IKenticoPermissionsProvider permissions,
-            IKenticoDocumentProvider documents, IKenticoLogger logger, IKenticoAddressBookProvider kenticoAddressBook)
+        public OrderListServiceFactory(IMapper mapper,
+                                       IOrderViewClient orderClient,
+                                       IKenticoCustomerProvider kenticoCustomer,
+                                       IKenticoResourceService kenticoResources, 
+                                       IKenticoSiteProvider site, 
+                                       IKenticoOrderProvider order, 
+                                       IKenticoPermissionsProvider permissions,
+                                       IKenticoDocumentProvider documents, 
+                                       IKenticoLogger logger, 
+                                       IKenticoAddressBookProvider kenticoAddressBook)
         {
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            if (orderClient == null)
-            {
-                throw new ArgumentNullException(nameof(orderClient));
-            }
-            if (kenticoUser == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoUser));
-            }
-            if (kenticoResources == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoResources));
-            }
-            if (site == null)
-            {
-                throw new ArgumentNullException(nameof(site));
-            }
-            if (permissions == null)
-            {
-                throw new ArgumentNullException(nameof(permissions));
-            }
-            if (order == null)
-            {
-                throw new ArgumentNullException(nameof(order));
-            }
-            if (documents == null)
-            {
-                throw new ArgumentNullException(nameof(documents));
-            }
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-            if (kenticoAddressBook == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoAddressBook));
-            }
-
-            _mapper = mapper;
-            _orderClient = orderClient;
-            _kenticoUser = kenticoUser;
-            _kenticoResources = kenticoResources;
-            _site = site;
-            _order = order;
-            _permissions = permissions;
-            _documents = documents;
-            _logger = logger;
-            _kenticoAddressBook = kenticoAddressBook;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _orderClient = orderClient ?? throw new ArgumentNullException(nameof(orderClient));
+            _kenticoCustomer = kenticoCustomer ?? throw new ArgumentNullException(nameof(kenticoCustomer));
+            _kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
+            _site = site ?? throw new ArgumentNullException(nameof(site));
+            _order = order ?? throw new ArgumentNullException(nameof(order));
+            _permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
+            _documents = documents ?? throw new ArgumentNullException(nameof(documents));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _kenticoAddressBook = kenticoAddressBook ?? throw new ArgumentNullException(nameof(kenticoAddressBook));
         }
 
         public IOrderListService GetDashboard()
         {
-            return new OrderListService(_mapper, _orderClient, _kenticoUser, _kenticoResources, _site, _order, _documents, _permissions, _logger, _kenticoAddressBook)
+            return new OrderListService(_mapper, _orderClient, _kenticoCustomer, _kenticoResources, _site, _order, _documents, _permissions, _logger, _kenticoAddressBook)
             {
                 PageCapacityKey = Settings.KDA_DashboardOrdersPageCapacity
             };
@@ -89,7 +55,7 @@ namespace Kadena.BusinessLogic.Factories
 
         public IOrderListService GetRecentOrders()
         {
-            return new OrderListService(_mapper, _orderClient, _kenticoUser, _kenticoResources, _site, _order, _documents, _permissions, _logger, _kenticoAddressBook)
+            return new OrderListService(_mapper, _orderClient, _kenticoCustomer, _kenticoResources, _site, _order, _documents, _permissions, _logger, _kenticoAddressBook)
             {
                 PageCapacityKey = Settings.KDA_RecentOrdersPageCapacity,
                 EnablePaging = true

@@ -1,6 +1,7 @@
 ﻿using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.Membership;
+using Kadena.Infrastructure.Exceptions;
 using Kadena.Models;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Newtonsoft.Json;
@@ -16,11 +17,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
 
         public DynamicPriceRangeProvider(IKenticoResourceService resources)
         {
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            this.resources = resources;
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
         }
 
 
@@ -30,6 +27,13 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             var ranges = GetDynamicPricingRanges(document?.GetStringValue("ProductDynamicPricing", string.Empty));
             return GetDynamicPrice(quantity, ranges);
         }
+
+        public IEnumerable<DynamicPricingRange> GetDynamicRanges(int documentId)
+        {
+            var document = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser)) as SKUTreeNode;
+            return GetDynamicPricingRanges(document?.GetStringValue("ProductDynamicPricing", string.Empty));
+        }
+
 
         public decimal GetDynamicPrice(int quantity, string rangesJson)
         {
@@ -48,7 +52,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 }
                 else
                 {
-                    throw new ArgumentException(resources.GetResourceString("Kadena.Product.QuantityOutOfRange"));
+                    throw new NotLoggedException(resources.GetResourceString("Kadena.Product.QuantityOutOfRange"));
                 }
             }
             return decimal.MinusOne;

@@ -8,6 +8,7 @@ using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using Kadena.Container.Default;
+using Kadena.Models.SiteSettings;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
@@ -412,7 +413,7 @@ public partial class CMSWebParts_Kadena_Address_CreateAddress : CMSAbstractWebPa
                 int referrer = ValidationHelper.GetInteger(Request.QueryString["refer"], 0);
                 if (referrer >0)
                 {
-                    var failedOrdersUrl = kenticoResourceService.GetSettingsKey("KDA_FailedOrdersPageUrl");
+                    var failedOrdersUrl = kenticoResourceService.GetSiteSettingsKey(Settings.KDA_FailedOrdersPageUrl);
                     URLHelper.Redirect($"{failedOrdersUrl}?campid={referrer}");
                 }
                 URLHelper.Redirect(CurrentDocument.Parent.DocumentUrlPath);

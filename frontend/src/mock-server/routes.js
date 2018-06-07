@@ -6,8 +6,10 @@ const Products = require('./controllers/products');
 const Orders = require('./controllers/order');
 const MailingList = require('./controllers/mailingList');
 const Login = require('./controllers/login');
+const Registration = require('./controllers/registration');
 const CheckTaC = require('./controllers/checkTaC');
 const AcceptTaC = require('./controllers/acceptTaC');
+const EmailProof = require('./controllers/emailProof');
 
 const apiRouter = require('express').Router();
 
@@ -17,12 +19,14 @@ apiRouter.use((req, res, next) => {
   next();
 });
 
-apiRouter.get('/order/recent/filtered/campaigns/:selectedOrderType', Orders.recent.filtered.campaigns);
-apiRouter.get('/order/recent/filtered/orders/:selectedOrderType/:selectedCampaign*?', Orders.recent.filtered.orders);
+apiRouter.get('/order/recent/filtered/campaigns', Orders.recent.filtered.campaigns);
+apiRouter.get('/order/recent/filtered/orders/:id*?/:campaign*?', Orders.recent.filtered.orders);
 
 apiRouter.post('/login', Login);
-apiRouter.post('/accepttac', AcceptTaC);
-apiRouter.post('/checktac', CheckTaC);
+apiRouter.get('/accepttac', AcceptTaC);
+apiRouter.get('/checktac', CheckTaC);
+
+apiRouter.post('/registration', Registration);
 
 apiRouter.get('/cartPreview', CartPreview);
 
@@ -51,13 +55,19 @@ apiRouter.put('/products/favourite/:id', Products.setFavourite);
 apiRouter.put('/products/unfavourite/:id', Products.setFavourite);
 apiRouter.post('/products/add-to-cart', Products.addToCart);
 apiRouter.post('/products/options', Products.options);
+apiRouter.get('/products/availability', Products.availability);
 
 apiRouter.get('/order/recent/ui', Orders.recent.ui);
+apiRouter.get('/order/recent/requiring-approval', Orders.recent.requiringApproval);
 apiRouter.get('/order/recent/page/:page', Orders.recent.page);
 apiRouter.get('/order/reports/rows', Orders.reports.rows);
-apiRouter.get('/order/detail', Orders.detail);
+apiRouter.get('/order/detail', Orders.detail.ui);
+apiRouter.post('/order/detail/accept', Orders.detail.accept);
+apiRouter.post('/order/detail/reject', Orders.detail.reject);
 
 apiRouter.post('/mailing-list/use-correct/:containerId', MailingList.useCorrect);
 apiRouter.post('/mailing-list/reprocess/:containerId', MailingList.reprocess);
+
+apiRouter.post('/email-proof', EmailProof);
 
 module.exports = apiRouter;

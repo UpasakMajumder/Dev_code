@@ -11,8 +11,8 @@
   <td>{%IfEmpty(FirstName,UserName,FirstName)%}</td>
   <td>{%LastName%}</td>
   <td><a href="#">{%Email%}</a></td>
-  <td>{%KadenaNamespace.GetDivisionName(UserDivisionID)|(user)cvoqa2@gmail.com|(hash)81ad92fd482d48d83a18387c566b233d8b8f2ddc1ee858d5c8d807715239d2f7%}</td>  
-  <td>{%KadenaNamespace.GetBusinessUnits(UserID)|(user)cvoqa2@gmail.com|(hash)55767ed51fee53d33b07b540df830ff522570dcaacb076faf7c5da96d1d77457%}</td>  
+  <td>{%KadenaNamespace.GetDivisionName(UserDivisionID)|(user)administrator|(hash)f8c3669e35dbec1108a78e66b3aebaea49c00f7023f9e914e2fb1f38ea7f8b9d%}</td>  
+  <td>{%KadenaNamespace.GetBusinessUnits(UserID)|(user)administrator|(hash)47a1e37e0702ddd87ba444efd582d39186282e0a38ed5f85d986d1f40959326c%}</td>  
   <td>{%IfEmpty(GetUserFullName(SalesManagerID),GetUserName(SalesManagerID),GetUserFullName(SalesManagerID))%}</td>
   <td>
     <div class="text-center">

@@ -95,6 +95,12 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_ProductEditButton : CM
                         lnkEdit.Enabled = true;
                         BindEditURL();
                     }
+                    else if (openCampaign && !closeCampaign)
+                    {
+                        lnkEdit.Visible = true;
+                        lnkEdit.Enabled = true;
+                        BindEditURL();
+                    }
                     else
                     {
                         lnkEdit.Visible = true;

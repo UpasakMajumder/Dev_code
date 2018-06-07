@@ -65,13 +65,35 @@ config.localization.checkout = {
   message: '{% CheckoutPageTopMessage %}',
   tAndC: {
     exists: {% CheckoutPageTermsAndConditionsRequired == True ? "true" : "false" %},
-    text: '{% GetResourceString("Kadena.Checkout.TermsAndConditions") |(user)tomas.rucki@actum.cz|(hash)2d6c3db00ef3c35c461632ae85e93d7386d91235a06432118d662bf6fbe210e2%}'
+    text: '{% GetResourceString("Kadena.Checkout.TermsAndConditions")|(user)administrator|(hash)4bdc58396bd4104c4c9de936bee0c768832e1dcf15cdf65384a6cbbb139d4c2f%}'
   }
 };
 config.localization.userSettings = {
 	addresses:{
 		editAddressURL : 'api/usersettings/saveshippingaddress'
 	}
+};
+
+config.localization.emailProof = {
+    submitUrl: '/api/mail/proof',
+    notificationSuccess: {
+        title: '{$ Kadena.EmailProof.NotificationSuccess $}',
+        text: '{$ Kadena.EmailProof.NotificationSuccessText $}'
+    },
+    dialog: {
+        title:'{$ Kadena.EmailProof.Title $}',
+        recepientEmailLabel: '{$ Kadena.EmailProof.Email $}',
+        subjectLabel: '{$ Kadena.EmailProof.Subject $}',
+        messageLabel: '{$ Kadena.EmailProof.Message $}',
+        proofLabel: '{$ Kadena.EmailProof.Proof $}',
+        submitButtonLabel: '{$ Kadena.EmailProof.Submitbutton $}',
+        cancelButtonLabel: '{$ Kadena.EmailProof.CancelButton $}',
+        note: '{$ Kadena.EmailProof.Note $}',
+        validationMessages: {
+            required: '{$ Kadena.EmailProof.FieldRequired $}',
+            email: '{$ Kadena.EmailProof.MailRequired $}'
+        }
+    }
 };
 ]]>
           </property>

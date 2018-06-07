@@ -1,5 +1,4 @@
-﻿using Kadena.Dto.Order;
-using Kadena.Models.RecentOrders;
+﻿using Kadena.Models.RecentOrders;
 using System.Threading.Tasks;
 
 namespace Kadena.BusinessLogic.Contracts
@@ -10,10 +9,14 @@ namespace Kadena.BusinessLogic.Contracts
 
         bool EnablePaging { get; set; }
 
+        Task<OrderHead> GetOrdersToApprove();
+
         Task<OrderHead> GetHeaders();
 
         Task<OrderBody> GetBody(int pageNumber);
 
-        Task<OrderHeadBlock> GetHeaders(string orderType, int campaignID);
+        Task<OrderHeadBlock> GetCampaignHeaders(string orderType, int campaignID);
+
+        Task<OrderHeadBlock> GetCampaignOrdersToApprove(string orderType, int campaignID);
     }
 }

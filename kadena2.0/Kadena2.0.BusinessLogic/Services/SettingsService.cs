@@ -2,10 +2,10 @@
 using Kadena.Models.Settings;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using System.Collections.Generic;
 using System.Linq;
 using System;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -15,52 +15,33 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoLocalizationProvider _localization;
         private readonly IKenticoSiteProvider _site;
         private readonly IKenticoUserProvider _kenticoUsers;
+        private readonly IKenticoCustomerProvider _kenticoCustomers;
         private readonly IKenticoResourceService _resources;
-        private readonly IKenticoAddressBookProvider  _addresses;
+        private readonly IKenticoAddressBookProvider _addresses;
+        private readonly IDialogService _dialogService;
 
         public SettingsService(IKenticoPermissionsProvider permissions,
                                IKenticoLocalizationProvider localization,
                                IKenticoSiteProvider site,
-                               IKenticoUserProvider kenticoUsers, 
+                               IKenticoUserProvider kenticoUsers,
+                               IKenticoCustomerProvider kenticoCustomers,
                                IKenticoResourceService resources,
-                               IKenticoAddressBookProvider addresses)
+                               IKenticoAddressBookProvider addresses,
+                               IDialogService dialogService)
         {
-            if (permissions == null)
-            {
-                throw new ArgumentNullException(nameof(permissions));
-            }
-            if (localization == null)
-            {
-                throw new ArgumentNullException(nameof(localization));
-            }
-            if (site == null)
-            {
-                throw new ArgumentNullException(nameof(site));
-            }
-            if (kenticoUsers == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoUsers));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (addresses == null)
-            {
-                throw new ArgumentNullException(nameof(addresses));
-            }
-
-            _permissions = permissions;
-            _localization = localization;
-            _site = site;
-            _kenticoUsers = kenticoUsers;
-            _resources = resources;
-            _addresses = addresses;
+            _permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
+            _localization = localization ?? throw new ArgumentNullException(nameof(localization));
+            _site = site ?? throw new ArgumentNullException(nameof(site));
+            _kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
+            _kenticoCustomers = kenticoCustomers ?? throw new ArgumentNullException(nameof(kenticoCustomers));
+            _resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            _addresses = addresses ?? throw new ArgumentNullException(nameof(addresses));
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
         public SettingsAddresses GetAddresses()
         {
-            var customer = _kenticoUsers.GetCurrentCustomer();
+            var customer = _kenticoCustomers.GetCurrentCustomer();
             var billingAddresses = _addresses.GetCustomerAddresses(AddressType.Billing);
             var shippingAddresses = _addresses.GetCustomerAddresses(AddressType.Shipping);
             var shippingAddressesSorted = shippingAddresses
@@ -70,7 +51,7 @@ namespace Kadena.BusinessLogic.Services
             var states = _localization.GetStates();
             var countries = _localization.GetCountries();
             var canEdit = _permissions.UserCanModifyShippingAddress();
-            var maxShippingAddressesSetting = _resources.GetSettingsKey("KDA_ShippingAddressMaxLimit");
+            var maxShippingAddressesSetting = _resources.GetSiteSettingsKey(Settings.KDA_ShippingAddressMaxLimit);
 
             var userNotification = string.Empty;
             var userNotificationLocalizationKey = _site.GetCurrentSiteCodeName() + ".Kadena.Settings.Address.NotificationMessage";
@@ -84,7 +65,6 @@ namespace Kadena.BusinessLogic.Services
             {
                 maxShippingAddresses = int.Parse(maxShippingAddressesSetting);
             }
-
 
             return new SettingsAddresses
             {
@@ -143,49 +123,7 @@ namespace Kadena.BusinessLogic.Services
                         Discard = _resources.GetResourceString("Kadena.Settings.Addresses.DiscardChanges"),
                         Save = _resources.GetResourceString("Kadena.Settings.Addresses.SaveAddress")
                     },
-                    Fields = new List<DialogField> {
-                        new DialogField {
-                            Id = "address1",
-                            Label = _resources.GetResourceString("Kadena.Settings.Addresses.AddressLine1"),
-                            Type = "text"},
-                        new DialogField {
-                            Id = "address2",
-                            Label = _resources.GetResourceString("Kadena.Settings.Addresses.AddressLine2"),
-                            Type = "text",
-                            IsOptional = true
-                        },
-                        new DialogField {
-                            Id = "city",
-                            Label = _resources.GetResourceString("Kadena.Settings.Addresses.City"),
-                            Type = "text"
-                        },
-                        new DialogField {
-                            Id = "state",
-                            Label = _resources.GetResourceString("Kadena.Settings.Addresses.State"),
-                            Type = "select",
-                            Values = new List<object>()
-                        },
-                        new DialogField {
-                            Id = "zip",
-                            Label = _resources.GetResourceString("Kadena.Settings.Addresses.Zip"),
-                            Type = "text"
-                        } ,
-                        new DialogField {
-                            Id = "country",
-                            Label = "Country",
-                            Values = countries
-                                .GroupJoin(states, c => c.Id, s => s.CountryId, (c, sts) => (object) new
-                                {
-                                    Id = c.Id.ToString(),
-                                    Name = c.Name,
-                                    Values = sts.Select(s => new
-                                    {
-                                        Id = s.Id.ToString(),
-                                        Name = s.StateDisplayName
-                                    }).ToArray()
-                                }).ToList()
-                        }
-                    }
+                    Fields = _dialogService.GetAddressFields().ToList()
                 }
             };
         }

@@ -97,6 +97,20 @@
           <controlname>textboxcontrol</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="CustomerApproverUserID" columntype="integer" guid="1d9824a7-20c3-4a5a-a7ee-c75a21f4e989" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Approver User</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Macro>
+            <![CDATA[{%KadenaMacroMethods.GetApprovers() |(user)administrator|(hash)b07a2c998341755dc3dd3bf4304dbc4bc5371a5eff2ed8bf42751ed1c55e9a39%}]]>
+          </Macro>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
       <field allowempty="true" column="CustomerCountryID" columntype="integer" guid="80182aa0-ae56-432a-8f66-51ea1ec857ac" publicfield="false" system="true">
         <properties>
           <fieldcaption>CustomerCountryID</fieldcaption>

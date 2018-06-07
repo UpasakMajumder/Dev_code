@@ -7,8 +7,8 @@
   </TransformationClassID>
   <TransformationCode>
 <![CDATA[
-<input name="customizedProductName" type="text" maxlength="40" class="input__text js-add-to-cart-name" 
-value="{%  String.IsNullOrWhiteSpace(QueryString.customName)? DocumentName : QueryString.customName |(user)rostyslav.diachenko@actum.cz|(hash)6aa5d7d9fff197696f9387fdfb55d86468d99e3e41ee0f5c6fb8fa8cf4f49712%}">
+<input name="customizedProductName" type="text" class="input__text js-add-to-cart-name" 
+value="{%  String.IsNullOrWhiteSpace(QueryString.customName)? DocumentName : QueryString.customName|(user)administrator|(hash)d225ffaf775cae0c4f1552f612f331b9e5f59dd85fcfcff3a93ad24015635238%}">
 
 ]]>
   </TransformationCode>

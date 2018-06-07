@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Web;
 
 namespace Kadena.Helpers
 {
@@ -12,6 +16,40 @@ namespace Kadena.Helpers
         public static Uri GetACSUri()
         {
             return new Uri("/api/login/saml2", UriKind.Relative);
+        }
+
+        public static NameValueCollection ParseQueryStringFromUrl(string url)
+        {
+            var parametersPart = url;
+            var parametersPartStart = url.IndexOf('?');
+            if (parametersPartStart > 0)
+            {
+                parametersPart = url.Substring(parametersPartStart);
+            }
+
+            return HttpUtility.ParseQueryString(parametersPart);
+        }
+
+        public static string SetQueryParameter(string url, string parameterName, string value)
+        {
+            var urlParts = url.Split('?');
+            var path = urlParts[0];
+            var query = urlParts
+                .Skip(1)
+                .FirstOrDefault() ?? string.Empty;
+            var parameters = HttpUtility.ParseQueryString(query);
+
+            parameters[parameterName] = value;
+
+            var newParameters = new List<string>(parameters.Count + 1);
+            foreach (var key in parameters.AllKeys)
+            {
+                var parameter = $"{key}={HttpUtility.UrlEncode(parameters[key])}";
+                newParameters.Add(parameter);
+            }
+
+            var newUrl = $"{path}?{string.Join("&", newParameters)}";
+            return newUrl;
         }
     }
 }

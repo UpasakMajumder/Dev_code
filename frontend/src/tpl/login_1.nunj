@@ -6,7 +6,6 @@
 {% block content %}
   <div class="new-login">
     <img class="new-login__logo new-login__logo--tl" src="http://satyr.io/150x150/blue" alt="#">
-    <div class="r-tac"></div>
     <div class="new-login__form new-login__form--abs new-login__form--bc">
       <div class="login__custom-logo mb-3">
         <img src="http://satyr.io/205x40/red" alt="logo-image">

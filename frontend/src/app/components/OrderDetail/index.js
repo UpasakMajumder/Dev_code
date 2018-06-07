@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 /* components */
 import Spinner from 'app.dump/Spinner';
 /* ac */
-import getUI from 'app.ac/orderDetail';
+import { getUI, changeStatus } from 'app.ac/orderDetail';
+import toogleEmailProof from 'app.ac/emailProof';
 /* utilities */
 import { getSearchObj } from 'app.helpers/location';
 /* local components */
@@ -13,6 +14,8 @@ import ShippingInfo from './ShippingInfo';
 import PaymentInfo from './PaymentInfo';
 import PricingInfo from './PricingInfo';
 import OrderedItems from './OrderedItems';
+import Actions from './Actions';
+import EmailProof from '../EmailProof';
 
 class OrderDetail extends Component {
   static propTypes = {
@@ -23,8 +26,12 @@ class OrderDetail extends Component {
       orderedItems: PropTypes.object,
       paymentInfo: PropTypes.object,
       pricingInfo: PropTypes.object,
-      shippingInfo: PropTypes.object
-    }).isRequired
+      shippingInfo: PropTypes.object,
+      actions: PropTypes.object,
+      general: PropTypes.object
+    }).isRequired,
+    emailProof: PropTypes.object.isRequired,
+    toogleEmailProof: PropTypes.func.isRequired
   };
 
   componentDidMount() {
@@ -34,11 +41,22 @@ class OrderDetail extends Component {
     getUI(orderID);
   }
 
+  changeStatus = newStatus => this.props.changeStatus(newStatus);
+
   render() {
-    const { ui } = this.props;
+    const { ui, emailProof, toogleEmailProof, changeStatus } = this.props;
     if (!Object.keys(ui).length) return <Spinner />;
 
-    const { commonInfo, shippingInfo, paymentInfo, pricingInfo, orderedItems, dateTimeNAString } = ui;
+    const {
+      commonInfo,
+      shippingInfo,
+      paymentInfo,
+      pricingInfo,
+      orderedItems,
+      dateTimeNAString,
+      actions,
+      general
+    } = ui;
 
     const shippingInfoEl = shippingInfo ? <div className="col-lg-4 mb-4"><ShippingInfo ui={shippingInfo} /></div> : null;
     const paymentInfoEl = paymentInfo ? <div className="col-lg-4 mb-4"><PaymentInfo ui={paymentInfo} dateTimeNAString={dateTimeNAString} /></div> : null;
@@ -46,6 +64,7 @@ class OrderDetail extends Component {
 
     return (
       <div>
+        {emailProof.show && <EmailProof />}
         <CommonInfo
           ui={commonInfo}
           dateTimeNAString={dateTimeNAString}
@@ -59,15 +78,25 @@ class OrderDetail extends Component {
           </div>
         </div>
 
-        <OrderedItems ui={orderedItems}/>
+        <OrderedItems toogleEmailProof={toogleEmailProof} ui={orderedItems}/>
+
+        <div className="order-block">
+          <Actions
+            ui={actions}
+            general={general}
+            changeStatus={changeStatus}
+          />
+        </div>
       </div>
     );
   }
 }
 
-export default connect(({ orderDetail }) => {
+export default connect(({ orderDetail, emailProof }) => {
   const { ui } = orderDetail;
-  return { ui };
+  return { ui, emailProof };
 }, {
-  getUI
+  getUI,
+  toogleEmailProof,
+  changeStatus
 })(OrderDetail);

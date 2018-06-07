@@ -6,49 +6,40 @@ using System.Collections.Generic;
 using Kadena.Models;
 using System;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena.Models.Approval;
 
 namespace Kadena.BusinessLogic.Services
 {
     public class CustomerDataService : ICustomerDataService
     {
+        private readonly IKenticoCustomerProvider kenticoCustomers;
         private readonly IKenticoUserProvider kenticoUsers;
         private readonly IKenticoPermissionsProvider kenticoPermissions;
         private readonly IKenticoLocalizationProvider kenticoLocalization;
         private readonly IKenticoAddressBookProvider kenticoAddresses;
 
-        public CustomerDataService(IKenticoUserProvider kenticoUsers, IKenticoPermissionsProvider kenticoPermissions, IKenticoLocalizationProvider kenticoLocalization, IKenticoAddressBookProvider kenticoAddresses)
+        public CustomerDataService(IKenticoCustomerProvider kenticoCustomers,
+                                   IKenticoUserProvider kenticoUsers, 
+                                   IKenticoPermissionsProvider kenticoPermissions, 
+                                   IKenticoLocalizationProvider kenticoLocalization, 
+                                   IKenticoAddressBookProvider kenticoAddresses)
         {
-            if (kenticoUsers == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoUsers));
-            }
-            if (kenticoPermissions == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoPermissions));
-            }
-            if (kenticoLocalization == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoLocalization));
-            }
-            if (kenticoAddresses == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoAddresses));
-            }
-
-            this.kenticoUsers = kenticoUsers;
-            this.kenticoPermissions = kenticoPermissions;
-            this.kenticoLocalization = kenticoLocalization;
-            this.kenticoAddresses = kenticoAddresses;
+            this.kenticoCustomers = kenticoCustomers ?? throw new ArgumentNullException(nameof(kenticoCustomers));
+            this.kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
+            this.kenticoPermissions = kenticoPermissions ?? throw new ArgumentNullException(nameof(kenticoPermissions));
+            this.kenticoLocalization = kenticoLocalization ?? throw new ArgumentNullException(nameof(kenticoLocalization));
+            this.kenticoAddresses = kenticoAddresses ?? throw new ArgumentNullException(nameof(kenticoAddresses));
         }
 
         public CustomerData GetCustomerData(int siteId, int customerId)
         {
-            var customer = kenticoUsers.GetCustomer(customerId);
+            var customer = kenticoCustomers.GetCustomer(customerId);
 
             if (customer == null)
                 return null;
                     
             var claims = GetCustomerClaims(siteId, customer.UserID);
+            var approvers = GetApprovers(customer.ApproverUserId);
 
             var customerData = new CustomerData()
             {
@@ -59,6 +50,7 @@ namespace Kadena.BusinessLogic.Services
                 PreferredLanguage = customer.PreferredLanguage,
                 Address = null,
                 Claims = claims,
+                Approvers = approvers
             };
 
             var address = kenticoAddresses.GetCustomerAddresses(customerId, AddressType.Shipping).FirstOrDefault();
@@ -79,6 +71,25 @@ namespace Kadena.BusinessLogic.Services
 
             return  customerData;
         }
+
+        private Approver[] GetApprovers(int userId)
+        {
+            var approvers = new List<Approver>();
+            var user = kenticoUsers.GetUserByUserId(userId);
+
+            if (user != null)
+            {
+                approvers.Add( new Approver
+                    {
+                        Email = user.Email,
+                        FullName = user.FullName
+                    }
+                );
+            }
+
+            return approvers.ToArray();
+        }
+
 
         private Dictionary<string, string> GetCustomerClaims(int siteId, int userId)
         {

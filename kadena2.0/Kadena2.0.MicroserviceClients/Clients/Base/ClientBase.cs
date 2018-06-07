@@ -1,4 +1,5 @@
 ﻿using Kadena.Dto.General;
+using Kadena.Models.SiteSettings;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using Newtonsoft.Json;
 using System;
@@ -12,10 +13,17 @@ namespace Kadena2.MicroserviceClients.Clients.Base
 {
     public abstract class ClientBase
     {
+        protected IMicroProperties _properties;
         private readonly ISuppliantDomainClient _suppliantDomain;
+        private readonly string _baseServiceUrlSettingKey = Settings.KDA_MicroservicesBaseAddress;
+        protected string _serviceVersionSettingKey;
+
+        [Obsolete("Remove after all microservices will use base url")]
+        protected string _serviceUrlSettingKey;
 
         public ClientBase()
         {
+
         }
 
         protected ClientBase(ISuppliantDomainClient suppliantDomain) : this()
@@ -24,6 +32,19 @@ namespace Kadena2.MicroserviceClients.Clients.Base
         }
 
         private const string _responseIncorrectMessage = "Response from microservice is not in correct format.";
+
+        [Obsolete("Remove after all microservices will use base url")]
+        public string BaseUrlOld => _properties.GetServiceUrl(_serviceUrlSettingKey);
+
+        public string BaseUrl
+        {
+            get
+            {
+                var url = _properties.GetServiceUrl(_baseServiceUrlSettingKey);
+                var version = _properties.GetServiceUrl(_serviceVersionSettingKey);
+                return $"{url}/api/v{version}";
+            }
+        }
 
         protected async Task<BaseResponseDto<TResult>> Get<TResult>(string url)
         {

@@ -5,6 +5,7 @@ using Kadena.Dto.SSO;
 using AutoMapper;
 using Kadena.BusinessLogic.Contracts.SSO;
 using Kadena.Models;
+using Kadena.Models.Membership;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -14,61 +15,34 @@ namespace Kadena.BusinessLogic.Services
         private readonly IMapper mapper;
         private readonly ISaml2Service saml2Service;
         private readonly IKenticoUserProvider userProvider;
+        private readonly IKenticoCustomerProvider customerProvider;
         private readonly IKenticoSiteProvider siteProvider;
         private readonly IKenticoAddressBookProvider addressProvider;
         private readonly IRoleService roleService;
         private readonly IKenticoLoginProvider loginProvider;
         private readonly IKenticoResourceService kenticoResourceService;
 
-        public IdentityService(IKenticoLogger logger, IMapper mapper, ISaml2Service saml2Service, IKenticoUserProvider userProvider, IKenticoSiteProvider siteProvider,
-            IKenticoAddressBookProvider addressProvider, IRoleService roleService, IKenticoLoginProvider loginProvider, IKenticoResourceService kenticoResourceService)
+        public IdentityService(IKenticoLogger logger, 
+                               IMapper mapper, 
+                               ISaml2Service saml2Service, 
+                               IKenticoUserProvider userProvider,
+                               IKenticoCustomerProvider customerProvider,
+                               IKenticoSiteProvider siteProvider,
+                               IKenticoAddressBookProvider addressProvider, 
+                               IRoleService roleService, 
+                               IKenticoLoginProvider loginProvider, 
+                               IKenticoResourceService kenticoResourceService)
         {
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            if (saml2Service == null)
-            {
-                throw new ArgumentNullException(nameof(saml2Service));
-            }
-            if (userProvider == null)
-            {
-                throw new ArgumentNullException(nameof(userProvider));
-            }
-            if (siteProvider == null)
-            {
-                throw new ArgumentNullException(nameof(siteProvider));
-            }
-            if (addressProvider == null)
-            {
-                throw new ArgumentNullException(nameof(addressProvider));
-            }
-            if (roleService == null)
-            {
-                throw new ArgumentNullException(nameof(roleService));
-            }
-            if (loginProvider == null)
-            {
-                throw new ArgumentNullException(nameof(loginProvider));
-            }
-            if (kenticoResourceService == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoResourceService));
-            }
-
-            this.logger = logger;
-            this.mapper = mapper;
-            this.saml2Service = saml2Service;
-            this.userProvider = userProvider;
-            this.siteProvider = siteProvider;
-            this.addressProvider = addressProvider;
-            this.roleService = roleService;
-            this.loginProvider = loginProvider;
-            this.kenticoResourceService = kenticoResourceService;
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.saml2Service = saml2Service ?? throw new ArgumentNullException(nameof(saml2Service));
+            this.userProvider = userProvider ?? throw new ArgumentNullException(nameof(userProvider));
+            this.customerProvider = customerProvider ?? throw new ArgumentNullException(nameof(customerProvider));
+            this.siteProvider = siteProvider ?? throw new ArgumentNullException(nameof(siteProvider));
+            this.addressProvider = addressProvider ?? throw new ArgumentNullException(nameof(addressProvider));
+            this.roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
+            this.loginProvider = loginProvider ?? throw new ArgumentNullException(nameof(loginProvider));
+            this.kenticoResourceService = kenticoResourceService ?? throw new ArgumentNullException(nameof(kenticoResourceService));
         }
 
         public Uri TryAuthenticate(string samlString)
@@ -133,16 +107,16 @@ namespace Kadena.BusinessLogic.Services
                 logger.LogInfo(this.GetType().Name, "ENSURESAMLCUSTOMER", "Customer info extraction has failed.");
                 return null;
             }
-            var existingCustomer = userProvider.GetCustomerByUser(userId);
+            var existingCustomer = customerProvider.GetCustomerByUser(userId);
             if (existingCustomer == null)
             {
-                newCustomer.Id = userProvider.CreateCustomer(newCustomer);
+                newCustomer.Id = customerProvider.CreateCustomer(newCustomer);
                 userProvider.LinkCustomerToUser(newCustomer.Id, userId);
             }
             else
             {
                 newCustomer.Id = existingCustomer.Id;
-                userProvider.UpdateCustomer(newCustomer);
+                customerProvider.UpdateCustomer(newCustomer);
             }
 
             return newCustomer;

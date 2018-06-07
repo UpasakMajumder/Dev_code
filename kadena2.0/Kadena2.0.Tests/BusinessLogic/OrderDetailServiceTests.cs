@@ -1,0 +1,206 @@
+﻿using Kadena.Dto.General;
+using Kadena.Dto.ViewOrder.MicroserviceResponses;
+using Kadena.Models;
+using Kadena.Models.Site;
+using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.MicroserviceClients.Contracts;
+using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security;
+using System.Threading.Tasks;
+using Xunit;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
+using Kadena.Container.Default;
+using Kadena.BusinessLogic.Services.Orders;
+using Kadena.Models.Product;
+using Kadena.Models.Orders;
+
+namespace Kadena.Tests.BusinessLogic
+{
+    public class OrderDetailServiceTests : KadenaUnitTest<OrderDetailService>
+    {
+        private BaseResponseDto<GetOrderByOrderIdResponseDTO> CreateOrderDetailDtoOK(OrderItemDTO[] items = null)
+        {
+            return new BaseResponseDto<GetOrderByOrderIdResponseDTO>()
+            {
+                Success = true,
+                Payload = new GetOrderByOrderIdResponseDTO()
+                {
+                    Id = "1",
+                    Items = new List<OrderItemDTO>(items ?? Enumerable.Empty<OrderItemDTO>()),
+                    OrderDate = DateTime.Now,
+                    PaymentInfo = new PaymentInfoDTO(),
+                    ShippingInfo = new ShippingInfoDTO() { ShippingDate = null },
+                    Status = "Shipped"
+                }
+            };
+        }
+
+        private BaseResponseDto<GetOrderByOrderIdResponseDTO> CreateOrderDetailDtoERROR()
+        {
+            return new BaseResponseDto<GetOrderByOrderIdResponseDTO>()
+            {
+                Success = false,
+                Payload = null
+            };
+        }
+
+        private void SetupBase()
+        {
+            Use(MapperBuilder.MapperInstance);
+
+            Setup<IKenticoPermissionsProvider, bool>(p => p.UserCanSeeAllOrders(), false);
+            Setup<IKenticoCustomerProvider, Customer>(p => p.GetCurrentCustomer(), new Customer() { Id = 10, UserID = 16 });
+            Setup<IKenticoSiteProvider, KenticoSite>(p => p.GetKenticoSite(), new KenticoSite());
+        }        
+
+        [Fact]
+        public async Task GetOrderDetail_ShouldSucceed_WhenUserCanApprove()
+        {
+            // A
+            const int customerId = 222;
+            const int customerUserId = 123;
+            var orderNumber = new OrderNumber(customerId, customerUserId, "17-00006");
+            var orderDto = CreateOrderDetailDtoOK();
+            orderDto.Payload.ClientId = customerId;
+            orderDto.Payload.StatusId = (int)OrderStatus.WaitingForApproval;
+
+            SetupBase();
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(
+                o => o.GetOrderByOrderId(orderNumber)
+                , Task.FromResult(orderDto));
+            Setup<IKenticoCustomerProvider, Customer>(
+                p => p.GetCustomer(customerId), 
+                new Customer { ApproverUserId = 16 });
+
+            // A
+            var result = await Sut.GetOrderDetail(orderNumber);
+
+            // A
+            Assert.NotNull(result);
+        }
+
+        [Fact(DisplayName = "OrderDetailService.GetOrderDetail() | User has permission to view order")]
+        public async Task OrderServiceTest_UserCanSee()
+        {
+            // Arrange
+            SetupBase();
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId("0010-0016-17-00006")
+                , Task.FromResult(CreateOrderDetailDtoOK()));
+
+            // Act
+            var actualResult = await Sut.GetOrderDetail("0010-0016-17-00006");
+
+            //Assert
+            Assert.NotNull(actualResult);
+        }
+
+        [Fact(DisplayName = "OrderDetailService.GetOrderDetail() | User hasn't permission to view order")]
+        public async Task OrderServiceTest_UserCannotSee()
+        {
+            // Arrange
+            SetupBase();
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId("0099-0099-17-00006")
+                , Task.FromResult(CreateOrderDetailDtoOK()));
+
+            // Act
+            Task action() => Sut.GetOrderDetail("0099-0099-17-00006");
+
+            // Assert
+            await Assert.ThrowsAsync<SecurityException>(action);
+        }
+
+        [Fact(DisplayName = "OrderDetailService.GetOrderDetail() | Microservice request error")]
+        public async Task OrderServiceTest_MicroserviceErrorLogged()
+        {
+            // Arrange
+            SetupBase();
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId("0010-0016-66-00006")
+                , Task.FromResult(CreateOrderDetailDtoERROR()));
+
+            // Act
+            var actualResult = await Sut.GetOrderDetail("0010-0016-66-00006");
+
+            // Assert
+            Assert.Null(actualResult);
+            Verify<IKenticoLogger>(l => l.LogError("GetOrderDetail", ""), Times.Exactly(1));
+        }
+
+        [Theory(DisplayName = "OrderDetailService.GetOrderDetail() | Bad format of order id")]
+        [InlineData("123")]
+        [InlineData("asdgfdsrfgsdfg")]
+        public async Task OrderServiceTest_BadFormatOrderId(string orderId)
+        {
+            // Arrange
+            SetupBase();
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId(orderId)
+                , Task.FromResult(CreateOrderDetailDtoOK()));
+
+            // Act
+            Task action() => Sut.GetOrderDetail(orderId);
+
+            // Assert
+            var exception = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(action);
+            Assert.Contains("Bad format of order ID", exception.Message);
+        }
+
+        [Theory(DisplayName = "OrderDetailService.GetOrderDetail() | Empty order id")]
+        [InlineData(null)]
+        [InlineData("")]
+        public async Task OrderServiceTest_EmptyOrderId(string orderId)
+        {
+            // Act
+            Task action() => Sut.GetOrderDetail(orderId);
+
+            // Assert
+            await Assert.ThrowsAsync<ArgumentNullException>("orderId", action);
+        }
+
+        [Fact(DisplayName = "OrderDetailService.GetOrderDetail() | Empty shipping address with only mailing products")]
+        public async Task OrderServiceTest_EmptyShippingAddressWhenMailingOnly()
+        {
+            // Arrange
+            SetupBase();
+            var templateId = Guid.Parse("E4D7716D-5AA7-4E4F-A621-AB3FB2E93AE8");
+            const string  orderId = "0010-0016-17-00006";
+            const int skuid = 123;
+            var orderResponse = CreateOrderDetailDtoOK(new[]
+            {
+                new OrderItemDTO { Type = Kadena.Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString(), TemplateId = templateId, SkuId = skuid }
+            });
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId(orderId), Task.FromResult(orderResponse));
+            Setup<IKenticoProductsProvider, Product>(p => p.GetProductBySkuId(skuid), new Product { });
+
+            // Act
+            var actualResult = await Sut.GetOrderDetail(orderId);
+
+            // Assert
+            Assert.Null(actualResult.ShippingInfo.Address);
+        }
+
+        [Fact(DisplayName = "OrderDetailService.GetOrderDetail() | Null dates")]
+        public async Task NullDatetimeTests()
+        {
+            // Arrange
+            SetupBase();
+            var templateId = Guid.Parse("E4D7716D-5AA7-4E4F-A621-AB3FB2E93AE8");
+            const string orderId = "0010-0016-17-00006";
+            const int skuid = 123;
+            var orderResponse = CreateOrderDetailDtoOK(new[]
+            {
+                new OrderItemDTO { Type = Kadena.Dto.SubmitOrder.MicroserviceRequests.OrderItemTypeDTO.Mailing.ToString(), TemplateId = templateId, SkuId = skuid }
+            });
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId(orderId), Task.FromResult(orderResponse));
+            Setup<IKenticoProductsProvider, Product>(p => p.GetProductBySkuId(skuid), new Product { });
+
+            // Act
+            var actualResult = await Sut.GetOrderDetail(orderId).ConfigureAwait(false);
+
+            // Assert
+            Assert.NotEqual(actualResult.CommonInfo.OrderDate.Value, DateTime.MinValue);
+            Assert.Null(actualResult.CommonInfo.ShippingDate.Value);
+        }
+    }
+}

@@ -129,18 +129,18 @@
           <property name="text" ismacro="true">
 <![CDATA[
 {%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-if (!iteratedDocument.DocumentMenuItemHideInNavigation) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-}
-iteratedDocument = iteratedDocument.Parent;
-};
-result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}", RootDocument.AbsoluteURL, result);
-
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)michal.machacek@actum.cz|(hash)8cda62a2a286510219a9295529a44ef338f699a3859e94cb27ad8d100a834f85%}
+  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
+  iteratedDocument = CurrentDocument.Parent;
+  while (iteratedDocument.Parent != null) {
+  if (!iteratedDocument.DocumentMenuItemHideInNavigation) {
+  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
+  }
+  iteratedDocument = iteratedDocument.Parent;
+  };
+  result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}", RootDocument.AbsoluteURL, result);
+  
+  "<div class='breadcrumbs'>" + result + "</div>"
+|(user)administrator|(hash)6a1e465a680c35e460d9265e9da9f0150739d0ee36c8c774b184d34c6b68fe61%}
 ]]>
           </property>
           <property name="timezonetype">inherit</property>
@@ -173,7 +173,7 @@ result = string.FormatString("<a href='{0}'>{$ Kadena.BreadcrumbsHome $}</a>{1}"
           <property name="hideonsubpages">False</property>
           <property name="instanceguid">818c5ea1-51bc-49e4-bb19-340c0d6d9dd7</property>
           <property name="newmailinglisturl" ismacro="true">
-            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KListNewPageURL) |(user)tomas.rucki@actum.cz|(hash)3538ee0eb092610309b0be1df916b0b95ea6c9f466915bcd7a3156b199455157%}]]>
+            <![CDATA[{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_KListNewPageURL)|(user)administrator|(hash)f32543814f720f327c4e306d502224a9c3663b3941173fac7a26d6108b5857a3%}]]>
           </property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>

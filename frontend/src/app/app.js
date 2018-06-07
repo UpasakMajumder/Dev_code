@@ -68,6 +68,10 @@ const app = {
     render('LanguageSelector', document.querySelectorAll('.r-language-selector'));
     render('TaC', document.querySelectorAll('.r-tac'));
     render('FilteredRecentOrders', document.querySelectorAll('.r-filtered-recent-orders'));
+    render('Registration', document.querySelectorAll('.r-registration'));
+    render('ProductDetail', document.querySelectorAll('.r-product-detail'));
+    render('ThumbnailPreview', document.querySelectorAll('.r-thumbnail-preview'));
+    render('Tabs', document.querySelectorAll('.r-tabs'));
   }
 };
 

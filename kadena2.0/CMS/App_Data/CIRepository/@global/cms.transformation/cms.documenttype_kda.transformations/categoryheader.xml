@@ -16,7 +16,7 @@
       <th>{$Kadena.CategoryList.Status$}</th>
         {% if (MembershipContext.AuthenticatedUser.IsInRole("TWEGlobalAdmin",false)) { %}
       <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
-      {%}|(user)cvoqa2@gmail.com|(hash)ab45dd9810092ceb3c807708b0f49f5ae954fc2c3a61d7b4f1fd94fd66a26b2d%}
+      {%} |(user)administrator|(hash)363d79cd4a5847835dea5fe8b34897c159109318a8da0fefca5992c8811ce703%}
     </tr>
 ]]>
   </TransformationCode>

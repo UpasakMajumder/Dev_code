@@ -160,19 +160,6 @@
           <ValuesSeparator>;</ValuesSeparator>
         </settings>
       </field>
-      <field allowempty="true" column="QtyPerPack" columntype="integer" guid="701c95e3-8215-41b2-b69b-47c15d71ddd4" publicfield="false" visible="true">
-        <properties>
-          <fieldcaption>Qty Per Pack</fieldcaption>
-        </properties>
-        <settings>
-          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
-          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
-          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
-          <controlname>TextBoxControl</controlname>
-          <FilterMode>False</FilterMode>
-          <Trim>False</Trim>
-        </settings>
-      </field>
       <field allowempty="true" column="ItemSpecs" columnsize="200" columntype="text" guid="52c7d890-3b10-43a3-be4b-555541698ca7" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Item Specs</fieldcaption>
@@ -285,7 +272,6 @@
   <ClassSearchSettings>
     <search>
       <item content="False" id="43aa1dca-b0e6-4672-bc82-0a6171ce2703" name="StoreFrontProductID" searchable="True" tokenized="False" />
-      <item content="False" id="44c77694-a25e-41ba-a10f-12fa045f0907" name="QtyPerPack" searchable="True" tokenized="False" />
       <item content="False" id="4b1b5af0-fbdf-437e-84a5-461761255eef" name="CampaignsProductID" searchable="True" tokenized="False" />
       <item content="False" id="4fc05400-59c4-4b90-9723-4aa60790f851" name="CategoryID" searchable="True" tokenized="False" />
       <item content="False" id="6b6d5bf5-34a3-4a83-816f-2351db186797" name="State" searchable="True" tokenized="False" />

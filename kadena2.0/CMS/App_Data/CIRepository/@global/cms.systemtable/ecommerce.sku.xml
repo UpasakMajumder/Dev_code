@@ -233,6 +233,38 @@
           <controlname>producttypeselector</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="SKUDontSendPriceToERP" columntype="boolean" guid="31844ee0-afd5-4800-ba3a-748cea0aa8aa" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>false</defaultvalue>
+          <fieldcaption>
+            <![CDATA[Don't send price to ERP]]>
+          </fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="SKUHiResPdfDownloadEnabled" columntype="boolean" guid="8ad34b07-1b2e-47f3-929b-c590f0813b1c" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>false</defaultvalue>
+          <fieldcaption>HiRes PDF download enabled</fieldcaption>
+          <visiblemacro ismacro="true">
+            <![CDATA[{%KadenaNamespace.IsTemplatedProduct(SKUID.Value)|(user)administrator|(hash)cfe02e8d0047b21181f63c55d26960d8d4c19ebf64b1d3b30e26e4574e443fb0%}]]>
+          </visiblemacro>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="SKUApprovalRequired" columntype="boolean" guid="e8895743-9873-453a-919e-5391220cb16c" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>false</defaultvalue>
+          <fieldcaption>Approval Required</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="SKUCustomData" columntype="longtext" guid="29e8c9c5-d3c7-4846-a18f-057d5cd0a352" publicfield="false" system="true">
         <properties>
           <fieldcaption>SKUCustomData</fieldcaption>
@@ -515,6 +547,39 @@
           <FilterType>0|3</FilterType>
           <Trim>True</Trim>
           <ValidChars>.,</ValidChars>
+        </settings>
+      </field>
+      <field allowempty="true" column="SKUUnitOfMeasure" columnsize="40" columntype="text" guid="79380af2-d662-438c-9ba2-22d7a62e6b7b" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>Each</defaultvalue>
+          <fieldcaption>Unit of measure</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Query>
+<![CDATA[
+SELECT Name,Name
+FROM KDA_UnitOfMeasure 
+ORDER BY IsDefault DESC
+]]>
+          </Query>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
+      <field allowempty="true" column="SKUNumberOfItemsInPackage" columntype="integer" guid="3afd1d0c-970b-43c5-9b73-94041a17ad9e" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>1</defaultvalue>
+          <fieldcaption>Number of items in package</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
         </settings>
       </field>
       <category name="com.sku.inventorycategory">

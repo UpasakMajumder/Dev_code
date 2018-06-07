@@ -35,6 +35,7 @@ namespace Kadena.Infrastructure.FileConversion
             {
                 dataMaxCellCount = table.Rows
                     .Select(r => r?.Items?.Length ?? 0)
+                    .Concat(new[] { 0 })
                     .Max();
             }
 

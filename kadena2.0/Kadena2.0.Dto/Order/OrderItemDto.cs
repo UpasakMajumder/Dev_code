@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace Kadena.Dto.Order
 {
@@ -16,5 +17,15 @@ namespace Kadena.Dto.Order
 
         [DataMember(Name = "unitPrice")]
         public decimal UnitPrice { get; set; }
+
+        [DataMember(Name = "quantityShipped")]
+        public int QuantityShipped { get; set; }
+
+        [DataMember(Name = "shippingDate")]
+        public DateTime? ShippingDate { get; set; }
+
+        [DataMember(Name = "trackingNumber")]
+        public string TrackingNumber { get; set; }
+
     }
 }

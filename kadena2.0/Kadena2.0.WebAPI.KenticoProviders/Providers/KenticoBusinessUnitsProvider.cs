@@ -1,10 +1,11 @@
-﻿using CMS.CustomTables;
-using CMS.DataEngine;
+﻿using AutoMapper;
+using CMS.CustomTables;
 using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.SiteProvider;
 using Kadena.Models.BusinessUnit;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,54 +15,33 @@ namespace Kadena.WebAPI.KenticoProviders
     {
         private readonly string BusinessUnitsCustomTableName = "KDA.BusinessUnit";
         private readonly string UserBusinessUnitsCustomTableName = "KDA.UserBusinessUnits";
+        private readonly IMapper mapper;
+
+        public KenticoBusinessUnitsProvider(IMapper mapper)
+        {
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
 
         public List<BusinessUnit> GetBusinessUnits()
         {
-            ObjectQuery<CustomTableItem> businessUnits = CustomTableItemProvider.GetItems(BusinessUnitsCustomTableName)
+            var businessUnits = CustomTableItemProvider.GetItems(BusinessUnitsCustomTableName)
                                                                                 .WhereEquals("SiteID", SiteContext.CurrentSiteID)
                                                                                 .And()
                                                                                 .WhereTrue("Status");
-            return businessUnits.Select(x => CreateBusinessUnit(x)).ToList();
+            return mapper.Map<BusinessUnit[]>(businessUnits).ToList();
         }
 
         public List<BusinessUnit> GetUserBusinessUnits(int userID)
         {
-            ObjectQuery<CustomTableItem> userBusinessUnits = CustomTableItemProvider.GetItems(UserBusinessUnitsCustomTableName)
-                                                                                    .WhereEquals("UserID", userID)
-                                                                                    .Columns("BusinessUnitID");
-            if (userBusinessUnits.TypedResult.Items.Count > 0)
-            {
-                return userBusinessUnits.Select(x => CreateBusinessUnit(GetBusinessUnitItem(x))).ToList();
-            }
-            else
-            {
-                return null;
-            }
-        }
+            var userBusinessUnits = CustomTableItemProvider.GetItems(BusinessUnitsCustomTableName)
+                                        .WhereEquals("SiteID", SiteContext.CurrentSiteID)
+                                        .WhereIn("ItemID",
+                                            CustomTableItemProvider.GetItems(UserBusinessUnitsCustomTableName)
+                                                .WhereEquals("UserID", userID)
+                                                .Columns("BusinessUnitID"))
+                                        .ToList();
 
-        private CustomTableItem GetBusinessUnitItem(CustomTableItem businessUnitItemID)
-        {
-            int itemID = businessUnitItemID.GetIntegerValue("BusinessUnitID", 0);
-            return CustomTableItemProvider.GetItem(itemID, BusinessUnitsCustomTableName);
-        }
-
-        private BusinessUnit CreateBusinessUnit(CustomTableItem businessUnitItem)
-        {
-            if (businessUnitItem == null)
-            {
-                return null;
-            }
-            else
-            {
-                return new BusinessUnit()
-                {
-                    ItemID = businessUnitItem.ItemID,
-                    SiteID = businessUnitItem.GetIntegerValue("SiteID", 0),
-                    BusinessUnitName = businessUnitItem.GetStringValue("BusinessUnitName", string.Empty),
-                    BusinessUnitNumber = businessUnitItem.GetIntegerValue("BusinessUnitNumber", 0),
-                    Status = businessUnitItem.GetBooleanValue("Status", false)
-                };
-            }
+            return userBusinessUnits.Count > 0 ? mapper.Map<BusinessUnit[]>(userBusinessUnits).ToList() : null;
         }
 
         public string GetDistributorBusinessUnit(int distributorID)
@@ -96,11 +76,17 @@ namespace Kadena.WebAPI.KenticoProviders
             return businessUnit;
         }
 
-        public string GetBusinessUnitName(string businessUnitNumber)
+        public string GetBusinessUnitName(long businessUnitNumber)
         {
-            if (string.IsNullOrEmpty(businessUnitNumber)) return string.Empty;
-            CustomTableItem businessUnitItem = CustomTableItemProvider.GetItems(BusinessUnitsCustomTableName, "BusinessUnitNumber=" + businessUnitNumber).FirstOrDefault();
-            return businessUnitItem != null ? businessUnitItem.GetStringValue("BusinessUnitName", string.Empty) : string.Empty;
+            if (businessUnitNumber == 0) return string.Empty;
+
+            var businessUnitItem = CustomTableItemProvider
+                .GetItems(BusinessUnitsCustomTableName)
+                .WhereEquals("BusinessUnitNumber", businessUnitNumber)
+                .FirstOrDefault();
+            return businessUnitItem != null
+                ? businessUnitItem.GetStringValue("BusinessUnitName", string.Empty)
+                : string.Empty;
         }
     }
 }

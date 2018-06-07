@@ -1,6 +1,5 @@
-﻿
-using CMS.FormEngine.Web.UI;
-using Kadena.Old_App_Code.Kadena.DynamicPricing;
+﻿using CMS.FormEngine.Web.UI;
+using Kadena.Models;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
 
@@ -8,6 +7,13 @@ namespace Kadena.CMSFormControls.Kadena
 {
   public partial class DynamicPricingSelector : FormEngineUserControl
   {
+    private class DynamicPricingRawData
+    {
+        public string minVal { get; set; }
+        public string maxVal { get; set; }
+        public string price { get; set; }
+    }
+
     public override object Value
     {
       get
@@ -28,30 +34,50 @@ namespace Kadena.CMSFormControls.Kadena
       {
         return true;
       }
-      List<DynamicPricingData> data;
-      if (!new DynamicPricingDataHelper().ConvertDynamicPricingData(rawData, out data))
-      {
-        return false;
-      }
-      return !IsDynamicPricingDataOverlap(data);
-    }
+      
+      var cleanData = new List<DynamicPricingRange>();
 
-    private bool IsDynamicPricingDataOverlap(List<DynamicPricingData> data)
-    {
-      foreach (var item1 in data)
-      {
-        foreach (var item2 in data)
+        foreach (var rawItem in rawData)
         {
-          if (item1.GetHashCode() != item2.GetHashCode())
-          {
-            if (item1.Min < item2.Max && item2.Min < item1.Max)
+            int min, max;
+            decimal price;
+
+            if (!int.TryParse(rawItem.minVal, out min))
             {
-              return true;
+                return false;
             }
-          }         
+            if (!int.TryParse(rawItem.maxVal, out max))
+            {
+                return false;
+            }
+            if (!decimal.TryParse(rawItem.price, out price))
+            {
+                return false;
+            }
+
+            if (min > max)
+            {
+                return false;
+            }
+
+            if (price < 0)
+            {
+                return false;
+            }
+
+            cleanData.Add(new DynamicPricingRange { MinVal = min, MaxVal = max, Price = price });
         }
-      }
-      return false;
+
+        var errors = new List<string>();
+
+        var valid = DynamicPricingRange.ValidateRanges(cleanData, errors, true);
+
+        if (!valid)
+        {
+             ValidationError = string.Join(". ", errors);
+        }
+
+        return valid;
     }
   }
 }

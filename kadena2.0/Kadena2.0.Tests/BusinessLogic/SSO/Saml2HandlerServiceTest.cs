@@ -1,24 +1,18 @@
 ﻿using Xunit;
 using Moq;
-using Moq.AutoMock;
 using Kadena.BusinessLogic.Services.SSO;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.Tests.BusinessLogic.SSO
 {
-    public class Saml2HandlerServiceTest
+    public class Saml2HandlerServiceTest : KadenaUnitTest<Saml2HandlerService>
     {
         [Fact(DisplayName = "Saml2HandlerService.GetTokenHandler()")]
         public void GetHandler()
         {
-            var autoMock = new AutoMocker();
-            var sut = autoMock.CreateInstance<Saml2HandlerService>();
-            autoMock
-                .GetMock<IKenticoResourceService>()
-                .Setup(s => s.GetSettingsKey(It.IsAny<string>()))
-                .Returns("SettingKeyValue");
+            Setup<IKenticoResourceService, string>(s => s.GetSiteSettingsKey(It.IsAny<string>()), "SettingKeyValue");
 
-            var actualResult = sut.GetTokenHandler();
+            var actualResult = Sut.GetTokenHandler();
 
             Assert.NotNull(actualResult);
         }

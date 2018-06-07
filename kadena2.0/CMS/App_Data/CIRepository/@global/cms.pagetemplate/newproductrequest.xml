@@ -80,7 +80,7 @@
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<div class="content-block j-new-product-form" data-handler="/CMSPages/Kadena/RequestNewProduct.ashx" data-thank-you-page='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_ProductRequestSentPageUrl) |(user)rostyslav.diachenko@actum.cz|(hash)f4f4e0df9ceebee9ba9d864ce1aa8fa7bb7d3b8c0345a5393f633778b98a0391%}'>
+<div class="content-block j-new-product-form" data-handler="/CMSPages/Kadena/RequestNewProduct.ashx" data-thank-you-page='{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_ProductRequestSentPageUrl)|(user)administrator|(hash)9b88c7df8bd9647b26b6baff419703975988a0ad44217d6a3448840fc138bc13%}'>
   <div class="block">
     <h2 class="block__heading">{$Kadena.NewProductForm.ProductDescription$}
     </h2>

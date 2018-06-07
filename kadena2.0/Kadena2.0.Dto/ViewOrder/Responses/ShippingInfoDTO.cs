@@ -6,6 +6,5 @@
         public string Message { get; set; }
         public string DeliveryMethod { get; set; }
         public AddressDto Address { get; set; }
-        public TrackingDTO Tracking { get; set; }
     }
 }

@@ -249,24 +249,6 @@ namespace CMS.DocumentEngine.Types.KDA
 			}
 		}
 
-
-		/// <summary>
-		/// Qty Per Pack.
-		/// </summary>
-		[DatabaseField]
-		public string QtyPerPack
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("QtyPerPack"), "");
-			}
-			set
-			{
-				SetValue("QtyPerPack", value);
-			}
-		}
-
-
 		/// <summary>
 		/// Status.
 		/// </summary>
@@ -545,20 +527,7 @@ namespace CMS.DocumentEngine.Types.KDA
 			}
 
 
-			/// <summary>
-			/// Qty Per Pack.
-			/// </summary>
-			public string QtyPerPack
-			{
-				get
-				{
-					return mInstance.QtyPerPack;
-				}
-				set
-				{
-					mInstance.QtyPerPack = value;
-				}
-			}
+			
 
 
 			/// <summary>

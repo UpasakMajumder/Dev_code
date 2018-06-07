@@ -13,6 +13,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         string GetDistributorBusinessUnitNumber(int distributorID);
 
-        string GetBusinessUnitName(string businessUnitNumber);
+        string GetBusinessUnitName(long businessUnitNumber);
     }
 }

@@ -89,6 +89,27 @@
           }
         ]
       },
+      emailProof: {
+        submitUrl: PATH + 'email-proof',
+        notificationSuccess: {
+          title: '🚀💪✈️🎉',
+          text: 'Sent!'
+        },
+        dialog: {
+          title: 'Email Proof',
+          recepientEmailLabel: 'Enter Email Address',
+          subjectLabel: 'Subject',
+          messageLabel: 'Message',
+          proofLabel: 'Click Here to View the Proof',
+          submitButtonLabel: 'Submit',
+          cancelButtonLabel: 'Cancel',
+          note: 'This is note',
+          validationMessages: {
+            required: 'Required',
+            email: 'Not Email'
+          }
+        }
+      },
       staticFields: {
         validation: {
           requiredMessage: 'The field is required',
@@ -97,6 +118,44 @@
         password: {
           show: 'show',
           hide: 'hide',
+        }
+      },
+      registration: {
+        title: 'Sign Up',
+        labels: {
+          firstName: 'First Name',
+          lastName: 'Last Name',
+          email: 'Email',
+          password: 'Password',
+          confirmPassword: 'Confirm Password',
+          button: 'Sign Up'
+        },
+        errors: {
+          required: 'Required!',
+          email: 'Invalid Email!',
+          confirmPassword: 'Passwords are not equal'
+        },
+        url: PATH + 'registration',
+        toLogin: {
+          url: 'lol',
+          text: 'To Login'
+        },
+        strength: {
+          minLength: 3,
+          preferedLength: 7,
+          minNonAlphaNumChars: 0,
+          preferedNonAlphaNumChars: 0,
+          regularExpression: null,
+          policyStrings: [
+            'Not Accepted',
+            'Weak',
+            'Acceptable',
+            'Average',
+            'Strong',
+            'Excelent'
+          ],
+          usePolicy: true,
+          info: 'Hello <br> How Are you? <br> Nice!'
         }
       },
       login: {
@@ -110,13 +169,15 @@
         passwordValidationMessage: 'Please enter password.',
         keepMeLoggedIn: 'Keep me logged in',
         login: 'Log in',
-        loginUrl: PATH + 'login',
-        acceptTaCUrl: PATH + 'accepttac',
-        checkTaCUrl: PATH + 'checktac'
+        loginUrl: PATH + 'login'
       },
       tac: {
+        show: true,
         title: 'Title',
-        submitTexT: 'Accept'
+        submitText: 'Accept',
+        acceptTaCUrl: PATH + 'accepttac',
+        checkTaCUrl: PATH + 'checktac',
+        iframeUrl: 'http://localhost:5002/terms-conditions.html'
       },
       checkout: {
         initRenderUIURL: PATH + 'checkout/ui',
@@ -172,10 +233,6 @@
         },
         nextLabel: "Next",
         backLabel: "Previous"
-      },
-      recentOrders: {
-        getHeaders: PATH + 'order/recent/ui',
-        getPageItems: PATH + 'order/recent/page'
       },
       ordersReports: {
         headings: [
@@ -245,22 +302,36 @@
         }
       },
       filteredRecentOrders: {
-        orderTypes: {
-          placeholder: 'Order Type',
-          items: [
-            {
-              id: '0',
-              name: 'Pre-But Orders',
-              campaigns: true
-            },
-            {
-              id: '1',
-              name: 'General Inventory Orders'
-            }
+        placeholder: 'Order Type',
+        filterItems: [
+              {
+                  name: 'Pre-But Orders',
+                  getCampaignsUrl: PATH + 'order/recent/filtered/campaigns',
+                  tabs: [
+                    {
+                      text: 'Orders requiring approval',
+                      getOrdersUrl: PATH + 'order/recent/filtered/orders/4' // /companyId = 0
+                    },
+                    {
+                      text: 'Orders',
+                      getOrdersUrl: PATH + 'order/recent/filtered/orders/5' // /companyId = 1
+                    }
+                  ]
+              },
+              {
+                name: 'General Inventory Orders',
+                tabs: [
+                  {
+                    text: 'Orders requiring approval',
+                    getOrdersUrl: PATH + 'order/recent/filtered/orders/2',
+                  },
+                  {
+                    text: 'Orders',
+                    getOrdersUrl: PATH + 'order/recent/filtered/orders/3',
+                  }
+                ]
+              }
           ]
-        },
-        getCampaignsUrl: PATH + 'order/recent/filtered/campaigns',
-        getOrdersUrl: PATH + 'order/recent/filtered/orders'
       },
       modifyMailingList: {
         errorList: {
@@ -468,6 +539,139 @@
         markProductFavouriteUrl: PATH + 'products/favourite',
         unmarkProductFavouriteUrl: PATH + 'products/unfavourite',
         nodeAliasPath: "/Products"
+      },
+      productDetail: {
+        thumbnail: { // props
+          image: 'http://satyr.io/500x300',
+          border: '2px solid red',
+          magnifyImage: 'http://satyr.io/1500x1000'
+        },
+        requiresApproval: { // props
+          exists: true,
+          text: 'Requires Approval'
+        },
+        attachments: [ // props
+          {
+            url: '#',
+            text: 'Download processed file'
+          },
+          {
+            url: '#',
+            text: 'Download processed file'
+          }
+        ],
+        info: { // props
+          createdDate: 'Product added: Feb 15 2017',
+          code: 'Product code: 326B-0815'
+        },
+        estimates: { // props
+          header: 'Delivery',
+          body: [
+            {
+              key: 'Production time',
+              value: '7 days'
+            },
+            {
+              key: 'Shopping cost',
+              value: '$10 - $15'
+            }
+          ]
+        },
+        dynamicPrices: { // props
+          header: 'Unit Price',
+          body: [ // state
+            {
+              id: '1',
+              key: '0-50 pcs',
+              value: '$2.10'
+            },
+            {
+              id: 'option-price',
+              key: '50+ pcs',
+              value: '$1.50'
+            }
+          ]
+        },
+        // availability: PATH + 'products/availability',
+        packagingInfo: 'These come in pack 50 pcs', // props
+        productOptions: {
+          priceElementId: "option-price",
+          priceUrl: PATH + 'products/options',
+          validationMessage: 'Required 🔥',
+          categories: [
+            {
+              name: "TShirtSize", // not rendered, used in API call
+              selector: "Dropdownlist", // Dropdownlist | RadioButtonsHorizontal | RadioButtonsVertical
+              options: [
+                {
+                  name: "please select", // category default record
+                  id: 0,
+                  disabled : true, // user cannot select this
+                  selected: true // category.CategoryDefaultRecord == category.CategoryDefaultOptions
+                },
+                {
+                  name: "XXL", // sku.SKUName
+                  id: 123,  // sku.SKUID
+                  selected: false, // sku.SKUID.ToString() == category.CategoryDefaultOptions
+                },
+                {
+                  name: "L",
+                  id: 124,
+                  selected: false,
+                },
+                {
+                  name: "S",
+                  id: 125,
+                  selected: false,
+                }
+              ]
+            },
+            {
+              name: "TShirtColor", // not rendered, used in API call
+              selector: "RadioButtonsHorizontal", // Dropdownlist | RadioButtonsHorizontal | RadioButtonsVertical
+              options: [
+                {
+                  name: "Blue", // sku.SKUName
+                  id: 123,  // sku.SKUID
+                  selected: false, // sku.SKUID.ToString() == category.CategoryDefaultOptions
+                },
+                {
+                  name: "Red",
+                  id: 124,
+                  selected: false,
+                },
+                {
+                  name: "Green",
+                  id: 125,
+                  selected: false,
+                }
+              ]
+            }
+          ]
+        },
+        openTemplate: { // null props
+          url: '#',
+          text: 'Open template in design'
+        },
+        description: { // props
+          title: 'Description',
+          text: '<p>Hello </p><p>How are you?</p>' // html
+        },
+        quantityText: 'Quantity Text', // not required
+        addToCart: { // null props
+          documentId: 'documentId',
+          url: PATH + 'products/add-to-cart', // TODO: Call
+          text: 'Add to cart',
+          unit: 'pack of 50 (50)',
+          tiers: {
+            placeholder: 'Hello 🏋️',
+            items: [5, 10, 15, 20, 25]
+          },
+          quantity: 1, // state
+          quantityErrorText: 'Invalid Quantity Here',
+          minQuantity: 1, // not required
+          maxQuantity: 10 // not required
+        }
       }
     }
   };
