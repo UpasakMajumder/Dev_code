@@ -27,6 +27,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
         private readonly IKenticoSiteProvider siteProvider;
         private readonly IKadenaSettings settings;
         private readonly IOrderDataFactory orderDataFactory;
+        private readonly IKenticoResourceService resources;
 
         public GetOrderDataService(IMapper mapper,
            IKenticoOrderProvider kenticoOrder,
@@ -37,8 +38,9 @@ namespace Kadena2.BusinessLogic.Services.Orders
            ITaxEstimationService taxService,
            IKenticoSiteProvider site,
            IKadenaSettings settings,
-           IOrderDataFactory orderDataFactory
-           )
+           IOrderDataFactory orderDataFactory,
+           IKenticoResourceService resources
+         )
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.kenticoOrder = kenticoOrder ?? throw new ArgumentNullException(nameof(kenticoOrder));
@@ -50,6 +52,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
             this.siteProvider = site ?? throw new ArgumentNullException(nameof(site));
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
             this.orderDataFactory = orderDataFactory ?? throw new ArgumentNullException(nameof(orderDataFactory));
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
         }
 
         public async Task<OrderDTO> GetSubmitOrderData(SubmitOrderRequest request)
@@ -85,7 +88,8 @@ namespace Kadena2.BusinessLogic.Services.Orders
             var orderDto = new OrderDTO()
             {
                 BillingAddress = orderDataFactory.CreateBillingAddress(billingAddress),
-                ShippingAddress = mapper.Map<AddressDTO>(shippingAddress),
+                ShippingAddressSource = GetSourceAddressForDeliveryEstimation(),
+                ShippingAddressDestination = mapper.Map<AddressDTO>(shippingAddress),
                 Customer = orderDataFactory.CreateCustomer(customer),
                 OrderDate = DateTime.Now,
                 PaymentOption = orderDataFactory.CreatePaymentOption(paymentMethod, request),
@@ -168,6 +172,19 @@ namespace Kadena2.BusinessLogic.Services.Orders
             {
                 throw new ArgumentException($"Missing mapping or invalid product type '{ productType }'");
             }
+        }
+
+        private AddressDTO GetSourceAddressForDeliveryEstimation()
+        {
+            return new AddressDTO()
+            {
+                AddressLine1 = resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderAddressLine1"),
+                AddressLine2 = resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderAddressLine2"),
+                City = resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderCity"),
+                Country = resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderCountry"),
+                Zip = resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderPostal"),
+                State = resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderState")
+            };
         }
     }
 }

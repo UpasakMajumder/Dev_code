@@ -73,7 +73,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     Type = orderType,
                     Campaign = GetCampaign(),
                     BillingAddress = GetBillingAddress(),
-                    ShippingAddress = GetBillingAddress(),
+                    ShippingAddressDestination = GetBillingAddress(),
                     ShippingOption = ShippingOption(),
                     Customer = GetCustomer(),
                     Site = GetSite(),
