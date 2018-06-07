@@ -20,5 +20,15 @@ namespace Kadena.Tests.Helpers
             var result = UrlHelper.ParseQueryStringFromUrl(url);
             Assert.Equal(2, result.Count);
         }
+
+        [Theory]
+        [InlineData("/some/url", "param", "value", "/some/url?param=value")]
+        [InlineData("/some/url?param3=value3", "param", "value", "/some/url?param3=value3&param=value")]
+        [InlineData("/some/url?param=value", "param", "value2", "/some/url?param=value2")]
+        public void SetQueryParameter_ShouldAddOrUpdateParameter(string oldUrl, string parameterName, string newValue, string newUrl)
+        {
+            var result = UrlHelper.SetQueryParameter(oldUrl, parameterName, newValue);
+            Assert.Equal(newUrl, result);
+        }
     }
 }

@@ -9,9 +9,9 @@ namespace Kadena.Models.TableSorting
         public static string OrderByParameterName => "orderby";
         public static string OrderByDirectionParameterName => "orderbydirection";
 
-        public static string DirectionAscending = "asc";
-        public static string DirectionDescending = "desc";
-        public static string DirectionEmpty = "no";
+        public static string DirectionAscending => "asc";
+        public static string DirectionDescending => "desc";
+        public static string DirectionEmpty => "no";
 
 
         public static string GetOrderBy(string[] columns, string currentUrl)
@@ -27,8 +27,7 @@ namespace Kadena.Models.TableSorting
 
         public static OrderBy ExtractOrderByFromUrl(string url)
         {
-            url = url.ToLower();
-            var parameters = UrlHelper.ParseQueryStringFromUrl(url);
+            var parameters = UrlHelper.ParseQueryStringFromUrl(url.ToLower());
 
             var orderByColumn = parameters.Get(OrderByParameterName);
             var orderByDirection = parameters.Get(OrderByDirectionParameterName);
@@ -43,8 +42,9 @@ namespace Kadena.Models.TableSorting
 
         public static string GetColumnDirection(string column, string currentUrl)
         {
-            var orderBy = ExtractOrderByFromUrl(currentUrl.ToLower());
-            if (orderBy.Column == column.ToLower())
+            column = column.ToLower();
+            var orderBy = ExtractOrderByFromUrl(currentUrl);
+            if (orderBy.Column == column)
             {
                 if (orderBy.Direction == DirectionDescending)
                 {
@@ -57,6 +57,21 @@ namespace Kadena.Models.TableSorting
             }
 
             return DirectionEmpty;
+        }
+
+        public static string GetColumnURL(string column, string currentUrl)
+        {
+            column = column.ToLower();
+            var orderBy = ExtractOrderByFromUrl(currentUrl.ToLower());
+            var direction = DirectionAscending;
+            if (orderBy.Column == column && orderBy.Direction != DirectionDescending)
+            {
+                direction = DirectionDescending;
+            }
+
+            currentUrl = UrlHelper.SetQueryParameter(currentUrl, OrderByParameterName, column);
+            currentUrl = UrlHelper.SetQueryParameter(currentUrl, OrderByDirectionParameterName, direction);
+            return currentUrl;
         }
     }
 }

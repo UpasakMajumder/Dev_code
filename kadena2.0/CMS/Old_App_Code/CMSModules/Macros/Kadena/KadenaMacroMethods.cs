@@ -579,8 +579,8 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 throw new NotSupportedException();
             }
             var columns = ValidationHelper.GetString(parameters[0], string.Empty).Split(',');
-            var currentUrl = CMSHttpContext.Current.Request.Url.PathAndQuery;
-            
+            var currentUrl = CMSHttpContext.Current.Request.RawUrl;
+
             return TableSortingHelper.GetOrderBy(columns, currentUrl);
         }
 
@@ -593,12 +593,24 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 throw new NotSupportedException();
             }
             var column = ValidationHelper.GetString(parameters[0], string.Empty);
-            var currentUrl = CMSHttpContext.Current.Request.Url.PathAndQuery;
+            var currentUrl = CMSHttpContext.Current.Request.RawUrl;
 
             return TableSortingHelper.GetColumnDirection(column, currentUrl);
         }
 
+        [MacroMethod(typeof(string), "Returns URL for sorting by given column and switching between asc and desc", 0)]
+        [MacroMethodParam(0, "column", typeof(string), "Column to test")]
+        public static object TableSortingColumnURL(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+            var column = ValidationHelper.GetString(parameters[0], string.Empty);
+            var currentUrl = CMSHttpContext.Current.Request.RawUrl;
 
+            return TableSortingHelper.GetColumnURL(column, currentUrl);
+        }
 
 
         /// <summary>

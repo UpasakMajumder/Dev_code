@@ -61,5 +61,28 @@ namespace Kadena.Tests.Models
             var result = TableSortingHelper.GetColumnDirection("col1", url);
             Assert.Equal("no", result);
         }
+
+        [Fact]
+        public void GetColumnURL_ShouldCreateSortingURLForGivenColumn()
+        {
+            const string column = "column1";
+            const string currentUrl = "/some/url?parameter1=value1";
+            const string expectedSortingUrl = "/some/url?parameter1=value1&orderby=column1&orderbydirection=asc";
+
+            var result = TableSortingHelper.GetColumnURL(column, currentUrl);
+
+            Assert.Equal(expectedSortingUrl, result);
+        }
+
+        [Theory]
+        [InlineData("/some/url?orderby=column1&orderbydirection=asc", "column1", "/some/url?orderby=column1&orderbydirection=desc")]
+        [InlineData("/some/url?orderby=column1", "column1", "/some/url?orderby=column1&orderbydirection=desc")]
+        [InlineData("/some/url?orderby=column1&orderbydirection=desc", "column1", "/some/url?orderby=column1&orderbydirection=asc")]
+        public void GetColumnURL_ShouldToggleDirection_WhenCurrentSortingIsForSameColumn(string currentUrl, string column, string newUrl)
+        {
+            var result = TableSortingHelper.GetColumnURL(column, currentUrl);
+
+            Assert.Equal(newUrl, result);
+        }
     }
 }
