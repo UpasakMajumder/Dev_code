@@ -17,14 +17,36 @@ class AddressDialog extends Component {
 
     this.stateIndex = dialog.fields.findIndex(element => element.id === 'state');
 
+    const defaultCountry = AddressDialog.getDefaultCountry(dialog.fields);
+
+    const fields = (fieldValues.state || defaultCountry) ? this.getNewStateFields(dialog.fields, fieldValues.country || defaultCountry) : dialog.fields;
+
     this.state = {
       fieldValues: {
         ...fieldValues,
+        country: AddressDialog.getCountry(dialog.fields, fieldValues),
         id: fieldValues.id || -1
       },
-      fields: fieldValues.state ? this.getNewStateFields(dialog.fields, fieldValues.country) : dialog.fields,
+      fields,
       inValidFields: []
     };
+  }
+
+  static getDefaultCountry(fields) {
+    const countryConfig = fields.find(field => field.id === 'country');
+    if (!countryConfig) return null;
+
+    const countries = countryConfig.values;
+    if (!countries) return null;
+
+    const defaultCountry = countries.find(country => country.isDefault);
+
+    if (defaultCountry) return defaultCountry.id;
+    return null;
+  }
+
+  static getCountry(fields, fieldValues) {
+    return fieldValues.country || AddressDialog.getDefaultCountry(fields);
   }
 
   static propTypes = {
@@ -71,7 +93,7 @@ class AddressDialog extends Component {
     const options = fields.find(field => field.id === 'country').values.find(country => country.id === countryId).values;
     const state = fields.find(element => element.id === 'state');
 
-    return [
+    const result = [
       ...fields.slice(0, this.stateIndex),
       {
         ...state,
@@ -79,6 +101,8 @@ class AddressDialog extends Component {
       },
       ...fields.slice(this.stateIndex + 1)
     ];
+
+    return result;
   }
 
   countryHasState = (countryId) => {
@@ -123,17 +147,32 @@ class AddressDialog extends Component {
         address2: '',
         city: '',
         state: '',
-        zip: ''
+        counry: '',
+        zip: '',
+        email: '',
+        phone: '',
+        customerName: ''
       }
     });
   };
 
   submitForm = (data) => {
-    const { addDataAddress, changeDataAddress, isModifyingDialog } = this.props;
+    const { addDataAddress, changeDataAddress, isModifyingDialog, dialog } = this.props;
     const { fieldValues } = this.state;
-    const requiredFields = ['address1', 'city', 'country', 'zip'];
-    this.countryHasState(fieldValues.country) && requiredFields.push('state');
-    const inValidFields = requiredFields.filter(requiredFiled => !fieldValues[requiredFiled]);
+
+    const inValidFields = [];
+
+    dialog.fields.forEach((data) => {
+      if (!data.isOptional) {
+        if (!fieldValues[data.id]) {
+          if (data.id === 'state') {
+            this.countryHasState(fieldValues.country) && inValidFields.push(data.id);
+          } else {
+            inValidFields.push(data.id);
+          }
+        }
+      }
+    });
 
     if (!inValidFields.length) {
       isModifyingDialog ? changeDataAddress(data) : addDataAddress(data);
@@ -151,27 +190,33 @@ class AddressDialog extends Component {
     const { dialog, isModifyingDialog } = this.props;
     const { fieldValues, fields } = this.state;
 
-    const footer = <div className="btn-group btn-group--right">
-      <button onClick={this.closeDialog}
-              type="button"
-              className="btn-action btn-action--secondary"
-      >
-        {dialog.buttons.discard}
-      </button>
+    const footer = (
+      <div className="btn-group btn-group--right">
+        <button
+          onClick={this.closeDialog}
+          type="button"
+          className="btn-action btn-action--secondary"
+        >
+          {dialog.buttons.discard}
+        </button>
+        <button
+          onClick={() => { this.submitForm(fieldValues); }}
+          type="button"
+          className="btn-action"
+        >
+          {dialog.buttons.save}
+        </button>
+      </div>
+    );
 
-      <button onClick={() => { this.submitForm(fieldValues); }}
-              type="button"
-              className="btn-action"
-      >
-        {dialog.buttons.save}
-      </button>
-    </div>;
 
+    const row1 = [];
+    const row2 = [];
 
-    const bodyContent = fields.map((field) => {
+    fields.forEach((field, i) => {
       const { label, values, type, id, isOptional } = field;
 
-      let input = {};
+      let input = null;
 
       if (type === 'text') {
         input = (
@@ -198,11 +243,13 @@ class AddressDialog extends Component {
         return null;
       }
 
-      return (
-        <td style={{ width: `${100 / dialog.fields.length}%` }} key={id}>
-          {input}
-        </td>
-      );
+      if (i + 1 <= Math.ceil(fields.length / 2)) {
+        row1.push(<td key={id}>{input}</td>);
+      } else {
+        row2.push(<td key={id}>{input}</td>);
+      }
+
+      return null;
     });
 
     const userNotification = dialog.userNotification ? <Alert type="info" text={dialog.userNotification}/> : null;
@@ -213,9 +260,8 @@ class AddressDialog extends Component {
 
         <table className="cart__dialog-table">
           <tbody>
-          <tr>
-            {bodyContent}
-          </tr>
+            <tr>{row1}</tr>
+            <tr>{row2}</tr>
           </tbody>
         </table>
       </div>
@@ -223,11 +269,15 @@ class AddressDialog extends Component {
 
     const title = isModifyingDialog ? dialog.types.edit : dialog.types.add;
 
-    return <Dialog closeDialog={this.closeDialog}
-                   hasCloseBtn={true}
-                   title={title}
-                   body={body}
-                   footer={footer}/>;
+    return (
+      <Dialog
+        closeDialog={this.closeDialog}
+        hasCloseBtn={true}
+        title={title}
+        body={body}
+        footer={footer}
+      />
+    );
   }
 }
 

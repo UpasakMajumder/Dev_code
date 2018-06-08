@@ -30,7 +30,7 @@ class ProductDetail extends Component {
       info: ImmutablePropTypes.map,
       estimates: ImmutablePropTypes.map,
       dynamicPrices: ImmutablePropTypes.map,
-      availability: ImmutablePropTypes.map,
+      availability: PropTypes.string,
       packagingInfo: PropTypes.string,
       quantityText: PropTypes.string,
       addToCart: ImmutablePropTypes.mapContains({
@@ -58,6 +58,7 @@ class ProductDetail extends Component {
 
     const options = {};
     const categories = props.ui.getIn(['productOptions', 'categories']);
+    const tiersItems = props.ui.getIn(['addToCart', 'tiers', 'items']);
 
     if (categories) {
       categories.forEach((category) => {
@@ -73,15 +74,55 @@ class ProductDetail extends Component {
       });
     }
 
+    const quantity = (tiersItems && tiersItems.count()) ? '' : this.props.ui.getIn(['addToCart', 'quantity'], 1);
+
     this.state = {
       options: Immutable.Map(options),
       optionsPrice: null,
-      quantity: this.props.ui.getIn(['addToCart', 'quantity'], 1),
+      quantity,
       isLoading: false,
       optionsError: false,
-      quanityError: ''
+      quanityError: '',
+      availability: null
     };
   }
+
+  componentDidMount() {
+    const getAvailabilityUrl = this.props.ui.get('availability');
+    if (getAvailabilityUrl) {
+      this.setState({
+        availability: Immutable.Map({ type: '', text: '' })
+      }, () => {
+        this.getAvailability(getAvailabilityUrl);
+      });
+    }
+  }
+
+  getAvailability = async () => {
+    const url = this.props.ui.get('availability');
+    if (url) {
+      try {
+        const availability = this.state.availability
+          .set('type', '')
+          .set('text', '');
+        this.setState({ availability, isLoading: true });
+        const response = await axios.get(url);
+        const { success, payload, errorMessage } = response.data;
+        if (success) {
+          const availability = this.state.availability
+            .set('type', payload.type)
+            .set('text', payload.text);
+          this.setState({ availability });
+        } else {
+          window.store.dispatch({ type: FAILURE, alert: errorMessage });
+        }
+      } catch (e) {
+        window.store.dispatch({ type: FAILURE });
+      } finally {
+        this.setState({ isLoading: false });
+      }
+    }
+  };
 
   isValid = () => {
     const { ui } = this.props;
@@ -201,6 +242,7 @@ class ProductDetail extends Component {
 
         // show notification
         toggleDialogAlert(true, confirmation.alertMessage, closeDialog, confirmBtn);
+        this.getAvailability();
       })
       .catch(() => {
         window.store.dispatch({ type: CART_PREVIEW_CHANGE_ITEMS + FAILURE });
@@ -271,11 +313,13 @@ class ProductDetail extends Component {
     return (
       <div>
         <div className="product-view">
+
           <ProductThumbnail
             thumbnail={ui.get('thumbnail')}
             attachments={ui.get('attachments')}
             requiresApproval={ui.get('requiresApproval')}
           />
+
           <div className="product-view__block">
             <Info
               info={ui.get('info')}
@@ -301,7 +345,7 @@ class ProductDetail extends Component {
             </div>
             <div className="product-view__footer">
               <Stock
-                availability={ui.get('availability')}
+                availability={this.state.availability}
               />
               {packagingInfoComponent}
               <Proceed

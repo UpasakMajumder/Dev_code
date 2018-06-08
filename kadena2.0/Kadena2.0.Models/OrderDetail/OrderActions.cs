@@ -6,5 +6,6 @@ namespace Kadena.Models.OrderDetail
     {
         public DialogButton Accept { get; set; }
         public DialogButton Reject { get; set; }
+        public TitleValuePair<string> Comment { get; set; }
     }
 }

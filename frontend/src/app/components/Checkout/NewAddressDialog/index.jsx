@@ -121,9 +121,9 @@ class NewAddressDialog extends Component {
       }
 
       if (i + 1 <= Math.ceil(bodyData.length / 2)) {
-        bodyContent1Part.push(<td key={i}>{element}</td>);
+        bodyContent1Part.push(<td key={data.id}>{element}</td>);
       } else {
-        bodyContent2Part.push(<td key={i}>{element}</td>);
+        bodyContent2Part.push(<td key={data.id}>{element}</td>);
       }
 
       return null;

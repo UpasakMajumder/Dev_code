@@ -1,6 +1,7 @@
 ﻿using System;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Web.Http.Filters;
+using Kadena.Infrastructure.Exceptions;
 
 namespace Kadena.WebAPI.Infrastructure.Filters
 {
@@ -19,7 +20,12 @@ namespace Kadena.WebAPI.Infrastructure.Filters
         {
             context.Response = FilterHelper.ErrorResponse(context.Exception.Message);
 
-            logger?.LogException(loggerSource, context.Exception);
+            var webApiException = context.Exception as WebApiException;
+
+            if (webApiException?.LogInEventLog ?? true)
+            {
+                logger?.LogException(loggerSource, context.Exception);
+            }
         }
     }
 }

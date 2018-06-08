@@ -135,16 +135,16 @@ const deliveryAddresses = {
         "type": "text"
       },
       {
-        "id": "zip",
-        "label": "Postal Code",
-        "values": [],
-        "type": "text"
-      },
-      {
         "id": "state",
         "label": "State",
         "values": [],
         "type": "select"
+      },
+      {
+        "id": "zip",
+        "label": "Postal Code",
+        "values": [],
+        "type": "text"
       },
       {
         "id": "country",
@@ -210,7 +210,10 @@ const deliveryAddresses = {
       "zip": "38017",
       "id": 1,
       "checked": true,
-      "country": "3"
+      "country": "3",
+      "phone": "776 884 228",
+      "email": "lol@gmail.com",
+      "customerName": "Andrei"
     },
     {
       "address1": "Test Address line 1",
