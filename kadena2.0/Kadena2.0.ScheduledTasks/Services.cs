@@ -43,7 +43,7 @@ namespace Kadena.ScheduledTasks
             container.RegisterInstance(typeof(IMapper), CreateMapper());
 
             // scheduled tasks services
-            container.Register<DeleteExpiredMailingListsService, DeleteExpiredMailingListsService>();
+            container.Register<IDeleteExpiredMailingListsService, DeleteExpiredMailingListsService>();
             container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
         }
 

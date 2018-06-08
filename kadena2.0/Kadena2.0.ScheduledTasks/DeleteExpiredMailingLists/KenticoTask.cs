@@ -1,6 +1,7 @@
 ﻿using CMS;
 using CMS.Scheduler;
 using Kadena.ScheduledTasks.DeleteExpiredMailingLists;
+using Kadena.ScheduledTasks.Infrastructure;
 
 [assembly: RegisterCustomClass("DeleteExpiredMailingLists", typeof(KenticoTask))]
 
@@ -10,7 +11,7 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
     {
         public string Execute(TaskInfo task)
         {
-            var service = Services.Resolve<DeleteExpiredMailingListsService>();
+            var service = Services.Resolve<IDeleteExpiredMailingListsService>();
             return service.Delete().Result;
         }
     }
