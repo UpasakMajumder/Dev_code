@@ -23,6 +23,11 @@
     }
   }
 
+  &__comment {
+    width: 400px;
+    margin: 0 0 10px auto;
+  }
+
   &__header {
     @include rem(margin-bottom, 20px);
   }

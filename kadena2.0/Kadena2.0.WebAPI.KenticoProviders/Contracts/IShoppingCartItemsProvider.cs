@@ -1,5 +1,4 @@
 ﻿using Kadena.Models.Checkout;
-using Kadena.Models.SubmitOrder;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -7,10 +6,10 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
     {
         int GetShoppingCartItemsCount();
         CheckoutCartItem[] GetCheckoutCartItems(bool showPrices = true);
-        OrderCartItem[] GetOrderCartItems();
         void RemoveCartItem(int id);
-        void SetCartItemQuantity(int id, int quantity);
+        void SetCartItemQuantity(CartItemEntity cartItemEntity, int quantity);
         void SaveCartItem(CartItemEntity item);
         CartItemEntity GetOrCreateCartItem(NewCartItem newItem);
+        CartItemEntity GetCartItemEntity(int cartItemId);
     }
 }

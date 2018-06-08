@@ -733,6 +733,13 @@
     <Compile Include="CMSFormControls\Kadena\BusinessUnitControl.ascx.designer.cs">
       <DependentUpon>BusinessUnitControl.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSFormControls\Kadena\TieredPricingSelector.ascx.cs">
+      <DependentUpon>TieredPricingSelector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSFormControls\Kadena\TieredPricingSelector.ascx.designer.cs">
+      <DependentUpon>TieredPricingSelector.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx.cs">
       <DependentUpon>DynamicPricingSelector.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1204,12 +1211,12 @@
     <Compile Include="CMSWebParts\Kadena\Product\AddInventoryProduct.ascx.designer.cs">
       <DependentUpon>AddInventoryProduct.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.cs">
-      <DependentUpon>AddToCartButton.ascx</DependentUpon>
+    <Compile Include="CMSWebParts\Kadena\Product\AddTemplatedToCartButton.ascx.cs">
+      <DependentUpon>AddTemplatedToCartButton.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx.designer.cs">
-      <DependentUpon>AddToCartButton.ascx</DependentUpon>
+    <Compile Include="CMSWebParts\Kadena\Product\AddTemplatedToCartButton.ascx.designer.cs">
+      <DependentUpon>AddTemplatedToCartButton.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Kadena\Product\CustomerShipToAddress.ascx.cs">
       <DependentUpon>CustomerShipToAddress.ascx</DependentUpon>
@@ -1332,9 +1339,6 @@
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\POSNumber.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\ProductItemSpecs.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\CustomTableItems\KDA\StatesGroup.generated.cs" />
-    <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingData.cs" />
-    <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingDataHelper.cs" />
-    <Compile Include="Old_App_Code\Kadena\DynamicPricing\DynamicPricingRawData.cs" />
     <Compile Include="Old_App_Code\Kadena\EmailNotifications\ProductEmailNotifications.cs" />
     <Compile Include="Old_App_Code\Kadena\Email\EmailService.cs" />
     <Compile Include="Old_App_Code\Kadena\Enums\ProductType.cs" />
@@ -1401,6 +1405,7 @@
   <ItemGroup>
     <Content Include="BrandWebservice.asmx" />
     <Content Include="CMSFormControls\Kadena\BusinessUnitControl.ascx" />
+    <Content Include="CMSFormControls\Kadena\TieredPricingSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\MediaMultiSelector.ascx" />
     <Content Include="CMSModules\Kadena\Pages\Orders\FailedOrders.aspx" />
@@ -1539,7 +1544,7 @@
     <Content Include="CMSScripts\Custom\Kadena\custom.js" />
     <Content Include="CMSWebParts\Kadena\Chili\ChiliIframe.ascx" />
     <Content Include="CMSWebParts\Kadena\Chili\OpenTemplatedProductButton.ascx" />
-    <Content Include="CMSWebParts\Kadena\Product\AddToCartButton.ascx" />
+    <Content Include="CMSWebParts\Kadena\Product\AddTemplatedToCartButton.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CMSPages\Kadena\SubmitBid.ashx" />
@@ -1553,6 +1558,7 @@
   <ItemGroup>
     <Content Include="ConnectionStrings.config" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -40,7 +40,7 @@ namespace Kadena.Tests.BusinessLogic
         public void GetLocation_NullArtwork()
         {
             Setup<IKenticoProductsProvider, Uri>(ip => ip.GetProductArtworkUri(It.IsAny<int>()), null);
-            Setup<IKenticoSiteProvider, string, string>(ip => ip.GetAbsoluteUrl(Helpers.Routes.File.Get), s => $"https://local/{s}");
+            Setup<IKenticoSiteProvider, string, string>(ip => ip.GetAbsoluteUrl(Kadena.Helpers.Routes.File.Get), s => $"https://local/{s}");
 
             // Act
             var actualResult = Sut.GetLocation(0);
@@ -56,7 +56,7 @@ namespace Kadena.Tests.BusinessLogic
             var expectedResult = "https://local/files/file.jpg";
 
             Setup<IKenticoProductsProvider, Uri>(ip => ip.GetProductArtworkUri(It.IsAny<int>()), new Uri(expectedResult));
-            Setup<IKenticoSiteProvider, string, string>(ip => ip.GetAbsoluteUrl(Helpers.Routes.File.Get), s => $"https://local/{s}");
+            Setup<IKenticoSiteProvider, string, string>(ip => ip.GetAbsoluteUrl(Kadena.Helpers.Routes.File.Get), s => $"https://local/{s}");
 
             // Act
             var actualResult = Sut.GetLocation(0);
@@ -74,9 +74,9 @@ namespace Kadena.Tests.BusinessLogic
             // Arrange 
             var expectedResult = $"environment/{path}";
 
-            Setup<IKenticoProductsProvider, Uri>(ip => ip.GetProductArtworkUri(It.IsAny<int>()), new Uri($"https://local/{Helpers.Routes.File.Get}?path={path}"));
+            Setup<IKenticoProductsProvider, Uri>(ip => ip.GetProductArtworkUri(It.IsAny<int>()), new Uri($"https://local/{Kadena.Helpers.Routes.File.Get}?path={path}"));
             Setup<IS3PathService, string>(ip => ip.GetObjectKeyFromPath(path, true), expectedResult);
-            Setup<IKenticoSiteProvider, string, string>(ip => ip.GetAbsoluteUrl(Helpers.Routes.File.Get), s => $"https://local/{s}");
+            Setup<IKenticoSiteProvider, string, string>(ip => ip.GetAbsoluteUrl(Kadena.Helpers.Routes.File.Get), s => $"https://local/{s}");
 
             // Act
             var actualResult = Sut.GetLocation(0);

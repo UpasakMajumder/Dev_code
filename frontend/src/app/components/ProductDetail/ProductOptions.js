@@ -31,7 +31,7 @@ const ProductOptions = ({
               {option.get('name')}
             </option>
           );
-        });
+        }).toJS();
 
         return (
           <div key={uuid()} className="input__wrapper product-options__input">
@@ -63,7 +63,7 @@ const ProductOptions = ({
               onChange={e => handleChangeOptions(category.get('name'), e.target.value)}
             />
           );
-        });
+        }).toJS();
 
         return (
           <div key={uuid()} className={`product-options__radio product-options__radio--${type}`}>
@@ -73,7 +73,7 @@ const ProductOptions = ({
       }
 
       return null;
-    });
+    }).toJS();
   };
 
   const align = categories.findEntry(category => category.get('selector') === 'RadioButtonsVertical') ? 'top' : 'center';

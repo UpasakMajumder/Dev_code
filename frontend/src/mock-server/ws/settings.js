@@ -58,6 +58,12 @@ const address = {
         },
         "fields": [
           {
+            "id": "customerName",
+            "label": "Customer Name",
+            "values": [],
+            "type": "text"
+          },
+          {
             "id": "address1",
             "label": "Address line 1",
             "values": [],
@@ -77,16 +83,16 @@ const address = {
             "type": "text"
           },
           {
-            "id": "zip",
-            "label": "Zip code",
-            "values": [],
-            "type": "text"
-          },
-          {
             "id": "state",
             "label": "State",
             "type": "select",
             "values": []
+          },
+          {
+            "id": "zip",
+            "label": "Zip code",
+            "values": [],
+            "type": "text"
           },
           {
             "id": "country",
@@ -100,6 +106,7 @@ const address = {
               {
                 id: "2",
                 name: "USA",
+                isDefault: true,
                 values: [
                   {
                     id: "21",
@@ -113,6 +120,19 @@ const address = {
               }
             ],
             "type": "select"
+          },
+          {
+            "id": "phone",
+            "label": "Phone",
+            "values": [],
+            "type": "text",
+            "isOptional": true
+          },
+          {
+            "id": "email",
+            "label": "Email",
+            "values": [],
+            "type": "text"
           }
         ]
       }

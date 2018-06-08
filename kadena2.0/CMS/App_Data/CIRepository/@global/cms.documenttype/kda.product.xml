@@ -43,12 +43,40 @@
           <Trim>False</Trim>
         </settings>
       </field>
+      <field allowempty="true" column="ProductPricingModel" columnsize="200" columntype="text" guid="fc2202c1-d75f-4fea-8422-664c054fc4fe" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Pricing model</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>DropDownListControl</controlname>
+          <DisplayActualValueAsItem>False</DisplayActualValueAsItem>
+          <EditText>False</EditText>
+          <Options>
+            <![CDATA[{% KadenaNamespace.GetProductPricingModels() |(user)administrator|(hash)7411d9843ca540a3c89fb8bce4caadaabf8c2cad5ae00a83c478ebc163152930%}]]>
+          </Options>
+          <SortItems>False</SortItems>
+        </settings>
+      </field>
       <field allowempty="true" column="ProductDynamicPricing" columntype="longtext" guid="0b3a73e5-b384-4363-b8b8-e09ec231f125" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Dymanic pricing and Quantity</fieldcaption>
+          <visiblemacro ismacro="true">
+            <![CDATA[{% ProductPricingModel == "Dynamic" %}]]>
+          </visiblemacro>
         </properties>
         <settings>
           <controlname>DynamicPricingSelector</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ProductTieredPricing" columntype="longtext" guid="0d2a5e09-535a-4f28-854d-b28e5f1fb03e" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Tiered pricing</fieldcaption>
+          <visiblemacro ismacro="true">
+            <![CDATA[{%ProductPricingModel == "Tiered"%}]]>
+          </visiblemacro>
+        </properties>
+        <settings>
+          <controlname>TieredPricingSelector</controlname>
         </settings>
       </field>
       <field allowempty="true" column="ProductThumbnailBorderDisabled" columntype="boolean" guid="ad1051c3-59b4-4e56-87e7-3976d05e9571" publicfield="false" visible="true">

@@ -30,7 +30,7 @@ namespace Kadena.WebAPI.Controllers
             }
 
             _orderService = orderListServiceFactory.GetRecentOrders();
-            this.orderDetailService = orderDetailService;
+            this.orderDetailService = orderDetailService ?? throw new ArgumentNullException(nameof(orderDetailService));
         }
 
         [HttpGet]

@@ -17,3 +17,4 @@ module.exports.options = (req, res) => {
     payload
   });
 };
+module.exports.availability = (req, res) => res.json(products.availability);

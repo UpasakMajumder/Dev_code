@@ -110,6 +110,7 @@ namespace Kadena.Container.Default
             container.Register<IImageService, ImageService>();
             container.Register<IApproverService, ApproverService>();
             container.Register<IApprovalService, ApprovalService>();
+            container.Register<IDialogService, DialogService>();
             container.Register<IS3PathService, S3PathService>();
             container.Register<IS3PathService, PathService>(setup: Setup.Decorator);
             container.Register<IArtworkService, ArtworkService>();
@@ -151,6 +152,9 @@ namespace Kadena.Container.Default
             container.Register<IKenticoRoleProvider, KenticoRoleProvider>();
             container.Register<IKenticoUnitOfMeasureProvider, KenticoUnitOfMeasureProvider>();
             container.Register<IKenticoMediaProvider, KenticoMediaProvider>();
+            container.Register<ITieredPriceRangeProvider, TieredPriceRangeProvider>();
+            container.Register<IOrderCartItemsProvider, OrderCartItemsProvider>();
+            container.Register<IKenticoSkuProvider, KenticoSkuProvider>();
             container.Register<IKenticoFileProvider, KenticoFileProvider>();
             container.Register<IKenticoCustomItemProvider, KenticoCustomItemProvider>();
             return container;
