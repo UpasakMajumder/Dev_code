@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Models;
@@ -28,6 +29,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
         private readonly IKadenaSettings settings;
         private readonly IOrderDataFactory orderDataFactory;
         private readonly IKenticoResourceService resources;
+        private readonly IGetDeliveryEstimationDataService deliveryEstimationData;
 
         public GetOrderDataService(IMapper mapper,
            IKenticoOrderProvider kenticoOrder,
@@ -39,7 +41,8 @@ namespace Kadena2.BusinessLogic.Services.Orders
            IKenticoSiteProvider site,
            IKadenaSettings settings,
            IOrderDataFactory orderDataFactory,
-           IKenticoResourceService resources
+           IKenticoResourceService resources,
+           IGetDeliveryEstimationDataService deliveryEstimationData
          )
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -53,6 +56,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
             this.orderDataFactory = orderDataFactory ?? throw new ArgumentNullException(nameof(orderDataFactory));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.deliveryEstimationData = deliveryEstimationData ?? throw new ArgumentNullException(nameof(deliveryEstimationData));
         }
 
         public async Task<OrderDTO> GetSubmitOrderData(SubmitOrderRequest request)
@@ -174,17 +178,9 @@ namespace Kadena2.BusinessLogic.Services.Orders
             }
         }
 
-        private AddressDTO GetSourceAddressForDeliveryEstimation()
+        public AddressDTO GetSourceAddressForDeliveryEstimation()
         {
-            return new AddressDTO()
-            {
-                AddressLine1 = resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderAddressLine1"),
-                AddressLine2 = resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderAddressLine2"),
-                City = resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderCity"),
-                Country = resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderCountry"),
-                Zip = resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderPostal"),
-                State = resources.GetSiteSettingsKey("KDA_EstimateDeliveryPrice_SenderState")
-            };
+            return mapper.Map<AddressDTO>(deliveryEstimationData.GetSourceAddressForDeliveryEstimation());
         }
     }
 }
