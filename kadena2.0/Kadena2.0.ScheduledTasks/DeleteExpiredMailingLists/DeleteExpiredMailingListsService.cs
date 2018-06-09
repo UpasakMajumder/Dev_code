@@ -16,7 +16,7 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
             this.configurationProvider = configurationProvider ?? throw new ArgumentNullException(nameof(configurationProvider));
         }
 
-        public async Task<string> Delete(Site site)
+        public async Task<string> Delete(KenticoSite site)
         {
             var now = DateTime.Now;
             var config = configurationProvider.Get<MailingListConfiguration>(site.Id);

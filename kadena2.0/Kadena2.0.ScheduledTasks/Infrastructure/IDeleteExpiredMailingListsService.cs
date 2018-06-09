@@ -6,6 +6,6 @@ namespace Kadena.ScheduledTasks.Infrastructure
 {
     public interface IDeleteExpiredMailingListsService
     {
-        Task<string> Delete(Site site);
+        Task<string> Delete(KenticoSite site);
     }
 }
