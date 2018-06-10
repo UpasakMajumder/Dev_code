@@ -15,6 +15,7 @@ import PaymentInfo from './PaymentInfo';
 import PricingInfo from './PricingInfo';
 import OrderedItems from './OrderedItems';
 import Actions from './Actions';
+import EditModal from './EditModal';
 import EmailProof from '../EmailProof';
 
 class OrderDetail extends Component {
@@ -28,10 +29,18 @@ class OrderDetail extends Component {
       pricingInfo: PropTypes.object,
       shippingInfo: PropTypes.object,
       actions: PropTypes.object,
-      general: PropTypes.object
+      general: PropTypes.object,
+      editOrders: PropTypes.shape({
+        proceedUrl: PropTypes.string.isRequired,
+        dialog: PropTypes.object.isRequired
+      })
     }).isRequired,
     emailProof: PropTypes.object.isRequired,
     toogleEmailProof: PropTypes.func.isRequired
+  };
+
+  state = {
+    showEditModal: false // managed in Actions component
   };
 
   componentDidMount() {
@@ -42,6 +51,8 @@ class OrderDetail extends Component {
   }
 
   changeStatus = newStatus => this.props.changeStatus(newStatus);
+
+  showEditModal = showEditModal => this.setState({ showEditModal });
 
   render() {
     const { ui, emailProof, toogleEmailProof, changeStatus } = this.props;
@@ -55,7 +66,8 @@ class OrderDetail extends Component {
       orderedItems,
       dateTimeNAString,
       actions,
-      general
+      general,
+      editOrders
     } = ui;
 
     const shippingInfoEl = shippingInfo ? <div className="col-lg-4 mb-4"><ShippingInfo ui={shippingInfo} /></div> : null;
@@ -64,7 +76,14 @@ class OrderDetail extends Component {
 
     return (
       <div>
-        {emailProof.show && <EmailProof />}
+        <EmailProof open={emailProof.show} />
+        <EditModal
+          closeModal={() => this.showEditModal(false)}
+          open={this.state.showEditModal}
+          orderedItems={orderedItems.items}
+          {...editOrders.dialog}
+          paidByCreditCard={paymentInfo.paymentIcon === 'credit-card'}
+        />
         <CommonInfo
           ui={commonInfo}
           dateTimeNAString={dateTimeNAString}
@@ -82,9 +101,11 @@ class OrderDetail extends Component {
 
         <div className="order-block">
           <Actions
-            ui={actions}
+            actions={actions}
+            editOrders={editOrders}
             general={general}
             changeStatus={changeStatus}
+            showEditModal={this.showEditModal}
           />
         </div>
       </div>

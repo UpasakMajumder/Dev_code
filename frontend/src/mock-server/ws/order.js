@@ -612,7 +612,7 @@ module.exports.detail =  {
       },
       "paymentInfo": {
         "title": "Payment",
-        "paymentIcon": "order-payment",
+        "paymentIcon": "credit-card",
         "paidBy": "Paid by credit card",
         "paymentDetail": "Mastercard •••• 4062",
         "date": "2017-08-07T09:12:08.108892Z",
@@ -648,6 +648,7 @@ module.exports.detail =  {
         "items": [
           {
             "id": 1,
+            "removeButton": "Remove",
             "isReport": true,
             "image": "http://satyr.io/200-500x300-700",
             "template": "Information letter lamp post Mar 30 3017",
@@ -657,7 +658,7 @@ module.exports.detail =  {
             "tracking": [],
             "mailingListPrefix": "Mailing list",
             "shippingDatePrefix": "Shipping date",
-            "templatePrefix": "Shipping date",
+            "templatePrefix": "Template",
             "price": "$ 112.2",
             "quantityPrefix": "Quantity:", // Addresses/Quantity,
             "quantityShippedPrefix": "Quantity shipped:",
@@ -688,6 +689,7 @@ module.exports.detail =  {
           },
           {
             "id": 2,
+            "removeButton": "Remove",
             "isReport": true,
             "image": "http://satyr.io/200-500x300-700",
             "template": "Information letter lamp post Mar 30 3017",
@@ -736,7 +738,7 @@ module.exports.detail =  {
             ],
             "mailingListPrefix": "Mailing list",
             "shippingDatePrefix": "Shipping date",
-            "templatePrefix": "Shipping date",
+            "templatePrefix": "Template",
             "price": "$ 112.2",
             "quantityPrefix": "Quantity:", // Addresses/Quantity,
             "quantityShippedPrefix": "Quantity shipped:",
@@ -779,6 +781,18 @@ module.exports.detail =  {
         },
         "comment": {
           "title": "Comment"
+        }
+      },
+      "editOrders": {
+        "button": "Edit",
+        "proceedUrl": "#",
+        "dialog": {
+          title: "Title",
+          description: "Description",
+          buttons: {
+            proceed: "Save Edits",
+            cancel: "Cancel"
+          }
         }
       }
     }

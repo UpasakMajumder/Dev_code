@@ -25,12 +25,16 @@ class Actions extends Component {
   };
 
   static propTypes = {
-    ui: PropTypes.shape({
+    actions: PropTypes.shape({
       accept: { ...actionPropTypes },
       reject: { ...actionPropTypes }
     }).isRequired,
+    editOrders: PropTypes.shape({
+      button: PropTypes.string.isRequired
+    }),
     general: PropTypes.object.isRequired,
-    changeStatus: PropTypes.func.isRequired
+    changeStatus: PropTypes.func.isRequired,
+    showEditModal: PropTypes.func.isRequired
   };
 
   handleShowReject = () => this.setState({ showReject: true });
@@ -73,15 +77,21 @@ class Actions extends Component {
   };
 
   render() {
-    if (!this.props.ui) return null;
-
-    const { ui: { accept, reject, comment } } = this.props;
+    const { actions: { accept, reject, comment } } = this.props;
     const { proceeded, rejectionNote, isLoading } = this.state;
 
-    return (
-      <div className="text-right">
-        {this.state.showReject && <Modal submit={() => this.submit(reject.proceedUrl)} closeDialog={this.handleHideReject} { ...reject.dialog } />}
+    const editButton = this.props.editOrders
+      ? (
+        <Button
+          text={this.props.editOrders.button}
+          type="action"
+          btnClass="mr-2"
+          onClick={() => this.props.showEditModal(true)}
+        />
+      ) : null;
 
+    const commentBlock = this.props.actions
+      ? (
         <Textarea
           label={comment.title}
           value={rejectionNote}
@@ -90,8 +100,12 @@ class Actions extends Component {
           wpapperClass="order-block__comment"
           onChange={e => this.handleChangeRejectionNote(e.target.value)}
         />
+      ) : null;
 
+    const approveButtons = this.props.actions
+      ? [
         <Button
+          key={1}
           text={accept.button}
           type="success"
           btnClass="mr-2"
@@ -101,15 +115,24 @@ class Actions extends Component {
             if (proceeded) return;
             this.submit(accept.proceedUrl);
           }}
-        />
-
+        />,
         <Button
+          key={2}
           text={reject.button}
           type="danger"
           disabled={proceeded}
           isLoading={isLoading}
           onClick={proceeded ? () => {} : this.handleShowReject}
         />
+      ] : null;
+
+    return (
+      <div className="text-right">
+        {this.state.showReject && <Modal submit={() => this.submit(reject.proceedUrl)} closeDialog={this.handleHideReject} { ...reject.dialog } />}
+
+        {commentBlock}
+        {editButton}
+        {approveButtons}
       </div>
     );
   }

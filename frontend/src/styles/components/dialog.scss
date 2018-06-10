@@ -7,6 +7,51 @@
   bottom: 0;
   z-index: 10000;
 
+  // React Css transition group
+  &-enter {
+    .dialog__shadow {
+      opacity: .01;
+    }
+
+    .dialog__block {
+      opacity: .01;
+      transform: translateY(500px);
+    }
+
+    &-active {
+      .dialog__shadow {
+        opacity: .5;
+      }
+
+      .dialog__block {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  &-leave {
+    .dialog__shadow {
+      opacity: .5;
+    }
+
+    .dialog__block {
+      opacity: 1;
+    }
+
+    &-active {
+      .dialog__shadow {
+        opacity: .01;
+        transition: opacity 300ms ease-in;
+      }
+
+      .dialog__block {
+        opacity: .01;
+        transform: translateY(-500px);
+      }
+    }
+  }
+
   &.active {
     display: flex;
   }
@@ -22,6 +67,7 @@
     background-color: $brand-dark;
     opacity: .5;
     z-index: $zindex-modal-backdrop;
+    transition: all 400ms;
   }
 
   &__content {
@@ -37,6 +83,7 @@
     background-color: $brand-white;
     z-index: $zindex-modal;
     border-radius: $border-radius * 4;
+    transition: all 400ms;
 
     & > *:not(:last-child) {
       @include rem(margin-bottom, 20px);
