@@ -19,14 +19,20 @@ import Button from 'app.dump/Button';
 import EmailConfirmation from '../Checkout/EmailConfirmation';
 
 class EmailProof extends Component {
-  state = {
-    form: {
-      recepientEmail: '',
-      subject: '',
-      message: ''
-    },
-    invalids: [], // { field, message }
-    isPending: false
+  constructor() {
+    super();
+
+    this.defaultState = {
+      form: {
+        recepientEmail: '',
+        subject: '',
+        message: ''
+      },
+      invalids: [], // { field, message }
+      isPending: false
+    };
+
+    this.state = { ...this.defaultState };
   }
 
   getInvalids = () => {
@@ -74,7 +80,7 @@ class EmailProof extends Component {
 
       if (success) {
         this.setState(prevState => ({ isPending: !prevState.isPending }));
-        this.props.toggleModal(false);
+        this.closeDialog();
         toastr.success(this.props.notificationSuccess.title, this.props.notificationSuccess.text);
       } else {
         this.setState(prevState => ({ isPending: !prevState.isPending }));
@@ -92,7 +98,10 @@ class EmailProof extends Component {
     }
   };
 
-  closeDialog = () => this.props.toggleModal(false);
+  closeDialog = () => {
+    this.setState({ ...this.defaultState });
+    this.props.toggleModal(false);
+  }
 
   handleChange = (field, value) => {
     this.setState({

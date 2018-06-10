@@ -373,7 +373,9 @@ class Checkout extends Component {
 
       content = (
         <div>
-          {this.props.emailProof.show && <EmailProof />}
+          <EmailProof
+            open={this.props.emailProof.show}
+          />
           {welcomeMessage}
           <div className="shopping-cart__block">
             <Products
