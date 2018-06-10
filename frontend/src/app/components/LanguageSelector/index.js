@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 /* components */
 import SVG from 'app.dump/SVG';
 import LanguageDropdown from 'app.dump/LanguageDropdown';
@@ -44,14 +45,19 @@ class LanguageSelector extends Component {
         <div className="nav-link">
           <SVG name="grid-world"/>
           <span>{selectedLanguage[0].language}</span>
-          <SVG name="small-arrow" className="nav-item--secondary" style={{
-            width: '10px',
-            height: '10px',
-            marginLeft: '5px',
-            rotate: this.props.languageSelector ? '180deg' : '0deg'
-          }}/>
+          <SVG
+            name="small-arrow"
+            className={`nav-item--secondary language-selector__arrow ${this.props.languageSelector ? 'language-selector__arrow--hovered' : ''}`}
+          />
         </div>
-        {languagesComponent}
+        <ReactCSSTransitionGroup
+          transitionName="language-selector__list"
+          transitionEnterTimeout={400}
+          transitionLeaveTimeout={400}
+          component="div"
+        >
+          {languagesComponent}
+        </ReactCSSTransitionGroup>
       </div>
     );
   }

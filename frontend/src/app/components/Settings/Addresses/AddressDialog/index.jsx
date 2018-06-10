@@ -50,6 +50,7 @@ class AddressDialog extends Component {
   }
 
   static propTypes = {
+    open: PropTypes.bool.isRequired,
     addDataAddress: PropTypes.func.isRequired,
     changeDataAddress: PropTypes.func.isRequired,
     closeDialog: PropTypes.func.isRequired,
@@ -276,6 +277,7 @@ class AddressDialog extends Component {
         title={title}
         body={body}
         footer={footer}
+        open={this.props.open}
       />
     );
   }
