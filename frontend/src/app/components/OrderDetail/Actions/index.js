@@ -30,11 +30,16 @@ class Actions extends Component {
       reject: { ...actionPropTypes }
     }).isRequired,
     editOrders: PropTypes.shape({
+<<<<<<< HEAD
       button: PropTypes.string.isRequired,
       proceedUrl: PropTypes.string.isRequired
+=======
+      button: PropTypes.string.isRequired
+>>>>>>> Render Modal
     }),
     general: PropTypes.object.isRequired,
-    changeStatus: PropTypes.func.isRequired
+    changeStatus: PropTypes.func.isRequired,
+    showEditModal: PropTypes.func.isRequired
   };
 
   handleShowReject = () => this.setState({ showReject: true });
@@ -86,10 +91,11 @@ class Actions extends Component {
           text={this.props.editOrders.button}
           type="action"
           btnClass="mr-2"
+          onClick={() => this.props.showEditModal(true)}
         />
       ) : null;
 
-    const commentBlock = actions
+    const commentBlock = this.props.actions
       ? (
         <Textarea
           label={actions.comment.title}
@@ -125,13 +131,10 @@ class Actions extends Component {
         />
       ] : null;
 
-    const modal = actions
-      ? this.state.showReject && <Modal submit={() => this.submit(actions.reject.proceedUrl)} closeDialog={this.handleHideReject} { ...actions.reject.dialog } />
-      : null;
-
     return (
       <div className="text-right">
-        {modal}
+          {this.state.showReject && <Modal submit={() => this.submit(actions.reject.proceedUrl)} closeDialog={this.handleHideReject} {...actions.reject.dialog } />}
+
         {commentBlock}
         {editButton}
         {approveButtons}

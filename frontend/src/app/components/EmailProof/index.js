@@ -185,6 +185,7 @@ class EmailProof extends Component {
         title={dialog.title}
         body={body}
         footer={footer}
+        open={this.props.open}
       />
     );
   }
@@ -194,6 +195,7 @@ class EmailProof extends Component {
   };
 
   static propTypes = {
+    open: PropTypes.bool.isRequired,
     // config
     submitUrl: PropTypes.string.isRequired,
     notificationSuccess: PropTypes.shape({
