@@ -1316,7 +1316,6 @@
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.Custom.cs" />
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroMethods.cs" />
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroNamespace.cs" />
-    <Compile Include="Old_App_Code\EventHandlers\ProductCreationHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\ProductEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\SettingsKeyEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
