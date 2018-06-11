@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using DryIoc;
-using Kadena.ScheduledTasks.DeleteExpiredMailingLists;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.ScheduledTasks.Infrastructure.Kentico;
 using Kadena.ScheduledTasks.UpdateInventoryData;
@@ -30,7 +29,7 @@ namespace Kadena.ScheduledTasks
 
             return container.Resolve<T>();
         }
-        
+
         public static void UpdateInstance<T>(T instance)
         {
             container.Unregister(instance.GetType());
@@ -45,6 +44,7 @@ namespace Kadena.ScheduledTasks
         private static void RegisterServices(IContainer container)
         {
             container
+                .RegisterBLL()
                 .RegisterKentico()
                 .RegisterMicroservices()
                 .RegisterKadenaSettings();
@@ -54,7 +54,6 @@ namespace Kadena.ScheduledTasks
             container.RegisterInstance(typeof(IMapper), CreateMapper());
 
             // scheduled tasks services
-            container.Register<IDeleteExpiredMailingListsService, DeleteExpiredMailingListsService>();
             container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
         }
 
