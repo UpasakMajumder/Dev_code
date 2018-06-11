@@ -69,6 +69,9 @@
           <fieldcaption>This product represents</fieldcaption>
         </properties>
       </field>
+      <field column="SKUDontSendPriceToERP" guid="31844ee0-afd5-4800-ba3a-748cea0aa8aa" />
+      <field column="SKUHiResPdfDownloadEnabled" guid="8ad34b07-1b2e-47f3-929b-c590f0813b1c" />
+      <field column="SKUApprovalRequired" guid="e8895743-9873-453a-919e-5391220cb16c" />
       <field column="SKUCustomData" guid="29e8c9c5-d3c7-4846-a18f-057d5cd0a352" />
       <field column="SKUCreated" guid="046115eb-09d5-4c9f-b4ae-e5da3761b436" />
       <field column="SKULastModified" guid="87e7a912-8806-4971-9912-af8711f71707" />
@@ -155,6 +158,8 @@
           <fieldcaption>Package depth</fieldcaption>
         </properties>
       </field>
+      <field column="SKUUnitOfMeasure" guid="79380af2-d662-438c-9ba2-22d7a62e6b7b" />
+      <field column="SKUNumberOfItemsInPackage" guid="3afd1d0c-970b-43c5-9b73-94041a17ad9e" reftype="Required" visible="" />
       <field column="SKUTrackInventory" guid="b008a40a-2651-4341-8779-872030271467" visible="" />
       <field column="SKUSellOnlyAvailable" guid="ca3ef874-bccc-401d-ae31-f5b40c99f900" visible="">
         <properties>
