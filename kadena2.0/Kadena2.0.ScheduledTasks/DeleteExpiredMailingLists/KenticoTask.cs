@@ -1,5 +1,6 @@
 ﻿using CMS;
 using CMS.Scheduler;
+using DryIoc;
 using Kadena.ScheduledTasks.DeleteExpiredMailingLists;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -15,13 +16,16 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
     {
         public string Execute(TaskInfo task)
         {
-            var service = Services.Resolve<IDeleteExpiredMailingListsService>();
             var kenticoSite = Services.Resolve<IKenticoSiteProvider>();
             var customerSites = kenticoSite.GetSites();
             var tasks = new List<Task<string>>();
+            Services.Register<IKenticoSiteProvider, SiteProvider>(setup: Setup.Decorator);
+            Services.Register<IKenticoResourceService, ResourceService>(setup: Setup.Decorator);
             foreach (var customerSite in customerSites)
             {
-                tasks.Add(service.Delete(customerSite));
+                Services.UpdateInstance(customerSite);
+                var service = Services.Resolve<IDeleteExpiredMailingListsService>();
+                tasks.Add(service.Delete());
             }
 
             return Task

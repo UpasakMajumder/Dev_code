@@ -19,7 +19,7 @@ namespace Kadena.ScheduledTasks
             container = new DryIoc.Container();
             RegisterServices(container);
         }
-    
+
         public static T Resolve<T>()
         {
             if (container == null)
@@ -29,6 +29,17 @@ namespace Kadena.ScheduledTasks
             }
 
             return container.Resolve<T>();
+        }
+        
+        public static void UpdateInstance<T>(T instance)
+        {
+            container.Unregister(instance.GetType());
+            container.RegisterInstance(instance);
+        }
+
+        public static void Register<T1, T2>(Setup setup = null) where T2 : T1
+        {
+            container.Register<T1, T2>(setup: setup);
         }
 
         private static void RegisterServices(IContainer container)
