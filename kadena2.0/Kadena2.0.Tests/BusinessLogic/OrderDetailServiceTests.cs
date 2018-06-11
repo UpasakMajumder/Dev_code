@@ -16,6 +16,7 @@ using Kadena.Container.Default;
 using Kadena.BusinessLogic.Services.Orders;
 using Kadena.Models.Product;
 using Kadena.Models.Orders;
+using Kadena.Models.SiteSettings.Permissions;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -80,6 +81,62 @@ namespace Kadena.Tests.BusinessLogic
 
             // A
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task GetOrderDetail_ApproverCanEdit()
+        {
+            // A
+            const int customerId = 222;
+            const int customerUserId = 123;
+            var orderNumber = new OrderNumber(customerId, customerUserId, "17-00006");
+            var orderDto = CreateOrderDetailDtoOK();
+            orderDto.Payload.ClientId = customerId;
+            orderDto.Payload.StatusId = (int)OrderStatus.WaitingForApproval;
+
+            SetupBase();
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(
+                o => o.GetOrderByOrderId(orderNumber)
+                , Task.FromResult(orderDto));
+            Setup<IKenticoCustomerProvider, Customer>(
+                p => p.GetCustomer(customerId),
+                new Customer { ApproverUserId = 16 });
+            Setup<IKenticoPermissionsProvider, bool>(p => p.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.EditOrdersInApproval), true);
+
+            // A
+            var result = await Sut.GetOrderDetail(orderNumber);
+
+            // A
+            Assert.NotNull(result);
+            Assert.NotNull(result.EditOrders);
+        }
+
+        [Fact]
+        public async Task GetOrderDetail_ApproverCannotEdit()
+        {
+            // A
+            const int customerId = 222;
+            const int customerUserId = 123;
+            var orderNumber = new OrderNumber(customerId, customerUserId, "17-00006");
+            var orderDto = CreateOrderDetailDtoOK();
+            orderDto.Payload.ClientId = customerId;
+            orderDto.Payload.StatusId = (int)OrderStatus.WaitingForApproval;
+
+            SetupBase();
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(
+                o => o.GetOrderByOrderId(orderNumber)
+                , Task.FromResult(orderDto));
+            Setup<IKenticoCustomerProvider, Customer>(
+                p => p.GetCustomer(customerId),
+                new Customer { ApproverUserId = 16 });
+            Setup<IKenticoPermissionsProvider, bool>(p => p.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.EditOrdersInApproval), false);
+
+            // A
+            var result = await Sut.GetOrderDetail(orderNumber);
+
+            // A
+            Assert.NotNull(result);
+            Assert.Null(result.EditOrders);
         }
 
         [Fact(DisplayName = "OrderDetailService.GetOrderDetail() | User has permission to view order")]
