@@ -17,14 +17,36 @@ class AddressDialog extends Component {
 
     this.stateIndex = dialog.fields.findIndex(element => element.id === 'state');
 
+    const defaultCountry = AddressDialog.getDefaultCountry(dialog.fields);
+
+    const fields = (fieldValues.state || defaultCountry) ? this.getNewStateFields(dialog.fields, fieldValues.country || defaultCountry) : dialog.fields;
+
     this.state = {
       fieldValues: {
         ...fieldValues,
+        country: AddressDialog.getCountry(dialog.fields, fieldValues),
         id: fieldValues.id || -1
       },
-      fields: fieldValues.state ? this.getNewStateFields(dialog.fields, fieldValues.country) : dialog.fields,
+      fields,
       inValidFields: []
     };
+  }
+
+  static getDefaultCountry(fields) {
+    const countryConfig = fields.find(field => field.id === 'country');
+    if (!countryConfig) return null;
+
+    const countries = countryConfig.values;
+    if (!countries) return null;
+
+    const defaultCountry = countries.find(country => country.isDefault);
+
+    if (defaultCountry) return defaultCountry.id;
+    return null;
+  }
+
+  static getCountry(fields, fieldValues) {
+    return fieldValues.country || AddressDialog.getDefaultCountry(fields);
   }
 
   static propTypes = {
@@ -71,7 +93,7 @@ class AddressDialog extends Component {
     const options = fields.find(field => field.id === 'country').values.find(country => country.id === countryId).values;
     const state = fields.find(element => element.id === 'state');
 
-    return [
+    const result = [
       ...fields.slice(0, this.stateIndex),
       {
         ...state,
@@ -79,6 +101,8 @@ class AddressDialog extends Component {
       },
       ...fields.slice(this.stateIndex + 1)
     ];
+
+    return result;
   }
 
   countryHasState = (countryId) => {

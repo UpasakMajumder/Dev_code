@@ -502,7 +502,7 @@ config.localization.productDetail = {
       body: {% KadenaNamespace.GetProductPricings(DocumentContext.CurrentDocument.DocumentID, SKUUnitOfMeasure, ProductPricingModel |(user)administrator|(hash)ad46af8ffdf54c215f4634b6e9dfdeaac5338e95e8f09b1c9d65ba5746c4678c%}
     },
     availability: null,
-    packagingInfo: '{% KadenaNamespace.GetPackagingString(ProductNumberOfItemsInPackage, SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)administrator|(hash)d2bd820f97df79f94438952adabf96fb2c5531a62a9e96a6b03ca07cab210995%}',
+    packagingInfo: '{% KadenaNamespace.GetPackagingString(SKUNumberOfItemsInPackage, SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)administrator|(hash)bf2793a33609eb827d2c68f67d526613ec4dcdf7297778424c3e75ca49a338e3%}',
     productOptions:{
           priceElementId: "option-price",
           priceUrl: '/api/products/getprice/{%NodeSKU.ID |(user)administrator|(hash)196992259153c5795bc9ab040b553916f8e04d82e8653bcae9f7084433736838%}',
@@ -511,7 +511,7 @@ config.localization.productDetail = {
       },   
     description: {
       title: '{$Kadena.Product.Description$}',
-      text: '{% CurrentDocument.DocumentSKUDescription.Replace("\r\n","\n").Replace("\n","<br />") |(user)administrator|(hash)717cf60f8fdbfbe67420b59a94ded580e9965fb4686c187770cd4428ecf5fb32%}'
+      text: '{% CurrentDocument.DocumentSKUDescription.Replace("\r\n","\n").Replace("\n","") |(user)administrator|(hash)9af97e18604bfb5272033fcd4ff60b89a9ef23e07a07b80230859fae1ded5d34%}'
     },
     quantityText: '{% KadenaNamespace.GetMinMaxString(ECommerceContext.CurrentProduct.SKUMinItemsInOrder, ECommerceContext.CurrentProduct.SKUMaxItemsInOrder) |(user)administrator|(hash)80b08b883005ff7aaf115de09ea25f2961b1ac8df33f23ee6fcf5338afbdd8ff%}',
     relatedProducts: null

@@ -54,24 +54,6 @@ namespace Kadena.Models.SiteSettings
         /// </summary>
         [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
         [GroupAttribute("Logs")]
-        [DefaultValueAttribute(@"AKIAJ2R5JA7EH6JORM4Q")]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkFjY2VzcyBLZXkiLCJLZXlOYW1lIjoiS0RBX0FXU19BY2Nlc3NLZXkiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjoiQUtJQUoyUjVKQTdFSDZKT1JNNFEiLCJLZXlEZXNjcmlwdGlvbiI6IiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiTG9ncyJ9fQ==")]
-        public const string KDA_AWS_AccessKey = "KDA_AWS_AccessKey";
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
-        [GroupAttribute("Logs")]
-        [DefaultValueAttribute(@"rKxsYpv10YHc7JAyFasHS3QJrjMPAOVp4IqFJROE")]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkFXUyBBY2Nlc3MgU2VjcmV0IiwiS2V5TmFtZSI6IktEQV9BV1NfQWNjZXNzU2VjcmV0IiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6InJLeHNZcHYxMFlIYzdKQXlGYXNIUzNRSnJqTVBBT1ZwNElxRkpST0UiLCJLZXlEZXNjcmlwdGlvbiI6IiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiTG9ncyJ9fQ==")]
-        public const string KDA_AWS_AccessSecret = "KDA_AWS_AccessSecret";
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
-        [GroupAttribute("Logs")]
         [DefaultValueAttribute(@"kenticoLogsAug")]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkxvZyBHcm91cCIsIktleU5hbWUiOiJLREFfQVdTX0xvZ0dyb3VwIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6ImtlbnRpY29Mb2dzQXVnIiwiS2V5RGVzY3JpcHRpb24iOiIiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiS2FkZW5hIiwiTmFtZSI6IkthZGVuYSIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkNNUy5TZXR0aW5ncyJ9LCJEaXNwbGF5TmFtZSI6IkxvZ3MifX0=")]
         public const string KDA_AWS_LogGroup = "KDA_AWS_LogGroup";
