@@ -5,6 +5,6 @@ namespace Kadena.BusinessLogic.Contracts.Orders
     public interface IGetDeliveryEstimationDataService
     {
         AddressDto GetSourceAddressForDeliveryEstimation();
-        WeightDto GetWeight();
+        WeightDto GetWeightInSiteUnit(decimal weight);
     }
 }

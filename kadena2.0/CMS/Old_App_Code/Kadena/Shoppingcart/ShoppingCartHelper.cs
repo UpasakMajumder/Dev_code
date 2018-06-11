@@ -43,11 +43,13 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         public static EstimateDeliveryPriceRequestDto GetEstimationDTO(ShoppingCartInfo cart)
         {
             Cart = cart;
+            var weight = (decimal)Cart.CartItems.Sum(x => (x.CartItemUnits * x.UnitWeight));
+
             return new EstimateDeliveryPriceRequestDto
             {
                 SourceAddress = estimationData.GetSourceAddressForDeliveryEstimation(),
                 TargetAddress = GetTargetAddress(),
-                Weight = GetWeight(),
+                Weight = estimationData.GetWeightInSiteUnit(weight),
                 Provider = CarrierInfoProvider.GetCarrierInfo(Cart.ShippingOption.ShippingOptionCarrierID).CarrierName,
                 ProviderService = Cart.ShippingOption.ShippingOptionName
             };
@@ -202,24 +204,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 AddressInfoProvider.SetAddressInfo(distributor);
             }
         }
-        /// <summary>
-        /// getting total weight
-        /// </summary>
-        /// <returns></returns>
-        private static WeightDto GetWeight()
-        {
-            try
-            {
-                var weight = Cart.CartItems.Sum(x => (x.CartItemUnits * x.UnitWeight));
-                return new WeightDto { Unit = SKUMeasuringUnits.Lb, Value = weight };
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("ShoppingCartHelper", "GetWeight", ex.Message);
-                return null;
-            }
-        }
-
+        
         /// <summary>
         /// Gets target shipping address
         /// </summary>

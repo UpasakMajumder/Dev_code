@@ -9,6 +9,7 @@ namespace Kadena.BusinessLogic.Services.Orders
     public class GetDeliveryEstimationDataService : IGetDeliveryEstimationDataService
     {
         private readonly IKenticoResourceService resources;
+        
         public GetDeliveryEstimationDataService(IKenticoResourceService resources)
         {
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
@@ -33,9 +34,13 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         }
 
-        public WeightDto GetWeight()
+        public WeightDto GetWeightInSiteUnit(decimal weight)
         {
-            throw new NotImplementedException();
+            return new WeightDto
+            {
+                Unit = resources.GetMassUnit(),
+                Value = weight
+            };
         }
     }
 }

@@ -10,6 +10,7 @@ using Kadena.Dto.CreditCard._3DSi.Requests;
 using Kadena.Dto.CreditCard.Requests;
 using Kadena.Dto.CreditCard.Responses;
 using Kadena.Dto.CustomerData;
+using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.Logon.Requests;
 using Kadena.Dto.Logon.Responses;
 using Kadena.Dto.MailingList;
@@ -390,6 +391,9 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.Zip, opt => opt.MapFrom(src => src.Postal))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
                 .ForAllOtherMembers(m => m.Ignore());
+            CreateMap<Weight, WeightDto>()
+                .ReverseMap();
+
         }
     }
 }
