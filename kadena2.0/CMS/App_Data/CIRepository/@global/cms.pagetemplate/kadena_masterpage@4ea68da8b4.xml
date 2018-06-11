@@ -160,23 +160,23 @@
     checkoutValidation  : {
       deliveryMethod: {
         title: 'Validation Error',
-        text: '{$Kadena.Checkout.DeliveryMethodInvalid$}'
+        text: '{%JSEscape(GetResourceString("Kadena.Checkout.DeliveryMethodInvalid")) |(user)administrator|(hash)34be6cbd0f165aa3c2f81613ed8df74957cd84ecca15da6a04bb893929273d29%}'
       },
       paymentMethod: {
         title: 'Validation Error',
-        text: '{$Kadena.Checkout.PaymentMethodInvalid$}'
+        text: '{%JSEscape(GetResourceString("Kadena.Checkout.PaymentMethodInvalid")) |(user)administrator|(hash)e684c1bc578ceff688f9c1d54e32a618d7b7f568b4bf5a9608dc49b4ba6807be%}'
       },
       deliveryAddress: {
         title: 'Validation Error',
-        text: '{$Kadena.Checkout.DeliveryAddressInvalid$}'
+        text: '{%JSEscape(GetResourceString("Kadena.Checkout.DeliveryAddressInvalid")) |(user)administrator|(hash)80ef9256c2f6fdb4a9b92e4b1356bc1e7a8f85247b25bd1f1badf03b13a18c33%}'
       },
       invoice: {
         title: 'Validation Error',
-        text: '{$Kadena.Checkout.PONumberInvalid$}'
+        text: '{%JSEscape(GetResourceString("Kadena.Checkout.PONumberInvalid")) |(user)administrator|(hash)e838a7df9240e5fbc62a76eea9292557eb8fd46ce3edd2b33deab5fbe170a4ce%}'
       },
       emailConfirmation: {
         title: 'Validation Error',
-        text: '{$Kadena.Checkout.EmailInvalid$}'
+        text: '{%JSEscape(GetResourceString("Kadena.Checkout.EmailInvalid")) |(user)administrator|(hash)72a130ee6445619efa91142586921b0606bec15c86a6f89686cc6b7c313d0734%}'
       }
     }      
   };
@@ -226,8 +226,8 @@
   };
   config.localization.tac= {
     show: {% KadenaNamespace.ShowTaC().ToString().ToLower()|(user)administrator|(hash)6885d90621575c7e47d255d23df491c6890f36726ebe98b4b8bab03b9746e2ee%},
-    title: '{$Kadena.TermsAndConditions.Title$}',
-    submitText: '{$Kadena.TermsAndConditions.Accept$}',
+    title: '{%JSEscape(GetResourceString("Kadena.TermsAndConditions.Title")) |(user)administrator|(hash)3bc7f0bca591f2ada7bfafdb38bb82697b4838f5d826160c9d9babaf5297f95b%}',
+    submitText: '{%JSEscape(GetResourceString("Kadena.TermsAndConditions.Accept")) |(user)administrator|(hash)cef6f75daa63eb362b2a4bdf7456383c01f992806a14403502ba1637cba4e531%}',
     acceptTaCUrl: 'api/user/accepttac',
     checkTaCUrl: 'api/user/checktac',
     iframeUrl: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.KDA_TermsAndConditionPage)|(user)administrator|(hash)e994358e78f9c46170b4f82e490bf9ac61d96bceaedc26c7fb2cbd69e6927522%}'
