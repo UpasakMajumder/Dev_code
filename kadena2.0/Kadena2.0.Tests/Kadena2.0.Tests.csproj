@@ -514,7 +514,7 @@
     <Compile Include="BusinessLogic\OrderReportTestHelper.cs" />
     <Compile Include="Models\Site\KenticoSiteTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScheduledTasks\DeleteExpiredMailingListsServiceTests.cs" />
+    <Compile Include="ScheduledTasks\DeleteExpiredMailingListsTaskTests.cs" />
     <Compile Include="UserHierarchyTest.cs" />
     <Compile Include="BusinessLogic\ShoppingCartServiceTests.cs" />
     <Compile Include="BusinessLogic\KListServiceTests.cs" />
