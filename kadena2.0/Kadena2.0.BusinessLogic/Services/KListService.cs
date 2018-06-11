@@ -33,7 +33,7 @@ namespace Kadena.BusinessLogic.Services
         public async Task<string> DeleteExpiredMailingLists()
         {
             var expirationDays = _resourceService.GetSettingsKey<int>(Settings.KDA_MailingList_DeleteExpiredAfter);
-            var deleteOlderThan = DateTime.Now.AddDays(-expirationDays);
+            var deleteOlderThan = DateTime.Today.AddDays(-expirationDays);
             var result = await _mailingClient.RemoveMailingList(deleteOlderThan).ConfigureAwait(false);
 
             var site = _site.GetKenticoSite();

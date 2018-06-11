@@ -12,6 +12,7 @@ using Kadena.Models.Site;
 using Kadena.Container.Default;
 using AutoMapper;
 using Moq;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -28,14 +29,34 @@ namespace Kadena.Tests.BusinessLogic
         {
             Assert.Throws<ArgumentNullException>(() => new KListService(client, site, validationClient, mapper, resourceService));
         }
+        
+        #region Delete expired lists
+        public static IEnumerable<object[]> GetListExpirationDates()
+        {
+            yield return new object[]
+                {
+                    DateTime.Today.AddDays(-10)
+                };
+            yield return new object[]
+                {
+                    DateTime.Today.AddDays(-30)
+                };
+            yield return new object[]
+                {
+                    DateTime.Today.AddDays(-90)
+                };
+        }
 
-        [Fact(DisplayName = "KListService.RemoveMailingList() | Success")]
-        public async Task RemoveMailingList_Success()
+        [Theory(DisplayName = "KListService.RemoveMailingList() | Success")]
+        [MemberData(nameof(GetListExpirationDates))]
+        public async Task RemoveMailingList_Success(DateTime expirationDate)
         {
             var expectedResult = $"{_site} - Done";
 
             SetupBase();
-            Setup<IMailingListClient, Task<BaseResponseDto<object>>>(s => s.RemoveMailingList(It.IsAny<DateTime>()),
+            Setup<IKenticoResourceService, int>(s => s.GetSettingsKey<int>(Settings.KDA_MailingList_DeleteExpiredAfter, _site.Id),
+                (int)(DateTime.Today - expirationDate).TotalDays);
+            Setup<IMailingListClient, Task<BaseResponseDto<object>>>(s => s.RemoveMailingList(expirationDate),
                 Task.FromResult(new BaseResponseDto<object> { Success = true }));
 
             var actualResult = await Sut.DeleteExpiredMailingLists();
@@ -43,8 +64,9 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(expectedResult, actualResult);
         }
 
-        [Fact(DisplayName = "KListService.RemoveMailingList() | Fail")]
-        public async Task RemoveMailingList_Fail()
+        [Theory(DisplayName = "KListService.RemoveMailingList() | Fail")]
+        [MemberData(nameof(GetListExpirationDates))]
+        public async Task RemoveMailingList_Fail(DateTime expirationDate)
         {
             var mailingListResponse = new BaseResponseDto<object>
             {
@@ -56,14 +78,16 @@ namespace Kadena.Tests.BusinessLogic
             };
             var expectedResult = $"Failure for {_site} - {mailingListResponse.ErrorMessages}";
             SetupBase();
-            Setup<IMailingListClient, Task<BaseResponseDto<object>>>(s => s.RemoveMailingList(It.IsAny<DateTime>()),
+            Setup<IKenticoResourceService, int>(s => s.GetSettingsKey<int>(Settings.KDA_MailingList_DeleteExpiredAfter, _site.Id), 
+                (int)(DateTime.Today - expirationDate).TotalDays);
+            Setup<IMailingListClient, Task<BaseResponseDto<object>>>(s => s.RemoveMailingList(expirationDate),
                 Task.FromResult(mailingListResponse));
 
             var actualResult = await Sut.DeleteExpiredMailingLists();
 
             Assert.Equal(expectedResult, actualResult);
         }
-
+        #endregion
         public KListServiceTests()
         {
             _containerId = Guid.NewGuid();
