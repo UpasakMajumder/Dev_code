@@ -57,7 +57,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 UnitOfMeasureErpCode = units.GetUnitOfMeasure(unitOfMeasure).ErpCode,
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
-                TotalPrice = (decimal)i.UnitPrice * i.CartItemUnits,
+                TotalPrice = (decimal)Math.Round( i.UnitPrice * i.CartItemUnits, 2),
                 SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true),
                 RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false),
                 Options = GetItemOptions(i)

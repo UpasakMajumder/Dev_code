@@ -72,6 +72,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
             var cartItems = orderCartItems.GetOrderCartItems();
             var currency = siteProvider.GetSiteCurrency();
             var totals = shoppingCart.GetShoppingCartTotals();
+            totals.TotalItemsPrice = cartItems.Sum(i => i.TotalPrice); // cannot round whole sum, need to sum rounded numbers
             totals.TotalTax = await taxService.EstimateTotalTax(shippingAddress);
 
             var pricedItemsTax = totals.TotalTax;

@@ -123,35 +123,39 @@
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>
         </webpart>
-        <webpart controlid="Breadcrumbs" guid="06690fcd-b6a8-4c56-bbd0-8d9c20ed2681" type="statictext" v="1">
+        <webpart controlid="Kadena_Breadcrumbs" guid="1b9a2f93-0827-48ca-b598-66feb7211178" type="Kadena_Breadcrumbs" v="1">
           <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
           <property name="cat_open_visibility"></property>
-          <property name="container"></property>
+          <property name="container">KadenaBreadcrumbs</property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
-          <property name="contentafter"></property>
+          <property name="contentafter">
+            <![CDATA[{% "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>" |(user)administrator|(hash)f18d074e62375d08336d21cc77a25213b561913585faedf8cdeeb8649e46da8f%}]]>
+          </property>
           <property name="contentbefore"></property>
-          <property name="controlid">Breadcrumbs</property>
+          <property name="controlid">Kadena_Breadcrumbs</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
-          <property name="disableviewstate">True</property>
+          <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
+          <property name="documentid" ismacro="true">
+            <![CDATA[{% QueryString.documentId |(user)administrator|(hash)16d5165354d695c656ff6f90147287a4f647a0b4be726634b78d2de5ba7b901b%}]]>
+          </property>
           <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
           <property name="hideonsubpages">False</property>
-          <property name="instanceguid">06690fcd-b6a8-4c56-bbd0-8d9c20ed2681</property>
+          <property name="instanceguid">1b9a2f93-0827-48ca-b598-66feb7211178</property>
           <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
           <property name="partialcachedependencies">
 <![CDATA[
 ##DEFAULT##
@@ -161,36 +165,13 @@
           <property name="partialcacheminutes"></property>
           <property name="positionleft"></property>
           <property name="positiontop"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="resolvedynamiccontrols">False</property>
+          <property name="preservepartialcacheonpostback">False</property>
           <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text" ismacro="true">
-<![CDATA[
-{%
-  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-  
-  productDocument = Documents.Where("DocumentID=" + QueryString.documentId)[0];
-  result = String.FormatString("{0}{1}", "<a href='" + productDocument.AbsoluteURL + "'>" + productDocument.DocumentName + "</a>", result);
-  
-  iteratedDocument = productDocument.Parent;
-  
-  while (iteratedDocument.Parent != null) {
-  if (!iteratedDocument.DocumentMenuItemHideInNavigation) {
-  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-  }
-  iteratedDocument = iteratedDocument.Parent;
-  };
-  
-  "<div class='breadcrumbs'>" + result + "</div>"
-|(user)administrator|(hash)ccde7e4ad5074b344f1968d659a0772e42bd8f85cbaf5cd1b300c2792be2c877%}
-]]>
-          </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
           <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
+          <property name="webparttype">Kadena_Breadcrumbs</property>
         </webpart>
       </webpartzone>
       <webpartzone id="zoneProductName" v="1">
@@ -301,35 +282,6 @@
         </webpart>
       </webpartzone>
       <webpartzone id="zoneChiliActionButtons" v="1">
-        <webpart controlid="ChilisSavedEvent" guid="86c68b68-d446-480e-90b9-865e71c58d5d" type="javascript" v="1">
-          <property name="cat_open_behavior"></property>
-          <property name="cat_open_performance"></property>
-          <property name="controlid">ChilisSavedEvent</property>
-          <property name="disablemacros">False</property>
-          <property name="disableviewstate">False</property>
-          <property name="displaytoroles"></property>
-          <property name="generatescripttags">True</property>
-          <property name="hideonsubpages">False</property>
-          <property name="inlinescript">
-<![CDATA[
-function OnEditorEvent(type) {
-  switch (type) {
-     case 'DocumentSaved':
-          window.saveChiliTemplate();
-          break;
-  }
-}
-]]>
-          </property>
-          <property name="inlinescriptpagelocation">Header</property>
-          <property name="instanceguid">86c68b68-d446-480e-90b9-865e71c58d5d</property>
-          <property name="linkedfile"></property>
-          <property name="linkedfilepagelocation">Header</property>
-          <property name="showfordocumenttypes"></property>
-          <property name="visible">True</property>
-          <property name="webparttitle"></property>
-          <property name="webparttype">javascript</property>
-        </webpart>
         <webpart controlid="DiscardChangesButton" guid="c21ed0c2-b811-43f0-915c-650b6848ee3d" type="statictext" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter">False</property>
