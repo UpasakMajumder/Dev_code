@@ -96,7 +96,9 @@
           <property name="newuserrole">CMSBasicUsers</property>
           <property name="nextgroup"></property>
           <property name="nextpage">KDA.Transformations.General-NextPage</property>
-          <property name="orderby">FirstName</property>
+          <property name="orderby">
+            <![CDATA[{% KadenaNamespace.TableSortingOrderBy("FirstName,LastName,Email,DivisionName,BusinessUnits,SalesManagerName") |(user)administrator|(hash)c06e9189581349056a9ecd9ee3044719aece90c1ae62809c114222ffaa62b162%}]]>
+          </property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>
