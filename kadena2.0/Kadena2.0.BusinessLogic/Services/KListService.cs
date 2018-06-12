@@ -32,17 +32,21 @@ namespace Kadena.BusinessLogic.Services
 
         public async Task<string> DeleteExpiredMailingLists()
         {
-            var expirationDays = _resourceService.GetSettingsKey<int>(Settings.KDA_MailingList_DeleteExpiredAfter);
-            var deleteOlderThan = DateTime.Today.AddDays(-expirationDays);
-            var result = await _mailingClient.RemoveMailingList(deleteOlderThan).ConfigureAwait(false);
-
             var site = _site.GetKenticoSite();
-            if (!result.Success)
+            var expirationDaysStr = _resourceService.GetSettingsKey<string>(Settings.KDA_MailingList_DeleteExpiredAfter);
+            if (int.TryParse(expirationDaysStr, out int expirationDays))
             {
-                return $"Failure for {site} - {result.ErrorMessages}";
+                var deleteOlderThan = DateTime.Today.AddDays(-expirationDays);
+                var result = await _mailingClient.RemoveMailingList(deleteOlderThan).ConfigureAwait(false);
+
+                if (!result.Success)
+                {
+                    return $"Failure for {site} - {result.ErrorMessages}.";
+                }
+                return $"{site} - Done.";
             }
 
-            return $"{site} - Done";
+            return $"{site} - Setting not set. Skipping.";
         }
 
         public async Task<MailingList> GetMailingList(Guid containerId)
