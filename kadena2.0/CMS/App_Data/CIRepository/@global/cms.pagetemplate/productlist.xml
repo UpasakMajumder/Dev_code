@@ -293,7 +293,7 @@
           <property name="pagerlayout">KDA.Transformations.Kadena-PagerLayout</property>
           <property name="pages">KDA.Transformations.General-Pages</property>
           <property name="pageseparator">CMS.PagerTransformations.General-PageSeparator</property>
-          <property name="pagesize">2</property>
+          <property name="pagesize">25</property>
           <property name="pagingmode">querystring</property>
           <property name="partialcachedependencies">
 <![CDATA[

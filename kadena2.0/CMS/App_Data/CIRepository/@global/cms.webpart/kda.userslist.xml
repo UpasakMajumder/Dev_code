@@ -49,7 +49,7 @@
           <controlname>selectalternativeform</controlname>
         </settings>
       </field>
-      <field allowempty="true" column="NewUserRole" columnsize="200" columntype="text" guid="240aaf99-0f4d-43df-b9b2-eb5bbb5fdf59" publicfield="false" reftype="Required" resolvedefaultvalue="False" visible="true">
+      <field allowempty="true" column="NewUserRole" columnsize="200" columntype="text" guid="240aaf99-0f4d-43df-b9b2-eb5bbb5fdf59" publicfield="false" resolvedefaultvalue="False" visible="true">
         <properties>
           <defaultvalue>Salesperson</defaultvalue>
           <fieldcaption>New User Role</fieldcaption>
@@ -171,6 +171,14 @@
           <visible>True</visible>
         </properties>
       </category>
+      <field column="SqlQueryName" columnsize="200" columntype="text" guid="d562c33a-3124-4583-b26b-f2b1ec11dfec" publicfield="false" reftype="Required" resolvedefaultvalue="False" visible="true">
+        <properties>
+          <fieldcaption>SQL Query Name</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>selectquery</controlname>
+        </settings>
+      </field>
       <field column="ShowFilterControl" columntype="boolean" guid="0d896733-7470-4c85-befd-61b4c86a6c08" publicfield="false" visibility="none" visible="true">
         <properties>
           <defaultvalue>true</defaultvalue>

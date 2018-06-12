@@ -93,10 +93,10 @@
           <property name="lastpage"></property>
           <property name="newuseralternativeform">cms.user.KDA_NewUser</property>
           <property name="newuserbuttontext" ismacro="true">{$Kadena.Users.NewUser$}</property>
-          <property name="newuserrole">AAAA_CustomRole</property>
+          <property name="newuserrole">CMSBasicUsers</property>
           <property name="nextgroup"></property>
           <property name="nextpage">KDA.Transformations.General-NextPage</property>
-          <property name="orderby"></property>
+          <property name="orderby">FirstName</property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>
@@ -127,6 +127,7 @@
           <property name="showfiltercontrol">True</property>
           <property name="showfordocumenttypes"></property>
           <property name="sitename"></property>
+          <property name="sqlqueryname">KDA.UsersModule.GetAllUsers</property>
           <property name="timezonetype">inherit</property>
           <property name="transformationname">KDA.Transformations.Users</property>
           <property name="userpageurl">~/Users/User</property>
@@ -134,7 +135,9 @@
           <property name="visible">True</property>
           <property name="webparttitle"></property>
           <property name="webparttype">KDA.UsersList</property>
-          <property name="wherecondition">UserPrivilegeLevel!=3</property>
+          <property name="wherecondition" ismacro="true">
+            <![CDATA[(UserIsHidden = 0 OR UserIsHidden IS NULL) AND UserPrivilegeLevel!=3 AND SiteID = {% CurrentSite.ID |(user)administrator|(hash)c7959cf7c81364fe0d5e1af0135736d2512b73d9b960ab53a7151ffc139f792f%}]]>
+          </property>
           <property name="zerorowstext" ismacro="true">
 <![CDATA[
 <div class=" mt-2">
