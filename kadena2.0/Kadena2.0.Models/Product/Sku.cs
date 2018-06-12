@@ -12,5 +12,6 @@
         public int MinItemsInOrder { get; set; }
         public int MaxItemsInOrder { get; set; }
         public string UnitOfMeasure { get; set; }
+        public int NumberOfItemsInPackage { get; set; }
     }
 }

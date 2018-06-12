@@ -210,35 +210,37 @@
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>
         </webpart>
-        <webpart controlid="Breadcrumbs" guid="06690fcd-b6a8-4c56-bbd0-8d9c20ed2681" type="statictext" v="1">
+        <webpart controlid="Kadena_Breadcrumbs" guid="0e8ecf4a-4763-4e42-a197-5189e6d3cfc1" type="Kadena_Breadcrumbs" v="1">
           <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
           <property name="cat_open_visibility"></property>
-          <property name="container"></property>
+          <property name="container">KadenaBreadcrumbs</property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
           <property name="contentafter"></property>
           <property name="contentbefore"></property>
-          <property name="controlid">Breadcrumbs</property>
+          <property name="controlid">Kadena_Breadcrumbs</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
-          <property name="disableviewstate">True</property>
+          <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
+          <property name="documentid" ismacro="true">
+            <![CDATA[{% CurrentDocument.ID |(user)administrator|(hash)a9a82af2e9ed17f3117d017f3e85aad6847125d531dcca4bea6fbc38b843c389%}]]>
+          </property>
           <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
           <property name="hideonsubpages">False</property>
-          <property name="instanceguid">06690fcd-b6a8-4c56-bbd0-8d9c20ed2681</property>
+          <property name="instanceguid">0e8ecf4a-4763-4e42-a197-5189e6d3cfc1</property>
           <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
           <property name="partialcachedependencies">
 <![CDATA[
 ##DEFAULT##
@@ -248,32 +250,13 @@
           <property name="partialcacheminutes"></property>
           <property name="positionleft"></property>
           <property name="positiontop"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="resolvedynamiccontrols">False</property>
+          <property name="preservepartialcacheonpostback">False</property>
           <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text" ismacro="true">
-<![CDATA[
-{%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-if (!iteratedDocument.DocumentMenuItemHideInNavigation) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-}
-iteratedDocument = iteratedDocument.Parent;
-};
-result = string.FormatString("<a href='{0}'>Home</a>{1}", RootDocument.AbsoluteURL, result);
-
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)administrator|(hash)10fb4efd56d711bd74daf0335de0e2796cccbcf0bda7741d9570a58244644768%}
-]]>
-          </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
           <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
+          <property name="webparttype">Kadena_Breadcrumbs</property>
         </webpart>
       </webpartzone>
     </page>

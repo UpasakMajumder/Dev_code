@@ -3,6 +3,7 @@
     public class KadenaOrders
     {
         public string ApproveOrders => "KDA_ApproveOrders";
+        public string EditOrdersInApproval => "KDA_EditOrdersInApproval";
         public string SeePrices => "KDA_SeePrices";
         public string SeeAllOrders => "KDA_SeeAllOrders";
         public string CanDownloadHiresPdf => "KDA_CanDownloadHiresPdf";
