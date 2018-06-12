@@ -18,7 +18,6 @@ const app = {
     init('confirmation', document.getElementsByClassName('js-confirmation'));
     init('storage', document.getElementsByClassName('js-storage'));
     init('spotfire', document.getElementsByClassName('js-spotfire'));
-    // init('money-format', document.getElementsByClassName('js-money-format'));
     init('tabs', document.getElementsByClassName('js-tabs'));
     init('collapse', document.getElementsByClassName('js-collapse'));
     init('tooltip', document.getElementsByClassName('js-tooltip'));
@@ -32,7 +31,6 @@ const app = {
     init('datepicker', document.getElementsByClassName('js-datepicker'));
     init('replace-value', document.getElementsByClassName('js-replace-value'));
     init('table-paginator', document.getElementsByClassName('js-table-paginator'));
-    init('add-to-cart', document.getElementsByClassName('js-add-to-cart'));
     init('chili-editor', document.getElementsByClassName('js-chili-editor'));
     init('product-view', document.getElementsByClassName('js-product-view'));
     init('cart-preview', document.getElementsByClassName('js-cart-preview'));
@@ -49,7 +47,6 @@ const app = {
     render('Checkout', document.querySelectorAll('#r-shopping-cart'));
     render('GlobalSpinner', document.querySelectorAll('.r-spinner'));
     render('Settings/Addresses', document.querySelectorAll('.r-settings-addresses'));
-    // render('Settings/Languages', document.querySelectorAll('.r-settings-languages'));
     render('OrderDetail', document.querySelectorAll('.r-order-detail'));
     render('SearchPage/Products', document.querySelectorAll('.r-search-page-products'));
     render('SearchPage/Pages', document.querySelectorAll('.r-search-page-pages'));

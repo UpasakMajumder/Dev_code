@@ -104,7 +104,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
             rfvPosNo.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCodeRequired");
             rfvProdCategory.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.POSCategroyRequired");
             revQuantity.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
-            rfvLongDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.LongDescritpionRequired");
             rfvShortDes.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ShortDescriptionRequired");
             revBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
             rfvBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BundleQntRequired");
