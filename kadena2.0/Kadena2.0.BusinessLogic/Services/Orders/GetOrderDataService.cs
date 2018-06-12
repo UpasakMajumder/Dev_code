@@ -29,7 +29,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
         private readonly IKadenaSettings settings;
         private readonly IOrderDataFactory orderDataFactory;
         private readonly IKenticoResourceService resources;
-        private readonly IGetDeliveryEstimationDataService deliveryEstimationData;
+        private readonly IDeliveryEstimationDataService deliveryEstimationData;
 
         public GetOrderDataService(IMapper mapper,
            IKenticoOrderProvider kenticoOrder,
@@ -42,7 +42,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
            IKadenaSettings settings,
            IOrderDataFactory orderDataFactory,
            IKenticoResourceService resources,
-           IGetDeliveryEstimationDataService deliveryEstimationData
+           IDeliveryEstimationDataService deliveryEstimationData
          )
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -181,7 +181,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
 
         public AddressDTO GetSourceAddressForDeliveryEstimation()
         {
-            return mapper.Map<AddressDTO>(deliveryEstimationData.GetSourceAddressForDeliveryEstimation());
+            return mapper.Map<AddressDTO>(deliveryEstimationData.GetSourceAddress());
         }
     }
 }

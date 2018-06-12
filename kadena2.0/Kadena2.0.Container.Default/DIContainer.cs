@@ -110,7 +110,7 @@ namespace Kadena.Container.Default
             container.Register<IApproverService, ApproverService>();
             container.Register<IApprovalService, ApprovalService>();
             container.Register<IDialogService, DialogService>();
-            container.Register<IGetDeliveryEstimationDataService, GetDeliveryEstimationDataService>();
+            container.Register<IDeliveryEstimationDataService, DeliveryEstimationDataService>();
             return container;
         }
 

@@ -34,7 +34,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
     {
         private static ShoppingCartInfo Cart { get; set; }
         private static readonly IGetOrderDataService getOrderData = DIContainer.Resolve<IGetOrderDataService>();
-        private static readonly IGetDeliveryEstimationDataService estimationData = DIContainer.Resolve<IGetDeliveryEstimationDataService>();
+        private static readonly IDeliveryEstimationDataService estimationData = DIContainer.Resolve<IDeliveryEstimationDataService>();
 
         /// <summary>
         /// creating estimation DTO
@@ -47,7 +47,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
 
             return new EstimateDeliveryPriceRequestDto
             {
-                SourceAddress = estimationData.GetSourceAddressForDeliveryEstimation(),
+                SourceAddress = estimationData.GetSourceAddress(),
                 TargetAddress = GetTargetAddress(),
                 Weight = estimationData.GetWeightInSiteUnit(weight),
                 Provider = CarrierInfoProvider.GetCarrierInfo(Cart.ShippingOption.ShippingOptionCarrierID).CarrierName,

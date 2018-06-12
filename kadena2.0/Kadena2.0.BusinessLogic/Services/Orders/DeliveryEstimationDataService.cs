@@ -6,16 +6,16 @@ using System.Linq;
 
 namespace Kadena.BusinessLogic.Services.Orders
 {
-    public class GetDeliveryEstimationDataService : IGetDeliveryEstimationDataService
+    public class DeliveryEstimationDataService : IDeliveryEstimationDataService
     {
         private readonly IKenticoResourceService resources;
         
-        public GetDeliveryEstimationDataService(IKenticoResourceService resources)
+        public DeliveryEstimationDataService(IKenticoResourceService resources)
         {
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
         }
 
-        public AddressDto GetSourceAddressForDeliveryEstimation()
+        public AddressDto GetSourceAddress()
         {
             var addressLines = new[]
             {

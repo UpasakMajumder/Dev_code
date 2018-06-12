@@ -63,7 +63,7 @@
     <Compile Include="Contracts\IModuleAccessService.cs" />
     <Compile Include="Contracts\IUserService.cs" />
     <Compile Include="Contracts\IMailService.cs" />
-    <Compile Include="Contracts\Orders\IGetDeliveryEstimationDataService.cs" />
+    <Compile Include="Contracts\Orders\IDeliveryEstimationDataService.cs" />
     <Compile Include="Contracts\Orders\IOrderReportService.cs" />
     <Compile Include="Contracts\Orders\IOrderResubmissionService.cs" />
     <Compile Include="Contracts\SSO\ISaml2RecipientValidator.cs" />
@@ -124,7 +124,7 @@
     <Compile Include="Services\ModuleAccessService.cs" />
     <Compile Include="Services\OrderPayment\SavedCreditCard3dsi.cs" />
     <Compile Include="Services\IBTFService.cs" />
-    <Compile Include="Services\Orders\GetDeliveryEstimationDataService.cs" />
+    <Compile Include="Services\Orders\DeliveryEstimationDataService.cs" />
     <Compile Include="Services\Orders\GetOrderDataService.cs" />
     <Compile Include="Services\Orders\OrderReportService.cs" />
     <Compile Include="Services\Orders\OrderResubmissionService.cs" />
