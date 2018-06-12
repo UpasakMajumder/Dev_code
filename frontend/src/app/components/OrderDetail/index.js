@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 /* components */
 import Spinner from 'app.dump/Spinner';
 /* ac */
-import { getUI, changeStatus } from 'app.ac/orderDetail';
+import { getUI, changeStatus, editOrders } from 'app.ac/orderDetail';
 import toogleEmailProof from 'app.ac/emailProof';
 /* utilities */
 import { getSearchObj } from 'app.helpers/location';
@@ -82,7 +82,9 @@ class OrderDetail extends Component {
           open={this.state.showEditModal}
           orderedItems={orderedItems.items}
           {...editOrders.dialog}
+          proceedUrl={this.props.ui.editOrders.proceedUrl}
           paidByCreditCard={paymentInfo.paymentIcon === 'credit-card'}
+          editOrders={this.props.editOrders}
         />
         <CommonInfo
           ui={commonInfo}
@@ -119,5 +121,6 @@ export default connect(({ orderDetail, emailProof }) => {
 }, {
   getUI,
   toogleEmailProof,
-  changeStatus
+  changeStatus,
+  editOrders
 })(OrderDetail);

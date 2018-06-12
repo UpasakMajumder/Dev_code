@@ -568,6 +568,35 @@ module.exports.recent = {
   }
 };
 
+module.exports.edit = {
+  success: true,
+  errorMessage: '',
+  payload: {
+    "pricingInfo": [
+      {
+        "title": "Summary",
+        "value": "$ 113.20"
+      },
+      {
+        "title": "Shipping",
+        "value": "$ 1.00"
+      },
+      {
+        "title": "Subtotal",
+        "value": "$ 113.20"
+      },
+      {
+        "title": "Tax",
+        "value": "$ 2.00"
+      },
+      {
+        "title": "Totals",
+        "value": "$ 212.20"
+      }
+    ]
+  }
+}
+
 module.exports.detail =  {
   ui: {
     "success": true,
@@ -648,10 +677,9 @@ module.exports.detail =  {
         "items": [
           {
             "id": 1,
-            "removeButton": "Remove",
             "isReport": true,
             "image": "http://satyr.io/200-500x300-700",
-            "template": "Information letter lamp post Mar 30 3017",
+            "template": "Information letter lamp post Mar 30 3018",
             "mailingList": "Mailing",
             "shippingDate": "2017-08-07T09:12:08.108892Z",
             "trackingPrefix": "Tracking ID",
@@ -689,7 +717,6 @@ module.exports.detail =  {
           },
           {
             "id": 2,
-            "removeButton": "Remove",
             "isReport": true,
             "image": "http://satyr.io/200-500x300-700",
             "template": "Information letter lamp post Mar 30 3017",
@@ -785,13 +812,15 @@ module.exports.detail =  {
       },
       "editOrders": {
         "button": "Edit",
-        "proceedUrl": "#",
+        "proceedUrl": "http://localhost:3000/api/order/edit",
         "dialog": {
           title: "Title",
           description: "Description",
+          validationMessage: "Maximum quantity is", // no space
           buttons: {
             proceed: "Save Edits",
-            cancel: "Cancel"
+            cancel: "Cancel",
+            remove: "Remove"
           }
         }
       }

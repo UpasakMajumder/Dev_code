@@ -1,4 +1,4 @@
-import { SUCCESS, INIT_UI, ORDER_DETAIL, CHANGE_STATUS } from 'app.consts';
+import { SUCCESS, INIT_UI, ORDER_DETAIL, CHANGE_STATUS, EDIT_ORDERS } from 'app.consts';
 
 const defaultState = {
   ui: {}
@@ -27,6 +27,22 @@ export default (state = defaultState, action) => {
         }
       }
     };
+
+  case ORDER_DETAIL + EDIT_ORDERS:
+    return {
+      ui: {
+        ...state.ui,
+        pricingInfo: {
+          ...state.ui.pricingInfo,
+          items: payload.pricingInfo
+        },
+        orderedItems: {
+          ...state.ui.orderedItems,
+          items: state.ui.orderedItems.map(item => ({ ...item, quantity: payload.orderedItems[item.id] }))
+        }
+      }
+    };
+
 
   default:
     return state;
