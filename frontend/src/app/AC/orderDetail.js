@@ -1,6 +1,6 @@
 import axios from 'axios';
 /* constants */
-import { FETCH, SUCCESS, FAILURE, INIT_UI, ORDER_DETAIL, CHANGE_STATUS } from 'app.consts';
+import { FETCH, SUCCESS, FAILURE, INIT_UI, ORDER_DETAIL, CHANGE_STATUS, EDIT_ORDERS } from 'app.consts';
 /* helpers */
 import { callAC } from 'app.helpers/ac';
 /* globals */
@@ -42,6 +42,16 @@ export const changeStatus = ({ status, note }) => {
     payload: {
       status,
       note
+    }
+  };
+};
+
+export const editOrders = ({ pricingInfo, orderedItems }) => {
+  return {
+    type: ORDER_DETAIL + EDIT_ORDERS,
+    payload: {
+      pricingInfo,
+      orderedItems
     }
   };
 };
