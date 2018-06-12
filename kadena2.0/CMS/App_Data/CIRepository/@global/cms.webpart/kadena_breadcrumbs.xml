@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.webpart>
+  <WebPartCategoryID>
+    <CodeName>Kadena</CodeName>
+    <GUID>ea902dcb-d5a7-41ee-9175-f9708776cf63</GUID>
+    <ObjectType>cms.webpartcategory</ObjectType>
+  </WebPartCategoryID>
+  <WebPartDefaultConfiguration>
+    <page />
+  </WebPartDefaultConfiguration>
+  <WebPartDefaultValues>
+    <form />
+  </WebPartDefaultValues>
+  <WebPartDescription />
+  <WebPartDisplayName>Breadcrumbs</WebPartDisplayName>
+  <WebPartFileName>kadena/common/breadcrumbs.ascx</WebPartFileName>
+  <WebPartGUID>4f522119-55ef-414a-9aa3-5378eca729f3</WebPartGUID>
+  <WebPartLoadGeneration>0</WebPartLoadGeneration>
+  <WebPartName>Kadena_Breadcrumbs</WebPartName>
+  <WebPartProperties>
+    <form version="2">
+      <field column="DocumentId" columntype="integer" guid="6fe457e8-f868-4a84-a0b4-96cedbc000ab" publicfield="false" reftype="Required" resolvedefaultvalue="False" visible="true">
+        <properties>
+          <fieldcaption>Document Id</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+    </form>
+  </WebPartProperties>
+  <WebPartType>0</WebPartType>
+</cms.webpart>

@@ -1036,6 +1036,13 @@
     <Compile Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx.designer.cs">
       <DependentUpon>CategoryFilter.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSWebParts\Kadena\Common\Breadcrumbs.ascx.cs">
+      <DependentUpon>Breadcrumbs.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSWebParts\Kadena\Common\Breadcrumbs.ascx.designer.cs">
+      <DependentUpon>Breadcrumbs.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSWebParts\Kadena\Filters\BrandsFilter.ascx.cs">
       <DependentUpon>BrandsFilter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1316,7 +1323,6 @@
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.Custom.cs" />
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroMethods.cs" />
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroNamespace.cs" />
-    <Compile Include="Old_App_Code\EventHandlers\ProductCreationHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\ProductEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\SettingsKeyEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
@@ -1495,6 +1501,7 @@
     <Content Include="CMSWebParts\Kadena\Catalog\PrebuyProductsFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\Category\Category.ascx" />
     <Content Include="CMSWebParts\Kadena\Category\CategoryFilter.ascx" />
+    <Content Include="CMSWebParts\Kadena\Common\Breadcrumbs.ascx" />
     <Content Include="CMSWebParts\Kadena\Filters\BrandsFilter.ascx" />
     <Content Include="CMSWebParts\Kadena\FYBudget\FyBudget.ascx" />
     <Content Include="CMSWebParts\Kadena\General\RichMessage.ascx" />
