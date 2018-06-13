@@ -175,21 +175,21 @@ config.localization.orderDetail = {
 config.localization.emailProof = {
     submitUrl: '/api/mail/proof',
     notificationSuccess: {
-        title: '{$ Kadena.EmailProof.NotificationSuccess $}',
-        text: '{$ Kadena.EmailProof.NotificationSuccessText $}'
+        title: '{%JSEscape(GetResourceString("Kadena.EmailProof.NotificationSuccess")) |(user)administrator|(hash)2ee06349e33425fe4ded3ed99bf1310874d6a265a30bef9183a4f9ab47fc249e%}',
+        text: '{%JSEscape(GetResourceString("Kadena.EmailProof.NotificationSuccessText")) |(user)administrator|(hash)2a082e6836cd2f44f9534ab8d678d41c939fcf0992c50800362b0ba981940c82%}'
     },
     dialog: {
-        title:'{$ Kadena.EmailProof.Title $}',
-        recepientEmailLabel: '{$ Kadena.EmailProof.Email $}',
-        subjectLabel: '{$ Kadena.EmailProof.Subject $}',
-        messageLabel: '{$ Kadena.EmailProof.Message $}',
-        proofLabel: '{$ Kadena.EmailProof.Proof $}',
-        submitButtonLabel: '{$ Kadena.EmailProof.Submitbutton $}',
-        cancelButtonLabel: '{$ Kadena.EmailProof.CancelButton $}',
-        note: '{$ Kadena.EmailProof.Note $}',
+        title:'{%JSEscape(GetResourceString(" Kadena.EmailProof.Title ")) |(user)administrator|(hash)e80266527c72a29ec31e53460541f58c7f02d1dbf0c4aa9bceae49d54eb65b6f%}',
+        recepientEmailLabel: '{%JSEscape(GetResourceString("Kadena.EmailProof.Email")) |(user)administrator|(hash)2d2890827c409110ad234d91574d561c7cf932344773b3501c2296558f930f7c%}',
+        subjectLabel: '{%JSEscape(GetResourceString("Kadena.EmailProof.Subject")) |(user)administrator|(hash)06138c89004c3ef2280ada6425c416b83ac2e5974b5a2d742a3931236ae24f36%}',
+        messageLabel: '{%JSEscape(GetResourceString("Kadena.EmailProof.Message")) |(user)administrator|(hash)9a519eb2db753e1043fa4110e2db58c5a303db97e80fdf6a113e281c4557208f%}',
+        proofLabel: '{%JSEscape(GetResourceString("Kadena.EmailProof.Proof")) |(user)administrator|(hash)8fce545407d733f6031a7b340b64209cc39d05e532bc68eade6383ce2e9014a9%}',
+        submitButtonLabel: '{%JSEscape(GetResourceString("Kadena.EmailProof.Submitbutton")) |(user)administrator|(hash)c5d37ad15569f52c09007fec5224acc8fa8a7eada66b7b34714d48b4f84df916%}',
+        cancelButtonLabel: '{%JSEscape(GetResourceString("Kadena.EmailProof.CancelButton")) |(user)administrator|(hash)9753e4b196e4e240cbfcb3bf522d56a449cd080246d5aca1a810a4c4ac29cd8d%}',
+        note: '{%JSEscape(GetResourceString("Kadena.EmailProof.Note")) |(user)administrator|(hash)2a87c801d27082da8a7c500ee3deca69bb24c255547c49da0a2727bf78b592c6%}',
         validationMessages: {
-            required: '{$ Kadena.EmailProof.FieldRequired $}',
-            email: '{$ Kadena.EmailProof.MailRequired $}'
+            required: '{%JSEscape(GetResourceString("Kadena.EmailProof.FieldRequired")) |(user)administrator|(hash)1eb69992dcf8892027fa6e64b1445cc731bdbf4d350f4ccfa6442829c688e346%}',
+            email: '{%JSEscape(GetResourceString("Kadena.EmailProof.MailRequired")) |(user)administrator|(hash)0ee6520e9a1e4c8d18792888df2d4ad24df6903a36a1d2ce6a641696307d9912%}'
         }
     }
 }
