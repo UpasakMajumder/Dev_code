@@ -111,6 +111,7 @@ namespace Kadena.Container.Default
             container.Register<IApprovalService, ApprovalService>();
             container.Register<IDialogService, DialogService>();
             container.Register<IDeliveryEstimationDataService, DeliveryEstimationDataService>();
+            container.Register<IOrderManualUpdateService, OrderManualUpdateService>();
             return container;
         }
 

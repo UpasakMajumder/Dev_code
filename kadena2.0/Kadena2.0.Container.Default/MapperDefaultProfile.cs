@@ -18,6 +18,7 @@ using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Dto.MailTemplate.Responses;
 using Kadena.Dto.Order;
 using Kadena.Dto.Order.Failed;
+using Kadena.Dto.OrderManualUpdate.Requests;
 using Kadena.Dto.Product;
 using Kadena.Dto.Product.Responses;
 using Kadena.Dto.RecentOrders;
@@ -45,6 +46,7 @@ using Kadena.Models.CustomerData;
 using Kadena.Models.Login;
 using Kadena.Models.Membership;
 using Kadena.Models.OrderDetail;
+using Kadena.Models.Orders;
 using Kadena.Models.Orders.Failed;
 using Kadena.Models.Product;
 using Kadena.Models.RecentOrders;
@@ -393,6 +395,7 @@ namespace Kadena.Container.Default
                 .ForAllOtherMembers(m => m.Ignore());
             CreateMap<Weight, WeightDto>()
                 .ReverseMap();
+            CreateMap<OrderItemUpdateDto, OrderItemUpdate>();
 
         }
     }

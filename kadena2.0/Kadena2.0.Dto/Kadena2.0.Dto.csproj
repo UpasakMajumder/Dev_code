@@ -74,6 +74,7 @@
     <Compile Include="Notification\MicroserviceRequests\SendCustomNotificationRequestDto.cs" />
     <Compile Include="OrderManualUpdate\MicroserviceRequests\ItemUpdateDto.cs" />
     <Compile Include="OrderManualUpdate\MicroserviceRequests\OrderManualUpdateRequestDto.cs" />
+    <Compile Include="OrderManualUpdate\Requests\OrderItemUpdateDto.cs" />
     <Compile Include="Order\Failed\FailedOrderDto.cs" />
     <Compile Include="Order\Failed\ResubmitOrderRequestDto.cs" />
     <Compile Include="Order\Failed\ResubmitOrderResponseDto.cs" />
