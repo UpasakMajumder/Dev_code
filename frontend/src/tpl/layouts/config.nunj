@@ -542,9 +542,9 @@
       },
       productDetail: {
         thumbnail: { // props
-          image: 'http://satyr.io/500x300',
+          image: 'http://satyr.io/500x1000',
           border: '2px solid red',
-          magnifyImage: 'http://satyr.io/1500x1000'
+          magnifyImage: 'http://satyr.io/1000x5000'
         },
         requiresApproval: { // props
           exists: true,

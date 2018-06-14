@@ -472,6 +472,7 @@
     <Compile Include="BusinessLogic\BusinessUnitServiceTests.cs" />
     <Compile Include="BusinessLogic\CreditCard\SavedCreditCard3dsiTests.cs" />
     <Compile Include="BusinessLogic\CreditCard\CreditCard3dsiTests.cs" />
+    <Compile Include="BusinessLogic\DeliveryEstimationDataTests.cs" />
     <Compile Include="BusinessLogic\DialogServiceTests.cs" />
     <Compile Include="BusinessLogic\Factories\Checkout\CheckoutPageFactoryTests.cs" />
     <Compile Include="BusinessLogic\TieredPricingTests.cs" />
