@@ -526,7 +526,8 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return string.Empty;
         }
 
-        [MacroMethod(typeof(string), "Returns localized urls for language selector.", 0)]
+        [MacroMethod(typeof(string), "Returns localized urls for language selector.", 1)]
+        [MacroMethodParam(0, "aliasPath", typeof(string), "Alias path of the document.")]
         public static object GetUrlsForLanguageSelector(EvaluationContext context, params object[] parameters)
         {
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
