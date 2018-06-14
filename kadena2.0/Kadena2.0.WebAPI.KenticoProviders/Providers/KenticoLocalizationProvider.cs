@@ -4,6 +4,7 @@ using CMS.Globalization;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.SiteProvider;
+using Kadena.Helpers;
 using Kadena.Models;
 using Kadena.Models.Site;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -19,12 +20,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public KenticoLocalizationProvider(IMapper mapper)
         {
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-
-            this._mapper = mapper;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public IEnumerable<State> GetStates()
@@ -34,6 +30,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 .Columns("StateDisplayName", "StateId", "StateName", "StateCode", "CountryId")
                 .Select<StateInfo, State>(s => _mapper.Map<State>(s));
         }
+
         public IEnumerable<Country> GetCountries()
         {
             return CountryInfoProvider
@@ -41,8 +38,11 @@ namespace Kadena.WebAPI.KenticoProviders
                 .Columns("CountryDisplayName", "CountryID", "CountryTwoLetterCode")
                 .Select<CountryInfo, Country>(s => _mapper.Map<Country>(s));
         }
-        public LanguageSelectorItem[] GetUrlsForLanguageSelector(string aliasPath)
+
+        public LanguageSelectorItem[] GetUrlsForLanguageSelector(string aliasPath, string currentUrl)
         {
+            var urlParameters = UrlHelper.GetQueryFromUrl(currentUrl);
+
             var siteCultureCodes = CultureSiteInfoProvider.GetSiteCultureCodes(SiteContext.CurrentSiteName);
             var tree = new TreeProvider(MembershipContext.AuthenticatedUser);
             var documents = tree.SelectNodes()
@@ -54,30 +54,26 @@ namespace Kadena.WebAPI.KenticoProviders
             foreach (var code in siteCultureCodes)
             {
                 var localizedName = CultureInfoProvider.GetCultureInfo(code).CultureShortName;
-                var localizedFound = false;
+                var url = "/";
                 foreach (var document in documents)
                 {
                     if (document.DocumentCulture == code)
                     {
-                        localizedFound = true;
-                        selectorItems.Add(new LanguageSelectorItem
-                        {
-                            Code = code,
-                            Language = localizedName,
-                            Url = document.DocumentUrlPath + "?lang=" + code
-                        });
+                        // normalize path format
+                        url = UrlHelper.GetPathFromUrl(document.DocumentUrlPath);
+                        break;
                     }
                 }
 
-                if (!localizedFound)
+                url = $"{url}?{urlParameters}";
+                url = UrlHelper.SetQueryParameter(url, "lang", code);
+
+                selectorItems.Add(new LanguageSelectorItem
                 {
-                    selectorItems.Add(new LanguageSelectorItem
-                    {
-                        Code = code,
-                        Language = localizedName,
-                        Url = "/?lang=" + code
-                    });
-                }
+                    Code = code,
+                    Language = localizedName,
+                    Url = url
+                });
             }
 
             return selectorItems.ToArray();
@@ -87,6 +83,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return SiteContext.CurrentSite.DefaultVisitorCulture == LocalizationContext.CurrentCulture.CultureCode;
         }
+
         public string GetContextCultureCode()
         {
             return LocalizationContext.CurrentCulture.CultureCode;

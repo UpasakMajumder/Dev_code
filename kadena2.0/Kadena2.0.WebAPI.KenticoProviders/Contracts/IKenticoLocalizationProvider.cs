@@ -6,7 +6,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
     public interface IKenticoLocalizationProvider
     {
-        LanguageSelectorItem[] GetUrlsForLanguageSelector(string aliasPath);
+        LanguageSelectorItem[] GetUrlsForLanguageSelector(string aliasPath, string currentUrl);
         IEnumerable<State> GetStates();
         IEnumerable<Country> GetCountries();
         bool IsCurrentCultureDefault();

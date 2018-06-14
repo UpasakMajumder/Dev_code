@@ -526,17 +526,18 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return string.Empty;
         }
 
-        [MacroMethod(typeof(string), "Returns localized urls for language selector.", 1)]
-        [MacroMethodParam(0, "aliasPath", typeof(string), "Alias path of the document.")]
+        [MacroMethod(typeof(string), "Returns localized urls for language selector.", 0)]
         public static object GetUrlsForLanguageSelector(EvaluationContext context, params object[] parameters)
         {
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
-            if (!string.IsNullOrWhiteSpace(aliasPath))
+            if (string.IsNullOrWhiteSpace(aliasPath))
             {
-                var kenticoLocalization = DIContainer.Resolve<IKenticoLocalizationProvider>();
-                return JsonConvert.SerializeObject(kenticoLocalization.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
+                return string.Empty;
             }
-            return string.Empty;
+
+            var currentUrl = CMSHttpContext.Current.Request.RawUrl;
+            var kenticoLocalization = DIContainer.Resolve<IKenticoLocalizationProvider>();
+            return JsonConvert.SerializeObject(kenticoLocalization.GetUrlsForLanguageSelector(aliasPath, currentUrl), CamelCaseSerializer);
         }
 
         [MacroMethod(typeof(string), "Returns unified date string in Kadena format", 1)]

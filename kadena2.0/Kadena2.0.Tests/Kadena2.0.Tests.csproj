@@ -482,6 +482,7 @@
     <Compile Include="Dto\Approval\MicroserviceRequests\ApprovalStateTests.cs" />
     <Compile Include="Helpers\EnumHelperTests.cs" />
     <Compile Include="BusinessLogic\SettingsServiceTests.cs" />
+    <Compile Include="Helpers\UrlHelperTests.cs" />
     <Compile Include="Infrastructure\AutoMapperTests.cs" />
     <Compile Include="MicroserviceClients\StatisticsClientTests.cs" />
     <Compile Include="BusinessLogic\PdfLowresServiceTests.cs" />
