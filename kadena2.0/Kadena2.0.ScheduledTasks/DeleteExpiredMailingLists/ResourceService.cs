@@ -20,6 +20,11 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
             throw new NotImplementedException();
         }
 
+        public string GetMassUnit()
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetPerSiteResourceString(string name, string site = "")
         {
             return kenticoResourceService.GetPerSiteResourceString(name, site);
