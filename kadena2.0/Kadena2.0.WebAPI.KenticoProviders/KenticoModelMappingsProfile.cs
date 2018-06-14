@@ -102,9 +102,12 @@ namespace Kadena2.WebAPI.KenticoProviders
             CreateMap<UserInfo, User>()
                 .ForMember(dest => dest.TermsConditionsAccepted, opt => opt.MapFrom(src => src.GetDateTimeValue("TermsConditionsAccepted", DateTime.MinValue)))
                 .ForMember(dest => dest.CallBackUrl, opt => opt.MapFrom(src => src.UserURLReferrer));
-            CreateMap<SiteInfo, Site>()
+            CreateMap<SiteInfo, KenticoSite>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.SiteID))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SiteName));
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SiteName))
+                .ForMember(dest => dest.SiteDomain, opt => opt.MapFrom(src => src.DomainName))
+                .ForMember(dest => dest.OrderManagerEmail, opt => opt.Ignore())
+                .ForMember(dest => dest.ErpCustomerId, opt => opt.Ignore());
             CreateMap<PaymentOptionInfo, PaymentMethod>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PaymentOptionID))
                 .ForMember(dest => dest.Disabled, opt => opt.MapFrom(src => !src.PaymentOptionEnabled))

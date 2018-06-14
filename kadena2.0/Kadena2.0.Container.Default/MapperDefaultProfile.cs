@@ -10,6 +10,7 @@ using Kadena.Dto.CreditCard._3DSi.Requests;
 using Kadena.Dto.CreditCard.Requests;
 using Kadena.Dto.CreditCard.Responses;
 using Kadena.Dto.CustomerData;
+using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.Logon.Requests;
 using Kadena.Dto.Logon.Responses;
 using Kadena.Dto.MailingList;
@@ -382,6 +383,17 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.CompanyName, opt => opt.Ignore());
             CreateMap<EmailProofRequestDto, EmailProofRequest>();
             CreateMap<ProductAvailability, ProductAvailabilityDto>();
+            CreateMap<Dto.EstimateDeliveryPrice.MicroserviceRequests.AddressDto, AddressDTO>()
+                .ForMember(dest => dest.AddressLine1, opt => opt.MapFrom(src => src.StreetLines != null && src.StreetLines.Count > 0 ? src.StreetLines[0] : string.Empty))
+                .ForMember(dest => dest.AddressLine2, opt => opt.MapFrom(src => src.StreetLines != null && src.StreetLines.Count > 1 ? src.StreetLines[1] : string.Empty))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
+                .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State))
+                .ForMember(dest => dest.Zip, opt => opt.MapFrom(src => src.Postal))
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
+                .ForAllOtherMembers(m => m.Ignore());
+            CreateMap<Weight, WeightDto>()
+                .ReverseMap();
+
         }
     }
 }

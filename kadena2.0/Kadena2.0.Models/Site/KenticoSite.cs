@@ -8,5 +8,10 @@
         public string ErpCustomerId { get; set; }
         public string OrderManagerEmail { get; set; }
         public string SiteDomain { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
