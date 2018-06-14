@@ -7,7 +7,8 @@ namespace Kadena.Dto.OrderManualUpdate.Requests
     {
         [Required]
         public string OrderId { get; set; }
-
+        [Required]
+        public int CustomerId { get; set; }
         [Required]
         public IEnumerable<OrderItemUpdateDto> Items { get; set; }
     }
