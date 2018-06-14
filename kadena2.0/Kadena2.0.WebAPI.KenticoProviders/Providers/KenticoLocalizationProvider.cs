@@ -39,44 +39,24 @@ namespace Kadena.WebAPI.KenticoProviders
                 .Select<CountryInfo, Country>(s => _mapper.Map<Country>(s));
         }
 
-        public LanguageSelectorItem[] GetUrlsForLanguageSelector(string aliasPath, string currentUrl)
+        public Culture[] GetSiteCultures()
         {
-            var urlParameters = UrlHelper.GetQueryFromUrl(currentUrl);
+            return CultureSiteInfoProvider
+                .GetSiteCultures(SiteContext.CurrentSiteName)
+                .Select(c => _mapper.Map<Culture>(c))
+                .ToArray();
+        }
 
-            var siteCultureCodes = CultureSiteInfoProvider.GetSiteCultureCodes(SiteContext.CurrentSiteName);
+        public DocumentLocalization[] GetDocumentLocalizationsByAlias(string aliasPath)
+        {
             var tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-            var documents = tree.SelectNodes()
-                        .Path(aliasPath, PathTypeEnum.Explicit)
-                        .OnSite(SiteContext.CurrentSiteName)
-                        .AllCultures();
-
-            var selectorItems = new List<LanguageSelectorItem>(siteCultureCodes.Count);
-            foreach (var code in siteCultureCodes)
-            {
-                var localizedName = CultureInfoProvider.GetCultureInfo(code).CultureShortName;
-                var url = "/";
-                foreach (var document in documents)
-                {
-                    if (document.DocumentCulture == code)
-                    {
-                        // normalize path format
-                        url = UrlHelper.GetPathFromUrl(document.DocumentUrlPath);
-                        break;
-                    }
-                }
-
-                url = $"{url}?{urlParameters}";
-                url = UrlHelper.SetQueryParameter(url, "lang", code);
-
-                selectorItems.Add(new LanguageSelectorItem
-                {
-                    Code = code,
-                    Language = localizedName,
-                    Url = url
-                });
-            }
-
-            return selectorItems.ToArray();
+            return tree.SelectNodes()
+                .Path(aliasPath, PathTypeEnum.Explicit)
+                .OnSite(SiteContext.CurrentSiteName)
+                .AllCultures()
+                .ToList()
+                .Select(node => _mapper.Map<DocumentLocalization>(node))
+                .ToArray();
         }
 
         public bool IsCurrentCultureDefault()

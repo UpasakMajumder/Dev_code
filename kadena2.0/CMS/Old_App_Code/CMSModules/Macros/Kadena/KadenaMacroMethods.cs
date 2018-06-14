@@ -536,7 +536,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             }
 
             var currentUrl = CMSHttpContext.Current.Request.RawUrl;
-            var kenticoLocalization = DIContainer.Resolve<IKenticoLocalizationProvider>();
+            var kenticoLocalization = DIContainer.Resolve<ILocalizationService>();
             return JsonConvert.SerializeObject(kenticoLocalization.GetUrlsForLanguageSelector(aliasPath, currentUrl), CamelCaseSerializer);
         }
 

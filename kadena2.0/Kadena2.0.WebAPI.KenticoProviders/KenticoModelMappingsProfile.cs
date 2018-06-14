@@ -1,21 +1,22 @@
 ﻿using AutoMapper;
-using CMS.Globalization;
-using CMS.Ecommerce;
-using Kadena.Models;
-using CMS.Membership;
-using System;
-using Kadena.Models.Site;
-using CMS.SiteProvider;
-using Kadena.WebAPI.KenticoProviders;
-using CMS.DocumentEngine;
-using Kadena.Models.Product;
-using CMS.Helpers;
 using CMS.CustomTables;
+using CMS.DocumentEngine;
+using CMS.Ecommerce;
+using CMS.Globalization;
+using CMS.Helpers;
+using CMS.Localization;
+using CMS.Membership;
+using CMS.SiteProvider;
+using Kadena.Models;
+using Kadena.Models.BusinessUnit;
+using Kadena.Models.Checkout;
 using Kadena.Models.CreditCard;
 using Kadena.Models.Membership;
-using Kadena.Models.Checkout;
+using Kadena.Models.Product;
+using Kadena.Models.Site;
+using Kadena.WebAPI.KenticoProviders;
+using System;
 using System.Data;
-using Kadena.Models.BusinessUnit;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -29,6 +30,9 @@ namespace Kadena2.WebAPI.KenticoProviders
 
             CreateMap<StateInfo, State>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.StateID));
+            CreateMap<CultureInfo, Culture>()
+                .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.CultureCode))
+                .ForMember(dest => dest.ShortName, opt => opt.MapFrom(src => src.CultureShortName));
             CreateMap<CountryInfo, Country>()
                 .ProjectUsing(src => new Country
                 {
@@ -139,6 +143,9 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.DatePrefix, opt => opt.Ignore())
                 .ForMember(dest => dest.Date, opt => opt.Ignore())
                 .ForMember(dest => dest.items, opt => opt.Ignore());
+            CreateMap<TreeNode, DocumentLocalization>()
+                .ForMember(dest => dest.CultureCode, opt => opt.MapFrom(src => src.DocumentCulture))
+                .ForMember(dest => dest.UrlPath, opt => opt.MapFrom(src => src.DocumentUrlPath));
             CreateMap<TreeNode, ProductCategoryLink>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.DocumentID))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.DocumentName))

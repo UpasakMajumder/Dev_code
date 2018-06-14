@@ -60,6 +60,7 @@
     <Compile Include="Contracts\IIBTFService.cs" />
     <Compile Include="Contracts\IIdentityService.cs" />
     <Compile Include="Contracts\IImageService.cs" />
+    <Compile Include="Contracts\ILocalizationService.cs" />
     <Compile Include="Contracts\IModuleAccessService.cs" />
     <Compile Include="Contracts\IUserService.cs" />
     <Compile Include="Contracts\IMailService.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Services\Approval\ApproverService.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\IdentityService.cs" />
+    <Compile Include="Services\LocalizationService.cs" />
     <Compile Include="Services\MailService.cs" />
     <Compile Include="Services\ImageService.cs" />
     <Compile Include="Services\ModuleAccessService.cs" />
