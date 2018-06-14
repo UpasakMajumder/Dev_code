@@ -18,16 +18,16 @@ namespace Kadena.WebAPI.Controllers
 
         public OrderUpdateController(IOrderManualUpdateService updateService, IMapper mapper)
         {
-            mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            updateService = updateService ?? throw new ArgumentNullException(nameof(updateService));
+            this.updateService = updateService ?? throw new ArgumentNullException(nameof(updateService));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpPost]
         [Route("api/orderupdate")]
-        public async Task<IHttpActionResult> UpdateOrder(OrderItemUpdateDto[] request)
+        public async Task<IHttpActionResult> UpdateOrder(OrderUpdateDto request)
         {
-            var items = mapper.Map<OrderItemUpdate[]>(request);
-            await updateService.UpdateOrderItems(items);
+            var requestModel = mapper.Map<OrderUpdate>(request);
+            await updateService.UpdateOrder(requestModel);
             return ResponseJson((string)null);
         }
     }

@@ -396,6 +396,8 @@ namespace Kadena.Container.Default
             CreateMap<Weight, WeightDto>()
                 .ReverseMap();
             CreateMap<OrderItemUpdateDto, OrderItemUpdate>();
+            CreateMap<OrderUpdateDto, OrderUpdate>();
+            
 
         }
     }
