@@ -313,11 +313,13 @@ class ProductDetail extends Component {
     return (
       <div>
         <div className="product-view">
+
           <ProductThumbnail
             thumbnail={ui.get('thumbnail')}
             attachments={ui.get('attachments')}
             requiresApproval={ui.get('requiresApproval')}
           />
+
           <div className="product-view__block">
             <Info
               info={ui.get('info')}

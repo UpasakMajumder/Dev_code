@@ -780,6 +780,11 @@ module.exports.detail =  {
         "comment": {
           "title": "Comment"
         }
+      },
+      "editOrders": {
+        "button": "Edit",
+        "proceedUrl": "",
+        "dialog": null
       }
     }
   },

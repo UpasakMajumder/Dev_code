@@ -17,8 +17,9 @@ namespace Kadena.Tests
         {
             var dependencies = typeof(TSut)
                 .GetConstructors()
+                .Select(c => c.GetParameters())
+                .Where(p => p.Length != 0)
                 .FirstOrDefault()?
-                .GetParameters()
                 .Select(p =>
                 {
                     var mockType = typeof(Mock<>).MakeGenericType(p.ParameterType);

@@ -6,7 +6,10 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
     public interface IKenticoSkuProvider
     {
         Sku GetSKU(int skuId);
-        void UpdateSku(Sku sku);
+        /// <summary>
+        /// Stores SKU fields which were made Mandatory by workaround - copying form Product in ProductEventHandler
+        /// </summary>
+        void UpdateSkuMandatoryFields(Sku sku);
         int GetSkuAvailableQty(int skuid);
         Price GetSkuPrice(int skuId);
         void SetSkuAvailableQty(string skunumber, int availableItems);

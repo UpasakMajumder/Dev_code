@@ -58,8 +58,6 @@
                 <cms:LocalizedLabel ID="lblLongDes" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblLongDes" />
                 <div class="input__inner long__desc">
                     <cms:CMSTextBox ID="txtLongDes" runat="server" EnableViewState="false" CssClass="input__text" Rows="5" Columns="5" TextMode="MultiLine"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvLongDes" CssClass="EditingFormErrorLabel" runat="server" ControlToValidate="txtLongDes">
-                    </asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
