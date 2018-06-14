@@ -1,12 +1,20 @@
 ﻿using Kadena.BusinessLogic.Services;
 using Kadena.Models.Site;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System;
 using Xunit;
 
 namespace Kadena.Tests.BusinessLogic
 {
     public class LocalizationServiceTests : KadenaUnitTest<LocalizationService>
     {
+        [Theory]
+        [ClassData(typeof(LocalizationServiceTests))]
+        public void ConstructorShouldThrow_WhenNullArgument(IKenticoLocalizationProvider kenticoLocalizationProvider)
+        {
+            Assert.Throws<ArgumentNullException>(() => new LocalizationService(kenticoLocalizationProvider));
+        }
+
         [Fact]
         public void GetUrlsForLanguageSelector_Should()
         {
