@@ -45,6 +45,7 @@ using Kadena.Models.CustomerData;
 using Kadena.Models.Login;
 using Kadena.Models.Membership;
 using Kadena.Models.OrderDetail;
+using Kadena.Models.Orders;
 using Kadena.Models.Orders.Failed;
 using Kadena.Models.Product;
 using Kadena.Models.RecentOrders;
@@ -63,6 +64,44 @@ namespace Kadena.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<OrderReportViewItem, Models.Common.TableRow>()
+                .ForMember(dest => dest.Items, opt => opt.ResolveUsing(src => new object[] {
+                    src.Site,
+                    src.Number,
+                    src.OrderingDate,
+                    src.User,
+                    src.Name,
+                    src.SKU,
+                    src.Quantity,
+                    src.Price,
+                    src.Status,
+                    src.ShippingDate,
+                    src.TrackingNumber
+                }));
+            CreateMap<RecentOrderDto, OrderReportViewItem>()
+                .ForMember(dest => dest.Site, opt => opt.MapFrom(src => src.SiteName))
+                .ForMember(dest => dest.Number, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Url, opt => opt.Ignore())
+                .ForMember(dest => dest.OrderingDate, opt => opt.Ignore())
+                .ForMember(dest => dest.User, opt => opt.Ignore())
+                .ForMember(dest => dest.Name, opt => opt.Ignore())
+                .ForMember(dest => dest.SKU, opt => opt.Ignore())
+                .ForMember(dest => dest.Quantity, opt => opt.Ignore())
+                .ForMember(dest => dest.Price, opt => opt.Ignore())
+                .ForMember(dest => dest.Status, opt => opt.Ignore())
+                .ForMember(dest => dest.ShippingDate, opt => opt.Ignore())
+                .ForMember(dest => dest.TrackingNumber, opt => opt.Ignore());
+            CreateMap<Dto.Order.OrderItemDto, OrderReportViewItem>()
+                .ForMember(dest => dest.Site, opt => opt.Ignore())
+                .ForMember(dest => dest.Number, opt => opt.Ignore())
+                .ForMember(dest => dest.Url, opt => opt.Ignore())
+                .ForMember(dest => dest.OrderingDate, opt => opt.Ignore())
+                .ForMember(dest => dest.User, opt => opt.Ignore())
+                .ForMember(dest => dest.SKU, opt => opt.MapFrom(src => src.SKUNumber))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.UnitPrice))
+                .ForMember(dest => dest.Status, opt => opt.Ignore())
+                .ForMember(dest => dest.ShippingDate, opt => opt.Ignore());
+
             CreateMap<Dto.ViewOrder.MicroserviceResponses.TrackingInfoDto, TrackingInfo>();
             CreateMap<TrackingInfo, TrackingInfoDto>();
 

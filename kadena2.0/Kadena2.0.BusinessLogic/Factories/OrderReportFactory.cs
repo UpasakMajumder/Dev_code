@@ -1,4 +1,5 @@
-﻿using Kadena.BusinessLogic.Contracts;
+﻿using AutoMapper;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.Order;
 using Kadena.Models;
 using Kadena.Models.Common;
@@ -31,6 +32,7 @@ namespace Kadena.BusinessLogic.Factories
         private readonly IDateTimeFormatter dateTimeFormatter;
         private readonly IKenticoResourceService kenticoResources;
         private readonly IKenticoDocumentProvider kenticoDocumentProvider;
+        private readonly IMapper mapper;
         private string _orderDetailUrl = string.Empty;
         public string OrderDetailUrl
         {
@@ -49,32 +51,30 @@ namespace Kadena.BusinessLogic.Factories
             IKenticoCustomerProvider kenticoCustomerProvider,
             IDateTimeFormatter dateTimeFormatter,
             IKenticoResourceService kenticoResources,
-            IKenticoDocumentProvider kenticoDocumentProvider)
+            IKenticoDocumentProvider kenticoDocumentProvider,
+            IMapper mapper)
         {
             this.kenticoOrderProvider = kenticoOrderProvider ?? throw new ArgumentNullException(nameof(kenticoOrderProvider));
             this.kenticoCustomerProvider = kenticoCustomerProvider ?? throw new ArgumentNullException(nameof(kenticoCustomerProvider));
             this.dateTimeFormatter = dateTimeFormatter ?? throw new ArgumentNullException(nameof(dateTimeFormatter));
             this.kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
             this.kenticoDocumentProvider = kenticoDocumentProvider ?? throw new ArgumentNullException(nameof(kenticoDocumentProvider));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public IEnumerable<OrderReportViewItem> CreateReportView(IEnumerable<RecentOrderDto> recentOrder) =>
             recentOrder
                 .SelectMany(r => r.Items
-                    .Select(i => new OrderReportViewItem
+                    .Select(i =>
                     {
-                        Url = FormatDetailUrl(r),
-                        Site = r.SiteName,
-                        Number = r.Id,
-                        OrderingDate = FormatDate(r.CreateDate),
-                        User = FormatCustomer(kenticoCustomerProvider.GetCustomer(r.CustomerId)),
-                        Name = i.Name,
-                        SKU = i.SKUNumber,
-                        Quantity = i.Quantity,
-                        Price = i.UnitPrice,
-                        Status = FormatOrderStatus(r.Status),
-                        ShippingDate = FormatDate(i.ShippingDate),
-                        TrackingNumber = i.TrackingNumber
+                        var res = mapper.Map<OrderReportViewItem>(i) ?? new OrderReportViewItem();
+                        mapper.Map(r, res);
+                        res.Url = FormatDetailUrl(r);
+                        res.OrderingDate = FormatDate(r.CreateDate);
+                        res.User = FormatCustomer(kenticoCustomerProvider.GetCustomer(r.CustomerId));
+                        res.Status = FormatOrderStatus(r.Status);
+                        res.ShippingDate = FormatDate(i.ShippingDate);
+                        return res;
                     })
                 );
 
@@ -82,24 +82,7 @@ namespace Kadena.BusinessLogic.Factories
         public TableView CreateTableView(IEnumerable<OrderReportViewItem> reportDto) =>
             new TableView
             {
-                Rows = reportDto.Select(it => new TableRow
-                {
-                    Url = it.Url,
-                    Items = new object[]
-                    {
-                        it.Site,
-                        it.Number,
-                        it.OrderingDate,
-                        it.User,
-                        it.Name,
-                        it.SKU,
-                        it.Quantity,
-                        it.Price,
-                        it.Status,
-                        it.ShippingDate,
-                        it.TrackingNumber
-                    }
-                }).ToArray(),
+                Rows = mapper.Map<TableRow[]>(reportDto),
                 Headers = new[]
                 {
                     kenticoResources.GetResourceString("Kadena.OrdersReport.Table.Site"),

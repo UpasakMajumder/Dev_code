@@ -1,5 +1,6 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Factories;
+using Kadena.Container.Default;
 using Kadena.Models.Orders;
 using Moq;
 using System;
@@ -32,6 +33,7 @@ namespace Kadena.Tests.BusinessLogic
                     }
                 };
             var expected = report.First();
+            Use(MapperBuilder.MapperInstance);
 
             var actualView = Sut.CreateTableView(report);
             var actual = actualView.Rows[0];
@@ -53,6 +55,7 @@ namespace Kadena.Tests.BusinessLogic
         [Fact]
         public void CreateReportView_ShouldMapReportToReportView()
         {
+            Use(MapperBuilder.MapperInstance);
             Setup<IDateTimeFormatter, string>(dtf => dtf.Format(It.IsAny<DateTime>()), "formatted");
             var orderDto = OrderReportTestHelper.CreateTestRecentOrder(1, 1);
 
