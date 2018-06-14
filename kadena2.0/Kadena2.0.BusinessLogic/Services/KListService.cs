@@ -8,6 +8,7 @@ using Kadena.Models;
 using System.Collections.Generic;
 using AutoMapper;
 using Kadena.Dto.MailingList.MicroserviceResponses;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -16,31 +17,36 @@ namespace Kadena.BusinessLogic.Services
         private readonly IMailingListClient _mailingClient;
         private readonly IAddressValidationClient _validationClient;
         private readonly IKenticoSiteProvider _site;
+        private readonly IKenticoResourceService _resourceService;
         private readonly IMapper _mapper;
 
-        public KListService(IMailingListClient client, IKenticoSiteProvider site, IAddressValidationClient validationClient, IMapper mapper)
+        public KListService(IMailingListClient client, IKenticoSiteProvider site, IAddressValidationClient validationClient, IMapper mapper,
+            IKenticoResourceService resourceService)
         {
-            if (client == null)
+            _mailingClient = client ?? throw new ArgumentNullException(nameof(client));
+            _site = site ?? throw new ArgumentNullException(nameof(site));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _validationClient = validationClient ?? throw new ArgumentNullException(nameof(validationClient));
+            _resourceService = resourceService ?? throw new ArgumentNullException(nameof(resourceService));
+        }
+
+        public async Task<string> DeleteExpiredMailingLists()
+        {
+            var site = _site.GetKenticoSite();
+            var expirationDaysStr = _resourceService.GetSettingsKey<string>(Settings.KDA_MailingList_DeleteExpiredAfter);
+            if (int.TryParse(expirationDaysStr, out int expirationDays))
             {
-                throw new ArgumentNullException(nameof(client));
-            }
-            if (site == null)
-            {
-                throw new ArgumentNullException(nameof(site));
-            }
-            if (validationClient == null)
-            {
-                throw new ArgumentNullException(nameof(validationClient));
-            }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
+                var deleteOlderThan = DateTime.Today.AddDays(-expirationDays);
+                var result = await _mailingClient.RemoveMailingList(deleteOlderThan).ConfigureAwait(false);
+
+                if (!result.Success)
+                {
+                    return $"Failure for {site} - {result.ErrorMessages}.";
+                }
+                return $"{site} - Done.";
             }
 
-            _mailingClient = client;
-            _site = site;
-            _mapper = mapper;
-            _validationClient = validationClient;
+            return $"{site} - Setting not set. Skipping.";
         }
 
         public async Task<MailingList> GetMailingList(Guid containerId)

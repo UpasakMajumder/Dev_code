@@ -8,32 +8,14 @@ using System.Threading.Tasks;
 using Kadena.BusinessLogic.Contracts;
 using AutoMapper;
 using System;
-using System.Collections.Generic;
 using Kadena.Dto.ViewOrder.Responses;
-using System.Linq;
 
 namespace Kadena.Tests.WebApi
 {
     public class RecentOrdersControllerTests : KadenaUnitTest<RecentOrdersController>
     {
-        public static IEnumerable<object[]> GetDependencies()
-        {
-            var dependencies = new object[] {
-                new Mock<IOrderDetailService>().Object,
-                new Mock<IOrderListServiceFactory>().Object,
-                new Mock<IMapper>().Object
-            };
-
-            foreach (var dep in dependencies)
-            {
-                yield return dependencies
-                    .Select(d => d.Equals(dep) ? null : d)
-                    .ToArray();
-            }
-        }
-
         [Theory(DisplayName = "RecentOrdersController()")]
-        [MemberData(nameof(GetDependencies))]
+        [ClassData(typeof(RecentOrdersControllerTests))]
         public void RecentOrdersController(IOrderDetailService orderDetailService,
             IOrderListServiceFactory orderListServiceFactory,
             IMapper mapper)
