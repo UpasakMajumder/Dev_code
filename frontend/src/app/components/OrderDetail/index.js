@@ -41,7 +41,7 @@ class OrderDetail extends Component {
 
   state = {
     showEditModal: false // managed in Actions component
-  };
+  }
 
   componentDidMount() {
     const { getUI } = this.props;
@@ -49,6 +49,19 @@ class OrderDetail extends Component {
 
     getUI(orderID);
   }
+
+  getMaxOrderQuantity = () => {
+    if (this.maxOrderQuantity) return this.maxOrderQuantity;
+
+    const maxOrderQuantity = {};
+    this.props.ui.orderedItems.items.forEach((orderedItem) => {
+      maxOrderQuantity[orderedItem.id] = orderedItem.quantity;
+    });
+
+    this.maxOrderQuantity = maxOrderQuantity;
+
+    return maxOrderQuantity;
+  };
 
   changeStatus = newStatus => this.props.changeStatus(newStatus);
 
@@ -85,6 +98,8 @@ class OrderDetail extends Component {
           proceedUrl={this.props.ui.editOrders.proceedUrl}
           paidByCreditCard={paymentInfo.paymentIcon === 'credit-card'}
           editOrders={this.props.editOrders}
+          general={general}
+          maxOrderQuantity={this.getMaxOrderQuantity()}
         />
         <CommonInfo
           ui={commonInfo}

@@ -5,6 +5,16 @@ import { Tooltip } from 'react-tippy';
 import TextInput from 'app.dump/Form/TextInput';
 
 const EditOrder = (props) => {
+  const removeButton = props.removeButton
+    ? (
+      <button
+        type="button"
+        className="cart-product__btn mt-2"
+      >
+        {props.removeButton}
+      </button>
+    ) : null;
+
   return (
     <div className="edit-order">
       <img
@@ -33,7 +43,7 @@ const EditOrder = (props) => {
           </Tooltip>
           {props.unitOfMeasure}
         </div>
-        {props.removeButton ? <span>Remove</span> : null}
+        {removeButton}
       </div>
     </div>
   );

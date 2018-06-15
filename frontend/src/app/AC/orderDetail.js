@@ -46,12 +46,17 @@ export const changeStatus = ({ status, note }) => {
   };
 };
 
-export const editOrders = ({ pricingInfo, orderedItems }) => {
+export const editOrders = ({
+  pricingInfo,
+  orderedItems,
+  ordersPrice
+}) => {
   return {
     type: ORDER_DETAIL + EDIT_ORDERS,
     payload: {
       pricingInfo,
-      orderedItems
+      orderedItems,
+      ordersPrice
     }
   };
 };
