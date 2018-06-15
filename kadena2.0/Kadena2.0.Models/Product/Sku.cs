@@ -13,5 +13,6 @@
         public int MaxItemsInOrder { get; set; }
         public string UnitOfMeasure { get; set; }
         public int NumberOfItemsInPackage { get; set; }
+        public string SKUNumber { get; set; }
     }
 }

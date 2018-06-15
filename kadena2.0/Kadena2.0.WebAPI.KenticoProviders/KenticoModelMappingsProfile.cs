@@ -267,7 +267,8 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.MinItemsInOrder, opt => opt.MapFrom(src => src.SKUMinItemsInOrder))
                 .ForMember(dest => dest.MaxItemsInOrder, opt => opt.MapFrom(src => src.SKUMaxItemsInOrder))
                 .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.GetStringValue("SKUUnitOfMeasure", UnitOfMeasure.DefaultUnit)))
-                .ForMember(dest => dest.NumberOfItemsInPackage, opt => opt.MapFrom(src => src.GetIntegerValue("SKUNumberOfItemsInPackage", 1)));
+                .ForMember(dest => dest.NumberOfItemsInPackage, opt => opt.MapFrom(src => src.GetIntegerValue("SKUNumberOfItemsInPackage", 1)))
+                .ForMember(dest => dest.SKUNumber, opt => opt.MapFrom(src => src.SKUNumber));
 
             CreateMap<User, UserInfo>()
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))

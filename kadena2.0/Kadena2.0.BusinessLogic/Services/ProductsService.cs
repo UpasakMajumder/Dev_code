@@ -58,6 +58,34 @@ namespace Kadena.BusinessLogic.Services
             return skus.GetSkuPrice(selectedVariant.SkuId);
         }
 
+        public decimal GetPriceByCustomModel(int documentId, int quantity)
+        {
+            var product = products.GetProductByDocumentId(documentId);
+            var price = decimal.MinusOne;
+
+            if (product == null)
+            {
+                return price;
+            }
+
+            if (product.PricingModel == PricingModel.Dynamic)
+            {
+                price = dynamicRanges.GetDynamicPrice(quantity, product.DynamicPricingJson);
+            }
+            else if (product.PricingModel == PricingModel.Tiered)
+            {
+                price = tieredRanges.GetTieredPrice(quantity, product.TieredPricingJson);
+            }
+
+            return price;            
+        }
+
+        public bool ProductHasValidSKUNumber(int skuid)
+        {
+            var sku = skus.GetSKU(skuid);
+            return sku != null ? !(string.IsNullOrWhiteSpace(sku.SKUNumber) || sku.SKUNumber.Equals("00000")) : false;
+        }
+
         public ProductsPage GetProducts(string path)
         {
             var categories = this.products.GetCategories(path).OrderBy(c => c.Order).ToList();
@@ -319,7 +347,6 @@ namespace Kadena.BusinessLogic.Services
                 });
             }
         }
-
 
         public string GetMinMaxItemsString(int min, int max)
         {

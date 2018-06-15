@@ -127,9 +127,8 @@ namespace Kadena.Tests.BusinessLogic
             };
             
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
-            Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku { });
-            Setup<IDynamicPriceRangeProvider, decimal>(dp => dp.GetDynamicPrice(5, null), dynamicPrice);
-            Setup<IKenticoProductsProvider, Product>(p => p.GetProductByDocumentId(1123), new Product { PricingModel = PricingModel.Dynamic });
+            Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku {  });
+            Setup<IProductsService, decimal>(p => p.GetPriceByCustomModel(5, 1123), dynamicPrice);
 
             // Act
             var result = await Sut.AddToCart(newCartItem);

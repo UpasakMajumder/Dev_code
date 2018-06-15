@@ -112,6 +112,7 @@ namespace Kadena.Container.Default
             container.Register<IDialogService, DialogService>();
             container.Register<IDeliveryEstimationDataService, DeliveryEstimationDataService>();
             container.Register<IOrderManualUpdateService, OrderManualUpdateService>();
+            container.Register<IDistributorShoppingCartService, DistributorShoppingCartService>();
             return container;
         }
 

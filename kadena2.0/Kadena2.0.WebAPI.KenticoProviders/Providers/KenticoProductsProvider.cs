@@ -258,13 +258,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
             return document != null ? document.GetIntegerValue("CampaignsProductID", default(int)) : default(int);
-        }
-
-        public bool ProductHasValidSKUNumber(int skuid)
-        {
-            SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
-            return sku != null ? !(string.IsNullOrWhiteSpace(sku.SKUNumber) || sku.SKUNumber.Equals("00000")) : false;
-        }
+        }        
 
         public CampaignsProduct GetCampaignProduct(int skuid)
         {
