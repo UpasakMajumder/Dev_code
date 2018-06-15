@@ -24,11 +24,11 @@ namespace Kadena.Tests.BusinessLogic
         public static RecentOrderDto[] CreateTestRecentOrders(int ordersCount, int itemsPerOrderCount)
         {
             return Enumerable.Range(1, ordersCount)
-                .Select(orderNumber => CreateTestRecentOrder(orderNumber, itemsPerOrderCount))
+                .Select(orderNumber => CreateTestRecentOrder(itemsPerOrderCount))
                 .ToArray();
         }
 
-        public static RecentOrderDto CreateTestRecentOrder(int orderNumber, int itemsCount)
+        private static RecentOrderDto CreateTestRecentOrder(int itemsCount)
         {
             var order = new RecentOrderDto
             {
@@ -45,7 +45,7 @@ namespace Kadena.Tests.BusinessLogic
             return order;
         }
 
-        public static OrderItemDto CreateTestRecentOrderItem(int itemNumber)
+        private static OrderItemDto CreateTestRecentOrderItem(int itemNumber)
         {
             return new OrderItemDto
             {

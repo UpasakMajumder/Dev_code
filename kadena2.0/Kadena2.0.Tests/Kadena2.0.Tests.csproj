@@ -484,6 +484,8 @@
     <Compile Include="Helpers\EnumHelperTests.cs" />
     <Compile Include="BusinessLogic\SettingsServiceTests.cs" />
     <Compile Include="Infrastructure\AutoMapperTests.cs" />
+    <Compile Include="Infrastructure\Mapping\DefaultProfileTests.cs" />
+    <Compile Include="Infrastructure\Mapping\ProfileTest.cs" />
     <Compile Include="MicroserviceClients\StatisticsClientTests.cs" />
     <Compile Include="BusinessLogic\PdfLowresServiceTests.cs" />
     <Compile Include="Models\OrderFilterTests.cs" />
