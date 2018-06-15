@@ -1,6 +1,6 @@
-﻿namespace Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests
+﻿namespace Kadena.Models.SubmitOrder
 {
-    public class WeightDto
+    public class Weight
     {
         public string Unit { get; set; }
         public decimal Value { get; set; }

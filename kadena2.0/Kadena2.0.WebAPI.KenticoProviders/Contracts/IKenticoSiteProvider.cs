@@ -5,7 +5,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
     public interface IKenticoSiteProvider
     {
-        Site[] GetSites();
+        KenticoSite[] GetSites();
         string GetCurrentSiteCodeName();
         KenticoSite GetKenticoSite();
         KenticoSite GetKenticoSite(int siteId);
