@@ -25,7 +25,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             return mapper.Map<Sku>(skuInfo);
         }
 
-        public void UpdateSku(Sku sku)
+        public void UpdateSkuMandatoryFields(Sku sku)
         {
             var skuInfo = SKUInfoProvider.GetSKUInfo(sku.SkuId);
             if (skuInfo == null)
@@ -35,6 +35,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
 
             skuInfo.SKUWeight = sku.Weight;
             skuInfo.SKUNeedsShipping = sku.NeedsShipping;
+            skuInfo.SetValue("SKUNumberOfItemsInPackage", sku.NumberOfItemsInPackage);
             skuInfo.Update();
         }
 

@@ -1,4 +1,6 @@
-﻿namespace Kadena.Dto.ViewOrder.Responses
+﻿using Kadena.Dto.Common;
+
+namespace Kadena.Dto.ViewOrder.Responses
 {
     public class OrderDetailDTO
     {
@@ -10,5 +12,6 @@
         public OrderInfoDTO General { get; set; }
         public OrderedItemsDTO OrderedItems { get; set; }
         public OrderActionsDTO Actions { get; set; }
+        public DialogButtonDTO EditOrders { get; set; }
     }
 }

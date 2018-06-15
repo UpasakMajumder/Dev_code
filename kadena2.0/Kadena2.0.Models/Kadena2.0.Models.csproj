@@ -135,6 +135,7 @@
     <Compile Include="SubmitOrder\MailingList.cs" />
     <Compile Include="SubmitOrder\OrderCartItem.cs" />
     <Compile Include="SubmitOrder\OrderItemSku.cs" />
+    <Compile Include="SubmitOrder\Weight.cs" />
     <Compile Include="TemplatedProduct\EmailProofRequest.cs" />
     <Compile Include="Common\ContentTypes.cs" />
     <Compile Include="Common\Country.cs" />
@@ -220,7 +221,6 @@
     <Compile Include="Settings\PageButton.cs" />
     <Compile Include="Settings\SettingsAddresses.cs" />
     <Compile Include="Site\LanguageSelectorItem.cs" />
-    <Compile Include="Site\Site.cs" />
     <Compile Include="Common\OperationResult.cs" />
     <Compile Include="Common\PagedData.cs" />
     <Compile Include="Common\Pagination.cs" />

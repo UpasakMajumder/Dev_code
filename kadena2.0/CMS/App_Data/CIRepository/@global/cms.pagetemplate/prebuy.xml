@@ -110,7 +110,7 @@
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
           <property name="cat_open_visibility"></property>
-          <property name="container"></property>
+          <property name="container">KadenaBreadcrumbs</property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
@@ -144,18 +144,11 @@
           <property name="resolvedynamiccontrols">True</property>
           <property name="showfordocumenttypes"></property>
           <property name="tag"></property>
-          <property name="text">
-<![CDATA[
- {%
- 
-"<div class='breadcrumbs'>" + GetCampaignName() + "</div>"
-%}	
-]]>
-          </property>
+          <property name="text">{% GetCampaignName() %}	</property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
-          <property name="webparttitle">Pre buy Bread crumb</property>
+          <property name="webparttitle">CampaignName</property>
           <property name="webparttype">statictext</property>
         </webpart>
       </webpartzone>

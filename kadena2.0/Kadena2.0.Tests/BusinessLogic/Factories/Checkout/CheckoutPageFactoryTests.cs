@@ -1,36 +1,17 @@
 ﻿using System;
 using Xunit;
-using Moq;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
 using Kadena.Models;
 using Kadena.BusinessLogic.Contracts;
-using System.Linq;
 
 namespace Kadena.Tests.BusinessLogic.Factories.Checkout
 {
     public class CheckoutPageFactoryTests : KadenaUnitTest<CheckoutPageFactory>
     {
-        public static IEnumerable<object[]> GetDependencies()
-        {
-            var dependencies = new object[] {
-                new Mock<IKenticoResourceService>().Object,
-                new Mock<IKenticoDocumentProvider>().Object,
-                new Mock<IKenticoLocalizationProvider>().Object,
-                new Mock<IDialogService>().Object,
-            };
-
-            foreach (var dep in dependencies)
-            {
-                yield return dependencies
-                    .Select(d => d.Equals(dep) ? null : d)
-                    .ToArray();
-            }
-        }
-
         [Theory(DisplayName = "CheckoutPageFactory()")]
-        [MemberData(nameof(GetDependencies))]
+        [ClassData(typeof(CheckoutPageFactoryTests))]
         public void CheckoutPageFactory(IKenticoResourceService resources, IKenticoDocumentProvider documents,
             IKenticoLocalizationProvider kenticoLocalization, IDialogService dialogService)
         {

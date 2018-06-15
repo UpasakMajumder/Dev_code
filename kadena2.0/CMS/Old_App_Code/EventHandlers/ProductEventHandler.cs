@@ -52,9 +52,10 @@ namespace Kadena.Old_App_Code.EventHandlers
                 {
                     SkuId = product.NodeSKUID,
                     NeedsShipping = product.SKUNeedsShipping,
-                    Weight = product.SKUWeight
+                    Weight = product.SKUWeight,
+                    NumberOfItemsInPackage = product.ProductSKUNumberOfItemsInPackage
                 };
-                SkuProvider.UpdateSku(sku);
+                SkuProvider.UpdateSkuMandatoryFields(sku);
             }
             catch (Exception ex)
             {

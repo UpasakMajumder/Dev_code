@@ -10,7 +10,9 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Dto.General;
 using Kadena.Models.Site;
 using Kadena.Container.Default;
+using AutoMapper;
 using Moq;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -18,7 +20,97 @@ namespace Kadena.Tests.BusinessLogic
     {
         private readonly Guid _containerId;
         private readonly List<MailingAddressDto> _addresses;
+        private readonly KenticoSite _site;
 
+        [Theory(DisplayName = "KListService()")]
+        [ClassData(typeof(KListServiceTests))]
+        public void DialogService(IMailingListClient client, IKenticoSiteProvider site, IMapper mapper,
+            IKenticoResourceService resourceService)
+        {
+            Assert.Throws<ArgumentNullException>(() => new KListService(client, site, mapper, resourceService));
+        }
+        
+        #region Delete expired lists
+        public static IEnumerable<object[]> GetListExpirationDates()
+        {
+            yield return new object[]
+                {
+                    DateTime.Today.AddDays(-10)
+                };
+            yield return new object[]
+                {
+                    DateTime.Today.AddDays(-30)
+                };
+            yield return new object[]
+                {
+                    DateTime.Today.AddDays(-90)
+                };
+        }
+
+        [Theory(DisplayName = "KListService.RemoveMailingList() | Success")]
+        [MemberData(nameof(GetListExpirationDates))]
+        public async Task RemoveMailingList_Success(DateTime expirationDate)
+        {
+            var expectedResult = $"{_site} - Done.";
+
+            SetupBase();
+            Setup<IKenticoResourceService, string>(s => s.GetSettingsKey<string>(Settings.KDA_MailingList_DeleteExpiredAfter, _site.Id),
+                $"{(int)(DateTime.Today - expirationDate).TotalDays}");
+            Setup<IMailingListClient, Task<BaseResponseDto<object>>>(s => s.RemoveMailingList(expirationDate),
+                Task.FromResult(new BaseResponseDto<object> { Success = true }));
+
+            var actualResult = await Sut.DeleteExpiredMailingLists();
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Theory(DisplayName = "KListService.RemoveMailingList() | Fail")]
+        [MemberData(nameof(GetListExpirationDates))]
+        public async Task RemoveMailingList_Fail(DateTime expirationDate)
+        {
+            var mailingListResponse = new BaseResponseDto<object>
+            {
+                Success = false,
+                Error = new BaseErrorDto
+                {
+                    Message = "Fake error message"
+                }
+            };
+            var expectedResult = $"Failure for {_site} - {mailingListResponse.ErrorMessages}.";
+            SetupBase();
+            Setup<IKenticoResourceService, string>(s => s.GetSettingsKey<string>(Settings.KDA_MailingList_DeleteExpiredAfter, _site.Id),
+                $"{(int)(DateTime.Today - expirationDate).TotalDays}");
+            Setup<IMailingListClient, Task<BaseResponseDto<object>>>(s => s.RemoveMailingList(expirationDate),
+                Task.FromResult(mailingListResponse));
+
+            var actualResult = await Sut.DeleteExpiredMailingLists();
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact(DisplayName = "KListService.RemoveMailingList() | Setting not set")]
+        public async Task RemoveMailingList_SettingNotSet()
+        {
+            var expectedResult = $"{_site} - Setting not set. Skipping.";
+            SetupBase();
+
+            var actualResult = await Sut.DeleteExpiredMailingLists();
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact(DisplayName = "KListService.RemoveMailingList() | Null response from microclient")]
+        public async Task RemoveMailingList_NullResponse()
+        {
+            SetupBase();
+            Setup<IKenticoResourceService, string>(s => s.GetSettingsKey<string>(Settings.KDA_MailingList_DeleteExpiredAfter, _site.Id), "0");
+
+            Task action() => Sut.DeleteExpiredMailingLists();
+
+            await Assert.ThrowsAsync<NullReferenceException>(action);
+        }
+
+        #endregion
         public KListServiceTests()
         {
             _containerId = Guid.NewGuid();
@@ -39,12 +131,17 @@ namespace Kadena.Tests.BusinessLogic
                     ErrorMessage = i % 2 == 0 ? $"Some error {i}" : null
                 });
             }
+
+            _site = new KenticoSite
+            {
+                Name = "SiteMock"
+            };
         }
 
         private void SetupBase()
         {
             Use(MapperBuilder.MapperInstance);
-            Setup<IKenticoSiteProvider, KenticoSite>(p => p.GetKenticoSite(), new KenticoSite());
+            Setup<IKenticoSiteProvider, KenticoSite>(p => p.GetKenticoSite(), _site);
         }
 
         private BaseResponseDto<IEnumerable<MailingAddressDto>> GetAddresses()

@@ -30,12 +30,6 @@ namespace Kadena.ScheduledTasks.Infrastructure.Kentico
             return null;
         }
 
-        private void LoadSection(MailingListConfiguration section, int siteId)
-        {
-            section.MailingServiceUrl = kenticoResources.GetSettingsKey<string>(Settings.KDA_MailingServiceUrl, siteId);
-            section.DeleteMailingListsPeriod = StringToInt(kenticoResources.GetSettingsKey<string>(Settings.KDA_MailingList_DeleteExpiredAfter, siteId));
-        }
-
         private void LoadSection(UpdateInventoryConfiguration section, int siteId)
         {
             section.ErpClientId = kenticoResources.GetSettingsKey<string>(Settings.KDA_ErpCustomerId, siteId);
