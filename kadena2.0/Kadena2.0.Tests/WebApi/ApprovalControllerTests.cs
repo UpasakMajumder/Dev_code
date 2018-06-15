@@ -1,38 +1,20 @@
 ﻿using Kadena.WebAPI.Controllers;
 using System;
 using Xunit;
-using Moq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using Kadena.BusinessLogic.Contracts.Approval;
 using System.Web.Http.Results;
 using Kadena.WebAPI.Infrastructure.Communication;
 using Kadena.Dto.Approval.Responses;
 using Kadena.Dto.Approval.Requests;
 using AutoMapper;
-using System.Linq;
 
 namespace Kadena.Tests.WebApi
 {
     public class ApprovalControllerTests : KadenaUnitTest<ApprovalController>
     {
-        public static IEnumerable<object[]> GetDependencies()
-        {
-            var dependencies = new object[] {
-                new Mock<IApprovalService>().Object,
-                new Mock<IMapper>().Object
-            };
-
-            foreach (var dep in dependencies)
-            {
-                yield return dependencies
-                    .Select(d => d.Equals(dep) ? null : d)
-                    .ToArray();
-            }
-        }
-
         [Theory(DisplayName = "ApprovalController()")]
-        [MemberData(nameof(GetDependencies))]
+        [ClassData(typeof(ApprovalControllerTests))]
         public void ApprovalController(IApprovalService approvalService, IMapper mapper)
         {
             Assert.Throws<ArgumentNullException>(() => new ApprovalController(approvalService, mapper));
