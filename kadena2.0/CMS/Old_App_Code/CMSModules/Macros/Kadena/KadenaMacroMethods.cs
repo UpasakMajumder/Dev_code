@@ -92,7 +92,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         
         [MacroMethod(typeof(string), "Gets URL of editor for mailing or templated product", 1)]
         [MacroMethodParam(0, "documentId", typeof(int), "documentId")]
-        [MacroMethodParam(1, "documentId", typeof(int), "documentId")]
+        [MacroMethodParam(1, "nodeId", typeof(int), "nodeId")]
         [MacroMethodParam(2, "productType", typeof(string), "productType")]
         [MacroMethodParam(3, "masterTemplateId", typeof(string), "masterTemplateId")]
         [MacroMethodParam(4, "workspaceId", typeof(string), "workspaceId")]
