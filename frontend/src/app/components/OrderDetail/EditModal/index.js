@@ -5,6 +5,8 @@ import axios from 'axios';
 import Dialog from 'app.dump/Dialog';
 import Button from 'app.dump/Button';
 import EditOrder from 'app.dump/Product/EditOrder';
+/* consts */
+import { FAILURE, SUCCESS } from 'app.consts';
 
 class EditModal extends Component {
   static propTypes = {
@@ -22,16 +24,23 @@ class EditModal extends Component {
       remove: PropTypes.string.isRequired
     }).isRequired,
     validationMessage: PropTypes.string.isRequired,
+    successMessage: PropTypes.string.isRequired,
     orderedItems: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-      quantity: PropTypes.number.isRequired
+      quantity: PropTypes.number.isRequired,
+      lineNumber: PropTypes.string.isRequired,
+      SKUId: PropTypes.string.isRequired
     }).isRequired).isRequired,
-    paidByCreditCard: PropTypes.bool.isRequired
+    general: PropTypes.shape({
+      orderId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+      customerId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired
+    }).isRequired,
+    paidByCreditCard: PropTypes.bool.isRequired,
+    maxOrderQuantity: PropTypes.object.isRequired
   }
 
   state = {
     orderedItems: null,
-    maxQuantity: null,
     invalids: [],
     isLoading: false
   };
@@ -39,17 +48,15 @@ class EditModal extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.open === nextProps.open) return;
     const orderedItems = {};
-    const maxQuantity = {};
 
     if (nextProps.open) {
       // create orderItems quanty { id: quantity }
       nextProps.orderedItems.forEach((orderedItem) => {
         orderedItems[orderedItem.id] = orderedItem.quantity;
-        maxQuantity[orderedItem.id] = orderedItem.quantity;
       });
     }
 
-    this.setState({ orderedItems, maxQuantity });
+    this.setState({ orderedItems });
   }
 
   handleChangeQuantity = (id, quantity) => {
@@ -59,14 +66,14 @@ class EditModal extends Component {
   };
 
   handleChangeQuantityOnlyDecrease = (id, quantity) => {
-    if (quantity <= this.state.maxQuantity[id]) {
+    if (quantity <= this.props.maxOrderQuantity[id]) {
       this.handleChangeQuantity(id, quantity);
       const invalids = this.state.invalids.filter(invalid => invalid.id !== id);
       this.setState({ invalids });
     } else {
       const recordedInvalid = !!this.state.invalids.find(invalid => invalid.id === id);
       if (recordedInvalid) return;
-      this.setState({ invalids: [...this.state.invalids, { id, maxQuantity: this.state.maxQuantity[id] }] });
+      this.setState({ invalids: [...this.state.invalids, { id, maxOrderQuantity: this.props.maxOrderQuantity[id] }] });
       setTimeout(() => {
         const invalids = this.state.invalids.filter(invalid => invalid.id !== id);
         this.setState({ invalids });
@@ -92,16 +99,32 @@ class EditModal extends Component {
     </div>
   );
 
-  // validate messages
-  // validate input
-  // change orders
-  // change taxes
+  getOrder = id => this.props.orderedItems.find(item => item.id.toString() === id.toString());
 
   submit = () => {
-    this.setState({ isLoading: true });
+    const orderedItems = Object.keys(this.state.orderedItems)
+      .filter(id => this.state.orderedItems[id] !== this.getOrder(id).quantity)
+      .map((id) => {
+        const { lineNumber, SKUId } = this.getOrder(id);
+        return {
+          quantity: this.state.orderedItems[id],
+          SKUId,
+          lineNumber
+        };
+      });
+
+    if (!orderedItems.length) {
+      this.props.closeModal();
+      return;
+    }
+
     const body = {
-      orderedItems: { ...this.state.orderedItems }
+      items: orderedItems,
+      orderId: this.props.general.orderId,
+      customerId: this.props.general.customerId
     };
+
+    this.setState({ isLoading: true });
 
     axios
       .post(this.props.proceedUrl, body)
@@ -110,17 +133,25 @@ class EditModal extends Component {
         if (success) {
           this.props.editOrders({
             pricingInfo: payload.pricingInfo,
-            orderedItems: this.state.orderedItems
+            orderedItems,
+            ordersPrice: payload.ordersPrice
           });
           this.props.closeModal();
+          window.store.dispatch({
+            type: SUCCESS,
+            alert: this.props.successMessage
+          });
         } else {
-          // TODO: errorMessage
+          window.store.dispatch({
+            type: FAILURE,
+            alert: errorMessage
+          });
         }
 
         this.setState({ isLoading: false });
       })
-      .catch(() => {
-        // TODO: toastr
+      .catch((error) => {
+        window.store.dispatch({ type: FAILURE, error });
         this.setState({ isLoading: false });
       });
   }
@@ -132,7 +163,7 @@ class EditModal extends Component {
           key={orderedItem.id}
           {...orderedItem}
           openTooltip={!!this.state.invalids.find(invalid => invalid.id === orderedItem.id)}
-          titleTooltip={`${this.props.validationMessage} ${this.state.maxQuantity && this.state.maxQuantity[orderedItem.id]}`}
+          titleTooltip={`${this.props.validationMessage} ${this.props.maxOrderQuantity[orderedItem.id]}`}
           onChange={this.props.paidByCreditCard ? e => this.handleChangeQuantityOnlyDecrease(orderedItem.id, e.target.value) : e => this.handleChangeQuantity(orderedItem.id, e.target.value)}
           value={this.state.orderedItems && this.state.orderedItems[orderedItem.id]}
           removeButton={this.props.buttons.remove}

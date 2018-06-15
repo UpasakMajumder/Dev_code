@@ -1,6 +1,6 @@
 import { toastr } from 'react-redux-toastr';
 /* consts */
-import { FAILURE } from 'app.consts';
+import { FAILURE, SUCCESS } from 'app.consts';
 /* globals */
 import { NOTIFICATION } from 'app.globals';
 
@@ -11,6 +11,12 @@ export default store => next => action => { // eslint-disable-line arrow-parens
 
     toastr.error(title, text);
   }
+
+  if (action.type.includes(SUCCESS) && action.alert) {
+    toastr.success(action.alert);
+  }
+
+  action.error && console.error(action.error); // eslint-disable-line
 
   next(action);
 };

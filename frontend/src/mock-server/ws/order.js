@@ -570,7 +570,7 @@ module.exports.recent = {
 
 module.exports.edit = {
   success: true,
-  errorMessage: '',
+  errorMessage: 'No! This is Wrong! Choose different approach',
   payload: {
     "pricingInfo": [
       {
@@ -592,6 +592,16 @@ module.exports.edit = {
       {
         "title": "Totals",
         "value": "$ 212.20"
+      }
+    ],
+    "ordersPrice": [
+      {
+        SKUId: "SKUId-1", // the same as 728
+        price: "$ 5"
+      },
+      {
+        SKUId: "SKUId-2", // the same as 728
+        price: "$ 50"
       }
     ]
   }
@@ -677,6 +687,8 @@ module.exports.detail =  {
         "items": [
           {
             "id": 1,
+            "SKUId": "SKUId-1",
+            "lineNumber": "lineNumber-1",
             "isReport": true,
             "image": "http://satyr.io/200-500x300-700",
             "template": "Information letter lamp post Mar 30 3018",
@@ -717,6 +729,8 @@ module.exports.detail =  {
           },
           {
             "id": 2,
+            "SKUId": "SKUId-2",
+            "lineNumber": "lineNumber-2",
             "isReport": true,
             "image": "http://satyr.io/200-500x300-700",
             "template": "Information letter lamp post Mar 30 3017",
@@ -817,6 +831,7 @@ module.exports.detail =  {
           title: "Title",
           description: "Description",
           validationMessage: "Maximum quantity is", // no space
+          successMessage: "Cool! 🚀",
           buttons: {
             proceed: "Save Edits",
             cancel: "Cancel",

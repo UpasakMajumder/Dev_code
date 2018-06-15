@@ -38,7 +38,18 @@ export default (state = defaultState, action) => {
         },
         orderedItems: {
           ...state.ui.orderedItems,
-          items: state.ui.orderedItems.map(item => ({ ...item, quantity: payload.orderedItems[item.id] }))
+          items: state.ui.orderedItems.items.map((item) => {
+            const orderedItem = payload.orderedItems.find(orderedItem => orderedItem.SKUId === item.SKUId);
+            if (!orderedItem) return item;
+
+            const priceItem = payload.ordersPrice.find(order => order.SKUId === item.SKUId);
+
+            return {
+              ...item,
+              quantity: orderedItem.quantity,
+              price: priceItem && priceItem.price
+            };
+          })
         }
       }
     };
