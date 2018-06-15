@@ -2,6 +2,8 @@
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
 using Kadena.Models.Orders;
+using Kadena.Models.Product;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Linq;
@@ -13,11 +15,13 @@ namespace Kadena.BusinessLogic.Services.Orders
     {
         private readonly IOrderManualUpdateClient updateService;
         private readonly IApproverService approvers;
+        private readonly IKenticoSkuProvider skuProvider;
 
-        public OrderManualUpdateService(IOrderManualUpdateClient updateService, IApproverService approvers)
+        public OrderManualUpdateService(IOrderManualUpdateClient updateService, IApproverService approvers, IKenticoSkuProvider skuProvider)
         {
             this.updateService = updateService ?? throw new ArgumentNullException(nameof(updateService));
             this.approvers = approvers ?? throw new ArgumentNullException(nameof(approvers));
+            this.skuProvider = skuProvider ?? throw new ArgumentNullException(nameof(skuProvider));
         }
 
         public async Task UpdateOrder(OrderUpdate request)
@@ -35,21 +39,31 @@ namespace Kadena.BusinessLogic.Services.Orders
             var totalTax = 0.0m;
             var totalShipping = 0.0m;
 
+            var kenticoSkus = skuProvider.GetSKUsByNumbers(request.Items.Select(i => i.SKUNumber).ToArray());
+
+            var changedItems = request.Items.Select(i => CreateChangedItem(i)).ToList();
+
             var requestDto = new OrderManualUpdateRequestDto
             {
                 OrderId = request.OrderId,
-                Items = request.Items.Select(i => new ItemUpdateDto
-                {
-                    LineNumber = i.LineNumber,
-                    UnitCount = i.Quantity
-                }).ToList(),
+                Items = changedItems,
                 TotalPrice = totalPrice,
                 TotalTax = totalTax,
                 TotalShipping = totalShipping
             };
 
             /*updateService.UpdateOrder()*/
+        }
 
+        ItemUpdateDto CreateChangedItem(OrderItemUpdate item)
+        {
+
+
+            return new ItemUpdateDto
+            {
+                LineNumber = item.LineNumber,
+                UnitCount = item.Quantity
+            };
         }
     }
 }

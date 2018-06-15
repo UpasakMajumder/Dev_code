@@ -128,6 +128,7 @@
     <Compile Include="Services\IBTFService.cs" />
     <Compile Include="Services\Orders\DeliveryEstimationDataService.cs" />
     <Compile Include="Services\Orders\GetOrderDataService.cs" />
+    <Compile Include="Services\Orders\OrderItemCheckerService.cs" />
     <Compile Include="Services\Orders\OrderManualUpdateService.cs" />
     <Compile Include="Services\Orders\OrderReportService.cs" />
     <Compile Include="Services\Orders\OrderResubmissionService.cs" />

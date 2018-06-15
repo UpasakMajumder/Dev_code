@@ -449,11 +449,18 @@ namespace Kadena.BusinessLogic.Services
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
 
-            var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);            
+            var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);
+
+            var sku = skus.GetSKU(cartItem.SKUID);
+
+            if (sku == null)
+            {
+                throw new ArgumentException($"Unable to find SKU {cartItem.SKUID}");
+            }
 
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.InventoryProduct))
             {
-                EnsureInventoryAmount(cartItem, newItem.Quantity, cartItem.SKUUnits);
+                EnsureInventoryAmount(sku, newItem.Quantity, cartItem.SKUUnits);
             }
             
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.MailingProduct))
@@ -520,15 +527,8 @@ namespace Kadena.BusinessLogic.Services
             cartItem.SKUUnits = addedAmount;
         }
 
-        private void EnsureInventoryAmount(CartItemEntity item, int addedQuantity, int resultedQuantity)
-        {
-            var sku = skus.GetSKU(item.SKUID);
-
-            if (sku == null)
-            {
-                throw new ArgumentException($"Unable to find SKU {item.SKUID}");
-            }
-
+        private void EnsureInventoryAmount(Sku sku, int addedQuantity, int resultedQuantity)
+        {            
             if (sku.SellOnlyIfAvailable)
             {
                 var availableQuantity = sku.AvailableItems;

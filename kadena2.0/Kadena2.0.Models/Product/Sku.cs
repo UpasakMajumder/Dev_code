@@ -14,5 +14,6 @@
         public string UnitOfMeasure { get; set; }
         public int NumberOfItemsInPackage { get; set; }
         public string SKUNumber { get; set; }
+        public bool SendPriceToERP { get; set; }
     }
 }
