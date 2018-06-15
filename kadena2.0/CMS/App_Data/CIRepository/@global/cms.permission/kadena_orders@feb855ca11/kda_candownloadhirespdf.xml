@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.permission>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>Download hi-res pdf</PermissionDisplayName>
+  <PermissionEditableByGlobalAdmin>False</PermissionEditableByGlobalAdmin>
+  <PermissionGUID>7ba6dd18-7cbd-463e-8016-917a4591637a</PermissionGUID>
+  <PermissionName>KDA_CanDownloadHiresPdf</PermissionName>
+  <PermissionOrder>2</PermissionOrder>
+  <ResourceID>
+    <CodeName>Kadena_Orders</CodeName>
+    <GUID>d1f7b52f-2a43-4f87-a55e-b0e93e77dcab</GUID>
+    <ObjectType>cms.resource</ObjectType>
+  </ResourceID>
+</cms.permission>

@@ -66,13 +66,15 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             try
             {
                 Cart = cart;
+                var billingAddress = GetBillingAddress();
                 return new OrderDTO
                 {
                     Type = orderType,
                     Campaign = GetCampaign(),
-                    BillingAddress = GetBillingAddress(),
+                    BillingAddress = billingAddress,
                     ShippingAddressSource = DIContainer.Resolve<IGetOrderDataService>().GetSourceAddressForDeliveryEstimation(),
-                    ShippingAddressDestination = GetBillingAddress(),
+                    ShippingAddressDestination = billingAddress,
+                    ShippingAddress = billingAddress,
                     ShippingOption = ShippingOption(),
                     Customer = GetCustomer(),
                     Site = GetSite(),
