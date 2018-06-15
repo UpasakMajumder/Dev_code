@@ -52,7 +52,10 @@ class EditModal extends Component {
     if (nextProps.open) {
       // create orderItems quanty { id: quantity }
       nextProps.orderedItems.forEach((orderedItem) => {
-        orderedItems[orderedItem.id] = orderedItem.quantity;
+        orderedItems[orderedItem.id] = {
+          quantity: orderedItem.quantity,
+          remove: false
+        };
       });
     }
 
@@ -62,7 +65,27 @@ class EditModal extends Component {
   handleChangeQuantity = (id, quantity) => {
     const quantityNumber = parseFloat(quantity);
     if (quantityNumber < 0) return;
-    this.setState({ orderedItems: { ...this.state.orderedItems, [id]: quantityNumber } });
+    this.setState({
+      orderedItems: {
+        ...this.state.orderedItems,
+        [id]: {
+          ...this.state.orderedItems[id],
+          quantity: quantityNumber
+        }
+      }
+    });
+  };
+
+  handleRemoveOrder = (id) => {
+    this.setState({
+      orderedItems: {
+        ...this.state.orderedItems,
+        [id]: {
+          remove: true,
+          quantity: 0
+        }
+      }
+    });
   };
 
   handleChangeQuantityOnlyDecrease = (id, quantity) => {
@@ -103,11 +126,11 @@ class EditModal extends Component {
 
   submit = () => {
     const orderedItems = Object.keys(this.state.orderedItems)
-      .filter(id => this.state.orderedItems[id] !== this.getOrder(id).quantity)
+      .filter(id => this.state.orderedItems[id].quantity !== this.getOrder(id).quantity)
       .map((id) => {
         const { lineNumber, SKUId } = this.getOrder(id);
         return {
-          quantity: this.state.orderedItems[id],
+          quantity: this.state.orderedItems[id].quantity,
           SKUId,
           lineNumber
         };
@@ -158,6 +181,7 @@ class EditModal extends Component {
 
   getBody = () => {
     const orders = this.props.orderedItems.map((orderedItem) => {
+      // if (this.state.orderedItems[orderedItem.id].remove) return null;
       return (
         <EditOrder
           key={orderedItem.id}
@@ -165,7 +189,8 @@ class EditModal extends Component {
           openTooltip={!!this.state.invalids.find(invalid => invalid.id === orderedItem.id)}
           titleTooltip={`${this.props.validationMessage} ${this.props.maxOrderQuantity[orderedItem.id]}`}
           onChange={this.props.paidByCreditCard ? e => this.handleChangeQuantityOnlyDecrease(orderedItem.id, e.target.value) : e => this.handleChangeQuantity(orderedItem.id, e.target.value)}
-          value={this.state.orderedItems && this.state.orderedItems[orderedItem.id]}
+          removeOrder={() => this.handleRemoveOrder(orderedItem.id)}
+          value={this.state.orderedItems && this.state.orderedItems[orderedItem.id] && this.state.orderedItems[orderedItem.id].quantity}
           removeButton={this.props.buttons.remove}
         />
       );

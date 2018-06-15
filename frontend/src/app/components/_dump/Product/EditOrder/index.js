@@ -10,6 +10,7 @@ const EditOrder = (props) => {
       <button
         type="button"
         className="cart-product__btn mt-2"
+        onClick={props.removeOrder}
       >
         {props.removeButton}
       </button>
@@ -61,7 +62,8 @@ EditOrder.propTypes = {
   titleTooltip: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  removeButton: PropTypes.string
+  removeButton: PropTypes.string,
+  removeOrder: PropTypes.func
 };
 
 export default EditOrder;
