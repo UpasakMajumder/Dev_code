@@ -65,6 +65,7 @@
     <Compile Include="Contracts\IUserService.cs" />
     <Compile Include="Contracts\IMailService.cs" />
     <Compile Include="Contracts\Orders\IDeliveryEstimationDataService.cs" />
+    <Compile Include="Contracts\Orders\IOrderItemCheckerService.cs" />
     <Compile Include="Contracts\Orders\IOrderManualUpdateService.cs" />
     <Compile Include="Contracts\Orders\IOrderReportService.cs" />
     <Compile Include="Contracts\Orders\IOrderResubmissionService.cs" />

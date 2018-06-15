@@ -10,8 +10,6 @@ namespace Kadena.Dto.OrderManualUpdate.Requests
         [Required]
         public int CustomerId { get; set; }
         [Required]
-        public string PaymentMethod { get; set; }
-        [Required]
         public IEnumerable<OrderItemUpdateDto> Items { get; set; }
     }
 }
