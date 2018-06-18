@@ -192,37 +192,37 @@
   };
   config.localization.pagination= {
     template: {
-      string: '{% GetResourceString("Kadena.Paging.Current")|(user)administrator|(hash)a33fb02d9ecb0d61c45afaead6cbc4942ec391b2a825af2bcf825d5cce128986%}',
+      string: '{% JSEscape(GetResourceString("Kadena.Paging.Current")) |(user)administrator|(hash)240d2f99715340d5d3096b2b3ef6018d8533d14f19c413a6fa61ecfaa9859668%}',
       from: '[FROM]',
       to: '[TO]',
       total: '[TOTAL]',
     },
-    nextLabel: '{% GetResourceString("Kadena.Paging.Next")|(user)administrator|(hash)3c94f2535a6a76eeda51138cdc5a71b93cccb73e94367adb393d3a4f216b6d25%}',
-    backLabel: '{% GetResourceString("Kadena.Paging.Previous")|(user)administrator|(hash)a0bbe8f4c7bad10a74475d663450288cda5e1078d9554c72b8cd5c5120ccbeb7%}'
+    nextLabel: '{% JSEscape(GetResourceString("Kadena.Paging.Next")) |(user)administrator|(hash)15db1c6821b4bdbf1007a4bc36787b88b4d8f3afeb203412c556c1015f1efe39%}',
+    backLabel: '{% JSEscape(GetResourceString("Kadena.Paging.Previous")) |(user)administrator|(hash)fd814958922770049bf5fa1545a207f885d9aea7c40f48a8d3b836ddb4ce0e9e%}'
   };   
   config.localization.smarty= {
     url:'https://us-street.api.smartystreets.com/street-address',
     key:''+{%Settings.SmartyKey |(user)administrator|(hash)a813e4c9bf5d0c2c47eae906a68bb19077491b6585e7fa44e424c3936ed1f88f%}+'',
-    errorLabel: '{% GetResourceString("Kadena.Smarty.ErrorText")|(user)administrator|(hash)ce752d13aa2bc80f19a3876863abb0fa6daa932796ddaeb62efcde0d9f14498f%}',
-    reqErrorLabel:'{% GetResourceString("Kadena.Smarty.ReqErrorText")|(user)administrator|(hash)9fa165ab9f47f36e5abe93c84dff4e1ed72dd8fb3629a87cdb4e28af7e3a862e%}',
-    missingInputLabel:'{% GetResourceString("Kadena.Smarty.MissingInputText")|(user)administrator|(hash)430d677b1614c5d4cffb2f92dd0f89649967067952f93be656c7b67cb6e144e3%}',
-    certifyMessageLabel:'{% GetResourceString("Kadena.Smarty.CertifyMessageText")|(user)administrator|(hash)2b5fc399549ee7e75ed0c672b547eefe04bb1f299ac4d10f53a452c03cc878e0%}',
-    autoCompleteCount:'{% GetResourceString("Kadena.Smarty.AutoCompleteCount")|(user)administrator|(hash)fe093fa6ad51bdea65d34492339c4eabe059a2605d40ec7b999253c1c9749339%}',
-    candidateCount:'{% GetResourceString("Kadena.Smarty.CandidateCount")|(user)administrator|(hash)a5e590111b50e4c99a425943008c8e279886a893ec926420ad2045b2f5c98f98%}'
+    errorLabel: '{% JSEscape(GetResourceString("Kadena.Smarty.ErrorText")) |(user)administrator|(hash)9b454b1ea894d32630da763808b231036177e4f9d592733877e6a5e9daed7de5%}',
+    reqErrorLabel:'{% JSEscape(GetResourceString("Kadena.Smarty.ReqErrorText")) |(user)administrator|(hash)e11a9abddc89cbfd25bb61a9f6bc5bd7dbe4c1abd56abb3a1b11e0e2930cb49b%}',
+    missingInputLabel:'{% JSEscape(GetResourceString("Kadena.Smarty.MissingInputText")) |(user)administrator|(hash)8edcfc931062ce92d17e1913aa8b751dca1a75e9df6d8b42c1b554e737ebbc99%}',
+    certifyMessageLabel:'{% JSEscape(GetResourceString("Kadena.Smarty.CertifyMessageText")) |(user)administrator|(hash)05adbd43cc574d059eac5977c6b1ad41f5dc4f0b71a07841a12f966a852f742e%}',
+    autoCompleteCount:'{% JSEscape(GetResourceString("Kadena.Smarty.AutoCompleteCount")) |(user)administrator|(hash)2a891c45d186cc13708319dc6a041e3e9bc5e77652f8c6d93b9516d59761d7f6%}',
+    candidateCount:'{% JSEscape(GetResourceString("Kadena.Smarty.CandidateCount")) |(user)administrator|(hash)5a229035d077d9852c3040566b24824d96e90c60d0900ba2ac204c60deacc5dc%}'
   };
   config.localization.globalSuccess= {
-    addSuccessMessage: '{% GetResourceString("Kadena.GlobalSuccess.AddSuccessMessage")|(user)administrator|(hash)4c1f1e1dcbd5d2941dc7455212de72cbe1645535b355e478d280982b54d96ec1%}',
-    updateSuccessMessage:'{% GetResourceString("Kadena.GlobalSuccess.UpdateSuccessMessage")|(user)administrator|(hash)4c8eed8cf9ebd05ba67e036df1aaa128cb2c55b73135b30c4013b3ca3b9c24a4%}',
-    deleteSuccessMessage: '{% GetResourceString("Kadena.GlobalSuccess.DeleteSuccessMessage") |(user)administrator|(hash)7a2c862817a1efaeedc5775027951c673b9e5706f0ff97136e8f6fa3a342deb9%}',
-    errorMessage: '{% GetResourceString("Kadena.GlobalError.ErrorMessage")|(user)administrator|(hash)34dd2978f8704269393fd9655ff0bdb8a5b57c404b6916c315a4c1d4aec43476%}',
-    pOSMappedWithProductError: '{% GetResourceString("KDA.POS.MappedWithProductError")|(user)administrator|(hash)0757c422f7e42bdd7635af86a032e01a66d5d608aff4ba12e1b8bbd65853e169%}'
+    addSuccessMessage: '{% JSEscape(GetResourceString("Kadena.GlobalSuccess.AddSuccessMessage")) |(user)administrator|(hash)90021f649d530f1620bb3b58c2fa67a24065757e35df2dd81ee4a92f7d3d883e%}',
+    updateSuccessMessage:'{% JSEscape(GetResourceString("Kadena.GlobalSuccess.UpdateSuccessMessage")) |(user)administrator|(hash)bed2dad3761c89ce0d128290cc449985c5bf4e2088c56b3a74ac300aab105714%}',
+    deleteSuccessMessage: '{% JSEscape(GetResourceString("Kadena.GlobalSuccess.DeleteSuccessMessage")) |(user)administrator|(hash)35c63a059bf9413e31182ef7f5cc0353ef5839f7dcb87b085695333dedd10dbf%}',
+    errorMessage: '{% JSEscape(GetResourceString("Kadena.GlobalError.ErrorMessage")) |(user)administrator|(hash)86c686ad8aacecf67d2de57f16174575d2166791ca9b512f76fc7f1ad2a81b47%}',
+    pOSMappedWithProductError: '{% JSEscape(GetResourceString("KDA.POS.MappedWithProductError")) |(user)administrator|(hash)215b762d053dbc57303a048c9dd416f3644148ee8e105d2efce4effad591bc3e%}'
   };
   config.localization.orders= {
-    orderScheduleTaskStartMessage: '{% GetResourceString("KDA.OrderSchedular.ExecutionStartMessage")|(user)administrator|(hash)4d943388a41232ac5ddb28928aabfe7d5488cea7ba4b86ee5a1e074c919cc980%}',
-    orderSuccessMessage: '{% GetResourceString("KDA.Checkout.OrderSuccess")|(user)administrator|(hash)38e5a55c64517f94979dc529f4f1df2462a8bc5543570595a68fc9c8749c96f6%}',
-    orderErrorMessage: '{% GetResourceString("KDA.Checkout.OrderError")|(user)administrator|(hash)3229a92426fa316a578acd0c10351ca1c8914cf96049aeff59aba89376b37561%}',
-    cartContainsInvalidProducts: '{% GetResourceString("KDA.Cart.CartContainsInvalidProducts")|(user)administrator|(hash)db9c5a25f273d5332c7891bf79bb67fba1b04d3cc06c2982fb4c29500de7ad54%}',
-    invalidProduct: '{% GetResourceString("KDA.Cart.InvalidProduct")|(user)administrator|(hash)f6a7647f0ba6b0a75d9e3a5633f4b79f2624b55dc13e6570eb04e90e0de16c2c%}'
+    orderScheduleTaskStartMessage: '{% JSEscape(GetResourceString("KDA.OrderSchedular.ExecutionStartMessage")) |(user)administrator|(hash)e0c51f17201e4781f60ac91db02d227455c772a96dbeabb88349a64fdb082333%}',
+    orderSuccessMessage: '{% JSEscape(GetResourceString("KDA.Checkout.OrderSuccess")) |(user)administrator|(hash)e0dee4c78fda91ded7c22fef1a367dedb2524037527875417646c426963e767b%}',
+    orderErrorMessage: '{% JSEscape(GetResourceString("KDA.Checkout.OrderError")) |(user)administrator|(hash)ff5b5c1d5b9d42f578d8e7b23b798223bc126b95f75502085ce561562096c344%}',
+    cartContainsInvalidProducts: '{% JSEscape(GetResourceString("KDA.Cart.CartContainsInvalidProducts")) |(user)administrator|(hash)0513a0f0281a4d32a1fe45001b1e4c0cfc8903a1f2e7cecb4226b335652f6ae6%}',
+    invalidProduct: '{% JSEscape(GetResourceString("KDA.Cart.InvalidProduct")) |(user)administrator|(hash)5183a5fd2d0e80b3c66402c28d3bdbb8d3b594890b8680e1e2b83865dbeeb1d1%}'
   };
   config.localization.tac= {
     show: {% KadenaNamespace.ShowTaC().ToString().ToLower()|(user)administrator|(hash)6885d90621575c7e47d255d23df491c6890f36726ebe98b4b8bab03b9746e2ee%},
