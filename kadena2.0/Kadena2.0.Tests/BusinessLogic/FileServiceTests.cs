@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.Infrastructure.FileConversion;
+using Kadena.Models.Common;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -28,13 +28,13 @@ namespace Kadena.Tests.BusinessLogic
         [Fact]
         public void ConvertToXlsx_NullRows()
         {
-            Assert.Throws<NullReferenceException>(() => Sut.ConvertToXlsx(new Table()));
+            Assert.Throws<NullReferenceException>(() => Sut.ConvertToXlsx(new TableView { Rows = null }));
         }
 
         [Fact]
         public void ConvertToXlsx()
         {
-            var actualResult = Sut.ConvertToXlsx(new Table { Rows = new TableRow[0] });
+            var actualResult = Sut.ConvertToXlsx(new TableView());
 
             Assert.NotNull(actualResult);
         }

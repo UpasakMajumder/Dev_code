@@ -1,5 +1,4 @@
-﻿using Kadena.Infrastructure.FileConversion;
-using Kadena.Models.Common;
+﻿using Kadena.Models.Common;
 using System.Threading.Tasks;
 
 namespace Kadena.BusinessLogic.Contracts
@@ -8,6 +7,6 @@ namespace Kadena.BusinessLogic.Contracts
     {
         Task<string> GetUrlFromS3(string key);
 
-        byte[] ConvertToXlsx(Table data);
+        byte[] ConvertToXlsx(TableView data);
     }
 }

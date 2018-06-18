@@ -32,7 +32,6 @@ using Kadena.Dto.SubmitOrder.Responses;
 using Kadena.Dto.TemplatedProduct.Requests;
 using Kadena.Dto.TemplatedProduct.Responses;
 using Kadena.Dto.ViewOrder.Responses;
-using Kadena.Infrastructure.FileConversion;
 using Kadena.Models;
 using Kadena.Models.AddToCart;
 using Kadena.Models.Approval;
@@ -291,11 +290,9 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.DeliveryDate, opt => opt.MapFrom(src => src.ShippingDate.GetValueOrDefault()));
             CreateMap<OrderBody, OrderBodyDto>();
 
-            CreateMap<TableView, Table>();
-            CreateMap<Models.Common.TableRow, Infrastructure.FileConversion.TableRow>();
 
             CreateMap<TableView, TableViewDto>();
-            CreateMap<Models.Common.TableRow, TableRowDto>();
+            CreateMap<TableRow, TableRowDto>();
             CreateMap<Pagination, PaginationDto>();
 
             CreateMap<NewAddressButton, NewAddressButtonDTO>();

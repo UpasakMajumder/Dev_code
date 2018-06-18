@@ -3,7 +3,6 @@ using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Factories;
 using Kadena.Dto.Order;
-using Kadena.Infrastructure.FileConversion;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
 using Kadena.Models.SiteSettings;
@@ -107,10 +106,9 @@ namespace Kadena.BusinessLogic.Services.Orders
             var report = orderReportFactory.CreateReportView(orders.Data);
             var tableView = orderReportFactory.CreateTableView(report);
 
-            var fileDataTable = mapper.Map<Table>(tableView);
             var fileResult = new FileResult
             {
-                Data = fileService.ConvertToXlsx(fileDataTable),
+                Data = fileService.ConvertToXlsx(tableView),
                 Name = "export.xlsx",
                 Mime = ContentTypes.Xlsx
             };

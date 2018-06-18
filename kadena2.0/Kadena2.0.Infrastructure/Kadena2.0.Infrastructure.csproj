@@ -43,8 +43,6 @@
   <ItemGroup>
     <Compile Include="Exceptions\NotLoggedException.cs" />
     <Compile Include="Exceptions\WebApiException.cs" />
-    <Compile Include="FileConversion\Table.cs" />
-    <Compile Include="FileConversion\TableRow.cs" />
     <Compile Include="Services\InMemoryCache.cs" />
     <Compile Include="Contracts\ICache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

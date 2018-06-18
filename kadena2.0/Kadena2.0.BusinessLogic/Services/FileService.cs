@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Kadena.AmazonFileSystemProvider;
 using Kadena.BusinessLogic.Contracts;
-using Kadena.Infrastructure.FileConversion;
 using Kadena.Models.Common;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
@@ -26,7 +25,7 @@ namespace Kadena.BusinessLogic.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public byte[] ConvertToXlsx(Table data)
+        public byte[] ConvertToXlsx(TableView data)
         {
             if (data == null)
             {
@@ -53,7 +52,7 @@ namespace Kadena.BusinessLogic.Services
             return linkResult.Payload;
         }
 
-        private static void AdjustColumnsSize(ISheet sheet, Table table)
+        private static void AdjustColumnsSize(ISheet sheet, TableView table)
         {
             var charWidth = 256;
             var minimalCharCount = 16;
@@ -91,7 +90,7 @@ namespace Kadena.BusinessLogic.Services
             }
         }
 
-        private static void AddSheetDataRows(ISheet sheet, Table table)
+        private static void AddSheetDataRows(ISheet sheet, TableView table)
         {
             var firstDataRowNumber = sheet.LastRowNum + 1;
             for (int rowIndex = 0; rowIndex < table.Rows.Length; rowIndex++)

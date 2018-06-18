@@ -4,7 +4,6 @@ using Kadena.BusinessLogic.Services.Orders;
 using Kadena.Container.Default;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
-using Kadena.Infrastructure.FileConversion;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
 using Kadena.Models.SiteSettings;
@@ -233,7 +232,7 @@ namespace Kadena.Tests.BusinessLogic
             SetupOrderViewClientReturning(orders);
 
             var dummyFileData = new byte[] { 1, 2, 3 };
-            Setup<IFileService, byte[]>(ec => ec.ConvertToXlsx(It.IsAny<Table>()), dummyFileData);
+            Setup<IFileService, byte[]>(ec => ec.ConvertToXlsx(It.IsAny<TableView>()), dummyFileData);
 
             var result = await Sut.GetOrdersExportForSite("test_site", new OrderFilter());
 
@@ -268,9 +267,9 @@ namespace Kadena.Tests.BusinessLogic
                 Payload = new OrderListDto { Orders = OrderReportTestHelper.CreateTestRecentOrders(1, 1) }
             };
             SetupOrderViewClientReturning(orders);
-            var actualResult = new Table();
+            var actualResult = new TableView();
             Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<IEnumerable<OrderReportViewItem>>()), expected);
-            Setup<IFileService, Table, byte[]>(ec => ec.ConvertToXlsx(It.IsAny<Table>()), t =>
+            Setup<IFileService, TableView, byte[]>(ec => ec.ConvertToXlsx(It.IsAny<TableView>()), t =>
               {
                   actualResult = t;
                   return null;
@@ -281,7 +280,7 @@ namespace Kadena.Tests.BusinessLogic
             await Sut.GetOrdersExportForSite("test_site", new OrderFilter());
 
             // assert
-            Assert.True(AreEqual(expected, actualResult));
+            Assert.Equal(expected, actualResult);
         }
 
         [Fact]
@@ -337,41 +336,6 @@ namespace Kadena.Tests.BusinessLogic
             await sut.GetOrdersExportForSite(currentSite, filterEmpty);
 
             Assert.Equal(expectedOrderListFilter, actualFilter);
-        }
-
-        private bool AreEqual(TableView t1, Table t2)
-        {
-            if (t1 == null)
-            {
-                throw new ArgumentNullException(nameof(t1));
-            }
-            if (t2 == null)
-            {
-                throw new ArgumentNullException(nameof(t2));
-            }
-
-            if (t1.Rows.Length != t2.Rows.Length)
-            {
-                return false;
-            }
-
-            for (int row = 0; row < t1.Rows.Length; row++)
-            {
-                if (t1.Rows[row].Items.Length != t2.Rows[row].Items.Length)
-                {
-                    return false;
-                }
-
-                for (int cell = 0; cell < t1.Rows[row].Items.Length; cell++)
-                {
-                    if (t1.Rows[row].Items[cell] != t2.Rows[row].Items[cell])
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
         }
 
         private void SetupOrderViewClientReturning(BaseResponseDto<OrderListDto> response)
