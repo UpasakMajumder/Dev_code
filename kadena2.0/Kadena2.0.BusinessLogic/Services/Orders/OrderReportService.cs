@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Factories;
 using Kadena.Dto.Order;
-using Kadena.Infrastructure.Contracts;
 using Kadena.Infrastructure.FileConversion;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
@@ -21,7 +21,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoResourceService kenticoResources;
         private readonly IKenticoSiteProvider kenticoSiteProvider;
         private readonly IOrderViewClient orderViewClient;
-        private readonly IExcelConvert excelConvert;
+        private readonly IFileService fileService;
         private readonly IOrderReportFactory orderReportFactory;
         private readonly IMapper mapper;
         public const int DefaultCountOfOrdersPerPage = 20;
@@ -58,14 +58,14 @@ namespace Kadena.BusinessLogic.Services.Orders
         public OrderReportService(IKenticoResourceService kenticoResources,
             IKenticoSiteProvider kenticoSiteProvider,
             IOrderViewClient orderViewClient,
-            IExcelConvert excelConvert,
+            IFileService fileService,
             IOrderReportFactory orderReportFactory,
             IMapper mapper)
         {
             this.kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
             this.kenticoSiteProvider = kenticoSiteProvider ?? throw new ArgumentNullException(nameof(kenticoSiteProvider));
             this.orderViewClient = orderViewClient ?? throw new ArgumentNullException(nameof(orderViewClient));
-            this.excelConvert = excelConvert ?? throw new ArgumentNullException(nameof(excelConvert));
+            this.fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
             this.orderReportFactory = orderReportFactory ?? throw new ArgumentNullException(nameof(orderReportFactory));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
@@ -110,7 +110,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             var fileDataTable = mapper.Map<Table>(tableView);
             var fileResult = new FileResult
             {
-                Data = excelConvert.Convert(fileDataTable),
+                Data = fileService.ConvertToXlsx(fileDataTable),
                 Name = "export.xlsx",
                 Mime = ContentTypes.Xlsx
             };

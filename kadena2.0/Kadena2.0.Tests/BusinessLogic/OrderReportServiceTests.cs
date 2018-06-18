@@ -1,9 +1,9 @@
-﻿using Kadena.BusinessLogic.Factories;
+﻿using Kadena.BusinessLogic.Contracts;
+using Kadena.BusinessLogic.Factories;
 using Kadena.BusinessLogic.Services.Orders;
 using Kadena.Container.Default;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
-using Kadena.Infrastructure.Contracts;
 using Kadena.Infrastructure.FileConversion;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
@@ -233,7 +233,7 @@ namespace Kadena.Tests.BusinessLogic
             SetupOrderViewClientReturning(orders);
 
             var dummyFileData = new byte[] { 1, 2, 3 };
-            Setup<IExcelConvert, byte[]>(ec => ec.Convert(It.IsAny<Table>()), dummyFileData);
+            Setup<IFileService, byte[]>(ec => ec.ConvertToXlsx(It.IsAny<Table>()), dummyFileData);
 
             var result = await Sut.GetOrdersExportForSite("test_site", new OrderFilter());
 
@@ -270,7 +270,7 @@ namespace Kadena.Tests.BusinessLogic
             SetupOrderViewClientReturning(orders);
             var actualResult = new Table();
             Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<IEnumerable<OrderReportViewItem>>()), expected);
-            Setup<IExcelConvert, Table, byte[]>(ec => ec.Convert(It.IsAny<Table>()), t =>
+            Setup<IFileService, Table, byte[]>(ec => ec.ConvertToXlsx(It.IsAny<Table>()), t =>
               {
                   actualResult = t;
                   return null;

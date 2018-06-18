@@ -475,6 +475,7 @@
     <Compile Include="BusinessLogic\DeliveryEstimationDataTests.cs" />
     <Compile Include="BusinessLogic\DialogServiceTests.cs" />
     <Compile Include="BusinessLogic\Factories\Checkout\CheckoutPageFactoryTests.cs" />
+    <Compile Include="BusinessLogic\FileServiceTests.cs" />
     <Compile Include="BusinessLogic\TieredPricingTests.cs" />
     <Compile Include="BusinessLogic\DynamicPricingTests.cs" />
     <Compile Include="BusinessLogic\ImageServiceTests.cs" />
