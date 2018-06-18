@@ -18,10 +18,6 @@ namespace Kadena.Tests.Models.Products.Templated
             string productEditorBaseUrl, int documentId, int nodeId, string templateId, string workspaceid,
             bool use3d, int quantity, string containerId, string customName)
         {
-            //var expected = "/editor?documentId=10&nodeId=20&templateId=30&workspaceid=40&use3d=True&quantity=2&containerId=60&customName=asdf";
-            //var result = EditorUrl.Create("/editor",
-            //    documentId: 10, nodeId: 20, templateId: "30", workspaceid: "40",
-            //    quantity: 2, use3d: true, containerId: "60", customName: "asdf");
             var result = EditorUrl.Create(productEditorBaseUrl,
                 documentId, nodeId, templateId, workspaceid,
                 quantity, use3d, containerId, customName);
