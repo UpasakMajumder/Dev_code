@@ -17,16 +17,19 @@ namespace Kadena.Helpers
             return new Uri("/api/login/saml2", UriKind.Relative);
         }
 
-        public static string SetQueryParameter(string url, string parameterName, string value)
+        public static string SetQueryParameters(string url, IEnumerable<KeyValuePair<string, string>> ppp)
         {
-            var urlParts = url.Split('?');
+            var urlParts = url?.Split('?') ?? new[] { string.Empty };
             var path = urlParts[0];
             var query = urlParts
                 .Skip(1)
                 .FirstOrDefault() ?? string.Empty;
             var parameters = HttpUtility.ParseQueryString(query);
 
-            parameters[parameterName] = value;
+            foreach (var paramValue in ppp)
+            {
+                parameters[paramValue.Key] = paramValue.Value;
+            }
 
             var newParameters = new List<string>(parameters.Count + 1);
             foreach (var key in parameters.AllKeys)
@@ -37,6 +40,11 @@ namespace Kadena.Helpers
 
             var newUrl = $"{path}?{string.Join("&", newParameters)}";
             return newUrl;
+        }
+
+        public static string SetQueryParameter(string url, string parameterName, string value)
+        {
+            return SetQueryParameters(url, new[] { new KeyValuePair<string, string>(parameterName, value) });
         }
 
         public static string GetPathFromUrl(string url)

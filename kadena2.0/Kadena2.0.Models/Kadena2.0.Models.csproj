@@ -137,6 +137,7 @@
     <Compile Include="SubmitOrder\OrderCartItem.cs" />
     <Compile Include="SubmitOrder\OrderItemSku.cs" />
     <Compile Include="SubmitOrder\Weight.cs" />
+    <Compile Include="TemplatedProduct\EditorUrl.cs" />
     <Compile Include="TemplatedProduct\EmailProofRequest.cs" />
     <Compile Include="_Common\ContentTypes.cs" />
     <Compile Include="_Common\Country.cs" />
