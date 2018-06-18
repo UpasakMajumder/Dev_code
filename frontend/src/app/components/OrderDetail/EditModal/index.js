@@ -40,7 +40,7 @@ class EditModal extends Component {
   }
 
   state = {
-    orderedItems: null,
+    orderedItems: {},
     invalids: [],
     isLoading: false
   };
@@ -132,7 +132,8 @@ class EditModal extends Component {
         return {
           quantity: this.state.orderedItems[id].quantity,
           SKUId,
-          lineNumber
+          lineNumber,
+          removed: this.state.orderedItems[id].remove
         };
       });
 
@@ -181,7 +182,13 @@ class EditModal extends Component {
 
   getBody = () => {
     const orders = this.props.orderedItems.map((orderedItem) => {
-      // if (this.state.orderedItems[orderedItem.id].remove) return null;
+
+      if (Object.keys(this.state.orderedItems).length) {
+        if (this.state.orderedItems[orderedItem.id].remove || orderedItem.removed) {
+          return null;
+        }
+      }
+
       return (
         <EditOrder
           key={orderedItem.id}

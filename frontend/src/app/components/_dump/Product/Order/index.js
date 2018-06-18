@@ -54,7 +54,9 @@ const Order = ({
   unitOfMeasure,
   // emailProof
   emailProof,
-  toogleEmailProof
+  toogleEmailProof,
+  removed,
+  removeLabel
 }) => {
   const downloadPdfLink = downloadPdfURL
     ? (
@@ -127,8 +129,20 @@ const Order = ({
     ? <div className="mr-3">{ options.map((option, i) => <p key={i}>{option.name}: {option.value}</p>) }</div>
     : null;
 
+  const rejection = removed
+   ? (
+    <div className="cart-product__flag flag flag--red">
+      <SVG
+        name="guarantee"
+        className="flag__icon"
+      />
+      <span className="flag__label">{removeLabel}</span>
+    </div>
+   ) : null;
+
   return (
     <div className="cart-product">
+      {rejection}
       <div className="cart-product__img">
         <img src={image} alt={template} />
       </div>
@@ -180,6 +194,7 @@ Order.propTypes = {
     url: PropTypes.string
   })),
   mailingListPrefix: PropTypes.string.isRequired,
+  removed: PropTypes.bool.isRequired,
   shippingDatePrefix: PropTypes.string.isRequired,
   templatePrefix: PropTypes.string.isRequired,
   productStatusPrefix: PropTypes.string.isRequired,
@@ -187,7 +202,8 @@ Order.propTypes = {
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
   unitOfMeasure: PropTypes.string.isRequired,
   emailProof: PropTypes.object.isRequired,
-  toogleEmailProof: PropTypes.func.isRequired
+  toogleEmailProof: PropTypes.func.isRequired,
+  removeLabel: PropTypes.string.isRequired
 };
 
 export default Order;

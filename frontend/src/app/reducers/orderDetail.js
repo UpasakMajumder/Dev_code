@@ -46,6 +46,7 @@ export default (state = defaultState, action) => {
 
             return {
               ...item,
+              removed: orderedItem.removed,
               quantity: orderedItem.quantity,
               price: priceItem && priceItem.price
             };

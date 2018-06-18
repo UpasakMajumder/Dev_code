@@ -688,6 +688,8 @@ module.exports.detail =  {
           {
             "id": 1,
             "SKUId": "SKUId-1",
+            "removed": false,
+            "removeLabel": "Rejected",
             "lineNumber": "lineNumber-1",
             "isReport": true,
             "image": "http://satyr.io/200-500x300-700",
@@ -730,6 +732,8 @@ module.exports.detail =  {
           {
             "id": 2,
             "SKUId": "SKUId-2",
+            "removed": true,
+            "removeLabel": "Rejected",
             "lineNumber": "lineNumber-2",
             "isReport": true,
             "image": "http://satyr.io/200-500x300-700",
