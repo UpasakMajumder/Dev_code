@@ -28,7 +28,7 @@ const Table = ({
         <td>{value}</td>
       </tr>
     );
-  });
+  }).toJS();
 
   return (
       <table className="table">

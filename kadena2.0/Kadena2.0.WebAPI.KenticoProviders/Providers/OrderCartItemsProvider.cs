@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CMS.Ecommerce;
+﻿using CMS.Ecommerce;
 using Kadena.Models.Checkout;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -13,10 +12,12 @@ namespace Kadena.WebAPI.KenticoProviders
     public class OrderCartItemsProvider : IOrderCartItemsProvider
     {
         private readonly IKenticoUnitOfMeasureProvider units;
+        private readonly IKenticoResourceService resources;
 
-        public OrderCartItemsProvider(IKenticoUnitOfMeasureProvider units)
+        public OrderCartItemsProvider(IKenticoUnitOfMeasureProvider units, IKenticoResourceService resources)
         {
             this.units = units ?? throw new ArgumentNullException(nameof(units));
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
         }
 
         public OrderCartItem[] GetOrderCartItems()
@@ -43,7 +44,12 @@ namespace Kadena.WebAPI.KenticoProviders
                     KenticoSKUID = i.SKUID,
                     Name = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
                     SKUNumber = i.SKU.SKUNumber,
-                    HiResPdfAllowed = i.SKU.GetBooleanValue("SKUHiResPdfDownloadEnabled", false)
+                    HiResPdfAllowed = i.SKU.GetBooleanValue("SKUHiResPdfDownloadEnabled", false),
+                    Weight = new Weight
+                    {
+                        Unit = resources.GetMassUnit(),
+                        Value = (decimal)i.TotalWeight
+                     }
                 },
                 
                 Artwork = i.GetValue("ArtworkLocation", string.Empty),
@@ -51,7 +57,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 UnitOfMeasureErpCode = units.GetUnitOfMeasure(unitOfMeasure).ErpCode,
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
-                TotalPrice = (decimal)i.UnitPrice * i.CartItemUnits,
+                TotalPrice = (decimal)Math.Round( i.UnitPrice * i.CartItemUnits, 2),
                 SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true),
                 RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false),
                 Options = GetItemOptions(i)

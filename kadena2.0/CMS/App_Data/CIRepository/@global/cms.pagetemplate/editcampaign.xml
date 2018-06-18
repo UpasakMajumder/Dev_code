@@ -168,28 +168,30 @@
         </webpart>
       </webpartzone>
       <webpartzone id="ZoneNavigation" v="1">
-        <webpart controlid="StaticText" guid="8e1d136b-e57b-4795-bdfe-f3931051e21f" type="statictext" v="1">
+        <webpart controlid="Kadena_Breadcrumbs" guid="015e0112-e0ef-41d1-b82f-cb910f060cdb" type="Kadena_Breadcrumbs" v="1">
           <property name="cat_open_ajax"></property>
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
           <property name="cat_open_visibility"></property>
-          <property name="container"></property>
+          <property name="container">KadenaBreadcrumbs</property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
           <property name="contentafter"></property>
           <property name="contentbefore"></property>
-          <property name="controlid">StaticText</property>
+          <property name="controlid">Kadena_Breadcrumbs</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
           <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
+          <property name="documentid" ismacro="true">
+            <![CDATA[{% CurrentDocument.ID |(user)administrator|(hash)a9a82af2e9ed17f3117d017f3e85aad6847125d531dcca4bea6fbc38b843c389%}]]>
+          </property>
           <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
           <property name="hideonsubpages">False</property>
-          <property name="instanceguid">8e1d136b-e57b-4795-bdfe-f3931051e21f</property>
+          <property name="instanceguid">015e0112-e0ef-41d1-b82f-cb910f060cdb</property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>
@@ -204,28 +206,15 @@
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
+          <property name="positionleft"></property>
+          <property name="positiontop"></property>
           <property name="preservepartialcacheonpostback">False</property>
-          <property name="resolvedynamiccontrols">True</property>
           <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text">
-<![CDATA[
- {%
-  result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-  iteratedDocument = CurrentDocument.Parent;
-  while (iteratedDocument.Parent != null) {
-  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-  iteratedDocument = iteratedDocument.Parent;
-  };
-  "<div class='breadcrumbs'>" + result + "</div>"
-|(user)administrator|(hash)25a38b3f17c6468d659e8f65b22b9d82b2decede46871dc160947145a720db8e%}
-]]>
-          </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
-          <property name="webparttitle">Breadcrumbs</property>
-          <property name="webparttype">statictext</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">Kadena_Breadcrumbs</property>
         </webpart>
       </webpartzone>
     </page>

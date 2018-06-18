@@ -98,9 +98,12 @@ namespace Kadena2.WebAPI.KenticoProviders
             CreateMap<UserInfo, User>()
                 .ForMember(dest => dest.TermsConditionsAccepted, opt => opt.MapFrom(src => src.GetDateTimeValue("TermsConditionsAccepted", DateTime.MinValue)))
                 .ForMember(dest => dest.CallBackUrl, opt => opt.MapFrom(src => src.UserURLReferrer));
-            CreateMap<SiteInfo, Site>()
+            CreateMap<SiteInfo, KenticoSite>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.SiteID))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SiteName));
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SiteName))
+                .ForMember(dest => dest.SiteDomain, opt => opt.MapFrom(src => src.DomainName))
+                .ForMember(dest => dest.OrderManagerEmail, opt => opt.Ignore())
+                .ForMember(dest => dest.ErpCustomerId, opt => opt.Ignore());
             CreateMap<PaymentOptionInfo, PaymentMethod>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PaymentOptionID))
                 .ForMember(dest => dest.Disabled, opt => opt.MapFrom(src => !src.PaymentOptionEnabled))
@@ -263,7 +266,8 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.ApprovalRequired, opt => opt.MapFrom(src => src.GetBooleanValue("SKUApprovalRequired", false)))
                 .ForMember(dest => dest.MinItemsInOrder, opt => opt.MapFrom(src => src.SKUMinItemsInOrder))
                 .ForMember(dest => dest.MaxItemsInOrder, opt => opt.MapFrom(src => src.SKUMaxItemsInOrder))
-                .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.GetStringValue("SKUUnitOfMeasure", UnitOfMeasure.DefaultUnit)));
+                .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.GetStringValue("SKUUnitOfMeasure", UnitOfMeasure.DefaultUnit)))
+                .ForMember(dest => dest.NumberOfItemsInPackage, opt => opt.MapFrom(src => src.GetIntegerValue("SKUNumberOfItemsInPackage", 1)));
 
             CreateMap<User, UserInfo>()
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
