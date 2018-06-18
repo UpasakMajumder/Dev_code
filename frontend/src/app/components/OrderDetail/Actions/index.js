@@ -30,7 +30,8 @@ class Actions extends Component {
       reject: { ...actionPropTypes }
     }).isRequired,
     editOrders: PropTypes.shape({
-      button: PropTypes.string.isRequired
+      button: PropTypes.string.isRequired,
+      proceedUrl: PropTypes.string.isRequired
     }),
     general: PropTypes.object.isRequired,
     changeStatus: PropTypes.func.isRequired,
@@ -77,23 +78,23 @@ class Actions extends Component {
   };
 
   render() {
-    const { actions: { accept, reject, comment } } = this.props;
+    const { actions, editOrders } = this.props;
     const { proceeded, rejectionNote, isLoading } = this.state;
 
-    const editButton = this.props.editOrders
+    const editButton = editOrders
       ? (
         <Button
-          text={this.props.editOrders.button}
+          text={editOrders.button}
           type="action"
           btnClass="mr-2"
           onClick={() => this.props.showEditModal(true)}
         />
       ) : null;
 
-    const commentBlock = this.props.actions
+    const commentBlock = actions
       ? (
         <Textarea
-          label={comment.title}
+          label={actions.comment.title}
           value={rejectionNote}
           rows={4}
           disabled={proceeded}
@@ -102,23 +103,23 @@ class Actions extends Component {
         />
       ) : null;
 
-    const approveButtons = this.props.actions
+    const approveButtons = actions
       ? [
         <Button
           key={1}
-          text={accept.button}
+          text={actions.accept.button}
           type="success"
           btnClass="mr-2"
           disabled={proceeded}
           isLoading={isLoading}
           onClick={() => {
             if (proceeded) return;
-            this.submit(accept.proceedUrl);
+            this.submit(actions.accept.proceedUrl);
           }}
         />,
         <Button
           key={2}
-          text={reject.button}
+          text={actions.reject.button}
           type="danger"
           disabled={proceeded}
           isLoading={isLoading}
@@ -128,7 +129,7 @@ class Actions extends Component {
 
     return (
       <div className="text-right">
-        {this.state.showReject && <Modal submit={() => this.submit(reject.proceedUrl)} closeDialog={this.handleHideReject} { ...reject.dialog } />}
+        {this.state.showReject && <Modal submit={() => this.submit(actions.reject.proceedUrl)} closeDialog={this.handleHideReject} { ...actions.reject.dialog } />}
 
         {commentBlock}
         {editButton}

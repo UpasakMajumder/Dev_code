@@ -9,6 +9,7 @@ using Kadena.Models.Common;
 using Kadena.Models.OrderDetail;
 using Kadena.Models.Orders;
 using Kadena.Models.Product;
+using Kadena.Models.SiteSettings.Permissions;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
@@ -104,7 +105,9 @@ namespace Kadena.BusinessLogic.Services.Orders
             var customer = kenticoCustomers.GetCustomer(data.ClientId) ?? Customer.Unknown;
             var isWaitingForApproval = data.StatusId == (int)OrderStatus.WaitingForApproval;
             var canCurrentUserApproveOrder = isWaitingForApproval && IsCurrentUserApproverFor(customer);
+            var canCurrentUserEditInApproval = permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.EditOrdersInApproval);
             var showApprovalButtons = canCurrentUserApproveOrder;
+            var showEditButton = canCurrentUserApproveOrder && canCurrentUserEditInApproval;
             var approvalMessages = data.Approvals?.Select(a => a.Note) ?? Enumerable.Empty<string>();
 
             CheckOrderDetailPermisson(orderNumber, kenticoCustomers.GetCurrentCustomer(), canCurrentUserApproveOrder);
@@ -120,6 +123,14 @@ namespace Kadena.BusinessLogic.Services.Orders
                     CustomerName = customer.FullName
                 },
 
+                EditOrders = showEditButton
+                    ? new DialogButton
+                    {
+                        Button = resources.GetResourceString("Kadena.Order.ButtonEdit"),
+                        ProceedUrl = "",
+                        Dialog = null
+                    }
+                    : null,
                 Actions = showApprovalButtons
                     ? new OrderActions
                     {

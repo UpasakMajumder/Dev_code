@@ -1,32 +1,14 @@
 ﻿using Kadena.BusinessLogic.Services;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Moq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace Kadena.Tests.BusinessLogic
 {
     public class DialogServiceTests : KadenaUnitTest<DialogService>
     {
-        public static IEnumerable<object[]> GetDependencies()
-        {
-            var dependencies = new object[] {
-                new Mock<IKenticoResourceService>().Object,
-                new Mock<IKenticoLocalizationProvider>().Object
-            };
-
-            foreach (var dep in dependencies)
-            {
-                yield return dependencies
-                    .Select(d => d.Equals(dep) ? null : d)
-                    .ToArray();
-            }
-        }
-
         [Theory(DisplayName = "DialogService()")]
-        [MemberData(nameof(GetDependencies))]
+        [ClassData(typeof(DialogServiceTests))]
         public void DialogService(IKenticoResourceService resources, IKenticoLocalizationProvider kenticoLocalization)
         {
             Assert.Throws<ArgumentNullException>(() => new DialogService(resources, kenticoLocalization));

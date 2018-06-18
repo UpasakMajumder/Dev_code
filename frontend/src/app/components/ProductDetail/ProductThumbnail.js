@@ -30,21 +30,21 @@ class ProductThumbnail extends Component {
     if (!attachments) return null;
 
     const list = attachments.map((attachment) => {
-
       return (
-        <a
-          key={uuid()}
-          href={attachment.get('url')}
-          className="link link--attachment product-view__attachment"
-        >
-          <SVG
-            name="download--blue"
-            className="icon-download"
-          />
-          <span>{attachment.get('text')}</span>
-        </a>
+        <li key={uuid()}>
+          <a
+            href={attachment.get('url')}
+            className="link link--attachment product-view__attachment"
+          >
+            <SVG
+              name="download--blue"
+              className="icon-download"
+            />
+            <span>{attachment.get('text')}</span>
+          </a>
+        </li>
       );
-    });
+    }).toJS();
 
     return (
       <ul className="product-view__attachments">
@@ -73,9 +73,9 @@ class ProductThumbnail extends Component {
 
         <img style={{ border: thumbnail.get('border') }} src={thumbnail.get('image')} />
 
+
         <div className="product-view__actions">
           {this.getAttachmentsComponent()}
-
           <button
             type="button"
             className="product-view__zoom"
