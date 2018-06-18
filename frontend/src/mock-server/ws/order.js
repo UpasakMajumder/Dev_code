@@ -602,10 +602,16 @@ module.exports.detail =  {
         "deliveryMethod": "fedex-delivery",
         "message": "All items will be mailed according to the selected mailing list",
         "address": {
+          "customerName": "Andrei Fidelman",
+          "company": "Actum",
           "address1": "4001 Valley Industrial Blvd",
+          "address2": "4002 Valley Industrial Blvd",
           "city": "Shakopee",
           "state": "MN",
-          "zip": "55379"
+          "zip": "55379",
+          "county": "CZ",
+          "phone": "+420 664 234 254",
+          "email": "andrei.fidelman@actum.cz"
         },
         "trackingPrefix": "Track your packages",
         "tracking": null
