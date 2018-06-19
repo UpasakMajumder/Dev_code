@@ -18,6 +18,7 @@ using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Dto.MailTemplate.Responses;
 using Kadena.Dto.Order;
 using Kadena.Dto.Order.Failed;
+using Kadena.Dto.OrderReport;
 using Kadena.Dto.Product;
 using Kadena.Dto.Product.Responses;
 using Kadena.Dto.RecentOrders;
@@ -55,6 +56,7 @@ using Kadena.Models.Site;
 using Kadena.Models.SubmitOrder;
 using Kadena.Models.TemplatedProduct;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Kadena.Container.Default
@@ -292,8 +294,11 @@ namespace Kadena.Container.Default
 
 
             CreateMap<TableView, TableViewDto>();
-            CreateMap<TableRow, TableRowDto>();
+            CreateMap<TableRow, TableRowDto>()
+                .AfterMap((src, dest, ctx) => dest.Items[10] = ctx.Mapper.Map<TrackingFieldDto>(dest.Items[10]));
             CreateMap<Pagination, PaginationDto>();
+            CreateMap<IEnumerable<TrackingInfo>, TrackingFieldDto>()
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src));
 
             CreateMap<NewAddressButton, NewAddressButtonDTO>();
             CreateMap<DeliveryAddressesBounds, DeliveryAddressesBoundsDTO>();
