@@ -9,9 +9,7 @@ namespace Kadena2.MicroserviceClients.Contracts
     {
         Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string orderId);
         Task<BaseResponseDto<OrderListDto>> GetOrders(string siteName, int pageNumber, int quantity);
-        Task<BaseResponseDto<OrderListDto>> GetOrders(int customerId, int pageNumber, int quantity);
         Task<BaseResponseDto<OrderListDto>> GetOrders(string siteName, int pageNumber, int quantity, int campaignID, string orderType);
-        Task<BaseResponseDto<OrderListDto>> GetOrders(int customerId, int pageNumber, int quantity, int campaignID, string orderType);
         Task<BaseResponseDto<OrderListDto>> GetOrders(OrderListFilter filter);
     }
 }
