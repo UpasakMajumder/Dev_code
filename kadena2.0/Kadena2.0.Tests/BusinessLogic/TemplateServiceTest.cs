@@ -178,11 +178,10 @@ namespace Kadena.Tests.WebApi
         }
 
         [Theory]
-        [InlineData("KDA.TemplatedProduct", "/editorurl?documentId=1230&nodeId=678&templateId=newtemplateid&workspaceid=80208ba7-99ea-6f19-3b07-35428e89aa4c&use3d=False")]
-        [InlineData("KDA.TemplatedProduct|KDA.MailingProduct", "/selectlisturl?url=%2feditorurl%3fdocumentId%3d1230%26nodeId%3d678%26templateId%3dnewtemplateid%26workspaceid%3d80208ba7-99ea-6f19-3b07-35428e89aa4c%26use3d%3dFalse")]
+        [InlineData("KDA.TemplatedProduct", "/editorurl?nodeId=678&templateId=newtemplateid&workspaceid=80208ba7-99ea-6f19-3b07-35428e89aa4c&use3d=False")]
+        [InlineData("KDA.TemplatedProduct|KDA.MailingProduct", "/selectlisturl?url=%2feditorurl%3fnodeId%3d678%26templateId%3dnewtemplateid%26workspaceid%3d80208ba7-99ea-6f19-3b07-35428e89aa4c%26use3d%3dFalse")]
         public async Task TemplatedProductEditorUrl_TemplatedTest(string productType, string expectedResult)
         {
-            const int documentId = 1230;
             const int nodeId = 678;
             const int userId = 45;
             const string masterTemplateId = "70208ba7-58ea-4f19-8b07-87628e89113b";
@@ -196,8 +195,7 @@ namespace Kadena.Tests.WebApi
             Setup<ITemplatedClient, Task<BaseResponseDto<string>>>(t => t.CreateNewTemplate(It.IsAny<NewTemplateRequestDto>()),
                 Task.FromResult(new BaseResponseDto<string> { Success = true, Payload = "http://chili.com/template?q=1&v=2&doc=newtemplateid" }));
 
-            var result = await Sut.TemplatedProductEditorUrl(documentId, 
-                                                             nodeId,
+            var result = await Sut.TemplatedProductEditorUrl(nodeId,
                                                              userId,
                                                              productType, 
                                                              Guid.Parse(masterTemplateId),

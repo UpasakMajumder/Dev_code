@@ -457,6 +457,11 @@ namespace Kadena.BusinessLogic.Services
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
 
+            if (newItem.NodeId > 0)
+            {
+                newItem.DocumentId = productsProvider.GetProductByNodeId(newItem.NodeId).Id;
+            }
+
             var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);            
 
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.InventoryProduct))

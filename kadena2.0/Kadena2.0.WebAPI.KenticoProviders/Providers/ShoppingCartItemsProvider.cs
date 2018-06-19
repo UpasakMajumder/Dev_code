@@ -113,7 +113,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 var nodeId = product?.NodeId ?? 0;
                 var use3d = product?.Use3d ?? false;
 
-                editorUrl = EditorUrl.Create(editorUrl, documentId, nodeId, templateId, workspaceid, quantity, use3d, containerId, customName);
+                editorUrl = EditorUrl.Create(editorUrl, nodeId, templateId, workspaceid, quantity, use3d, containerId, customName);
 
                 checkoutCartItem.EditorURL = editorUrl;
 

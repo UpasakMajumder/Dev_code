@@ -91,28 +91,26 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 
         
         [MacroMethod(typeof(string), "Gets URL of editor for mailing or templated product", 1)]
-        [MacroMethodParam(0, "documentId", typeof(int), "documentId")]
-        [MacroMethodParam(1, "nodeId", typeof(int), "nodeId")]
-        [MacroMethodParam(2, "productType", typeof(string), "productType")]
-        [MacroMethodParam(3, "masterTemplateId", typeof(string), "masterTemplateId")]
-        [MacroMethodParam(4, "workspaceId", typeof(string), "workspaceId")]
-        [MacroMethodParam(5, "use3d", typeof(bool), "use3d")]
+        [MacroMethodParam(0, "nodeId", typeof(int), "nodeId")]
+        [MacroMethodParam(1, "productType", typeof(string), "productType")]
+        [MacroMethodParam(2, "masterTemplateId", typeof(string), "masterTemplateId")]
+        [MacroMethodParam(3, "workspaceId", typeof(string), "workspaceId")]
+        [MacroMethodParam(4, "use3d", typeof(bool), "use3d")]
         public static object TemplatedProductEditorUrl(EvaluationContext context, params object[] parameters)
         {
-            if (parameters.Length != 6)
+            if (parameters.Length != 5)
             {
                 throw new NotSupportedException();
             }
 
-            var documentId = Convert.ToInt32(parameters[0]);
-            var nodeId = Convert.ToInt32(parameters[1]);
+            var nodeId = Convert.ToInt32(parameters[0]);
             var userId = MembershipContext.AuthenticatedUser.UserID;
-            var productType = (string)parameters[2];
-            Guid masterTemplateId = Guid.Parse((string)parameters[3]);
-            Guid workspaceId = Guid.Parse((string)parameters[4]);
-            bool use3d = Convert.ToBoolean(parameters[5]);
+            var productType = (string)parameters[1];
+            Guid masterTemplateId = Guid.Parse((string)parameters[2]);
+            Guid workspaceId = Guid.Parse((string)parameters[3]);
+            bool use3d = Convert.ToBoolean(parameters[4]);
 
-            return DIContainer.Resolve<ITemplateService>().TemplatedProductEditorUrl(documentId, nodeId, userId, productType, masterTemplateId, workspaceId, use3d).Result;
+            return DIContainer.Resolve<ITemplateService>().TemplatedProductEditorUrl(nodeId, userId, productType, masterTemplateId, workspaceId, use3d).Result;
         }
 
         [MacroMethod(typeof(bool), "Get name of product by nodeId and current culture", 1)]

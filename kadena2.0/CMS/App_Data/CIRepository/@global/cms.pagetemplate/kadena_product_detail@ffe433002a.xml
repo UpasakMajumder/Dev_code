@@ -593,12 +593,11 @@ config.localization.productDetail.addToCart = {
           <property name="inlinescript">
 <![CDATA[
 config.localization.productDetail.openTemplate = { 
-     url: '{% KadenaNamespace.TemplatedProductEditorUrl(DocumentContext.CurrentDocument.ID, 
-                                                       DocumentContext.CurrentDocument.NodeID,
+     url: '{% KadenaNamespace.TemplatedProductEditorUrl(DocumentContext.CurrentDocument.NodeID,
                                                        ProductType,
                                                        ProductChiliTemplateID,
                                                        ProductChiliWorkgroupID,
-                                                       ProductChili3dEnabled)|(user)administrator|(hash)3bf75e616449a93e2a8e8096b6904bb1b298246bc9ad01027d64b14d5cebe60b%}',
+                                                       ProductChili3dEnabled)|(user)administrator|(hash)6f69f734e2375ce31505fa6b0950aaa9856035778876c31ba7acd3dcb489891a%}',
     text: '{$Kadena.Product.OpenTemplateInDesign$}'
   }
 ]]>
