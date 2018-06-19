@@ -63,7 +63,7 @@ namespace Kadena.Container.Default
     {
         public MapperDefaultProfile()
         {
-            CreateMap<OrderReportViewItem, Models.Common.TableRow>()
+            CreateMap<OrderReportViewItem, TableRow>()
                 .ForMember(dest => dest.Items, opt => opt.ResolveUsing(src => new object[] {
                     src.Site,
                     src.Number,
@@ -75,7 +75,7 @@ namespace Kadena.Container.Default
                     src.Price,
                     src.Status,
                     src.ShippingDate,
-                    src.TrackingNumber
+                    src.TrackingInfos
                 }));
             CreateMap<RecentOrderDto, OrderReportViewItem>()
                 .ForMember(dest => dest.Site, opt => opt.MapFrom(src => src.SiteName))
@@ -89,7 +89,7 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.Price, opt => opt.Ignore())
                 .ForMember(dest => dest.Status, opt => opt.Ignore())
                 .ForMember(dest => dest.ShippingDate, opt => opt.Ignore())
-                .ForMember(dest => dest.TrackingNumber, opt => opt.Ignore());
+                .ForMember(dest => dest.TrackingInfos, opt => opt.Ignore());
             CreateMap<Dto.Order.OrderItemDto, OrderReportViewItem>()
                 .ForMember(dest => dest.Site, opt => opt.Ignore())
                 .ForMember(dest => dest.Number, opt => opt.Ignore())

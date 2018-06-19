@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Kadena.Dto.ViewOrder.MicroserviceResponses;
+using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Kadena.Dto.Order
@@ -24,8 +26,6 @@ namespace Kadena.Dto.Order
         [DataMember(Name = "shippingDate")]
         public DateTime? ShippingDate { get; set; }
 
-        [DataMember(Name = "trackingNumber")]
-        public string TrackingNumber { get; set; }
-
+        public IEnumerable<TrackingInfoDto> TrackingInfos { get; set; }
     }
 }

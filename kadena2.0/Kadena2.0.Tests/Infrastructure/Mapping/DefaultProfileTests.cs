@@ -1,8 +1,10 @@
 ﻿using Kadena.Container.Default;
 using Kadena.Dto.Order;
+using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
-using System;
+using Kadena.Models.Shipping;
+using System.Linq;
 using Xunit;
 
 namespace Kadena.Tests.Infrastructure.Mapping
@@ -23,7 +25,9 @@ namespace Kadena.Tests.Infrastructure.Mapping
                 Site = "site",
                 SKU = "sku",
                 Status = "status",
-                TrackingNumber = "track",
+                TrackingInfos = new[] {
+                    new TrackingInfo()
+                },
                 Url = "url",
                 User = "user"
             };
@@ -44,7 +48,7 @@ namespace Kadena.Tests.Infrastructure.Mapping
             Assert.Equal(expectedRow.Price, actualRow.Items[7]);
             Assert.Equal(expectedRow.Status, actualRow.Items[8]);
             Assert.Equal(expectedRow.ShippingDate, actualRow.Items[9]);
-            Assert.Equal(expectedRow.TrackingNumber, actualRow.Items[10]);
+            Assert.Equal(expectedRow.TrackingInfos, actualRow.Items[10]);
         }
 
         [Fact]
@@ -68,10 +72,12 @@ namespace Kadena.Tests.Infrastructure.Mapping
             var orderItem = new OrderItemDto
             {
                 Name = "somename",
-                SKUNumber= "somenumber",
+                SKUNumber = "somenumber",
                 Quantity = 1234,
                 UnitPrice = 1.2324m,
-                TrackingNumber = "somenumber"
+                TrackingInfos = new[] {
+                    new TrackingInfoDto()
+                }
             };
 
             var actualResult = Sut.Map<OrderReportViewItem>(orderItem);
@@ -80,7 +86,7 @@ namespace Kadena.Tests.Infrastructure.Mapping
             Assert.Equal(orderItem.SKUNumber, actualResult.SKU);
             Assert.Equal(orderItem.Quantity, actualResult.Quantity);
             Assert.Equal(orderItem.UnitPrice, actualResult.Price);
-            Assert.Equal(orderItem.TrackingNumber, actualResult.TrackingNumber);
+            Assert.Equal(orderItem.TrackingInfos.Count(), actualResult.TrackingInfos.Count());
         }
     }
 }

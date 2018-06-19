@@ -1,4 +1,7 @@
-﻿namespace Kadena.Models.Orders
+﻿using Kadena.Models.Shipping;
+using System.Collections.Generic;
+
+namespace Kadena.Models.Orders
 {
     public class OrderReportViewItem
     {
@@ -13,6 +16,6 @@
         public decimal Price { get; set; }
         public string Status { get; set; }
         public string ShippingDate { get; set; }
-        public string TrackingNumber { get; set; }
+        public IEnumerable<TrackingInfo> TrackingInfos { get; set; }
     }
 }
