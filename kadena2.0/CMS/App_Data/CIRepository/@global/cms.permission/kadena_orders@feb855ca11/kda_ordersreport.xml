@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.permission>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>Orders Report</PermissionDisplayName>
+  <PermissionEditableByGlobalAdmin>False</PermissionEditableByGlobalAdmin>
+  <PermissionGUID>29525e81-53df-483c-8982-96f945c93f9c</PermissionGUID>
+  <PermissionName>KDA_OrdersReport</PermissionName>
+  <PermissionOrder>3</PermissionOrder>
+  <ResourceID>
+    <CodeName>Kadena_Orders</CodeName>
+    <GUID>d1f7b52f-2a43-4f87-a55e-b0e93e77dcab</GUID>
+    <ObjectType>cms.resource</ObjectType>
+  </ResourceID>
+</cms.permission>

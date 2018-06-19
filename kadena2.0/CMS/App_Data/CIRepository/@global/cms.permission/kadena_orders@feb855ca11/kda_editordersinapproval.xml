@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.permission>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>Edit orders for approval</PermissionDisplayName>
+  <PermissionEditableByGlobalAdmin>False</PermissionEditableByGlobalAdmin>
+  <PermissionGUID>ac34bc3e-b2b7-4ee1-a51f-bf8713a943d3</PermissionGUID>
+  <PermissionName>KDA_EditOrdersInApproval</PermissionName>
+  <PermissionOrder>5</PermissionOrder>
+  <ResourceID>
+    <CodeName>Kadena_Orders</CodeName>
+    <GUID>d1f7b52f-2a43-4f87-a55e-b0e93e77dcab</GUID>
+    <ObjectType>cms.resource</ObjectType>
+  </ResourceID>
+</cms.permission>
