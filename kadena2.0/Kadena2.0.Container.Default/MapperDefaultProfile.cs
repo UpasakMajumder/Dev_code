@@ -397,8 +397,12 @@ namespace Kadena.Container.Default
                 .ReverseMap();
             CreateMap<OrderItemUpdateDto, OrderItemUpdate>();
             CreateMap<OrderUpdateDto, OrderUpdate>();
-            
-
+            CreateMap<AddressDTO, Dto.EstimateDeliveryPrice.MicroserviceRequests.AddressDto>()
+                .ForMember(dest => dest.StreetLines, opt => opt.MapFrom(src => new[] { src.AddressLine1, src.AddressLine2 }.Where(s => !string.IsNullOrEmpty(s)).ToList()))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
+                .ForMember(dest => dest.Postal, opt => opt.MapFrom(src => src.Zip))
+                .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State));
         }
     }
 }

@@ -14,5 +14,6 @@ namespace Kadena.Dto.OrderManualUpdate.MicroserviceRequests
 
         public decimal TotalShipping { get; set; }
 
+        public decimal PricedItemsTax { get; set; }
     }
 }

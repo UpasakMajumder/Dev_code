@@ -24,5 +24,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetProductImagePath(int productPageId);
         IEnumerable<ProductCategory> GetProductCategories(int skuid);
         ProductPricingInfo GetDefaultVariantPricing(int documentId, string uomLocalized);
+        Product[] GetProductsByDocumentIds(int[] documentIds);
     }
 }

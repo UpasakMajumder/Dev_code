@@ -247,7 +247,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 {
                     Title = resources.GetResourceString("Kadena.Order.ShippingSection"),
                     DeliveryMethod = shoppingCart.GetShippingProviderIcon(data.ShippingInfo.Provider),
-                    Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo)
+                    Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo),
                 };
                 orderDetail.ShippingInfo.Address.Country = localization
                     .GetCountries()
