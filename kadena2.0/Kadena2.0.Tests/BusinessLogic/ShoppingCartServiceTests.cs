@@ -1,4 +1,5 @@
 ﻿using Kadena.BusinessLogic.Contracts;
+using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.BusinessLogic.Services;
 using Kadena.Models;
@@ -246,6 +247,7 @@ namespace Kadena.Tests.BusinessLogic
 
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
             Setup<IKenticoSkuProvider, Sku>(cp => cp.GetSKU(originalCartItemEntity.SKUID), new Sku { AvailableItems = 1, SellOnlyIfAvailable = true });
+            SetupThrows<IOrderItemCheckerService>(o => o.EnsureInventoryAmount(It.IsAny<Sku>(), 2, 3), new ArgumentException());
 
             // Act
             Task action() => Sut.AddToCart(newCartItem);

@@ -112,7 +112,22 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
             }
 
-            //TODO for inventory products, update Available items with diff
+            UpdateAvailableItems(updatedItemsData);
+        }
+
+        void UpdateAvailableItems(IEnumerable<UpdatedItemCheckData> updateData)
+        {
+            var inventoryProductsData = updateData
+                .Where(u => ProductTypes.IsOfType(u.Product.ProductType, ProductTypes.InventoryProduct))
+                .ToList();
+
+            inventoryProductsData.ForEach(data =>
+            {
+                var addedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
+
+                // Not using Set... because when waiting for result of OrderUpdate, quantity can change
+                skuProvider.IncreaseSkuAvailableQty(data.Sku.SKUNumber, addedQuantity);
+            });
         }
 
         async Task DoEstimations(OrderManualUpdateRequestDto request, IEnumerable<UpdatedItemCheckData> updateData, GetOrderByOrderIdResponseDTO orderDetail)
@@ -200,7 +215,10 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var addedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
 
-            orderChecker.EnsureInventoryAmount(data.Sku, addedQuantity, data.UpdatedItem.Quantity);
+            if (ProductTypes.IsOfType(data.Product.ProductType, ProductTypes.InventoryProduct))
+            {
+                orderChecker.EnsureInventoryAmount(data.Sku, addedQuantity, data.UpdatedItem.Quantity);
+            }
 
             var price = products.GetPriceByCustomModel( data.OriginalItem.DocumentId, data.UpdatedItem.Quantity);
 

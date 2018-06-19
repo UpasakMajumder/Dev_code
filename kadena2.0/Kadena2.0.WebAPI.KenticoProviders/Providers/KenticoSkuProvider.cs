@@ -80,6 +80,20 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             }
         }
 
+        public void IncreaseSkuAvailableQty(string skunumber, int diff)
+        {
+            // TODO for future, improve Availability methods to be thread safe 
+            var sku = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", skunumber).FirstOrDefault();
+
+            if (sku != null)
+            {
+                sku.SKUAvailableItems += diff;
+                sku.SubmitChanges(false);
+                sku.MakeComplete(true);
+                sku.Update();
+            }
+        }
+
         public Price GetSkuPrice(int skuId)
         {
             var sku = SKUInfoProvider.GetSKUInfo(skuId);
