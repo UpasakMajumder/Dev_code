@@ -87,9 +87,8 @@ class OrderDetail extends Component {
     const paymentInfoEl = paymentInfo ? <div className="col-lg-4 mb-4"><PaymentInfo ui={paymentInfo} dateTimeNAString={dateTimeNAString} /></div> : null;
     const pricingInfoEl = pricingInfo ? <div className="col-lg-4 mb-4"><PricingInfo ui={pricingInfo} /></div> : null;
 
-    return (
-      <div>
-        <EmailProof open={emailProof.show} />
+    const editModal = editOrders
+      ? (
         <EditModal
           closeModal={() => this.showEditModal(false)}
           open={this.state.showEditModal}
@@ -101,6 +100,13 @@ class OrderDetail extends Component {
           general={general}
           maxOrderQuantity={this.getMaxOrderQuantity()}
         />
+      ) : null;
+
+
+    return (
+      <div>
+        <EmailProof open={emailProof.show} />
+        {editModal}
         <CommonInfo
           ui={commonInfo}
           dateTimeNAString={dateTimeNAString}

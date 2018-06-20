@@ -32,8 +32,7 @@ class EditModal extends Component {
       SKUId: PropTypes.string.isRequired
     }).isRequired).isRequired,
     general: PropTypes.shape({
-      orderId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-      customerId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired
+      orderId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired
     }).isRequired,
     paidByCreditCard: PropTypes.bool.isRequired,
     maxOrderQuantity: PropTypes.object.isRequired
@@ -128,10 +127,9 @@ class EditModal extends Component {
     const orderedItems = Object.keys(this.state.orderedItems)
       .filter(id => this.state.orderedItems[id].quantity !== this.getOrder(id).quantity)
       .map((id) => {
-        const { lineNumber, SKUId } = this.getOrder(id);
+        const { lineNumber } = this.getOrder(id);
         return {
           quantity: this.state.orderedItems[id].quantity,
-          SKUId,
           lineNumber,
           removed: this.state.orderedItems[id].remove
         };
@@ -144,8 +142,7 @@ class EditModal extends Component {
 
     const body = {
       items: orderedItems,
-      orderId: this.props.general.orderId,
-      customerId: this.props.general.customerId
+      orderId: this.props.general.orderId
     };
 
     this.setState({ isLoading: true });
