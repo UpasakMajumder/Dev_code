@@ -42,5 +42,24 @@ namespace Kadena.BusinessLogic.Services.Orders
                 Value = weight
             };
         }
+
+        public EstimateDeliveryPriceRequestDto[] GetDeliveryEstimationRequestData(string provider, string service, decimal weight, AddressDto source, AddressDto target)
+        {
+            return new[]
+            {
+                new EstimateDeliveryPriceRequestDto
+                {
+                    Provider = provider,
+                    ProviderService = service,
+                    SourceAddress = source,
+                    TargetAddress = target,
+                    Weight = new WeightDto
+                    {
+                        Value = weight,
+                        Unit = resources.GetMassUnit()
+                    }
+                }
+            };
+        }
     }
 }

@@ -25,9 +25,9 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             return mapper.Map<Sku>(skuInfo);
         }
 
-        public Sku[] GetSKUsByNumbers(string[] skuNumbers)
+        public Sku[] GetSKUsByIds(int[] skuIds)
         {
-            var skuInfos = SKUInfoProvider.GetSKUs().WhereIn("SKUNumber", skuNumbers).ToArray();
+            var skuInfos = SKUInfoProvider.GetSKUs().WhereIn("SKUID", skuIds).ToArray();
             return mapper.Map<Sku[]>(skuInfos);
         }
 

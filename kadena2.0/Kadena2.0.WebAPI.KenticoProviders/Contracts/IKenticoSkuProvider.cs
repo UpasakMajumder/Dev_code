@@ -15,7 +15,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void SetSkuAvailableQty(string skunumber, int availableItems);
         Sku GetVariant(int skuId, IEnumerable<int> optionsIds);
         void SetSkuAvailableQty(int skuid, int qty);
-        Sku[] GetSKUsByNumbers(string[] skuNumbers);
+        Sku[] GetSKUsByIds(int[] skuIds);
         void IncreaseSkuAvailableQty(string skunumber, int diff);
     }
 }

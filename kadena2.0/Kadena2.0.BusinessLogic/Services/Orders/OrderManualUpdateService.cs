@@ -70,8 +70,6 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public async Task UpdateOrder(OrderUpdate request)
         {
-            approvers.CheckIsCustomersEditor(request.CustomerId);
-            
             var orderDetailResult = await orderService.GetOrderByOrderId(request.OrderId);
 
             if (!orderDetailResult.Success || orderDetailResult.Payload == null)
@@ -79,11 +77,14 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new Exception($"Failed to retireve data for order {request.OrderId}");
             }
 
-            var orderDetail = orderDetailResult.Payload; 
+            var orderDetail = orderDetailResult.Payload;
+
+            approvers.CheckIsCustomersEditor(orderDetail.ClientId);
+            
             var documentIds = orderDetail.Items.Select(i => i.DocumentId).Distinct().ToArray();
-            var skuNumbers = orderDetail.Items.Select(i => i.SkuId.ToString()).Distinct().ToArray();
+            var skuIds = orderDetail.Items.Select(i => i.SkuId).Distinct().ToArray();
             var products = productsProvider.GetProductsByDocumentIds(documentIds);
-            var skus = skuProvider.GetSKUsByNumbers(skuNumbers);
+            var skus = skuProvider.GetSKUsByIds(skuIds);
 
             var updatedItemsData = request.Items.Join(orderDetail.Items,
                                                        chi => chi.LineNumber,
@@ -92,12 +93,14 @@ namespace Kadena.BusinessLogic.Services.Orders
                                                            {
                                                                OriginalItem = oi,
                                                                UpdatedItem = chi,
-                                                               Sku = skus.First(s => s.SKUNumber == oi.SkuId.ToString()),
-                                                               Product = products.First(p => p.SkuNumber == oi.SkuId.ToString()),
+                                                               Sku = skus.First(s => s.SkuId == oi.SkuId),
+                                                               Product = products.First(p => p.SkuId == oi.SkuId)
                                                            }
-                                                       );
+                                                       ).ToList();
 
-            var changedItems = updatedItemsData.Select(d => CreateChangedItem(d)).ToList();
+            updatedItemsData.ForEach(d => d.ManuallyUpdatedItem = CreateChangedItem(d));
+
+            var changedItems = updatedItemsData.Select(d => d.ManuallyUpdatedItem).ToList();
 
             var requestDto = new OrderManualUpdateRequestDto
             {
@@ -123,7 +126,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             inventoryProductsData.ForEach(data =>
             {
-                var addedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
+                var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
 
                 // Not using Set... because when waiting for result of OrderUpdate, quantity can change
                 skuProvider.IncreaseSkuAvailableQty(data.Sku.SKUNumber, addedQuantity);
@@ -140,49 +143,34 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var shippableWeight = updateData
                 .Where(u => u.Sku.NeedsShipping)
-                .Sum(u => u.Sku.Weight);
+                .Sum(u => u.Sku.Weight * u.ManuallyUpdatedItem.Quantity);
+
+            request.TotalShipping = 0.0m;
 
             var sourceAddress = deliveryData.GetSourceAddress();
             var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
 
-            var shippingCostRequest = new[]
+            if (!orderDetail.ShippingInfo.Provider.EndsWith("Customer"))
             {
-                new EstimateDeliveryPriceRequestDto
+                var shippingCostRequest = deliveryData.GetDeliveryEstimationRequestData(orderDetail.ShippingInfo.Provider, 
+                                                                           orderDetail.ShippingInfo.ShippingService, 
+                                                                           (decimal)shippableWeight,
+                                                                           sourceAddress,
+                                                                           targetAddress);
+
+                var totalShippingResult = await shippingCosts.EstimateShippingCost(shippingCostRequest);
+
+                if (totalShippingResult.Success == false || totalShippingResult.Payload.Length < 1 || !totalShippingResult.Payload[0].Success)
                 {
-                    Provider = orderDetail.ShippingInfo.Provider,
-                    ProviderService = orderDetail.ShippingInfo.ShippingService,
-                    SourceAddress = sourceAddress,
-                    TargetAddress = targetAddress,
-                    Weight = new WeightDto
-                    {
-                        Value = (decimal)shippableWeight,
-                        Unit = resources.GetMassUnit()
-                    }
+                    throw new Exception("Cannot be delivered by original provider and service. " + totalShippingResult.Payload?[0]?.ErrorMessage);
                 }
-            };
 
-            var totalShippingResult = await shippingCosts.EstimateShippingCost(shippingCostRequest);
-
-            if (totalShippingResult.Success == false || totalShippingResult.Payload.Length<1 || !totalShippingResult.Payload[0].Success)
-            {
-                throw new Exception("Cannot be delivered by original provider and service. " + totalShippingResult.Payload?[0]?.ErrorMessage);
+                request.TotalShipping = totalShippingResult.Payload[0].Cost;
             }
 
-            request.TotalShipping = totalShippingResult.Payload[0].Cost;
-
-            var totalTaxTask = EstimateTax(request.TotalPrice, request.TotalShipping, sourceAddress, targetAddress);
-            var pricedTaxTask = EstimateTax(totalPricedPrice, request.TotalShipping, sourceAddress, targetAddress);
-
-            await Task.WhenAll(new Task[]
-            {
-                totalTaxTask,
-                pricedTaxTask
-            });
-
-            request.TotalTax = totalTaxTask.Result;
-            request.PricedItemsTax = pricedTaxTask.Result;
+            request.TotalTax = await EstimateTax(request.TotalPrice, request.TotalShipping, sourceAddress, targetAddress);
         }
-
+        
         async Task<decimal> EstimateTax(decimal totalBasePrice, decimal shipppingCosts, AddressDto sourceAddress, AddressDto targetAddress)
         {
             var taxRequest = new TaxCalculatorRequestDto
@@ -213,24 +201,22 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             orderChecker.CheckMinMaxQuantity(data.Sku, data.UpdatedItem.Quantity);
 
-            var addedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
+            var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
 
             if (ProductTypes.IsOfType(data.Product.ProductType, ProductTypes.InventoryProduct))
             {
                 orderChecker.EnsureInventoryAmount(data.Sku, addedQuantity, data.UpdatedItem.Quantity);
             }
 
-            var price = products.GetPriceByCustomModel( data.OriginalItem.DocumentId, data.UpdatedItem.Quantity);
+            var unitPrice = products.GetPriceByCustomModel( data.OriginalItem.DocumentId, data.UpdatedItem.Quantity);
 
-            data.ManuallyUpdatedItem = new ItemUpdateDto
+            return new ItemUpdateDto
             {
                 LineNumber = data.OriginalItem.LineNumber,
-                UnitCount = data.UpdatedItem.Quantity,
-                TotalPrice = price,
-                UnitPrice = price / data.UpdatedItem.Quantity
+                Quantity = data.UpdatedItem.Quantity,
+                TotalPrice = unitPrice * data.UpdatedItem.Quantity,
+                UnitPrice = unitPrice
             };
-
-            return data.ManuallyUpdatedItem;
         }
     }
 }

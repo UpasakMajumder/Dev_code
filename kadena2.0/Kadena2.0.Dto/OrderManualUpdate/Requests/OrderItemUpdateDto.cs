@@ -7,8 +7,6 @@ namespace Kadena.Dto.OrderManualUpdate.Requests
         [Required]
         public int LineNumber { get; set; }
         [Required]
-        public string SKUNumber { get; set; }
-        [Required]
         public int Quantity { get; set; }
     }
 }
