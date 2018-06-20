@@ -5,6 +5,7 @@ using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
+using Kadena.Models.OrderDetail;
 using Kadena.Models.Orders;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -68,7 +69,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task UpdateOrder(OrderUpdate request)
+        public async Task<OrderUpdateResult> UpdateOrder(OrderUpdate request)
         {
             var orderDetailResult = await orderService.GetOrderByOrderId(request.OrderId);
 
@@ -116,6 +117,69 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
 
             UpdateAvailableItems(updatedItemsData);
+
+            return GetUpdatesForFrontend(updatedItemsData, orderDetail, requestDto.TotalShipping, requestDto.TotalTax);
+        }
+
+        OrderUpdateResult GetUpdatesForFrontend(IEnumerable<UpdatedItemCheckData> updateData, GetOrderByOrderIdResponseDTO orderDetail, decimal shipping, decimal tax)
+        {
+            decimal summary = 0.0m;
+
+            orderDetail.Items.ForEach(i =>
+                {
+                    var updatedItem = updateData.FirstOrDefault(d => d.ManuallyUpdatedItem.LineNumber == i.LineNumber);
+
+                    if (updatedItem != null)
+                    {
+                        summary += updatedItem.ManuallyUpdatedItem.TotalPrice;
+                    }
+                    else
+                    {
+                        summary += (decimal)i.TotalPrice;
+                    }
+                }
+            );
+
+            var result = new OrderUpdateResult
+            {
+                Pricinginfo = new[]
+                {
+                        new TitleValuePair<string>
+                        {
+                            Title = resources.GetResourceString("Kadena.Order.PricingSummary"),
+                            Value = String.Format("$ {0:#,0.00}", summary)
+                        },
+                        new TitleValuePair<string>
+                        {
+                            Title = resources.GetResourceString("Kadena.Order.PricingShipping"),
+                            Value = String.Format("$ {0:#,0.00}", shipping)
+                        },
+                        new TitleValuePair<string>
+                        {
+                            Title = resources.GetResourceString("Kadena.Order.PricingSubtotal"),
+                            Value = String.Format("$ {0:#,0.00}",summary + shipping)
+                        },
+                        new TitleValuePair<string>
+                        {
+                            Title = resources.GetResourceString("Kadena.Order.PricingTax"),
+                            Value = String.Format("$ {0:#,0.00}",tax)
+                        },
+                        new TitleValuePair<string>
+                        {
+                            Title = resources.GetResourceString("Kadena.Order.PricingTotals"),
+                            Value = String.Format("$ {0:#,0.00}",summary + shipping + tax)
+                        }
+
+                },
+
+                OrdersPrice = updateData.Select(d => new ItemUpdateResult
+                {
+                    LineNumber = d.ManuallyUpdatedItem.LineNumber,
+                    Price = d.ManuallyUpdatedItem.TotalPrice
+                }).ToArray()
+            };
+
+            return result;
         }
 
         void UpdateAvailableItems(IEnumerable<UpdatedItemCheckData> updateData)

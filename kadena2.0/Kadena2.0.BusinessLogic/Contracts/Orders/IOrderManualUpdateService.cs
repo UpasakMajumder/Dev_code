@@ -5,6 +5,6 @@ namespace Kadena.BusinessLogic.Contracts.Orders
 {
     public interface IOrderManualUpdateService
     {
-        Task UpdateOrder(OrderUpdate request);
+        Task<OrderUpdateResult> UpdateOrder(OrderUpdate request);
     }
 }

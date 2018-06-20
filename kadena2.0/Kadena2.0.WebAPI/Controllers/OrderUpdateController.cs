@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.OrderManualUpdate.Requests;
+using Kadena.Dto.OrderManualUpdate.Responses;
 using Kadena.Helpers.Routes;
 using Kadena.Models.Orders;
 using Kadena.WebAPI.Infrastructure;
@@ -28,8 +29,9 @@ namespace Kadena.WebAPI.Controllers
         public async Task<IHttpActionResult> UpdateOrder(OrderUpdateDto request)
         {
             var requestModel = mapper.Map<OrderUpdate>(request);
-            await updateService.UpdateOrder(requestModel);
-            return ResponseJson((string)null);
+            var result = await updateService.UpdateOrder(requestModel);
+            var resultDto = mapper.Map<OrderUpdateResultDto>(result);
+            return ResponseJson(resultDto);
         }
     }
 }

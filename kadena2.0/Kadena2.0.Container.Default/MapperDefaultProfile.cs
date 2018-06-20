@@ -19,6 +19,7 @@ using Kadena.Dto.MailTemplate.Responses;
 using Kadena.Dto.Order;
 using Kadena.Dto.Order.Failed;
 using Kadena.Dto.OrderManualUpdate.Requests;
+using Kadena.Dto.OrderManualUpdate.Responses;
 using Kadena.Dto.Product;
 using Kadena.Dto.Product.Responses;
 using Kadena.Dto.RecentOrders;
@@ -406,6 +407,8 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
                 .ForMember(dest => dest.Postal, opt => opt.MapFrom(src => src.Zip))
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State));
+            CreateMap<OrderUpdateResult, OrderUpdateResultDto>();
+            CreateMap<ItemUpdateResult, ItemUpdateResultDto>();
         }
     }
 }
