@@ -500,6 +500,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             txtLongDes.Text = skuDetails.SKUDescription;
                             txtEstPrice.Text = ValidationHelper.GetString(product.EstimatedPrice, string.Empty);
                             txtShortDes.Text = skuDetails.SKUName;
+                            txtSKUNumber.Text = skuDetails.SKUNumber;
                             txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
                             ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
                             imgProduct.ImageUrl = ValidationHelper.GetString(product.ProductImage, string.Empty);
@@ -544,6 +545,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             txtLongDes.Text = string.Empty;
             txtQuantity.Text = string.Empty;
             txtShortDes.Text = string.Empty;
+            txtSKUNumber.Text = string.Empty;
             txtWeight.Text = string.Empty;
             RepSelectedUser.DataSource = string.Empty;
             RepSelectedUser.DataBind();
@@ -772,6 +774,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     folderName = !string.IsNullOrEmpty(folderName) ? folderName.Replace(" ", "") : "CampaignProducts";
                     txtLongDes.Text = skuDetails.SKUDescription;
                     txtShortDes.Text = skuDetails.SKUName;
+                    txtSKUNumber.Text = skuDetails.SKUNumber;
                     txtActualPrice.Text = ValidationHelper.GetString(skuDetails.SKUPrice, string.Empty);
                     ddlStatus.SelectedValue = skuDetails.SKUEnabled == true ? "1" : "0";
                     imgProduct.Visible = imgProduct.ImageUrl != string.Empty ? true : false;
