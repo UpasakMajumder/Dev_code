@@ -39,10 +39,10 @@ export default (state = defaultState, action) => {
         orderedItems: {
           ...state.ui.orderedItems,
           items: state.ui.orderedItems.items.map((item) => {
-            const orderedItem = payload.orderedItems.find(orderedItem => orderedItem.SKUId === item.SKUId);
+            const orderedItem = payload.orderedItems.find(orderedItem => orderedItem.lineNumber === item.lineNumber);
             if (!orderedItem) return item;
 
-            const priceItem = payload.ordersPrice.find(order => order.SKUId === item.SKUId);
+            const priceItem = payload.ordersPrice.find(order => order.lineNumber === item.lineNumber);
 
             return {
               ...item,

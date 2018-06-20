@@ -596,11 +596,11 @@ module.exports.edit = {
     ],
     "ordersPrice": [
       {
-        SKUId: "SKUId-1", // the same as 728
+        lineNumber: "lineNumber-1", // like 693 row
         price: "$ 5"
       },
       {
-        SKUId: "SKUId-2", // the same as 728
+        lineNumber: "lineNumber-2", // like 737 row
         price: "$ 50"
       }
     ]
