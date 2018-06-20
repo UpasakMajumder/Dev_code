@@ -88,6 +88,8 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.ProductStatus, opt => opt.Ignore())
                 .ForMember(dest => dest.Preview, opt => opt.Ignore())
                 .ForMember(dest => dest.EmailProof, opt => opt.Ignore())
+                .ForMember(dest => dest.Removed, opt => opt.Ignore())
+                .ForMember(dest => dest.RemoveLabel, opt => opt.Ignore())
                 .ForMember(dest => dest.Options, opt => opt.UseValue(Enumerable.Empty<ItemOption>()));
 
             CreateMap<ApprovalResult, ApprovalResultDto>();
@@ -211,7 +213,6 @@ namespace Kadena.Container.Default
             CreateMap<DefaultAddress, DefaultAddressDto>();
             CreateMap<SettingsAddresses, SettingsAddressesDto>();
             CreateMap<OrderedItem, OrderedItemDTO>();
-
             CreateMap<OrderedItems, OrderedItemsDTO>();
             CreateMap<OrderDetail, OrderDetailDTO>();
             CreateMap<CommonInfo, CommonInfoDTO>();
