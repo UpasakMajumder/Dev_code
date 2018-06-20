@@ -241,6 +241,8 @@
     <Compile Include="ViewOrder\MicroserviceResponses\TrackingInfoDto.cs" />
     <Compile Include="ViewOrder\Responses\AddressDto.cs" />
     <Compile Include="ViewOrder\Responses\CommonInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\EditOrderDialogButtonsDTO.cs" />
+    <Compile Include="ViewOrder\Responses\EditOrderDialogDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderActionsDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderDetailDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemDTO.cs" />
