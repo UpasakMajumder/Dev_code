@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 /* helpers */
 import timeFormat from 'app.helpers/time';
 
-const redirectUser = url => location.assign(url);
+const redirectUser = (e, url) => {
+  if (e.target.tagName !== 'A') location.assign(url);
+};
 
 const Order = ({
   url,
@@ -33,7 +35,7 @@ const Order = ({
 
   return (
     <tr
-      onClick={() => redirectUser(url)}
+      onClick={e => redirectUser(e, url)}
     >
       {orders}
     </tr>
