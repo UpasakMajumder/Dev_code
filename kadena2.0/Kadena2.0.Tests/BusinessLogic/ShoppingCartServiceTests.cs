@@ -129,7 +129,7 @@ namespace Kadena.Tests.BusinessLogic
             
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
             Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku {  });
-            Setup<IProductsService, decimal>(p => p.GetPriceByCustomModel(5, 1123), dynamicPrice);
+            Setup<IProductsService, decimal>(p => p.GetPriceByCustomModel(1123, 5), dynamicPrice);
 
             // Act
             var result = await Sut.AddToCart(newCartItem);
