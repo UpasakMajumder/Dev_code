@@ -118,28 +118,11 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             UpdateAvailableItems(updatedItemsData);
 
-            return GetUpdatesForFrontend(updatedItemsData, orderDetail, requestDto.TotalShipping, requestDto.TotalTax);
+            return GetUpdatesForFrontend(updatedItemsData, requestDto);
         }
 
-        OrderUpdateResult GetUpdatesForFrontend(IEnumerable<UpdatedItemCheckData> updateData, GetOrderByOrderIdResponseDTO orderDetail, decimal shipping, decimal tax)
-        {
-            decimal summary = 0.0m;
-
-            orderDetail.Items.ForEach(i =>
-                {
-                    var updatedItem = updateData.FirstOrDefault(d => d.ManuallyUpdatedItem.LineNumber == i.LineNumber);
-
-                    if (updatedItem != null)
-                    {
-                        summary += updatedItem.ManuallyUpdatedItem.TotalPrice;
-                    }
-                    else
-                    {
-                        summary += (decimal)i.TotalPrice;
-                    }
-                }
-            );
-
+        OrderUpdateResult GetUpdatesForFrontend(IEnumerable<UpdatedItemCheckData> updateData, OrderManualUpdateRequestDto requestDto)
+        {            
             var result = new OrderUpdateResult
             {
                 PricingInfo = new[]
@@ -147,27 +130,27 @@ namespace Kadena.BusinessLogic.Services.Orders
                         new TitleValuePair<string>
                         {
                             Title = resources.GetResourceString("Kadena.Order.PricingSummary"),
-                            Value = String.Format("$ {0:#,0.00}", summary)
+                            Value = String.Format("$ {0:#,0.00}", requestDto.TotalPrice)
                         },
                         new TitleValuePair<string>
                         {
                             Title = resources.GetResourceString("Kadena.Order.PricingShipping"),
-                            Value = String.Format("$ {0:#,0.00}", shipping)
+                            Value = String.Format("$ {0:#,0.00}", requestDto.TotalShipping)
                         },
                         new TitleValuePair<string>
                         {
                             Title = resources.GetResourceString("Kadena.Order.PricingSubtotal"),
-                            Value = String.Format("$ {0:#,0.00}",summary + shipping)
+                            Value = String.Format("$ {0:#,0.00}",requestDto.TotalPrice + requestDto.TotalShipping)
                         },
                         new TitleValuePair<string>
                         {
                             Title = resources.GetResourceString("Kadena.Order.PricingTax"),
-                            Value = String.Format("$ {0:#,0.00}",tax)
+                            Value = String.Format("$ {0:#,0.00}",requestDto.TotalTax)
                         },
                         new TitleValuePair<string>
                         {
                             Title = resources.GetResourceString("Kadena.Order.PricingTotals"),
-                            Value = String.Format("$ {0:#,0.00}",summary + shipping + tax)
+                            Value = String.Format("$ {0:#,0.00}",requestDto.TotalPrice + requestDto.TotalShipping + requestDto.TotalTax)
                         }
 
                 },
@@ -199,11 +182,22 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         async Task DoEstimations(OrderManualUpdateRequestDto request, IEnumerable<UpdatedItemCheckData> updateData, GetOrderByOrderIdResponseDTO orderDetail)
         {
-            request.TotalPrice = updateData.Sum(d => d.ManuallyUpdatedItem.TotalPrice);
+            request.TotalPrice = 0.0m;
 
-            var totalPricedPrice = updateData
-                .Where(d => d.Sku.SendPriceToERP)
-                .Sum(d => d.ManuallyUpdatedItem.TotalPrice);
+            orderDetail.Items.ForEach(i =>
+            {
+                var updatedItem = updateData.FirstOrDefault(d => d.ManuallyUpdatedItem.LineNumber == i.LineNumber);
+
+                if (updatedItem != null)
+                {
+                    request.TotalPrice += updatedItem.ManuallyUpdatedItem.TotalPrice;
+                }
+                else
+                {
+                    request.TotalPrice += (decimal)i.TotalPrice;
+                }
+            }
+            );
 
             var shippableWeight = updateData
                 .Where(u => u.Sku.NeedsShipping)
