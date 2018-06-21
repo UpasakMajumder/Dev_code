@@ -68,7 +68,7 @@
                     <span class="input__label" runat="server" id="lblExpirationDate"></span>
                     <div class="input__inner date_picker">
                         <asp:TextBox runat="server" ID="txtExpireDate" EnableViewState="true" CssClass="input__text js-datepicker"></asp:TextBox>
-                        <asp:CompareValidator ID="compareDate" runat="server" CssClass="EditingFormErrorLabel" Operator="GreaterThanEqual" ControlToValidate="txtExpireDate" Type="date" />
+                        <asp:CompareValidator ID="compareDate" runat="server" CssClass="EditingFormErrorLabel" Operator="GreaterThanEqual" ControlToValidate="txtExpireDate" Type="Date" />
                     </div>
                 </div>
             </div>
@@ -158,6 +158,14 @@
                     </div>
                 </div>
             </div>
+        <div class="mb-2 form__block">
+            <div class="input__wrapper">
+                <cms:LocalizedLabel ID="lblSKUNumber" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblSKUNumber" />
+                <div class="input__inner">
+                    <cms:CMSTextBox ID="txtSKUNumber" runat="server" EnableViewState="false" CssClass="input__text" Enabled="false" ReadOnly="true"></cms:CMSTextBox>
+                </div>
+            </div>
+        </div>
             <div class="mb-2 form__block">
                 <div class="input__wrapper">
                     <span class="input__label" runat="server" id="lblImage"></span>
