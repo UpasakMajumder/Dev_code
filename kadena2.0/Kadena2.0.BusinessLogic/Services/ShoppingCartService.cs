@@ -469,7 +469,7 @@ namespace Kadena.BusinessLogic.Services
                 cartItem.SKUUnits = totalQuantity;
             }
             
-            var price = productsService.GetPriceByCustomModel(cartItem.SKUUnits, newItem.DocumentId);
+            var price = productsService.GetPriceByCustomModel(newItem.DocumentId, cartItem.SKUUnits);
             if (price != decimal.MinusOne)
             {
                 cartItem.CartItemPrice = price;
