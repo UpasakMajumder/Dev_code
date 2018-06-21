@@ -175,7 +175,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 OrdersPrice = updateData.Select(d => new ItemUpdateResult
                 {
                     LineNumber = d.ManuallyUpdatedItem.LineNumber,
-                    Price = d.ManuallyUpdatedItem.TotalPrice
+                    Price = String.Format("$ {0:#,0.00}", d.ManuallyUpdatedItem.TotalPrice)  
                 }).ToArray()
             };
 
