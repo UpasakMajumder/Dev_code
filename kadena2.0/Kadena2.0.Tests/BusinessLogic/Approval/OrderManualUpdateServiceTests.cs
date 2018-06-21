@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kadena.Tests
+namespace Kadena.Tests.Orders
 {
     class OrderManualUpdateServiceTests : KadenaUnitTest<OrderManualUpdateService>
     {
