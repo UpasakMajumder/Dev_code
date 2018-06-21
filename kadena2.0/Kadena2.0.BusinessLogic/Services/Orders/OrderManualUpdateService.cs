@@ -142,7 +142,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var result = new OrderUpdateResult
             {
-                Pricinginfo = new[]
+                PricingInfo = new[]
                 {
                         new TitleValuePair<string>
                         {
