@@ -56,8 +56,7 @@ namespace Kadena.BusinessLogic.Services.Approval
 
             var customersApproverUserId = customers.GetCustomer(customerId)?.ApproverUserId ?? 0;
 
-            return customersApproverUserId != 0 && 
-                   customersApproverUserId == approverUserId;
+            return customersApproverUserId == approverUserId;
         }
 
         public void CheckIsCustomersApprover(int customerId, string customerName)

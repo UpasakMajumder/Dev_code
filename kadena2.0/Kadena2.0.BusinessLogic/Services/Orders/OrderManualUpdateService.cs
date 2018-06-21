@@ -226,7 +226,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
                 if (totalShippingResult.Success == false || totalShippingResult.Payload.Length < 1 || !totalShippingResult.Payload[0].Success)
                 {
-                    throw new Exception("Cannot be delivered by original provider and service. " + totalShippingResult.Payload?[0]?.ErrorMessage);
+                    throw new Exception($"Cannot be delivered by original provider and service. Request error: '{totalShippingResult.ErrorMessages}', Item error: '{totalShippingResult.Payload?[0]?.ErrorMessage}'");
                 }
 
                 request.TotalShipping = totalShippingResult.Payload[0].Cost;

@@ -440,12 +440,7 @@ namespace Kadena.BusinessLogic.Services
 
             var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);
 
-            var sku = skus.GetSKU(cartItem.SKUID);
-
-            if (sku == null)
-            {
-                throw new ArgumentException($"Unable to find SKU {cartItem.SKUID}");
-            }
+            var sku = skus.GetSKU(cartItem.SKUID) ?? throw new ArgumentException($"Unable to find SKU {cartItem.SKUID}");
 
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.InventoryProduct))
             {

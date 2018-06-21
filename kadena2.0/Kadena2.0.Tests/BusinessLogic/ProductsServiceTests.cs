@@ -454,5 +454,15 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(price, result[0].Key);
             Assert.Equal(dollar, result[0].Value);
         }
+
+        public void GetPriceByCustomModelTest()
+        {
+            // Sut.GetPriceByCustomModel() TODO
+        }
+
+        public void ProductHasValidSKUNumberTest()
+        {
+             //Sut.ProductHasValidSKUNumber() TODO
+        }
     }
 }

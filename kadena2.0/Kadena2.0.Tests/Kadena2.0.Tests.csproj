@@ -475,6 +475,7 @@
     <Compile Include="BusinessLogic\DeliveryEstimationDataTests.cs" />
     <Compile Include="BusinessLogic\DialogServiceTests.cs" />
     <Compile Include="BusinessLogic\Factories\Checkout\CheckoutPageFactoryTests.cs" />
+    <Compile Include="BusinessLogic\OrderItemCheckerServiceTests.cs" />
     <Compile Include="BusinessLogic\TieredPricingTests.cs" />
     <Compile Include="BusinessLogic\DynamicPricingTests.cs" />
     <Compile Include="BusinessLogic\ImageServiceTests.cs" />
@@ -514,6 +515,7 @@
     <Compile Include="BusinessLogic\OrderReportFactoryTests.cs" />
     <Compile Include="BusinessLogic\OrderReportTestHelper.cs" />
     <Compile Include="Models\Site\KenticoSiteTests.cs" />
+    <Compile Include="OrderManualUpdateServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScheduledTasks\DeleteExpiredMailingListsTaskTests.cs" />
     <Compile Include="UserHierarchyTest.cs" />

@@ -73,11 +73,8 @@ namespace Kadena.BusinessLogic.Services
 
         private List<DistributorCartItem> GetDistributorCartItems(int skuID, int inventoryType = 1)
         {
-            CampaignsProduct product = productsProvider.GetCampaignProduct(skuID);
-            if (product == null)
-            {
-                throw new Exception("Invalid product");
-            }
+            CampaignsProduct product = productsProvider.GetCampaignProduct(skuID) ?? throw new Exception("Invalid product");
+            
             List<AddressData> distributors = addressBookProvider.GetAddressesListByUserID(kenticoUsers.GetCurrentUser().UserId, inventoryType, product.CampaignID);
             return distributors.Select(x =>
             {
@@ -92,15 +89,12 @@ namespace Kadena.BusinessLogic.Services
 
         public int UpdateDistributorCarts(DistributorCart cartDistributorData)
         {
-            if (cartDistributorData == null || (cartDistributorData != null && cartDistributorData.Items.Count <= 0))
+            if ((cartDistributorData?.Items.Count ?? 0)<= 0)
             {
                 throw new Exception("Invalid request");
             }
-            CampaignsProduct product = productsProvider.GetCampaignProduct(cartDistributorData.SKUID);
-            if (product == null)
-            {
-                throw new Exception("Invalid product");
-            }
+            CampaignsProduct product = productsProvider.GetCampaignProduct(cartDistributorData.SKUID) ?? throw new Exception("Invalid product");
+            
             cartDistributorData.Items.Where(i => i.ShoppingCartID.Equals(default(int)) && i.Quantity > 0)
                                     ?.ToList().ForEach(x => CreateDistributorCart(x, product, cartDistributorData.CartType));
             cartDistributorData.Items.Where(i => i.ShoppingCartID > 0 && i.Quantity > 0)

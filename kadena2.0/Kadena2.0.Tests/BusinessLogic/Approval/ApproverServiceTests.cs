@@ -73,5 +73,15 @@ namespace Kadena.Tests.BusinessLogic.Approval
             Verify<IKenticoPermissionsProvider>(p => p.UserHasPermission(approverUserId, ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.ApproveOrders), Times.Once);
             Verify<IKenticoCustomerProvider>(p => p.GetCustomer(customerId), Times.Once);
         }
+
+        public void CheckIsCustomersApproverTest()
+        {
+            // Sut.CheckIsCustomersApprover(); TODO
+        }
+
+        public void CheckIsCustomersEditorTest()
+        {
+             // Sut.CheckIsCustomersEditor(); TODO
+        }
     }
 }

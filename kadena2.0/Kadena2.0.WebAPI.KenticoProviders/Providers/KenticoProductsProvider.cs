@@ -135,15 +135,8 @@ namespace Kadena.WebAPI.KenticoProviders
 
             foreach (var product in products)
             {
-                var sku = skuInfos.FirstOrDefault(s => s.SKUID == product.SkuId);
-
-                if (sku == null)
-                {
-                    throw new Exception($"SKU with ID '{product.SkuId}' not found");
-                }
-
+                var sku = skuInfos.FirstOrDefault(s => s.SKUID == product.SkuId) ?? throw new Exception($"SKU with ID '{product.SkuId}' not found");
                 SetDefaultSettingsId(product);
-
                 SetSkuProperties(product, sku);
             }
 

@@ -14,7 +14,7 @@ namespace Kadena2.MicroserviceClients.Clients
         public OrderManualUpdateClient(IMicroProperties properties)
         {
             _properties = properties ?? throw new ArgumentNullException(nameof(properties));
-            _serviceVersionSettingKey = Settings.KDA_OrderServiceVersion;
+            _serviceVersionSettingKey = Settings.KDA_OrderManualUpdateVersion;
         }
 
         public async Task<BaseResponseDto<object>> UpdateOrder(OrderManualUpdateRequestDto request)
