@@ -33,11 +33,11 @@ namespace Kadena.Tests.BusinessLogic
             var order = new RecentOrderDto
             {
                 CreateDate = OrderReportTestHelper.GetRandomDateTime(),
-                CustomerId = 1,
+                ClientId = 1,
                 Id = GetRandomString(),
                 ShippingDate = OrderReportTestHelper.GetRandomDateTime(),
                 Status = GetRandomString(),
-                TotalPrice = random.Next(1000),
+                TotalCost = random.Next(1000),
                 Items = Enumerable.Range(1, itemsCount)
                     .Select(CreateTestRecentOrderItem)
                     .ToArray()

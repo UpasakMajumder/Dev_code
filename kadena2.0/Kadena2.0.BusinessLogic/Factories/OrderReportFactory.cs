@@ -71,7 +71,7 @@ namespace Kadena.BusinessLogic.Factories
                         mapper.Map(r, res);
                         res.Url = FormatDetailUrl(r);
                         res.OrderingDate = FormatDate(r.CreateDate);
-                        res.User = FormatCustomer(kenticoCustomerProvider.GetCustomer(r.CustomerId));
+                        res.User = FormatCustomer(kenticoCustomerProvider.GetCustomer(r.ClientId));
                         res.Status = FormatOrderStatus(r.Status);
                         res.ShippingDate = FormatDate(i.ShippingDate);
                         return res;

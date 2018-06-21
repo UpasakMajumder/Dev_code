@@ -105,7 +105,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                     var customerProvider = DIContainer.Resolve<IKenticoCustomerProvider>();
                     var userProvider = DIContainer.Resolve<IKenticoUserProvider>();
 
-                    var customerOrderData = response.Payload.Orders.GroupBy(x => x.CustomerId,
+                    var customerOrderData = response.Payload.Orders.GroupBy(x => x.ClientId,
                         (key, value) => new
                         {
                             CustomerId = key,
@@ -117,7 +117,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                                     .Columns("SKUProductCustomerReferenceNumber", nameof(SKUInfo.SKUEnabled), nameof(SKUInfo.SKUNumber));
                                 return new
                                 {
-                                    ord.TotalPrice,
+                                    ord.TotalCost,
                                     ord.ShippingDate,
                                     CampaignId = ord.Campaign.ID,
                                     Items = ord.Items.GroupJoin(skus, i => i.SKUNumber, s => s.SKUNumber, (i, sks) => new
@@ -142,7 +142,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                                 var orderDetails = new Dictionary<string, object>
                                 {
                                     { "name", x.User.FirstName },
-                                    { "totalprice", o.TotalPrice },
+                                    { "totalprice", o.TotalCost },
                                     { "shippingdate", o.ShippingDate },
                                     { "campaignid", o.CampaignId }
                                 };
