@@ -32,6 +32,13 @@ export default (state = defaultState, action) => {
     return {
       ui: {
         ...state.ui,
+        commonInfo: {
+          ...state.ui.commonInfo,
+          totalCost: {
+            ...state.ui.commonInfo.totalCost,
+            value: payload.pricingInfo[payload.pricingInfo.length - 1].value // totalCost is always the last item
+          }
+        },
         pricingInfo: {
           ...state.ui.pricingInfo,
           items: payload.pricingInfo
