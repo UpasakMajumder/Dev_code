@@ -102,6 +102,7 @@ class OrderDetail extends Component {
         />
       ) : null;
 
+    const nonZeroProductsExist = Boolean(orderedItems.items.filter(item => item.quantity > 0).length);
 
     return (
       <div>
@@ -120,16 +121,20 @@ class OrderDetail extends Component {
           </div>
         </div>
 
-        <OrderedItems
-          toogleEmailProof={toogleEmailProof}
-          ui={orderedItems}
-          showRejectionLabel={false}
-        />
+        {nonZeroProductsExist && (
+          <OrderedItems
+            toogleEmailProof={toogleEmailProof}
+            ui={orderedItems}
+            showRejectionLabel={false}
+          />
+        )}
 
         <div className="order-block">
           <Actions
+            acceptEnabled={nonZeroProductsExist}
             actions={actions}
             editOrders={editOrders}
+            editEnabled={nonZeroProductsExist}
             general={general}
             changeStatus={changeStatus}
             showEditModal={this.showEditModal}

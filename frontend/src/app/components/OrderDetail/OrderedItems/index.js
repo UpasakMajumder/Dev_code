@@ -6,7 +6,7 @@ import Product from 'app.dump/Product/Order';
 const OrderedItems = ({ ui, toogleEmailProof, showRejectionLabel }) => {
   const { title, items } = ui;
 
-  const products = items.map((item, i) => (
+  const products = items.filter(item => item.quantity).map((item, i) => (
     <Product
       toogleEmailProof={toogleEmailProof}
       key={i}

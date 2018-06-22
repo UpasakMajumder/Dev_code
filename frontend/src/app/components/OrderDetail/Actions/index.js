@@ -30,16 +30,14 @@ class Actions extends Component {
       reject: { ...actionPropTypes }
     }).isRequired,
     editOrders: PropTypes.shape({
-<<<<<<< HEAD
       button: PropTypes.string.isRequired,
       proceedUrl: PropTypes.string.isRequired
-=======
-      button: PropTypes.string.isRequired
->>>>>>> Render Modal
     }),
     general: PropTypes.object.isRequired,
     changeStatus: PropTypes.func.isRequired,
-    showEditModal: PropTypes.func.isRequired
+    showEditModal: PropTypes.func.isRequired,
+    acceptEnabled: PropTypes.bool.isRequired,
+    editEnabled: PropTypes.bool.isRequired
   };
 
   handleShowReject = () => this.setState({ showReject: true });
@@ -82,10 +80,15 @@ class Actions extends Component {
   };
 
   render() {
-    const { actions } = this.props;
+    const {
+      acceptEnabled,
+      actions,
+      editEnabled,
+      editOrders
+    } = this.props;
     const { proceeded, rejectionNote, isLoading } = this.state;
 
-    const editButton = this.props.editOrders
+    const editButton = (editOrders && editEnabled)
       ? (
         <Button
           text={this.props.editOrders.button}
@@ -107,8 +110,8 @@ class Actions extends Component {
         />
       ) : null;
 
-    const approveButtons = actions
-      ? [
+    const acceptButton = (actions && acceptEnabled)
+      ? (
         <Button
           key={1}
           text={actions.accept.button}
@@ -120,16 +123,20 @@ class Actions extends Component {
             if (proceeded) return;
             this.submit(actions.accept.proceedUrl);
           }}
-        />,
+        />
+      ) : null;
+
+    const rejectButton = actions
+      ? (
         <Button
           key={2}
           text={actions.reject.button}
           type="danger"
           disabled={proceeded}
           isLoading={isLoading}
-          onClick={proceeded ? () => {} : this.handleShowReject}
+          onClick={proceeded ? () => { } : this.handleShowReject}
         />
-      ] : null;
+      ) : null;
 
     return (
       <div className="text-right">
@@ -137,7 +144,8 @@ class Actions extends Component {
 
         {commentBlock}
         {editButton}
-        {approveButtons}
+        {acceptButton}
+        {rejectButton}
       </div>
     );
   }
