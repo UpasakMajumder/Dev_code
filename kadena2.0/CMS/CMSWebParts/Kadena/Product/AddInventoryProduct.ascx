@@ -158,20 +158,20 @@
         </div>
         <div class="mb-2 form__block">
             <div class="input__wrapper">
+                <cms:LocalizedLabel ID="lblSKUNumber" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblSKUNumber" />
+                <div class="input__inner">
+                    <cms:CMSTextBox ID="txtSKUNumber" runat="server" EnableViewState="false" CssClass="input__text" Enabled="false" ReadOnly="true"></cms:CMSTextBox>
+                </div>
+            </div>
+        </div>
+        <div class="mb-2 form__block">
+            <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblImage" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblImage" />
                 <div class="input__inner">
                     <asp:FileUpload ID="productImage" runat="server" CssClass="input__file" />
                     <div class="product-img">
                         <asp:Image ID="imgProduct" runat="server" Height="100" Visible="false" />
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="mb-2 form__block">
-            <div class="input__wrapper">
-                <cms:LocalizedLabel ID="lblSKUNumber" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblSKUNumber" />
-                <div class="input__inner">
-                    <cms:CMSTextBox ID="txtSKUNumber" runat="server" EnableViewState="false" CssClass="input__text" ReadOnly="true"></cms:CMSTextBox>
                 </div>
             </div>
         </div>
