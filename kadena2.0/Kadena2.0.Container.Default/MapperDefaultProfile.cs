@@ -135,32 +135,6 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Id))
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.Id));
 
-            CreateMap<DeliveryAddressDTO, DeliveryAddress>()
-                .ForMember(dest => dest.AddressPersonalName, opt => opt.MapFrom(src => src.CustomerName))
-                .ForMember(dest => dest.CompanyName, opt => opt.Ignore())
-                .ForMember(dest => dest.Country, opt =>
-                {
-                    opt.MapFrom(src => src);
-                    opt.PreCondition(src => !string.IsNullOrWhiteSpace(src.Country));
-                })
-                .ForMember(dest => dest.State, opt =>
-                {
-                    opt.MapFrom(src => src);
-                    opt.PreCondition(src => !string.IsNullOrWhiteSpace(src.State));
-                });
-
-            CreateMap<DeliveryAddressDTO, Country>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Country))
-                .ForMember(dest => dest.Name, opt => opt.Ignore())
-                .ForMember(dest => dest.Code, opt => opt.Ignore());
-
-            CreateMap<DeliveryAddressDTO, State>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.State))
-                .ForMember(dest => dest.StateDisplayName, opt => opt.Ignore())
-                .ForMember(dest => dest.StateName, opt => opt.Ignore())
-                .ForMember(dest => dest.StateCode, opt => opt.Ignore())
-                .ForMember(dest => dest.CountryId, opt => opt.Ignore());
-
             CreateMap<CheckoutPage, CheckoutPageDTO>();
             CreateMap<NotificationEmail, NotificationEmailDto>();
             CreateMap<NotificationEmailTooltip, NotificationEmailTooltipDto>();
