@@ -11,12 +11,8 @@ namespace Kadena2.Carriers
         public EstimateDeliveryPriceRequestDto[] Create(Delivery delivery, string provider, string service)
         {
             var estimationData = DIContainer.Resolve<IDeliveryEstimationDataService>();
-
-            var sourceAddress = estimationData.GetSourceAddress();
             var targetAddress = GetAddress(delivery.DeliveryAddress);
-            var providerService = service.Replace("#", ""); // hack to solve non-unique service keys
-
-            return estimationData.GetDeliveryEstimationRequestData(provider, providerService, delivery.Weight, sourceAddress, targetAddress);
+            return estimationData.GetDeliveryEstimationRequestData(provider, service, delivery.Weight, targetAddress);
         }      
         private AddressDto GetAddress(IAddress address)
         {

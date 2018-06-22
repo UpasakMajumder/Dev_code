@@ -43,15 +43,15 @@ namespace Kadena.BusinessLogic.Services.Orders
             };
         }
 
-        public EstimateDeliveryPriceRequestDto[] GetDeliveryEstimationRequestData(string provider, string service, decimal weight, AddressDto source, AddressDto target)
+        public EstimateDeliveryPriceRequestDto[] GetDeliveryEstimationRequestData(string provider, string service, decimal weight, AddressDto target)
         {
             return new[]
             {
                 new EstimateDeliveryPriceRequestDto
                 {
                     Provider = provider,
-                    ProviderService = service,
-                    SourceAddress = source,
+                    ProviderService = service.Replace("#", ""), // hack to solve non-unique service keys,
+                    SourceAddress = GetSourceAddress(),
                     TargetAddress = target,
                     Weight = new WeightDto
                     {

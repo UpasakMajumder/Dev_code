@@ -214,7 +214,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                 var shippingCostRequest = deliveryData.GetDeliveryEstimationRequestData(orderDetail.ShippingInfo.Provider, 
                                                                            orderDetail.ShippingInfo.ShippingService, 
                                                                            (decimal)shippableWeight,
-                                                                           sourceAddress,
                                                                            targetAddress);
                 
                 var totalShippingResult = await shippingCosts.EstimateShippingCost(shippingCostRequest);

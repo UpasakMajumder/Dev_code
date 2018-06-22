@@ -18,6 +18,7 @@ using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Dto.MailTemplate.Responses;
 using Kadena.Dto.Order;
 using Kadena.Dto.Order.Failed;
+using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
 using Kadena.Dto.OrderManualUpdate.Requests;
 using Kadena.Dto.OrderManualUpdate.Responses;
 using Kadena.Dto.Product;
@@ -410,6 +411,7 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State));
             CreateMap<OrderUpdateResult, OrderUpdateResultDto>();
             CreateMap<ItemUpdateResult, ItemUpdateResultDto>();
+            //CreateMap<UpdatedItemCheckData, ItemUpdateDto>()
         }
     }
 }
