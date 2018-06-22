@@ -311,7 +311,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var customerAddresses = kenticoAddresses.GetCustomerAddresses(AddressType.Shipping);
             var userNotificationString = GetUserNotificationString();
-            var otherAddressEnabled = GetOtherAddressSettingsValue();
+            var otherAddressEnabled = resources.GetSiteSettingsKey<bool>(Settings.KDA_AllowCustomShippingAddress);
 
             var addresses = checkoutfactory.CreateDeliveryAddresses(customerAddresses.ToList(), userNotificationString, otherAddressEnabled);
 
@@ -577,14 +577,6 @@ namespace Kadena.BusinessLogic.Services
                     throw new ArgumentException(errorText);
                 }
             }
-        }
-
-        private bool GetOtherAddressSettingsValue()
-        {
-            var settingsKey = resources.GetSiteSettingsKey(Settings.KDA_AllowCustomShippingAddress);
-            bool otherAddressAvailable = false;
-            bool.TryParse(settingsKey, out otherAddressAvailable);
-            return otherAddressAvailable;
         }
 
         public List<int> GetLoggedInUserCartData(int inventoryType, int userID, int campaignID = 0)
