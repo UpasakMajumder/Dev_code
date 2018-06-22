@@ -120,7 +120,11 @@ class OrderDetail extends Component {
           </div>
         </div>
 
-        <OrderedItems toogleEmailProof={toogleEmailProof} ui={orderedItems}/>
+        <OrderedItems
+          toogleEmailProof={toogleEmailProof}
+          ui={orderedItems}
+          showRejectionLabel={false}
+        />
 
         <div className="order-block">
           <Actions

@@ -44,6 +44,7 @@ const Order = ({
   quantityShipped,
   mailingListPrefix,
   shippingDatePrefix,
+  showRejectionLabel,
   trackingPrefix,
   tracking,
   templatePrefix,
@@ -142,7 +143,7 @@ const Order = ({
 
   return (
     <div className="cart-product">
-      {rejection}
+      {showRejectionLabel && rejection}
       <div className="cart-product__img">
         <img src={image} alt={template} />
       </div>
@@ -196,6 +197,7 @@ Order.propTypes = {
   mailingListPrefix: PropTypes.string.isRequired,
   removed: PropTypes.bool.isRequired,
   shippingDatePrefix: PropTypes.string.isRequired,
+  showRejectionLabel: PropTypes.bool,
   templatePrefix: PropTypes.string.isRequired,
   productStatusPrefix: PropTypes.string.isRequired,
   productStatus: PropTypes.string.isRequired,
@@ -204,6 +206,10 @@ Order.propTypes = {
   emailProof: PropTypes.object.isRequired,
   toogleEmailProof: PropTypes.func.isRequired,
   removeLabel: PropTypes.string.isRequired
+};
+
+Order.defaultProps = {
+  showRejectionLabel: true
 };
 
 export default Order;

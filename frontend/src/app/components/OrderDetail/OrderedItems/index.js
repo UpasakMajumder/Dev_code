@@ -3,10 +3,17 @@ import PropTypes from 'prop-types';
 /* components */
 import Product from 'app.dump/Product/Order';
 
-const OrderedItems = ({ ui, toogleEmailProof }) => {
+const OrderedItems = ({ ui, toogleEmailProof, showRejectionLabel }) => {
   const { title, items } = ui;
 
-  const products = items.map((item, i) => <Product toogleEmailProof={toogleEmailProof} key={i} {...item} />);
+  const products = items.map((item, i) => (
+    <Product
+      toogleEmailProof={toogleEmailProof}
+      key={i}
+      showRejectionLabel={showRejectionLabel}
+      {...item}
+    />
+  ));
 
   return (
     <div className="order-block">
@@ -21,7 +28,8 @@ OrderedItems.propTypes = {
     title: PropTypes.string.isRequired,
     items: PropTypes.array.isRequired
   }),
-  toogleEmailProof: PropTypes.func.isRequired
+  toogleEmailProof: PropTypes.func.isRequired,
+  showRejectionLabel: PropTypes.bool.isRequired
 };
 
 export default OrderedItems;
