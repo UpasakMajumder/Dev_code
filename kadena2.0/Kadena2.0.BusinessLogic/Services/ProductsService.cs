@@ -60,6 +60,11 @@ namespace Kadena.BusinessLogic.Services
 
         public decimal GetPriceByCustomModel(int documentId, int quantity)
         {
+            if (quantity == 0)
+            {
+                return 0.0m;
+            }
+
             var product = products.GetProductByDocumentId(documentId);
             var price = decimal.MinusOne;
 

@@ -36,7 +36,7 @@ namespace Kadena.BusinessLogic.Services.Approval
                 ModulePermissions.KadenaOrdersModule,
                 ModulePermissions.KadenaOrdersModule.ApproveOrders);
 
-        public bool IsEditor(int userId) =>
+        bool IsEditor(int userId) =>
             permissions.UserHasPermission(
                 userId,
                 ModulePermissions.KadenaOrdersModule,

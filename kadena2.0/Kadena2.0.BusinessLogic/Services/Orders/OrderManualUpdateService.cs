@@ -207,15 +207,16 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var sourceAddress = deliveryData.GetSourceAddress();
             var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
+            targetAddress.Country = orderDetail.ShippingInfo.AddressTo.isoCountryCode;
 
-            if (!orderDetail.ShippingInfo.Provider.EndsWith("Customer"))
+            if (updateData.Any(u => u.ManuallyUpdatedItem.Quantity > 0) && !orderDetail.ShippingInfo.Provider.EndsWith("Customer"))
             {
                 var shippingCostRequest = deliveryData.GetDeliveryEstimationRequestData(orderDetail.ShippingInfo.Provider, 
                                                                            orderDetail.ShippingInfo.ShippingService, 
                                                                            (decimal)shippableWeight,
                                                                            sourceAddress,
                                                                            targetAddress);
-
+                
                 var totalShippingResult = await shippingCosts.EstimateShippingCost(shippingCostRequest);
 
                 if (totalShippingResult.Success == false || totalShippingResult.Payload.Length < 1 || !totalShippingResult.Payload[0].Success)
@@ -231,6 +232,11 @@ namespace Kadena.BusinessLogic.Services.Orders
         
         async Task<decimal> EstimateTax(decimal totalBasePrice, decimal shipppingCosts, AddressDto sourceAddress, AddressDto targetAddress)
         {
+            if (totalBasePrice == 0.0m)
+            {
+                return 0.0m;
+            }
+
             var taxRequest = new TaxCalculatorRequestDto
             {
                 ShipCost = (double)shipppingCosts,
@@ -267,6 +273,10 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
 
             var unitPrice = products.GetPriceByCustomModel( data.OriginalItem.DocumentId, data.UpdatedItem.Quantity);
+            if (unitPrice == decimal.MinusOne)
+            {
+                unitPrice = data.Sku.Price;
+            }
 
             return new ItemUpdateDto
             {
