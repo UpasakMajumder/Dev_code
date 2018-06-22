@@ -1,4 +1,6 @@
-﻿namespace Kadena.Models.OrderDetail
+﻿using Kadena.Models.Common;
+
+namespace Kadena.Models.OrderDetail
 {
     public class OrderDetail
     {
@@ -10,6 +12,7 @@
         public OrderInfo General { get; set; }
         public OrderedItems OrderedItems { get; set; }
         public OrderActions Actions { get; set; }
+        public DialogButton EditOrders { get; set; }
 
         public void HidePrices()
         {

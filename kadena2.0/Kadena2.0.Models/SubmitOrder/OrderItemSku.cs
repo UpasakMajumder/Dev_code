@@ -6,5 +6,6 @@
         public string SKUNumber { get; set; }
         public string Name { get; set; }
         public bool HiResPdfAllowed { get; set; }
+        public Weight Weight { get; set; }
     }
 }

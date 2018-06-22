@@ -12,5 +12,7 @@ namespace Kadena.BusinessLogic.Contracts
         Task<bool> UpdateAddresses(Guid containerId, IEnumerable<MailingAddress> addresses);
 
         Task<MailingList> GetMailingList(Guid containerId);
+
+        Task<string> DeleteExpiredMailingLists();
     }
 }

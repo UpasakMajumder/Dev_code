@@ -7,5 +7,6 @@ namespace Kadena2.BusinessLogic.Contracts.Orders
     public interface IGetOrderDataService
     {
         Task<OrderDTO> GetSubmitOrderData(SubmitOrderRequest request);
+        AddressDTO GetSourceAddressForDeliveryEstimation();
     }
 }

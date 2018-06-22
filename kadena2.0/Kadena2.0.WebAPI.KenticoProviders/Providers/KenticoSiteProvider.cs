@@ -22,9 +22,9 @@ namespace Kadena.WebAPI.KenticoProviders
             this.kadenaSettings = kadenaSettings ?? throw new ArgumentNullException(nameof(kadenaSettings));
         }
 
-        public Site[] GetSites()
+        public KenticoSite[] GetSites()
         {
-            return mapper.Map<Site[]>(SiteInfoProvider.GetSites().ToArray());
+            return mapper.Map<KenticoSite[]>(SiteInfoProvider.GetSites().ToArray());
         }
 
         public KenticoSite GetKenticoSite()
@@ -67,18 +67,14 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private KenticoSite CreateKenticoSite(SiteInfo site)
         {
-            if (site == null)
-                return null;
+            var kenticoSite = mapper.Map<KenticoSite>(site);
 
-            return new KenticoSite()
+            if (kenticoSite != null)
             {
-                Id = site.SiteID,
-                Name = site.SiteName,
-                DisplayName = site.DisplayName,
-                ErpCustomerId = kadenaSettings.ErpCustomerId,
-                SiteDomain = site.DomainName,
-                OrderManagerEmail = kadenaSettings.OrderNotificationEmail
-            };
+                kenticoSite.OrderManagerEmail = kadenaSettings.OrderNotificationEmail;
+                kenticoSite.ErpCustomerId = kadenaSettings.ErpCustomerId;
+            }
+            return kenticoSite;
         }
 
         public string GetFullUrl()
