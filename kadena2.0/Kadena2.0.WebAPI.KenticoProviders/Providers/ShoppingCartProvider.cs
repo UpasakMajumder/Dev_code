@@ -445,7 +445,7 @@ namespace Kadena.WebAPI.KenticoProviders
                                          .Sum(x => x.CartItemUnits);
         }
 
-        public void DeleteTemporaryAddresses(int customerId)
+        private void DeleteTemporaryAddresses(int customerId)
         {
             const string tempName = "TemporaryAddress";
 
