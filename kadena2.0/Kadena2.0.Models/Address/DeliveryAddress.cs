@@ -14,5 +14,6 @@
         public string Email { get; set; }
         public string AddressPersonalName { get; set; }
         public string CompanyName { get; set; }
+        public string AddressName { get; set; }
     }
 }
