@@ -19,11 +19,11 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         List<CampaignsProduct> GetCampaignsProductSKUIDs(int campaignID);
         bool IsProductHasAllocation(int productID);
         OptionCategory GetOptionCategory(string codeName);        
-        int GetCampaignProductIDBySKUID(int skuid);
-        bool ProductHasValidSKUNumber(int skuid);
+        int GetCampaignProductIDBySKUID(int skuid);        
         CampaignsProduct GetCampaignProduct(int skuid);
         string GetProductImagePath(int productPageId);
         IEnumerable<ProductCategory> GetProductCategories(int skuid);
         ProductPricingInfo GetDefaultVariantPricing(int documentId, string uomLocalized);
+        Product[] GetProductsByDocumentIds(int[] documentIds);
     }
 }

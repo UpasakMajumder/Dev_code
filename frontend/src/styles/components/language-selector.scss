@@ -6,11 +6,23 @@
     width: $width;
   }
 
+  &__arrow {
+    width: 10px !important;
+    height: 10px !important;
+    margin-left: 5px !important;
+    transition: all 400ms;
+
+    &--hovered {
+      rotate: 180deg;
+    }
+  }
+
   &__list {
     @extend .list--unstyled;
     background: white;
     min-width: $width;
     margin: 0;
+    transition: all 400ms;
 
     &--absolute {
       transform: translateY(100%);
@@ -22,6 +34,22 @@
 
     &--shadow {
       box-shadow: 0 0 15px $brand-darkgrey;
+    }
+
+    &-enter {
+      opacity: .01;
+
+      &-active {
+        opacity: 1;
+      }
+    }
+
+    &-leave {
+      opacity: 1;
+
+      &-active {
+        opacity: .01;
+      }
     }
   }
 
