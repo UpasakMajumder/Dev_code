@@ -22,15 +22,15 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoLoginProvider loginProvider;
         private readonly IKenticoResourceService kenticoResourceService;
 
-        public IdentityService(IKenticoLogger logger, 
-                               IMapper mapper, 
-                               ISaml2Service saml2Service, 
+        public IdentityService(IKenticoLogger logger,
+                               IMapper mapper,
+                               ISaml2Service saml2Service,
                                IKenticoUserProvider userProvider,
                                IKenticoCustomerProvider customerProvider,
                                IKenticoSiteProvider siteProvider,
-                               IKenticoAddressBookProvider addressProvider, 
-                               IRoleService roleService, 
-                               IKenticoLoginProvider loginProvider, 
+                               IKenticoAddressBookProvider addressProvider,
+                               IRoleService roleService,
+                               IKenticoLoginProvider loginProvider,
                                IKenticoResourceService kenticoResourceService)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -125,10 +125,16 @@ namespace Kadena.BusinessLogic.Services
         private DeliveryAddress EnsureUpdateAddress(AddressDto address, int customerId)
         {
             var newAddress = mapper.Map<DeliveryAddress>(address);
+            if (newAddress == null)
+            {
+                logger.LogInfo(this.GetType().Name, "ENSURESAMLADDRESS", "Customer info extraction has failed.");
+                return null;
+            }
             var existingAddresses = addressProvider.GetCustomerAddresses(customerId, AddressType.Shipping);
             if (existingAddresses.Length == 0)
             {
-                addressProvider.SaveShippingAddress(newAddress, customerId);
+                newAddress.CustomerId = customerId;
+                addressProvider.SaveShippingAddress(newAddress);
             }
             return newAddress;
         }

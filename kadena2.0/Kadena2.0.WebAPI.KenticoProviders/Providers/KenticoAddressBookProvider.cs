@@ -85,7 +85,7 @@ namespace Kadena.WebAPI.KenticoProviders
             SetDefaultShippingAddress(0);
         }
 
-        public void SaveShippingAddress(DeliveryAddress address, int customerId = 0)
+        public void SaveShippingAddress(DeliveryAddress address)
         {
             if (address != null)
             {
@@ -101,8 +101,8 @@ namespace Kadena.WebAPI.KenticoProviders
 
                 if (address.Country != null)
                 {
-                    CustomerInfo customer = customerId > 0
-                        ? CustomerInfoProvider.GetCustomerInfo(customerId)
+                    CustomerInfo customer = address.CustomerId > 0
+                        ? CustomerInfoProvider.GetCustomerInfo(address.CustomerId)
                         : ECommerceContext.CurrentCustomer;
 
                     if (string.IsNullOrWhiteSpace(address.AddressPersonalName))
@@ -127,10 +127,10 @@ namespace Kadena.WebAPI.KenticoProviders
                         address.AddressName = $"{address.AddressPersonalName}, {address.Address1}, {address.City}";
                     }
 
+                    address.CustomerId = customer.CustomerID;
+
                     var info = mapper.Map<AddressInfo>(address);
                     info.SetValue("AddressType", AddressType.Shipping.Code);
-                    info.AddressCustomerID = customer.CustomerID;
-
                     AddressInfoProvider.SetAddressInfo(info);
                     address.Id = info.AddressID;
                 }
