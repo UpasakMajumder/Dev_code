@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.permission>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>Content enabled</PermissionDisplayName>
+  <PermissionEditableByGlobalAdmin>False</PermissionEditableByGlobalAdmin>
+  <PermissionGUID>98a9e61a-0d1f-4d10-804a-4ee7c7d972b8</PermissionGUID>
+  <PermissionName>KDA_ContentEnabled</PermissionName>
+  <PermissionOrder>1</PermissionOrder>
+  <ResourceID>
+    <CodeName>Kadena_K-Source</CodeName>
+    <GUID>0daf8775-7261-4929-ad4e-a5c709a16419</GUID>
+    <ObjectType>cms.resource</ObjectType>
+  </ResourceID>
+</cms.permission>

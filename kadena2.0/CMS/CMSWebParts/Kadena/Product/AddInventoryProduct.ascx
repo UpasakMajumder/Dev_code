@@ -58,8 +58,6 @@
                 <cms:LocalizedLabel ID="lblLongDes" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblLongDes" />
                 <div class="input__inner long__desc">
                     <cms:CMSTextBox ID="txtLongDes" runat="server" EnableViewState="false" CssClass="input__text" Rows="5" Columns="5" TextMode="MultiLine"></cms:CMSTextBox>
-                    <asp:RequiredFieldValidator ID="rfvLongDes" CssClass="EditingFormErrorLabel" runat="server" ControlToValidate="txtLongDes">
-                    </asp:RequiredFieldValidator>
                 </div>
             </div>
         </div>
@@ -160,6 +158,14 @@
         </div>
         <div class="mb-2 form__block">
             <div class="input__wrapper">
+                <cms:LocalizedLabel ID="lblSKUNumber" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblSKUNumber" />
+                <div class="input__inner">
+                    <cms:CMSTextBox ID="txtSKUNumber" runat="server" EnableViewState="false" CssClass="input__text" Enabled="false" ReadOnly="true"></cms:CMSTextBox>
+                </div>
+            </div>
+        </div>
+        <div class="mb-2 form__block">
+            <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblImage" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblImage" />
                 <div class="input__inner">
                     <asp:FileUpload ID="productImage" runat="server" CssClass="input__file" />
@@ -169,6 +175,7 @@
                 </div>
             </div>
         </div>
+        <div class="mb-2 form__block"></div>
         <div class="mb-2 form__block">
             <div class="input__wrapper allocated__block ">
                 <cms:LocalizedLabel ID="lblProductAllcation" runat="server" EnableViewState="False" CssClass="input__label"

@@ -65,7 +65,7 @@ config.localization.checkout = {
   message: '{% CheckoutPageTopMessage %}',
   tAndC: {
     exists: {% CheckoutPageTermsAndConditionsRequired == True ? "true" : "false" %},
-    text: '{% GetResourceString("Kadena.Checkout.TermsAndConditions")|(user)administrator|(hash)4bdc58396bd4104c4c9de936bee0c768832e1dcf15cdf65384a6cbbb139d4c2f%}'
+    text: '{% JSEscape(GetResourceString("Kadena.Checkout.TermsAndConditions"))|(user)administrator|(hash)659f8d7c1f6e6cc1522d121553d746189459e4893ef3c44e2a9c5b5f66b0ed89%}'
   }
 };
 config.localization.userSettings = {
@@ -77,21 +77,21 @@ config.localization.userSettings = {
 config.localization.emailProof = {
     submitUrl: '/api/mail/proof',
     notificationSuccess: {
-        title: '{$ Kadena.EmailProof.NotificationSuccess $}',
-        text: '{$ Kadena.EmailProof.NotificationSuccessText $}'
+        title: '{%JSEscape(GetResourceString("Kadena.EmailProof.NotificationSuccess")) |(user)administrator|(hash)2ee06349e33425fe4ded3ed99bf1310874d6a265a30bef9183a4f9ab47fc249e%}',
+        text: '{%JSEscape(GetResourceString("Kadena.EmailProof.NotificationSuccessText")) |(user)administrator|(hash)2a082e6836cd2f44f9534ab8d678d41c939fcf0992c50800362b0ba981940c82%}'
     },
     dialog: {
-        title:'{$ Kadena.EmailProof.Title $}',
-        recepientEmailLabel: '{$ Kadena.EmailProof.Email $}',
-        subjectLabel: '{$ Kadena.EmailProof.Subject $}',
-        messageLabel: '{$ Kadena.EmailProof.Message $}',
-        proofLabel: '{$ Kadena.EmailProof.Proof $}',
-        submitButtonLabel: '{$ Kadena.EmailProof.Submitbutton $}',
-        cancelButtonLabel: '{$ Kadena.EmailProof.CancelButton $}',
-        note: '{$ Kadena.EmailProof.Note $}',
+        title:'{%JSEscape(GetResourceString("Kadena.EmailProof.Title")) |(user)administrator|(hash)1d33cdcdcfeb1e5fb059eb631c8de0ccd6ca0274992e69c114db6f434dc7f09c%}',
+        recepientEmailLabel: '{%JSEscape(GetResourceString("Kadena.EmailProof.Email")) |(user)administrator|(hash)2d2890827c409110ad234d91574d561c7cf932344773b3501c2296558f930f7c%}',
+        subjectLabel: '{%JSEscape(GetResourceString("Kadena.EmailProof.Subject")) |(user)administrator|(hash)06138c89004c3ef2280ada6425c416b83ac2e5974b5a2d742a3931236ae24f36%}',
+        messageLabel: '{%JSEscape(GetResourceString("Kadena.EmailProof.Message")) |(user)administrator|(hash)9a519eb2db753e1043fa4110e2db58c5a303db97e80fdf6a113e281c4557208f%}',
+        proofLabel: '{%JSEscape(GetResourceString("Kadena.EmailProof.Proof")) |(user)administrator|(hash)8fce545407d733f6031a7b340b64209cc39d05e532bc68eade6383ce2e9014a9%}',
+        submitButtonLabel: '{%JSEscape(GetResourceString("Kadena.EmailProof.Submitbutton")) |(user)administrator|(hash)c5d37ad15569f52c09007fec5224acc8fa8a7eada66b7b34714d48b4f84df916%}',
+        cancelButtonLabel: '{%JSEscape(GetResourceString("Kadena.EmailProof.CancelButton")) |(user)administrator|(hash)9753e4b196e4e240cbfcb3bf522d56a449cd080246d5aca1a810a4c4ac29cd8d%}',
+        note: '{%JSEscape(GetResourceString("Kadena.EmailProof.Note")) |(user)administrator|(hash)2a87c801d27082da8a7c500ee3deca69bb24c255547c49da0a2727bf78b592c6%}',
         validationMessages: {
-            required: '{$ Kadena.EmailProof.FieldRequired $}',
-            email: '{$ Kadena.EmailProof.MailRequired $}'
+            required: '{%JSEscape(GetResourceString("Kadena.EmailProof.FieldRequired")) |(user)administrator|(hash)1eb69992dcf8892027fa6e64b1445cc731bdbf4d350f4ccfa6442829c688e346%}',
+            email: '{%JSEscape(GetResourceString("Kadena.EmailProof.MailRequired")) |(user)administrator|(hash)0ee6520e9a1e4c8d18792888df2d4ad24df6903a36a1d2ce6a641696307d9912%}'
         }
     }
 };
@@ -218,35 +218,37 @@ config.localization.emailProof = {
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>
         </webpart>
-        <webpart controlid="Breadcrumbs" guid="06690fcd-b6a8-4c56-bbd0-8d9c20ed2681" type="statictext" v="1">
+        <webpart controlid="Kadena_Breadcrumbs" guid="77027663-92f6-46a2-880f-4f5bc6483ccc" type="Kadena_Breadcrumbs" v="1">
           <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
           <property name="cat_open_visibility"></property>
-          <property name="container"></property>
+          <property name="container">KadenaBreadcrumbs</property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
           <property name="contentafter"></property>
           <property name="contentbefore"></property>
-          <property name="controlid">Breadcrumbs</property>
+          <property name="controlid">Kadena_Breadcrumbs</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
-          <property name="disableviewstate">True</property>
+          <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
+          <property name="documentid" ismacro="true">
+            <![CDATA[{% CurrentDocument.ID |(user)administrator|(hash)a9a82af2e9ed17f3117d017f3e85aad6847125d531dcca4bea6fbc38b843c389%}]]>
+          </property>
           <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
           <property name="hideonsubpages">False</property>
-          <property name="instanceguid">06690fcd-b6a8-4c56-bbd0-8d9c20ed2681</property>
+          <property name="instanceguid">77027663-92f6-46a2-880f-4f5bc6483ccc</property>
           <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
           <property name="partialcachedependencies">
 <![CDATA[
 ##DEFAULT##
@@ -256,28 +258,13 @@ config.localization.emailProof = {
           <property name="partialcacheminutes"></property>
           <property name="positionleft"></property>
           <property name="positiontop"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="resolvedynamiccontrols">False</property>
+          <property name="preservepartialcacheonpostback">False</property>
           <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text" ismacro="true">
-<![CDATA[
-{%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)administrator|(hash)6bfc4283a297cf1dac98542bb0d719e1a27d1c7ac39cab2d6f5aae2e8ba69c23%}
-]]>
-          </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
           <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
+          <property name="webparttype">Kadena_Breadcrumbs</property>
         </webpart>
       </webpartzone>
       <webpartzone id="shoppingCart" v="1" />

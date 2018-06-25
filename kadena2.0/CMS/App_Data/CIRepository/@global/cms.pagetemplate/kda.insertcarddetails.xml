@@ -103,30 +103,30 @@ config.localization.cardPayment = {
         ResultURL: '{% Settings.GetValue("KDA_CreditCard_SaveTokenUrl", string.Empty) |(user)administrator|(hash)c21496d6911c0d35462e22a8ac7fc3ec5dc7c21017a3ad96914ffc626e8edd0e%}',
         ResponseType: 'Return',
         acceptedCards: ['visa', 'amex', 'mastercard'],
-        submitButtonText: '{$Kadena.CreditCard.ProceedPaymentButton$}',
-        cardTypeInValidMessage: '{$Kadena.CreditCard.CardTypeError$}',
+        submitButtonText: '{%JSEscape(GetResourceString("Kadena.CreditCard.ProceedPaymentButton")) |(user)administrator|(hash)ec25f2980ef79cbd3e8fca862431f706d9dbab090713ec7949c9e3007c36726b%}',
+        cardTypeInValidMessage: '{%JSEscape(GetResourceString("Kadena.CreditCard.CardTypeError")) |(user)administrator|(hash)3e589f6dc2e7b0ff51e5bc6de49586ce3964380d6fc410481dfb5865fe54df42%}',
         fields: {
           number: {
-            label: '{$Kadena.CreditCard.CardNumber$}',
-            inValidMessage: '{$Kadena.CreditCard.CardNumberError$}',
-            placeholder: '{$Kadena.CreditCard.CardNumberPlaceholder$}'
+            label: '{%JSEscape(GetResourceString("Kadena.CreditCard.CardNumber")) |(user)administrator|(hash)d2de5f59885200844d6f02bd3e7b2e42f9dbb0d4286c47b5556eba7c60afc623%}',
+            inValidMessage: '{%JSEscape(GetResourceString("Kadena.CreditCard.CardNumberError")) |(user)administrator|(hash)6a04a254c2f2dfae29627440eb218ff569d9f9eaceedfa77f3e9c64f77dde31a%}',
+            placeholder: '{%JSEscape(GetResourceString("Kadena.CreditCard.CardNumberPlaceholder")) |(user)administrator|(hash)c6caa6516d4fd6746246122a02b68c463b031dda315902eff895fc95d6c30349%}'
           },
           name: {
-            label: '{$Kadena.CreditCard.CardFullName$}',
-            inValidMessage: '{$Kadena.CreditCard.CardFullNameError$}',
-            placeholder: '{$Kadena.CreditCard.CardFullNamePlaceholder$}',
-            cardLabel: '{$Kadena.CreditCard.CardFullNameCardPlaceholder$}'
+            label: '{%JSEscape(GetResourceString("Kadena.CreditCard.CardFullName")) |(user)administrator|(hash)2e8af61603dd688267c97a067d604c788a4cbccd17d988e5803ffbb7461c0087%}',
+            inValidMessage: '{%JSEscape(GetResourceString("Kadena.CreditCard.CardFullNameError")) |(user)administrator|(hash)79646aa7f91afdf00937f0e3e8d196c70c67c55e2aaf83107383339510552f78%}',
+            placeholder: '{%JSEscape(GetResourceString("Kadena.CreditCard.CardFullNamePlaceholder")) |(user)administrator|(hash)8852e20244fb33e0e6aeaba6a3bac5762bda45c5616948964d7b65801a46a06a%}',
+            cardLabel: '{%JSEscape(GetResourceString("Kadena.CreditCard.CardFullNameCardPlaceholder")) |(user)administrator|(hash)0b75e1492d577d31207d48217c0cdffcfb9d851799d4908da5c7bded76ea7c4f%}'
           },
           cvc: {
-            label: '{$Kadena.CreditCard.CardCVC$}',
-            inValidMessage: '{$Kadena.CreditCard.CardCVCError$}',
-            placeholder: '{$Kadena.CreditCard.CardCVCPlaceholder$}'
+            label: '{%JSEscape(GetResourceString("Kadena.CreditCard.CardCVC")) |(user)administrator|(hash)8f5fd71d844febcae2ebf00044e4575abedaf3de987e903fabe19463a6ded041%}',
+            inValidMessage: '{%JSEscape(GetResourceString("Kadena.CreditCard.CardCVCError")) |(user)administrator|(hash)659ace6beb100f8e084d5a32368fd08fedba780adfe55814ca75143511d11b64%}',
+            placeholder: '{%JSEscape(GetResourceString("Kadena.CreditCard.CardCVCPlaceholder")) |(user)administrator|(hash)c04c3dfd2afe7cdf032bde1be8165f7d511378fcd01281b11c07da6b87638d0f%}'
           },
           expiry: {
-            label: '{$Kadena.CreditCard.Expiry$}',
-            inValidMessage: '{$Kadena.CreditCard.ExpiryError$}',
-            placeholder: '{$Kadena.CreditCard.ExpiryPlaceholder$}',
-            cardLabel: '{$Kadena.CreditCard.ExpiryCardPlaceholder$}'
+            label: '{%JSEscape(GetResourceString("Kadena.CreditCard.Expiry")) |(user)administrator|(hash)24adc87de0f4041060aafee2fe91f29f5a877827a7099ae31066f77d758de86a%}',
+            inValidMessage: '{%JSEscape(GetResourceString("Kadena.CreditCard.ExpiryError")) |(user)administrator|(hash)7213ecba4494db9eb722c1be321bc533c830b9891abe0ac141731ffaf39df32e%}',
+            placeholder: '{%JSEscape(GetResourceString("Kadena.CreditCard.ExpiryPlaceholder")) |(user)administrator|(hash)aeb059eb73fb0d3c9388147c64f6c9036b6517e5799f73e4d7256af32e56cce4%}',
+            cardLabel: '{%JSEscape(GetResourceString("Kadena.CreditCard.ExpiryCardPlaceholder")) |(user)administrator|(hash)312c7a605bc70aabecadf93d5f2aaec5c732be166937d0b1d1b33952c3019ee3%}'
           },
         },
         DemoURL: '{% KadenaNamespace.GetLocalizedDocumentUrl(Settings.GetValue("KDA_CreditCard_PaymentResultPage", string.Empty))|(user)administrator|(hash)87f5b4018dcddefc764821786ba03da55ca27544a0e20408a1e609454b5fd317%}?success=true&order_id=123456789',
@@ -143,7 +143,7 @@ config.localization.cardPayment = {
         CreditCard_BillingAddress_PostalCode: '{% Settings.GetValue("KDA_CreditCard_BillingAddress_PostalCode", string.Empty) |(user)administrator|(hash)d989fe61dee385afb61cde4693c33cef941da6cc245e02bbb9d4e7d37eaf192f%}',
         saveToProfile:{
           exists: {%Settings.GetValue("KDA_CreditCard_EnableSaveCard", "false").ToLower()|(user)administrator|(hash)ec2c2883d8e360b91de530e873654c116e2fd7fca66badc1b7c7ea95d4626fa5%},
-          label: '{$Kadena.CreditCard.SaveCardLabel$}',
+          label: '{%JSEscape(GetResourceString("Kadena.CreditCard.SaveCardLabel")) |(user)administrator|(hash)0dfc959c84b9d5dc034f2a364fb3fc214152687014a61c9e10d5bbda61c9cd97%}',
           url: '/api/3dsi/saveCard'
         }
       }
@@ -219,35 +219,37 @@ config.localization.cardPayment = {
           <property name="webparttitle"></property>
           <property name="webparttype">statictext</property>
         </webpart>
-        <webpart controlid="Breadcrumbs" guid="06690fcd-b6a8-4c56-bbd0-8d9c20ed2681" type="statictext" v="1">
+        <webpart controlid="Kadena_Breadcrumbs" guid="c50af6e0-1f85-4108-b0fd-fa00f3f1c1f1" type="Kadena_Breadcrumbs" v="1">
           <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
           <property name="cat_open_visibility"></property>
-          <property name="container"></property>
+          <property name="container">KadenaBreadcrumbs</property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
           <property name="contentafter"></property>
           <property name="contentbefore"></property>
-          <property name="controlid">Breadcrumbs</property>
+          <property name="controlid">Kadena_Breadcrumbs</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
-          <property name="disableviewstate">True</property>
+          <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
+          <property name="documentid" ismacro="true">
+            <![CDATA[{% CurrentDocument.ID |(user)administrator|(hash)a9a82af2e9ed17f3117d017f3e85aad6847125d531dcca4bea6fbc38b843c389%}]]>
+          </property>
           <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
           <property name="hideonsubpages">False</property>
-          <property name="instanceguid">06690fcd-b6a8-4c56-bbd0-8d9c20ed2681</property>
+          <property name="instanceguid">c50af6e0-1f85-4108-b0fd-fa00f3f1c1f1</property>
           <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
           <property name="partialcachedependencies">
 <![CDATA[
 ##DEFAULT##
@@ -257,28 +259,13 @@ config.localization.cardPayment = {
           <property name="partialcacheminutes"></property>
           <property name="positionleft"></property>
           <property name="positiontop"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="resolvedynamiccontrols">False</property>
+          <property name="preservepartialcacheonpostback">False</property>
           <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text" ismacro="true">
-<![CDATA[
-{%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)administrator|(hash)6bfc4283a297cf1dac98542bb0d719e1a27d1c7ac39cab2d6f5aae2e8ba69c23%}
-]]>
-          </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
           <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
+          <property name="webparttype">Kadena_Breadcrumbs</property>
         </webpart>
       </webpartzone>
       <webpartzone id="shoppingCart" v="1" />
