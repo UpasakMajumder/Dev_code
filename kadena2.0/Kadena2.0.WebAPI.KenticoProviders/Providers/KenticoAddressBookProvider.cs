@@ -124,7 +124,11 @@ namespace Kadena.WebAPI.KenticoProviders
                         }
                     }
 
-                    info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
+                    if (string.IsNullOrWhiteSpace(info.AddressName))
+                    {
+                        info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
+                    }
+
                     info.SetValue("AddressType", AddressType.Shipping.Code);
                     info.AddressCustomerID = customer.CustomerID;
 
