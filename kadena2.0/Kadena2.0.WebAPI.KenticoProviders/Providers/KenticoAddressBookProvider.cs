@@ -101,34 +101,33 @@ namespace Kadena.WebAPI.KenticoProviders
 
                 if (address.Country != null)
                 {
-                    var info = mapper.Map<AddressInfo>(address);
-
                     CustomerInfo customer = customerId > 0
                         ? CustomerInfoProvider.GetCustomerInfo(customerId)
                         : ECommerceContext.CurrentCustomer;
 
-                    if (string.IsNullOrWhiteSpace(info.AddressPersonalName))
+                    if (string.IsNullOrWhiteSpace(address.AddressPersonalName))
                     {
-                        info.AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}";
+                        address.AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}";
                     }
 
-                    if (string.IsNullOrWhiteSpace(info.GetStringValue("CompanyName", string.Empty)))
+                    if (string.IsNullOrWhiteSpace(address.CompanyName))
                     {
                         if (customer.CustomerHasCompanyInfo)
                         {
-                            info.SetValue("CompanyName", customer.CustomerCompany);
+                            address.CompanyName = customer.CustomerCompany;
                         }
                         else
                         {
-                            info.SetValue("CompanyName", kadenaSettings.DefaultCustomerCompanyName);
+                            address.CompanyName = kadenaSettings.DefaultCustomerCompanyName;
                         }
                     }
 
-                    if (string.IsNullOrWhiteSpace(info.AddressName))
+                    if (string.IsNullOrWhiteSpace(address.AddressName))
                     {
-                        info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
+                        address.AddressName = $"{address.AddressPersonalName}, {address.Address1}, {address.City}";
                     }
 
+                    var info = mapper.Map<AddressInfo>(address);
                     info.SetValue("AddressType", AddressType.Shipping.Code);
                     info.AddressCustomerID = customer.CustomerID;
 
