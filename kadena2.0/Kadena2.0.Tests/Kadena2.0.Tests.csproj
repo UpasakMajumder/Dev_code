@@ -517,6 +517,7 @@
     <Compile Include="BusinessLogic\OrderResubmissionServiceTests.cs" />
     <Compile Include="BusinessLogic\OrderReportFactoryTests.cs" />
     <Compile Include="BusinessLogic\OrderReportTestHelper.cs" />
+    <Compile Include="Models\Shipping\TrackingInfoTests.cs" />
     <Compile Include="Models\Site\KenticoSiteTests.cs" />
     <Compile Include="BusinessLogic\Approval\OrderManualUpdateServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
