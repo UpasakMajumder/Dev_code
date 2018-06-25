@@ -130,7 +130,6 @@ namespace Kadena.WebAPI.KenticoProviders
 
                     info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
                     info.SetValue("AddressType", AddressType.Shipping.Code);
-                    info.SetValue("Email", address.Email);
                     info.AddressCustomerID = customer.CustomerID;
                     AddressInfoProvider.SetAddressInfo(info);
                     address.Id = info.AddressID;
