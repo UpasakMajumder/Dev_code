@@ -25,12 +25,16 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Kadena.Models.SiteSettings;
+using Kadena2.BusinessLogic.Contracts.Orders;
+using Kadena.BusinessLogic.Contracts.Orders;
 
 namespace Kadena.Old_App_Code.Kadena.Shoppingcart
 {
     public class ShoppingCartHelper
     {
         private static ShoppingCartInfo Cart { get; set; }
+        private static readonly IGetOrderDataService getOrderData = DIContainer.Resolve<IGetOrderDataService>();
+        private static readonly IDeliveryEstimationDataService estimationData = DIContainer.Resolve<IDeliveryEstimationDataService>();
 
         /// <summary>
         /// creating estimation DTO
@@ -38,23 +42,17 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// <returns></returns>
         public static EstimateDeliveryPriceRequestDto GetEstimationDTO(ShoppingCartInfo cart)
         {
-            try
+            Cart = cart;
+            var weight = (decimal)Cart.CartItems.Sum(x => (x.CartItemUnits * x.UnitWeight));
+
+            return new EstimateDeliveryPriceRequestDto
             {
-                Cart = cart;
-                return new EstimateDeliveryPriceRequestDto
-                {
-                    SourceAddress = GetSourceAddressFromConfig(),
-                    TargetAddress = GetTargetAddress(),
-                    Weight = GetWeight(),
-                    Provider = CarrierInfoProvider.GetCarrierInfo(Cart.ShippingOption.ShippingOptionCarrierID).CarrierName,
-                    ProviderService = Cart.ShippingOption.ShippingOptionName
-                };
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("ShoppingCartHelper", "GetEstimationDTO", ex.Message);
-                return null;
-            }
+                SourceAddress = estimationData.GetSourceAddress(),
+                TargetAddress = GetTargetAddress(),
+                Weight = estimationData.GetWeightInSiteUnit(weight),
+                Provider = CarrierInfoProvider.GetCarrierInfo(Cart.ShippingOption.ShippingOptionCarrierID).CarrierName,
+                ProviderService = Cart.ShippingOption.ShippingOptionName
+            };
         }
 
         /// <summary>
@@ -68,12 +66,15 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             try
             {
                 Cart = cart;
+                var billingAddress = GetBillingAddress();
                 return new OrderDTO
                 {
                     Type = orderType,
                     Campaign = GetCampaign(),
-                    BillingAddress = GetBillingAddress(),
-                    ShippingAddress = GetBillingAddress(),
+                    BillingAddress = billingAddress,
+                    ShippingAddressSource = DIContainer.Resolve<IGetOrderDataService>().GetSourceAddressForDeliveryEstimation(),
+                    ShippingAddressDestination = billingAddress,
+                    ShippingAddress = billingAddress,
                     ShippingOption = ShippingOption(),
                     Customer = GetCustomer(),
                     Site = GetSite(),
@@ -134,22 +135,14 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// <returns></returns>
         public static BaseResponseDto<EstimateDeliveryPricePayloadDto[]> CallEstimationService(EstimateDeliveryPriceRequestDto[] requestBody)
         {
-            try
-            {
-                var microserviceClient = DIContainer.Resolve<IShippingCostServiceClient>();
-                var response = microserviceClient.EstimateShippingCost(requestBody).Result;
+            var microserviceClient = DIContainer.Resolve<IShippingCostServiceClient>();
+            var response = microserviceClient.EstimateShippingCost(requestBody).Result;
 
-                if (!response.Success || response.Payload == null)
-                {
-                    EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from '{Cart.ShippingOption.ShippingOptionName}' provider resulted with error {response.Error?.Message ?? string.Empty}");
-                }
-                return response;
-            }
-            catch (Exception ex)
+            if (!response.Success || response.Payload == null)
             {
-                EventLogProvider.LogInformation("ShoppingCartHelper", "CallEstimationService", ex.Message);
-                return null;
+                EventLogProvider.LogInformation("DeliveryPriceEstimationClient", "ERROR", $"Call from '{Cart.ShippingOption.ShippingOptionName}' provider resulted with error {response.Error?.Message ?? string.Empty}");
             }
+            return response;
         }
 
         /// <summary>
@@ -213,24 +206,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 AddressInfoProvider.SetAddressInfo(distributor);
             }
         }
-        /// <summary>
-        /// getting total weight
-        /// </summary>
-        /// <returns></returns>
-        private static WeightDto GetWeight()
-        {
-            try
-            {
-                var weight = Cart.CartItems.Sum(x => (x.CartItemUnits * x.UnitWeight));
-                return new WeightDto { Unit = SKUMeasuringUnits.Lb, Value = weight };
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("ShoppingCartHelper", "GetWeight", ex.Message);
-                return null;
-            }
-        }
-
+        
         /// <summary>
         /// Gets target shipping address
         /// </summary>
@@ -264,35 +240,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             }
         }
 
-        /// <summary>
-        /// Gets source  address
-        /// </summary>
-        /// <returns></returns>
-        private static AddressDto GetSourceAddressFromConfig()
-        {
-            try
-            {
-                var addressLines = new[]
-                                    {
-                                        SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderAddressLine1"),
-                                        SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderAddressLine2")
-                                    }.Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
 
-                return new AddressDto()
-                {
-                    City = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCity"),
-                    Country = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderCountry"),
-                    Postal = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderPostal"),
-                    State = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".KDA_EstimateDeliveryPrice_SenderState"),
-                    StreetLines = addressLines
-                };
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("ShoppingCartHelper", "GetSourceAddressFromConfig", ex.Message);
-                return null;
-            }
-        }
 
         /// <summary>
         /// Returns campaign details
@@ -599,7 +547,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var product = DIContainer.Resolve<IKenticoProductsProvider>();
+                var product = DIContainer.Resolve<IKenticoSkuProvider>();
                 cart.CartItems.ForEach(cartItem =>
                 {
                     product.SetSkuAvailableQty(cartItem.SKUID, cartItem.CartItemUnits);

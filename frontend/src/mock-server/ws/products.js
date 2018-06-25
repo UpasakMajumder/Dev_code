@@ -292,9 +292,18 @@ module.exports.managed = {
   }
 };
 
-module.exports.addToCart = {
+module.exports.availability = {
   success: true,
   errorMessage: null,
+  payload: {
+    type: 'available', // unavailable, outofstock, available
+    text: 'Out of stock'
+  }
+}
+
+module.exports.addToCart = {
+  success: true,
+  errorMessage: 'Error',
   payload: {
     "cartPreview": {
       "summaryPrice": {

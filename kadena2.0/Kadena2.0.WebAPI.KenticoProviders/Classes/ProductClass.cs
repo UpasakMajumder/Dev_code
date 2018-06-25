@@ -5,5 +5,6 @@
         public double SKUWeight { get; set; }
         public bool SKUNeedsShipping { get; set; }
         public int NodeSKUID { get; set; }
+        public int ProductSKUNumberOfItemsInPackage { get; set; }
     }
 }

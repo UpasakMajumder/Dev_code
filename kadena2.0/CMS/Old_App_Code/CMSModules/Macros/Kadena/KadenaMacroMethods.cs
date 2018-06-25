@@ -224,43 +224,9 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return DIContainer.Resolve<IProductsService>().CanDisplayAddToCartButton(productType, numberOfAvailableProducts, sellOnlyIfAvailable);
         }
 
-        [MacroMethod(typeof(string), "Gets formated and localized product availability string.", 1)]
-        [MacroMethodParam(0, "productType", typeof(string), "Current product type")]
-        [MacroMethodParam(1, "numberOfAvailableProducts", typeof(int), "NumberOfAvailableProducts")]
-        [MacroMethodParam(2, "cultureCode", typeof(string), "Current culture code")]
-        [MacroMethodParam(3, "numberOfAvailableProductsHelper", typeof(int), "NumberOfAvailableProducts of ECommerce")]
-        [MacroMethodParam(4, "unitOfMeasure", typeof(string), "Unit of measure")]
-        public static object GetAvailability(EvaluationContext context, params object[] parameters)
-        {
-            if (parameters.Length != 5)
-            {
-                throw new NotSupportedException();
-            }
-
-            var productType = (string)parameters[0];
-            var numberOfAvailableProducts = (int?)parameters[1];
-            var cultureCode = (string)parameters[2];
-            var numberOfStockProducts = (int)parameters[3];
-            var unitOfmeasure = (string)parameters[4];
-
-            if (string.IsNullOrEmpty(unitOfmeasure))
-            {
-                unitOfmeasure = UnitOfMeasure.DefaultUnit;
-            }
-
-            var availability = DIContainer.Resolve<IProductsService>()
-                .GetInventoryProductAvailability(productType, numberOfAvailableProducts, cultureCode, numberOfStockProducts, unitOfmeasure);
-
-            if (availability == null)
-            {
-                return "null";
-            }
-
-            return JsonConvert.SerializeObject(availability, CamelCaseSerializer);
-        }
 
         [MacroMethod(typeof(string), "Gets formated and localized product availability string.", 1)]
-        [MacroMethodParam(0, "numberOfAvailableProducts", typeof(int), "NumberOfAvailableProducts")]
+        [MacroMethodParam(0, "numberOfItemsInPackage", typeof(int), "numberOfItemsInPackage")]
         [MacroMethodParam(1, "unitOfMeasure", typeof(string), "Unit of measure")]
         [MacroMethodParam(2, "cultureCode", typeof(string), "Current culture code")]
         public static object GetPackagingString(EvaluationContext context, params object[] parameters)
@@ -447,27 +413,61 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return JsonConvert.SerializeObject(estimates, CamelCaseSerializer);
         }
 
+        [MacroMethod(typeof(string), "Returns json of product pricing tiers", 1)]
+        [MacroMethodParam(0, "documentId", typeof(int), "document ID")]
+        public static object GetProductTiers(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+
+            var documentId = Convert.ToInt32(parameters[0]);
+
+            var estimates = DIContainer.Resolve<IProductsService>().GetProductTiers(documentId);
+
+            return JsonConvert.SerializeObject(estimates, CamelCaseSerializer);
+        }
+
         [MacroMethod(typeof(string), "Returns json of product pricings", 1)]
         [MacroMethodParam(0, "documentId", typeof(int), "document ID")]
         [MacroMethodParam(1, "uom", typeof(string), "UOM")]
+        [MacroMethodParam(2, "pricingModel", typeof(string), "Pricing model")]
         public static object GetProductPricings(EvaluationContext context, params object[] parameters)
         {
-            if (parameters.Length != 2)
+            if (parameters.Length != 3)
             {
                 throw new NotSupportedException();
             }
 
             var documentId = Convert.ToInt32(parameters[0]);
             var unitOfmeasure = (string)parameters[1];
+            var pricingModel = (string)parameters[2];
 
             if (string.IsNullOrEmpty(unitOfmeasure))
             {
                 unitOfmeasure = UnitOfMeasure.DefaultUnit;
             }
 
-            var estimates = DIContainer.Resolve<IProductsService>().GetProductPricings(documentId, unitOfmeasure, LocalizationContext.CurrentCulture.CultureCode);
+            if (string.IsNullOrEmpty(pricingModel))
+            {
+                pricingModel = PricingModel.GetDefault();
+            }
+
+            var estimates = DIContainer.Resolve<IProductsService>().GetProductPricings(documentId, pricingModel, unitOfmeasure, LocalizationContext.CurrentCulture.CultureCode);
 
             return JsonConvert.SerializeObject(estimates, CamelCaseSerializer);
+        }
+
+        [MacroMethod(typeof(string[]), "Returns product pricing models", 1)]
+        public static object GetProductPricingModels(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 0)
+            {
+                throw new NotSupportedException();
+            }
+
+            return PricingModel.GetAll();
         }
 
 

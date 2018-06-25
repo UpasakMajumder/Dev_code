@@ -12,9 +12,10 @@ const Textarea = ({
   name,
   onChange,
   inputClass,
+  wpapperClass,
   rows
 }) => {
-  const labelElement = label ? <span className="input__label">{label}</span> : null;
+  const labelElement = label ? <span className="input__label text-left">{label}</span> : null;
   const selector = disabled ? 'input__wrapper input__wrapper--disabled' : 'input__wrapper';
   const errorElement = error ? <span className="input__error input__error--noborder">{error}</span> : null;
   const errorClass = error ? 'input--error' : '';
@@ -22,7 +23,7 @@ const Textarea = ({
   const inputSelector = `${errorClass} ${inputClass}`;
 
   return (
-    <div className={selector}>
+    <div className={`${selector} ${wpapperClass}`}>
       {labelElement}
       {optionalLabel}
       <textarea
@@ -30,6 +31,7 @@ const Textarea = ({
         className={inputSelector}
         value={value}
         rows={rows}
+        disabled={disabled}
       />
       {errorElement}
     </div>
@@ -43,7 +45,8 @@ Textarea.defaultProps = {
   isOptional: false,
   name: '',
   inputClass: '',
-  rows: 1
+  rows: 1,
+  wpapperClass: ''
 };
 
 Textarea.propTypes = {
@@ -55,7 +58,8 @@ Textarea.propTypes = {
   isOptional: PropTypes.bool,
   name: PropTypes.string,
   inputClass: PropTypes.string,
-  rows: PropTypes.number
+  rows: PropTypes.number,
+  wpapperClass: PropTypes.string
 };
 
 export default Textarea;

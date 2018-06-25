@@ -92,35 +92,37 @@
           <property name="width"></property>
           <property name="zonecssclass"></property>
         </webpart>
-        <webpart controlid="Breadcrumbs" guid="7dca651d-7f94-4c1b-9f50-fbd62a51fa45" type="statictext" v="1">
+        <webpart controlid="Kadena_Breadcrumbs" guid="8d286145-f900-4fd2-b406-6f4d59990fd0" type="Kadena_Breadcrumbs" v="1">
           <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
           <property name="cat_open_visibility"></property>
-          <property name="container"></property>
+          <property name="container">KadenaBreadcrumbs</property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
           <property name="contentafter"></property>
           <property name="contentbefore"></property>
-          <property name="controlid">Breadcrumbs</property>
+          <property name="controlid">Kadena_Breadcrumbs</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
-          <property name="disableviewstate">True</property>
+          <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
+          <property name="documentid" ismacro="true">
+            <![CDATA[{% CurrentDocument.ID |(user)administrator|(hash)a9a82af2e9ed17f3117d017f3e85aad6847125d531dcca4bea6fbc38b843c389%}]]>
+          </property>
           <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
           <property name="hideonsubpages">False</property>
-          <property name="instanceguid">7dca651d-7f94-4c1b-9f50-fbd62a51fa45</property>
+          <property name="instanceguid">8d286145-f900-4fd2-b406-6f4d59990fd0</property>
           <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
           <property name="partialcachedependencies">
 <![CDATA[
 ##DEFAULT##
@@ -130,28 +132,13 @@
           <property name="partialcacheminutes"></property>
           <property name="positionleft"></property>
           <property name="positiontop"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="resolvedynamiccontrols">False</property>
+          <property name="preservepartialcacheonpostback">False</property>
           <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text" ismacro="true">
-<![CDATA[
-{%
-result = "<a href='" + CurrentDocument.AbsoluteURL + "'>" + CurrentDocument.DocumentName + "</a>";
-iteratedDocument = CurrentDocument.Parent;
-while (iteratedDocument.Parent != null) {
-result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-iteratedDocument = iteratedDocument.Parent;
-};
-"<div class='breadcrumbs'>" + result + "</div>"
-|(user)administrator|(hash)6bfc4283a297cf1dac98542bb0d719e1a27d1c7ac39cab2d6f5aae2e8ba69c23%}
-]]>
-          </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
           <property name="webparttitle"></property>
-          <property name="webparttype">statictext</property>
+          <property name="webparttype">Kadena_Breadcrumbs</property>
         </webpart>
       </webpartzone>
       <webpartzone id="zoneContent" v="1" />
@@ -486,36 +473,32 @@ config.localization.productDetail = {
     },
     requiresApproval: {
       exists: {%DocumentContext.CurrentDocument.GetValue("SKUApprovalRequired").ToString() == "True" ? "true" : "false"|(user)administrator|(hash)0aa7eb9fed1377cdc574685eed4ad75c693353603d863aca81ed7395de3e4f4c%},
-      text: '{$Kadena.Product.RequiresApproval$}'
+      text: '{%JSEscape(GetResourceString("Kadena.Product.RequiresApproval")) |(user)administrator|(hash)829ea6cc2ada74bc85f0474bc99b229242227906f673fcaf6fafc8db441e8563%}'
     },
     attachments: {% KadenaNamespace.GetProductAttachments(ProductAttachments) |(user)administrator|(hash)e40a8edbb4bceda80b92a7687db7ab7b31730ba0da8f35b72cf83f23a5d82875%},
     info: { 
-      createdDate: '{$Kadena.Product.ProductAdded$}: {% KadenaNamespace.FormatDate(DocumentCreatedWhen) |(user)administrator|(hash)92484b8dd82fd13a6d510965f3fa2ea206b3d2e4c512372482011654765afd2e%}',
+      createdDate: '{%JSEscape(GetResourceString("Kadena.Product.ProductAdded")) |(user)administrator|(hash)e1cd44eeb1cd0b76af379469f3e32156da1dd263cf97b4004b16e8e93c90911b%}: {% KadenaNamespace.FormatDate(DocumentCreatedWhen) |(user)administrator|(hash)92484b8dd82fd13a6d510965f3fa2ea206b3d2e4c512372482011654765afd2e%}',
       code: '{% ProductCustomerReferenceNumber == "" ? "" : String.FormatString("{0}: {1}",  GetResourceString("Kadena.Product.ProductCode"), ProductCustomerReferenceNumber) |(user)administrator|(hash)2d70e5fd0b80de889426e3352fd222ed2b25cab629d19e3ddb749a3cbe352ede%}'
     },
     estimates: {
-      header: '{$Kadena.Product.Estimates$}',
+      header: '{%JSEscape(GetResourceString("Kadena.Product.Estimates")) |(user)administrator|(hash)00b8d22c3e3a24175f258f4a339609fbb6d2ea6eb7025271d8b6c52199364a82%}',
       body: {% KadenaNamespace.GetProductEstimates(DocumentContext.CurrentDocument.DocumentID ) |(user)administrator|(hash)5e1ac2a1bd04043f76c8b5a35a7bb78f0a9311bc7cd5ee6baedbb9bed9f3a838%}
     },
     dynamicPrices: {
-      header: '{$Kadena.Product.UnitPrice$}',
-      body: {% KadenaNamespace.GetProductPricings(DocumentContext.CurrentDocument.DocumentID, SKUUnitOfMeasure |(user)administrator|(hash)0c7f90634a553b7a85bf479e746c509d365d8a8dcd5296640046799cfae93e27%}
+      header: '{%JSEscape(GetResourceString("Kadena.Product.UnitPrice")) |(user)administrator|(hash)4f50c4fd3875c4575dd08984d8684514419819faf8071d39bf6deecc08ca321d%}',
+      body: {% KadenaNamespace.GetProductPricings(DocumentContext.CurrentDocument.DocumentID, SKUUnitOfMeasure, ProductPricingModel |(user)administrator|(hash)ad46af8ffdf54c215f4634b6e9dfdeaac5338e95e8f09b1c9d65ba5746c4678c%}
     },
-    availability: {% KadenaNamespace.GetAvailability(DocumentContext.CurrentDocument.GetValue("ProductType").ToString(),
-                        DocumentContext.CurrentDocument.GetValue("SKUAvailableItems") , 
-                        LocalizationContext.CurrentCulture.CultureCode, 
-                        ECommerceContext.CurrentProduct.SKUAvailableItems,
-                        ECommerceContext.CurrentProduct.SKUUnitOfMeasure) |(user)administrator|(hash)4117b64895d4327ff6c8b8d6122c487dbb9735151c63b7337ece60cdcec2492d%},
-    packagingInfo: '{% KadenaNamespace.GetPackagingString(ProductNumberOfItemsInPackage, SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)administrator|(hash)d2bd820f97df79f94438952adabf96fb2c5531a62a9e96a6b03ca07cab210995%}',
+    availability: null,
+    packagingInfo: '{% KadenaNamespace.GetPackagingString(SKUNumberOfItemsInPackage, SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)administrator|(hash)bf2793a33609eb827d2c68f67d526613ec4dcdf7297778424c3e75ca49a338e3%}',
     productOptions:{
           priceElementId: "option-price",
           priceUrl: '/api/products/getprice/{%NodeSKU.ID |(user)administrator|(hash)196992259153c5795bc9ab040b553916f8e04d82e8653bcae9f7084433736838%}',
           categories: {% KadenaNamespace.GetProductOptions(NodeSKU.ID) |(user)administrator|(hash)e15fa684b9778653c74272699abf518b4bcd02dd7480837cfd6ee1bf1dd078e6%},
-          validationMessage: '{$Kadena.Product.OptionsValidation$}'
+          validationMessage: '{%JSEscape(GetResourceString("Kadena.Product.OptionsValidation")) |(user)administrator|(hash)de8e26963a83950ab5d56f6ff2d4bd487d76c139752a01ab80a337ffb39be4ff%}'
       },   
     description: {
-      title: '{$Kadena.Product.Description$}',
-      text: '{% CurrentDocument.DocumentSKUDescription.Replace("\r\n","\n").Replace("\n","<br />") |(user)administrator|(hash)717cf60f8fdbfbe67420b59a94ded580e9965fb4686c187770cd4428ecf5fb32%}'
+      title: '{%JSEscape(GetResourceString("Kadena.Product.Description")) |(user)administrator|(hash)5e5c774339a9f9493ac67c8f2198c1b8e35b7d7b75a3855f730fbc98e672f050%}',
+      text: '{% CurrentDocument.DocumentSKUDescription.Replace("\r\n","\n").Replace("\n","") |(user)administrator|(hash)9af97e18604bfb5272033fcd4ff60b89a9ef23e07a07b80230859fae1ded5d34%}'
     },
     quantityText: '{% KadenaNamespace.GetMinMaxString(ECommerceContext.CurrentProduct.SKUMinItemsInOrder, ECommerceContext.CurrentProduct.SKUMaxItemsInOrder) |(user)administrator|(hash)80b08b883005ff7aaf115de09ea25f2961b1ac8df33f23ee6fcf5338afbdd8ff%}',
     relatedProducts: null
@@ -529,6 +512,29 @@ config.localization.productDetail = {
           <property name="linkedfilepagelocation">Header</property>
           <property name="showfordocumenttypes"></property>
           <property name="visible">True</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">javascript</property>
+        </webpart>
+        <webpart controlid="javascriptInventoryAMountCall" guid="5183328a-ac83-4eb6-a15d-509ee477f063" type="javascript" v="1">
+          <property name="cat_open_behavior">False</property>
+          <property name="cat_open_performance"></property>
+          <property name="controlid">javascriptInventoryAMountCall</property>
+          <property name="disablemacros">False</property>
+          <property name="disableviewstate">False</property>
+          <property name="displaytoroles"></property>
+          <property name="generatescripttags">True</property>
+          <property name="hideonsubpages">False</property>
+          <property name="inlinescript">
+            <![CDATA[config.localization.productDetail.availability = '/api/products/availability/{%SKUID%}';]]>
+          </property>
+          <property name="inlinescriptpagelocation">Inline</property>
+          <property name="instanceguid">5183328a-ac83-4eb6-a15d-509ee477f063</property>
+          <property name="linkedfile"></property>
+          <property name="linkedfilepagelocation">Header</property>
+          <property name="showfordocumenttypes"></property>
+          <property name="visible" ismacro="true">
+            <![CDATA[{%ProductType.Contains("KDA.InventoryProduct")|(user)administrator|(hash)0162778f0be9dbdfe2accf80a9adc6df38cde762f111ffcf90478821c68be643%}]]>
+          </property>
           <property name="webparttitle"></property>
           <property name="webparttype">javascript</property>
         </webpart>
@@ -548,6 +554,10 @@ config.localization.productDetail.addToCart = {
       url: '/api/shoppingcart/addtocart',
       text: '{$Kadena.Product.AddToCart$}',
       unit: '{% KadenaNamespace.LocalizeUom(SKUUnitOfMeasure, LocalizationContext.CurrentCulture.CultureCode) |(user)administrator|(hash)1ece51502e479631d7796d73c8f6b6cd99b37272bab64cb63e8c845d33807c82%}',
+      tiers: {
+          placeholder: '{$Kadena.Product.SelectPriceTier$}',
+          items: {% KadenaNamespace.GetProductTiers(DocumentContext.CurrentDocument.ID) |(user)administrator|(hash)14dd5fdbef63c4e75a95fed3e348ab740d79737fac8e595e6d77797d794eefe5%}
+      },
       quantity: 1,
       minQuantity: 1,
       maxQuantity: '{% ECommerceContext.CurrentProduct.SKUMaxItemsInOrder |(user)administrator|(hash)c0037174074c1356b30d49cfb524efd97b63d71be1554a39435d684bd10bf550%}',
@@ -588,7 +598,7 @@ config.localization.productDetail.openTemplate = {
                                                        ProductChiliTemplateID,
                                                        ProductChiliWorkgroupID,
                                                        ProductChili3dEnabled)|(user)administrator|(hash)55edea20cb79db1d5c29cdffcdb5e97445fb7e613ce62cb07e0de4d12419be8e%}',
-    text: '{$Kadena.Product.OpenTemplateInDesign$}'
+    text: '{%JSEscape(GetResourceString("Kadena.Product.OpenTemplateInDesign")) |(user)administrator|(hash)8eb9c1c658d91ea1b36ea3023e3710cfaae0e41fe6154b0032fd261f52e7d208%}'
   }
 ]]>
           </property>

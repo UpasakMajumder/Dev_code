@@ -47,8 +47,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.GetStringValue("Email", string.Empty)))
                 .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.GetStringValue("CompanyName", string.Empty)))
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.AddressPhone))
-                .ForMember(dest => dest.Checked, opt => opt.Ignore())
-                .ForMember(dest => dest.CustomerName, opt => opt.Ignore());
+                .ForMember(dest => dest.Checked, opt => opt.Ignore());
             CreateMap<AddressInfo, State>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.AddressStateID))
                 .ForMember(dest => dest.CountryId, opt => opt.MapFrom(src => src.AddressCountryID))
@@ -99,9 +98,12 @@ namespace Kadena2.WebAPI.KenticoProviders
             CreateMap<UserInfo, User>()
                 .ForMember(dest => dest.TermsConditionsAccepted, opt => opt.MapFrom(src => src.GetDateTimeValue("TermsConditionsAccepted", DateTime.MinValue)))
                 .ForMember(dest => dest.CallBackUrl, opt => opt.MapFrom(src => src.UserURLReferrer));
-            CreateMap<SiteInfo, Site>()
+            CreateMap<SiteInfo, KenticoSite>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.SiteID))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SiteName));
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SiteName))
+                .ForMember(dest => dest.SiteDomain, opt => opt.MapFrom(src => src.DomainName))
+                .ForMember(dest => dest.OrderManagerEmail, opt => opt.Ignore())
+                .ForMember(dest => dest.ErpCustomerId, opt => opt.Ignore());
             CreateMap<PaymentOptionInfo, PaymentMethod>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PaymentOptionID))
                 .ForMember(dest => dest.Disabled, opt => opt.MapFrom(src => !src.PaymentOptionEnabled))
@@ -258,12 +260,14 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.SkuId, opt => opt.MapFrom(src => src.SKUID))
                 .ForMember(dest => dest.NeedsShipping, opt => opt.MapFrom(src => src.SKUNeedsShipping))
                 .ForMember(dest => dest.SellOnlyIfAvailable, opt => opt.MapFrom(src => src.SKUSellOnlyAvailable))
-                .ForMember(dest => dest.AvailableItems, opt => opt.MapFrom(src => src.SKUAvailableItems))
+                .ForMember(dest => dest.AvailableItems, opt => opt.MapFrom(src => (int?)src.GetValue("SKUAvailableItems")))
                 .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.SKUWeight))
                 .ForMember(dest => dest.HiResPdfDownloadEnabled, opt => opt.MapFrom(src => src.GetBooleanValue("SKUHiResPdfDownloadEnabled", false)))
                 .ForMember(dest => dest.ApprovalRequired, opt => opt.MapFrom(src => src.GetBooleanValue("SKUApprovalRequired", false)))
                 .ForMember(dest => dest.MinItemsInOrder, opt => opt.MapFrom(src => src.SKUMinItemsInOrder))
-                .ForMember(dest => dest.MaxItemsInOrder, opt => opt.MapFrom(src => src.SKUMaxItemsInOrder));
+                .ForMember(dest => dest.MaxItemsInOrder, opt => opt.MapFrom(src => src.SKUMaxItemsInOrder))
+                .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.GetStringValue("SKUUnitOfMeasure", UnitOfMeasure.DefaultUnit)))
+                .ForMember(dest => dest.NumberOfItemsInPackage, opt => opt.MapFrom(src => src.GetIntegerValue("SKUNumberOfItemsInPackage", 1)));
 
             CreateMap<User, UserInfo>()
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))

@@ -31,16 +31,13 @@ namespace Kadena.AWSLogging
         {
             _config = config;
             _logType = logType;
-            var credentials = config.Credentials;
-            _client = new AmazonCloudWatchLogsClient(credentials, _config.RegionEndpoint);
+            _client = new AmazonCloudWatchLogsClient(_config.RegionEndpoint);
             ((AmazonCloudWatchLogsClient)this._client).BeforeRequestEvent += ServiceClientBeforeRequestEvent;
             StartMonitor();
             RegisterShutdownHook();
 
             // Disable adding messages when logger is not properly configured
-            isInit = !(string.IsNullOrWhiteSpace(credentials?.GetCredentials()?.AccessKey) ||
-                string.IsNullOrWhiteSpace(credentials?.GetCredentials()?.SecretKey) ||
-                string.IsNullOrWhiteSpace(_config?.LogGroup));
+            isInit = !(string.IsNullOrWhiteSpace(_config?.LogGroup));
         }
 
         private void RegisterShutdownHook()

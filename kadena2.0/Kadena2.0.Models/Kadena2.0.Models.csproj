@@ -50,6 +50,7 @@
     <Compile Include="AddToCart\DistributorCart.cs" />
     <Compile Include="AddToCart\DistributorCartItem.cs" />
     <Compile Include="Address\BillingAddress.cs" />
+    <Compile Include="Approval\ApprovalResult.cs" />
     <Compile Include="Approval\Approver.cs" />
     <Compile Include="Brand\Brand.cs" />
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="OrderDetail\OrderStatusInfo.cs" />
     <Compile Include="Orders\Failed\FailedOrder.cs" />
     <Compile Include="Orders\OrderFilter.cs" />
+    <Compile Include="Orders\OrderNumber.cs" />
     <Compile Include="Orders\OrderReport.cs" />
     <Compile Include="Orders\OrderStatus.cs" />
     <Compile Include="ProductOptions\ProductCategory.cs" />
@@ -80,6 +82,8 @@
     <Compile Include="ProductOptions\ProductOptions.cs" />
     <Compile Include="Product\Border.cs" />
     <Compile Include="Product\CampaignsProduct.cs" />
+    <Compile Include="Product\PricingModel.cs" />
+    <Compile Include="Product\TieredPricingRange.cs" />
     <Compile Include="Product\Price.cs" />
     <Compile Include="Checkout\ItemOption.cs" />
     <Compile Include="Product\OptionCategory.cs" />
@@ -119,15 +123,18 @@
     <Compile Include="Checkout\SubmitButton.cs" />
     <Compile Include="Checkout\Total.cs" />
     <Compile Include="Checkout\Totals.cs" />
+    <Compile Include="Shipping\TrackingInfo.cs" />
     <Compile Include="SiteSettings\Permissions\PermissionModules.cs" />
     <Compile Include="SiteSettings\Permissions\ModulePermissions.cs" />
     <Compile Include="SiteSettings\Settings.General.cs" />
     <Compile Include="SiteSettings\Settings.Microservices.cs" />
     <Compile Include="SiteSettings\Settings.OrderDetails.cs" />
+    <Compile Include="SiteSettings\Settings.TWE.cs" />
     <Compile Include="Site\ModuleMapping.cs" />
     <Compile Include="SubmitOrder\MailingList.cs" />
     <Compile Include="SubmitOrder\OrderCartItem.cs" />
     <Compile Include="SubmitOrder\OrderItemSku.cs" />
+    <Compile Include="SubmitOrder\Weight.cs" />
     <Compile Include="TemplatedProduct\EmailProofRequest.cs" />
     <Compile Include="_Common\ContentTypes.cs" />
     <Compile Include="_Common\Country.cs" />
@@ -184,7 +191,6 @@
     <Compile Include="OrderDetail\PricingInfo.cs" />
     <Compile Include="OrderDetail\PricingInfoItem.cs" />
     <Compile Include="OrderDetail\ShippingInfo.cs" />
-    <Compile Include="OrderDetail\Tracking.cs" />
     <Compile Include="RecentOrders\OrderList.cs" />
     <Compile Include="Checkout\PaymentMethod.cs" />
     <Compile Include="Product\ProductCategoryLink.cs" />
@@ -216,7 +222,6 @@
     <Compile Include="Settings\PageButton.cs" />
     <Compile Include="Settings\SettingsAddresses.cs" />
     <Compile Include="Site\LanguageSelectorItem.cs" />
-    <Compile Include="Site\Site.cs" />
     <Compile Include="_Common\OperationResult.cs" />
     <Compile Include="_Common\PagedData.cs" />
     <Compile Include="_Common\Pagination.cs" />

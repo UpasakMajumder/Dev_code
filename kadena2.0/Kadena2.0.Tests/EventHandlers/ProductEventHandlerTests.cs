@@ -18,7 +18,7 @@ namespace Kadena.Tests.EventHandlers
 
             sut.CopyProductSKUFieldsToSKU_EventHandler(sut, new DocumentEventArgs());
 
-            Verify<IKenticoProductsProvider>(p => p.UpdateSku(It.IsAny<Sku>()), Times.Never);
+            Verify<IKenticoSkuProvider>(p => p.UpdateSkuMandatoryFields(It.IsAny<Sku>()), Times.Never);
         }
 
         [Fact(DisplayName = "ProductEventHandlerFake.CopyProductSKUFieldsToSKU_EventHandler()")]
@@ -28,27 +28,29 @@ namespace Kadena.Tests.EventHandlers
             {
                 NodeSKUID = 1,
                 SKUNeedsShipping = true,
-                SKUWeight = 2
+                SKUWeight = 2,
+                ProductSKUNumberOfItemsInPackage = 100
             };
             var sut = new ProductEventHandlerFake() { Product = product };
-            var productProviderMock = new Mock<IKenticoProductsProvider>();
-            sut.ProductsProvider = productProviderMock.Object;
+            var skuProviderMock = new Mock<IKenticoSkuProvider>();
+            sut.SkuProvider = skuProviderMock.Object;
 
             sut.CopyProductSKUFieldsToSKU_EventHandler(sut, new DocumentEventArgs());
 
-            productProviderMock.Verify(p => p.UpdateSku(It.Is<Sku>(s
+            skuProviderMock.Verify(p => p.UpdateSkuMandatoryFields(It.Is<Sku>(s
                 => s.SkuId == product.NodeSKUID
                     && s.NeedsShipping == product.SKUNeedsShipping
-                    && s.Weight == product.SKUWeight)));
+                    && s.Weight == product.SKUWeight
+                    && s.NumberOfItemsInPackage == 100)));
         }
 
         [Fact(DisplayName = "ProductEventHandlerFake.CopyProductSKUFieldsToSKU_EventHandler()")]
         public void CopyProductSKUFieldsToSKU_ShouldLogException_WhenProductProviderFails()
         {
             var sut = new ProductEventHandlerFake() { Product = new ProductClass() };
-            var productProviderStub = new Mock<IKenticoProductsProvider>();
-            productProviderStub.Setup(p => p.UpdateSku(It.IsAny<Sku>())).Throws(new Exception());
-            sut.ProductsProvider = productProviderStub.Object;
+            var skuProviderStub = new Mock<IKenticoSkuProvider>();
+            skuProviderStub.Setup(p => p.UpdateSkuMandatoryFields(It.IsAny<Sku>())).Throws(new Exception());
+            sut.SkuProvider = skuProviderStub.Object;
             var loggerMock = new Mock<IKenticoLogger>();
             sut.Logger = loggerMock.Object;
 

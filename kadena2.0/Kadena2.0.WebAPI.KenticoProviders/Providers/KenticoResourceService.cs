@@ -6,6 +6,7 @@ using CMS.Localization;
 using CMS.MacroEngine;
 using System;
 using CMS.Membership;
+using CMS.Ecommerce;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -98,6 +99,11 @@ namespace Kadena.WebAPI.KenticoProviders
         public string GetLogonPageUrl()
         {
             return URLHelper.ResolveUrl(AuthenticationHelper.GetSecuredAreasLogonPage(new SiteInfoIdentifier(SiteContext.CurrentSiteID)));
+        }
+
+        public string GetMassUnit()
+        {
+            return ECommerceSettings.MassUnit();
         }
     }
 }

@@ -93,10 +93,10 @@
           <property name="width"></property>
           <property name="zonecssclass"></property>
         </webpart>
-        <webpart controlid="Breadcrumbs" guid="b34311e5-a9ab-4ec0-bcc8-222d5a226389" type="statictext" v="1">
+        <webpart controlid="Kadena_Breadcrumbs" guid="e3718cbb-5f09-4102-8a95-dbfe7708d8d8" type="Kadena_Breadcrumbs" v="1">
           <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
           <property name="cat_open_visibility"></property>
           <property name="container">KadenaBreadcrumbs</property>
@@ -106,22 +106,24 @@
           <property name="containertitle"></property>
           <property name="contentafter"></property>
           <property name="contentbefore"></property>
-          <property name="controlid">Breadcrumbs</property>
+          <property name="controlid">Kadena_Breadcrumbs</property>
           <property name="customtimezone"></property>
           <property name="disablemacros">False</property>
-          <property name="disableviewstate">True</property>
+          <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
+          <property name="documentid" ismacro="true">
+            <![CDATA[{% Documents[Settings.KDA_KListNewPageURL].ID |(user)administrator|(hash)757dcab2d0c53480ae550a3b049ceb5dbfdbeb6a2d14f8d8a181b0a513ccb11b%}]]>
+          </property>
           <property name="enableoutputfilter">False</property>
-          <property name="encodetext">False</property>
           <property name="hideonsubpages">False</property>
-          <property name="instanceguid">b34311e5-a9ab-4ec0-bcc8-222d5a226389</property>
+          <property name="instanceguid">e3718cbb-5f09-4102-8a95-dbfe7708d8d8</property>
           <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
           <property name="partialcachedependencies">
 <![CDATA[
 ##DEFAULT##
@@ -129,29 +131,15 @@
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="resolvedynamiccontrols">True</property>
+          <property name="positionleft"></property>
+          <property name="positiontop"></property>
+          <property name="preservepartialcacheonpostback">False</property>
           <property name="showfordocumenttypes"></property>
-          <property name="tag"></property>
-          <property name="text" ismacro="true">
-<![CDATA[
-{%
-  result = "<a href='" + Documents[Settings.KDA_KListNewPageURL].AbsoluteURL + "'>" + Documents[Settings.KDA_KListNewPageURL].DocumentName + "</a>";
-  iteratedDocument = Documents[Settings.KDA_KListNewPageURL].Parent;
-  while (iteratedDocument.Parent != null) {
-  result = String.FormatString("{0}{1}", "<a href='" + iteratedDocument.AbsoluteURL + "'>" + iteratedDocument.DocumentName + "</a>", result);
-  iteratedDocument = iteratedDocument.Parent;
-  };
-  result = String.FormatString("{0}{1}", "<a href='"+ RootDocument.AbsoluteURL +"'>{$ Kadena.BreadcrumbsHome $}</a>", result);
-  result
-|(user)administrator|(hash)004a846d24b77ec8cd76e05f08aed10d8bca0b1db78ca28ea6995e6c48f95c24%}
-]]>
-          </property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
-          <property name="webparttitle">Breadcrumbs (Static Text)</property>
-          <property name="webparttype">statictext</property>
+          <property name="webparttitle"></property>
+          <property name="webparttype">Kadena_Breadcrumbs</property>
         </webpart>
       </webpartzone>
       <webpartzone id="zoneContent" v="1">

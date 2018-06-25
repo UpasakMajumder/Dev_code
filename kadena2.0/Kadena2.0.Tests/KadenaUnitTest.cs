@@ -1,13 +1,42 @@
 ﻿using Moq;
 using Moq.AutoMock;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Kadena.Tests
 {
-    public abstract class KadenaUnitTest<TSut> where TSut : class
+    public abstract class KadenaUnitTest<TSut> : IEnumerable<object[]>
+        where TSut : class
     {
         private readonly AutoMocker autoMocker = new AutoMocker();
+
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            var dependencies = typeof(TSut)
+                .GetConstructors()
+                .Select(c => c.GetParameters())
+                .Where(p => p.Length != 0)
+                .FirstOrDefault()?
+                .Select(p =>
+                {
+                    var mockType = typeof(Mock<>).MakeGenericType(p.ParameterType);
+                    return ((Mock)Activator.CreateInstance(mockType)).Object;
+                })
+                .ToArray()
+                ?? new object[0];
+
+            foreach (var dep in dependencies)
+            {
+                yield return dependencies
+                    .Select(d => d.Equals(dep) ? null : d)
+                    .ToArray();
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         protected TSut Sut => autoMocker.CreateInstance<TSut>();
 
@@ -41,8 +70,8 @@ namespace Kadena.Tests
             autoMocker.GetMock<TService>().VerifyNoOtherCalls();
         }
 
-        protected void Use<TMock, TService>() 
-            where TMock : class 
+        protected void Use<TMock, TService>()
+            where TMock : class
             where TService : class, TMock
         {
             Use<TMock>(autoMocker.CreateInstance<TService>());

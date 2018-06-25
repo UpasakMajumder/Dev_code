@@ -9,6 +9,7 @@ using Kadena.Models.Common;
 using Kadena.Models.OrderDetail;
 using Kadena.Models.Orders;
 using Kadena.Models.Product;
+using Kadena.Models.SiteSettings.Permissions;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
@@ -62,7 +63,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.kenticoOrder = kenticoOrder ?? throw new ArgumentNullException(nameof(kenticoOrder));
             this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
             this.products = products ?? throw new ArgumentNullException(nameof(products));
-            this.kenticoCustomers = kenticoCustomers?? throw new ArgumentNullException(nameof(kenticoCustomers));
+            this.kenticoCustomers = kenticoCustomers ?? throw new ArgumentNullException(nameof(kenticoCustomers));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.mailingClient = mailingClient ?? throw new ArgumentNullException(nameof(mailingClient));
             this.kenticoLog = kenticoLog ?? throw new ArgumentNullException(nameof(kenticoLog));
@@ -77,7 +78,12 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
         {
-            CheckOrderDetailPermisson(orderId, kenticoCustomers.GetCurrentCustomer());
+            if (string.IsNullOrWhiteSpace(orderId))
+            {
+                throw new ArgumentNullException(nameof(orderId));
+            }
+
+            var orderNumber = OrderNumber.Parse(orderId);
 
             var microserviceResponse = await orderViewClient.GetOrderByOrderId(orderId);
 
@@ -98,9 +104,13 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var customer = kenticoCustomers.GetCustomer(data.ClientId) ?? Customer.Unknown;
             var isWaitingForApproval = data.StatusId == (int)OrderStatus.WaitingForApproval;
-            var canCurrentUserApproveOrder = IsCurrentUserApproverFor(customer);
-            var showApprovalButtons = isWaitingForApproval && canCurrentUserApproveOrder;
+            var canCurrentUserApproveOrder = isWaitingForApproval && IsCurrentUserApproverFor(customer);
+            var canCurrentUserEditInApproval = permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.EditOrdersInApproval);
+            var showApprovalButtons = canCurrentUserApproveOrder;
+            var showEditButton = canCurrentUserApproveOrder && canCurrentUserEditInApproval;
             var approvalMessages = data.Approvals?.Select(a => a.Note) ?? Enumerable.Empty<string>();
+
+            CheckOrderDetailPermisson(orderNumber, kenticoCustomers.GetCurrentCustomer(), canCurrentUserApproveOrder);
 
             var orderDetail = new OrderDetail()
             {
@@ -113,32 +123,36 @@ namespace Kadena.BusinessLogic.Services.Orders
                     CustomerName = customer.FullName
                 },
 
+                EditOrders = showEditButton
+                    ? new DialogButton
+                    {
+                        Button = resources.GetResourceString("Kadena.Order.ButtonEdit"),
+                        ProceedUrl = "",
+                        Dialog = null
+                    }
+                    : null,
                 Actions = showApprovalButtons
                     ? new OrderActions
                     {
                         Accept = new DialogButton
                         {
                             Button = resources.GetResourceString("Kadena.Order.ButtonAccept"),
-                            Dialog = new Dialog
-                            {
-                                CancelButton = resources.GetResourceString("Kadena.Order.DialogAccept.Cancel"),
-                                ProceedButton = resources.GetResourceString("Kadena.Order.DialogAccept.Proceed"),
-                                ProceedUrl = '/' + Routes.Order.Approve,
-                                Text = resources.GetResourceString("Kadena.Order.DialogAccept.Message"),
-                                Title = resources.GetResourceString("Kadena.Order.DialogAccept.Title")
-                            }
+                            ProceedUrl = '/' + Routes.Order.Approve,
                         },
                         Reject = new DialogButton
                         {
                             Button = resources.GetResourceString("Kadena.Order.ButtonReject"),
+                            ProceedUrl = '/' + Routes.Order.Reject,
                             Dialog = new Dialog
                             {
                                 CancelButton = resources.GetResourceString("Kadena.Order.DialogReject.Cancel"),
                                 ProceedButton = resources.GetResourceString("Kadena.Order.DialogReject.Proceed"),
-                                ProceedUrl = '/' + Routes.Order.Reject,
-                                Text = resources.GetResourceString("Kadena.Order.DialogReject.Message"),
                                 Title = resources.GetResourceString("Kadena.Order.DialogReject.Title")
                             }
+                        },
+                        Comment = new TitleValuePair<string>
+                        {
+                            Title = resources.GetResourceString("Kadena.Order.Comment.Title")
                         }
                     }
                     : null,
@@ -233,8 +247,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 {
                     Title = resources.GetResourceString("Kadena.Order.ShippingSection"),
                     DeliveryMethod = shoppingCart.GetShippingProviderIcon(data.ShippingInfo.Provider),
-                    Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo),
-                    Tracking = null
+                    Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo)
                 };
                 orderDetail.ShippingInfo.Address.Country = localization
                     .GetCountries()
@@ -281,46 +294,43 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             var orderedItems = items.Select(i =>
             {
+                var oi = mapper.Map<OrderedItem>(i);
+
                 var templatedProduct = i.TemplateId != Guid.Empty ? products.GetProductBySkuId(i.SkuId) : null;
                 var previewUrl = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, templatedProduct?.TemplateLowResSettingId ?? Guid.Empty);
                 var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
 
-                return new OrderedItem()
+                oi.Image = imageService.GetThumbnailLink(products.GetSkuImageUrl(i.SkuId));
+                oi.DownloadPdfURL = GetPdfUrl(orderId, i, templatedProduct);
+                oi.UnitOfMeasure = units.GetDisplaynameByCode(oi.UnitOfMeasure);
+                oi.QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ?
+                    resources.GetResourceString("Kadena.Order.QuantityPrefixAddresses")
+                    : resources.GetResourceString("Kadena.Order.QuantityPrefix");
+                oi.QuantityShippedPrefix = resources.GetResourceString("Kadena.Order.QuantityShippedPrefix");
+                oi.MailingListPrefix = resources.GetResourceString("Kadena.Order.MailingListPrefix");
+                oi.ShippingDatePrefix = resources.GetResourceString("Kadena.Order.ItemShippingDatePrefix");
+                oi.TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix");
+                oi.TrackingPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix");
+                oi.ProductStatusPrefix = resources.GetResourceString("Kadena.Order.ProductStatusPrefix");
+                oi.ProductStatus = products.GetProductStatus(i.SkuId);
+                oi.Preview = new Button
                 {
-                    Id = i.SkuId,
-                    Image = imageService.GetThumbnailLink(products.GetSkuImageUrl(i.SkuId)),
-                    DownloadPdfURL =  GetPdfUrl(orderId, i, templatedProduct),
-                    MailingList = i.MailingList == Guid.Empty.ToString() ? string.Empty : i.MailingList,
-                    Price = String.Format("$ {0:#,0.00}", i.TotalPrice),
-                    UnitOfMeasure = units.GetDisplaynameByCode(i.UnitOfMeasure),
-                    Quantity = i.Quantity,
-                    QuantityShipped = i.QuantityShipped,
-                    QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ? resources.GetResourceString("Kadena.Order.QuantityPrefixAddresses") : resources.GetResourceString("Kadena.Order.QuantityPrefix"),
-                    QuantityShippedPrefix = resources.GetResourceString("Kadena.Order.QuantityShippedPrefix"),
-                    ShippingDate = string.Empty,
-                    Template = i.Name,
-                    TrackingId = i.TrackingId,
-                    MailingListPrefix = resources.GetResourceString("Kadena.Order.MailingListPrefix"),
-                    ShippingDatePrefix = resources.GetResourceString("Kadena.Order.ItemShippingDatePrefix"),
-                    TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix"),
-                    TrackingIdPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix"),
-                    ProductStatusPrefix = resources.GetResourceString("Kadena.Order.ProductStatusPrefix"),
-                    ProductStatus = products.GetProductStatus(i.SkuId),
-                    Preview = new Button
-                    {
-                        Exists = templatedProduct != null,
-                        Text = resources.GetResourceString("Kadena.Checkout.PreviewButton"),
-                        Url = previewAbsoluteUrl
-                    },
-                    EmailProof = new Button
-                    {
-                        Exists = templatedProduct != null,
-                        Text = resources.GetResourceString("Kadena.EmailProof.ButtonLabel"),
-                        Url = GetPdfUrl(orderId, i, templatedProduct)
-                    },
-
-                    Options = i.Attributes?.Select(a => new ItemOption { Name = products.GetOptionCategory(a.Key)?.DisplayName ?? a.Key, Value = a.Value }) ?? Enumerable.Empty<ItemOption>()
+                    Exists = templatedProduct != null,
+                    Text = resources.GetResourceString("Kadena.Checkout.PreviewButton"),
+                    Url = previewAbsoluteUrl
                 };
+                oi.EmailProof = new Button
+                {
+                    Exists = templatedProduct != null,
+                    Text = resources.GetResourceString("Kadena.EmailProof.ButtonLabel"),
+                    Url = GetPdfUrl(orderId, i, templatedProduct)
+                };
+                if (i.Attributes != null)
+                {
+                    oi.Options = i.Attributes.Select(a => new ItemOption { Name = products.GetOptionCategory(a.Key)?.DisplayName ?? a.Key, Value = a.Value });
+                }
+
+                return oi;
             }).ToList();
 
             await SetMailingListNames(orderedItems);
@@ -352,32 +362,23 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
         }
 
-        private void CheckOrderDetailPermisson(string orderId, Customer customer)
+        private void CheckOrderDetailPermisson(OrderNumber orderId, Customer customer, bool canCurrentUserApproveOrder)
         {
-            if (string.IsNullOrWhiteSpace(orderId))
+            if (orderId == null)
             {
                 throw new ArgumentNullException(nameof(orderId));
             }
 
-            int orderUserId;
-            int orderCustomerId;
-            var orderIdparts = orderId.Split(new char[] { '-' }, 3);
-
-            if (orderIdparts.Length != 3 || !int.TryParse(orderIdparts[0], out orderCustomerId) || !int.TryParse(orderIdparts[1], out orderUserId))
-            {
-                throw new ArgumentOutOfRangeException(nameof(orderId), "Bad format of customer ID");
-            }
-
             // Allow admin who has set permission to see all orders in Kentico
             // or Allow orders belonging to currently logged User and Customer
-            bool isAdmin = permissions.UserCanSeeAllOrders();
-            bool isOrderOwner = (orderUserId == customer.UserID && orderCustomerId == customer.Id);
-            if (isAdmin || isOrderOwner)
-            {
-                return;
-            }
+            var isAdmin = permissions.UserCanSeeAllOrders();
+            var isOrderOwner = (orderId.UserId == customer.UserID && orderId.CustomerId == customer.Id);
 
-            throw new SecurityException("Permission denied");
+            var canViewOrder = isAdmin || isOrderOwner || canCurrentUserApproveOrder;
+            if (!canViewOrder)
+            {
+                throw new SecurityException("Permission denied");
+            }
         }
 
         private string GetPaymentMethodIcon(string paymentMethod)

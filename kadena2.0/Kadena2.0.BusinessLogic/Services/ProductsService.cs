@@ -13,37 +13,49 @@ namespace Kadena.BusinessLogic.Services
     public class ProductsService : IProductsService
     {
         private readonly IKenticoProductsProvider products;
+        private readonly IKenticoSkuProvider skus;
         private readonly IKenticoFavoritesProvider favorites;
         private readonly IKenticoResourceService resources;
         private readonly IKenticoUnitOfMeasureProvider units;
         private readonly IImageService imageService;
         private readonly IKenticoPermissionsProvider permissions;
         private readonly IDynamicPriceRangeProvider dynamicRanges;
+        private readonly ITieredPriceRangeProvider tieredRanges;
 
-        public ProductsService(IKenticoProductsProvider products, IKenticoFavoritesProvider favorites, IKenticoResourceService resources, IKenticoUnitOfMeasureProvider units, IImageService imageService, IKenticoPermissionsProvider permissions, IDynamicPriceRangeProvider dynamicRanges)
+        public ProductsService(IKenticoProductsProvider products,
+                               IKenticoSkuProvider skus,
+                               IKenticoFavoritesProvider favorites, 
+                               IKenticoResourceService resources, 
+                               IKenticoUnitOfMeasureProvider units, 
+                               IImageService imageService, 
+                               IKenticoPermissionsProvider permissions, 
+                               IDynamicPriceRangeProvider dynamicRanges, 
+                               ITieredPriceRangeProvider tieredRanges)
         {
             this.products = products ?? throw new ArgumentNullException(nameof(products));
+            this.skus = skus ?? throw new ArgumentNullException(nameof(skus));
             this.favorites = favorites ?? throw new ArgumentNullException(nameof(favorites));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
             this.units = units ?? throw new ArgumentNullException(nameof(units));
             this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             this.dynamicRanges = dynamicRanges ?? throw new ArgumentNullException(nameof(dynamicRanges));
+            this.tieredRanges = tieredRanges ?? throw new ArgumentNullException(nameof(tieredRanges));
         }
 
         public Price GetPrice(int skuId, Dictionary<string, int> skuOptions = null)
         {
             if ((skuOptions?.Count ?? 0) == 0)
             {
-                return products.GetSkuPrice(skuId);
+                return skus.GetSkuPrice(skuId);
             }
 
-            var selectedVariant = products.GetVariant(skuId, new HashSet<int>(skuOptions.Values.Distinct()));
+            var selectedVariant = skus.GetVariant(skuId, new HashSet<int>(skuOptions.Values.Distinct()));
             if (selectedVariant == null)
             {
                 throw new ArgumentException("Product Variant for specified SKU and Options not found.");
             }
-            return products.GetSkuPrice(selectedVariant.SkuId);
+            return skus.GetSkuPrice(selectedVariant.SkuId);
         }
 
         public ProductsPage GetProducts(string path)
@@ -71,57 +83,58 @@ namespace Kadena.BusinessLogic.Services
             return productsPage;
         }
 
-        string GetAvailableProductsString(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasureCode)
+        string GetAvailableProductsString(int? numberOfAvailableProducts, string unitOfMeasureCode)
         {
             string formattedValue = string.Empty;
 
-            if (!ProductTypes.IsOfType(productType, ProductTypes.InventoryProduct))
-            {
-                return formattedValue;
-            }
-
             if (!numberOfAvailableProducts.HasValue)
             {
-                formattedValue = resources.GetResourceString("Kadena.Product.Unavailable", cultureCode);
+                formattedValue = resources.GetResourceString("Kadena.Product.Unavailable");
             }
-            else if (numberOfStockProducts == 0)
+            else if (numberOfAvailableProducts.Value == 0)
             {
-                formattedValue = resources.GetResourceString("Kadena.Product.OutOfStock", cultureCode);
+                formattedValue = resources.GetResourceString("Kadena.Product.OutOfStock");
             }
             else
             {
-                var baseString = resources.GetResourceString("Kadena.Product.NumberOfAvailableProducts", cultureCode);
-                var uomDisplayName = resources.GetResourceString(units.GetUnitOfMeasure(unitOfMeasureCode).LocalizationString, cultureCode);
-                formattedValue = string.Format(baseString, numberOfStockProducts, uomDisplayName);
+                var baseString = resources.GetResourceString("Kadena.Product.NumberOfAvailableProducts");
+                var uomDisplayName = resources.GetResourceString(units.GetUnitOfMeasure(unitOfMeasureCode).LocalizationString);
+                formattedValue = string.Format(baseString, numberOfAvailableProducts, uomDisplayName);
             }
 
             return formattedValue;
         }
 
-        public ProductAvailability GetInventoryProductAvailability(string productType, int? numberOfAvailableProducts, string cultureCode, int numberOfStockProducts, string unitOfMeasureCode)
+        string GetAvailabilityType(int? availableItems)
         {
-            if (ProductTypes.IsOfType(productType, ProductTypes.InventoryProduct))
+            if (!availableItems.HasValue)
             {
-                var availability = new ProductAvailability();
+                return ProductAvailability.Unavailable;
+            }
+            else if (availableItems.Value == 0)
+            {
+                return ProductAvailability.OutOfStock;
+            }
+            else
+            {
+                return ProductAvailability.Available;
+            }
+        }
 
-                if (!numberOfAvailableProducts.HasValue)
-                {
-                    availability.Type = ProductAvailability.Unavailable;
-                }
-                else if (numberOfStockProducts == 0)
-                {
-                    availability.Type = ProductAvailability.OutOfStock;
-                }
-                else
-                {
-                    availability.Type = ProductAvailability.Available;
-                }
+        public ProductAvailability GetInventoryProductAvailability(int skuId)
+        {
+            var sku = skus.GetSKU(skuId);
 
-                availability.Text = GetAvailableProductsString(productType, numberOfAvailableProducts, cultureCode, numberOfStockProducts, unitOfMeasureCode);
-                return availability;
+            if (sku == null)
+            {
+                return null;
             }
 
-            return null;
+            return new ProductAvailability
+            {
+                Text = GetAvailableProductsString(sku.AvailableItems, sku.UnitOfMeasure),
+                Type = GetAvailabilityType(sku.AvailableItems)
+            };
         }
 
         public bool CanDisplayAddToCartButton(string productType, int? numberOfAvailableProducts, bool sellOnlyIfAvailable)
@@ -231,31 +244,82 @@ namespace Kadena.BusinessLogic.Services
             return estimates;
         }
 
-        public IEnumerable<ProductPricingInfo> GetProductPricings(int documentId, string unitOfMeasure, string cultureCode)
+        public IEnumerable<int> GetProductTiers(int documentId)
         {
-            var ranges = dynamicRanges.GetDynamicRanges(documentId);
-            var localizedUom = TranslateUnitOfMeasure(unitOfMeasure, cultureCode);
-            var pricings = new List<ProductPricingInfo>();
-            var currencySymbol = "$";
+            var product = products.GetProductByDocumentId(documentId);
+            var pricingModel = product?.PricingModel;
+            var tiers = new List<int>();
 
-            if (ranges == null || ranges.Count() == 0)
+            if (pricingModel == PricingModel.Tiered)
             {
-                pricings.Add(products.GetDefaultVariantPricing(documentId, localizedUom));
-            }
-            else
-            {
-                foreach (var r in ranges)
+                var ranges = tieredRanges.GetTieredRanges(documentId);
+                if (ranges != null)
                 {
-                    pricings.Add(new ProductPricingInfo
-                    {
-                        Key = $"{r.MinVal}-{r.MaxVal} {localizedUom}",
-                        Value = $"{currencySymbol}{r.Price}"
-                    });
+                    tiers.AddRange(ranges.Select(tr => tr.Quantity));
                 }
+            }
+
+            return tiers;
+        }
+
+        public IEnumerable<ProductPricingInfo> GetProductPricings(int documentId, string pricingModel, string unitOfMeasure, string cultureCode)
+        {
+            var pricings = new List<ProductPricingInfo>();
+            var localizedUom = TranslateUnitOfMeasure(unitOfMeasure, cultureCode);
+            var currencySymbol = "$";
+            
+            if (pricingModel == PricingModel.Dynamic)
+            {
+                FillDynamicPrices(pricings, documentId, localizedUom, currencySymbol);
+            }
+            else if (pricingModel == PricingModel.Tiered)
+            {
+                FillTieredPrices(pricings, documentId, localizedUom, currencySymbol);
             }
 
             return pricings;
         }
+
+        private void FillDynamicPrices(List<ProductPricingInfo> pricings, int documentId, string localizedUom, string currencySymbol)
+        {
+            var dynamicRanges = this.dynamicRanges.GetDynamicRanges(documentId);
+
+            if((dynamicRanges?.Count() ?? 0) == 0)
+            {
+                pricings.Add(products.GetDefaultVariantPricing(documentId, localizedUom));
+                return;
+            }
+
+            foreach (var r in dynamicRanges)
+            {
+                pricings.Add(new ProductPricingInfo
+                {
+                    Key = $"{r.MinVal}-{r.MaxVal} {localizedUom}",
+                    Value = $"{currencySymbol}{r.Price}"
+                });
+            }
+        }
+
+        private void FillTieredPrices(List<ProductPricingInfo> pricings, int documentId, string localizedUom, string currencySymbol)
+        {
+            var tieredRanges = this.tieredRanges.GetTieredRanges(documentId);
+
+            if ((tieredRanges?.Count() ?? 0) == 0)
+            {
+                pricings.Add(products.GetDefaultVariantPricing(documentId, localizedUom));
+                return;
+            }
+
+            foreach (var r in tieredRanges)
+            {
+                pricings.Add(new ProductPricingInfo
+                {
+                    Key = $"{r.Quantity} {localizedUom}",
+                    Value = $"{currencySymbol}{r.Price.ToString("N2")}"
+                });
+            }
+        }
+
 
         public string GetMinMaxItemsString(int min, int max)
         {
