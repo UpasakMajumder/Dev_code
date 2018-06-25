@@ -134,7 +134,7 @@ namespace Kadena.BusinessLogic.Services
 
                         return new ProductTemplate
                         {
-                            EditorUrl = EditorUrl.Create(productEditorUrl, product.NodeId, t.TemplateId.ToString(),
+                            EditorUrl = ProductTemplate.CreateEditorUrl(productEditorUrl, product.NodeId, t.TemplateId.ToString(),
                                 product.ProductChiliWorkgroupID.ToString(), quantity, product.Use3d, t.MailingList?.ContainerId, t.Name),
                             TemplateId = t.TemplateId,
                             CreatedDate = t.Created,
@@ -189,7 +189,7 @@ namespace Kadena.BusinessLogic.Services
             
             var uri = new Uri(newTemplateUrl.Payload);
             var newTemplateID = HttpUtility.ParseQueryString(uri.Query).Get("doc");
-            var destinationUrl = EditorUrl.Create(productEditorUrl, nodeId, newTemplateID, workspaceId.ToString(), use3d: use3d);
+            var destinationUrl = ProductTemplate.CreateEditorUrl(productEditorUrl, nodeId, newTemplateID, workspaceId.ToString(), use3d: use3d);
 
             if (ProductTypes.IsOfType(productType, ProductTypes.MailingProduct) && ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct))
             {

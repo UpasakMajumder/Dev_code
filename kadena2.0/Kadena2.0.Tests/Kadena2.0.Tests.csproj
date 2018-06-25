@@ -510,7 +510,7 @@
     <Compile Include="KadenaUnitTest.cs" />
     <Compile Include="MicroserviceClients\FileModuleTests.cs" />
     <Compile Include="MicroserviceClients\TemplateClientTest.cs" />
-    <Compile Include="Models\Products\Templated\EditorUrlTests.cs" />
+    <Compile Include="Models\Products\Templated\ProductTemplateTests.cs" />
     <Compile Include="Models\ProductValidatorTests.cs" />
     <Compile Include="Models\DeliveryAddressesTests.cs" />
     <Compile Include="BusinessLogic\OrderResubmissionServiceTests.cs" />

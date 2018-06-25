@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Kadena.Tests.Models.Products.Templated
 {
-    public class EditorUrlTests
+    public class ProductTemplateTests
     {
         [Theory]
         [InlineData("/editor?nodeId=20&templateId=30&workspaceid=40&use3d=True&quantity=2&containerId=60&customName=asdf",
@@ -18,7 +18,7 @@ namespace Kadena.Tests.Models.Products.Templated
             string productEditorBaseUrl, int nodeId, string templateId, string workspaceid,
             bool use3d, int quantity, string containerId, string customName)
         {
-            var result = EditorUrl.Create(productEditorBaseUrl,
+            var result = ProductTemplate.CreateEditorUrl(productEditorBaseUrl,
                 nodeId, templateId, workspaceid,
                 quantity, use3d, containerId, customName);
             Assert.Equal(expectedUrl, result);
