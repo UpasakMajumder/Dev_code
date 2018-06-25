@@ -63,6 +63,7 @@
     <Compile Include="Clients\FileClient.cs" />
     <Compile Include="Clients\OrderResubmitClient.cs" />
     <Compile Include="Clients\NotificationClient.cs" />
+    <Compile Include="Clients\OrderManualUpdateClient.cs" />
     <Compile Include="Clients\UserDataServiceClient.cs" />
     <Compile Include="Clients\PaymentServiceClient.cs" />
     <Compile Include="Clients\MailingListClient.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Contracts\ICreditCardManagerClient.cs" />
     <Compile Include="Contracts\IExportClient.cs" />
     <Compile Include="Contracts\INotificationClient.cs" />
+    <Compile Include="Contracts\IOrderManualUpdateClient.cs" />
     <Compile Include="Contracts\IOrderResubmitClient.cs" />
     <Compile Include="Contracts\IPaymentServiceClient.cs" />
     <Compile Include="Contracts\IUserDataServiceClient.cs" />

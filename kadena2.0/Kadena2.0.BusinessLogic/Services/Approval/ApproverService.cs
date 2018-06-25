@@ -12,12 +12,15 @@ namespace Kadena.BusinessLogic.Services.Approval
     {
         private readonly IKenticoPermissionsProvider permissions;
         private readonly IKenticoCustomerProvider customers;
+        private readonly IKenticoUserProvider users;
 
         public ApproverService(IKenticoPermissionsProvider permissions, 
-                               IKenticoCustomerProvider customers)
+                               IKenticoCustomerProvider customers,
+                               IKenticoUserProvider users)
         {
             this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             this.customers = customers ?? throw new ArgumentNullException(nameof(customers));
+            this.users = users ?? throw new ArgumentNullException(nameof(users));
         }
 
         public IEnumerable<User> GetApprovers(int siteId)
@@ -33,6 +36,12 @@ namespace Kadena.BusinessLogic.Services.Approval
                 ModulePermissions.KadenaOrdersModule,
                 ModulePermissions.KadenaOrdersModule.ApproveOrders);
 
+        bool IsEditor(int userId) =>
+            permissions.UserHasPermission(
+                userId,
+                ModulePermissions.KadenaOrdersModule,
+                ModulePermissions.KadenaOrdersModule.EditOrdersInApproval);
+
         public bool IsCustomersApprover(int approverUserId, int customerId)
         {
             if (approverUserId == 0 || customerId == 0)
@@ -47,8 +56,27 @@ namespace Kadena.BusinessLogic.Services.Approval
 
             var customersApproverUserId = customers.GetCustomer(customerId)?.ApproverUserId ?? 0;
 
-            return customersApproverUserId != 0 && 
-                   customersApproverUserId == approverUserId;
+            return customersApproverUserId == approverUserId;
+        }
+
+        public void CheckIsCustomersApprover(int customerId, string customerName)
+        {
+            var currentUser = users.GetCurrentUser();
+
+            if ((currentUser == null) || !IsCustomersApprover(currentUser.UserId, customerId))
+            {
+                throw new Exception($"Current User is not an approver of customer '{customerName}' (Id={customerId})");
+            }
+        }
+
+        public void CheckIsCustomersEditor(int customerId)
+        {
+            var currentUser = users.GetCurrentUser();
+
+            if ((currentUser == null) || !IsCustomersApprover(currentUser.UserId, customerId) || !IsEditor(currentUser.UserId))
+            {
+                throw new Exception($"Current User has no permissions to edit orders of customer with Id={customerId}");
+            }
         }
     }
 }

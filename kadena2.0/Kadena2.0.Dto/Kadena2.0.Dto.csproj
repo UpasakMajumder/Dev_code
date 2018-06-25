@@ -72,6 +72,12 @@
     <Compile Include="Logon\Requests\RegistrationDto.cs" />
     <Compile Include="Logon\Requests\SamlAuthenticationDto.cs" />
     <Compile Include="Notification\MicroserviceRequests\SendCustomNotificationRequestDto.cs" />
+    <Compile Include="OrderManualUpdate\MicroserviceRequests\ItemUpdateDto.cs" />
+    <Compile Include="OrderManualUpdate\MicroserviceRequests\OrderManualUpdateRequestDto.cs" />
+    <Compile Include="OrderManualUpdate\Requests\OrderItemUpdateDto.cs" />
+    <Compile Include="OrderManualUpdate\Requests\OrderUpdateDto.cs" />
+    <Compile Include="OrderManualUpdate\Responses\ItemUpdateResultDto.cs" />
+    <Compile Include="OrderManualUpdate\Responses\OrderUpdateResultDto.cs" />
     <Compile Include="Order\Failed\FailedOrderDto.cs" />
     <Compile Include="Order\Failed\ResubmitOrderRequestDto.cs" />
     <Compile Include="Order\Failed\ResubmitOrderResponseDto.cs" />
@@ -237,6 +243,8 @@
     <Compile Include="ViewOrder\MicroserviceResponses\TrackingInfoDto.cs" />
     <Compile Include="ViewOrder\Responses\AddressDto.cs" />
     <Compile Include="ViewOrder\Responses\CommonInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\EditOrderDialogButtonsDTO.cs" />
+    <Compile Include="ViewOrder\Responses\EditOrderDialogDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderActionsDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderDetailDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemDTO.cs" />

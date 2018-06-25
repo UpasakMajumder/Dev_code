@@ -36,9 +36,9 @@ class Orders extends Component {
 
   getDialog = () => {
     const { activeDialog } = this.state;
-    if (activeDialog === '') return null;
-    const { dialog } = this.props.orders.rows[activeDialog];
-    return <Dialog dialog={dialog} closeDialog={this.closeDialog} />;
+    const activeDialogData = this.props.orders.rows[activeDialog];
+    const dialog = activeDialogData ? activeDialogData.dialog : {};
+    return <Dialog dialog={dialog} open={activeDialog !== ''} closeDialog={this.closeDialog} />;
   };
 
   getTableHeader = () => {
