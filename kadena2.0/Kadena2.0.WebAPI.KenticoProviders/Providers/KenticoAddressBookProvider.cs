@@ -107,30 +107,27 @@ namespace Kadena.WebAPI.KenticoProviders
                         ? CustomerInfoProvider.GetCustomerInfo(customerId)
                         : ECommerceContext.CurrentCustomer;
 
-
                     if (string.IsNullOrWhiteSpace(info.AddressPersonalName))
                     {
                         info.AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}";
-                        if (string.IsNullOrWhiteSpace(info.GetStringValue("CompanyName", string.Empty)))
-                        {
-                            if (customer.CustomerHasCompanyInfo)
-                            {
-                                info.SetValue("CompanyName", customer.CustomerCompany);
-                            }
-                            else
-                            {
-                                info.SetValue("CompanyName", kadenaSettings.DefaultCustomerCompanyName);
-                            }
-                        }
                     }
-                    else
+
+                    if (string.IsNullOrWhiteSpace(info.GetStringValue("CompanyName", string.Empty)))
                     {
-                        info.SetValue("CompanyName", address.CompanyName);
+                        if (customer.CustomerHasCompanyInfo)
+                        {
+                            info.SetValue("CompanyName", customer.CustomerCompany);
+                        }
+                        else
+                        {
+                            info.SetValue("CompanyName", kadenaSettings.DefaultCustomerCompanyName);
+                        }
                     }
 
                     info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
                     info.SetValue("AddressType", AddressType.Shipping.Code);
-                    info.AddressCustomerID = customer.CustomerID;
+                    info.AddressCustomerID = customer.CustomerID;
+
                     AddressInfoProvider.SetAddressInfo(info);
                     address.Id = info.AddressID;
                 }
