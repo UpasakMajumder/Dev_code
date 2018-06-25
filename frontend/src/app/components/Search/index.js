@@ -40,7 +40,10 @@ class Search extends Component {
       this.setState({ workingProcess: workingProcessId });
     }
 
-    if (!query.length) closeDropdown();
+    if (!query.length) {
+      clearTimeout(workingProcess);
+      closeDropdown();
+    }
   };
 
   redirectUserToResultPage = (e) => {
