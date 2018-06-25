@@ -47,6 +47,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.GetStringValue("Email", string.Empty)))
                 .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.GetStringValue("CompanyName", string.Empty)))
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.AddressPhone))
+                .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.AddressCustomerID))
                 .ForMember(dest => dest.Checked, opt => opt.Ignore());
             CreateMap<AddressInfo, State>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.AddressStateID))
@@ -67,7 +68,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.AddressStateID, opt => opt.MapFrom(src => src.State.Id))
                 .ForMember(dest => dest.AddressCountryID, opt => opt.MapFrom(src => src.Country.Id))
                 .ForMember(dest => dest.AddressPhone, opt => opt.MapFrom(src => src.Phone))
-                .ForMember(dest => dest.AddressCustomerID, opt => opt.Ignore())
+                .ForMember(dest => dest.AddressCustomerID, opt => opt.MapFrom(src => src.CustomerId))
                 .ForMember(dest => dest.AddressName, opt => opt.Ignore())
                 .ForMember(dest => dest.AddressGUID, opt => opt.Ignore())
                 .ForMember(dest => dest.AddressLastModified, opt => opt.Ignore())
