@@ -75,12 +75,15 @@ namespace Kadena.WebAPI.KenticoProviders
         }
         public int GetOpenCampaignID()
         {
-            var openCampaign = DocumentHelper.GetDocuments(PageTypeClassName).OnSite(SiteContext.CurrentSiteID).Columns("CampaignID,Name,StartDate,EndDate")
-                                    .WhereEquals("OpenCampaign", true)
-                                    .Where(new WhereCondition().WhereEquals("CloseCampaign", false).Or()
-                                    .WhereEquals("CloseCampaign", null))
-                                    .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID).FirstOrDefault();
-            return openCampaign != null ? openCampaign.GetIntegerValue("CampaignID", default(int)) : default(int);
+            var openCampaign = DocumentHelper.GetDocuments(PageTypeClassName)
+                .Columns("CampaignID,Name,StartDate,EndDate")
+                .OnSite(SiteContext.CurrentSiteID)
+                .WhereEquals("OpenCampaign", true)
+                .Where(new WhereCondition().WhereEquals("CloseCampaign", false).Or().WhereEquals("CloseCampaign", null))
+                .FirstOrDefault();
+            return openCampaign != null 
+                ? openCampaign.GetIntegerValue("CampaignID", default(int)) 
+                : default(int);
         }
         public string GetCampaignFiscalYear(int campaignID)
         {

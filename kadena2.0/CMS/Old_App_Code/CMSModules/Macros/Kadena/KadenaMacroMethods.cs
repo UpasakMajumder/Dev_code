@@ -27,6 +27,7 @@ using Kadena.Models.ModuleAccess;
 using Kadena.BusinessLogic.Contracts.Approval;
 using Newtonsoft.Json;
 using Kadena.Helpers;
+using Kadena.Models.ShoppingCarts;
 
 [assembly: CMS.RegisterExtension(typeof(KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 
@@ -714,24 +715,15 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         [MacroMethodParam(1, "inventoryType", typeof(int), "InventoryType")]
         public static object GetCartCountByInventoryType(EvaluationContext context, params object[] parameters)
         {
-            try
-            {
-                int userID = ValidationHelper.GetInteger(parameters[1], default(int));
-                int inventoryType = ValidationHelper.GetInteger(parameters[2], default(int));
-                int openCampaignID = ValidationHelper.GetInteger(parameters[3], default(int));
-                var query = new DataQuery(SQLQueries.getShoppingCartCount);
-                QueryDataParameters queryParams = new QueryDataParameters();
-                queryParams.Add("@ShoppingCartUserID", userID);
-                queryParams.Add("@ShoppingCartInventoryType", inventoryType);
-                queryParams.Add("@ShoppingCartCampaignID", openCampaignID);
-                var countData = ConnectionHelper.ExecuteScalar(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
-                return ValidationHelper.GetInteger(countData, default(int));
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("Kadena Macro methods", "BindPrograms", ex.Message);
-                return default(int);
-            }
+            int userID = ValidationHelper.GetInteger(parameters[1], default(int));
+            int inventoryType = ValidationHelper.GetInteger(parameters[2], default(int));
+            int openCampaignID = ValidationHelper.GetInteger(parameters[3], default(int));
+            var query = new DataQuery(SQLQueries.getShoppingCartCount);
+
+            var shoppingCartProvider = DIContainer.Resolve<IShoppingCartProvider>();
+            var count = shoppingCartProvider.GetDistributorCartCount(userID, openCampaignID, (ShoppingCartTypes)inventoryType);
+
+            return count;
         }
 
         /// <summary>
