@@ -217,7 +217,7 @@
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
+          <property name="cat_open_visibility">False</property>
           <property name="container"></property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
@@ -251,7 +251,9 @@
           <property name="showfordocumenttypes"></property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
+          <property name="visible" ismacro="true">
+            <![CDATA[{% KadenaNamespace.GetCartCountByInventoryType(CurrentUser.UserID, 1, KadenaMacroMethods.OpenCampaignID()) > 0 |(user)administrator|(hash)71bd6de143709201366027b9ad553d95f4127518249c10e4bf8efbb2cabbcf7f%}]]>
+          </property>
           <property name="webparttitle"></property>
           <property name="webparttype">CartCheckout</property>
         </webpart>
@@ -262,7 +264,7 @@
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
+          <property name="cat_open_visibility">False</property>
           <property name="container"></property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
@@ -297,7 +299,9 @@
           <property name="showfordocumenttypes"></property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
+          <property name="visible" ismacro="true">
+            <![CDATA[{% KadenaNamespace.GetCartCountByInventoryType(CurrentUser.UserID, 1, KadenaMacroMethods.OpenCampaignID()) > 0 |(user)administrator|(hash)71bd6de143709201366027b9ad553d95f4127518249c10e4bf8efbb2cabbcf7f%}]]>
+          </property>
           <property name="webparttitle"></property>
           <property name="webparttype">GeneratePDFforCart</property>
         </webpart>

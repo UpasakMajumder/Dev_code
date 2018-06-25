@@ -715,10 +715,9 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         [MacroMethodParam(1, "inventoryType", typeof(int), "InventoryType")]
         public static object GetCartCountByInventoryType(EvaluationContext context, params object[] parameters)
         {
-            int userID = ValidationHelper.GetInteger(parameters[1], default(int));
-            int inventoryType = ValidationHelper.GetInteger(parameters[2], default(int));
-            int openCampaignID = ValidationHelper.GetInteger(parameters[3], default(int));
-            var query = new DataQuery(SQLQueries.getShoppingCartCount);
+            var userID = ValidationHelper.GetInteger(parameters[0], 0);
+            var inventoryType = ValidationHelper.GetInteger(parameters[1], 0);
+            var openCampaignID = ValidationHelper.GetInteger(parameters[2], 0);
 
             var shoppingCartProvider = DIContainer.Resolve<IShoppingCartProvider>();
             var count = shoppingCartProvider.GetDistributorCartCount(userID, openCampaignID, (ShoppingCartTypes)inventoryType);
