@@ -75,7 +75,7 @@ namespace Kadena.Container.Default
                     src.OrderingDate,
                     src.User,
                     src.Name,
-                    src.SKU,
+                    src.SKU ?? string.Empty,
                     src.Quantity,
                     src.Price,
                     src.Status,
