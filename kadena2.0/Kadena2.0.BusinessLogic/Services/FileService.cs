@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -104,7 +105,14 @@ namespace Kadena.BusinessLogic.Services
                     if (rowData[cellIndex] != null)
                     {
                         // if needed it could be casted to excel supported primitive types
-                        cell.SetCellValue(rowData[cellIndex].ToString());
+                        if (rowData[cellIndex] is IEnumerable<object> enumerable)
+                        {
+                            cell.SetCellValue(string.Join(", ", enumerable));
+                        }
+                        else
+                        {
+                            cell.SetCellValue(rowData[cellIndex].ToString());
+                        }
                     }
                 }
             }
