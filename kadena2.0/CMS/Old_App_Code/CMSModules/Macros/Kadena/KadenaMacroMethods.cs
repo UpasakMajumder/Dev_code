@@ -713,8 +713,14 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         [MacroMethod(typeof(string), "Returns cart items count", 1)]
         [MacroMethodParam(0, "userID", typeof(int), "UserID")]
         [MacroMethodParam(1, "inventoryType", typeof(int), "InventoryType")]
+        [MacroMethodParam(2, "campaignId", typeof(int), "CampaignId")]
         public static object GetCartCountByInventoryType(EvaluationContext context, params object[] parameters)
         {
+            if (parameters.Length != 3)
+            {
+                throw new NotSupportedException();
+            }
+
             var userID = ValidationHelper.GetInteger(parameters[0], 0);
             var inventoryType = ValidationHelper.GetInteger(parameters[1], 0);
             var openCampaignID = ValidationHelper.GetInteger(parameters[2], 0);
