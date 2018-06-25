@@ -69,15 +69,6 @@ namespace Kadena.WebAPI.KenticoProviders
             return mapper.Map<DeliveryAddress[]>(query.ToArray());
         }
 
-        public DeliveryAddress[] GetCustomerShippingAddresses(int customerId)
-        {
-            var addresses = AddressInfoProvider.GetAddresses(customerId)
-                .Where(a => a.GetStringValue("AddressType", string.Empty) == AddressType.Shipping)
-                .ToArray();
-
-            return mapper.Map<DeliveryAddress[]>(addresses.ToArray());
-        }
-
         public void SetDefaultShippingAddress(int addressId)
         {
             var customer = ECommerceContext.CurrentCustomer;
