@@ -124,22 +124,34 @@ namespace Kadena.BusinessLogic.Services.Orders
                 },
 
                 EditOrders = showEditButton
-                    ? new DialogButton
+                    ? new DialogButton<EditOrderDialog>
                     {
                         Button = resources.GetResourceString("Kadena.Order.ButtonEdit"),
-                        ProceedUrl = "",
-                        Dialog = null
+                        ProceedUrl = $"/{Routes.Order.OrderUpdate}",
+                        Dialog = new EditOrderDialog
+                        {
+                            Title = resources.GetResourceString("Kadena.Order.EditTite"),
+                            Description = resources.GetResourceString("Kadena.Order.EditDescription"),
+                            SuccessMessage = resources.GetResourceString("Kadena.Order.EditSuccess"),
+                            ValidationMessage = resources.GetResourceString("Kadena.Order.EditValidation"),
+                            Buttons = new EditOrderDialogButtons
+                            {
+                                Cancel = resources.GetResourceString("Kadena.Order.EditCancel"),
+                                Proceed = resources.GetResourceString("Kadena.Order.EditProceed"),
+                                Remove = resources.GetResourceString("Kadena.Order.EditRemove")
+                            }
+                        }
                     }
                     : null,
                 Actions = showApprovalButtons
                     ? new OrderActions
                     {
-                        Accept = new DialogButton
+                        Accept = new DialogButton<Dialog>
                         {
                             Button = resources.GetResourceString("Kadena.Order.ButtonAccept"),
                             ProceedUrl = '/' + Routes.Order.Approve,
                         },
-                        Reject = new DialogButton
+                        Reject = new DialogButton<Dialog>
                         {
                             Button = resources.GetResourceString("Kadena.Order.ButtonReject"),
                             ProceedUrl = '/' + Routes.Order.Reject,
@@ -247,7 +259,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 {
                     Title = resources.GetResourceString("Kadena.Order.ShippingSection"),
                     DeliveryMethod = shoppingCart.GetShippingProviderIcon(data.ShippingInfo.Provider),
-                    Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo)
+                    Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo),
                 };
                 orderDetail.ShippingInfo.Address.Country = localization
                     .GetCountries()

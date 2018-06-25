@@ -62,9 +62,8 @@ class SettingAddresses extends Component {
       dialog
     };
 
-    const dialogEl = isDialogOpen
-      ?
-      (
+    return Object.keys(ui).length
+    ? <div className="settings__block">
         <AddressDialog
           isModifyingDialog={isModifyingDialog}
           closeDialog={this.closeDialog}
@@ -72,13 +71,8 @@ class SettingAddresses extends Component {
           changeDataAddress={this.changeDataAddress}
           dialog={dialog}
           address={address}
+          open={isDialogOpen}
         />
-      )
-      : null;
-
-    return Object.keys(ui).length
-    ? <div className="settings__block">
-        {dialogEl}
         <AddressBlock
           ui={billing}
           setDefault={(id, url) => setDefault('billing', id, url)}

@@ -25,7 +25,7 @@ export const changeSearchQuery = (query) => {
 };
 
 export const sendQuery = (query, pressedEnter) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: SEARCH_RESULTS + FETCH });
 
     axios({
@@ -36,6 +36,7 @@ export const sendQuery = (query, pressedEnter) => {
       }
     }).then((response) => {
       const { payload, success, errorMessage } = response.data;
+      const visibilityStatus = getState().search.query.length ? SHOW : HIDE;
 
       if (!success) {
         dispatch({
@@ -50,8 +51,9 @@ export const sendQuery = (query, pressedEnter) => {
             pressedEnter: pressedEnter || false
           }
         });
-        dispatch({ type: SEARCH_RESULTS + SHOW });
-        dispatch({ type: HEADER_SHADOW + SHOW });
+
+        dispatch({ type: SEARCH_RESULTS + visibilityStatus });
+        dispatch({ type: HEADER_SHADOW + visibilityStatus });
       }
     })
       .catch((error) => {

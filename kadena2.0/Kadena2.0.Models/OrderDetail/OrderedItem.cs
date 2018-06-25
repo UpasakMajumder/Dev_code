@@ -29,5 +29,8 @@ namespace Kadena.Models.OrderDetail
         public Button Preview { get; set; }
         public Button EmailProof { get; set; }
         public IEnumerable<ItemOption> Options { get; set; }
+        public int LineNumber { get; set; }
+        public bool Removed { get; set; }
+        public string RemoveLabel { get; set; }
     }
 }

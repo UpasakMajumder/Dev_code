@@ -74,15 +74,6 @@ namespace Kadena.Tests.BusinessLogic.Approval
         }
 
         [Fact]
-        public async Task ApproveOrderTest_Exception()
-        {
-            Setup<IApproverService, bool>(a => a.IsCustomersApprover(approverUserId, customerId), false);
-
-            await Assert.ThrowsAsync<Exception>(async () => await Sut.ApproveOrder(orderId, customerId, customerName));
-        }
-
-
-        [Fact]
         public async Task RejectOrderTest()
         {
             const string rejectNote = "because";
@@ -137,11 +128,19 @@ namespace Kadena.Tests.BusinessLogic.Approval
             await Assert.ThrowsAsync<ApprovalServiceException>(action);
             Verify<IKenticoLogger>(l => l.LogError("RejectOrder", It.Is<string>(s => s.Contains(orderId) && s.Contains(badStatus))), Times.Once);
         }
-        
+
+        [Fact]
+        public async Task ApproveOrderTest_Exception()
+        {
+            SetupThrows<IApproverService>(a => a.CheckIsCustomersApprover(customerId, customerName), new Exception());
+
+            await Assert.ThrowsAsync<Exception>(async () => await Sut.ApproveOrder(orderId, customerId, customerName));
+        }
+
         [Fact]
         public async Task RejectOrderTest_Exception()
         {
-            Setup<IApproverService, bool>(a => a.IsCustomersApprover(approverUserId, customerId), false);
+            SetupThrows<IApproverService>(a => a.CheckIsCustomersApprover(customerId, customerName), new Exception());
 
             await Assert.ThrowsAsync<Exception>(async () => await Sut.RejectOrder(orderId, customerId, customerName));
         }
