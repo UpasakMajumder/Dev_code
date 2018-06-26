@@ -30,8 +30,6 @@ public partial class CMSWebParts_Kadena_Search_KDASqlSearchBox : CMSAbstractWebP
         set
         {
             SetValue("ShowImageButton", value);
-            btnGo.Visible = !value;
-            btnImageButton.Visible = value;
         }
     }
 
@@ -42,12 +40,11 @@ public partial class CMSWebParts_Kadena_Search_KDASqlSearchBox : CMSAbstractWebP
     {
         get
         {
-            return ResolveUrl(ValidationHelper.GetString(GetValue("ImageUrl"), btnImageButton.ImageUrl));
+            return ResolveUrl(ValidationHelper.GetString(GetValue("ImageUrl"), ""));
         }
         set
         {
             SetValue("ImageUrl", value);
-            btnImageButton.ImageUrl = value;
         }
     }
 
@@ -95,7 +92,6 @@ public partial class CMSWebParts_Kadena_Search_KDASqlSearchBox : CMSAbstractWebP
         set
         {
             SetValue("SearchButtonText", value);
-            btnGo.Text = value;
         }
     }
 
@@ -143,8 +139,6 @@ public partial class CMSWebParts_Kadena_Search_KDASqlSearchBox : CMSAbstractWebP
         set
         {
             SetValue("SearchButtonCssClass", value);
-            btnGo.CssClass = value;
-            btnImageButton.CssClass = value;
         }
     }
 
@@ -197,8 +191,6 @@ public partial class CMSWebParts_Kadena_Search_KDASqlSearchBox : CMSAbstractWebP
             {
                 lblSearch.SkinID = value;
                 txtWord.SkinID = value;
-                btnGo.SkinID = value;
-                btnImageButton.SkinID = value;
             }
         }
     }
@@ -221,12 +213,6 @@ public partial class CMSWebParts_Kadena_Search_KDASqlSearchBox : CMSAbstractWebP
         if (!StopProcessing)
         {
             txtWord.Attributes.Add("placeholder", CMS.Helpers.ResHelper.GetString("KDA.Common.SearchWaterMarkText"));
-            btnGo.Visible = !ShowImageButton;
-            btnImageButton.Visible = ShowImageButton;
-            pnlSearch.DefaultButton = btnGo.Visible ? btnGo.ID : btnImageButton.ID;
-
-            btnImageButton.ImageUrl = ImageUrl;
-            btnImageButton.AlternateText = GetString("General.search");
 
             // Set label visibility according to WAI standards
             if (!ShowSearchLabel)
@@ -237,13 +223,9 @@ public partial class CMSWebParts_Kadena_Search_KDASqlSearchBox : CMSAbstractWebP
             // Set text properties
             lblSearch.Text = SearchLabelText;
 
-            btnGo.Text = SearchButtonText;
-
             // Set class properties
             lblSearch.CssClass = SearchLabelCssClass;
             txtWord.CssClass = SearchTextboxCssClass;
-            btnGo.CssClass = SearchButtonCssClass;
-            btnImageButton.CssClass = SearchButtonCssClass;
 
             // Set result page
             mResultPageUrl = SearchResultsPageUrl;
@@ -254,8 +236,6 @@ public partial class CMSWebParts_Kadena_Search_KDASqlSearchBox : CMSAbstractWebP
                 string skinId = SkinID;
                 lblSearch.SkinID = skinId;
                 txtWord.SkinID = skinId;
-                btnGo.SkinID = skinId;
-                btnImageButton.SkinID = skinId;
             }
         }
 
@@ -273,26 +253,8 @@ public partial class CMSWebParts_Kadena_Search_KDASqlSearchBox : CMSAbstractWebP
         string skinId = SkinID;
         lblSearch.SkinID = skinId;
         txtWord.SkinID = skinId;
-        btnGo.SkinID = skinId;
-        btnImageButton.SkinID = skinId;
 
         base.ApplyStyleSheetSkin(page);
-    }
-
-    /// <summary>
-    /// Button search handler.
-    /// </summary>
-    protected void btnGo_Click(object sender, EventArgs e)
-    {
-        //Search();
-    }
-
-    /// <summary>
-    /// Image button search handler.
-    /// </summary>
-    protected void btnImageButton_Click(object sender, ImageClickEventArgs e)
-    {
-        //Search();
     }
 
     /// <summary>
