@@ -244,7 +244,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             };
 
             var mailingTypeCode = OrderItemTypeDTO.Mailing.ToString();
-            var hasOnlyMailingListProducts = data.Items.All(item => item.Type == mailingTypeCode);
+            var hasOnlyMailingListProducts = data.Items?.All(item => item.Type == mailingTypeCode) ?? false;
             if (hasOnlyMailingListProducts)
             {
                 orderDetail.ShippingInfo = new ShippingInfo
@@ -304,6 +304,11 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         private async Task<List<OrderedItem>> MapOrderedItems(List<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO> items, string orderId)
         {
+            if (items == null)
+            {
+                return new List<OrderedItem>();
+            }
+
             var orderedItems = items
                 .Where(i => i.Quantity > 0)
                 .Select(i =>
