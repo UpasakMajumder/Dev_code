@@ -179,6 +179,13 @@ class EditModal extends Component {
 
   getBody = () => {
     const orders = this.props.orderedItems.filter(item => item.quantity).map((orderedItem) => {
+      const isRemoved = !!(
+        this.state.orderedItems &&
+        this.state.orderedItems[orderedItem.id] &&
+        this.state.orderedItems[orderedItem.id].remove
+      );
+      if (isRemoved) return null;
+
       return (
         <EditOrder
           key={orderedItem.id}
