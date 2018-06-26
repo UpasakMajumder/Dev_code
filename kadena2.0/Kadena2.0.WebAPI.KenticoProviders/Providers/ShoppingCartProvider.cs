@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Kadena.Models.AddToCart;
+using Kadena.Models.ShoppingCarts;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -526,12 +527,12 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public int GetDistributorCartCount(int userID, int campaignID, int inventoryType = 1)
+        public int GetDistributorCartCount(int userID, int campaignID, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory)
         {
             var query = new DataQuery("Ecommerce.Shoppingcart.GetShoppingCartCount");
             QueryDataParameters queryParams = new QueryDataParameters();
             queryParams.Add("@ShoppingCartUserID", userID);
-            queryParams.Add("@ShoppingCartInventoryType", inventoryType);
+            queryParams.Add("@ShoppingCartInventoryType", (int)cartType);
             queryParams.Add("@ShoppingCartCampaignID", campaignID);
             var countData = ConnectionHelper.ExecuteScalar(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
             return ValidationHelper.GetInteger(countData, default(int));

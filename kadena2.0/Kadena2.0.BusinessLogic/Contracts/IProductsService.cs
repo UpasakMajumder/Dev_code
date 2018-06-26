@@ -16,5 +16,7 @@ namespace Kadena.BusinessLogic.Contracts
         ProductAvailability GetInventoryProductAvailability(int skuId);
         string GetMinMaxItemsString(int min, int max);
         IEnumerable<int> GetProductTiers(int documentId);
+        decimal GetPriceByCustomModel(int documentId, int quantity);
+        bool ProductHasValidSKUNumber(int skuid);
     }
 }

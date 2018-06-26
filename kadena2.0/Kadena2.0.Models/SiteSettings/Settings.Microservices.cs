@@ -56,6 +56,15 @@ namespace Kadena.Models.SiteSettings
         [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
         [GroupAttribute("Microservices settings")]
         [DefaultValueAttribute(@"1")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9PcmRlck1hbnVhbFVwZGF0ZVZlcnNpb24iLCJLZXlOYW1lIjoiS0RBX09yZGVyTWFudWFsVXBkYXRlVmVyc2lvbiIsIktleVR5cGUiOiJpbnQiLCJLZXlEZWZhdWx0VmFsdWUiOiIxIiwiS2V5RGVzY3JpcHRpb24iOiIiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiS2FkZW5hIiwiTmFtZSI6IkthZGVuYSIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkNNUy5TZXR0aW5ncyJ9LCJEaXNwbGF5TmFtZSI6Ik1pY3Jvc2VydmljZXMgc2V0dGluZ3MifX0=")]
+        public const string KDA_OrderManualUpdateVersion = "KDA_OrderManualUpdateVersion";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Microservices settings")]
+        [DefaultValueAttribute(@"1")]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9Ob3RpZmljYXRpb25TZXJ2aWNlVmVyc2lvbiIsIktleU5hbWUiOiJLREFfTm90aWZpY2F0aW9uU2VydmljZVZlcnNpb24iLCJLZXlUeXBlIjoiaW50IiwiS2V5RGVmYXVsdFZhbHVlIjpudWxsLCJLZXlEZXNjcmlwdGlvbiI6IiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiTWljcm9zZXJ2aWNlcyBzZXR0aW5ncyJ9fQ==")]
         public const string KDA_NotificationServiceVersion = "KDA_NotificationServiceVersion";
 

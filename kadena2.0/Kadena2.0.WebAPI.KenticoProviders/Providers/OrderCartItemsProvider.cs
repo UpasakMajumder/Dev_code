@@ -60,7 +60,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 TotalPrice = (decimal)Math.Round( i.UnitPrice * i.CartItemUnits, 2),
                 SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true),
                 RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false),
-                Options = GetItemOptions(i)
+                Options = GetItemOptions(i),
+                DocumentId = i.GetIntegerValue("ProductPageID", 0)
             };
 
             if (ProductTypes.IsOfType(orderCartItem.ProductType, ProductTypes.MailingProduct))

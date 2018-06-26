@@ -422,7 +422,8 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                         UnitOfMeasure =  uomProvider.GetUnitOfMeasure(uom).ErpCode,
                         RequiresApproval = item.SKU.GetBooleanValue("SKUApprovalRequired", false),
                         UnitPrice = ValidationHelper.GetDecimal(item.UnitPrice, default(decimal)),
-                        TotalPrice = ValidationHelper.GetDecimal(item.TotalPrice, default(decimal))
+                        TotalPrice = ValidationHelper.GetDecimal(item.TotalPrice, default(decimal)),
+                        DocumentId = item.GetIntegerValue("ProductPageID", 0)
                     });
                 });
             }

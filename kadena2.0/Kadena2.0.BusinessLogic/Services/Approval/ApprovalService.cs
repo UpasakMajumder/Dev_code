@@ -15,21 +15,18 @@ namespace Kadena.BusinessLogic.Services.Approval
     {
         private readonly IApproverService approvers;
         private readonly IApprovalServiceClient approvalClient;
-        private readonly IKenticoUserProvider users;
         private readonly IKenticoLogger log;
         private readonly IKenticoOrderProvider kenticoOrderProvider;
         private readonly IKenticoResourceService kenticoResource;
 
         public ApprovalService(IApproverService approvers,
                                IApprovalServiceClient approvalClient,
-                               IKenticoUserProvider users,
-                               IKenticoLogger log,
+                                       IKenticoLogger log,
                                IKenticoOrderProvider kenticoOrderProvider,
                                IKenticoResourceService kenticoResource)
         {
             this.approvers = approvers ?? throw new ArgumentNullException(nameof(approvers));
             this.approvalClient = approvalClient ?? throw new ArgumentNullException(nameof(approvalClient));
-            this.users = users ?? throw new ArgumentNullException(nameof(users));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
             this.kenticoOrderProvider = kenticoOrderProvider ?? throw new ArgumentNullException(nameof(kenticoOrderProvider));
             this.kenticoResource = kenticoResource ?? throw new ArgumentNullException(nameof(kenticoResource));
@@ -59,7 +56,7 @@ namespace Kadena.BusinessLogic.Services.Approval
 
         async Task CallApprovalService(string orderId, int customerId, string customerName, string note, ApprovalState approvalState)
         {
-            CheckIsCustomersApprover(customerId, customerName);
+            approvers.CheckIsCustomersApprover(customerId, customerName);
             var approveRequest = GetApprovalData(orderId, customerId, customerName, approvalState, note);
 
             var microserviceResult = await approvalClient.Approval(approveRequest).ConfigureAwait(false);
@@ -83,15 +80,7 @@ namespace Kadena.BusinessLogic.Services.Approval
             log.LogInfo(approvalState.GetDisplayName(), "Info", $"Order '{approveRequest.OrderId}' successfully processed, approval status : {microserviceResult.Payload}. {noteLog}");
         }
 
-        void CheckIsCustomersApprover(int customerId, string customerName)
-        {
-            var currentUser = users.GetCurrentUser();
-
-            if ((currentUser == null) || !approvers.IsCustomersApprover(currentUser.UserId, customerId))
-            {
-                throw new Exception($"Current User is not an approver of customer '{customerName}' (Id={customerId})");
-            }
-        }
+        
 
         private ApprovalRequestDto GetApprovalData(string orderId, int customerId, string customerName, ApprovalState state, string rejectionNote)
         {

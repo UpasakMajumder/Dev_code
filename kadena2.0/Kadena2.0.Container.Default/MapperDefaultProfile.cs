@@ -18,6 +18,9 @@ using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Dto.MailTemplate.Responses;
 using Kadena.Dto.Order;
 using Kadena.Dto.Order.Failed;
+using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
+using Kadena.Dto.OrderManualUpdate.Requests;
+using Kadena.Dto.OrderManualUpdate.Responses;
 using Kadena.Dto.Product;
 using Kadena.Dto.Product.Responses;
 using Kadena.Dto.RecentOrders;
@@ -45,6 +48,7 @@ using Kadena.Models.CustomerData;
 using Kadena.Models.Login;
 using Kadena.Models.Membership;
 using Kadena.Models.OrderDetail;
+using Kadena.Models.Orders;
 using Kadena.Models.Orders.Failed;
 using Kadena.Models.Product;
 using Kadena.Models.RecentOrders;
@@ -85,6 +89,8 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.ProductStatus, opt => opt.Ignore())
                 .ForMember(dest => dest.Preview, opt => opt.Ignore())
                 .ForMember(dest => dest.EmailProof, opt => opt.Ignore())
+                .ForMember(dest => dest.Removed, opt => opt.Ignore())
+                .ForMember(dest => dest.RemoveLabel, opt => opt.Ignore())
                 .ForMember(dest => dest.Options, opt => opt.UseValue(Enumerable.Empty<ItemOption>()));
 
             CreateMap<ApprovalResult, ApprovalResultDto>();
@@ -186,14 +192,16 @@ namespace Kadena.Container.Default
             CreateMap<DefaultAddress, DefaultAddressDto>();
             CreateMap<SettingsAddresses, SettingsAddressesDto>();
             CreateMap<OrderedItem, OrderedItemDTO>();
-
             CreateMap<OrderedItems, OrderedItemsDTO>();
             CreateMap<OrderDetail, OrderDetailDTO>();
             CreateMap<CommonInfo, CommonInfoDTO>();
             CreateMap<OrderStatusInfo, OrderStatusInfoDTO>();
             CreateMap<OrderInfo, OrderInfoDTO>();
             CreateMap<OrderActions, OrderActionsDTO>();
-            CreateMap<Models.Common.DialogButton, DialogButtonDTO>();
+            CreateMap<DialogButton<Dialog>, DialogButtonDTO<DialogDTO>>();
+            CreateMap<DialogButton<EditOrderDialog>, DialogButtonDTO<EditOrderDialogDTO>>();
+            CreateMap<EditOrderDialog, EditOrderDialogDTO>();
+            CreateMap<EditOrderDialogButtons, EditOrderDialogButtonsDTO>();
             CreateMap<Dialog, DialogDTO>();
             CreateMap(typeof(TitleValuePair<>), typeof(TitleValuePairDto<>));
             CreateMap<ShippingInfo, ShippingInfoDTO>();
@@ -375,7 +383,17 @@ namespace Kadena.Container.Default
                 .ForAllOtherMembers(m => m.Ignore());
             CreateMap<Weight, WeightDto>()
                 .ReverseMap();
-
+            CreateMap<OrderItemUpdateDto, OrderItemUpdate>();
+            CreateMap<OrderUpdateDto, OrderUpdate>();
+            CreateMap<AddressDTO, Dto.EstimateDeliveryPrice.MicroserviceRequests.AddressDto>()
+                .ForMember(dest => dest.StreetLines, opt => opt.MapFrom(src => new[] { src.AddressLine1, src.AddressLine2 }.Where(s => !string.IsNullOrEmpty(s)).ToList()))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
+                .ForMember(dest => dest.Postal, opt => opt.MapFrom(src => src.Zip))
+                .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State));
+            CreateMap<OrderUpdateResult, OrderUpdateResultDto>();
+            CreateMap<ItemUpdateResult, ItemUpdateResultDto>();
+            //CreateMap<UpdatedItemCheckData, ItemUpdateDto>()
         }
     }
 }

@@ -18,6 +18,7 @@ namespace Kadena.Models.SubmitOrder
         public ChiliProcess ChiliProcess { get; set; }
         public bool SendPriceToErp { get; set; }
         public bool RequiresApproval { get; set; }                
-        public IEnumerable<ItemOption> Options { get; set; } 
+        public IEnumerable<ItemOption> Options { get; set; }
+        public int DocumentId { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Kadena.BusinessLogic.Contracts;
+using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.BusinessLogic.Services;
 using Kadena.Models;
@@ -129,9 +130,8 @@ namespace Kadena.Tests.BusinessLogic
             };
 
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
-            Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku { });
-            Setup<IDynamicPriceRangeProvider, decimal>(dp => dp.GetDynamicPrice(5, null), dynamicPrice);
-            Setup<IKenticoProductsProvider, Product>(p => p.GetProductByDocumentId(1123), new Product { PricingModel = PricingModel.Dynamic });
+            Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku {  });
+            Setup<IProductsService, decimal>(p => p.GetPriceByCustomModel(1123, 5), dynamicPrice);
 
             // Act
             var result = await Sut.AddToCart(newCartItem);
@@ -249,6 +249,7 @@ namespace Kadena.Tests.BusinessLogic
 
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
             Setup<IKenticoSkuProvider, Sku>(cp => cp.GetSKU(originalCartItemEntity.SKUID), new Sku { AvailableItems = 1, SellOnlyIfAvailable = true });
+            SetupThrows<IOrderItemCheckerService>(o => o.EnsureInventoryAmount(It.IsAny<Sku>(), 2, 3), new ArgumentException());
 
             // Act
             Task action() => Sut.AddToCart(newCartItem);
@@ -438,19 +439,15 @@ namespace Kadena.Tests.BusinessLogic
                                    IShoppingCartItemsProvider shoppingCartItems,
                                    ICheckoutPageFactory checkoutfactory,
                                    IKenticoLogger log,
-                                   IKenticoAddressBookProvider addressBookProvider,
-                                   IKenticoProductsProvider productsProvider,
-                                   IKenticoBusinessUnitsProvider businessUnitsProvider,
-                                   IDynamicPriceRangeProvider dynamicPrices,
-                                   ITieredPriceRangeProvider tieredPrices,
+                                   IProductsService productsService,
                                    IImageService imageService,
                                    IKenticoSkuProvider skus,
+                                   IOrderItemCheckerService orderChecker,
                                    ISettingsService settingsService)
         {
             Assert.Throws<ArgumentNullException>(() => new ShoppingCartService(kenticoSite, localization, permissions, kenticoUsers,
                 kenticoCustomer, addresses, resources, taxCalculator, mailingService, userDataClient, shoppingCart, shoppingCartItems,
-                checkoutfactory, log, addressBookProvider, productsProvider, businessUnitsProvider, dynamicPrices, tieredPrices,
-                imageService, skus, settingsService));
+                checkoutfactory, log, productsService, imageService, skus, orderChecker, settingsService));
         }
 
         [Fact(DisplayName = "ShoppingCartService.SaveTemporaryAddress() | Null address")]

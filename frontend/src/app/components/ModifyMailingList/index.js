@@ -140,7 +140,6 @@ class ModifyMailingList extends Component {
     let errorContainer = null;
     let successContainer = null;
     let btnCorrectErrors = null;
-    let mailingDialog = null;
 
     if (filteredErrorList.length) {
       const { reupload, correct } = errorUI.btns;
@@ -186,23 +185,18 @@ class ModifyMailingList extends Component {
       );
     }
 
-    if (isDialogShown) {
-      mailingDialog = (
+    return (
+      <div className="processed-list">
+        {errorContainer}
+        {successContainer}
         <MailingDialog
           closeDialog={this.closeDialog}
           formInfo={formInfo}
           emptyFields={emptyFields}
           reprocessAddresses={this.handleReprocessAddresses}
           errorList={errorList}
+          open={isDialogShown}
         />
-      );
-    }
-
-    return (
-      <div className="processed-list">
-        {errorContainer}
-        {successContainer}
-        {mailingDialog}
       </div>
     );
   }

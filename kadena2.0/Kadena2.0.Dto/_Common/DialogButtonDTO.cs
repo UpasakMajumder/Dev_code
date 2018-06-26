@@ -1,9 +1,9 @@
 ﻿namespace Kadena.Dto.Common
 {
-    public class DialogButtonDTO
+    public class DialogButtonDTO<T>
     {
         public string Button { get; set; }
         public string ProceedUrl { get; set; }
-        public DialogDTO Dialog { get; set; }
+        public T Dialog { get; set; }
     }
 }
