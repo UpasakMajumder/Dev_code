@@ -55,6 +55,11 @@ namespace Kadena.Tests
             autoMocker.Setup(setupAction).Returns(result);
         }
 
+        protected void SetupThrows<TService>(Expression<Action<TService>> setupAction, Exception exception) where TService : class
+        {
+            autoMocker.Setup<TService>(setupAction).Throws(exception);
+        }
+
         protected void Verify<TService>(Expression<Action<TService>> verifyAction, Func<Times> times) where TService : class
         {
             autoMocker.Verify(verifyAction, times);

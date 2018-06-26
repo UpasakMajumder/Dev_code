@@ -25,6 +25,7 @@ export const APP_LOADING = 'APP_LOADING';
 export const SEARCH_PAGE = 'SEARCH_PAGE';
 export const ORDER_DETAIL = 'ORDER_DETAIL';
 export const CHANGE_STATUS = 'CHANGE_STATUS';
+export const EDIT_ORDERS = 'EDIT_ORDERS';
 export const HEADER_SHADOW = 'HEADER_SHADOW';
 export const SEARCH_RESULTS = 'SEARCH_RESULTS';
 export const CHECKOUT_ASK_PDF = 'CHECKOUT_ASK_PDF';

@@ -115,6 +115,9 @@ namespace Kadena.Container.Default
             container.Register<IS3PathService, PathService>(setup: Setup.Decorator);
             container.Register<IArtworkService, ArtworkService>();
             container.Register<IDeliveryEstimationDataService, DeliveryEstimationDataService>();
+            container.Register<IOrderManualUpdateService, OrderManualUpdateService>();
+            container.Register<IDistributorShoppingCartService, DistributorShoppingCartService>();
+            container.Register<IOrderItemCheckerService, OrderItemCheckerService>();
             return container;
         }
 
@@ -190,6 +193,7 @@ namespace Kadena.Container.Default
             container.Register<IExportClient, ExportClient>();
             container.Register<INotificationClient, NotificationClient>();
             container.Register<IApprovalServiceClient, ApprovalServiceClient>();
+            container.Register<IOrderManualUpdateClient, OrderManualUpdateClient>();
             return container;
         }
 
