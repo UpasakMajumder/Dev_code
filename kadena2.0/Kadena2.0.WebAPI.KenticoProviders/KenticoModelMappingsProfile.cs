@@ -69,7 +69,6 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.AddressCountryID, opt => opt.MapFrom(src => src.Country.Id))
                 .ForMember(dest => dest.AddressPhone, opt => opt.MapFrom(src => src.Phone))
                 .ForMember(dest => dest.AddressCustomerID, opt => opt.MapFrom(src => src.CustomerId))
-                .ForMember(dest => dest.AddressName, opt => opt.Ignore())
                 .ForMember(dest => dest.AddressGUID, opt => opt.Ignore())
                 .ForMember(dest => dest.AddressLastModified, opt => opt.Ignore())
                 .ForMember(dest => dest.AllowPartialUpdate, opt => opt.Ignore())
