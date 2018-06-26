@@ -8,14 +8,20 @@ import Select from 'app.dump/Form/Select';
 import Tooler from 'app.dump/Tooler';
 
 class MailingDialog extends Component {
-  state = { errorList: null };
+  constructor(props) {
+    super(props);
+    this.defaultState = { errorList: null };
+    this.state = { ...this.defaultState };
+  }
 
-  componentDidMount() {
-    this.setState({ errorList: this.props.errorList });
+  componentWillReceiveProps(nextProps) {
+    if (!this.state.errorList && nextProps.errorList) {
+      this.setState({ errorList: nextProps.errorList });
+    }
   }
 
   handleCloseDialog = () => {
-    this.setState({ errorList: null });
+    this.setState({ ...this.defaultState });
     this.props.closeDialog();
   };
 
@@ -137,17 +143,25 @@ class MailingDialog extends Component {
   };
 
   render() {
-    if (!this.state.errorList) return null;
-    const { title } = this.props.formInfo;
+    const { errorList } = this.state;
+    const title = errorList ? this.props.formInfo.title : 'null';
+    const body = errorList ? this.getBody() : null;
+    const footer = errorList ? this.getFooter() : null;
 
-    return <Dialog closeDialog={this.handleCloseDialog}
-                   hasCloseBtn={true}
-                   footer={this.getFooter()}
-                   body={this.getBody()}
-                   title={title} />;
+    return (
+      <Dialog
+        closeDialog={this.handleCloseDialog}
+        hasCloseBtn={true}
+        footer={footer}
+        body={body}
+        title={title}
+        open={this.props.open}
+      />
+    );
   }
 
   static propTypes = {
+    open: PropTypes.bool.isRequired,
     emptyFields: PropTypes.object.isRequired,
     closeDialog: PropTypes.func.isRequired,
     formInfo: PropTypes.shape({

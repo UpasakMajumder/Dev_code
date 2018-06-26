@@ -274,7 +274,10 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.MinItemsInOrder, opt => opt.MapFrom(src => src.SKUMinItemsInOrder))
                 .ForMember(dest => dest.MaxItemsInOrder, opt => opt.MapFrom(src => src.SKUMaxItemsInOrder))
                 .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.GetStringValue("SKUUnitOfMeasure", UnitOfMeasure.DefaultUnit)))
-                .ForMember(dest => dest.NumberOfItemsInPackage, opt => opt.MapFrom(src => src.GetIntegerValue("SKUNumberOfItemsInPackage", 1)));
+                .ForMember(dest => dest.NumberOfItemsInPackage, opt => opt.MapFrom(src => src.GetIntegerValue("SKUNumberOfItemsInPackage", 1)))
+                .ForMember(dest => dest.SKUNumber, opt => opt.MapFrom(src => src.SKUNumber))
+                .ForMember(dest => dest.SendPriceToERP, opt => opt.MapFrom(src => !src.GetBooleanValue("SKUDontSendPriceToERP", false)))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => (decimal)src.SKUPrice));
 
             CreateMap<User, UserInfo>()
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
@@ -347,6 +350,27 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.BusinessUnitNumber, opt => opt.MapFrom(src => src.GetValue<long>("BusinessUnitNumber", 0)))
                 .ForMember(dest => dest.SiteID, opt => opt.MapFrom(src => src.GetIntegerValue("SiteID", 0)))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.GetBooleanValue("Status", false)));
+
+            CreateMap<TreeNode, Product>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.DocumentID))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.DocumentName))
+                .ForMember(dest => dest.DocumentUrl, opt => opt.MapFrom(src => src.AbsoluteURL))
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Parent == null ? string.Empty : src.Parent.DocumentName))
+                .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.GetValue("ProductType", string.Empty)))
+                .ForMember(dest => dest.ProductMasterTemplateID, opt => opt.MapFrom(src => src.GetValue<Guid>("ProductChiliTemplateID", Guid.Empty)))
+                .ForMember(dest => dest.ProductChiliWorkgroupID, opt => opt.MapFrom(src => src.GetValue<Guid>("ProductChiliWorkgroupID", Guid.Empty)))
+                .ForMember(dest => dest.TemplateLowResSettingId, opt => opt.MapFrom(src => src.GetValue("ProductChiliLowResSettingId", Guid.Empty)))
+                .ForMember(dest => dest.ProductionTime, opt => opt.MapFrom(src => src.GetStringValue("ProductProductionTime", string.Empty)))
+                .ForMember(dest => dest.ShipTime, opt => opt.MapFrom(src => src.GetStringValue("ProductShipTime", string.Empty)))
+                .ForMember(dest => dest.ShippingCost, opt => opt.MapFrom(src => src.GetStringValue("ProductShippingCost", string.Empty)))
+                .ForMember(dest => dest.PricingModel, opt => opt.MapFrom(src => src.GetStringValue("ProductPricingModel", PricingModel.GetDefault())))
+                .ForMember(dest => dest.DynamicPricingJson, opt => opt.MapFrom(src => src.GetStringValue("ProductDynamicPricing", string.Empty)))
+                .ForMember(dest => dest.TieredPricingJson, opt => opt.MapFrom(src => src.GetStringValue("ProductTieredPricing", string.Empty)))
+                .ForMember(dest => dest.SkuId, opt => opt.MapFrom(src => src.NodeSKUID))
+                .ForMember(dest => dest.Use3d, opt => opt.MapFrom(src => src.GetBooleanValue("ProductChili3dEnabled", false)))
+                .ForMember(dest => dest.NodeId, opt => opt.MapFrom(src => src.NodeID))
+                .ForAllOtherMembers(m => m.Ignore());
+
         }
     }
 }

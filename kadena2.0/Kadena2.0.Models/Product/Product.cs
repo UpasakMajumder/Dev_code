@@ -5,6 +5,7 @@ namespace Kadena.Models.Product
     public class Product
     {
         public int Id { get; set; }
+        public int NodeId { get; set; }
         public string Name { get; set; }
         public string Category { get; set; }
         public string Availability { get; set; }
@@ -18,7 +19,7 @@ namespace Kadena.Models.Product
         public double Weight { get; set; }
         public bool HiResPdfDownloadEnabled { get; set; }
         public int SkuId { get; set; }
-        public int NodeId { get; set; }
+        public string SkuNumber { get; set; }
         public bool HasProductTypeFlag(string productType)
         {
             return ProductTypes.IsOfType(ProductType, productType);

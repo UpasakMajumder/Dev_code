@@ -568,6 +568,45 @@ module.exports.recent = {
   }
 };
 
+module.exports.edit = {
+  success: true,
+  errorMessage: 'No! This is Wrong! Choose different approach',
+  payload: {
+    "pricingInfo": [
+      {
+        "title": "Summary",
+        "value": "$ 113.20"
+      },
+      {
+        "title": "Shipping",
+        "value": "$ 1.00"
+      },
+      {
+        "title": "Subtotal",
+        "value": "$ 113.20"
+      },
+      {
+        "title": "Tax",
+        "value": "$ 2.00"
+      },
+      {
+        "title": "Totals",
+        "value": "$ 212.20"
+      }
+    ],
+    "ordersPrice": [
+      {
+        lineNumber: "lineNumber-1", // like 693 row
+        price: "$ 5"
+      },
+      {
+        lineNumber: "lineNumber-2", // like 737 row
+        price: "$ 50"
+      }
+    ]
+  }
+}
+
 module.exports.detail =  {
   ui: {
     "success": true,
@@ -612,7 +651,7 @@ module.exports.detail =  {
       },
       "paymentInfo": {
         "title": "Payment",
-        "paymentIcon": "order-payment",
+        "paymentIcon": "credit-card",
         "paidBy": "Paid by credit card",
         "paymentDetail": "Mastercard •••• 4062",
         "date": "2017-08-07T09:12:08.108892Z",
@@ -648,16 +687,20 @@ module.exports.detail =  {
         "items": [
           {
             "id": 1,
+            "SKUId": "SKUId-1",
+            "removed": false,
+            "removeLabel": "Rejected",
+            "lineNumber": "lineNumber-1",
             "isReport": true,
             "image": "http://satyr.io/200-500x300-700",
-            "template": "Information letter lamp post Mar 30 3017",
+            "template": "Information letter lamp post Mar 30 3018",
             "mailingList": "Mailing",
             "shippingDate": "2017-08-07T09:12:08.108892Z",
             "trackingPrefix": "Tracking ID",
             "tracking": [],
             "mailingListPrefix": "Mailing list",
             "shippingDatePrefix": "Shipping date",
-            "templatePrefix": "Shipping date",
+            "templatePrefix": "Template",
             "price": "$ 112.2",
             "quantityPrefix": "Quantity:", // Addresses/Quantity,
             "quantityShippedPrefix": "Quantity shipped:",
@@ -688,6 +731,10 @@ module.exports.detail =  {
           },
           {
             "id": 2,
+            "SKUId": "SKUId-2",
+            "removed": true,
+            "removeLabel": "Rejected",
+            "lineNumber": "lineNumber-2",
             "isReport": true,
             "image": "http://satyr.io/200-500x300-700",
             "template": "Information letter lamp post Mar 30 3017",
@@ -736,7 +783,7 @@ module.exports.detail =  {
             ],
             "mailingListPrefix": "Mailing list",
             "shippingDatePrefix": "Shipping date",
-            "templatePrefix": "Shipping date",
+            "templatePrefix": "Template",
             "price": "$ 112.2",
             "quantityPrefix": "Quantity:", // Addresses/Quantity,
             "quantityShippedPrefix": "Quantity shipped:",
@@ -783,8 +830,18 @@ module.exports.detail =  {
       },
       "editOrders": {
         "button": "Edit",
-        "proceedUrl": "",
-        "dialog": null
+        "proceedUrl": "http://localhost:3000/api/order/edit",
+        "dialog": {
+          title: "Title",
+          description: "Description",
+          validationMessage: "Maximum quantity is", // no space
+          successMessage: "Cool! 🚀",
+          buttons: {
+            proceed: "Save Edits",
+            cancel: "Cancel",
+            remove: "Remove"
+          }
+        }
       }
     }
   },

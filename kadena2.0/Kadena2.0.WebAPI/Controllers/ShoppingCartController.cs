@@ -10,12 +10,9 @@ using Kadena.Dto.Checkout.Requests;
 using Kadena.Models.Checkout;
 using Kadena.Models;
 using Kadena.Dto.CustomerData;
-using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.CustomerData;
 using Kadena.Dto.Checkout.Responses;
 using Kadena.Dto.Settings;
-using Kadena.Dto.AddToCart;
-using Kadena.Models.AddToCart;
 using System.ComponentModel.DataAnnotations;
 using Kadena.Dto.SubmitOrder.Requests;
 using Kadena.Dto.SubmitOrder.Responses;
@@ -25,21 +22,18 @@ namespace Kadena.WebAPI.Controllers
 {
     public class ShoppingCartController : ApiControllerBase
     {
-        private readonly IShoppingCartService service;
-        private readonly IMapper mapper;
-        private readonly IShoppingCartProvider provider;
+        private readonly IShoppingCartService shoppingCartService;
         private readonly ISubmitOrderService submitOrderService;
+        private readonly IMapper mapper;
 
         public ShoppingCartController(
             IShoppingCartService service,
-            IMapper mapper,
-            IShoppingCartProvider provider,
-            ISubmitOrderService submitOrderService)
+            ISubmitOrderService submitOrderService,
+            IMapper mapper)
         {
-            this.service = service ?? throw new ArgumentNullException(nameof(service));
-            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            this.provider = provider ?? throw new ArgumentNullException(nameof(provider));
+            this.shoppingCartService = service ?? throw new ArgumentNullException(nameof(service));
             this.submitOrderService = submitOrderService ?? throw new ArgumentNullException(nameof(submitOrderService));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet]
@@ -47,7 +41,7 @@ namespace Kadena.WebAPI.Controllers
         [CustomerAuthorizationFilter]
         public async Task<IHttpActionResult> Get()
         {
-            var checkoutPage = await service.GetCheckoutPage();
+            var checkoutPage = await shoppingCartService.GetCheckoutPage();
             var checkoutPageDto = mapper.Map<CheckoutPageDTO>(checkoutPage);
             return ResponseJson(checkoutPageDto);
         }
@@ -57,7 +51,7 @@ namespace Kadena.WebAPI.Controllers
         [CustomerAuthorizationFilter]
         public async Task<IHttpActionResult> GetDeliveryTotals()
         {
-            var deliveryTotals = await service.GetDeliveryAndTotals();
+            var deliveryTotals = await shoppingCartService.GetDeliveryAndTotals();
             var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
             return ResponseJson(deliveryTotalsDto);
         }
@@ -68,7 +62,7 @@ namespace Kadena.WebAPI.Controllers
         public IHttpActionResult SaveTemporaryAddress([FromBody] AddressDto postedAddress)
         {
             var address = mapper.Map<DeliveryAddress>(postedAddress);
-            var addressId = service.SaveTemporaryAddress(address);
+            var addressId = shoppingCartService.SaveTemporaryAddress(address);
             return ResponseJson(new IdDto { Id = addressId });
         }
 
@@ -77,7 +71,7 @@ namespace Kadena.WebAPI.Controllers
         [CustomerAuthorizationFilter]
         public async Task<IHttpActionResult> SelectShipping([FromBody]ChangeSelectionRequestDto request)
         {
-            var deliveryTotals = await service.SelectShipping(request.Id);
+            var deliveryTotals = await shoppingCartService.SelectShipping(request.Id);
             var deliveryTotalsDto = mapper.Map<CheckoutPageDeliveryTotalsDTO>(deliveryTotals);
             return ResponseJson(deliveryTotals);
         }
@@ -87,7 +81,7 @@ namespace Kadena.WebAPI.Controllers
         [CustomerAuthorizationFilter]
         public IHttpActionResult SelectAddress([FromBody]ChangeSelectionRequestDto request)
         {
-            var result = service.SelectAddress(request.Id);
+            var result = shoppingCartService.SelectAddress(request.Id);
             var resultDto = mapper.Map<ChangeDeliveryAddressResponseDto>(result);
             return ResponseJson(resultDto);
         }
@@ -97,7 +91,7 @@ namespace Kadena.WebAPI.Controllers
         [CustomerAuthorizationFilter]
         public IHttpActionResult RemoveItem([FromBody]RemoveItemRequestDto request)
         {
-            var result = service.RemoveItem(request.Id);
+            var result = shoppingCartService.RemoveItem(request.Id);
             var resultDto = mapper.Map<ChangeItemQuantityResponseDto>(result);
             return ResponseJson(resultDto);
         }
@@ -107,7 +101,7 @@ namespace Kadena.WebAPI.Controllers
         [CustomerAuthorizationFilter]
         public IHttpActionResult ChangeItemQuantity([FromBody]ChangeItemQuantityRequestDto request)
         {
-            var result = service.ChangeItemQuantity(request.Id, request.Quantity);
+            var result = shoppingCartService.ChangeItemQuantity(request.Id, request.Quantity);
             var resultDto = mapper.Map<ChangeItemQuantityResponseDto>(result);
             return ResponseJson(resultDto);
         }
@@ -117,7 +111,7 @@ namespace Kadena.WebAPI.Controllers
         [CustomerAuthorizationFilter]
         public IHttpActionResult ItemsPreview()
         {
-            var result = service.ItemsPreview();
+            var result = shoppingCartService.ItemsPreview();
             var resultDto = mapper.Map<CartItemsPreviewDTO>(result);
             return ResponseJson(resultDto);
         }
@@ -129,40 +123,10 @@ namespace Kadena.WebAPI.Controllers
         public async Task<IHttpActionResult> AddToCart([FromBody][Required] NewCartItemDto item)
         {
             var addItem = mapper.Map<NewCartItem>(item);
-            var result = await service.AddToCart(addItem);
+            var result = await shoppingCartService.AddToCart(addItem);
             var resultDto = mapper.Map<AddToCartResultDto>(result);
             return ResponseJson(resultDto);
-        }
-
-        [HttpPost]
-        [Route("api/distributor/update")]
-        [CustomerAuthorizationFilter]
-        public IHttpActionResult UpdateData([FromBody]DistributorDTO request)
-        {
-            var submitRequest = mapper.Map<Distributor>(request);
-            var serviceResponse = provider.UpdateCartQuantity(submitRequest);
-            return ResponseJson<string>(serviceResponse);
-        }
-
-        [HttpGet]
-        [Route("api/getcartdistributordata/{skuID}/{inventoryType}")]
-        [CustomerAuthorizationFilter]
-        public IHttpActionResult GetCartDistributorData(int skuID, int inventoryType)
-        {
-            var distributorData = service.GetCartDistributorData(skuID, inventoryType);
-            var result = mapper.Map<DistributorCartDto>(distributorData);
-            return ResponseJson(result);
-        }
-
-        [HttpPost]
-        [Route("api/updatedistributorcarts")]
-        [CustomerAuthorizationFilter]
-        public IHttpActionResult UpdateDistributorCarts([FromBody]DistributorCartDto request)
-        {
-            var submitRequest = mapper.Map<DistributorCart>(request);
-            var serviceResponse = service.UpdateDistributorCarts(submitRequest);
-            return ResponseJson(new { cartCount = serviceResponse });
-        }
+        }        
 
         [HttpPost]
         [Route("api/shoppingcart/submit")]

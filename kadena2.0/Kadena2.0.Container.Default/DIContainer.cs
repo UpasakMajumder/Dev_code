@@ -112,6 +112,9 @@ namespace Kadena.Container.Default
             container.Register<IApprovalService, ApprovalService>();
             container.Register<IDialogService, DialogService>();
             container.Register<IDeliveryEstimationDataService, DeliveryEstimationDataService>();
+            container.Register<IOrderManualUpdateService, OrderManualUpdateService>();
+            container.Register<IDistributorShoppingCartService, DistributorShoppingCartService>();
+            container.Register<IOrderItemCheckerService, OrderItemCheckerService>();
             return container;
         }
 
@@ -186,6 +189,7 @@ namespace Kadena.Container.Default
             container.Register<IExportClient, ExportClient>();
             container.Register<INotificationClient, NotificationClient>();
             container.Register<IApprovalServiceClient, ApprovalServiceClient>();
+            container.Register<IOrderManualUpdateClient, OrderManualUpdateClient>();
             return container;
         }
 

@@ -18,5 +18,6 @@ namespace Kadena.Dto.ViewOrder.MicroserviceResponses
         public int LineNumber { get; set; }
         public Guid TemplateId { get; set; }
         public Dictionary<string, string> Attributes { get; set; }
+        public int DocumentId { get; set; }
     }
 }

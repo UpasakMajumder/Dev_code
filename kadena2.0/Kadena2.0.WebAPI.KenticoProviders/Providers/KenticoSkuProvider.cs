@@ -25,6 +25,12 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             return mapper.Map<Sku>(skuInfo);
         }
 
+        public Sku[] GetSKUsByIds(int[] skuIds)
+        {
+            var skuInfos = SKUInfoProvider.GetSKUs().WhereIn("SKUID", skuIds).ToArray();
+            return mapper.Map<Sku[]>(skuInfos);
+        }
+
         public void UpdateSkuMandatoryFields(Sku sku)
         {
             var skuInfo = SKUInfoProvider.GetSKUInfo(sku.SkuId);
@@ -68,6 +74,20 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             if (sku != null)
             {
                 sku.SKUAvailableItems = availableItems;
+                sku.SubmitChanges(false);
+                sku.MakeComplete(true);
+                sku.Update();
+            }
+        }
+
+        public void IncreaseSkuAvailableQty(string skunumber, int diff)
+        {
+            // TODO for future, improve Availability methods to be thread safe 
+            var sku = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", skunumber).FirstOrDefault();
+
+            if (sku != null)
+            {
+                sku.SKUAvailableItems += diff;
                 sku.SubmitChanges(false);
                 sku.MakeComplete(true);
                 sku.Update();

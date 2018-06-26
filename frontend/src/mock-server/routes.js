@@ -21,6 +21,7 @@ apiRouter.use((req, res, next) => {
 
 apiRouter.get('/order/recent/filtered/campaigns', Orders.recent.filtered.campaigns);
 apiRouter.get('/order/recent/filtered/orders/:id*?/:campaign*?', Orders.recent.filtered.orders);
+apiRouter.post('/order/edit', Orders.edit);
 
 apiRouter.post('/login', Login);
 apiRouter.get('/accepttac', AcceptTaC);
