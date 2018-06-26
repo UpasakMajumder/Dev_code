@@ -232,7 +232,7 @@ namespace Kadena.Tests.BusinessLogic
             SetupOrderViewClientReturning(orders);
 
             var dummyFileData = new byte[] { 1, 2, 3 };
-            Setup<IFileService, byte[]>(ec => ec.ConvertToXlsx(It.IsAny<TableView>()), dummyFileData);
+            Setup<IConvert, byte[]>(ec => ec.GetBytes(It.IsAny<TableView>()), dummyFileData);
 
             var result = await Sut.GetOrdersExportForSite("test_site", new OrderFilter());
 
@@ -269,7 +269,7 @@ namespace Kadena.Tests.BusinessLogic
             SetupOrderViewClientReturning(orders);
             var actualResult = new TableView();
             Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<IEnumerable<OrderReportViewItem>>()), expected);
-            Setup<IFileService, TableView, byte[]>(ec => ec.ConvertToXlsx(It.IsAny<TableView>()), t =>
+            Setup<IConvert, TableView, byte[]>(ec => ec.GetBytes(It.IsAny<TableView>()), t =>
               {
                   actualResult = t;
                   return null;

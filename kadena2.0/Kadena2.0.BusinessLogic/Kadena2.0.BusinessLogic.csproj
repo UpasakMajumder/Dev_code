@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Contracts\Approval\IApprovalService.cs" />
     <Compile Include="Contracts\Approval\IApproverService.cs" />
+    <Compile Include="Contracts\IConvert.cs" />
     <Compile Include="Contracts\IDialogService.cs" />
     <Compile Include="Contracts\IIBTFService.cs" />
     <Compile Include="Contracts\IIdentityService.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="Services\TemplateService.cs" />
     <Compile Include="Services\UserBudgetService.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\XlsxConvert.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kadena.AmazonFileSystemProvider\Kadena.AmazonFileSystemProvider.csproj">

@@ -20,7 +20,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoResourceService kenticoResources;
         private readonly IKenticoSiteProvider kenticoSiteProvider;
         private readonly IOrderViewClient orderViewClient;
-        private readonly IFileService fileService;
+        private readonly IConvert xlsxConvert;
         private readonly IOrderReportFactory orderReportFactory;
         private readonly IMapper mapper;
         public const int DefaultCountOfOrdersPerPage = 20;
@@ -57,14 +57,14 @@ namespace Kadena.BusinessLogic.Services.Orders
         public OrderReportService(IKenticoResourceService kenticoResources,
             IKenticoSiteProvider kenticoSiteProvider,
             IOrderViewClient orderViewClient,
-            IFileService fileService,
+            IConvert xlsxConvert,
             IOrderReportFactory orderReportFactory,
             IMapper mapper)
         {
             this.kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
             this.kenticoSiteProvider = kenticoSiteProvider ?? throw new ArgumentNullException(nameof(kenticoSiteProvider));
             this.orderViewClient = orderViewClient ?? throw new ArgumentNullException(nameof(orderViewClient));
-            this.fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
+            this.xlsxConvert = xlsxConvert ?? throw new ArgumentNullException(nameof(xlsxConvert));
             this.orderReportFactory = orderReportFactory ?? throw new ArgumentNullException(nameof(orderReportFactory));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
@@ -108,7 +108,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var fileResult = new FileResult
             {
-                Data = fileService.ConvertToXlsx(tableView),
+                Data = xlsxConvert.GetBytes(tableView),
                 Name = "export.xlsx",
                 Mime = ContentTypes.Xlsx
             };
