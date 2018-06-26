@@ -304,46 +304,48 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         private async Task<List<OrderedItem>> MapOrderedItems(List<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO> items, string orderId)
         {
-            var orderedItems = items.Select(i =>
-            {
-                var oi = mapper.Map<OrderedItem>(i);
-
-                var templatedProduct = i.TemplateId != Guid.Empty ? products.GetProductBySkuId(i.SkuId) : null;
-                var previewUrl = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, templatedProduct?.TemplateLowResSettingId ?? Guid.Empty);
-                var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
-
-                oi.Image = imageService.GetThumbnailLink(products.GetSkuImageUrl(i.SkuId));
-                oi.DownloadPdfURL = GetPdfUrl(orderId, i, templatedProduct);
-                oi.UnitOfMeasure = units.GetDisplaynameByCode(oi.UnitOfMeasure);
-                oi.QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ?
-                    resources.GetResourceString("Kadena.Order.QuantityPrefixAddresses")
-                    : resources.GetResourceString("Kadena.Order.QuantityPrefix");
-                oi.QuantityShippedPrefix = resources.GetResourceString("Kadena.Order.QuantityShippedPrefix");
-                oi.MailingListPrefix = resources.GetResourceString("Kadena.Order.MailingListPrefix");
-                oi.ShippingDatePrefix = resources.GetResourceString("Kadena.Order.ItemShippingDatePrefix");
-                oi.TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix");
-                oi.TrackingPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix");
-                oi.ProductStatusPrefix = resources.GetResourceString("Kadena.Order.ProductStatusPrefix");
-                oi.ProductStatus = products.GetProductStatus(i.SkuId);
-                oi.Preview = new Button
+            var orderedItems = items
+                .Where(i => i.Quantity > 0)
+                .Select(i =>
                 {
-                    Exists = templatedProduct != null,
-                    Text = resources.GetResourceString("Kadena.Checkout.PreviewButton"),
-                    Url = previewAbsoluteUrl
-                };
-                oi.EmailProof = new Button
-                {
-                    Exists = templatedProduct != null,
-                    Text = resources.GetResourceString("Kadena.EmailProof.ButtonLabel"),
-                    Url = GetPdfUrl(orderId, i, templatedProduct)
-                };
-                if (i.Attributes != null)
-                {
-                    oi.Options = i.Attributes.Select(a => new ItemOption { Name = products.GetOptionCategory(a.Key)?.DisplayName ?? a.Key, Value = a.Value });
-                }
+                    var oi = mapper.Map<OrderedItem>(i);
 
-                return oi;
-            }).ToList();
+                    var templatedProduct = i.TemplateId != Guid.Empty ? products.GetProductBySkuId(i.SkuId) : null;
+                    var previewUrl = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, templatedProduct?.TemplateLowResSettingId ?? Guid.Empty);
+                    var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
+
+                    oi.Image = imageService.GetThumbnailLink(products.GetSkuImageUrl(i.SkuId));
+                    oi.DownloadPdfURL = GetPdfUrl(orderId, i, templatedProduct);
+                    oi.UnitOfMeasure = units.GetDisplaynameByCode(oi.UnitOfMeasure);
+                    oi.QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ?
+                        resources.GetResourceString("Kadena.Order.QuantityPrefixAddresses")
+                        : resources.GetResourceString("Kadena.Order.QuantityPrefix");
+                    oi.QuantityShippedPrefix = resources.GetResourceString("Kadena.Order.QuantityShippedPrefix");
+                    oi.MailingListPrefix = resources.GetResourceString("Kadena.Order.MailingListPrefix");
+                    oi.ShippingDatePrefix = resources.GetResourceString("Kadena.Order.ItemShippingDatePrefix");
+                    oi.TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix");
+                    oi.TrackingPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix");
+                    oi.ProductStatusPrefix = resources.GetResourceString("Kadena.Order.ProductStatusPrefix");
+                    oi.ProductStatus = products.GetProductStatus(i.SkuId);
+                    oi.Preview = new Button
+                    {
+                        Exists = templatedProduct != null,
+                        Text = resources.GetResourceString("Kadena.Checkout.PreviewButton"),
+                        Url = previewAbsoluteUrl
+                    };
+                    oi.EmailProof = new Button
+                    {
+                        Exists = templatedProduct != null,
+                        Text = resources.GetResourceString("Kadena.EmailProof.ButtonLabel"),
+                        Url = GetPdfUrl(orderId, i, templatedProduct)
+                    };
+                    if (i.Attributes != null)
+                    {
+                        oi.Options = i.Attributes.Select(a => new ItemOption { Name = products.GetOptionCategory(a.Key)?.DisplayName ?? a.Key, Value = a.Value });
+                    }
+
+                    return oi;
+                }).ToList();
 
             await SetMailingListNames(orderedItems);
 
