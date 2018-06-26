@@ -21,6 +21,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IRoleService roleService;
         private readonly IKenticoLoginProvider loginProvider;
         private readonly IKenticoResourceService kenticoResourceService;
+        private readonly ISettingsService settingsService;
 
         public IdentityService(IKenticoLogger logger,
                                IMapper mapper,
@@ -31,7 +32,8 @@ namespace Kadena.BusinessLogic.Services
                                IKenticoAddressBookProvider addressProvider,
                                IRoleService roleService,
                                IKenticoLoginProvider loginProvider,
-                               IKenticoResourceService kenticoResourceService)
+                               IKenticoResourceService kenticoResourceService,
+                               ISettingsService settingsService)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -43,6 +45,7 @@ namespace Kadena.BusinessLogic.Services
             this.roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
             this.loginProvider = loginProvider ?? throw new ArgumentNullException(nameof(loginProvider));
             this.kenticoResourceService = kenticoResourceService ?? throw new ArgumentNullException(nameof(kenticoResourceService));
+            this.settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
         }
 
         public Uri TryAuthenticate(string samlString)
@@ -134,7 +137,7 @@ namespace Kadena.BusinessLogic.Services
             if (existingAddresses.Length == 0)
             {
                 newAddress.CustomerId = customerId;
-                addressProvider.SaveShippingAddress(newAddress);
+                settingsService.SaveShippingAddress(newAddress);
             }
             return newAddress;
         }

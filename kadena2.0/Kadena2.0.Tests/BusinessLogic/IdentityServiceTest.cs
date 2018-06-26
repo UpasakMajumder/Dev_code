@@ -28,10 +28,11 @@ namespace Kadena.Tests.BusinessLogic
                                IKenticoAddressBookProvider addressProvider,
                                IRoleService roleService,
                                IKenticoLoginProvider loginProvider,
-                               IKenticoResourceService kenticoResourceService)
+                               IKenticoResourceService kenticoResourceService,
+                               ISettingsService settingsService)
         {
             Assert.Throws<ArgumentNullException>(() => new IdentityService(logger, mapper, saml2Service, userProvider, customerProvider,
-                siteProvider, addressProvider, roleService, loginProvider, kenticoResourceService));
+                siteProvider, addressProvider, roleService, loginProvider, kenticoResourceService, settingsService));
         }
 
         [Fact(DisplayName = "IdentityService.TryAuthenticate() | Fail")]
