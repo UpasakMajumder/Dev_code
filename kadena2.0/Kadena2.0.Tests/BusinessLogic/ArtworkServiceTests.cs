@@ -10,27 +10,8 @@ namespace Kadena.Tests.BusinessLogic
 {
     public class ArtworkServiceTests : KadenaUnitTest<ArtworkService>
     {
-        public static IEnumerable<object[]> GetDependencies()
-        {
-            yield return new object[] {
-                null,
-                new Mock<IS3PathService>().Object,
-                new Mock<IKenticoSiteProvider>().Object
-            };
-            yield return new object[] {
-                new Mock<IKenticoProductsProvider>().Object,
-                null,
-                new Mock<IKenticoSiteProvider>().Object
-            };
-            yield return new object[] {
-                new Mock<IKenticoProductsProvider>().Object,
-                new Mock<IS3PathService>().Object,
-                null
-            };
-        }
-
         [Theory(DisplayName = "ArtworkService()")]
-        [MemberData(nameof(GetDependencies))]
+        [ClassData(typeof(ArtworkServiceTests))]
         public void ConstructorNull(IKenticoProductsProvider productsProvider, IS3PathService pathService, IKenticoSiteProvider siteProvider)
         {
             Assert.Throws<ArgumentNullException>(() => new ArtworkService(productsProvider, pathService, siteProvider));

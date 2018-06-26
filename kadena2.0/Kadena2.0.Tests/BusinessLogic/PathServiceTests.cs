@@ -19,48 +19,9 @@ namespace Kadena.Tests.BusinessLogic
             Setup<IKenticoCustomItemProvider, Kadena.Models.Common.Environment>(s => s.GetItem<Kadena.Models.Common.Environment>(0, It.IsAny<string>()),
                 new Kadena.Models.Common.Environment { AmazonS3Folder = "dev" });
         }
-
-        public static IEnumerable<object[]> GetDependencies()
-        {
-            yield return new object[] {
-                null,
-                new Mock<IKenticoResourceService>().Object,
-                new Mock<IKenticoCustomItemProvider>().Object,
-                new Mock<IFileClient>().Object,
-                new Mock<IKenticoSiteProvider>().Object,
-            };
-            yield return new object[] {
-                new Mock<IS3PathService>().Object,
-                null,
-                new Mock<IKenticoCustomItemProvider>().Object,
-                new Mock<IFileClient>().Object,
-                new Mock<IKenticoSiteProvider>().Object,
-            };
-            yield return new object[] {
-                new Mock<IS3PathService>().Object,
-                new Mock<IKenticoResourceService>().Object,
-                null,
-                new Mock<IFileClient>().Object,
-                new Mock<IKenticoSiteProvider>().Object,
-            };
-            yield return new object[] {
-                new Mock<IS3PathService>().Object,
-                new Mock<IKenticoResourceService>().Object,
-                new Mock<IKenticoCustomItemProvider>().Object,
-                null,
-                new Mock<IKenticoSiteProvider>().Object,
-            };
-            yield return new object[] {
-                new Mock<IS3PathService>().Object,
-                new Mock<IKenticoResourceService>().Object,
-                new Mock<IKenticoCustomItemProvider>().Object,
-                new Mock<IFileClient>().Object,
-                null
-            };
-        }
-
+        
         [Theory(DisplayName = "PathService()")]
-        [MemberData(nameof(GetDependencies))]
+        [ClassData(typeof(PathServiceTests))]
         public void ConstructorNull(IS3PathService pathService, IKenticoResourceService resourceService, IKenticoCustomItemProvider customItemProvider,
             IFileClient fileClient, IKenticoSiteProvider siteProvider)
         {
