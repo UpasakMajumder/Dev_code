@@ -14,33 +14,11 @@ namespace Kadena.Tests.WebApi
 {
     public class KListControllerTests : KadenaUnitTest<KListController>
     {
-        public static IEnumerable<object[]> GetDependencies()
-        {
-            yield return new object[]
-            {
-                null,
-                new Mock<IMapper>().Object,
-                new Mock<IFileService>().Object,
-            };
-            yield return new object[]
-            {
-                new Mock<IKListService>().Object,
-                null,
-                new Mock<IFileService>().Object,
-            };
-            yield return new object[]
-            {
-                new Mock<IKListService>().Object,
-                new Mock<IMapper>().Object,
-                null,
-            };
-        }
-
         [Theory(DisplayName = "KListController()")]
-        [MemberData(nameof(GetDependencies))]
-        public void KListController(IKListService kListService, IMapper mapper, IFileService fileService)
+        [ClassData(typeof(KListControllerTests))]
+        public void KListController(IKListService kListService, IMapper mapper)
         {
-            Assert.Throws<ArgumentNullException>(() => new KListController(kListService, mapper, fileService));
+            Assert.Throws<ArgumentNullException>(() => new KListController(kListService, mapper));
         }
 
         [Fact(DisplayName = "KListController.UseOnlyCorrect() | Success")]
@@ -95,7 +73,7 @@ namespace Kadena.Tests.WebApi
         public async Task Export_Success()
         {
             var containerId = Guid.NewGuid();
-            Setup<IFileService, Task<Uri>>(s => s.GetContainerFileUrl(containerId), Task.FromResult(new Uri("https://google.com")));
+            Setup<IKListService, Task<Uri>>(s => s.GetContainerFileUrl(containerId), Task.FromResult(new Uri("https://google.com")));
 
             var actualResult = await Sut.Export(containerId);
 

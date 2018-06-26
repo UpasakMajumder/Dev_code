@@ -3,11 +3,9 @@ using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
-using CMS.SiteProvider;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Models.Common;
 using Kadena.Container.Default;
-using Kadena2.MicroserviceClients;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
@@ -293,7 +291,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 return string.Empty;
             }
 
-            var fileService = DIContainer.Resolve<IFileService>();
+            var fileService = DIContainer.Resolve<IKListService>();
             var mailingListFileKey = fileService.CreateMailingList(fileName, fileStream);
 
             return mailingListFileKey;

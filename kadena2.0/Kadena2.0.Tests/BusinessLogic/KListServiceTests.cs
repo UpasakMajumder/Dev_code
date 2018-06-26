@@ -13,6 +13,7 @@ using Kadena.Container.Default;
 using AutoMapper;
 using Moq;
 using Kadena.Models.SiteSettings;
+using Kadena.AmazonFileSystemProvider;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -25,9 +26,11 @@ namespace Kadena.Tests.BusinessLogic
         [Theory(DisplayName = "KListService()")]
         [ClassData(typeof(KListServiceTests))]
         public void DialogService(IMailingListClient client, IKenticoSiteProvider site, IMapper mapper,
-            IKenticoResourceService resourceService)
+            IKenticoResourceService resourceService, IKenticoFileProvider fileProvider, IExportClient exportClient,
+            IS3PathService pathService, IKenticoLogger logger)
         {
-            Assert.Throws<ArgumentNullException>(() => new KListService(client, site, mapper, resourceService));
+            Assert.Throws<ArgumentNullException>(() => new KListService(client, site, mapper, resourceService, fileProvider, exportClient,
+                pathService, logger));
         }
         
         #region Delete expired lists
@@ -226,6 +229,50 @@ namespace Kadena.Tests.BusinessLogic
             Task action() => Sut.UpdateAddresses(_containerId, null);
 
             await Assert.ThrowsAsync<NullReferenceException>(action);
+        }
+
+        [Fact(DisplayName = "FileService.CreateMailingList()")]
+        public void CreateMailing()
+        {
+            var exc = Record.Exception(() => Sut.CreateMailingList("", null));
+
+            Assert.Null(exc);
+        }
+
+        [Theory(DisplayName = "FileService.GetContainerFileUrl() | Success")]
+        [InlineData("https://example.com")]
+        [InlineData("/relativeurl")]
+        [InlineData("")]
+        public async Task GetContainerFileUrl_Success(string url)
+        {
+            Setup<IExportClient, Task<BaseResponseDto<string>>>(s => s.ExportMailingList(It.IsAny<Guid>()),
+                Task.FromResult(new BaseResponseDto<string> { Success = true, Payload = url }));
+
+            var actualResult = await Sut.GetContainerFileUrl(Guid.Empty);
+
+            Assert.NotNull(actualResult);
+        }
+
+        [Fact(DisplayName = "FileService.GetContainerFileUrl() | Success null value")]
+        public async Task GetContainerFileUrl_SuccessNullValue()
+        {
+            Setup<IExportClient, Task<BaseResponseDto<string>>>(s => s.ExportMailingList(It.IsAny<Guid>()),
+                Task.FromResult(new BaseResponseDto<string> { Success = true, Payload = null }));
+
+            Task action() => Sut.GetContainerFileUrl(Guid.Empty);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(action);
+        }
+
+        [Fact(DisplayName = "FileService.GetContainerFileUrl() | Failed")]
+        public async Task GetContainerFileUrl_Failed()
+        {
+            Setup<IExportClient, Task<BaseResponseDto<string>>>(s => s.ExportMailingList(It.IsAny<Guid>()),
+                Task.FromResult(new BaseResponseDto<string> { Success = false }));
+
+            var actualResult = await Sut.GetContainerFileUrl(Guid.Empty);
+
+            Assert.Null(actualResult);
         }
     }
 }

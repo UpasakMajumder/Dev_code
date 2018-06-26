@@ -16,13 +16,11 @@ namespace Kadena.WebAPI.Controllers
     {
         private readonly IKListService _service;
         private readonly IMapper _mapper;
-        private readonly IFileService fileService;
 
-        public KListController(IKListService service, IMapper mapper, IFileService fileService)
+        public KListController(IKListService service, IMapper mapper)
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            this.fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
         }
 
         [HttpPost]
@@ -60,7 +58,7 @@ namespace Kadena.WebAPI.Controllers
         [Route(Klist.Export)]
         public async Task<IHttpActionResult> Export([FromUri] Guid containerId)
         {
-            var uri = await fileService.GetContainerFileUrl(containerId);
+            var uri = await _service.GetContainerFileUrl(containerId);
             if (uri == null)
             {
                 return NotFound();
