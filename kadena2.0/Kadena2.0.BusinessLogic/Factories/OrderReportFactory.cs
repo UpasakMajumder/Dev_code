@@ -106,10 +106,9 @@ namespace Kadena.BusinessLogic.Factories
                 return string.Empty;
             }
 
-            var name = $"{customer.FirstName} {customer.LastName}";
-            if (!string.IsNullOrWhiteSpace(name))
+            if (!string.IsNullOrWhiteSpace(customer.FullName))
             {
-                return name;
+                return customer.FullName;
             }
 
             return customer.Email;
