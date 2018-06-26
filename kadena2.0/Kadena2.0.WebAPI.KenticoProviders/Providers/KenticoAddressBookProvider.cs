@@ -15,16 +15,12 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private readonly IMapper mapper;
         private readonly IShoppingCartProvider shoppingCartProvider;
-        private readonly IKadenaSettings kadenaSettings;
-        private readonly IKenticoLocalizationProvider localizationProvider;
         private readonly IKenticoCustomerProvider customers;
 
-        public KenticoAddressBookProvider(IMapper mapper, IShoppingCartProvider shoppingCartProvider, IKadenaSettings kadenaSettings, IKenticoLocalizationProvider localizationProvider, IKenticoCustomerProvider customers)
+        public KenticoAddressBookProvider(IMapper mapper, IShoppingCartProvider shoppingCartProvider, IKenticoCustomerProvider customers)
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.shoppingCartProvider = shoppingCartProvider ?? throw new ArgumentNullException(nameof(shoppingCartProvider));
-            this.kadenaSettings = kadenaSettings ?? throw new ArgumentNullException(nameof(kadenaSettings));
-            this.localizationProvider = localizationProvider ?? throw new ArgumentNullException(nameof(localizationProvider));
             this.customers = customers ?? throw new ArgumentNullException(nameof(customers));
         }
         public void DeleteAddress(int addressID)
@@ -87,53 +83,12 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public void SaveShippingAddress(DeliveryAddress address)
         {
-            if (address != null)
+            var info = mapper.Map<AddressInfo>(address);
+            if (info != null)
             {
-                if (address.State != null && address.State.Id == 0)
-                {
-                    address.State = localizationProvider.GetStates().FirstOrDefault(c => c.StateCode == address.State.StateCode);
-                }
-
-                if (address.Country != null && address.Country.Id == 0)
-                {
-                    address.Country = localizationProvider.GetCountries().FirstOrDefault(c => c.Code == address.Country.Code);
-                }
-
-                if (address.Country != null)
-                {
-                    CustomerInfo customer = address.CustomerId > 0
-                        ? CustomerInfoProvider.GetCustomerInfo(address.CustomerId)
-                        : ECommerceContext.CurrentCustomer;
-
-                    if (string.IsNullOrWhiteSpace(address.AddressPersonalName))
-                    {
-                        address.AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}";
-                    }
-
-                    if (string.IsNullOrWhiteSpace(address.CompanyName))
-                    {
-                        if (customer.CustomerHasCompanyInfo)
-                        {
-                            address.CompanyName = customer.CustomerCompany;
-                        }
-                        else
-                        {
-                            address.CompanyName = kadenaSettings.DefaultCustomerCompanyName;
-                        }
-                    }
-
-                    if (string.IsNullOrWhiteSpace(address.AddressName))
-                    {
-                        address.AddressName = $"{address.AddressPersonalName}, {address.Address1}, {address.City}";
-                    }
-
-                    address.CustomerId = customer.CustomerID;
-
-                    var info = mapper.Map<AddressInfo>(address);
-                    info.SetValue("AddressType", AddressType.Shipping.Code);
-                    AddressInfoProvider.SetAddressInfo(info);
-                    address.Id = info.AddressID;
-                }
+                info.SetValue("AddressType", AddressType.Shipping.Code);
+                AddressInfoProvider.SetAddressInfo(info);
+                address.Id = info.AddressID;
             }
         }
 
