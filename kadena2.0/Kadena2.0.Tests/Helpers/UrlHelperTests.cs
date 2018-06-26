@@ -1,10 +1,20 @@
 ﻿using Kadena.Helpers;
+using System;
 using Xunit;
 
 namespace Kadena.Tests.Helpers
 {
     public class UrlHelperTests
     {
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void ParseQueryStringFromUrl_ShouldReturnEmptyCollection_WhenEmptyParameters(string url)
+        {
+            var result = UrlHelper.ParseQueryStringFromUrl(url);
+            Assert.Empty(result);
+        }
+
         [Fact]
         public void ParseQueryStringFromUrl_ShouldReturnEmptyCollection_WhenNoParameters()
         {
@@ -29,6 +39,20 @@ namespace Kadena.Tests.Helpers
         {
             var result = UrlHelper.SetQueryParameter(oldUrl, parameterName, newValue);
             Assert.Equal(newUrl, result);
+        }
+
+        [Fact]
+        public void SetQueryParameter_ShouldThrow_WhenUrlIsNull()
+        {
+            Action action = () => UrlHelper.SetQueryParameter(null, "param1", "value1");
+            Assert.Throws<ArgumentNullException>(action);
+        }
+
+        [Fact]
+        public void SetQueryParameter_ShouldThrow_WhenParameterNameIsNull()
+        {
+            Action action = () => UrlHelper.SetQueryParameter("", null, "value1");
+            Assert.Throws<ArgumentNullException>(action);
         }
     }
 }

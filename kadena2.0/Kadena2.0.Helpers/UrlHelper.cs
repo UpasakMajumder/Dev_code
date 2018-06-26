@@ -20,6 +20,11 @@ namespace Kadena.Helpers
 
         public static NameValueCollection ParseQueryStringFromUrl(string url)
         {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                return new NameValueCollection();
+            }
+
             var parametersPart = url;
             var parametersPartStart = url.IndexOf('?');
             if (parametersPartStart > 0)
@@ -32,6 +37,15 @@ namespace Kadena.Helpers
 
         public static string SetQueryParameter(string url, string parameterName, string value)
         {
+            if (url == null)
+            {
+                throw new ArgumentNullException(nameof(url));
+            }
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
             var urlParts = url.Split('?');
             var path = urlParts[0];
             var query = urlParts
