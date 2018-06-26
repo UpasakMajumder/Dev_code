@@ -5,6 +5,7 @@ using Kadena.Models.AddToCart;
 using Kadena.Models.Checkout;
 using Kadena.Models.CustomerData;
 using Kadena.Models.Product;
+using Kadena.Models.ShoppingCarts;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
@@ -88,6 +89,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         void DeleteDistributorCartItem(int cartID, int SKUID);
 
-        int GetDistributorCartCount(int userID, int campaignID, int inventoryType = 1);        
+        int GetDistributorCartCount(int userID, int campaignID, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory);        
     }
 }

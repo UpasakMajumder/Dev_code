@@ -17,7 +17,9 @@ class DialogAlert extends Component {
   };
 
   render() {
-    if (!this.props.visible) return null;
+    const { visible } = this.props;
+
+    if (!visible) return null;
 
     const btnsList = this.props.btns.map((btn, i) => {
       return (
@@ -37,6 +39,7 @@ class DialogAlert extends Component {
         closeDialog={this.props.closeDialog}
         title={this.props.message}
         footer={this.props.btns.length ? footer : null}
+        open={visible}
       />
     );
   }
