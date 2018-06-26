@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 /* components */
 import Spinner from 'app.dump/Spinner';
 /* ac */
-import { getUI, changeStatus } from 'app.ac/orderDetail';
+import { getUI, changeStatus, editOrders } from 'app.ac/orderDetail';
 import toogleEmailProof from 'app.ac/emailProof';
 /* utilities */
 import { getSearchObj } from 'app.helpers/location';
@@ -15,6 +15,7 @@ import PaymentInfo from './PaymentInfo';
 import PricingInfo from './PricingInfo';
 import OrderedItems from './OrderedItems';
 import Actions from './Actions';
+import EditModal from './EditModal';
 import EmailProof from '../EmailProof';
 
 class OrderDetail extends Component {
@@ -29,11 +30,18 @@ class OrderDetail extends Component {
       shippingInfo: PropTypes.object,
       actions: PropTypes.object,
       general: PropTypes.object,
-      editOrders: PropTypes.object
+      editOrders: PropTypes.shape({
+        proceedUrl: PropTypes.string.isRequired,
+        dialog: PropTypes.object.isRequired
+      })
     }).isRequired,
     emailProof: PropTypes.object.isRequired,
     toogleEmailProof: PropTypes.func.isRequired
   };
+
+  state = {
+    showEditModal: false // managed in Actions component
+  }
 
   componentDidMount() {
     const { getUI } = this.props;
@@ -42,7 +50,22 @@ class OrderDetail extends Component {
     getUI(orderID);
   }
 
+  getMaxOrderQuantity = () => {
+    if (this.maxOrderQuantity) return this.maxOrderQuantity;
+
+    const maxOrderQuantity = {};
+    this.props.ui.orderedItems.items.forEach((orderedItem) => {
+      maxOrderQuantity[orderedItem.id] = orderedItem.quantity;
+    });
+
+    this.maxOrderQuantity = maxOrderQuantity;
+
+    return maxOrderQuantity;
+  };
+
   changeStatus = newStatus => this.props.changeStatus(newStatus);
+
+  showEditModal = showEditModal => this.setState({ showEditModal });
 
   render() {
     const { ui, emailProof, toogleEmailProof, changeStatus } = this.props;
@@ -64,9 +87,27 @@ class OrderDetail extends Component {
     const paymentInfoEl = paymentInfo ? <div className="col-lg-4 mb-4"><PaymentInfo ui={paymentInfo} dateTimeNAString={dateTimeNAString} /></div> : null;
     const pricingInfoEl = pricingInfo ? <div className="col-lg-4 mb-4"><PricingInfo ui={pricingInfo} /></div> : null;
 
+    const editModal = editOrders
+      ? (
+        <EditModal
+          closeModal={() => this.showEditModal(false)}
+          open={this.state.showEditModal}
+          orderedItems={orderedItems.items}
+          {...editOrders.dialog}
+          proceedUrl={this.props.ui.editOrders.proceedUrl}
+          paidByCreditCard={paymentInfo.paymentIcon === 'credit-card'}
+          editOrders={this.props.editOrders}
+          general={general}
+          maxOrderQuantity={this.getMaxOrderQuantity()}
+        />
+      ) : null;
+
+    const nonZeroProductsExist = Boolean(orderedItems.items.filter(item => item.quantity > 0).length);
+
     return (
       <div>
-        {emailProof.show && <EmailProof />}
+        <EmailProof open={emailProof.show} />
+        {editModal}
         <CommonInfo
           ui={commonInfo}
           dateTimeNAString={dateTimeNAString}
@@ -80,14 +121,23 @@ class OrderDetail extends Component {
           </div>
         </div>
 
-        <OrderedItems toogleEmailProof={toogleEmailProof} ui={orderedItems}/>
+        {nonZeroProductsExist && (
+          <OrderedItems
+            toogleEmailProof={toogleEmailProof}
+            ui={orderedItems}
+            showRejectionLabel={false}
+          />
+        )}
 
         <div className="order-block">
           <Actions
+            acceptEnabled={nonZeroProductsExist}
             actions={actions}
             editOrders={editOrders}
+            editEnabled={nonZeroProductsExist}
             general={general}
             changeStatus={changeStatus}
+            showEditModal={this.showEditModal}
           />
         </div>
       </div>
@@ -101,5 +151,6 @@ export default connect(({ orderDetail, emailProof }) => {
 }, {
   getUI,
   toogleEmailProof,
-  changeStatus
+  changeStatus,
+  editOrders
 })(OrderDetail);

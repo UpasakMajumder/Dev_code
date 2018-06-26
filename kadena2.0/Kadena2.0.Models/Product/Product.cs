@@ -18,6 +18,7 @@ namespace Kadena.Models.Product
         public double Weight { get; set; }
         public bool HiResPdfDownloadEnabled { get; set; }
         public int SkuId { get; set; }
+        public string SkuNumber { get; set; }
         public bool HasProductTypeFlag(string productType)
         {
             return ProductTypes.IsOfType(ProductType, productType);

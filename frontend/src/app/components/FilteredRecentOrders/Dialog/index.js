@@ -44,23 +44,31 @@ const getBody = (distributor, pdf, table) => {
 
 const OrderDialog = ({
   dialog,
-  closeDialog
+  closeDialog,
+  open
 }) => {
-  const { orderId, distributor, pdf, table } = dialog;
-  const title = `${orderId.label}: ${orderId.value}`;
+  const body = Object.keys(dialog).length
+    ? getBody(dialog.distributor, dialog.pdf, dialog.table)
+    : null;
+
+  const title = Object.keys(dialog).length
+    ? `${dialog.orderId.label}: ${dialog.orderId.value}`
+    : 'null';
 
   return (
     <Dialog
       closeDialog={closeDialog}
       hasCloseBtn
       footer={null}
-      body={getBody(distributor, pdf, table)}
+      body={body}
       title={title}
+      open={open}
     />
   );
 };
 
 OrderDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
   closeDialog: PropTypes.func.isRequired,
   dialog: PropTypes.shape({
     orderId: PropTypes.shape({
@@ -82,7 +90,7 @@ OrderDialog.propTypes = {
         span: PropTypes.number
       })))
     }).isRequired
-  }).isRequired
+  })
 };
 
 export default OrderDialog;

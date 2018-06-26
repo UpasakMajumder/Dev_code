@@ -50,6 +50,7 @@ class Modal extends Component {
         hasCloseBtn={true}
         title={title}
         footer={this.getFooter()}
+        open={true}
       />
     );
   }
