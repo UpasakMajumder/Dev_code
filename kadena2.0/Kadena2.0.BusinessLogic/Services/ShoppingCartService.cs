@@ -529,35 +529,6 @@ namespace Kadena.BusinessLogic.Services
             cartItem.SKUUnits = addedAmount;
         }
 
-        private void EnsureInventoryAmount(CartItemEntity item, int addedQuantity, int resultedQuantity)
-        {
-            var sku = skus.GetSKU(item.SKUID);
-
-            if (sku == null)
-            {
-                throw new ArgumentException($"Unable to find SKU {item.SKUID}");
-            }
-
-            if (sku.SellOnlyIfAvailable)
-            {
-                var availableQuantity = sku.AvailableItems;
-
-                if (addedQuantity > availableQuantity)
-                {
-                    throw new ArgumentException(resources.GetResourceString("Kadena.Product.LowerNumberOfAvailableProducts"));
-                }
-
-                if (resultedQuantity > availableQuantity)
-                {
-                    var errorText = string.Format(resources.GetResourceString("Kadena.Product.ItemsInCartExceeded"),
-                                                  resultedQuantity - addedQuantity,
-                                                  availableQuantity - resultedQuantity + addedQuantity);
-
-                    throw new ArgumentException(errorText);
-                }
-            }
-        }
-
         public List<int> GetLoggedInUserCartData(int inventoryType, int userID, int campaignID = 0)
         {
             return shoppingCart.GetShoppingCartIDByInventoryType(inventoryType, userID, campaignID);
