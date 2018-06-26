@@ -29,9 +29,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         void SetShoppingCartAddress(int addressId);
 
-        void SetShoppingCartAddress(DeliveryAddress address);
-        int SetTemporaryShoppingCartAddress(DeliveryAddress address);
-
         void SelectShipping(int shippingOptionsId);
 
         int GetCurrentCartShippingOptionId();
@@ -55,10 +52,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         List<int> GetUserIDsWithShoppingCart(int campaignID, int productType);
 
         ShoppingCartInfo GetShoppingCartByID(int cartID);
-
-        List<int> GetShoppingCartIDs(WhereCondition where);
-
-        List<ShoppingCartItemInfo> GetShoppingCartItemsByCartIDs(List<int> cartIDs);
 
         void UpdateBusinessUnit(ShoppingCartInfo cart, long businessUnitID);
 
