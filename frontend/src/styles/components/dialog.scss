@@ -1,3 +1,7 @@
+$dialog-height: 90vh;
+$dialog-header-height: 100px;
+$dialog-footer-height: 100px;
+
 .dialog {
   display: none;
   position: fixed;
@@ -72,12 +76,13 @@
 
   &__content {
     @include rem(padding-right, 10px);
-    max-height: 560px;
+    max-height: calc(#{$dialog-height} - #{$dialog-header-height} - #{$dialog-footer-height});
     overflow: auto;
   }
 
   &__block {
     @include rem(padding, 20px);
+    max-height: $dialog-height;
     margin: auto;
     align-self: flex-start;
     background-color: $brand-white;
