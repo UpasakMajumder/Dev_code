@@ -92,9 +92,13 @@ class Actions extends Component {
       ? (
         <Button
           text={this.props.editOrders.button}
+          disabled={proceeded}
           type="action"
           btnClass="mr-2"
-          onClick={() => this.props.showEditModal(true)}
+          onClick={() => {
+            if (proceeded) return;
+            this.props.showEditModal(true);
+          }}
         />
       ) : null;
 

@@ -7,6 +7,7 @@ using Kadena.Models.Product;
 using System.Collections.Generic;
 using Kadena.Models.AddToCart;
 using Kadena.Models.CustomerData;
+using Kadena.Models.ShoppingCarts;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -101,7 +102,7 @@ namespace Kadena.BusinessLogic.Services
                                     ?.ToList().ForEach(x => shoppingCart.UpdateDistributorCart(x, product, cartDistributorData.CartType));
             cartDistributorData.Items.Where(i => i.ShoppingCartID > 0 && i.Quantity == 0)
                                     ?.ToList().ForEach(x => shoppingCart.DeleteDistributorCartItem(x.ShoppingCartID, cartDistributorData.SKUID));
-            return shoppingCart.GetDistributorCartCount(kenticoUsers.GetCurrentUser().UserId, product.CampaignID, cartDistributorData.CartType);
+            return shoppingCart.GetDistributorCartCount(kenticoUsers.GetCurrentUser().UserId, product.CampaignID, (ShoppingCartTypes)cartDistributorData.CartType);
         }
 
         private void CreateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int inventoryType = 1)

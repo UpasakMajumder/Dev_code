@@ -217,7 +217,7 @@ AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN {%KadenaM
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
+          <property name="cat_open_visibility">False</property>
           <property name="container"></property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
@@ -252,7 +252,9 @@ AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN {%KadenaM
           <property name="showfordocumenttypes"></property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
+          <property name="visible" ismacro="true">
+            <![CDATA[{% KadenaNamespace.GetCartCountByInventoryType(CurrentUser.UserID, 2, KadenaMacroMethods.OpenCampaignID()) > 0 |(user)administrator|(hash)2a35a4f578305d813d6293cd989dfad8c8dd87e3db954ccb2b75b7f6f79863bc%}]]>
+          </property>
           <property name="webparttitle"></property>
           <property name="webparttype">GeneratePDFforCart</property>
         </webpart>
