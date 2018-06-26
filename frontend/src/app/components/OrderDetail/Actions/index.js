@@ -34,7 +34,10 @@ class Actions extends Component {
       proceedUrl: PropTypes.string.isRequired
     }),
     general: PropTypes.object.isRequired,
-    changeStatus: PropTypes.func.isRequired
+    changeStatus: PropTypes.func.isRequired,
+    showEditModal: PropTypes.func.isRequired,
+    acceptEnabled: PropTypes.bool.isRequired,
+    editEnabled: PropTypes.bool.isRequired
   };
 
   handleShowReject = () => this.setState({ showReject: true });
@@ -77,19 +80,25 @@ class Actions extends Component {
   };
 
   render() {
-    const { actions } = this.props;
+    const {
+      acceptEnabled,
+      actions,
+      editEnabled,
+      editOrders
+    } = this.props;
     const { proceeded, rejectionNote, isLoading } = this.state;
 
-    const editButton = this.props.editOrders
+    const editButton = (editOrders && editEnabled)
       ? (
         <Button
           text={this.props.editOrders.button}
           type="action"
           btnClass="mr-2"
+          onClick={() => this.props.showEditModal(true)}
         />
       ) : null;
 
-    const commentBlock = actions
+    const commentBlock = this.props.actions
       ? (
         <Textarea
           label={actions.comment.title}
@@ -101,8 +110,8 @@ class Actions extends Component {
         />
       ) : null;
 
-    const approveButtons = actions
-      ? [
+    const acceptButton = (actions && acceptEnabled)
+      ? (
         <Button
           key={1}
           text={actions.accept.button}
@@ -114,27 +123,29 @@ class Actions extends Component {
             if (proceeded) return;
             this.submit(actions.accept.proceedUrl);
           }}
-        />,
+        />
+      ) : null;
+
+    const rejectButton = actions
+      ? (
         <Button
           key={2}
           text={actions.reject.button}
           type="danger"
           disabled={proceeded}
           isLoading={isLoading}
-          onClick={proceeded ? () => {} : this.handleShowReject}
+          onClick={proceeded ? () => { } : this.handleShowReject}
         />
-      ] : null;
-
-    const modal = actions
-      ? this.state.showReject && <Modal submit={() => this.submit(actions.reject.proceedUrl)} closeDialog={this.handleHideReject} { ...actions.reject.dialog } />
-      : null;
+      ) : null;
 
     return (
       <div className="text-right">
-        {modal}
+          {this.state.showReject && <Modal submit={() => this.submit(actions.reject.proceedUrl)} closeDialog={this.handleHideReject} {...actions.reject.dialog } />}
+
         {commentBlock}
         {editButton}
-        {approveButtons}
+        {acceptButton}
+        {rejectButton}
       </div>
     );
   }

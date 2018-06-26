@@ -26,5 +26,6 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
         public ChiliProcessDto ChiliProcess { get; set; }
         public bool SendPriceToErp { get; set; }
         public bool RequiresApproval { get; set; }
+        public int DocumentId { get; set; }
     }
 }
