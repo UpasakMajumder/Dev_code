@@ -454,5 +454,83 @@ namespace Kadena.Tests.BusinessLogic
             Assert.Equal(price, result[0].Key);
             Assert.Equal(dollar, result[0].Value);
         }
+
+        [Fact]
+        public void GetPriceByCustomModelTest_BadProduct()
+        {
+            var price = Sut.GetPriceByCustomModel(1, 10);
+
+            Assert.Equal(decimal.MinusOne, price);
+            Verify<IKenticoProductsProvider>(p => p.GetProductByDocumentId(1), Times.Once);
+        }
+
+        [Fact]
+        public void GetPriceByCustomModel_Dynamic()
+        {
+            const decimal price = 123.45m;
+            const int documentId = 1;
+            const int quantity = 10;
+            const string json = "json";
+            Setup<IKenticoProductsProvider, Product>(p => p.GetProductByDocumentId(documentId), new Product
+            {
+                PricingModel = PricingModel.Dynamic,
+                DynamicPricingJson = json
+            }
+            );
+            Setup<IDynamicPriceRangeProvider, decimal>(p => p.GetDynamicPrice(quantity, json), price);
+
+            var newprice = Sut.GetPriceByCustomModel(documentId, quantity);
+
+            Assert.Equal(price, newprice);
+            Verify<IDynamicPriceRangeProvider>(p => p.GetDynamicPrice(quantity, json), Times.Once);
+        }
+
+        [Fact]
+        public void GetPriceByCustomModel_Tiered()
+        {
+            const decimal price = 123.45m;
+            const int documentId = 1;
+            const int quantity = 10;
+            const string json = "json";
+            Setup<IKenticoProductsProvider, Product>(p => p.GetProductByDocumentId(documentId), new Product
+            {
+                PricingModel = PricingModel.Tiered,
+                TieredPricingJson = json
+            }
+            );
+
+            Setup<ITieredPriceRangeProvider, decimal>(p => p.GetTieredPrice(quantity, json), price);
+
+            var newprice = Sut.GetPriceByCustomModel(documentId, quantity);
+
+            Assert.Equal(price, newprice);
+            Verify<ITieredPriceRangeProvider>(p => p.GetTieredPrice(quantity, json), Times.Once);
+        }
+
+        [Fact]
+        public void ProductHasValidSKUNumberTest_Ok()
+        {
+            const int skuid = 1;
+            Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(skuid), new Sku { SKUNumber = "34562354" });
+
+            var result = Sut.ProductHasValidSKUNumber(skuid);
+
+            Assert.True(result);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("00000")]
+        [InlineData(null)]
+        public void ProductHasValidSKUNumberTest_Bas(string skunumber)
+        {
+            const int skuid = 1;
+            Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(skuid), new Sku { SKUNumber = skunumber });
+
+            var result = Sut.ProductHasValidSKUNumber(skuid);
+
+            Assert.False(result);
+            Verify<IKenticoSkuProvider>(p => p.GetSKU(skuid), Times.Once);
+        }
     }
 }

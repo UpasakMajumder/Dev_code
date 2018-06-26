@@ -16,6 +16,7 @@
   border: 3px solid $brand-grey;
   display: flex;
   min-height: $min-height;
+  position: relative;
 
   p {
     margin: 0;
@@ -37,6 +38,12 @@
       max-height: 105px;
       max-width: 105px;
     }
+  }
+
+  &__flag {
+    position: absolute;
+    left: 10px;
+    top: 10px;
   }
 
   &__content {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { connect } from 'react-redux';
 /* ac */
 import { getUI } from 'app.ac/cartPreview';
@@ -64,9 +65,14 @@ class CartPreview extends Component {
     const preview = <div className="cart-preview__container">{content}</div>;
 
     return (
-      <div className="cart-preview">
+      <ReactCSSTransitionGroup
+        transitionName="cart-preview"
+        transitionEnterTimeout={400}
+        transitionLeaveTimeout={400}
+        component="div"
+      >
         { isVisible ? preview : null}
-      </div>
+      </ReactCSSTransitionGroup>
     );
   }
 
