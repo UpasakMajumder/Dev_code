@@ -43,6 +43,7 @@
     padding-top: 56.25%;
     width: calc(100% + #{$content-inner-padding * 2});
     margin: 0 #{-$content-inner-padding} #{-$content-inner-padding};
+    background-color: $brand-grey;
 
     iframe {
       position: absolute;
@@ -50,6 +51,34 @@
       top: 0;
       width: 100%;
       height: 100%;
+
+      /**
+       * Workaround for flash parameter <param name="wmode" value="direct" />
+       * which causes the flash object to be stacked highest in the viewport.
+       *
+       * We cannot use value "opaque", or "transparent", because when parameter
+       * "enable3D=true" is present in the iframe URL the flash widget has
+       * to support some 3D rendering functionalities which are not available
+       * when "wmode" is not set as "direct".
+       *
+       * Therefore we check the iframe params and when overlay or modal dialog
+       * are shown we just temporarily hide the flash widget, so that no content
+       * is overlapped.
+       *
+       * Ticket: KDA-3216
+       */
+      &[src*='enable3D=true'] {
+        transition: visibility .3s ease-out, opacity .3s ease-out;
+        visibility: visible;
+        opacity: 1;
+        will-change: visibility, opacity;
+
+        .has-overlay &,
+        .has-dialog & {
+          visibility: hidden;
+          opacity: 0;
+        }
+      }
     }
   }
 
