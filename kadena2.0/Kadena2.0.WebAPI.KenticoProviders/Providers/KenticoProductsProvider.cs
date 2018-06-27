@@ -287,7 +287,8 @@ namespace Kadena.WebAPI.KenticoProviders
                     EstimatedPrice = document.GetValue("EstimatedPrice", default(decimal)),
                     POSNumber = sku.GetStringValue("SKUProductCustomerReferenceNumber", string.Empty),
                     ProgramID = document.GetIntegerValue("ProgramID", default(int)),
-                    CampaignID = new KenticoProgramsProvider().GetProgram(document.GetIntegerValue("ProgramID", default(int)))?.CampaignID ?? 0
+                    CampaignID = new KenticoProgramsProvider().GetProgram(document.GetIntegerValue("ProgramID", default(int)))?.CampaignID ?? 0,
+                    DocumentId = document.DocumentID
                 };
             }
             else
