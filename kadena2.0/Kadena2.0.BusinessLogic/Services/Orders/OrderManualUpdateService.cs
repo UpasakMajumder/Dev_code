@@ -71,6 +71,8 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public async Task<OrderUpdateResult> UpdateOrder(OrderUpdate request)
         {
+            CheckRequestData(request);
+
             var orderDetailResult = await orderService.GetOrderByOrderId(request.OrderId);
 
             if (!orderDetailResult.Success || orderDetailResult.Payload == null)
@@ -80,12 +82,15 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var orderDetail = orderDetailResult.Payload;
 
-            approvers.CheckIsCustomersEditor(orderDetail.ClientId);
+            var itemsWithoutDocument = orderDetail.Items.Where(i => i.DocumentId == 0).Select(i => i.Name);
+
+            if (itemsWithoutDocument.Any())
+            {
+                throw new Exception("Following items were ordered with empty documentId : " + string.Join(", ", itemsWithoutDocument));
+            }
+
+            approvers.CheckIsCustomersEditor(orderDetail.ClientId);            
             
-            var documentIds = orderDetail.Items.Select(i => i.DocumentId).Distinct().ToArray();
-            var skuIds = orderDetail.Items.Select(i => i.SkuId).Distinct().ToArray();
-            var products = productsProvider.GetProductsByDocumentIds(documentIds);
-            var skus = skuProvider.GetSKUsByIds(skuIds);
 
             var updatedItemsData = request.Items.Join(orderDetail.Items,
                                                        chi => chi.LineNumber,
@@ -93,11 +98,31 @@ namespace Kadena.BusinessLogic.Services.Orders
                                                        (chi, oi) => new UpdatedItemCheckData
                                                            {
                                                                OriginalItem = oi,
-                                                               UpdatedItem = chi,
-                                                               Sku = skus.First(s => s.SkuId == oi.SkuId),
-                                                               Product = products.First(p => p.SkuId == oi.SkuId)
+                                                               UpdatedItem = chi
                                                            }
                                                        ).ToList();
+
+            if (updatedItemsData.Count() != request.Items.Count())
+            {
+                throw new Exception("Couldn't match all given line numbers in original order");
+            }
+
+            var documentIds = orderDetail.Items.Select(i => i.DocumentId).Distinct().ToArray();
+            var skuIds = orderDetail.Items.Select(i => i.SkuId).Distinct().ToArray();
+            var products = productsProvider.GetProductsByDocumentIds(documentIds);
+            var skus = skuProvider.GetSKUsByIds(skuIds);
+
+            updatedItemsData.ForEach(u =>
+            {
+                var sku = skus.FirstOrDefault(s => s.SkuId == u.OriginalItem.SkuId) 
+                          ?? throw new Exception($"Unable to find SKU {u.OriginalItem.SkuId} of item {u.OriginalItem.Name}");
+
+                var product = products.FirstOrDefault(p => p.Id == u.OriginalItem.DocumentId) 
+                              ?? throw new Exception($"Unable to find product {u.OriginalItem.DocumentId} of item {u.OriginalItem.Name}");
+
+                u.Sku = sku;
+                u.Product = product;
+            });
 
             updatedItemsData.ForEach(d => d.ManuallyUpdatedItem = CreateChangedItem(d));
 
@@ -109,7 +134,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 Items = changedItems,
             };
 
-            await DoEstimations(requestDto, updatedItemsData, orderDetail);
+            await DoEstimations(requestDto, updatedItemsData, orderDetail, skus);
             var updateResult = await updateService.UpdateOrder(requestDto);
             if (!updateResult.Success)
             {
@@ -119,6 +144,26 @@ namespace Kadena.BusinessLogic.Services.Orders
             UpdateAvailableItems(updatedItemsData);
 
             return GetUpdatesForFrontend(updatedItemsData, requestDto);
+        }
+
+        void CheckRequestData(OrderUpdate request)
+        {
+            OrderNumber.Parse(request.OrderId);
+
+            if ((request.Items?.Count() ?? 0) == 0)
+            {
+                throw new Exception("No items were submitted to process");
+            }
+
+            if (request.Items.GroupBy(i => i.LineNumber).Count() != request.Items.Count())
+            {
+                throw new Exception("Line numbers of changed items are not unique");
+            }
+
+            if (request.Items.Any(i => i.Quantity < 0))
+            {
+                throw new Exception("New item quantity cannot be < 0");
+            }
         }
 
         OrderUpdateResult GetUpdatesForFrontend(IEnumerable<UpdatedItemCheckData> updateData, OrderManualUpdateRequestDto requestDto)
@@ -180,9 +225,10 @@ namespace Kadena.BusinessLogic.Services.Orders
             });
         }
 
-        async Task DoEstimations(OrderManualUpdateRequestDto request, IEnumerable<UpdatedItemCheckData> updateData, GetOrderByOrderIdResponseDTO orderDetail)
+        async Task DoEstimations(OrderManualUpdateRequestDto request, IEnumerable<UpdatedItemCheckData> updateData, GetOrderByOrderIdResponseDTO orderDetail, Sku[] skus)
         {
             request.TotalPrice = 0.0m;
+            var shippableWeight = 0.0d;
 
             orderDetail.Items.ForEach(i =>
             {
@@ -191,17 +237,22 @@ namespace Kadena.BusinessLogic.Services.Orders
                 if (updatedItem != null)
                 {
                     request.TotalPrice += updatedItem.ManuallyUpdatedItem.TotalPrice;
+                    if (updatedItem.Sku.NeedsShipping)
+                    {
+                        shippableWeight += updatedItem.Sku.Weight * updatedItem.ManuallyUpdatedItem.Quantity;
+                    }
                 }
                 else
                 {
                     request.TotalPrice += (decimal)i.TotalPrice;
+                    var sku = skus.First(s => s.SkuId == i.SkuId);
+                    if (sku.NeedsShipping)
+                    {
+                        shippableWeight += sku.Weight * i.Quantity;
+                    }
                 }
             }
             );
-
-            var shippableWeight = updateData
-                .Where(u => u.Sku.NeedsShipping)
-                .Sum(u => u.Sku.Weight * u.ManuallyUpdatedItem.Quantity);
 
             request.TotalShipping = 0.0m;
 
@@ -209,7 +260,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
             targetAddress.Country = orderDetail.ShippingInfo.AddressTo.isoCountryCode;
 
-            if (updateData.Any(u => u.ManuallyUpdatedItem.Quantity > 0) && !orderDetail.ShippingInfo.Provider.EndsWith("Customer"))
+            if (!orderDetail.ShippingInfo.Provider.EndsWith("Customer"))
             {
                 var shippingCostRequest = deliveryData.GetDeliveryEstimationRequestData(orderDetail.ShippingInfo.Provider, 
                                                                            orderDetail.ShippingInfo.ShippingService, 

@@ -484,6 +484,7 @@
     <Compile Include="Dto\Approval\MicroserviceRequests\ApprovalStateTests.cs" />
     <Compile Include="Helpers\EnumHelperTests.cs" />
     <Compile Include="BusinessLogic\SettingsServiceTests.cs" />
+    <Compile Include="Helpers\UrlHelperTests.cs" />
     <Compile Include="Infrastructure\AutoMapperTests.cs" />
     <Compile Include="MicroserviceClients\StatisticsClientTests.cs" />
     <Compile Include="BusinessLogic\PdfLowresServiceTests.cs" />
@@ -511,6 +512,7 @@
     <Compile Include="MicroserviceClients\TemplateClientTest.cs" />
     <Compile Include="Models\ProductValidatorTests.cs" />
     <Compile Include="Models\DeliveryAddressesTests.cs" />
+    <Compile Include="Models\TableSortingHelperTests.cs" />
     <Compile Include="BusinessLogic\OrderResubmissionServiceTests.cs" />
     <Compile Include="BusinessLogic\OrderReportFactoryTests.cs" />
     <Compile Include="BusinessLogic\OrderReportTestHelper.cs" />
