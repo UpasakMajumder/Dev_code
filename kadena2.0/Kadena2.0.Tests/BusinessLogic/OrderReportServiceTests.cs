@@ -1,10 +1,9 @@
-﻿using Kadena.BusinessLogic.Factories;
+﻿using Kadena.BusinessLogic.Contracts;
+using Kadena.BusinessLogic.Factories;
 using Kadena.BusinessLogic.Services.Orders;
 using Kadena.Container.Default;
 using Kadena.Dto.General;
 using Kadena.Dto.Order;
-using Kadena.Infrastructure.Contracts;
-using Kadena.Infrastructure.FileConversion;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
 using Kadena.Models.SiteSettings;
@@ -12,6 +11,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -41,29 +41,21 @@ namespace Kadena.Tests.BusinessLogic
         }
 
         [Fact]
-        public void ConvertOrdersToView_ShouldThrow_WhenArgumentNull()
+        public async Task ConvertOrdersToView_ShouldMapOrdersToTableView()
         {
-            Assert.Throws<ArgumentNullException>(() => Sut.ConvertOrdersToView(null));
-        }
 
-        [Fact]
-        public void ConvertOrdersToView_ShouldMapOrdersToTableView()
-        {
-            var orders = new PagedData<OrderReport>
+            var tableView = new TableView
             {
-                Data = OrderReportTestHelper.CreateTestOrders(ordersCount: 1, itemsPerOrderCount: 1),
                 Pagination = new Pagination()
             };
+            Setup<IOrderViewClient, Task<BaseResponseDto<OrderListDto>>>(s => s.GetOrders(It.IsAny<OrderListFilter>()),
+                Task.FromResult(new BaseResponseDto<OrderListDto>()));
+            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<IEnumerable<OrderReportViewItem>>()), tableView);
 
-            var tableView = new TableView();
-            var reportView = new OrderReportView();
-            Setup<IOrderReportFactory, OrderReportView>(orf => orf.CreateReportView(orders.Data), reportView);
-            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(reportView), tableView);
-
-            var actual = Sut.ConvertOrdersToView(orders);
+            var actual = await Sut.ConvertOrdersToView(1, new OrderFilter());
 
             Assert.Equal(tableView, actual);
-            Assert.Equal(orders.Pagination, actual.Pagination);
+            Assert.Equal(tableView.Pagination, actual.Pagination);
         }
 
         [Fact]
@@ -78,9 +70,10 @@ namespace Kadena.Tests.BusinessLogic
                     actualFilter = f;
                     return Task.FromResult(new BaseResponseDto<OrderListDto>());
                 });
+            Setup<IOrderReportFactory, TableView>(s => s.CreateTableView(It.IsAny<IEnumerable<OrderReportViewItem>>()), new TableView());
             var page = 2;
 
-            await Sut.GetOrders(page, new OrderFilter());
+            await Sut.ConvertOrdersToView(page, new OrderFilter());
 
             Assert.Equal(currentSite, actualFilter.SiteName);
             Assert.Equal(page, actualFilter.PageNumber);
@@ -102,11 +95,11 @@ namespace Kadena.Tests.BusinessLogic
             var someInvalidFilter = GetInvalidDateFilter();
 
             Task action() => Sut.GetOrdersForSite("test_site", OrderReportService.FirstPageNumber
-                , someInvalidFilter);
+                 , someInvalidFilter);
 
             await Assert.ThrowsAsync<ArgumentException>("filter", action);
         }
-        
+
         [Fact]
         public async Task GetOrdersForSite_ShouldConfigureDateFilterAsInclusive()
         {
@@ -177,7 +170,7 @@ namespace Kadena.Tests.BusinessLogic
         {
             var filterWithInvalidSort = new OrderFilter { OrderByExpression = orderBy };
 
-            Task<PagedData<OrderReport>> action() => Sut.GetOrders(1, filterWithInvalidSort);
+            Task action() => Sut.ConvertOrdersToView(1, filterWithInvalidSort);
 
             await Assert.ThrowsAsync<ArgumentException>("filter", action);
         }
@@ -194,7 +187,7 @@ namespace Kadena.Tests.BusinessLogic
         {
             var filterWithInvalidDateRange = GetInvalidDateFilter();
 
-            Task action() => Sut.GetOrders(1, filterWithInvalidDateRange);
+            Task action() => Sut.ConvertOrdersToView(1, filterWithInvalidDateRange);
 
             await Assert.ThrowsAsync<ArgumentException>("filter", action);
         }
@@ -239,7 +232,7 @@ namespace Kadena.Tests.BusinessLogic
             SetupOrderViewClientReturning(orders);
 
             var dummyFileData = new byte[] { 1, 2, 3 };
-            Setup<IExcelConvert, byte[]>(ec => ec.Convert(It.IsAny<Table>()), dummyFileData);
+            Setup<IConvert, byte[]>(ec => ec.GetBytes(It.IsAny<TableView>()), dummyFileData);
 
             var result = await Sut.GetOrdersExportForSite("test_site", new OrderFilter());
 
@@ -274,9 +267,9 @@ namespace Kadena.Tests.BusinessLogic
                 Payload = new OrderListDto { Orders = OrderReportTestHelper.CreateTestRecentOrders(1, 1) }
             };
             SetupOrderViewClientReturning(orders);
-            var actualResult = new Table();
-            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<OrderReportView>()), expected);
-            Setup<IExcelConvert, Table, byte[]>(ec => ec.Convert(It.IsAny<Table>()), t =>
+            var actualResult = new TableView();
+            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<IEnumerable<OrderReportViewItem>>()), expected);
+            Setup<IConvert, TableView, byte[]>(ec => ec.GetBytes(It.IsAny<TableView>()), t =>
               {
                   actualResult = t;
                   return null;
@@ -287,7 +280,7 @@ namespace Kadena.Tests.BusinessLogic
             await Sut.GetOrdersExportForSite("test_site", new OrderFilter());
 
             // assert
-            Assert.True(AreEqual(expected, actualResult));
+            Assert.Equal(expected, actualResult);
         }
 
         [Fact]
@@ -343,41 +336,6 @@ namespace Kadena.Tests.BusinessLogic
             await sut.GetOrdersExportForSite(currentSite, filterEmpty);
 
             Assert.Equal(expectedOrderListFilter, actualFilter);
-        }
-
-        private bool AreEqual(TableView t1, Table t2)
-        {
-            if (t1 == null)
-            {
-                throw new ArgumentNullException(nameof(t1));
-            }
-            if (t2 == null)
-            {
-                throw new ArgumentNullException(nameof(t2));
-            }
-
-            if (t1.Rows.Length != t2.Rows.Length)
-            {
-                return false;
-            }
-
-            for (int row = 0; row < t1.Rows.Length; row++)
-            {
-                if (t1.Rows[row].Items.Length != t2.Rows[row].Items.Length)
-                {
-                    return false;
-                }
-
-                for (int cell = 0; cell < t1.Rows[row].Items.Length; cell++)
-                {
-                    if (t1.Rows[row].Items[cell] != t2.Rows[row].Items[cell])
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
         }
 
         private void SetupOrderViewClientReturning(BaseResponseDto<OrderListDto> response)

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.query>
+  <ClassID>
+    <CodeName>KDA.UsersModule</CodeName>
+    <GUID>effde0ae-234c-4f18-b269-75297b940b0e</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </ClassID>
+  <QueryConnectionString>CMSConnectionString</QueryConnectionString>
+  <QueryGUID>4525fc79-1225-4b47-8f83-bec9d23a4ea5</QueryGUID>
+  <QueryIsCustom>True</QueryIsCustom>
+  <QueryIsLocked>True</QueryIsLocked>
+  <QueryLoadGeneration>0</QueryLoadGeneration>
+  <QueryName>GetAllUsers</QueryName>
+  <QueryRequiresTransaction>False</QueryRequiresTransaction>
+  <QueryText>
+<![CDATA[
+SELECT 
+  ISNULL(NULLIF(u.FirstName, ''), u.UserName) AS FirstName,
+  u.LastName,
+  u.Email,
+  ISNULL(k_div.DivisionName, '') AS DivisionName,
+  STUFF(
+    (SELECT ', ' + BusinessUnitName 
+     FROM KDA_BusinessUnit bu 
+     JOIN KDA_UserBusinessUnits ubu ON ubu.BusinessUnitID = bu.ItemID
+     WHERE ubu.UserID = u.UserID
+     ORDER BY BusinessUnitName
+     FOR XML PATH('')),
+	1,
+	1,
+	'') AS BusinessUnits,
+  (SELECT ISNULL(NULLIF(u_sm.FullName, ''), u_sm.UserName) FROM CMS_User u_sm WHERE u_sm.UserID = us.SalesManagerID) AS SalesManagerName,
+  u.UserID
+FROM CMS_User u
+JOIN CMS_UserSettings us ON us.UserSettingsUserID = u.UserID
+JOIN CMS_UserSite u_site ON u_site.UserID = u.UserID
+LEFT JOIN KDA_Division k_div ON k_div.ItemID = us.UserDivisionID
+WHERE ##WHERE##
+ORDER BY ##ORDERBY##
+]]>
+  </QueryText>
+  <QueryTypeID>0</QueryTypeID>
+</cms.query>

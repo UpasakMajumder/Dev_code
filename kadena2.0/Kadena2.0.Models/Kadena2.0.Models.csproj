@@ -79,7 +79,7 @@
     <Compile Include="Orders\OrderFilter.cs" />
     <Compile Include="Orders\OrderItemUpdate.cs" />
     <Compile Include="Orders\OrderNumber.cs" />
-    <Compile Include="Orders\OrderReport.cs" />
+    <Compile Include="Orders\OrderReportViewItem.cs" />
     <Compile Include="Orders\OrderStatus.cs" />
     <Compile Include="Orders\OrderUpdate.cs" />
     <Compile Include="Orders\OrderUpdateResult.cs" />
@@ -141,8 +141,10 @@
     <Compile Include="SubmitOrder\MailingList.cs" />
     <Compile Include="SubmitOrder\OrderCartItem.cs" />
     <Compile Include="SubmitOrder\OrderItemSku.cs" />
-    <Compile Include="SubmitOrder\Weight.cs" />
+    <Compile Include="TableSorting\OrderBy.cs" />
+    <Compile Include="TableSorting\TableSortingHelper.cs" />
     <Compile Include="TemplatedProduct\EmailProofRequest.cs" />
+    <Compile Include="SubmitOrder\Weight.cs" />
     <Compile Include="_Common\ContentTypes.cs" />
     <Compile Include="_Common\Country.cs" />
     <Compile Include="CreditCard\SaveTokenData.cs" />

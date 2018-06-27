@@ -40,12 +40,12 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     {
         get
         {
-            return ValidationHelper.GetString(GetValue("WhereCondition"), srcUsers.WhereCondition);
+            return ValidationHelper.GetString(GetValue("WhereCondition"), repUsers.WhereCondition);
         }
         set
         {
             SetValue("WhereCondition", value);
-            srcUsers.WhereCondition = value;
+            repUsers.WhereCondition = value;
         }
     }
 
@@ -57,12 +57,12 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     {
         get
         {
-            return ValidationHelper.GetString(GetValue("OrderBy"), srcUsers.OrderBy);
+            return ValidationHelper.GetString(GetValue("OrderBy"), repUsers.OrderBy);
         }
         set
         {
             SetValue("OrderBy", value);
-            srcUsers.OrderBy = value;
+            repUsers.OrderBy = value;
         }
     }
 
@@ -74,12 +74,12 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     {
         get
         {
-            return ValidationHelper.GetInteger(GetValue("SelectTopN"), srcUsers.TopN);
+            return ValidationHelper.GetInteger(GetValue("SelectTopN"), repUsers.TopN);
         }
         set
         {
             SetValue("SelectTopN", value);
-            srcUsers.TopN = value;
+            repUsers.TopN = value;
         }
     }
 
@@ -91,83 +91,14 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     {
         get
         {
-            return ValidationHelper.GetString(GetValue("Columns"), srcUsers.SelectedColumns);
+            return ValidationHelper.GetString(GetValue("Columns"), repUsers.SelectedColumns);
         }
         set
         {
             SetValue("Columns", value);
-            srcUsers.SelectedColumns = value;
+            repUsers.SelectedColumns = value;
         }
     }
-
-
-    /// <summary>
-    /// Gets or sets the source filter name.
-    /// </summary>
-    public string FilterName
-    {
-        get
-        {
-            return ValidationHelper.GetString(GetValue("FilterName"), srcUsers.SourceFilterName);
-        }
-        set
-        {
-            SetValue("FilterName", value);
-            srcUsers.SourceFilterName = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets site name.
-    /// </summary>
-    public string SiteName
-    {
-        get
-        {
-            return DataHelper.GetNotEmpty(GetValue("SiteName"), srcUsers.SiteName);
-        }
-        set
-        {
-            SetValue("SiteName", value);
-            srcUsers.SiteName = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets the select only approved users.
-    /// </summary>
-    public bool SelectOnlyApproved
-    {
-        get
-        {
-            return ValidationHelper.GetBoolean(GetValue("SelectOnlyApproved"), srcUsers.SelectOnlyApproved);
-        }
-        set
-        {
-            SetValue("SelectOnlyApproved", value);
-            srcUsers.SelectOnlyApproved = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets the select hidden users.
-    /// </summary>
-    public bool SelectHidden
-    {
-        get
-        {
-            return ValidationHelper.GetBoolean(GetValue("SelectHidden"), srcUsers.SelectHidden);
-        }
-        set
-        {
-            SetValue("SelectHidden", value);
-            srcUsers.SelectHidden = value;
-        }
-    }
-
 
     /// <summary>
     /// Gest or sest the cache item name.
@@ -181,7 +112,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         set
         {
             base.CacheItemName = value;
-            srcUsers.CacheItemName = value;
+            repUsers.CacheItemName = value;
         }
     }
 
@@ -193,12 +124,12 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     {
         get
         {
-            return ValidationHelper.GetString(base.CacheDependencies, srcUsers.CacheDependencies);
+            return ValidationHelper.GetString(base.CacheDependencies, repUsers.CacheDependencies);
         }
         set
         {
             base.CacheDependencies = value;
-            srcUsers.CacheDependencies = value;
+            repUsers.CacheDependencies = value;
         }
     }
 
@@ -215,7 +146,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         set
         {
             base.CacheMinutes = value;
-            srcUsers.CacheMinutes = value;
+            repUsers.CacheMinutes = value;
         }
     }
 
@@ -382,6 +313,15 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
         }
     }
 
+    public string SqlQueryName
+    {
+        get => ValidationHelper.GetString(GetValue(nameof(SqlQueryName)), string.Empty);
+        set
+        {
+            SetValue(nameof(SqlQueryName), value);
+            repUsers.QueryName = value;
+        }
+    }
 
     /// <summary>
     /// Gets or sets ZeroRowsText property.
@@ -757,9 +697,8 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     /// </summary>
     protected void filterUsers_OnFilterChanged()
     {
-        filterUsers.InitDataProperties(srcUsers);
-        repUsers.DataSource = srcUsers.DataSource;
-        repUsers.DataBind();
+        repUsers.WhereCondition = SqlHelper.AddWhereCondition(WhereCondition, filterUsers.WhereCondition);
+        repUsers.ReloadData(true);
     }
 
 
@@ -804,34 +743,16 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                 pnlUserForm.Visible = false;
                 pnlListView.Visible = true;
 
-                repUsers.DataBindByDefault = false;
-                pagerElem.PageControl = repUsers.ID;
-
                 filterUsers.Visible = ShowFilterControl;
                 filterUsers.OnFilterChanged += filterUsers_OnFilterChanged;
-                srcUsers.OnFilterChanged += filterUsers_OnFilterChanged;
+                filterUsers.NewUserButtonText = NewUserButtonText;
 
                 // Basic control properties
+                repUsers.QueryName = SqlQueryName;
                 repUsers.HideControlForZeroRows = HideControlForZeroRows;
                 repUsers.ZeroRowsText = ZeroRowsText;
-
-                // Data source properties
-                srcUsers.WhereCondition = WhereCondition;
-                srcUsers.OrderBy = OrderBy;
-                srcUsers.TopN = SelectTopN;
-                srcUsers.SelectedColumns = Columns;
-                srcUsers.SiteName = SiteName;
-                srcUsers.FilterName = filterUsers.ID;
-                srcUsers.SourceFilterName = FilterName;
-                srcUsers.CacheItemName = CacheItemName;
-                srcUsers.CacheDependencies = CacheDependencies;
-                srcUsers.CacheMinutes = CacheMinutes;
-                srcUsers.SelectOnlyApproved = SelectOnlyApproved;
-                srcUsers.SelectHidden = SelectHidden;
-
-                // Init data properties
-                filterUsers.InitDataProperties(srcUsers);
-
+                repUsers.WhereCondition = WhereCondition;
+                repUsers.OrderBy = OrderBy;
 
                 #region "Repeater template properties"
 
@@ -859,15 +780,15 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
 
                 #endregion
 
-
                 // UniPager properties
+                pagerElem.PageControl = repUsers.ID;
                 pagerElem.PageSize = PageSize;
                 pagerElem.GroupSize = GroupSize;
                 pagerElem.QueryStringKey = QueryStringKey;
                 pagerElem.DisplayFirstLastAutomatically = DisplayFirstLastAutomatically;
                 pagerElem.DisplayPreviousNextAutomatically = DisplayPreviousNextAutomatically;
                 pagerElem.HidePagerForSinglePage = HidePagerForSinglePage;
-                pagerElem.Enabled = EnablePaging;
+                pagerElem.Enabled = EnablePaging;                
 
                 switch (PagingMode.ToLowerCSafe())
                 {
@@ -940,13 +861,6 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                 }
 
                 #endregion
-
-
-                // Connects repeater with data source
-                repUsers.DataSource = srcUsers.DataSource;
-                repUsers.DataBind();
-
-                filterUsers.NewUserButtonText = NewUserButtonText;
             }
         }
     }
@@ -989,7 +903,7 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
     /// </summary>
     public override void ClearCache()
     {
-        srcUsers.ClearCache();
+        repUsers.ClearCache();
     }
 
     protected void btnCancel_Click(object sender, EventArgs e)

@@ -15,23 +15,11 @@ namespace Kadena.BusinessLogic.Services
 
         public FileService(IFileClient fileClient, IKenticoResourceService resources, IKenticoLogger logger)
         {
-            if (fileClient == null)
-            {
-                throw new ArgumentNullException(nameof(fileClient));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-            _fileClient = fileClient;
-            _resources = resources;
-            _logger = logger;
+            _fileClient = fileClient ?? throw new ArgumentNullException(nameof(fileClient));
+            _resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-
+        
         public async Task<string> GetUrlFromS3(string key)
         {
             var linkResult = await _fileClient.GetShortliveSecureLink(PathHelper.EnsureFullKey(key));
