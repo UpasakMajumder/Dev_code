@@ -25,11 +25,7 @@ class BodyClassToggler extends Component<Props> {
   }
 
   componentDidMount() {
-    if (this.props.isActive) {
-      this.add();
-    } else {
-      this.remove();
-    }
+    this.props.isActive ? this.add() : this.remove();
   }
 
   componentWillUnmount() {
