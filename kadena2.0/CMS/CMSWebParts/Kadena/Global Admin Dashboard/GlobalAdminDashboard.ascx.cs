@@ -168,17 +168,17 @@ public partial class CMSWebParts_Kadena_Global_Admin_Dashboard_GlobalAdminDashbo
             Week = new StatisticsReading()
             {
                 Count = Weekly.Count,
-                Cost = Weekly.Sum(x => x.TotalPrice).ToString()
+                Cost = Weekly.Sum(x => x.TotalCost).ToString()
             },
             Month = new StatisticsReading()
             {
                 Count = Monthly.Count,
-                Cost = Monthly.Sum(x => x.TotalPrice).ToString()
+                Cost = Monthly.Sum(x => x.TotalCost).ToString()
             },
             Year = new StatisticsReading()
             {
                 Count = Yearly.Count,
-                Cost = Yearly.Sum(x => x.TotalPrice).ToString()
+                Cost = Yearly.Sum(x => x.TotalCost).ToString()
             }
         };
     }

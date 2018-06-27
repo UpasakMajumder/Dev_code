@@ -2,7 +2,7 @@
 using Kadena.Container.Default;
 using Xunit;
 
-namespace Kadena.Tests.Infrastructure
+namespace Kadena.Tests.Infrastructure.Mapping
 {
     public class AutoMapperTests
     {
