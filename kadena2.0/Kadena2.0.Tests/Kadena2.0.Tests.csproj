@@ -514,6 +514,7 @@
     <Compile Include="Models\Products\Templated\ProductTemplateTests.cs" />
     <Compile Include="Models\ProductValidatorTests.cs" />
     <Compile Include="Models\DeliveryAddressesTests.cs" />
+    <Compile Include="Models\TableSortingHelperTests.cs" />
     <Compile Include="BusinessLogic\OrderResubmissionServiceTests.cs" />
     <Compile Include="BusinessLogic\OrderReportFactoryTests.cs" />
     <Compile Include="BusinessLogic\OrderReportTestHelper.cs" />

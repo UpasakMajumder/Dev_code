@@ -84,6 +84,8 @@ namespace Kadena.Tests.WebApi
                             CreateSavedTemplate()
                         }
                 }));
+            Setup<IKenticoResourceService, string>(res => res.GetSiteSettingsKey(Settings.KDA_Templating_ProductEditorUrl), "/");
+            Setup<IKenticoDocumentProvider, string>(doc => doc.GetDocumentUrl("/", false), "/");
             Setup<IKenticoUserProvider, User>(prv => prv.GetCurrentUser(), new User { });
             Setup<IKenticoProductsProvider, Product>(srv => srv.GetProductByDocumentId(documentId), new Product { ProductType = ProductTypes.TemplatedProduct });
 
@@ -108,6 +110,8 @@ namespace Kadena.Tests.WebApi
                             CreateWorkingCopyTemplate()
                         }
                 }));
+            Setup<IKenticoResourceService, string>(res => res.GetSiteSettingsKey(Settings.KDA_Templating_ProductEditorUrl), "/");
+            Setup<IKenticoDocumentProvider, string>(doc => doc.GetDocumentUrl("/", false), "/");
             Setup<IKenticoUserProvider, User>(prv => prv.GetCurrentUser(), new User { });
             Setup<IKenticoProductsProvider, Product>(srv => srv.GetProductByDocumentId(documentId), new Product { ProductType = ProductTypes.TemplatedProduct });
 

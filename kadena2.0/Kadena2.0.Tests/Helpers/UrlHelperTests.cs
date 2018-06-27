@@ -1,9 +1,6 @@
 ﻿using Kadena.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Kadena.Tests.Helpers
@@ -11,10 +8,48 @@ namespace Kadena.Tests.Helpers
     public class UrlHelperTests
     {
         [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void ParseQueryStringFromUrl_ShouldReturnEmptyCollection_WhenEmptyParameters(string url)
+        {
+            var result = UrlHelper.ParseQueryStringFromUrl(url);
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public void ParseQueryStringFromUrl_ShouldReturnEmptyCollection_WhenNoParameters()
+        {
+            const string url = "/some/url?";
+            var result = UrlHelper.ParseQueryStringFromUrl(url);
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public void ParseQueryStringFromUrl_ShouldReturnNonEmptyCollection_WhenUrlContainsParameters()
+        {
+            const string url = "/some/other/url?param1=value1&param2=value2";
+            var result = UrlHelper.ParseQueryStringFromUrl(url);
+            Assert.Equal(2, result.Count);
+        }
+
+        [Fact]
+        public void SetQueryParameter_ShouldThrow_WhenUrlIsNull()
+        {
+            Action action = () => UrlHelper.SetQueryParameter(null, "param1", "value1");
+            Assert.Throws<ArgumentNullException>(action);
+        }
+
+        [Fact]
+        public void SetQueryParameter_ShouldThrow_WhenParameterNameIsNull()
+        {
+            Action action = () => UrlHelper.SetQueryParameter("", null, "value1");
+            Assert.Throws<ArgumentNullException>(action);
+        }
+
+        [Theory]
         [InlineData("/some/url", "param", "value", "/some/url?param=value")]
         [InlineData("/some/url?param3=value3", "param", "value", "/some/url?param3=value3&param=value")]
         [InlineData("/some/url?param=value", "param", "value2", "/some/url?param=value2")]
-        [InlineData(null, "param", "value2", "?param=value2")]
         [InlineData("asdf", "param", "value2", "asdf?param=value2")]
         public void SetQueryParameter_ShouldAddOrUpdateParameter(string oldUrl, string parameterName, string newValue, string newUrl)
         {
@@ -27,7 +62,7 @@ namespace Kadena.Tests.Helpers
         {
             var oldUrl = "/some/url";
             var newUrl = "/some/url?param1=val1&param2=val2";
-            var result = UrlHelper.SetQueryParameters(oldUrl, new[] 
+            var result = UrlHelper.SetQueryParameters(oldUrl, new[]
             {
                 new KeyValuePair<string, string>("param1", "val1"),
                 new KeyValuePair<string, string>("param2", "val2"),

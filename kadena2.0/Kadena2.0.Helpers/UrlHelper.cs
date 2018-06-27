@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 
@@ -17,8 +18,44 @@ namespace Kadena.Helpers
             return new Uri("/api/login/saml2", UriKind.Relative);
         }
 
+        public static NameValueCollection ParseQueryStringFromUrl(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                return new NameValueCollection();
+            }
+
+            var parametersPart = url;
+            var parametersPartStart = url.IndexOf('?');
+            if (parametersPartStart > 0)
+            {
+                parametersPart = url.Substring(parametersPartStart);
+            }
+
+            return HttpUtility.ParseQueryString(parametersPart);
+        }
+
+        public static string SetQueryParameter(string url, string parameterName, string value)
+        {
+            if (url == null)
+            {
+                throw new ArgumentNullException(nameof(url));
+            }
+            if (parameterName == null)
+            {
+                throw new ArgumentNullException(nameof(parameterName));
+            }
+
+            return SetQueryParameters(url, new[] { new KeyValuePair<string, string>(parameterName, value) });
+        }
+
         public static string SetQueryParameters(string url, IEnumerable<KeyValuePair<string, string>> ppp)
         {
+            if (url == null)
+            {
+                throw new ArgumentNullException(nameof(url));
+            }
+
             var urlParts = url?.Split('?') ?? new[] { string.Empty };
             var path = urlParts[0];
             var query = urlParts
@@ -40,11 +77,6 @@ namespace Kadena.Helpers
 
             var newUrl = $"{path}?{string.Join("&", newParameters)}";
             return newUrl;
-        }
-
-        public static string SetQueryParameter(string url, string parameterName, string value)
-        {
-            return SetQueryParameters(url, new[] { new KeyValuePair<string, string>(parameterName, value) });
         }
 
         public static string GetPathFromUrl(string url)
