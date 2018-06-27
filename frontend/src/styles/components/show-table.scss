@@ -44,17 +44,14 @@
     }
 
     &.fixed-main-td {
-      max-width: 350px;
-      width: 350px;
+      max-width: 300px;
 
       @media (min-width: 1400px) {
-        max-width: 550px;
-        width: 550px;
+        max-width: 500px;
       }
 
       @media (min-width: 1600px) {
-        max-width: 650px;
-        width: 650px;
+        max-width: 600px;
       }
     }
   }

@@ -8,12 +8,12 @@
   <TransformationCode>
 <![CDATA[
 <tr>
-  <td>{%IfEmpty(FirstName,UserName,FirstName)%}</td>
+  <td>{%FirstName%}</td>
   <td>{%LastName%}</td>
   <td><a href="#">{%Email%}</a></td>
-  <td>{%KadenaNamespace.GetDivisionName(UserDivisionID)|(user)administrator|(hash)f8c3669e35dbec1108a78e66b3aebaea49c00f7023f9e914e2fb1f38ea7f8b9d%}</td>  
-  <td>{%KadenaNamespace.GetBusinessUnits(UserID)|(user)administrator|(hash)47a1e37e0702ddd87ba444efd582d39186282e0a38ed5f85d986d1f40959326c%}</td>  
-  <td>{%IfEmpty(GetUserFullName(SalesManagerID),GetUserName(SalesManagerID),GetUserFullName(SalesManagerID))%}</td>
+  <td>{%DivisionName%}</td>  
+  <td>{%BusinessUnits%}</td>  
+  <td>{%SalesManagerName%}</td>
   <td>
     <div class="text-center">
       <a href="?userid={%UserID%}" class="edit_btn"> <i class="fa fa-pencil" aria-hidden="true"></i></a>
