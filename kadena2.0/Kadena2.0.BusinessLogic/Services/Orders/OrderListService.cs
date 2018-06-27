@@ -125,7 +125,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 }
 
                 orders.Orders = orders.Orders
-                    .Where(o => approvingCustomers.Any(c => c.Id == o.CustomerId))
+                    .Where(o => approvingCustomers.Any(c => c.Id == o.ClientId))
                     .ToList();
 
                 return orders;

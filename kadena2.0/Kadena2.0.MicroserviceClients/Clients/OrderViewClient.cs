@@ -54,17 +54,6 @@ namespace Kadena2.MicroserviceClients.Clients
             return await Get<OrderListDto>(parameterizedUrl).ConfigureAwait(false);
         }
 
-        public Task<BaseResponseDto<OrderListDto>> GetOrders(int customerId, int pageNumber, int quantity)
-        {
-            var filter = new OrderListFilter
-            {
-                PageNumber = pageNumber,
-                ItemsPerPage = quantity,
-                CustomerId = customerId
-            };
-            return GetOrders(filter);
-        }
-
         public Task<BaseResponseDto<OrderListDto>> GetOrders(string siteName, int pageNumber, int quantity)
         {
             var filter = new OrderListFilter
@@ -84,19 +73,6 @@ namespace Kadena2.MicroserviceClients.Clients
                 ItemsPerPage = quantity,
                 OrderType = orderType,
                 SiteName = siteName,
-                CampaignId = campaignID
-            };
-            return GetOrders(filter);
-        }
-
-        public Task<BaseResponseDto<OrderListDto>> GetOrders(int customerId, int pageNumber, int quantity, int campaignID, string orderType)
-        {
-            var filter = new OrderListFilter
-            {
-                PageNumber = pageNumber,
-                ItemsPerPage = quantity,
-                OrderType = orderType,
-                CustomerId = customerId,
                 CampaignId = campaignID
             };
             return GetOrders(filter);
