@@ -2,8 +2,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+import { HAS_DIALOG } from 'app.consts';
+
 /* components */
 import SVG from 'app.dump/SVG';
+import BodyClassToggler from 'app.dump/BodyClassToggler';
 /* flow-types */
 
 type Props = {
@@ -11,7 +15,8 @@ type Props = {
   hasCloseBtn: ?boolean,
   title: string,
   body: ?{},
-  footer: ?{}
+  footer: ?{},
+  open: boolean
 };
 
 const Dialog = (props: Props) => {
@@ -46,14 +51,19 @@ const Dialog = (props: Props) => {
     ) : null;
 
   return (
-    <ReactCSSTransitionGroup
-      transitionName="dialog"
-      transitionEnterTimeout={400}
-      transitionLeaveTimeout={400}
-      component="div"
+    <BodyClassToggler
+      className={HAS_DIALOG}
+      isActive={open}
     >
-      {content}
-    </ReactCSSTransitionGroup>
+      <ReactCSSTransitionGroup
+        transitionName="dialog"
+        transitionEnterTimeout={400}
+        transitionLeaveTimeout={400}
+        component="div"
+      >
+        {content}
+        </ReactCSSTransitionGroup>
+    </BodyClassToggler>
   );
 };
 
