@@ -18,8 +18,9 @@ select p.CampaignsProductID,s.SKUName,s.SKUProductCustomerReferenceNumber as POS
 s.SKUValidUntil,b.BrandName as BrandName,s.SKUDescription
 from KDA_CampaignsProduct p  join View_CMS_Tree_joined t on p.CampaignsProductID=t.DocumentForeignKeyValue
 join COM_SKU s  on s.SKUID=t.NodeSKUID
- join KDA_Brand b on b.ItemID=p.BrandID 
- where  ##WHERE## 
+join KDA_Brand b on b.ItemID=p.BrandID 
+where  ##WHERE## 
+order by ##ORDERBY##
 ]]>
   </QueryText>
   <QueryTypeID>0</QueryTypeID>
