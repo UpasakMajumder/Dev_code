@@ -53,17 +53,20 @@
       height: 100%;
 
       /**
-       * Workaround for flash parameter <param name="wmode" value="direct" />
-       * which causes the flash object to be stacked highest in the viewport.
+       * IE bug on Windows 7:
+       * Flash parameter <param name="wmode" value="direct" />
+       * causes the flash object to be stacked highest in the viewport,
        *
        * We cannot use value "opaque", or "transparent", because when parameter
        * "enable3D=true" is present in the iframe URL the flash widget has
        * to support some 3D rendering functionalities which are not available
        * when "wmode" is not set as "direct".
        *
-       * Therefore we check the iframe params and when overlay or modal dialog
+       * Therefore we check the iframe parameters and when overlay or modal dialog
        * are shown we just temporarily hide the flash widget, so that no content
        * is overlapped.
+       *
+       * Class "IE" is added by Kentico to document.body.
        *
        * Ticket: KDA-3216
        */
@@ -73,8 +76,8 @@
         opacity: 1;
         will-change: visibility, opacity;
 
-        .has-overlay &,
-        .has-dialog & {
+        .IE.has-overlay &,
+        .IE.has-dialog & {
           visibility: hidden;
           opacity: 0;
         }
