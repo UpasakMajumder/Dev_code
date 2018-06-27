@@ -558,6 +558,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 cartItem.SetValue("CartItemDistributorID", distributorCartItem.DistributorID);
                 cartItem.SetValue("CartItemCampaignID", product.CampaignID);
                 cartItem.SetValue("CartItemProgramID", product.ProgramID);
+                cartItem.SetValue("ProductPageID", product.DocumentId);
                 ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItem);
             }
         }
