@@ -55,7 +55,7 @@
       /**
        * IE bug on Windows 7:
        * Flash parameter <param name="wmode" value="direct" />
-       * causes the flash object to be stacked highest in the viewport,
+       * causes the flash object to be stacked highest in the viewport.
        *
        * We cannot use value "opaque", or "transparent", because when parameter
        * "enable3D=true" is present in the iframe URL the flash widget has

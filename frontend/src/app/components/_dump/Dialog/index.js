@@ -62,7 +62,7 @@ const Dialog = (props: Props) => {
         component="div"
       >
         {content}
-        </ReactCSSTransitionGroup>
+      </ReactCSSTransitionGroup>
     </BodyClassToggler>
   );
 };
