@@ -260,7 +260,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
             targetAddress.Country = orderDetail.ShippingInfo.AddressTo.isoCountryCode;
 
-            if (!orderDetail.ShippingInfo.Provider.EndsWith("Customer"))
+            if (!orderDetail.ShippingInfo.Provider.EndsWith("Customer") && shippableWeight > 0)
             {
                 var shippingCostRequest = deliveryData.GetDeliveryEstimationRequestData(orderDetail.ShippingInfo.Provider, 
                                                                            orderDetail.ShippingInfo.ShippingService, 
