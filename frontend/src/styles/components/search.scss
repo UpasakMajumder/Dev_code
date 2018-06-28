@@ -77,4 +77,36 @@
     border-radius: $border-radius;
     background: white;
   }
+
+  &__recent {
+    width: 250px;
+    float: left;
+    margin: 0 5px 20px 0;
+
+    &--icon {
+      position: relative;
+
+      input {
+        padding-right: 35px;
+      }
+
+      & .search__submit {
+        @extend %flex--center--default;
+        position: absolute;
+        right: 10px;
+        top: 0;
+        bottom: 0;
+
+        svg {
+          transition: all .1s;
+        }
+
+        &:hover {
+          svg {
+            @extend .icon-input;
+          }
+        }
+      }
+    }
+  }
 }

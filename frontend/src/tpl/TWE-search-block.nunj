@@ -1,0 +1,18 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/svg.nunj" import svg %}
+
+{% set title = 'TWE Search Block' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
+
+{% block content %}
+
+<div class="search__recent search__recent--icon">
+  <input name="search" type="text" onchange="" onkeypress="" id="id" class="input__text" placeholder="Search">
+  <button class="search__submit btn--off" type="submit">
+    {{ svg('search', 'icon-dollar') }}
+  </button>
+</div>
+
+{% endblock %}
