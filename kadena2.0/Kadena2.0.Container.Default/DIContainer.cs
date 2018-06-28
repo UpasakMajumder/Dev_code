@@ -28,9 +28,7 @@ using Kadena2.WebAPI.KenticoProviders.Providers;
 using Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings;
 using Kadena.BusinessLogic.Contracts.SSO;
 using Kadena.BusinessLogic.Services.SSO;
-using Kadena.Infrastructure.FileConversion;
 using System.IdentityModel.Tokens;
-using Kadena.Infrastructure.Contracts;
 using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.BusinessLogic.Services.Approval;
 
@@ -114,6 +112,7 @@ namespace Kadena.Container.Default
             container.Register<IOrderManualUpdateService, OrderManualUpdateService>();
             container.Register<IDistributorShoppingCartService, DistributorShoppingCartService>();
             container.Register<IOrderItemCheckerService, OrderItemCheckerService>();
+            container.Register<IConvert, XlsxConvert>();
             return container;
         }
 
@@ -206,7 +205,6 @@ namespace Kadena.Container.Default
         {
             container.RegisterInstance(typeof(IMapper), MapperBuilder.MapperInstance);
             container.Register<ICache>(Reuse.Singleton, Made.Of(() => new InMemoryCache()));
-            container.Register<IExcelConvert, ExcelConvert>();
             return container;
         }
     }
