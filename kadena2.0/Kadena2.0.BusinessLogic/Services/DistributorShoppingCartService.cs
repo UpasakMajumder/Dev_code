@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Kadena.Models.AddToCart;
 using Kadena.Models.CustomerData;
 using Kadena.Models.ShoppingCarts;
+using Kadena.Dto.ViewOrder.MicroserviceResponses;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -48,25 +49,10 @@ namespace Kadena.BusinessLogic.Services
                 userId = kenticoUsers.GetCurrentUser().UserId;
             }
 
-            int businessUnitsCount = businessUnitsProvider.GetUserBusinessUnits(userId)?.Count ?? 0;
-            if (businessUnitsCount == 0)
-            {
-                throw new Exception(resources.GetResourceString("Kadena.AddToCart.BusinessUnitError"));
-            }
-            if (inventoryType == 1 && !productsService.ProductHasValidSKUNumber(skuID))
-            {
-                throw new Exception(resources.GetResourceString("KDA.Cart.InvalidProduct"));
-            }
-            int availableQty = inventoryType == 1 ? skus.GetSkuAvailableQty(skuID) : -1;
-            if (availableQty == 0)
-            {
-                throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));
-            }
-            int allocatedQty = inventoryType == 1 ? shoppingCart.GetAllocatedQuantity(skuID, userId) : -1;
-            if (allocatedQty == 0)
-            {
-                throw new Exception(resources.GetResourceString("KDA.Cart.Update.ProductNotAllocatedMessage"));
-            }
+            ValidateBusinessUnits(userId);
+            ValidateSku(skuID, inventoryType);
+            int availableQty = GetInventoryAvailableQuantity(skuID, inventoryType);
+            int allocatedQty = GetAllocatedQuantity(skuID, inventoryType, userId);
             return new DistributorCart()
             {
                 SKUID = skuID,
@@ -77,20 +63,64 @@ namespace Kadena.BusinessLogic.Services
             };
         }
 
+        private void ValidateBusinessUnits(int userId)
+        {
+            int businessUnitsCount = businessUnitsProvider.GetUserBusinessUnits(userId)?.Count ?? 0;
+            if (businessUnitsCount == 0)
+            {
+                throw new Exception(resources.GetResourceString("Kadena.AddToCart.BusinessUnitError"));
+            }
+        }
+
+        private void ValidateSku(int skuID, int inventoryType)
+        {
+            if (inventoryType == 1 && !productsService.ProductHasValidSKUNumber(skuID))
+            {
+                throw new Exception(resources.GetResourceString("KDA.Cart.InvalidProduct"));
+            }
+        }
+
+        private int GetAllocatedQuantity(int skuID, int inventoryType, int userId)
+        {
+            int allocatedQty = inventoryType == 1 ? shoppingCart.GetAllocatedQuantity(skuID, userId) : -1;
+            if (allocatedQty == 0)
+            {
+                throw new Exception(resources.GetResourceString("KDA.Cart.Update.ProductNotAllocatedMessage"));
+            }
+
+            return allocatedQty;
+        }
+
+        private int GetInventoryAvailableQuantity(int skuID, int inventoryType)
+        {
+            int availableQty = inventoryType == 1 ? skus.GetSkuAvailableQty(skuID) : -1;
+            if (availableQty == 0)
+            {
+                throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));
+            }
+
+            return availableQty;
+        }
+
         private List<DistributorCartItem> GetDistributorCartItems(int skuID, int userId, int inventoryType = 1)
         {
             CampaignsProduct product = productsProvider.GetCampaignProduct(skuID) ?? throw new Exception("Invalid product");
-            
+
             List<AddressData> distributors = addressBookProvider.GetAddressesListByUserID(userId, inventoryType, product.CampaignID);
             return distributors.Select(x =>
             {
-                return new DistributorCartItem()
-                {
-                    DistributorID = x.AddressID,
-                    ShoppingCartID = x.DistributorShoppingCartID,
-                    Quantity = shoppingCart.GetItemQuantity(skuID, x.DistributorShoppingCartID)
-                };
+                return CreateDistributorCartItem(skuID, x.DistributorShoppingCartID, x.AddressID);
             }).ToList();
+        }
+
+        private DistributorCartItem CreateDistributorCartItem(int skuID, int cartId, int addressId)
+        {
+            return new DistributorCartItem()
+            {
+                DistributorID = addressId,
+                ShoppingCartID = cartId,
+                Quantity = shoppingCart.GetItemQuantity(skuID, cartId)
+            };
         }
 
         public int UpdateDistributorCarts(DistributorCart cartDistributorData, int userId = 0)
@@ -100,12 +130,12 @@ namespace Kadena.BusinessLogic.Services
                 userId = kenticoUsers.GetCurrentUser().UserId;
             }
 
-            if ((cartDistributorData?.Items.Count ?? 0)<= 0)
+            if ((cartDistributorData?.Items.Count ?? 0) <= 0)
             {
                 throw new Exception("Invalid request");
             }
             CampaignsProduct product = productsProvider.GetCampaignProduct(cartDistributorData.SKUID) ?? throw new Exception("Invalid product");
-            
+
             cartDistributorData.Items.Where(i => i.ShoppingCartID.Equals(default(int)) && i.Quantity > 0)
                                     ?.ToList().ForEach(x => CreateDistributorCart(x, product, userId, cartDistributorData.CartType));
             cartDistributorData.Items.Where(i => i.ShoppingCartID > 0 && i.Quantity > 0)
