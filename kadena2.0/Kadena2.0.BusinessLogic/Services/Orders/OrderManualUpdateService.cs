@@ -274,21 +274,8 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             if (!orderDetail.ShippingInfo.Provider.EndsWith("Customer") && shippableWeight > 0.0m)
             {
-                log.LogInfo("Approval", "Info", $"Going to call estimation microservice");
-
-                var shippingCostRequest = deliveryData.GetDeliveryEstimationRequestData(orderDetail.ShippingInfo.Provider,
-                                                                           orderDetail.ShippingInfo.ShippingService,
-                                                                           (decimal)shippableWeight,
-                                                                           targetAddress);
-
-                var totalShippingResult = await shippingCosts.EstimateShippingCost(shippingCostRequest);
-
-                if (totalShippingResult.Success == false || totalShippingResult.Payload.Length < 1 || !totalShippingResult.Payload[0].Success)
-                {
-                    throw new Exception($"Cannot be delivered by original provider and service. Request error: '{totalShippingResult.ErrorMessages}', Item error: '{totalShippingResult.Payload?[0]?.ErrorMessage}'");
-                }
-
-                request.TotalShipping = totalShippingResult.Payload[0].Cost;
+                request.TotalShipping = await GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
+                    shippableWeight, targetAddress);
             }
             else
             {
@@ -297,7 +284,25 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             request.TotalTax = await EstimateTax(request.TotalPrice, request.TotalShipping, sourceAddress, targetAddress);
         }
-        
+
+        private async Task<decimal> GetShippinCost(string provider, string shippingService,
+            decimal shippableWeight, AddressDto targetAddress)
+        {
+            log.LogInfo("Approval", "Info", $"Going to call estimation microservice");
+
+            var shippingCostRequest = deliveryData.GetDeliveryEstimationRequestData(provider, shippingService,
+                shippableWeight, targetAddress);
+
+            var totalShippingResult = await shippingCosts.EstimateShippingCost(shippingCostRequest);
+
+            if (totalShippingResult.Success == false || totalShippingResult.Payload.Length < 1 || !totalShippingResult.Payload[0].Success)
+            {
+                throw new Exception($"Cannot be delivered by original provider and service. Request error: '{totalShippingResult.ErrorMessages}', Item error: '{totalShippingResult.Payload?[0]?.ErrorMessage}'");
+            }
+
+            return totalShippingResult.Payload[0].Cost;
+        }
+
         async Task<decimal> EstimateTax(decimal totalBasePrice, decimal shipppingCosts, AddressDto sourceAddress, AddressDto targetAddress)
         {
             if (totalBasePrice == 0.0m)
