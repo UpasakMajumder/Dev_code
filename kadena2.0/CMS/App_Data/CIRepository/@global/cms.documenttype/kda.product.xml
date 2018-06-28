@@ -406,19 +406,6 @@
           <visible>True</visible>
         </properties>
       </category>
-      <field column="ProductSKUNumberOfItemsInPackage" columntype="integer" guid="53fe2389-c5e6-46c1-9638-b16ce8bdfa69" publicfield="false" visible="true">
-        <properties>
-          <fieldcaption>Number of items in package</fieldcaption>
-        </properties>
-        <settings>
-          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
-          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
-          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
-          <controlname>TextBoxControl</controlname>
-          <FilterMode>False</FilterMode>
-          <Trim>False</Trim>
-        </settings>
-      </field>
       <field column="ProductSKUWeight" columntype="double" guid="7045c85c-8122-4c89-a058-5f843bbd0b70" publicfield="false" visible="true">
         <properties>
           <defaultvalue>0</defaultvalue>
