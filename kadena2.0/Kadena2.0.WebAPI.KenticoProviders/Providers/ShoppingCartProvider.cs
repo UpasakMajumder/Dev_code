@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Kadena.Models.AddToCart;
 using Kadena.Models.ShoppingCarts;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -510,7 +511,7 @@ namespace Kadena.WebAPI.KenticoProviders
         }
         public int CreateDistributorCart(int distributorId, int campaignId, int programId, int userID, int inventoryType = 1)
         {
-            ShippingOptionInfo shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(resources.GetSiteSettingsKey("KDA_DefaultShipppingOption"), SiteContext.CurrentSiteName);
+            ShippingOptionInfo shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(resources.GetSiteSettingsKey(Settings.KDA_DefaultShipppingOption), SiteContext.CurrentSiteName);
             var customerAddress = AddressInfoProvider.GetAddressInfo(distributorId);
             ShoppingCartInfo cart = new ShoppingCartInfo()
             {
