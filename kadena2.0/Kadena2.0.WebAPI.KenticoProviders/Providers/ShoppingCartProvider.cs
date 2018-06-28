@@ -489,7 +489,7 @@ namespace Kadena.WebAPI.KenticoProviders
                                                 .Where(x => x.ShoppingCartID.Equals(shoppingCartID) && x.SKUID.Equals(SKUID))
                                                 .Sum(x => x.CartItemUnits);
         }
-        
+
         public void RemoveCurrentItemsFromStock(int shoppingCartId = 0)
         {
             var shoppingCart = GetShoppingCart(shoppingCartId);
@@ -508,22 +508,22 @@ namespace Kadena.WebAPI.KenticoProviders
                 }
             }
         }
-        public int CreateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int userID, int inventoryType = 1)
+        public int CreateDistributorCart(int distributorId, int campaignId, int programId, int userID, int inventoryType = 1)
         {
             ShippingOptionInfo shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(resources.GetSiteSettingsKey("KDA_DefaultShipppingOption"), SiteContext.CurrentSiteName);
-            var customerAddress = AddressInfoProvider.GetAddressInfo(distributorCartItem.DistributorID);
+            var customerAddress = AddressInfoProvider.GetAddressInfo(distributorId);
             ShoppingCartInfo cart = new ShoppingCartInfo()
             {
                 ShoppingCartSiteID = SiteContext.CurrentSiteID,
-                ShoppingCartCustomerID = distributorCartItem.DistributorID,
+                ShoppingCartCustomerID = distributorId,
                 ShoppingCartCurrencyID = CurrencyInfoProvider.GetMainCurrency(SiteContext.CurrentSiteID).CurrencyID,
                 User = UserInfoProvider.GetUserInfo(userID),
                 ShoppingCartShippingAddress = customerAddress,
                 ShoppingCartShippingOptionID = shippingOption?.ShippingOptionID ?? 0
             };
-            cart.SetValue("ShoppingCartCampaignID", product.CampaignID);
-            cart.SetValue("ShoppingCartProgramID", product.ProgramID);
-            cart.SetValue("ShoppingCartDistributorID", distributorCartItem.DistributorID);
+            cart.SetValue("ShoppingCartCampaignID", campaignId);
+            cart.SetValue("ShoppingCartProgramID", programId);
+            cart.SetValue("ShoppingCartDistributorID", distributorId);
             cart.SetValue("ShoppingCartInventoryType", inventoryType);
             ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
             return cart?.ShoppingCartID ?? 0;

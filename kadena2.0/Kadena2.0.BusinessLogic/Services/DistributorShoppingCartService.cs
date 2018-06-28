@@ -147,7 +147,9 @@ namespace Kadena.BusinessLogic.Services
 
         private void CreateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int userId, int inventoryType = 1)
         {
-            int cartID = shoppingCart.CreateDistributorCart(distributorCartItem, product, userId, inventoryType);
+            int cartID = shoppingCart.CreateDistributorCart(distributorCartItem.DistributorID,
+                product.CampaignID, product.ProgramID,
+                userId, inventoryType);
             shoppingCart.AddDistributorCartItem(cartID, distributorCartItem, product, inventoryType);
         }
 
