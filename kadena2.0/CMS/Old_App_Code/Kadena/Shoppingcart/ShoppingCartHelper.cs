@@ -38,19 +38,6 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         private static readonly IDeliveryEstimationDataService estimationData = DIContainer.Resolve<IDeliveryEstimationDataService>();
 
         /// <summary>
-        /// creating estimation DTO
-        /// </summary>
-        /// <returns></returns>
-        private static EstimateDeliveryPriceRequestDto[] GetEstimationDTO(ShoppingCartInfo cart)
-        {
-            Cart = cart;
-            var weight = (decimal)Cart.CartItems.Sum(x => (x.CartItemUnits * x.UnitWeight));
-            return estimationData.GetDeliveryEstimationRequestData(
-                CarrierInfoProvider.GetCarrierInfo(Cart.ShippingOption.ShippingOptionCarrierID).CarrierName,
-                Cart.ShippingOption.ShippingOptionName, weight, GetTargetAddress());
-        }
-
-        /// <summary>
         /// Returns order dto
         /// </summary>
         /// <param name="cart"></param>
@@ -485,7 +472,13 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var estimationdto = GetEstimationDTO(cart);
+                Cart = cart;
+                var weight = (decimal)Cart.CartItems.Sum(x => (x.CartItemUnits * x.UnitWeight));
+
+                var estimationdto = estimationData.GetDeliveryEstimationRequestData(
+                    CarrierInfoProvider.GetCarrierInfo(Cart.ShippingOption.ShippingOptionCarrierID).CarrierName,
+                    Cart.ShippingOption.ShippingOptionName, weight, GetTargetAddress());
+
                 return CallEstimationService(estimationdto);
             }
             catch (Exception ex)
