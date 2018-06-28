@@ -24,14 +24,6 @@ namespace Kadena2.WebAPI.KenticoProviders.Classes
             set { productNode.SetValue("NodeSKUID", value); }
         }
 
-        public int ProductSKUNumberOfItemsInPackage
-        {
-            get { return productNode.GetIntegerValue("ProductSKUNumberOfItemsInPackage", 1); }
-            set { productNode.SetValue("ProductSKUNumberOfItemsInPackage", value); }
-        }
-
-
-
         public TreeNode TreeNode => productNode;
 
         public ProductClassWrapper(TreeNode productNode)
@@ -50,8 +42,7 @@ namespace Kadena2.WebAPI.KenticoProviders.Classes
             {
                 NodeSKUID = NodeSKUID,
                 SKUNeedsShipping = ProductSKUNeedsShipping,
-                SKUWeight = ProductSKUWeight,
-                ProductSKUNumberOfItemsInPackage = ProductSKUNumberOfItemsInPackage
+                SKUWeight = ProductSKUWeight
             };
         }
     }
