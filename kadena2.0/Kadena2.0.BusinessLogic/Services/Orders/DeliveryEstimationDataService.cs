@@ -34,15 +34,6 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         }
 
-        public WeightDto GetWeightInSiteUnit(decimal weight)
-        {
-            return new WeightDto
-            {
-                Unit = resources.GetMassUnit(),
-                Value = weight
-            };
-        }
-
         public EstimateDeliveryPriceRequestDto[] GetDeliveryEstimationRequestData(string provider, string service, decimal weight, AddressDto target)
         {
             return new[]
