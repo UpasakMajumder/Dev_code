@@ -332,7 +332,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 LineNumber = data.OriginalItem.LineNumber,
                 Quantity = data.UpdatedItem.Quantity,
-                TotalPrice = unitPrice * data.UpdatedItem.Quantity,
+                TotalPrice = Math.Round(unitPrice * data.UpdatedItem.Quantity, 2),
                 UnitPrice = unitPrice
             };
         }

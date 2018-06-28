@@ -22478,6 +22478,7 @@
     <Content Include="CMSScripts\Vendor\Angular-1.5.5\angular.min.js.map" />
     <Content Include="CMSScripts\Vendor\Angular-1.5.5\angular-resource.min.js.map" />
     <Content Include="CMSScripts\Vendor\Angular-1.5.5\angular-sanitize.min.js.map" />
+    <Content Include="ConnectionStrings.config" />
     <None Include="Old_App_WebReferences\WS\WebService.discomap" />
     <None Include="Old_App_WebReferences\WS\WebService.wsdl" />
     <Content Include="CMSAdminControls\web.config" />
