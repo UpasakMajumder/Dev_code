@@ -10,5 +10,6 @@
         public int ProgramID { get; set; }
         public int CampaignID { get; set; }
         public string POSNumber { get; set; }
+        public int DocumentId { get; set; }
     }
 }

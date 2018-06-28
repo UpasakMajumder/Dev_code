@@ -82,7 +82,7 @@
     <Compile Include="Order\Failed\ResubmitOrderRequestDto.cs" />
     <Compile Include="Order\Failed\ResubmitOrderResponseDto.cs" />
     <Compile Include="Order\OrderListFilter.cs" />
-    <Compile Include="Order\OrderReportDto.cs" />
+    <Compile Include="OrderReport\TrackingFieldDto.cs" />
     <Compile Include="Payment\CreditCard\MicroserviceRequests\UpdateCustomerContainerRequestDto.cs" />
     <Compile Include="Product\BorderDto.cs" />
     <Compile Include="Product\PriceDto.cs" />
@@ -167,7 +167,7 @@
     <Compile Include="Search\Responses\SearchResultPageResponseDTO.cs" />
     <Compile Include="Search\Responses\StockDTO.cs" />
     <Compile Include="Search\Responses\UseTemplateBtnDTO.cs" />
-    <Compile Include="Order\OrderDto.cs" />
+    <Compile Include="Order\RecentOrderDto.cs" />
     <Compile Include="Order\OrderListDto.cs" />
     <Compile Include="Order\OrderItemDto.cs" />
     <Compile Include="Common\ButtonDto.cs" />

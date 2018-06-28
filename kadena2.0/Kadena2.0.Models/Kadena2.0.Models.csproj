@@ -79,7 +79,7 @@
     <Compile Include="Orders\OrderFilter.cs" />
     <Compile Include="Orders\OrderItemUpdate.cs" />
     <Compile Include="Orders\OrderNumber.cs" />
-    <Compile Include="Orders\OrderReport.cs" />
+    <Compile Include="Orders\OrderReportViewItem.cs" />
     <Compile Include="Orders\OrderStatus.cs" />
     <Compile Include="Orders\OrderUpdate.cs" />
     <Compile Include="Orders\OrderUpdateResult.cs" />

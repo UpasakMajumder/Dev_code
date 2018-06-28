@@ -157,7 +157,7 @@ namespace Kadena.Tests.OrderResubmission
                         {
                             { (int)OrderStatus.SentToTibcoError, 2 }
                         },
-                        TotalPrice = 3.5m
+                        TotalCost = 3.5m
                     }
                 }
             };
