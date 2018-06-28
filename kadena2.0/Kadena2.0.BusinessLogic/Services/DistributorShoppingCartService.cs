@@ -42,12 +42,9 @@ namespace Kadena.BusinessLogic.Services
             this.skus = skus ?? throw new ArgumentNullException(nameof(skus));
         }
 
-        public DistributorCart GetCartDistributorData(int skuID, int inventoryType = 1, int userId = 0)
+        public DistributorCart GetCartDistributorData(int skuID, int inventoryType = 1)
         {
-            if (userId < 1)
-            {
-                userId = kenticoUsers.GetCurrentUser().UserId;
-            }
+            var userId = kenticoUsers.GetCurrentUser().UserId;
 
             ValidateBusinessUnits(userId);
             ValidateSku(skuID, inventoryType);
