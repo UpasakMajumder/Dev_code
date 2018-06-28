@@ -128,7 +128,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                             return;
                         }
                     }
-                    OrderDTO ordersDTO = CreateOrdersDTO(Cart, Cart.ShoppingCartUserID, OrderType.generalInventory, shippingCost);
+                    OrderDTO ordersDTO = CreateOrdersDTO(Cart, OrderType.generalInventory, shippingCost);
                     var response = ProcessOrder(Cart, CurrentUser.UserID, OrderType.generalInventory, ordersDTO, shippingCost);
                     if (response != null && response.Success)
                     {

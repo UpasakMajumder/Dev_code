@@ -43,7 +43,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// <param name="cart"></param>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public static OrderDTO CreateOrdersDTO(ShoppingCartInfo cart, int userID, string orderType, decimal shippingCost)
+        public static OrderDTO CreateOrdersDTO(ShoppingCartInfo cart, string orderType, decimal shippingCost)
         {
             try
             {
