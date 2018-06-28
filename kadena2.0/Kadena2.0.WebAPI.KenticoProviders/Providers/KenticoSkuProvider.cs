@@ -41,7 +41,6 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
 
             skuInfo.SKUWeight = sku.Weight;
             skuInfo.SKUNeedsShipping = sku.NeedsShipping;
-            skuInfo.SetValue("SKUNumberOfItemsInPackage", sku.NumberOfItemsInPackage);
             skuInfo.Update();
         }
 
