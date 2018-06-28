@@ -41,19 +41,13 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// creating estimation DTO
         /// </summary>
         /// <returns></returns>
-        public static EstimateDeliveryPriceRequestDto GetEstimationDTO(ShoppingCartInfo cart)
+        private static EstimateDeliveryPriceRequestDto[] GetEstimationDTO(ShoppingCartInfo cart)
         {
             Cart = cart;
             var weight = (decimal)Cart.CartItems.Sum(x => (x.CartItemUnits * x.UnitWeight));
-
-            return new EstimateDeliveryPriceRequestDto
-            {
-                SourceAddress = estimationData.GetSourceAddress(),
-                TargetAddress = GetTargetAddress(),
-                Weight = estimationData.GetWeightInSiteUnit(weight),
-                Provider = CarrierInfoProvider.GetCarrierInfo(Cart.ShippingOption.ShippingOptionCarrierID).CarrierName,
-                ProviderService = Cart.ShippingOption.ShippingOptionName
-            };
+            return estimationData.GetDeliveryEstimationRequestData(
+                CarrierInfoProvider.GetCarrierInfo(Cart.ShippingOption.ShippingOptionCarrierID).CarrierName,
+                Cart.ShippingOption.ShippingOptionName, weight, GetTargetAddress());
         }
 
         /// <summary>
@@ -491,7 +485,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var estimationdto = new[] { GetEstimationDTO(cart) };
+                var estimationdto = GetEstimationDTO(cart);
                 return CallEstimationService(estimationdto);
             }
             catch (Exception ex)

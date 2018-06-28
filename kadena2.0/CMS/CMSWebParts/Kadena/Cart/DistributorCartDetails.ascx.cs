@@ -303,7 +303,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 {
                     if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
                     {
-                        estimation = GetShippingResponse();
+                        estimation = ShoppingCartHelper.GetOrderShippingTotal(Cart);
                     }
                     if (estimation != null && estimation.Success && estimation.Payload?[0] != null)
                     {
@@ -422,23 +422,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         #endregion "Event handling"
 
         #region "Private Methods"
-        /// <summary>
-        /// gets Shipping cost response
-        /// </summary>
-        /// <returns></returns>
-        private BaseResponseDto<EstimateDeliveryPricePayloadDto[]> GetShippingResponse()
-        {
-            try
-            {
-                var estimationdto = new[] { ShoppingCartHelper.GetEstimationDTO(Cart) };
-                return ShoppingCartHelper.CallEstimationService(estimationdto);
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "OnPreRender", ex.Message);
-                return null;
-            }
-        }
         /// <summary>
         /// gets etimated subtotal
         /// </summary>
