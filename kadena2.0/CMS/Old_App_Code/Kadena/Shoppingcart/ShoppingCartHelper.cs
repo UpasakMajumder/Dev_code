@@ -27,6 +27,7 @@ using System.Linq;
 using Kadena.Models.SiteSettings;
 using Kadena2.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Contracts.Orders;
+using Kadena.Models.CampaignData;
 
 namespace Kadena.Old_App_Code.Kadena.Shoppingcart
 {

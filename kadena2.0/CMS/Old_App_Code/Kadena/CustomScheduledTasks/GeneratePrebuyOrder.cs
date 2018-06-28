@@ -16,6 +16,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Old_App_Code.Kadena.InBoundForm;
 using Kadena.Models.SiteSettings;
+using Kadena.Models.CampaignData;
 
 namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
 {

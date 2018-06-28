@@ -19,11 +19,7 @@
     {
         public const string cartItems = "KDA.Transformations.xCartItems";
     }
-    public static class OrderType
-    {
-        public const string prebuy = "prebuy";
-        public const string generalInventory = "general";
-    }
+    
     /// <summary>
     /// This class represents orderstatus
     /// </summary>

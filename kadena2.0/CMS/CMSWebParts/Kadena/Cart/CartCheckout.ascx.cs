@@ -18,6 +18,7 @@ using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using CMS.SiteProvider;
 using Kadena.Models.SiteSettings;
+using Kadena.Models.CampaignData;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
