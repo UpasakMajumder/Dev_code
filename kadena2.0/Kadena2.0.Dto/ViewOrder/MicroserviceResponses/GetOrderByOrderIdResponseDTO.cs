@@ -17,5 +17,6 @@ namespace Kadena.Dto.ViewOrder.MicroserviceResponses
         public List<OrderItemDTO> Items { get; set; }
         public List<ApprovalDTO> Approvals { get; set; }
         public CampaignDTO campaign { get; set; }
+        public string Type { get; set; }
     }
 }
