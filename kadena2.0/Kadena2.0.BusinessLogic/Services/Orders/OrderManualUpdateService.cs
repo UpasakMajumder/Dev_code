@@ -40,6 +40,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IShippingCostServiceClient shippingCosts;
         private readonly IKenticoResourceService resources;
         private readonly IDeliveryEstimationDataService deliveryData;
+        private readonly IKenticoLogger log;
         private readonly IMapper mapper;
 
         public OrderManualUpdateService(IOrderManualUpdateClient updateService,
@@ -53,6 +54,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                                         IShippingCostServiceClient shippingCosts,
                                         IKenticoResourceService resources,
                                         IDeliveryEstimationDataService deliveryData,
+                                        IKenticoLogger log,
                                         IMapper mapper)
         {
             this.updateService = updateService ?? throw new ArgumentNullException(nameof(updateService));
@@ -66,6 +68,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.shippingCosts = shippingCosts ?? throw new ArgumentNullException(nameof(shippingCosts));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.deliveryData = deliveryData ?? throw new ArgumentNullException(nameof(deliveryData));
+            this.log = log ?? throw new ArgumentNullException(nameof(log));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -228,7 +231,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         async Task DoEstimations(OrderManualUpdateRequestDto request, IEnumerable<UpdatedItemCheckData> updateData, GetOrderByOrderIdResponseDTO orderDetail, Sku[] skus)
         {
             request.TotalPrice = 0.0m;
-            var shippableWeight = 0.0d;
+            var shippableWeight = 0.0m;
 
             orderDetail.Items.ForEach(i =>
             {
@@ -239,7 +242,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     request.TotalPrice += updatedItem.ManuallyUpdatedItem.TotalPrice;
                     if (updatedItem.Sku.NeedsShipping)
                     {
-                        shippableWeight += updatedItem.Sku.Weight * updatedItem.ManuallyUpdatedItem.Quantity;
+                        shippableWeight += (decimal)updatedItem.Sku.Weight * updatedItem.ManuallyUpdatedItem.Quantity;
                     }
                 }
                 else
@@ -248,7 +251,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     var sku = skus.First(s => s.SkuId == i.SkuId);
                     if (sku.NeedsShipping)
                     {
-                        shippableWeight += sku.Weight * i.Quantity;
+                        shippableWeight += (decimal)sku.Weight * i.Quantity;
                     }
                 }
             }
@@ -260,13 +263,18 @@ namespace Kadena.BusinessLogic.Services.Orders
             var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
             targetAddress.Country = orderDetail.ShippingInfo.AddressTo.isoCountryCode;
 
-            if (!orderDetail.ShippingInfo.Provider.EndsWith("Customer") && shippableWeight > 0)
+            log.LogInfo("Approval", "Info", $"Provider is '{orderDetail.ShippingInfo.Provider}'");
+            log.LogInfo("Approval", "Info", $"Total shippable weight is '{shippableWeight}'");
+
+            if (!orderDetail.ShippingInfo.Provider.EndsWith("Customer") && shippableWeight > 0.0m)
             {
-                var shippingCostRequest = deliveryData.GetDeliveryEstimationRequestData(orderDetail.ShippingInfo.Provider, 
-                                                                           orderDetail.ShippingInfo.ShippingService, 
+                log.LogInfo("Approval", "Info", $"Going to call estimation microservice");
+
+                var shippingCostRequest = deliveryData.GetDeliveryEstimationRequestData(orderDetail.ShippingInfo.Provider,
+                                                                           orderDetail.ShippingInfo.ShippingService,
                                                                            (decimal)shippableWeight,
                                                                            targetAddress);
-                
+
                 var totalShippingResult = await shippingCosts.EstimateShippingCost(shippingCostRequest);
 
                 if (totalShippingResult.Success == false || totalShippingResult.Payload.Length < 1 || !totalShippingResult.Payload[0].Success)
@@ -275,6 +283,10 @@ namespace Kadena.BusinessLogic.Services.Orders
                 }
 
                 request.TotalShipping = totalShippingResult.Payload[0].Cost;
+            }
+            else
+            {
+                log.LogInfo("Approval", "Info", $"NOT going to call estimation microservice");
             }
 
             request.TotalTax = await EstimateTax(request.TotalPrice, request.TotalShipping, sourceAddress, targetAddress);
