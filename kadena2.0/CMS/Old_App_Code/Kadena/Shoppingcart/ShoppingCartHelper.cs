@@ -115,7 +115,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// </summary>
         /// <param name="requestBody"></param>
         /// <returns></returns>
-        public static BaseResponseDto<EstimateDeliveryPricePayloadDto[]> CallEstimationService(EstimateDeliveryPriceRequestDto[] requestBody)
+        private static BaseResponseDto<EstimateDeliveryPricePayloadDto[]> CallEstimationService(EstimateDeliveryPriceRequestDto[] requestBody)
         {
             var microserviceClient = DIContainer.Resolve<IShippingCostServiceClient>();
             var response = microserviceClient.EstimateShippingCost(requestBody).Result;
