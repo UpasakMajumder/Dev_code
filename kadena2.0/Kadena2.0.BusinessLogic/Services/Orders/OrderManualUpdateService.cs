@@ -5,6 +5,7 @@ using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
+using Kadena.Models.CampaignData;
 using Kadena.Models.OrderDetail;
 using Kadena.Models.Orders;
 using Kadena.Models.Product;
@@ -84,6 +85,11 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
 
             var orderDetail = orderDetailResult.Payload;
+
+            if (orderDetail.Type == OrderType.prebuy)
+            {
+                throw new InvalidOperationException("Editing of order isn't supported for Pre-buy orders.");
+            }
 
             var itemsWithoutDocument = orderDetail.Items.Where(i => i.DocumentId == 0).Select(i => i.Name);
 
