@@ -109,11 +109,11 @@ namespace Kadena.BusinessLogic.Services
             List<AddressData> distributors = addressBookProvider.GetAddressesListByUserID(userId, inventoryType, product.CampaignID);
             return distributors.Select(x =>
             {
-                return CreateDistributorCartItem(skuID, x.DistributorShoppingCartID, x.AddressID, shoppingCart.GetItemQuantity(skuID, x.DistributorShoppingCartID));
+                return CreateDistributorCartItem(x.DistributorShoppingCartID, x.AddressID, shoppingCart.GetItemQuantity(skuID, x.DistributorShoppingCartID));
             }).ToList();
         }
 
-        private DistributorCartItem CreateDistributorCartItem(int skuID, int cartId, int addressId, int quantity)
+        private DistributorCartItem CreateDistributorCartItem(int cartId, int addressId, int quantity)
         {
             return new DistributorCartItem()
             {
