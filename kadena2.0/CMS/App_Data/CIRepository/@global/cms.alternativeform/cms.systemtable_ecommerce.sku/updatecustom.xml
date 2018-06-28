@@ -159,7 +159,6 @@
         </properties>
       </field>
       <field column="SKUUnitOfMeasure" guid="79380af2-d662-438c-9ba2-22d7a62e6b7b" />
-      <field column="SKUNumberOfItemsInPackage" guid="3afd1d0c-970b-43c5-9b73-94041a17ad9e" reftype="Required" visible="" />
       <field column="SKUTrackInventory" guid="b008a40a-2651-4341-8779-872030271467" visible="" />
       <field column="SKUSellOnlyAvailable" guid="ca3ef874-bccc-401d-ae31-f5b40c99f900" visible="">
         <properties>
