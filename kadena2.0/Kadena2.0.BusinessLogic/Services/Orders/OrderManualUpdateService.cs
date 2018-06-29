@@ -152,8 +152,8 @@ namespace Kadena.BusinessLogic.Services.Orders
                         distributorShoppingCartService.UpdateDistributorCarts(c, orderDetail.Customer.KenticoUserID);
                     }
                     );
+
                     // get updated data from cart
-                    
                     var cart = shoppingCartProvider.GetShoppingCart(cartId, orderDetail.Type);
                     requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart);
                     requestDto.OrderId = request.OrderId;
@@ -169,32 +169,31 @@ namespace Kadena.BusinessLogic.Services.Orders
                     var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
                         weight, targetAddress);
                     requestDto.TotalShipping = shippingCost;
-
-                    // send to microservice
-                    var updateResult = await updateService.UpdateOrder(requestDto);
-                    if (!updateResult.Success)
-                    {
-                        throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
-                    }
-
-                    // adjust available quantity
-                    AdjustAvailableItems(updatedItemsData);
-
-                    // Adjust budget
-                    budgetProvider.UpdateUserBudgetAllocationRecords(orderDetail.Customer.KenticoUserID,
-                        orderDetail.OrderDate.Year.ToString(),
-                        shippingCost - Convert.ToDecimal(orderDetail.PaymentInfo.Shipping));
                 }
                 catch (Exception exc)
                 {
                     log.LogException(this.GetType().Name, exc);
-                    throw;
                 }
                 finally
                 {
                     // remove fake cart
                     shoppingCartProvider.DeleteShoppingCart(cartId);
                 }
+
+                // send to microservice
+                var updateResult = await updateService.UpdateOrder(requestDto);
+                if (!updateResult.Success)
+                {
+                    throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
+                }
+
+                // adjust available quantity
+                AdjustAvailableItems(updatedItemsData);
+
+                // Adjust budget
+                budgetProvider.UpdateUserBudgetAllocationRecords(orderDetail.Customer.KenticoUserID,
+                    orderDetail.OrderDate.Year.ToString(),
+                    requestDto.TotalShipping - Convert.ToDecimal(orderDetail.PaymentInfo.Shipping));
             }
             else
             {
