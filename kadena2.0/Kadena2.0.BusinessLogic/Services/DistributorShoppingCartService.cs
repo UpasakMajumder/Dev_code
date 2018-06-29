@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using Kadena.Models.AddToCart;
 using Kadena.Models.CustomerData;
 using Kadena.Models.ShoppingCarts;
-using Kadena.Dto.ViewOrder.MicroserviceResponses;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -97,6 +96,26 @@ namespace Kadena.BusinessLogic.Services
             }
 
             return availableQty;
+        }
+
+        // items - order item relation (skuid -> quantity), 
+        // userid - creator of order, addressid - distributors address id
+        public IEnumerable<DistributorCart> CreateCart(Dictionary<int, int> items, int userId, int addressId)
+        {
+            var inventoryType = 1;
+            return items.Select(i =>
+            {
+                int availableQty = GetInventoryAvailableQuantity(i.Key, inventoryType);
+                int allocatedQty = GetAllocatedQuantity(i.Key, inventoryType, userId);
+                return new DistributorCart
+                {
+                    SKUID = i.Key,
+                    Items = new List<DistributorCartItem>
+                    {
+                        CreateDistributorCartItem(0, addressId, i.Value)
+                    }
+                };
+            });
         }
 
         private List<DistributorCartItem> GetDistributorCartItems(int skuID, int userId, int inventoryType = 1)
