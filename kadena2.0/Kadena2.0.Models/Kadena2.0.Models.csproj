@@ -131,6 +131,8 @@
     <Compile Include="Checkout\Total.cs" />
     <Compile Include="Checkout\Totals.cs" />
     <Compile Include="Shipping\TrackingInfo.cs" />
+    <Compile Include="ShoppingCarts\ShoppingCart.cs" />
+    <Compile Include="ShoppingCarts\ShoppingCartItem.cs" />
     <Compile Include="ShoppingCarts\ShoppingCartTypes.cs" />
     <Compile Include="SiteSettings\Permissions\PermissionModules.cs" />
     <Compile Include="SiteSettings\Permissions\ModulePermissions.cs" />
