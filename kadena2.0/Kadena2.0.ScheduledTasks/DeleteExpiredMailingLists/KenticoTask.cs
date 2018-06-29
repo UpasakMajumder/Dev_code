@@ -18,10 +18,7 @@ namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
         private readonly IKenticoSiteProvider kenticoSiteProvider;
 
         public KenticoTask() : this(Services.Resolve<IKenticoSiteProvider>())
-        {
-            Services.Register<IKenticoSiteProvider, SiteProvider>(setup: Setup.Decorator);
-            Services.Register<IKenticoResourceService, ResourceService>(setup: Setup.Decorator);
-        }
+        { }
 
         public KenticoTask(IKenticoSiteProvider kenticoSiteProvider)
         {
