@@ -128,7 +128,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public Product[] GetProductsByDocumentIds(int[] documentIds)
         {
-            var docs = DocumentHelper.GetDocuments().WhereIn("DocumentID", documentIds).ToArray();
+            var docs = DocumentHelper.GetDocuments("KDA.Product").WhereIn("DocumentID", documentIds).ToArray();
             var skuIds = docs.Select(d => d.NodeSKUID).ToArray();
             var skuInfos = SKUInfoProvider.GetSKUs().WhereIn("SKUId", skuIds).ToArray();
             var products = mapper.Map<Product[]>(docs);

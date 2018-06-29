@@ -405,6 +405,11 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         ItemUpdateDto CreateChangedItem(UpdatedItemCheckData data)
         {
+            if (ProductTypes.IsOfType(data.Product.ProductType, ProductTypes.MailingProduct))
+            {
+                throw new Exception("Cannot change quantity of Mailing product item");
+            }
+
             orderChecker.CheckMinMaxQuantity(data.Sku, data.UpdatedItem.Quantity);
 
             var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
