@@ -70,6 +70,7 @@ namespace Kadena.Container.Default
         public MapperDefaultProfile()
         {
             CreateMap<ShoppingCart, OrderManualUpdateRequestDto>()
+                .ForMember(dest => dest.TotalShipping, opt => opt.Ignore())
                 .ForMember(dest => dest.OrderId, opt => opt.Ignore());
             CreateMap<ShoppingCart, ItemUpdateDto>()
                .ForMember(dest => dest.LineNumber, opt => opt.Ignore());
