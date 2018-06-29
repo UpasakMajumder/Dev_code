@@ -5,6 +5,7 @@ using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
+using Kadena.Models.AddToCart;
 using Kadena.Models.CampaignData;
 using Kadena.Models.OrderDetail;
 using Kadena.Models.Orders;
@@ -42,6 +43,9 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IDeliveryEstimationDataService deliveryData;
         private readonly IKenticoLogger log;
         private readonly IMapper mapper;
+        private readonly IkenticoUserBudgetProvider budgetProvider;
+        private readonly IDistributorShoppingCartService distributorShoppingCartService;
+        private readonly IShoppingCartProvider shoppingCartProvider;
 
         public OrderManualUpdateService(IOrderManualUpdateClient updateService,
                                         IOrderViewClient orderService,
@@ -54,7 +58,10 @@ namespace Kadena.BusinessLogic.Services.Orders
                                         IKenticoResourceService resources,
                                         IDeliveryEstimationDataService deliveryData,
                                         IKenticoLogger log,
-                                        IMapper mapper)
+                                        IMapper mapper,
+                                        IDistributorShoppingCartService distributorShoppingCartService,
+                                        IShoppingCartProvider shoppingCartProvider,
+                                        IkenticoUserBudgetProvider budgetProvider)
         {
             this.updateService = updateService ?? throw new ArgumentNullException(nameof(updateService));
             this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
@@ -68,6 +75,9 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.deliveryData = deliveryData ?? throw new ArgumentNullException(nameof(deliveryData));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.distributorShoppingCartService = distributorShoppingCartService ?? throw new ArgumentNullException(nameof(distributorShoppingCartService));
+            this.shoppingCartProvider = shoppingCartProvider ?? throw new ArgumentNullException(nameof(shoppingCartProvider));
+            this.budgetProvider = budgetProvider ?? throw new ArgumentNullException(nameof(budgetProvider));
         }
 
         public async Task<OrderUpdateResult> UpdateOrder(OrderUpdate request)
@@ -115,41 +125,103 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new Exception("Couldn't match all given line numbers in original order");
             }
 
-            var documentIds = orderDetail.Items.Select(i => i.DocumentId).Distinct().ToArray();
-            var skuIds = orderDetail.Items.Select(i => i.SkuId).Distinct().ToArray();
-            var products = productsProvider.GetProductsByDocumentIds(documentIds);
-            var skus = skuProvider.GetSKUsByIds(skuIds);
+            var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
+            targetAddress.Country = orderDetail.ShippingInfo.AddressTo.isoCountryCode;
 
-            updatedItemsData.ForEach(u =>
+            var requestDto = new OrderManualUpdateRequestDto();
+
+            if (orderDetail.Type == OrderType.generalInventory)
             {
-                var sku = skus.FirstOrDefault(s => s.SkuId == u.OriginalItem.SkuId)
-                          ?? throw new Exception($"Unable to find SKU {u.OriginalItem.SkuId} of item {u.OriginalItem.Name}");
+                var skuLines = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.LineNumber);
+                var skuNewQty = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.Quantity);
 
-                var product = products.FirstOrDefault(p => p.Id == u.OriginalItem.DocumentId)
-                              ?? throw new Exception($"Unable to find product {u.OriginalItem.DocumentId} of item {u.OriginalItem.Name}");
+                // create distributor cart items
+                var distributorCartItems = distributorShoppingCartService
+                    .CreateCart(skuNewQty, orderDetail.Customer.KenticoUserID, orderDetail.campaign.DistributorID)
+                    .ToList();
+                // create fake cart with new data
+                // distributor set to 0 so cart won't be visible for active users
+                var cartId = shoppingCartProvider.CreateDistributorCart(0,
+                    orderDetail.campaign.ID, orderDetail.campaign.ProgramID,
+                    orderDetail.Customer.KenticoUserID);
+                // update fake cart
+                distributorCartItems.ForEach(c =>
+                {
+                    c.Items.ForEach(i => i.ShoppingCartID = cartId);
+                    distributorShoppingCartService.UpdateDistributorCarts(c, orderDetail.Customer.KenticoUserID);
+                }
+                );
+                // get updated data from cart
+                var weight = shoppingCartProvider.GetCartWeight(cartId);
+                var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
+                    weight, targetAddress);
+                var cart = shoppingCartProvider.GetShoppingCart(cartId, orderDetail.Type);
+                requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart);
+                requestDto.OrderId = request.OrderId;
+                requestDto.TotalShipping = shippingCost;
+                requestDto.Items = cart.Items.Select(i =>
+                {
+                    var item = mapper.Map<ItemUpdateDto>(i);
+                    item.LineNumber = skuLines[i.SkuId];
+                    return item;
+                })
+                .ToList();
+                // send to microservice
+                var updateResult = await updateService.UpdateOrder(requestDto);
+                if (!updateResult.Success)
+                {
+                    throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
+                }
 
-                u.Sku = sku;
-                u.Product = product;
-            });
+                // adjust available quantity
+                AdjustAvailableItems(updatedItemsData);
 
-            updatedItemsData.ForEach(d => d.ManuallyUpdatedItem = CreateChangedItem(d));
+                // Adjust budget
+                budgetProvider.UpdateUserBudgetAllocationRecords(orderDetail.Customer.KenticoUserID, 
+                    orderDetail.OrderDate.Year.ToString(),
+                    shippingCost - Convert.ToDecimal(orderDetail.PaymentInfo.Shipping));
 
-            var changedItems = updatedItemsData.Select(d => d.ManuallyUpdatedItem).ToList();
-
-            var requestDto = new OrderManualUpdateRequestDto
-            {
-                OrderId = request.OrderId,
-                Items = changedItems,
-            };
-
-            await DoEstimations(requestDto, updatedItemsData, orderDetail, skus);
-            var updateResult = await updateService.UpdateOrder(requestDto);
-            if (!updateResult.Success)
-            {
-                throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
+                // remove fake cart
+                shoppingCartProvider.DeleteShoppingCart(cartId);
             }
+            else
+            {
+                var documentIds = orderDetail.Items.Select(i => i.DocumentId).Distinct().ToArray();
+                var skuIds = orderDetail.Items.Select(i => i.SkuId).Distinct().ToArray();
+                var products = productsProvider.GetProductsByDocumentIds(documentIds);
+                var skus = skuProvider.GetSKUsByIds(skuIds);
 
-            UpdateAvailableItems(updatedItemsData);
+                updatedItemsData.ForEach(u =>
+                {
+                    var sku = skus.FirstOrDefault(s => s.SkuId == u.OriginalItem.SkuId)
+                              ?? throw new Exception($"Unable to find SKU {u.OriginalItem.SkuId} of item {u.OriginalItem.Name}");
+
+                    var product = products.FirstOrDefault(p => p.Id == u.OriginalItem.DocumentId)
+                                  ?? throw new Exception($"Unable to find product {u.OriginalItem.DocumentId} of item {u.OriginalItem.Name}");
+
+                    u.Sku = sku;
+                    u.Product = product;
+                });
+
+                updatedItemsData.ForEach(d => d.ManuallyUpdatedItem = CreateChangedItem(d));
+
+                var changedItems = updatedItemsData.Select(d => d.ManuallyUpdatedItem).ToList();
+
+                requestDto = new OrderManualUpdateRequestDto
+                {
+                    OrderId = request.OrderId,
+                    Items = changedItems,
+                };
+
+                await DoEstimations(requestDto, updatedItemsData, orderDetail, skus, targetAddress);
+                var updateResult = await updateService.UpdateOrder(requestDto);
+                if (!updateResult.Success)
+                {
+                    throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
+                }
+
+                UpdateAvailableItems(updatedItemsData);
+            }
 
             return GetUpdatesForFrontend(updatedItemsData, requestDto);
         }
@@ -233,7 +305,17 @@ namespace Kadena.BusinessLogic.Services.Orders
             });
         }
 
-        async Task DoEstimations(OrderManualUpdateRequestDto request, IEnumerable<UpdatedItemCheckData> updateData, GetOrderByOrderIdResponseDTO orderDetail, Sku[] skus)
+        void AdjustAvailableItems(IEnumerable<UpdatedItemCheckData> updateData)
+        {
+            updateData.ToList().ForEach(data =>
+            {
+                var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
+                skuProvider.SetSkuAvailableQty(data.Sku.SkuId, addedQuantity);
+            });
+        }
+
+        async Task DoEstimations(OrderManualUpdateRequestDto request, IEnumerable<UpdatedItemCheckData> updateData, GetOrderByOrderIdResponseDTO orderDetail, Sku[] skus,
+            AddressDto targetAddress)
         {
             request.TotalPrice = 0.0m;
             var shippableWeight = 0.0m;
@@ -265,8 +347,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             request.TotalShipping = 0.0m;
 
             var sourceAddress = deliveryData.GetSourceAddress();
-            var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
-            targetAddress.Country = orderDetail.ShippingInfo.AddressTo.isoCountryCode;
+
 
             log.LogInfo("Approval", "Info", $"Provider is '{orderDetail.ShippingInfo.Provider}'");
             log.LogInfo("Approval", "Info", $"Total shippable weight is '{shippableWeight}'");
