@@ -30,11 +30,14 @@ namespace Kadena.Tests.BusinessLogic
         }
 
         [Fact]
-        public void CreateTableView()
+        public void CreateTableView_NonZeroQuantity()
         {
             var report = new[]
                 {
-                    new OrderReportViewItem()
+                    new OrderReportViewItem
+                    {
+                        Quantity = 1
+                    }
                 };
             Use(MapperBuilder.MapperInstance);
 
@@ -42,6 +45,23 @@ namespace Kadena.Tests.BusinessLogic
 
             Assert.NotEmpty(actualView.Rows);
             Assert.Equal(11, actualView.Headers.Length);
+        }
+
+        [Fact]
+        public void CreateTableView_ZeroQuantity()
+        {
+            var report = new[]
+                {
+                    new OrderReportViewItem
+                    {
+                        Quantity = 0
+                    }
+                };
+            Use(MapperBuilder.MapperInstance);
+
+            var actualView = Sut.CreateTableView(report);
+
+            Assert.Empty(actualView.Rows);
         }
 
         [Theory]
