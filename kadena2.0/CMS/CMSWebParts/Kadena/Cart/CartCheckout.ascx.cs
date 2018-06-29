@@ -18,6 +18,7 @@ using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using CMS.SiteProvider;
 using Kadena.Models.SiteSettings;
+using Kadena.Models.CampaignData;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -116,18 +117,18 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     }
                     if (shippingOption != null && shippingOption.ShippingOptionName.ToLower() != ShippingOption.Ground)
                     {
-                        var shippingResponse = GetOrderShippingTotal(Cart);
-                        if (shippingResponse != null && shippingResponse.Success && shippingResponse.Payload?[0] != null)
+                        try
                         {
-                            shippingCost = ValidationHelper.GetDecimal(shippingResponse.Payload[0].Cost, default(decimal));
+                            var shippingResponse = GetOrderShippingTotal(Cart);
+                            shippingCost = ValidationHelper.GetDecimal(shippingResponse, default(decimal));
                         }
-                        else
+                        catch(InvalidOperationException exc)
                         {
-                            unprocessedDistributorIDs.Add(new Tuple<int, string>(Cart.GetIntegerValue("ShoppingCartDistributorID", default(int)), shippingResponse.ErrorMessages));
+                            unprocessedDistributorIDs.Add(new Tuple<int, string>(Cart.GetIntegerValue("ShoppingCartDistributorID", default(int)), exc.Message));
                             return;
                         }
                     }
-                    OrderDTO ordersDTO = CreateOrdersDTO(Cart, Cart.ShoppingCartUserID, OrderType.generalInventory, shippingCost);
+                    OrderDTO ordersDTO = CreateOrdersDTO(Cart, OrderType.generalInventory, shippingCost);
                     var response = ProcessOrder(Cart, CurrentUser.UserID, OrderType.generalInventory, ordersDTO, shippingCost);
                     if (response != null && response.Success)
                     {

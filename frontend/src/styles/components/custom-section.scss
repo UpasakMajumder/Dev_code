@@ -2,28 +2,6 @@
   margin-bottom: 20px;
 }
 
-.search__block {
-  width: 250px;
-  float: left;
-  margin: 0 5px 20px 0;
-  position: relative;
-
-  input {
-    padding-right: 45px;
-  }
-
-  &:after {
-    content: '';
-    position: absolute;
-    top: 11px;
-    right: 10px;
-    background: url(../gfx/svg/search.svg) no-repeat;
-    width: 18px;
-    height: 18px;
-    background-size: 100%;
-  }
-}
-
 .add__btn {
   float: right;
 
