@@ -89,6 +89,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         void DeleteDistributorCartItem(int cartID, int SKUID);
 
-        int GetDistributorCartCount(int userID, int campaignID, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory);        
+        int GetDistributorCartCount(int userID, int campaignID, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory);
+
+        decimal GetCartWeight(int cartId);
     }
 }

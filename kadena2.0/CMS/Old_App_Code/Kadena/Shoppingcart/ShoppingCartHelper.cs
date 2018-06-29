@@ -35,7 +35,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         private static ShoppingCartInfo Cart { get; set; }
         private static readonly IGetOrderDataService getOrderData = DIContainer.Resolve<IGetOrderDataService>();
         private static readonly IDeliveryEstimationDataService estimationData = DIContainer.Resolve<IDeliveryEstimationDataService>();
-
+        private static readonly IShoppingCartProvider shoppingCartProvider = DIContainer.Resolve<IShoppingCartProvider>();
         /// <summary>
         /// Returns order dto
         /// </summary>
@@ -455,7 +455,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             try
             {
                 Cart = cart;
-                var weight = (decimal)Cart.CartItems.Sum(x => (x.CartItemUnits * x.UnitWeight));
+                var weight = shoppingCartProvider.GetCartWeight(cart.ShoppingCartID);
                 return estimationData.GetShippingCost(CarrierInfoProvider.GetCarrierInfo(Cart.ShippingOption.ShippingOptionCarrierID).CarrierName,
                      Cart.ShippingOption.ShippingOptionName, weight, GetTargetAddress());
             }

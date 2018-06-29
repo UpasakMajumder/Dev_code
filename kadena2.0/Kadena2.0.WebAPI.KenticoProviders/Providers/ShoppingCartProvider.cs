@@ -589,5 +589,11 @@ namespace Kadena.WebAPI.KenticoProviders
             var countData = ConnectionHelper.ExecuteScalar(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
             return ValidationHelper.GetInteger(countData, default(int));
         }
+
+        public decimal GetCartWeight(int cartId)
+        {
+            var cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartId);
+            return (decimal)cart.CartItems.Sum(x => (x.CartItemUnits * x.UnitWeight));
+        }
     }
 }
