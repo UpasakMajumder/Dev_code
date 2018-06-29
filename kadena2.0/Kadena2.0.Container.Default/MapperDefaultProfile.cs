@@ -55,6 +55,7 @@ using Kadena.Models.RecentOrders;
 using Kadena.Models.Search;
 using Kadena.Models.Settings;
 using Kadena.Models.Shipping;
+using Kadena.Models.ShoppingCarts;
 using Kadena.Models.Site;
 using Kadena.Models.SubmitOrder;
 using Kadena.Models.TemplatedProduct;
@@ -68,6 +69,12 @@ namespace Kadena.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<ShoppingCart, OrderManualUpdateRequestDto>()
+                .ForMember(dest => dest.TotalShipping, opt => opt.Ignore())
+                .ForMember(dest => dest.OrderId, opt => opt.Ignore());
+            CreateMap<ShoppingCartItem, ItemUpdateDto>()
+               .ForMember(dest => dest.LineNumber, opt => opt.Ignore());
+
             CreateMap<OrderReportViewItem, TableRow>()
                 .ForMember(dest => dest.Items, opt => opt.ResolveUsing(src => new object[] {
                     src.Site,

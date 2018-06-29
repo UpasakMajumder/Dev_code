@@ -810,9 +810,12 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                         var Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
                         if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
                         {
-                            var estimationdto = new[] { ShoppingCartHelper.GetEstimationDTO(Cart) };
-                            var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
-                            cartTotal += ValidationHelper.GetDecimal(estimation?.Payload?[0]?.Cost, default(decimal));
+                            try
+                            {
+                                var estimation = ShoppingCartHelper.GetOrderShippingTotal(Cart);
+                                cartTotal += ValidationHelper.GetDecimal(estimation, default(decimal));
+                            }
+                            catch { }
                         }
                     });
                     return ValidationHelper.GetDecimal(cartTotal, default(decimal));
