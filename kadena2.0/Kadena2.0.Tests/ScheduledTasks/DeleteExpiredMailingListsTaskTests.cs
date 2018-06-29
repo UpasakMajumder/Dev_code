@@ -14,13 +14,5 @@ namespace Kadena.Tests.ScheduledTasks
         {
             Assert.Throws<ArgumentNullException>(() => new KenticoTask(site));
         }
-
-        [Fact(DisplayName = "KenticoTask.Execute() | Empty if there are zero sites")]
-        public void Execute()
-        {
-            var actualResult = Sut.Execute(new TaskInfo());
-
-            Assert.Equal(string.Empty, actualResult);
-        }
     }
 }
