@@ -1,6 +1,5 @@
 ﻿using CMS;
 using CMS.Scheduler;
-using DryIoc;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Models.Site;
 using Kadena.ScheduledTasks.DeleteExpiredMailingLists;

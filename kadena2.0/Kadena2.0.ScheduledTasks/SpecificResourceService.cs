@@ -2,14 +2,14 @@
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 
-namespace Kadena.ScheduledTasks.DeleteExpiredMailingLists
+namespace Kadena.ScheduledTasks
 {
-    class ResourceService : IKenticoResourceService
+    class SpecificResourceService : IKenticoResourceService
     {
         private readonly IKenticoResourceService kenticoResourceService;
         private readonly KenticoSite site;
 
-        public ResourceService(IKenticoResourceService kenticoResourceService, KenticoSite site)
+        public SpecificResourceService(IKenticoResourceService kenticoResourceService, KenticoSite site)
         {
             this.kenticoResourceService = kenticoResourceService ?? throw new ArgumentNullException(nameof(kenticoResourceService));
             this.site = site ?? throw new ArgumentNullException(nameof(site));

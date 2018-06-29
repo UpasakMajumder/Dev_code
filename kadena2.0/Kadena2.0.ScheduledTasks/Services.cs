@@ -7,7 +7,6 @@ using Kadena.WebAPI.KenticoProviders;
 using Kadena.Container.Default;
 using Kadena2.WebAPI.KenticoProviders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.ScheduledTasks.DeleteExpiredMailingLists;
 using Kadena.Models.Site;
 
 namespace Kadena.ScheduledTasks
@@ -60,10 +59,9 @@ namespace Kadena.ScheduledTasks
             // scheduled tasks services
             container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
 
-            container.Register<IKenticoSiteProvider, SiteProvider>(setup: Setup.Decorator);
-            container.Register<IKenticoResourceService, ResourceService>(setup: Setup.Decorator);
+            container.Register<IKenticoSiteProvider, SpecificSiteProvider>(setup: Setup.Decorator);
+            container.Register<IKenticoResourceService, SpecificResourceService>(setup: Setup.Decorator);
             container.Register<KenticoSite>();
-
         }
 
         private static IMapper CreateMapper()

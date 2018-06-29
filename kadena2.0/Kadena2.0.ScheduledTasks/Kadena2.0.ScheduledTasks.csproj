@@ -69,8 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeleteExpiredMailingLists\KenticoTask.cs" />
-    <Compile Include="DeleteExpiredMailingLists\ResourceService.cs" />
-    <Compile Include="DeleteExpiredMailingLists\SiteProvider.cs" />
+    <Compile Include="SpecificResourceService.cs" />
+    <Compile Include="SpecificSiteProvider.cs" />
     <Compile Include="GenerateOrders\KenticoTask.cs" />
     <Compile Include="GenerateOrders\OrderCreationService.cs" />
     <Compile Include="Infrastructure\IConfigurationProvider.cs" />
