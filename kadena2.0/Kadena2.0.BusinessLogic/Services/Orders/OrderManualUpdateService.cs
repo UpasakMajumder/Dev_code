@@ -231,7 +231,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 UpdateAvailableItems(updatedItemsData);
             }
 
-            return GetUpdatesForFrontend(updatedItemsData, requestDto);
+            return GetUpdatesForFrontend(requestDto);
         }
 
         void CheckRequestData(OrderUpdate request)
@@ -254,7 +254,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
         }
 
-        OrderUpdateResult GetUpdatesForFrontend(IEnumerable<UpdatedItemCheckData> updateData, OrderManualUpdateRequestDto requestDto)
+        OrderUpdateResult GetUpdatesForFrontend(OrderManualUpdateRequestDto requestDto)
         {
             var result = new OrderUpdateResult
             {
@@ -288,10 +288,10 @@ namespace Kadena.BusinessLogic.Services.Orders
 
                 },
 
-                OrdersPrice = updateData.Select(d => new ItemUpdateResult
+                OrdersPrice = requestDto.Items.Select(d => new ItemUpdateResult
                 {
-                    LineNumber = d.ManuallyUpdatedItem.LineNumber,
-                    Price = String.Format("$ {0:#,0.00}", d.ManuallyUpdatedItem.TotalPrice)
+                    LineNumber = d.LineNumber,
+                    Price = String.Format("$ {0:#,0.00}", d.TotalPrice)
                 }).ToArray()
             };
 
