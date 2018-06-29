@@ -738,7 +738,86 @@ module.exports.detail =  {
             "isReport": true,
             "image": "http://satyr.io/200-500x300-700",
             "template": "Information letter lamp post Mar 30 3017",
-            "mailingList": "",
+            "mailingList": "some mailingList",
+            "shippingDate": "2017-08-07T09:12:08.108892Z",
+            "trackingPrefix": "Tracking ID",
+            "tracking": [
+              {
+                "id": "501213",
+                "url": "#"
+              },
+              {
+                "id": "5012114",
+                "url": "#"
+              },
+              {
+                "id": "5014214",
+                "url": "#"
+              },
+              {
+                "id": "5012214",
+                "url": "#"
+              },
+              {
+                "id": "5041214",
+                "url": "#"
+              },
+              {
+                "id": "5051214",
+                "url": "#"
+              },
+              {
+                "id": "5016214"
+              },
+              {
+                "id": "501214-501214-501214",
+                "url": "#"
+              },
+              {
+                "id": "501214501214"
+              },
+              {
+                "id": "50122214",
+                "url": "#"
+              }
+            ],
+            "mailingListPrefix": "Mailing list",
+            "shippingDatePrefix": "Shipping date",
+            "templatePrefix": "Template",
+            "price": "$ 112.2",
+            "quantityPrefix": "Quantity:", // Addresses/Quantity,
+            "quantityShippedPrefix": "Quantity shipped:",
+            "quantityShipped": 22,
+            "quantity": 11,
+            "unitOfMeasure": "pc",
+            "downloadPdfURL": "#",
+            "options": [
+              {
+                "name": "Color",
+                "value": "Blue"
+              }
+            ],
+            "preview": {
+              "exists": false,
+              "text": "Preview",
+              "url": "#"
+            },
+            "emailProof": {
+              "exists": true,
+              "text": "Email",
+              "url": "2"
+            }
+          },
+          {
+            "id": 3,
+            "SKUId": "SKUId-3",
+            "removed": false,
+            "removeLabel": "Rejected",
+            "lineNumber": "lineNumber-3",
+            "isReport": true,
+            "image": "http://satyr.io/200-500x300-700",
+            "template": "Product with null mailingList property",
+            "mailingList": null,
             "shippingDate": "2017-08-07T09:12:08.108892Z",
             "trackingPrefix": "Tracking ID",
             "tracking": [

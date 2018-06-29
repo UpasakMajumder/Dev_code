@@ -186,6 +186,8 @@ class EditModal extends Component {
       );
       if (isRemoved) return null;
 
+      if (orderedItem.mailingList) return null;
+
       return (
         <EditOrder
           key={orderedItem.id}
