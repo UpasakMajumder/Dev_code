@@ -153,13 +153,10 @@ namespace Kadena.BusinessLogic.Services.Orders
                     }
                     );
                     // get updated data from cart
-                    var weight = shoppingCartProvider.GetCartWeight(cartId);
-                    var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
-                        weight, targetAddress);
+                    
                     var cart = shoppingCartProvider.GetShoppingCart(cartId, orderDetail.Type);
                     requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart);
                     requestDto.OrderId = request.OrderId;
-                    requestDto.TotalShipping = shippingCost;
                     requestDto.Items = cart.Items.Select(i =>
                     {
                         var item = mapper.Map<ItemUpdateDto>(i);
@@ -167,6 +164,12 @@ namespace Kadena.BusinessLogic.Services.Orders
                         return item;
                     })
                     .ToList();
+
+                    var weight = shoppingCartProvider.GetCartWeight(cartId);
+                    var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
+                        weight, targetAddress);
+                    requestDto.TotalShipping = shippingCost;
+
                     // send to microservice
                     var updateResult = await updateService.UpdateOrder(requestDto);
                     if (!updateResult.Success)
