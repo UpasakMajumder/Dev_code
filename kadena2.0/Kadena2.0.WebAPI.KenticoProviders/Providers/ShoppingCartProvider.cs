@@ -621,5 +621,10 @@ namespace Kadena.WebAPI.KenticoProviders
                 TotalPrice = OrderType.generalInventory.Equals(orderType) ? decimal.Zero : ValidationHelper.GetDecimal(cart.TotalItemsPrice, default(decimal))
             };
         }
+
+        public void DeleteShoppingCart(int cartId)
+        {
+            ShoppingCartInfoProvider.DeleteShoppingCartInfo(cartId);
+        }
     }
 }

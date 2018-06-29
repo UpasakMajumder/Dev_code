@@ -93,6 +93,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         decimal GetCartWeight(int cartId);
 
+        void DeleteShoppingCart(int cartId);
+
         ShoppingCart GetShoppingCart(int cartId, string orderType);
     }
 }
