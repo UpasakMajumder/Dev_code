@@ -6,5 +6,6 @@ namespace Kadena.BusinessLogic.Contracts.Orders
     {
         AddressDto GetSourceAddress();
         EstimateDeliveryPriceRequestDto[] GetDeliveryEstimationRequestData(string provider, string service, decimal weight, AddressDto target);
+        decimal GetShippingCost(string provider, string service, decimal weight, AddressDto target);
     }
 }

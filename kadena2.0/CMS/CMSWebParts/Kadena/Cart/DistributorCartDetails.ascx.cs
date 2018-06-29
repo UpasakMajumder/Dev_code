@@ -283,7 +283,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                BaseResponseDto<EstimateDeliveryPricePayloadDto[]> estimation = null;
                 var estimatedPrice = default(double);
                 if (ValidCart)
                 {
@@ -303,11 +302,12 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 {
                     if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
                     {
-                        estimation = ShoppingCartHelper.GetOrderShippingTotal(Cart);
-                    }
-                    if (estimation != null && estimation.Success && estimation.Payload?[0] != null)
-                    {
-                        estimatedPrice = ValidationHelper.GetDouble(estimation.Payload[0].Cost, default(double));
+                        try
+                        {
+                            var estimation = ShoppingCartHelper.GetOrderShippingTotal(Cart);
+                            estimatedPrice = ValidationHelper.GetDouble(estimation, default(double));
+                        }
+                        catch { }
                     }
                 }
                 BindShippingDropdown(inventoryType, estimatedPrice);

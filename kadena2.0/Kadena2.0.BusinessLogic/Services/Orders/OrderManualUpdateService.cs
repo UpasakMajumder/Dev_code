@@ -38,7 +38,6 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IOrderItemCheckerService orderChecker;
         private readonly IProductsService products;
         private readonly ITaxEstimationServiceClient taxes;
-        private readonly IShippingCostServiceClient shippingCosts;
         private readonly IKenticoResourceService resources;
         private readonly IDeliveryEstimationDataService deliveryData;
         private readonly IKenticoLogger log;
@@ -52,7 +51,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                                         IOrderItemCheckerService orderChecker,
                                         IProductsService products,
                                         ITaxEstimationServiceClient taxes,
-                                        IShippingCostServiceClient shippingCosts,
                                         IKenticoResourceService resources,
                                         IDeliveryEstimationDataService deliveryData,
                                         IKenticoLogger log,
@@ -66,7 +64,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.orderChecker = orderChecker ?? throw new ArgumentNullException(nameof(orderChecker));
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.taxes = taxes ?? throw new ArgumentNullException(nameof(taxes));
-            this.shippingCosts = shippingCosts ?? throw new ArgumentNullException(nameof(shippingCosts));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.deliveryData = deliveryData ?? throw new ArgumentNullException(nameof(deliveryData));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
@@ -91,6 +88,8 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new InvalidOperationException("Editing of order isn't supported for Pre-buy orders.");
             }
 
+
+
             var itemsWithoutDocument = orderDetail.Items.Where(i => i.DocumentId == 0).Select(i => i.Name);
 
             if (itemsWithoutDocument.Any())
@@ -98,17 +97,17 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new Exception("Following items were ordered with empty documentId : " + string.Join(", ", itemsWithoutDocument));
             }
 
-            approvers.CheckIsCustomersEditor(orderDetail.ClientId);            
-            
+            approvers.CheckIsCustomersEditor(orderDetail.ClientId);
+
 
             var updatedItemsData = request.Items.Join(orderDetail.Items,
                                                        chi => chi.LineNumber,
                                                        oi => oi.LineNumber,
                                                        (chi, oi) => new UpdatedItemCheckData
-                                                           {
-                                                               OriginalItem = oi,
-                                                               UpdatedItem = chi
-                                                           }
+                                                       {
+                                                           OriginalItem = oi,
+                                                           UpdatedItem = chi
+                                                       }
                                                        ).ToList();
 
             if (updatedItemsData.Count() != request.Items.Count())
@@ -123,10 +122,10 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             updatedItemsData.ForEach(u =>
             {
-                var sku = skus.FirstOrDefault(s => s.SkuId == u.OriginalItem.SkuId) 
+                var sku = skus.FirstOrDefault(s => s.SkuId == u.OriginalItem.SkuId)
                           ?? throw new Exception($"Unable to find SKU {u.OriginalItem.SkuId} of item {u.OriginalItem.Name}");
 
-                var product = products.FirstOrDefault(p => p.Id == u.OriginalItem.DocumentId) 
+                var product = products.FirstOrDefault(p => p.Id == u.OriginalItem.DocumentId)
                               ?? throw new Exception($"Unable to find product {u.OriginalItem.DocumentId} of item {u.OriginalItem.Name}");
 
                 u.Sku = sku;
@@ -176,7 +175,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         }
 
         OrderUpdateResult GetUpdatesForFrontend(IEnumerable<UpdatedItemCheckData> updateData, OrderManualUpdateRequestDto requestDto)
-        {            
+        {
             var result = new OrderUpdateResult
             {
                 PricingInfo = new[]
@@ -212,7 +211,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 OrdersPrice = updateData.Select(d => new ItemUpdateResult
                 {
                     LineNumber = d.ManuallyUpdatedItem.LineNumber,
-                    Price = String.Format("$ {0:#,0.00}", d.ManuallyUpdatedItem.TotalPrice)  
+                    Price = String.Format("$ {0:#,0.00}", d.ManuallyUpdatedItem.TotalPrice)
                 }).ToArray()
             };
 
@@ -274,7 +273,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             if (!orderDetail.ShippingInfo.Provider.EndsWith("Customer") && shippableWeight > 0.0m)
             {
-                request.TotalShipping = await GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
+                request.TotalShipping = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
                     shippableWeight, targetAddress);
             }
             else
@@ -285,22 +284,11 @@ namespace Kadena.BusinessLogic.Services.Orders
             request.TotalTax = await EstimateTax(request.TotalPrice, request.TotalShipping, sourceAddress, targetAddress);
         }
 
-        private async Task<decimal> GetShippinCost(string provider, string shippingService,
-            decimal shippableWeight, AddressDto targetAddress)
+        private decimal GetShippinCost(string provider, string shippingService, decimal shippableWeight, AddressDto targetAddress)
         {
             log.LogInfo("Approval", "Info", $"Going to call estimation microservice");
 
-            var shippingCostRequest = deliveryData.GetDeliveryEstimationRequestData(provider, shippingService,
-                shippableWeight, targetAddress);
-
-            var totalShippingResult = await shippingCosts.EstimateShippingCost(shippingCostRequest);
-
-            if (totalShippingResult.Success == false || totalShippingResult.Payload.Length < 1 || !totalShippingResult.Payload[0].Success)
-            {
-                throw new Exception($"Cannot be delivered by original provider and service. Request error: '{totalShippingResult.ErrorMessages}', Item error: '{totalShippingResult.Payload?[0]?.ErrorMessage}'");
-            }
-
-            return totalShippingResult.Payload[0].Cost;
+            return deliveryData.GetShippingCost(provider, shippingService, shippableWeight, targetAddress);
         }
 
         async Task<decimal> EstimateTax(decimal totalBasePrice, decimal shipppingCosts, AddressDto sourceAddress, AddressDto targetAddress)
@@ -345,7 +333,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 orderChecker.EnsureInventoryAmount(data.Sku, addedQuantity, data.UpdatedItem.Quantity);
             }
 
-            var unitPrice = products.GetPriceByCustomModel( data.OriginalItem.DocumentId, data.UpdatedItem.Quantity);
+            var unitPrice = products.GetPriceByCustomModel(data.OriginalItem.DocumentId, data.UpdatedItem.Quantity);
             if (unitPrice == decimal.MinusOne)
             {
                 unitPrice = data.Sku.Price;

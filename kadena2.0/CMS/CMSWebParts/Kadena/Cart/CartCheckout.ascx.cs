@@ -117,14 +117,14 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     }
                     if (shippingOption != null && shippingOption.ShippingOptionName.ToLower() != ShippingOption.Ground)
                     {
-                        var shippingResponse = GetOrderShippingTotal(Cart);
-                        if (shippingResponse != null && shippingResponse.Success && shippingResponse.Payload?[0] != null)
+                        try
                         {
-                            shippingCost = ValidationHelper.GetDecimal(shippingResponse.Payload[0].Cost, default(decimal));
+                            var shippingResponse = GetOrderShippingTotal(Cart);
+                            shippingCost = ValidationHelper.GetDecimal(shippingResponse, default(decimal));
                         }
-                        else
+                        catch(InvalidOperationException exc)
                         {
-                            unprocessedDistributorIDs.Add(new Tuple<int, string>(Cart.GetIntegerValue("ShoppingCartDistributorID", default(int)), shippingResponse.ErrorMessages));
+                            unprocessedDistributorIDs.Add(new Tuple<int, string>(Cart.GetIntegerValue("ShoppingCartDistributorID", default(int)), exc.Message));
                             return;
                         }
                     }
