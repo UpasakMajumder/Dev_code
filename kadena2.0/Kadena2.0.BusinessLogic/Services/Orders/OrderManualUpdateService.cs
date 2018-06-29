@@ -145,44 +145,53 @@ namespace Kadena.BusinessLogic.Services.Orders
                     orderDetail.campaign.ID, orderDetail.campaign.ProgramID,
                     orderDetail.Customer.KenticoUserID);
                 // update fake cart
-                distributorCartItems.ForEach(c =>
+                try
                 {
-                    c.Items.ForEach(i => i.ShoppingCartID = cartId);
-                    distributorShoppingCartService.UpdateDistributorCarts(c, orderDetail.Customer.KenticoUserID);
+                    distributorCartItems.ForEach(c =>
+                    {
+                        c.Items.ForEach(i => i.ShoppingCartID = cartId);
+                        distributorShoppingCartService.UpdateDistributorCarts(c, orderDetail.Customer.KenticoUserID);
+                    }
+                    );
+                    // get updated data from cart
+                    var weight = shoppingCartProvider.GetCartWeight(cartId);
+                    var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
+                        weight, targetAddress);
+                    var cart = shoppingCartProvider.GetShoppingCart(cartId, orderDetail.Type);
+                    requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart);
+                    requestDto.OrderId = request.OrderId;
+                    requestDto.TotalShipping = shippingCost;
+                    requestDto.Items = cart.Items.Select(i =>
+                    {
+                        var item = mapper.Map<ItemUpdateDto>(i);
+                        item.LineNumber = skuLines[i.SkuId];
+                        return item;
+                    })
+                    .ToList();
+                    // send to microservice
+                    var updateResult = await updateService.UpdateOrder(requestDto);
+                    if (!updateResult.Success)
+                    {
+                        throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
+                    }
+
+                    // adjust available quantity
+                    AdjustAvailableItems(updatedItemsData);
+
+                    // Adjust budget
+                    budgetProvider.UpdateUserBudgetAllocationRecords(orderDetail.Customer.KenticoUserID,
+                        orderDetail.OrderDate.Year.ToString(),
+                        shippingCost - Convert.ToDecimal(orderDetail.PaymentInfo.Shipping));
                 }
-                );
-                // get updated data from cart
-                var weight = shoppingCartProvider.GetCartWeight(cartId);
-                var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
-                    weight, targetAddress);
-                var cart = shoppingCartProvider.GetShoppingCart(cartId, orderDetail.Type);
-                requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart);
-                requestDto.OrderId = request.OrderId;
-                requestDto.TotalShipping = shippingCost;
-                requestDto.Items = cart.Items.Select(i =>
+                catch (Exception exc)
                 {
-                    var item = mapper.Map<ItemUpdateDto>(i);
-                    item.LineNumber = skuLines[i.SkuId];
-                    return item;
-                })
-                .ToList();
-                // send to microservice
-                var updateResult = await updateService.UpdateOrder(requestDto);
-                if (!updateResult.Success)
-                {
-                    throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
+                    log.LogException(this.GetType().Name, exc);
                 }
-
-                // adjust available quantity
-                AdjustAvailableItems(updatedItemsData);
-
-                // Adjust budget
-                budgetProvider.UpdateUserBudgetAllocationRecords(orderDetail.Customer.KenticoUserID, 
-                    orderDetail.OrderDate.Year.ToString(),
-                    shippingCost - Convert.ToDecimal(orderDetail.PaymentInfo.Shipping));
-
-                // remove fake cart
-                shoppingCartProvider.DeleteShoppingCart(cartId);
+                finally
+                {
+                    // remove fake cart
+                    shoppingCartProvider.DeleteShoppingCart(cartId);
+                }
             }
             else
             {
