@@ -27,6 +27,7 @@ using Kadena.Models.SiteSettings;
 using Kadena2.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Models.CampaignData;
+using Kadena.Models.ShoppingCarts;
 
 namespace Kadena.Old_App_Code.Kadena.Shoppingcart
 {
@@ -46,6 +47,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
+                var shoppingCart = shoppingCartProvider.GetShoppingCart(cart.ShoppingCartID, orderType);
                 Cart = cart;
                 var billingAddress = GetBillingAddress();
                 return new OrderDTO
@@ -73,14 +75,14 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                         TransactionKey = string.Empty
                     },
                     NotificationsData = GetNotification(),
-                    Items = GetCartItems(),
+                    Items = GetCartItems(cart.CartItems, shoppingCart.Items),
                     OrderDate = DateTime.Now,
                     Totals = new TotalsDto
                     {
-                        Price = GetOrderTotal(orderType),
+                        Price = shoppingCart.TotalPrice,
                         Shipping = shippingCost,
-                        Tax = 0,
-                        PricedItemsTax = 0
+                        Tax = shoppingCart.TotalTax,
+                        PricedItemsTax = shoppingCart.PricedItemsTax
                     },
                     OrderCurrency = GetCurrencyDTO(Cart.Currency),
                 };
@@ -359,44 +361,44 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// Returns Shopping cart Items
         /// </summary>
         /// <returns></returns>
-        private static List<OrderItemDTO> GetCartItems()
+        private static List<OrderItemDTO> GetCartItems(IEnumerable<ShoppingCartItemInfo> items, IEnumerable<ShoppingCartItem> cartItems)
         {
             var uomProvider = DIContainer.Resolve<IKenticoUnitOfMeasureProvider>();
 
-            List<OrderItemDTO> items = new List<OrderItemDTO>();
             try
             {
-                Cart.CartItems.ForEach(item =>
+                return items.GroupJoin(cartItems, i=>i.SKUID, ci=>ci.SkuId, (item, ci) =>
                 {
+                    var cartItem = ci.DefaultIfEmpty().First();
                     var uom = item.SKU.GetStringValue("SKUUnitOfMeasure", string.Empty);
                     if (string.IsNullOrEmpty(uom))
                     {
                         uom = SKUUnitOfMeasure.Default;
                     }
 
-                    items.Add(new OrderItemDTO
+                    return new OrderItemDTO
                     {
                         SKU = new SKUDTO
                         {
-                            KenticoSKUID = item.SKUID,
+                            KenticoSKUID = cartItem?.SkuId ?? item.SKUID,
                             Name = item.SKU.SKUName,
                             SKUNumber = item.SKU.SKUNumber
                         },
-                        UnitCount = item.CartItemUnits,
+                        UnitCount = cartItem?.Quantity ?? item.CartItemUnits,
                         UnitOfMeasure = uomProvider.GetUnitOfMeasure(uom).ErpCode,
                         RequiresApproval = item.SKU.GetBooleanValue("SKUApprovalRequired", false),
-                        UnitPrice = ValidationHelper.GetDecimal(item.UnitPrice, default(decimal)),
-                        TotalPrice = ValidationHelper.GetDecimal(item.TotalPrice, default(decimal)),
+                        UnitPrice = cartItem?.UnitPrice ?? ValidationHelper.GetDecimal(item.UnitPrice, default(decimal)),
+                        TotalPrice = cartItem?.TotalPrice ?? ValidationHelper.GetDecimal(item.TotalPrice, default(decimal)),
                         DocumentId = item.GetIntegerValue("ProductPageID", 0)
-                    });
-                });
+                    };
+                })
+                .ToList();
             }
             catch (Exception ex)
             {
                 EventLogProvider.LogInformation("ShoppingCartHelper", "GetCartItems", ex.Message);
                 return null;
             }
-            return items;
         }
 
         /// <summary>
@@ -418,30 +420,6 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             {
                 EventLogProvider.LogInformation("ShoppingCartHelper", "GetOrderTotal", ex.Message);
                 return null;
-            }
-        }
-        /// <summary>
-        /// Returns order total
-        /// </summary>
-        /// <param name="inventoryType"></param>
-        /// <returns></returns>
-        private static decimal GetOrderTotal(string type)
-        {
-            try
-            {
-                if (type == OrderType.prebuy)
-                {
-                    return ValidationHelper.GetDecimal(Cart.TotalItemsPrice, default(decimal));
-                }
-                else
-                {
-                    return default(decimal);
-                }
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("ShoppingCartHelper", "GetOrderTotal", ex.Message);
-                return default(decimal);
             }
         }
 

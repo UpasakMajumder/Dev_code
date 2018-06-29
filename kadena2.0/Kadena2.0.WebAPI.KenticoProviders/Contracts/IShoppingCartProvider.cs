@@ -92,5 +92,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         int GetDistributorCartCount(int userID, int campaignID, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory);
 
         decimal GetCartWeight(int cartId);
+
+        ShoppingCart GetShoppingCart(int cartId, string orderType);
     }
 }

@@ -20,6 +20,7 @@ using System.Linq;
 using Kadena.Models.AddToCart;
 using Kadena.Models.ShoppingCarts;
 using Kadena.Models.SiteSettings;
+using Kadena.Models.CampaignData;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -276,7 +277,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return ShoppingCartInfoProvider.GetShoppingCartInfo(userId, siteName)?.ShoppingCartID ?? 0;
         }
 
-        private ShoppingCartInfo GetShoppingCart(int shoppingCartId = 0)
+        private ShoppingCartInfo GetShoppingCartInternal(int shoppingCartId = 0)
         {
             return shoppingCartId > 0
                 ? ShoppingCartInfoProvider.GetShoppingCartInfo(shoppingCartId)
@@ -285,7 +286,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public void ClearCart(int shoppingCartId = 0)
         {
-            var shoppingCart = GetShoppingCart(shoppingCartId);
+            var shoppingCart = GetShoppingCartInternal(shoppingCartId);
             ShoppingCartInfoProvider.DeleteShoppingCartInfo(shoppingCart);
         }
 
@@ -354,7 +355,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public bool IsCartContainsInvalidProduct(int shoppingCartId = 0)
         {
             bool isValidCart = true;
-            ShoppingCartInfo shoppingCart = GetShoppingCart(shoppingCartId);
+            ShoppingCartInfo shoppingCart = GetShoppingCartInternal(shoppingCartId);
             if (shoppingCart != null)
             {
                 var inValidCartItems = shoppingCart.CartItems.Where(x => string.IsNullOrWhiteSpace(x.SKU.SKUNumber) || x.SKU.SKUNumber.Equals("00000"));
@@ -493,7 +494,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public void RemoveCurrentItemsFromStock(int shoppingCartId = 0)
         {
-            var shoppingCart = GetShoppingCart(shoppingCartId);
+            var shoppingCart = GetShoppingCartInternal(shoppingCartId);
 
             var items = shoppingCart.CartItems;
 
@@ -594,6 +595,31 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartId);
             return (decimal)cart.CartItems.Sum(x => (x.CartItemUnits * x.UnitWeight));
+        }
+
+        public ShoppingCart GetShoppingCart(int cartId, string orderType)
+        {
+            var cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartId);
+            if (cart == null)
+            {
+                return null;
+            }
+
+            return new ShoppingCart
+            {
+                Items = cart.CartItems
+                    .Select(i => new ShoppingCartItem
+                    {
+                        SkuId = i.SKUID,
+                        Quantity = i.CartItemUnits,
+                        UnitPrice = ValidationHelper.GetDecimal(i.UnitPrice, default(decimal)),
+                        TotalPrice = ValidationHelper.GetDecimal(i.TotalPrice, default(decimal))
+                    })
+                    .ToList(),
+                PricedItemsTax = 0,
+                TotalTax = 0,
+                TotalPrice = OrderType.generalInventory.Equals(orderType) ? decimal.Zero : ValidationHelper.GetDecimal(cart.TotalItemsPrice, default(decimal))
+            };
         }
     }
 }
