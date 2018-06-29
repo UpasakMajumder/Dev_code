@@ -83,7 +83,7 @@ namespace Kadena.BusinessLogic.Factories
         public TableView CreateTableView(IEnumerable<OrderReportViewItem> reportDto) =>
             new TableView
             {
-                Rows = mapper.Map<TableRow[]>(reportDto),
+                Rows = mapper.Map<TableRow[]>(reportDto.Where(r => r.Quantity > 0)),
                 Headers = new[]
                 {
                     kenticoResources.GetResourceString("Kadena.OrdersReport.Table.Site"),
