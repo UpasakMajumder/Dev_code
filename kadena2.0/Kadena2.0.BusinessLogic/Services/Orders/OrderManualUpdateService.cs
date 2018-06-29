@@ -185,6 +185,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 catch (Exception exc)
                 {
                     log.LogException(this.GetType().Name, exc);
+                    throw;
                 }
                 finally
                 {
