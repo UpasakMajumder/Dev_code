@@ -16,6 +16,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Old_App_Code.Kadena.InBoundForm;
 using Kadena.Models.SiteSettings;
+using Kadena.Models.CampaignData;
 
 namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
 {
@@ -79,7 +80,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                                 ShoppingCartInfoProvider.SetShoppingCartInfo(Cart);
                             }
                         }
-                        OrderDTO ordersDTO = ShoppingCartHelper.CreateOrdersDTO(Cart, Cart.ShoppingCartUserID, OrderType.prebuy, shippingCost);
+                        OrderDTO ordersDTO = ShoppingCartHelper.CreateOrdersDTO(Cart, OrderType.prebuy, shippingCost);
                         var response = ShoppingCartHelper.ProcessOrder(Cart, Cart.ShoppingCartUserID, OrderType.prebuy, ordersDTO, shippingCost);
                         if (response != null && response.Success)
                         {
