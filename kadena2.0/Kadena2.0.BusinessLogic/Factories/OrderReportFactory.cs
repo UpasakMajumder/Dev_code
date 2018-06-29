@@ -74,6 +74,7 @@ namespace Kadena.BusinessLogic.Factories
                         res.User = FormatCustomer(kenticoCustomerProvider.GetCustomer(r.ClientId));
                         res.Status = FormatOrderStatus(r.Status);
                         res.ShippingDate = FormatDate(i.ShippingDate);
+                        res.Price = FormatPrice(r.TotalCost);
                         return res;
                     })
                 );
@@ -124,5 +125,8 @@ namespace Kadena.BusinessLogic.Factories
             date.HasValue
                 ? dateTimeFormatter.Format(date.Value)
                 : string.Empty;
+
+        private decimal FormatPrice(decimal price) =>
+            Math.Round(price, 2);
     }
 }
