@@ -20,6 +20,7 @@ using System.Data;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Kadena.Models.Shipping;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {

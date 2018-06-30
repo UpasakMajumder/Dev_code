@@ -43,13 +43,6 @@
         public const string InvalidProduct = "invalidproduct";
     }
     /// <summary>
-    /// This class represents shipping options
-    /// </summary>
-    public class ShippingOption
-    {
-        public const string Ground = "ground";
-    }
-    /// <summary>
     /// This class represents SKU Measuring Units
     /// </summary>
     public class SKUMeasuringUnits

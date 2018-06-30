@@ -29,6 +29,7 @@ using Newtonsoft.Json;
 using Kadena.Helpers;
 using Kadena.Models.ShoppingCarts;
 using Kadena.Models.TableSorting;
+using Kadena.Models.Shipping;
 
 [assembly: CMS.RegisterExtension(typeof(KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 

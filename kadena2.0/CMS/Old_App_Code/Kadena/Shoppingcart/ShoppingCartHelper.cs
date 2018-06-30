@@ -278,7 +278,9 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 return new ShippingOptionDTO
                 {
                     KenticoShippingOptionID = Cart.ShoppingCartShippingOptionID,
-                    ShippingService = Cart.ShippingOption.ShippingOptionCarrierServiceName,
+                    ShippingService = Cart.ShippingOption.ShippingOptionName.ToLower().Equals(Models.Shipping.ShippingOption.Ground.ToLower()) 
+                        ? Models.Shipping.ShippingOption.Ground
+                        : Cart.ShippingOption.ShippingOptionCarrierServiceName,
                     ShippingCompany = carrier != null ? carrier.CarrierName : Cart.ShippingOption.ShippingOptionName,
                     CarrierCode = Cart.ShippingOption.GetStringValue("ShippingOptionSAPName", string.Empty)
                 };

@@ -1,5 +1,6 @@
 ﻿using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
+using Kadena.Models.Shipping;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
@@ -60,6 +61,11 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public decimal GetShippingCost(string provider, string service, decimal weight, AddressDto target)
         {
+            if (ShippingOption.Ground.ToLower().Equals(service.ToLower()))
+            {
+                return decimal.Zero;
+            }
+
             var shippingCostRequest = GetDeliveryEstimationRequestData(provider, service,
                 weight, target);
 

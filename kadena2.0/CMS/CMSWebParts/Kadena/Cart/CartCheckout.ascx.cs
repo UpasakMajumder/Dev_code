@@ -19,6 +19,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using CMS.SiteProvider;
 using Kadena.Models.SiteSettings;
 using Kadena.Models.CampaignData;
+using Kadena.Models.Shipping;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
