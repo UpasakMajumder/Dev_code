@@ -75,13 +75,11 @@
     <Compile Include="GenerateOrders\OrderCreationService.cs" />
     <Compile Include="Infrastructure\IConfigurationProvider.cs" />
     <Compile Include="Infrastructure\IOrderCreationService.cs" />
-    <Compile Include="Infrastructure\IUpdateInventoryDataService.cs" />
     <Compile Include="Infrastructure\Kentico\KenticoConfigurationProvider.cs" />
     <Compile Include="Infrastructure\UpdateInventoryConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services.cs" />
     <Compile Include="UpdateInventoryData\KenticoTask.cs" />
-    <Compile Include="UpdateInventoryData\UpdateInventoryDataService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kadena2.0.BusinessLogic\Kadena2.0.BusinessLogic.csproj">

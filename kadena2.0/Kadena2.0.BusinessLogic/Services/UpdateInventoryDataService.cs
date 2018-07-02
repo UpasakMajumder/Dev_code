@@ -1,13 +1,12 @@
-﻿using Kadena.Models.SiteSettings;
-using Kadena.ScheduledTasks.Infrastructure;
+﻿using Kadena.BusinessLogic.Contracts;
+using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Kadena.ScheduledTasks.UpdateInventoryData
+namespace Kadena.BusinessLogic.Services
 {
     public class UpdateInventoryDataService : IUpdateInventoryDataService
     {

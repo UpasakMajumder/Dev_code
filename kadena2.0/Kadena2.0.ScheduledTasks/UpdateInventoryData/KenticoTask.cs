@@ -1,7 +1,7 @@
 ﻿using CMS;
 using CMS.Scheduler;
 using Kadena.Models.Site;
-using Kadena.ScheduledTasks.Infrastructure;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.ScheduledTasks.UpdateInventoryData;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;

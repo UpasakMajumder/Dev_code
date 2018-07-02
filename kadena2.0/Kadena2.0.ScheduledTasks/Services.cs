@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using DryIoc;
-using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.ScheduledTasks.Infrastructure.Kentico;
-using Kadena.ScheduledTasks.UpdateInventoryData;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.Container.Default;
 using Kadena2.WebAPI.KenticoProviders;
@@ -54,10 +52,6 @@ namespace Kadena.ScheduledTasks
             // scheduled tasks infrastructure
             container.Register<Infrastructure.IConfigurationProvider, KenticoConfigurationProvider>();
             container.RegisterInstance(typeof(IMapper), CreateMapper());
-
-
-            // scheduled tasks services
-            container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
 
             container.Register<IKenticoSiteProvider, SpecificSiteProvider>(setup: Setup.Decorator);
             container.Register<IKenticoResourceService, SpecificResourceService>(setup: Setup.Decorator);

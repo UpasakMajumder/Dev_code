@@ -78,6 +78,7 @@
     <Compile Include="Contracts\IImageService.cs" />
     <Compile Include="Contracts\IModuleAccessService.cs" />
     <Compile Include="Contracts\IDistributorShoppingCartService.cs" />
+    <Compile Include="Contracts\IUpdateInventoryDataService.cs" />
     <Compile Include="Contracts\IUserService.cs" />
     <Compile Include="Contracts\IMailService.cs" />
     <Compile Include="Contracts\Orders\IDeliveryEstimationDataService.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="Services\OrderPayment\PurchaseOrder.cs" />
     <Compile Include="Services\TaxEstimationService.cs" />
     <Compile Include="Services\TemplateService.cs" />
+    <Compile Include="Services\UpdateInventoryDataService.cs" />
     <Compile Include="Services\UserBudgetService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\XlsxConvert.cs" />
