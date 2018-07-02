@@ -1,0 +1,16 @@
+{% import "./../macro/dialog.nunj" as dialog %}
+
+{% call dialog.wrapper(id='registration-success', class='active') %}
+  {{ dialog.header(header='Registration successful') }}
+  {% call dialog.content() %}
+    <p>
+      Your account was successfully created.
+      Click the login link below to access the storefront.
+    </p>
+  {% endcall %}
+  {% call dialog.footer() %}
+  <div class="btn-group btn-group--center">
+    <button type="button" class="btn-action js-dialog dialog__closer" data-dialog="#registration-success">Login</button>
+  </div>
+  {% endcall %}
+{% endcall %}

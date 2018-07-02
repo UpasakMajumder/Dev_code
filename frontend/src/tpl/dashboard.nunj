@@ -100,4 +100,6 @@
     </div>
   </div>
 
+  <!-- Backend TODO: Generate modal only once after the first login after registration -->
+  {% include 'components/registration-success.nunj' %}
 {% endblock %}
