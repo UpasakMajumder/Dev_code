@@ -51,7 +51,16 @@ namespace Kadena.BusinessLogic.Services.Approval
 
         public async Task<ApprovalResult> RejectOrder(string orderId, int customerId, string customerName, string rejectionNote = "")
         {
+            var order = await orderService.GetOrderByOrderId(orderId);
+            if (!order.Success)
+            {
+                throw new ApprovalServiceException(order.ErrorMessages);
+            }
+
             await CallApprovalService(orderId, customerId, customerName, rejectionNote, ApprovalState.ApprovalRejected);
+
+            order.Payload.Items.ForEach(i => skuProvider.UpdateAvailableQuantity(i.SkuId, i.Quantity));
+
             return new ApprovalResult
             {
                 Title = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastTitle"),
