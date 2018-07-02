@@ -312,7 +312,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
 
                 // Not using Set... because when waiting for result of OrderUpdate, quantity can change
-                skuProvider.IncreaseSkuAvailableQty(data.Sku.SKUNumber, addedQuantity);
+                skuProvider.UpdateAvailableQuantity(data.Sku.SKUNumber, addedQuantity);
             });
         }
 
