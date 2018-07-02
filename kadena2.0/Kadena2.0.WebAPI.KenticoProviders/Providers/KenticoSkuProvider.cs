@@ -51,12 +51,6 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             return mapper.Map<Sku>(variant);
         }
 
-        public void SetSkuAvailableQty(int skuid, int qty)
-        {
-            SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
-            SetAvailableItems(sku, sku.SKUAvailableItems - qty);
-        }
-
         public int GetSkuAvailableQty(int skuid)
         {
             SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
