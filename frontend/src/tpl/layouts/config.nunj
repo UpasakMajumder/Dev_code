@@ -142,7 +142,7 @@
         },
         autoLogin: {
           loginAPI: PATH + 'login',
-          dashboardUrl: '/dashboard.html'
+          dashboardUrl: '/dashboard.html?registration-popup=true'
         },
         strength: {
           minLength: 3,
