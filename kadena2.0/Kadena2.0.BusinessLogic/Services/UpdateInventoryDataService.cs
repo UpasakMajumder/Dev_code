@@ -20,10 +20,10 @@ namespace Kadena.BusinessLogic.Services
                                           IKenticoLogger kenticoLog,
                                           IKenticoResourceService kenticoResources)
         {
-            this.microserviceInventory = microserviceInventory ?? throw new ArgumentOutOfRangeException(nameof(microserviceInventory));
+            this.microserviceInventory = microserviceInventory ?? throw new ArgumentNullException(nameof(microserviceInventory));
             this.skuProvider = skuProvider ?? throw new ArgumentNullException(nameof(skuProvider));
-            this.kenticoLog = kenticoLog ?? throw new ArgumentOutOfRangeException(nameof(kenticoLog));
-            this.kenticoResources = kenticoResources ?? throw new ArgumentOutOfRangeException(nameof(kenticoResources));
+            this.kenticoLog = kenticoLog ?? throw new ArgumentNullException(nameof(kenticoLog));
+            this.kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
         }
 
         public async Task<string> UpdateInventoryData()
