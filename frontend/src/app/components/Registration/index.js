@@ -35,7 +35,11 @@ class Registration extends Component {
         url: '#',
         text: 'Sign Inn'
       },
-      strength: REGISTRATION.strength || null
+      strength: REGISTRATION.strength || null,
+      autoLogin: REGISTRATION.autoLogin || {
+        loginAPI: '#',
+        dashboardUrl: '#'
+      }
     } : {
       title: 'Sign Up',
       labels: {
@@ -56,7 +60,11 @@ class Registration extends Component {
         url: '#',
         text: 'Sign In'
       },
-      strength: null
+      strength: null,
+      autoLogin: {
+        loginAPI: '#',
+        dashboardUrl: '#'
+      }
     }
   }
 
@@ -90,7 +98,11 @@ class Registration extends Component {
         policyStrings: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
         usePolicy: PropTypes.bool,
         info: PropTypes.string.isRequire
-      })
+      }),
+      autoLogin: PropTypes.shape({
+        loginAPI: PropTypes.string.isRequired,
+        dashboardUrl: PropTypes.string.isRequired
+      }).isRequired
     }).isRequired
   }
 
@@ -147,6 +159,48 @@ class Registration extends Component {
       this.getStrength(value);
     }
   };
+
+  handleRegistrationSuccess = () => {
+    this.handleAutoLogin();
+  }
+
+  handleAutoLoginSuccess = () => {
+    location.assign(this.props.config.autoLogin.dashboardUrl);
+  }
+
+  handleAutoLogin = () => {
+    const { email, password } = this.state.fields;
+
+    axios.post(this.props.config.autoLogin.loginAPI, {
+      isKeepMeLoggedIn: false,
+      loginEmail: email,
+      password
+    })
+      .then((response) => {
+        const { success, payload, errorMessage } = response.data;
+        if (success) {
+          if (payload) {
+            if (payload.errorPropertyName) {
+              const invalids = [{
+                field: payload.errorPropertyName,
+                errorMessage: payload.errorMessage
+              }];
+              this.setState({ invalids });
+            }
+          } else {
+            this.handleAutoLoginSuccess();
+          }
+        } else {
+          window.store.dispatch({
+            type: FAILURE,
+            alert: errorMessage
+          });
+        }
+      })
+      .catch(() => {
+        window.store.dispatch({ type: FAILURE });
+      });
+  }
 
   isValid = () => {
     const {
@@ -234,7 +288,7 @@ class Registration extends Component {
               this.setState({ invalids });
             }
           } else {
-            location.assign(this.props.config.toLogin.url);
+            this.handleRegistrationSuccess();
           }
         } else {
           window.store.dispatch({
