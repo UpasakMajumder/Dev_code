@@ -11,23 +11,17 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
 {
     public class UpdateInventoryDataService : IUpdateInventoryDataService
     {
-        private readonly IConfigurationProvider configurationProvider;
         private readonly IInventoryUpdateClient microserviceInventory;
-        private readonly IKenticoSiteProvider kenticoSite;
         private readonly IKenticoSkuProvider skuProvider;
         private readonly IKenticoLogger kenticoLog;
         private readonly IKenticoResourceService kenticoResources;
 
-        public UpdateInventoryDataService(IConfigurationProvider configurationProvider,
-                                          IInventoryUpdateClient microserviceInventory,
-                                          IKenticoSiteProvider kenticoSite,
+        public UpdateInventoryDataService(IInventoryUpdateClient microserviceInventory,
                                           IKenticoSkuProvider skuProvider,
                                           IKenticoLogger kenticoLog,
                                           IKenticoResourceService kenticoResources)
         {
-            this.configurationProvider = configurationProvider ?? throw new ArgumentOutOfRangeException(nameof(configurationProvider));
             this.microserviceInventory = microserviceInventory ?? throw new ArgumentOutOfRangeException(nameof(microserviceInventory));
-            this.kenticoSite = kenticoSite ?? throw new ArgumentOutOfRangeException(nameof(kenticoSite));
             this.skuProvider = skuProvider ?? throw new ArgumentNullException(nameof(skuProvider));
             this.kenticoLog = kenticoLog ?? throw new ArgumentOutOfRangeException(nameof(kenticoLog));
             this.kenticoResources = kenticoResources ?? throw new ArgumentOutOfRangeException(nameof(kenticoResources));
