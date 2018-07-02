@@ -19,13 +19,15 @@ namespace Kadena.BusinessLogic.Services.Approval
         private readonly IKenticoOrderProvider kenticoOrderProvider;
         private readonly IKenticoResourceService kenticoResource;
         private readonly IOrderViewClient orderService;
+        private readonly IKenticoSkuProvider skuProvider;
 
-        public ApprovalService(IApproverService approvers, 
-            IApprovalServiceClient approvalClient, 
-            IKenticoLogger log, 
-            IKenticoOrderProvider kenticoOrderProvider, 
+        public ApprovalService(IApproverService approvers,
+            IApprovalServiceClient approvalClient,
+            IKenticoLogger log,
+            IKenticoOrderProvider kenticoOrderProvider,
             IKenticoResourceService kenticoResource,
-            IOrderViewClient orderService)
+            IOrderViewClient orderService,
+            IKenticoSkuProvider skuProvider)
         {
             this.approvers = approvers ?? throw new ArgumentNullException(nameof(approvers));
             this.approvalClient = approvalClient ?? throw new ArgumentNullException(nameof(approvalClient));
@@ -33,6 +35,7 @@ namespace Kadena.BusinessLogic.Services.Approval
             this.kenticoOrderProvider = kenticoOrderProvider ?? throw new ArgumentNullException(nameof(kenticoOrderProvider));
             this.kenticoResource = kenticoResource ?? throw new ArgumentNullException(nameof(kenticoResource));
             this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+            this.skuProvider = skuProvider ?? throw new ArgumentNullException(nameof(skuProvider));
         }
 
         public async Task<ApprovalResult> ApproveOrder(string orderId, int customerId, string customerName, string note = "")

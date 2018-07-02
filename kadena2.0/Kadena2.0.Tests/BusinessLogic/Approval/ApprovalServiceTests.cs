@@ -27,10 +27,11 @@ namespace Kadena.Tests.BusinessLogic.Approval
             IKenticoLogger log,
             IKenticoOrderProvider kenticoOrderProvider,
             IKenticoResourceService kenticoResource,
-            IOrderViewClient orderService)
+            IOrderViewClient orderService,
+            IKenticoSkuProvider skuProvider)
         {
             Assert.Throws<ArgumentNullException>(() => new ApprovalService(approvers, approvalClient, log, kenticoOrderProvider,
-                kenticoResource, orderService));
+                kenticoResource, orderService, skuProvider));
         }
 
         [Fact]
