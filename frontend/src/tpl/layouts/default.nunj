@@ -133,5 +133,6 @@
   <script src="js/app.min.js"></script>
 {% endif %}
 
+{% block js %}{% endblock %}
 </body>
 </html>

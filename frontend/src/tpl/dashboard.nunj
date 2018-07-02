@@ -109,3 +109,15 @@
   -->
   {% include 'components/registration-success.nunj' %}
 {% endblock %}
+
+{% block js %}
+  <!-- For HTML demo purposes only: display popup when param "registration-popup=true" is in url -->
+  <script>
+    var registrationPopup = document.getElementById('registration-success');
+    var showPopup = window.location.search.includes('registration-popup=true');
+
+    if (!showPopup) {
+      registrationPopup.classList.remove('active');
+    }
+  </script>
+{% endblock %}
