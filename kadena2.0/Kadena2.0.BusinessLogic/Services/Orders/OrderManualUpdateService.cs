@@ -320,8 +320,8 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             updateData.ToList().ForEach(data =>
             {
-                var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
-                skuProvider.SetSkuAvailableQty(data.OriginalItem.SkuId, addedQuantity);
+                var freedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
+                skuProvider.UpdateAvailableQuantity(data.OriginalItem.SkuId, freedQuantity);
             });
         }
 
