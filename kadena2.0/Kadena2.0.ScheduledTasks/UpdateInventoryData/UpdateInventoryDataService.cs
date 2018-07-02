@@ -1,4 +1,5 @@
-﻿using Kadena.ScheduledTasks.Infrastructure;
+﻿using Kadena.Models.SiteSettings;
+using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using System;
@@ -15,43 +16,29 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
         private readonly IKenticoSiteProvider kenticoSite;
         private readonly IKenticoSkuProvider skuProvider;
         private readonly IKenticoLogger kenticoLog;
+        private readonly IKenticoResourceService kenticoResources;
 
-        public UpdateInventoryDataService(IConfigurationProvider configurationProvider, 
+        public UpdateInventoryDataService(IConfigurationProvider configurationProvider,
                                           IInventoryUpdateClient microserviceInventory,
                                           IKenticoSiteProvider kenticoSite,
                                           IKenticoSkuProvider skuProvider,
-                                          IKenticoLogger kenticoLog)
+                                          IKenticoLogger kenticoLog,
+                                          IKenticoResourceService kenticoResources)
         {
             this.configurationProvider = configurationProvider ?? throw new ArgumentOutOfRangeException(nameof(configurationProvider));
             this.microserviceInventory = microserviceInventory ?? throw new ArgumentOutOfRangeException(nameof(microserviceInventory));
             this.kenticoSite = kenticoSite ?? throw new ArgumentOutOfRangeException(nameof(kenticoSite));
             this.skuProvider = skuProvider ?? throw new ArgumentNullException(nameof(skuProvider));
             this.kenticoLog = kenticoLog ?? throw new ArgumentOutOfRangeException(nameof(kenticoLog));
+            this.kenticoResources = kenticoResources ?? throw new ArgumentOutOfRangeException(nameof(kenticoResources));
         }
 
         public async Task<string> UpdateInventoryData()
         {
-            var sites = kenticoSite.GetSites();
-            var tasks = new List<Task<string>>();
-
-            foreach (var site in sites)
-            {
-                var configuration = configurationProvider.Get<UpdateInventoryConfiguration>(site.Id);
-                var erpId = configuration.ErpClientId;
-                var task = UpdateSiteProducts(erpId);
-                tasks.Add(task);
-            }
-
-            await Task.WhenAll(tasks.ToArray()).ConfigureAwait(false);
-            return string.Join(". ", tasks.Select(t => t.Result));
-        }
-
-
-        private async Task<string> UpdateSiteProducts(string customerErpId)
-        {
+            var customerErpId = kenticoResources.GetSiteSettingsKey<string>(Settings.KDA_ErpCustomerId);
             var products = await microserviceInventory.GetInventoryItems(customerErpId).ConfigureAwait(false);
 
-            if(!products.Success)
+            if (!products.Success)
             {
                 kenticoLog.LogError("UpdateInventory", products.ErrorMessages);
                 return products.ErrorMessages;
@@ -59,7 +46,7 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
 
             if (products.Payload == null || products.Payload.Length == 0)
             {
-                return $"Customer with ErpId {customerErpId} done, but no products data were received from microservice and updated";
+                return $"Customer with ErpId {customerErpId} done, but no products data were received from microservice and updated.";
             }
 
             foreach (var product in products.Payload.Where(p => p.ClientId == customerErpId))
@@ -67,7 +54,7 @@ namespace Kadena.ScheduledTasks.UpdateInventoryData
                 skuProvider.SetSkuAvailableQty(product.Id, (int)product.AvailableQty);
             }
 
-            return $"Customer with ErpId {customerErpId} done successfully";
+            return $"Customer with ErpId {customerErpId} done successfully.";
         }
     }
 }
