@@ -5,7 +5,6 @@ using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
-using Kadena.Models.AddToCart;
 using Kadena.Models.CampaignData;
 using Kadena.Models.OrderDetail;
 using Kadena.Models.Orders;
@@ -145,27 +144,42 @@ namespace Kadena.BusinessLogic.Services.Orders
                     orderDetail.campaign.ID, orderDetail.campaign.ProgramID,
                     orderDetail.Customer.KenticoUserID);
                 // update fake cart
-                distributorCartItems.ForEach(c =>
+                try
                 {
-                    c.Items.ForEach(i => i.ShoppingCartID = cartId);
-                    distributorShoppingCartService.UpdateDistributorCarts(c, orderDetail.Customer.KenticoUserID);
+                    distributorCartItems.ForEach(c =>
+                    {
+                        c.Items.ForEach(i => i.ShoppingCartID = cartId);
+                        distributorShoppingCartService.UpdateDistributorCarts(c, orderDetail.Customer.KenticoUserID);
+                    }
+                    );
+
+                    // get updated data from cart
+                    var cart = shoppingCartProvider.GetShoppingCart(cartId, orderDetail.Type);
+                    requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart);
+                    requestDto.OrderId = request.OrderId;
+                    requestDto.Items = cart.Items.Select(i =>
+                    {
+                        var item = mapper.Map<ItemUpdateDto>(i);
+                        item.LineNumber = skuLines[i.SkuId];
+                        return item;
+                    })
+                    .ToList();
+
+                    var weight = shoppingCartProvider.GetCartWeight(cartId);
+                    var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
+                        weight, targetAddress);
+                    requestDto.TotalShipping = shippingCost;
                 }
-                );
-                // get updated data from cart
-                var weight = shoppingCartProvider.GetCartWeight(cartId);
-                var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
-                    weight, targetAddress);
-                var cart = shoppingCartProvider.GetShoppingCart(cartId, orderDetail.Type);
-                requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart);
-                requestDto.OrderId = request.OrderId;
-                requestDto.TotalShipping = shippingCost;
-                requestDto.Items = cart.Items.Select(i =>
+                catch (Exception exc)
                 {
-                    var item = mapper.Map<ItemUpdateDto>(i);
-                    item.LineNumber = skuLines[i.SkuId];
-                    return item;
-                })
-                .ToList();
+                    log.LogException(this.GetType().Name, exc);
+                }
+                finally
+                {
+                    // remove fake cart
+                    shoppingCartProvider.DeleteShoppingCart(cartId);
+                }
+
                 // send to microservice
                 var updateResult = await updateService.UpdateOrder(requestDto);
                 if (!updateResult.Success)
@@ -177,12 +191,9 @@ namespace Kadena.BusinessLogic.Services.Orders
                 AdjustAvailableItems(updatedItemsData);
 
                 // Adjust budget
-                budgetProvider.UpdateUserBudgetAllocationRecords(orderDetail.Customer.KenticoUserID, 
+                budgetProvider.UpdateUserBudgetAllocationRecords(orderDetail.Customer.KenticoUserID,
                     orderDetail.OrderDate.Year.ToString(),
-                    shippingCost - Convert.ToDecimal(orderDetail.PaymentInfo.Shipping));
-
-                // remove fake cart
-                shoppingCartProvider.DeleteShoppingCart(cartId);
+                    requestDto.TotalShipping - Convert.ToDecimal(orderDetail.PaymentInfo.Shipping));
             }
             else
             {
@@ -223,7 +234,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 UpdateAvailableItems(updatedItemsData);
             }
 
-            return GetUpdatesForFrontend(updatedItemsData, requestDto);
+            return GetUpdatesForFrontend(requestDto);
         }
 
         void CheckRequestData(OrderUpdate request)
@@ -246,7 +257,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
         }
 
-        OrderUpdateResult GetUpdatesForFrontend(IEnumerable<UpdatedItemCheckData> updateData, OrderManualUpdateRequestDto requestDto)
+        OrderUpdateResult GetUpdatesForFrontend(OrderManualUpdateRequestDto requestDto)
         {
             var result = new OrderUpdateResult
             {
@@ -280,10 +291,10 @@ namespace Kadena.BusinessLogic.Services.Orders
 
                 },
 
-                OrdersPrice = updateData.Select(d => new ItemUpdateResult
+                OrdersPrice = requestDto.Items.Select(d => new ItemUpdateResult
                 {
-                    LineNumber = d.ManuallyUpdatedItem.LineNumber,
-                    Price = String.Format("$ {0:#,0.00}", d.ManuallyUpdatedItem.TotalPrice)
+                    LineNumber = d.LineNumber,
+                    Price = String.Format("$ {0:#,0.00}", d.TotalPrice)
                 }).ToArray()
             };
 
@@ -310,7 +321,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             updateData.ToList().ForEach(data =>
             {
                 var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
-                skuProvider.SetSkuAvailableQty(data.Sku.SkuId, addedQuantity);
+                skuProvider.SetSkuAvailableQty(data.OriginalItem.SkuId, addedQuantity);
             });
         }
 
@@ -405,6 +416,11 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         ItemUpdateDto CreateChangedItem(UpdatedItemCheckData data)
         {
+            if (ProductTypes.IsOfType(data.Product.ProductType, ProductTypes.MailingProduct))
+            {
+                throw new Exception("Cannot change quantity of Mailing product item");
+            }
+
             orderChecker.CheckMinMaxQuantity(data.Sku, data.UpdatedItem.Quantity);
 
             var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;

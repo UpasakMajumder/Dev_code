@@ -262,8 +262,17 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
 
             var orderList = _mapper.Map<OrderList>(orders);
+            RemoveRemovedLineItems(orderList);
             MapOrdersStatusToGeneric(orderList?.Orders);
             return orderList;
+        }
+
+        private void RemoveRemovedLineItems(OrderList orderList)
+        {
+            foreach (var order in orderList.Orders)
+            {
+                order.Items = order.Items.Where(it => it.Quantity > 0);
+            }
         }
 
         public async Task<OrderHeadBlock> GetCampaignHeaders(string orderType, int campaignID)
