@@ -18,18 +18,21 @@ namespace Kadena.BusinessLogic.Services.Approval
         private readonly IKenticoLogger log;
         private readonly IKenticoOrderProvider kenticoOrderProvider;
         private readonly IKenticoResourceService kenticoResource;
+        private readonly IOrderViewClient orderService;
 
-        public ApprovalService(IApproverService approvers,
-                               IApprovalServiceClient approvalClient,
-                                       IKenticoLogger log,
-                               IKenticoOrderProvider kenticoOrderProvider,
-                               IKenticoResourceService kenticoResource)
+        public ApprovalService(IApproverService approvers, 
+            IApprovalServiceClient approvalClient, 
+            IKenticoLogger log, 
+            IKenticoOrderProvider kenticoOrderProvider, 
+            IKenticoResourceService kenticoResource,
+            IOrderViewClient orderService)
         {
             this.approvers = approvers ?? throw new ArgumentNullException(nameof(approvers));
             this.approvalClient = approvalClient ?? throw new ArgumentNullException(nameof(approvalClient));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
             this.kenticoOrderProvider = kenticoOrderProvider ?? throw new ArgumentNullException(nameof(kenticoOrderProvider));
             this.kenticoResource = kenticoResource ?? throw new ArgumentNullException(nameof(kenticoResource));
+            this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
         }
 
         public async Task<ApprovalResult> ApproveOrder(string orderId, int customerId, string customerName, string note = "")
@@ -79,8 +82,6 @@ namespace Kadena.BusinessLogic.Services.Approval
 
             log.LogInfo(approvalState.GetDisplayName(), "Info", $"Order '{approveRequest.OrderId}' successfully processed, approval status : {microserviceResult.Payload}. {noteLog}");
         }
-
-        
 
         private ApprovalRequestDto GetApprovalData(string orderId, int customerId, string customerName, ApprovalState state, string rejectionNote)
         {

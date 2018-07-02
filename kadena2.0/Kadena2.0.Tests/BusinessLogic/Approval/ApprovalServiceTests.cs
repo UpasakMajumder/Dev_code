@@ -5,6 +5,7 @@ using Kadena.Dto.General;
 using Kadena.Models.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Moq;
 using System;
 using System.Threading.Tasks;
@@ -18,6 +19,19 @@ namespace Kadena.Tests.BusinessLogic.Approval
         const int customerId = 56;
         const string customerName = "John Customer";
         const int approverUserId = 11;
+
+        [Theory]
+        [ClassData(typeof(ApprovalServiceTests))]
+        public void ApprovalService(IApproverService approvers,
+            IApprovalServiceClient approvalClient,
+            IKenticoLogger log,
+            IKenticoOrderProvider kenticoOrderProvider,
+            IKenticoResourceService kenticoResource,
+            IOrderViewClient orderService)
+        {
+            Assert.Throws<ArgumentNullException>(() => new ApprovalService(approvers, approvalClient, log, kenticoOrderProvider,
+                kenticoResource, orderService));
+        }
 
         [Fact]
         public async Task ApproveOrderTest()
