@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using DryIoc;
-using Kadena.ScheduledTasks.Infrastructure.Kentico;
 using Kadena.WebAPI.KenticoProviders;
 using Kadena.Container.Default;
 using Kadena2.WebAPI.KenticoProviders;
@@ -49,8 +48,6 @@ namespace Kadena.ScheduledTasks
                 .RegisterMicroservices()
                 .RegisterKadenaSettings();
 
-            // scheduled tasks infrastructure
-            container.Register<Infrastructure.IConfigurationProvider, KenticoConfigurationProvider>();
             container.RegisterInstance(typeof(IMapper), CreateMapper());
 
             container.Register<IKenticoSiteProvider, SpecificSiteProvider>(setup: Setup.Decorator);
