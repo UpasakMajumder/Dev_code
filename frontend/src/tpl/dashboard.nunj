@@ -99,25 +99,4 @@
       </div>
     </div>
   </div>
-
-  <!--
-    Backend TODO:
-    Generate modal only once after the first login after registration.
-    User is redirected to dashboard based on the URL set in "config.localization.autoLogin.dashboardUrl"
-    Using cookies is not enough, as the user is not supposed to see the modal never again =>
-    store the user state in a database.
-  -->
-  {% include 'components/registration-success.nunj' %}
-{% endblock %}
-
-{% block js %}
-  <!-- For HTML demo purposes only: display popup when param "registration-popup=true" is in url -->
-  <script>
-    var registrationPopup = document.getElementById('registration-success');
-    var showPopup = window.location.search.includes('registration-popup=true');
-
-    if (!showPopup) {
-      registrationPopup.classList.remove('active');
-    }
-  </script>
 {% endblock %}
