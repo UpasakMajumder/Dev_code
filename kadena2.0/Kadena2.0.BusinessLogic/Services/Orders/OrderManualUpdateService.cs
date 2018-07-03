@@ -12,7 +12,6 @@ using Kadena.Models.Orders;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
-using Kadena2.MicroserviceClients.MicroserviceRequests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -186,6 +185,9 @@ namespace Kadena.BusinessLogic.Services.Orders
                     var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
                         weight, targetAddress);
                     requestDto.TotalShipping = shippingCost;
+
+                    var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
+                    requestDto.TotalTax = await taxEstimationService.EstimateTax(taxAddress, (double)requestDto.TotalPrice, (double)requestDto.TotalShipping);
                 }
                 catch (Exception exc)
                 {
