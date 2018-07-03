@@ -12,6 +12,8 @@ import defineStrength from 'app.helpers/password';
 import { FAILURE } from 'app.consts';
 /* globals */
 import { REGISTRATION } from 'app.globals';
+/* local components */
+import LoginModal from './LoginModal';
 
 class Registration extends Component {
   static defaultProps = {
@@ -36,9 +38,10 @@ class Registration extends Component {
         text: 'Sign Inn'
       },
       strength: REGISTRATION.strength || null,
-      autoLogin: REGISTRATION.autoLogin || {
-        loginAPI: '#',
-        dashboardUrl: '#'
+      loginModal: REGISTRATION.loginModal || {
+        body: 'Your account was successfully created. Click the login link below to access the storefront.',
+        btnLabel: 'Login',
+        title: 'Registration successful'
       }
     } : {
       title: 'Sign Up',
@@ -61,9 +64,10 @@ class Registration extends Component {
         text: 'Sign In'
       },
       strength: null,
-      autoLogin: {
-        loginAPI: '#',
-        dashboardUrl: '#'
+      loginModal: {
+        body: 'Your account was successfully created. Click the login link below to access the storefront.',
+        btnLabel: 'Login',
+        title: 'Registration successful'
       }
     }
   }
@@ -99,9 +103,10 @@ class Registration extends Component {
         usePolicy: PropTypes.bool,
         info: PropTypes.string.isRequire
       }),
-      autoLogin: PropTypes.shape({
-        loginAPI: PropTypes.string.isRequired,
-        dashboardUrl: PropTypes.string.isRequired
+      loginModal: PropTypes.shape({
+        btnLabel: PropTypes.string.isRequired,
+        body: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired
       }).isRequired
     }).isRequired
   }
@@ -121,7 +126,8 @@ class Registration extends Component {
       level: 0,
       message: this.props.config.strength.policyStrings[0],
       valid: false
-    }
+    },
+    showLoginModal: false
   };
 
   getErrorMessage = (name) => {
@@ -161,45 +167,7 @@ class Registration extends Component {
   };
 
   handleRegistrationSuccess = () => {
-    this.handleAutoLogin();
-  }
-
-  handleAutoLoginSuccess = () => {
-    location.assign(this.props.config.autoLogin.dashboardUrl);
-  }
-
-  handleAutoLogin = () => {
-    const { email, password } = this.state.fields;
-
-    axios.post(this.props.config.autoLogin.loginAPI, {
-      isKeepMeLoggedIn: false,
-      loginEmail: email,
-      password
-    })
-      .then((response) => {
-        const { success, payload, errorMessage } = response.data;
-        if (success) {
-          if (payload) {
-            if (payload.errorPropertyName) {
-              const invalids = [{
-                field: payload.errorPropertyName,
-                errorMessage: payload.errorMessage
-              }];
-              this.setState({ invalids });
-            }
-          } else {
-            this.handleAutoLoginSuccess();
-          }
-        } else {
-          window.store.dispatch({
-            type: FAILURE,
-            alert: errorMessage
-          });
-        }
-      })
-      .catch(() => {
-        window.store.dispatch({ type: FAILURE });
-      });
+    this.setState({ showLoginModal: true });
   }
 
   isValid = () => {
@@ -297,7 +265,9 @@ class Registration extends Component {
           });
         }
       })
-      .catch(() => {
+      .catch((e) => {
+        // eslint-disable-next-line
+        console.error(e);
         window.store.dispatch({ type: FAILURE });
       });
   };
@@ -335,8 +305,22 @@ class Registration extends Component {
     this.setState({ isPending: false });
   };
 
+  renderLoginModal = () => {
+    const { toLogin, loginModal } = this.props.config;
+    const { btnLabel, body, title } = loginModal;
+
+    return (
+      <LoginModal
+        body={body}
+        btnLabel={btnLabel}
+        btnLink={toLogin.url}
+        title={title}
+      />
+    );
+  }
+
   render() {
-    const { fields } = this.state;
+    const { fields, showLoginModal } = this.state;
     const { config } = this.props;
 
     return (
@@ -398,18 +382,20 @@ class Registration extends Component {
         </div>
 
         <div className="mb-3">
-            <Button
-              text={config.labels.button}
-              type="action"
-              btnClass="login__login-button btn--no-shadow"
-              onClick={this.handleSubmit}
-              isLoading={this.state.isPending}
-            />
-          </div>
+          <Button
+            text={config.labels.button}
+            type="action"
+            btnClass="login__login-button btn--no-shadow"
+            onClick={this.handleSubmit}
+            isLoading={this.state.isPending}
+          />
+        </div>
 
-          <div>
-            <a className="link" href={config.toLogin.url}>{config.toLogin.text}</a>
-          </div>
+        <div>
+          <a className="link" href={config.toLogin.url}>{config.toLogin.text}</a>
+        </div>
+
+        {showLoginModal && this.renderLoginModal()}
       </div>
     );
   }
