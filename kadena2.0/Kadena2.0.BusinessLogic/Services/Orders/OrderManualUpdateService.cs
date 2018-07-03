@@ -325,7 +325,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
 
                 // Not using Set... because when waiting for result of OrderUpdate, quantity can change
-                skuProvider.IncreaseSkuAvailableQty(data.Sku.SKUNumber, addedQuantity);
+                skuProvider.UpdateAvailableQuantity(data.Sku.SkuId, addedQuantity);
             });
         }
 
@@ -333,8 +333,8 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             updateData.ToList().ForEach(data =>
             {
-                var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
-                skuProvider.SetSkuAvailableQty(data.OriginalItem.SkuId, addedQuantity);
+                var freedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
+                skuProvider.UpdateAvailableQuantity(data.OriginalItem.SkuId, freedQuantity);
             });
         }
 
