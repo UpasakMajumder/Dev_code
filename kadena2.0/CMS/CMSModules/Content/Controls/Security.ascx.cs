@@ -14,9 +14,9 @@ using CMS.Helpers;
 using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.UIControls;
+using CMS.Localization;
 
 using TreeNode = CMS.DocumentEngine.TreeNode;
-
 
 public partial class CMSModules_Content_Controls_Security : CMSUserControl
 {
@@ -1259,7 +1259,7 @@ select.change(function(){{
 
         // Log synchronization task and flush cache
         TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-        TreeNode node = tree.SelectSingleDocument(Node.NodeID);
+        TreeNode node = tree.SelectSingleNode(Node.NodeID, LocalizationContext.PreferredCultureCode);
 
         DocumentSynchronizationHelper.LogDocumentChange(node, TaskTypeEnum.UpdateDocument, Node.TreeProvider);
         Node.ClearCache();

@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Data;
-
-using CMS.Base.Web.UI;
-using CMS.Helpers;
-
+using System.Linq;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using CMS.Base;
+using CMS.Base.Web.UI;
 using CMS.FormEngine;
+using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.PortalEngine;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using CMS.UIControls;
-
 
 public partial class CMSModules_Widgets_Dialogs_WidgetSelector : CMSModalPage, ICallbackEventHandler
 {
@@ -236,7 +234,7 @@ function OnReceiveAddInlineWidgetScript(rvalue, context) {
                 }
 
                 // Save inline widget script
-                script = PortalHelper.GetAddInlineWidgetScript(wi, dr, fi.GetFields(true, true));
+                script = PortalHelper.GetAddInlineWidgetScript(wi, dr, fi.GetFields(true, true), Enumerable.Empty<string>());
 
                 script += " CloseDialog(false);";
 

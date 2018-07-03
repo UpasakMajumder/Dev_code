@@ -18,13 +18,13 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
     private bool? mAddSelectCountryRecord;
     private bool? mEnableStateSelection;
     private bool? mUseStateSelection;
+    private ReturnTypeEnum? mReturnType;
 
-    private ReturnType returnWhat = ReturnType.Both;
 
     /// <summary>
     /// Indicates what return value should be submited by the control.
     /// </summary>
-    private enum ReturnType
+    private enum ReturnTypeEnum
     {
         /// <summary>
         /// Default value. Returns string value with both countryID and stateID separated by semicolumn.
@@ -207,7 +207,7 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
     {
         get
         {
-            return mUseCodeNameForSelection;
+            return mUseCodeNameForSelection && ReturnType == ReturnTypeEnum.Both;
         }
         set
         {
@@ -403,16 +403,14 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
     {
         get
         {
-            returnWhat = (ReturnType)ValidationHelper.GetInteger(GetValue("ReturnType"), 0);
-
             // Return only country ID
-            if (returnWhat == ReturnType.CountryID)
+            if (ReturnType == ReturnTypeEnum.CountryID)
             {
                 return CountryID == 0 ? null : (object)CountryID;
             }
 
             // Return only state ID
-            if (returnWhat == ReturnType.StateID)
+            if (ReturnType == ReturnTypeEnum.StateID)
             {
                 return StateID == 0 ? null : (object)StateID;
             }
@@ -432,9 +430,6 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
         }
         set
         {
-            // Return type
-            returnWhat = (ReturnType)ValidationHelper.GetInteger(GetValue("ReturnType"), 0);
-
             // Load panel
             if ((uniSelectorCountry == null) || (uniSelectorState == null))
             {
@@ -442,14 +437,14 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
             }
 
             // Get only country ID
-            if (returnWhat == ReturnType.CountryID)
+            if (ReturnType == ReturnTypeEnum.CountryID)
             {
                 CountryID = ValidationHelper.GetInteger(value, 0);
 
                 LoadOtherValues();
             }
                 // Get only stateID
-            else if (returnWhat == ReturnType.StateID)
+            else if (ReturnType == ReturnTypeEnum.StateID)
             {
                 StateID = ValidationHelper.GetInteger(value, 0);
 
@@ -557,6 +552,19 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
         }
     }
 
+
+    private ReturnTypeEnum ReturnType
+    {
+        get
+        {
+            if (mReturnType == null)
+            {
+                mReturnType = (ReturnTypeEnum)ValidationHelper.GetInteger(GetValue("ReturnType"), 0);
+            }
+            return mReturnType.Value;
+        }
+    }
+
     #endregion
 
 
@@ -614,6 +622,7 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
             uniSelectorState.MaxDisplayedTotalItems = uniSelectorState.MaxDisplayedItems + 50;
             uniSelectorState.WhereCondition = "CountryID = " + CountryID;
             mUseStateSelection = null;
+            uniSelectorState.Reload(true);
 
             if (UseCodeNameForSelection)
             {
@@ -727,7 +736,14 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
             var stateInfo = StateInfoProvider.GetStateInfo(ValidationHelper.GetInteger(GetColumnValue(StateIDColumnName), 0));
             if ((stateInfo != null) && (uniSelectorState != null))
             {
-                uniSelectorState.Value = stateInfo.StateName;
+                if (UseCodeNameForSelection)
+                {
+                    uniSelectorState.Value = stateInfo.StateName;
+                }
+                else
+                {
+                    uniSelectorState.Value = stateInfo.StateID;
+                }
             }
         }
     }
@@ -744,13 +760,18 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
             // Set properties names
             object[,] values = new object[1, 2];
             values[0, 0] = StateIDColumnName;
-            if (StateID > 0)
+            values[0, 1] = null;
+
+            if (UseCodeNameForSelection)
             {
-                values[0, 1] = StateID.ToString();
+                if (!string.IsNullOrEmpty(StateName))
+                {
+                    values[0, 1] = StateName;
+                }
             }
-            else
+            else if (StateID > 0)
             {
-                values[0, 1] = null;
+                values[0, 1] = StateID;
             }
 
             return values;
