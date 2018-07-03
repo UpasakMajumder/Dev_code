@@ -7,8 +7,13 @@
             <asp:DropDownList ID="ddlProgram" runat="server" Visible="false" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
             <asp:DropDownList ID="ddlCategory" runat="server" Visible="false" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
         </div>
-        <div class="search__block">
+        <div class="search__block search__recent search__recent--icon">
             <asp:TextBox ID="txtPos" runat="server" OnTextChanged="txtPos_TextChanged" AutoPostBack="true" class="input__text"></asp:TextBox>
+            <button class="search__submit btn--off" type="submit">
+                <svg class="icon icon-dollar">
+                    <use xlink:href="/gfx/svg/sprites/icons.svg#search"></use>
+                </svg>
+            </button>
         </div>
     </div>
     <div class="custom__content row">
