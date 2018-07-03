@@ -140,10 +140,6 @@
           url: 'lol',
           text: 'To Login'
         },
-        autoLogin: {
-          loginAPI: PATH + 'login',
-          dashboardUrl: '/dashboard.html?registration-popup=true'
-        },
         strength: {
           minLength: 3,
           preferedLength: 7,
