@@ -153,17 +153,30 @@ namespace Kadena.BusinessLogic.Services.Orders
                     }
                     );
 
+                    // deleted items will not be shopping cart, need to add them manually
+                    var deletedItems = updatedItemsData
+                        .Where(u => u.UpdatedItem.Quantity == 0)
+                        .Select(u => new ItemUpdateDto
+                        {
+                            LineNumber = u.UpdatedItem.LineNumber,
+                            Quantity = 0,
+                            TotalPrice = 0,
+                            UnitPrice = 0
+                        });
+
                     // get updated data from cart
                     var cart = shoppingCartProvider.GetShoppingCart(cartId, orderDetail.Type);
                     requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart);
                     requestDto.OrderId = request.OrderId;
-                    requestDto.Items = cart.Items.Select(i =>
-                    {
-                        var item = mapper.Map<ItemUpdateDto>(i);
-                        item.LineNumber = skuLines[i.SkuId];
-                        return item;
-                    })
-                    .ToList();
+                    requestDto.Items = cart.Items
+                        .Select(i =>
+                        {
+                            var item = mapper.Map<ItemUpdateDto>(i);
+                            item.LineNumber = skuLines[i.SkuId];
+                            return item;
+                        })
+                        .Concat(deletedItems)
+                        .ToList();
 
                     var weight = shoppingCartProvider.GetCartWeight(cartId);
                     var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
