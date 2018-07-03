@@ -34,11 +34,9 @@ namespace Kadena.BusinessLogic.Services
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
 
-        public async Task<decimal> EstimateTax(DeliveryAddress deliveryAddress, double pricedItemsPrice)
+        public async Task<decimal> EstimateTax(DeliveryAddress deliveryAddress, double pricedItemsPrice, double shippingCost)
         {
-            double shippingCosts = shoppingCart.GetCurrentCartShippingCost();
-
-            var taxRequest = CreateTaxEstimationRequest(deliveryAddress, pricedItemsPrice, shippingCosts);
+            var taxRequest = CreateTaxEstimationRequest(deliveryAddress, pricedItemsPrice, shippingCost);
 
             var estimate = await EstimateTotalTaxCachedCall(taxRequest);
             return estimate;
