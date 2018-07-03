@@ -14,20 +14,17 @@ namespace Kadena.BusinessLogic.Services
     {
         private readonly IKenticoLocalizationProvider kenticoLocalization;
         private readonly IKenticoLogger kenticoLog;
-        private readonly IKenticoResourceService resources;
         private readonly ITaxEstimationServiceClient taxCalculator;
         private readonly IShoppingCartProvider shoppingCart;
         private readonly ICache cache;
 
         public TaxEstimationService(IKenticoLocalizationProvider kenticoLocalization,
-                                   IKenticoResourceService resources,                                    
                                    ITaxEstimationServiceClient taxCalculator,
                                    IKenticoLogger kenticoLog,
                                    IShoppingCartProvider shoppingCart,
                                    ICache cache)
         {
             this.kenticoLocalization = kenticoLocalization ?? throw new ArgumentNullException(nameof(kenticoLocalization));
-            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));            
             this.taxCalculator = taxCalculator ?? throw new ArgumentNullException(nameof(taxCalculator));            
             this.kenticoLog = kenticoLog ?? throw new ArgumentNullException(nameof(kenticoLog));
             this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
