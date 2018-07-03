@@ -89,6 +89,7 @@ class TaCDialog extends Component {
         title={title}
         body={body}
         footer={footer}
+        open={this.props.show}
       />
     );
   }
