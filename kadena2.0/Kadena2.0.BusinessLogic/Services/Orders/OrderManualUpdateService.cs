@@ -5,6 +5,7 @@ using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
+using Kadena.Models;
 using Kadena.Models.CampaignData;
 using Kadena.Models.OrderDetail;
 using Kadena.Models.Orders;
@@ -45,6 +46,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IkenticoUserBudgetProvider budgetProvider;
         private readonly IDistributorShoppingCartService distributorShoppingCartService;
         private readonly IShoppingCartProvider shoppingCartProvider;
+        private readonly ITaxEstimationService taxEstimationService;
 
         public OrderManualUpdateService(IOrderManualUpdateClient updateService,
                                         IOrderViewClient orderService,
@@ -60,7 +62,8 @@ namespace Kadena.BusinessLogic.Services.Orders
                                         IMapper mapper,
                                         IDistributorShoppingCartService distributorShoppingCartService,
                                         IShoppingCartProvider shoppingCartProvider,
-                                        IkenticoUserBudgetProvider budgetProvider)
+                                        IkenticoUserBudgetProvider budgetProvider,
+                                        ITaxEstimationService taxEstimationService)
         {
             this.updateService = updateService ?? throw new ArgumentNullException(nameof(updateService));
             this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
@@ -77,6 +80,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.distributorShoppingCartService = distributorShoppingCartService ?? throw new ArgumentNullException(nameof(distributorShoppingCartService));
             this.shoppingCartProvider = shoppingCartProvider ?? throw new ArgumentNullException(nameof(shoppingCartProvider));
             this.budgetProvider = budgetProvider ?? throw new ArgumentNullException(nameof(budgetProvider));
+            this.taxEstimationService = taxEstimationService ?? throw new ArgumentNullException(nameof(taxEstimationService));
         }
 
         public async Task<OrderUpdateResult> UpdateOrder(OrderUpdate request)
@@ -385,8 +389,8 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 log.LogInfo("Approval", "Info", $"NOT going to call estimation microservice");
             }
-
-            request.TotalTax = await EstimateTax(request.TotalPrice, request.TotalShipping, sourceAddress, targetAddress);
+            var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
+            request.TotalTax = await taxEstimationService.EstimateTax(taxAddress, (double)request.TotalPrice, (double)request.TotalShipping);
         }
 
         private decimal GetShippinCost(string provider, string shippingService, decimal shippableWeight, AddressDto targetAddress)
@@ -394,37 +398,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             log.LogInfo("Approval", "Info", $"Going to call estimation microservice");
 
             return deliveryData.GetShippingCost(provider, shippingService, shippableWeight, targetAddress);
-        }
-
-        async Task<decimal> EstimateTax(decimal totalBasePrice, decimal shipppingCosts, AddressDto sourceAddress, AddressDto targetAddress)
-        {
-            if (totalBasePrice == 0.0m)
-            {
-                return 0.0m;
-            }
-
-            var taxRequest = new TaxCalculatorRequestDto
-            {
-                ShipCost = (double)shipppingCosts,
-                TotalBasePrice = (double)totalBasePrice,
-
-                ShipFromCity = sourceAddress.City,
-                ShipFromState = sourceAddress.State,
-                ShipFromZip = sourceAddress.Postal,
-
-                ShipToCity = targetAddress.City,
-                ShipToState = targetAddress.State,
-                ShipToZip = targetAddress.Postal
-            };
-
-            var taxResult = await taxes.CalculateTax(taxRequest);
-
-            if (!taxResult.Success)
-            {
-                throw new Exception("Failed to estimate tax");
-            }
-
-            return taxResult.Payload;
         }
 
         ItemUpdateDto CreateChangedItem(UpdatedItemCheckData data)
