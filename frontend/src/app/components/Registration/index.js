@@ -265,9 +265,7 @@ class Registration extends Component {
           });
         }
       })
-      .catch((e) => {
-        // eslint-disable-next-line
-        console.error(e);
+      .catch(() => {
         window.store.dispatch({ type: FAILURE });
       });
   };
