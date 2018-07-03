@@ -12,6 +12,7 @@ using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.MicroserviceRequests;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IApproverService approvers;
         private readonly IKenticoProductsProvider productsProvider;
         private readonly IKenticoSkuProvider skuProvider;
+        private readonly IKenticoPermissionsProvider permissions;
         private readonly IOrderItemCheckerService orderChecker;
         private readonly IProductsService products;
         private readonly ITaxEstimationServiceClient taxes;
@@ -51,6 +53,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                                         IApproverService approvers,
                                         IKenticoProductsProvider productsProvider,
                                         IKenticoSkuProvider skuProvider,
+                                        IKenticoPermissionsProvider permissions,
                                         IOrderItemCheckerService orderChecker,
                                         IProductsService products,
                                         ITaxEstimationServiceClient taxes,
@@ -67,6 +70,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.approvers = approvers ?? throw new ArgumentNullException(nameof(approvers));
             this.productsProvider = productsProvider ?? throw new ArgumentNullException(nameof(productsProvider));
             this.skuProvider = skuProvider ?? throw new ArgumentNullException(nameof(skuProvider));
+            this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             this.orderChecker = orderChecker ?? throw new ArgumentNullException(nameof(orderChecker));
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.taxes = taxes ?? throw new ArgumentNullException(nameof(taxes));
@@ -272,6 +276,11 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         OrderUpdateResult GetUpdatesForFrontend(OrderManualUpdateRequestDto requestDto)
         {
+            if (!permissions.UserCanSeePrices())
+            {
+                return null;
+            }
+
             var result = new OrderUpdateResult
             {
                 PricingInfo = new[]
