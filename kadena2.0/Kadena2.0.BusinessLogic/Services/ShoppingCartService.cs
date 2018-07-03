@@ -213,7 +213,7 @@ namespace Kadena.BusinessLogic.Services
             var shoppingCartTotals = shoppingCart.GetShoppingCartTotals();
             if (deliveryAddress != null)
             {
-                shoppingCartTotals.TotalTax = await taxCalculator.EstimateTotalTax(deliveryAddress);
+                shoppingCartTotals.TotalTax = await taxCalculator.EstimatePricedItemsTax(deliveryAddress, (double)shoppingCartTotals.TotalItemsPrice);
             }
             totals.Items = new Total[]
             {
