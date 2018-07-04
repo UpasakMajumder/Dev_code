@@ -322,10 +322,10 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             inventoryProductsData.ForEach(data =>
             {
-                var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
+                var freedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
 
                 // Not using Set... because when waiting for result of OrderUpdate, quantity can change
-                skuProvider.UpdateAvailableQuantity(data.Sku.SkuId, addedQuantity);
+                skuProvider.UpdateAvailableQuantity(data.Sku.SkuId, freedQuantity);
             });
         }
 
