@@ -37,7 +37,6 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoSkuProvider skuProvider;
         private readonly IOrderItemCheckerService orderChecker;
         private readonly IProductsService products;
-        private readonly ITaxEstimationServiceClient taxes;
         private readonly IKenticoResourceService resources;
         private readonly IDeliveryEstimationDataService deliveryData;
         private readonly IKenticoLogger log;
@@ -54,7 +53,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                                         IKenticoSkuProvider skuProvider,
                                         IOrderItemCheckerService orderChecker,
                                         IProductsService products,
-                                        ITaxEstimationServiceClient taxes,
                                         IKenticoResourceService resources,
                                         IDeliveryEstimationDataService deliveryData,
                                         IKenticoLogger log,
@@ -71,7 +69,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.skuProvider = skuProvider ?? throw new ArgumentNullException(nameof(skuProvider));
             this.orderChecker = orderChecker ?? throw new ArgumentNullException(nameof(orderChecker));
             this.products = products ?? throw new ArgumentNullException(nameof(products));
-            this.taxes = taxes ?? throw new ArgumentNullException(nameof(taxes));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.deliveryData = deliveryData ?? throw new ArgumentNullException(nameof(deliveryData));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
@@ -326,13 +323,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 .Where(u => ProductTypes.IsOfType(u.Product.ProductType, ProductTypes.InventoryProduct))
                 .ToList();
 
-            inventoryProductsData.ForEach(data =>
-            {
-                var freedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
-
-                // Not using Set... because when waiting for result of OrderUpdate, quantity can change
-                skuProvider.UpdateAvailableQuantity(data.Sku.SkuId, freedQuantity);
-            });
+            AdjustAvailableItems(inventoryProductsData);
         }
 
         void AdjustAvailableItems(IEnumerable<UpdatedItemCheckData> updateData)
@@ -340,6 +331,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             updateData.ToList().ForEach(data =>
             {
                 var freedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
+                // Not using Set... because when waiting for result of OrderUpdate, quantity can change
                 skuProvider.UpdateAvailableQuantity(data.OriginalItem.SkuId, freedQuantity);
             });
         }
@@ -375,9 +367,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             );
 
             request.TotalShipping = 0.0m;
-
-            var sourceAddress = deliveryData.GetSourceAddress();
-
 
             log.LogInfo("Approval", "Info", $"Provider is '{orderDetail.ShippingInfo.Provider}'");
             log.LogInfo("Approval", "Info", $"Total shippable weight is '{shippableWeight}'");
