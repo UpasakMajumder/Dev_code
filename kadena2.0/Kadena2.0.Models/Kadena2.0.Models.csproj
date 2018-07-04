@@ -56,6 +56,7 @@
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
     <Compile Include="CampaignData\Campaign.cs" />
     <Compile Include="CampaignData\CampaignData.cs" />
+    <Compile Include="CampaignData\OrderType.cs" />
     <Compile Include="Checkout\CartItemEntity.cs" />
     <Compile Include="Checkout\ChiliProcess.cs" />
     <Compile Include="CreditCard\SaveCardData.cs" />
@@ -129,7 +130,10 @@
     <Compile Include="Checkout\SubmitButton.cs" />
     <Compile Include="Checkout\Total.cs" />
     <Compile Include="Checkout\Totals.cs" />
+    <Compile Include="Shipping\ShippingOption.cs" />
     <Compile Include="Shipping\TrackingInfo.cs" />
+    <Compile Include="ShoppingCarts\ShoppingCart.cs" />
+    <Compile Include="ShoppingCarts\ShoppingCartItem.cs" />
     <Compile Include="ShoppingCarts\ShoppingCartTypes.cs" />
     <Compile Include="SiteSettings\Permissions\PermissionModules.cs" />
     <Compile Include="SiteSettings\Permissions\ModulePermissions.cs" />

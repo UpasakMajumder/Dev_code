@@ -52,6 +52,18 @@ namespace Kadena.Tests.BusinessLogic
         }
 
         [Fact]
+        void CheckMinMaxQuantity_ShouldPass_WhenLineItemIsRemoved()
+        {
+            var sku = new Sku
+            {
+                MinItemsInOrder = 2,
+                MaxItemsInOrder = 10
+            };
+
+            Sut.CheckMinMaxQuantity(sku, 0);
+        }
+
+        [Fact]
         void EnsureInventoryAmountTest_IfAvailable_OK()
         {
             var sku = new Sku
