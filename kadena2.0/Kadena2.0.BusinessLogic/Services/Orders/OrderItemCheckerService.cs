@@ -42,7 +42,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             var min = sku?.MinItemsInOrder ?? 0;
             var max = sku?.MaxItemsInOrder ?? 0;
 
-            if (min > 0 && totalAmountAfterAdding < min)
+            if (min > 0 && totalAmountAfterAdding < min && totalAmountAfterAdding != 0)
             {
                 throw new NotLoggedException("Cannot order less than minimal count of items");
             }

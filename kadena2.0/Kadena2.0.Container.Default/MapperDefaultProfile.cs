@@ -21,6 +21,7 @@ using Kadena.Dto.Order.Failed;
 using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
 using Kadena.Dto.OrderManualUpdate.Requests;
 using Kadena.Dto.OrderManualUpdate.Responses;
+using Kadena.Dto.OrderReport;
 using Kadena.Dto.Product;
 using Kadena.Dto.Product.Responses;
 using Kadena.Dto.RecentOrders;
@@ -35,7 +36,6 @@ using Kadena.Dto.SubmitOrder.Responses;
 using Kadena.Dto.TemplatedProduct.Requests;
 using Kadena.Dto.TemplatedProduct.Responses;
 using Kadena.Dto.ViewOrder.Responses;
-using Kadena.Infrastructure.FileConversion;
 using Kadena.Models;
 using Kadena.Models.AddToCart;
 using Kadena.Models.Approval;
@@ -55,10 +55,12 @@ using Kadena.Models.RecentOrders;
 using Kadena.Models.Search;
 using Kadena.Models.Settings;
 using Kadena.Models.Shipping;
+using Kadena.Models.ShoppingCarts;
 using Kadena.Models.Site;
 using Kadena.Models.SubmitOrder;
 using Kadena.Models.TemplatedProduct;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Kadena.Container.Default
@@ -67,6 +69,50 @@ namespace Kadena.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<ShoppingCart, OrderManualUpdateRequestDto>()
+                .ForMember(dest => dest.TotalShipping, opt => opt.Ignore())
+                .ForMember(dest => dest.OrderId, opt => opt.Ignore());
+            CreateMap<ShoppingCartItem, ItemUpdateDto>()
+               .ForMember(dest => dest.LineNumber, opt => opt.Ignore());
+
+            CreateMap<OrderReportViewItem, TableRow>()
+                .ForMember(dest => dest.Items, opt => opt.ResolveUsing(src => new object[] {
+                    src.Site,
+                    src.Number,
+                    src.OrderingDate,
+                    src.User,
+                    src.Name,
+                    src.SKU ?? string.Empty,
+                    src.Quantity,
+                    src.Price,
+                    src.Status,
+                    src.ShippingDate,
+                    src.TrackingInfos
+                }));
+            CreateMap<RecentOrderDto, OrderReportViewItem>()
+                .ForMember(dest => dest.Site, opt => opt.MapFrom(src => src.SiteName))
+                .ForMember(dest => dest.Number, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Url, opt => opt.Ignore())
+                .ForMember(dest => dest.OrderingDate, opt => opt.Ignore())
+                .ForMember(dest => dest.User, opt => opt.Ignore())
+                .ForMember(dest => dest.Name, opt => opt.Ignore())
+                .ForMember(dest => dest.SKU, opt => opt.Ignore())
+                .ForMember(dest => dest.Quantity, opt => opt.Ignore())
+                .ForMember(dest => dest.Price, opt => opt.Ignore())
+                .ForMember(dest => dest.Status, opt => opt.Ignore())
+                .ForMember(dest => dest.ShippingDate, opt => opt.Ignore())
+                .ForMember(dest => dest.TrackingInfos, opt => opt.Ignore());
+            CreateMap<Dto.Order.OrderItemDto, OrderReportViewItem>()
+                .ForMember(dest => dest.Site, opt => opt.Ignore())
+                .ForMember(dest => dest.Number, opt => opt.Ignore())
+                .ForMember(dest => dest.Url, opt => opt.Ignore())
+                .ForMember(dest => dest.OrderingDate, opt => opt.Ignore())
+                .ForMember(dest => dest.User, opt => opt.Ignore())
+                .ForMember(dest => dest.SKU, opt => opt.MapFrom(src => src.SKUNumber))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.UnitPrice))
+                .ForMember(dest => dest.Status, opt => opt.Ignore())
+                .ForMember(dest => dest.ShippingDate, opt => opt.Ignore());
+
             CreateMap<Dto.ViewOrder.MicroserviceResponses.TrackingInfoDto, TrackingInfo>();
             CreateMap<TrackingInfo, TrackingInfoDto>();
 
@@ -260,12 +306,13 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.DeliveryDate, opt => opt.MapFrom(src => src.ShippingDate.GetValueOrDefault()));
             CreateMap<OrderBody, OrderBodyDto>();
 
-            CreateMap<TableView, Table>();
-            CreateMap<Models.Common.TableRow, Infrastructure.FileConversion.TableRow>();
 
             CreateMap<TableView, TableViewDto>();
-            CreateMap<Models.Common.TableRow, TableRowDto>();
+            CreateMap<TableRow, TableRowDto>()
+                .AfterMap((src, dest, ctx) => dest.Items[10] = ctx.Mapper.Map<TrackingFieldDto>(dest.Items[10]));
             CreateMap<Pagination, PaginationDto>();
+            CreateMap<IEnumerable<TrackingInfo>, TrackingFieldDto>()
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src));
 
             CreateMap<NewAddressButton, NewAddressButtonDTO>();
             CreateMap<DeliveryAddressesBounds, DeliveryAddressesBoundsDTO>();

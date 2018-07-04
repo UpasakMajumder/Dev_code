@@ -28,6 +28,8 @@ using Kadena.BusinessLogic.Contracts.Approval;
 using Newtonsoft.Json;
 using Kadena.Helpers;
 using Kadena.Models.ShoppingCarts;
+using Kadena.Models.TableSorting;
+using Kadena.Models.Shipping;
 
 [assembly: CMS.RegisterExtension(typeof(KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 
@@ -90,7 +92,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         }
 
 
-        
+
         [MacroMethod(typeof(string), "Gets URL of editor for mailing or templated product", 1)]
         [MacroMethodParam(0, "documentId", typeof(int), "Product types piped string")]
         [MacroMethodParam(1, "productType", typeof(string), "Product types piped string")]
@@ -361,8 +363,8 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 
             var isForEnabledItems = ValidationHelper.GetBoolean(parameters[0], false);
 
-            var moduleState = isForEnabledItems 
-                ? KadenaModuleState.enabled 
+            var moduleState = isForEnabledItems
+                ? KadenaModuleState.enabled
                 : KadenaModuleState.disabled;
 
             var cacheKey = $@"Kadena.MacroMethods.GetMainNavigationWhereCondition_{
@@ -570,6 +572,49 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 
         #region TWE macro methods
 
+        [MacroMethod(typeof(string), "Returns ORDER BY expression for table sorting", 0)]
+        [MacroMethodParam(0, "columns", typeof(string), "Comma separated list of columns")]
+        public static object TableSortingOrderBy(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+            var columns = ValidationHelper.GetString(parameters[0], string.Empty).Split(',');
+            var currentUrl = CMSHttpContext.Current.Request.RawUrl;
+
+            return TableSortingHelper.GetOrderBy(columns, currentUrl);
+        }
+
+        [MacroMethod(typeof(string), "Returns 'asc' or 'desc' when current sorting is for given column otherwise 'no'", 0)]
+        [MacroMethodParam(0, "column", typeof(string), "Column to test")]
+        public static object TableSortingColumnDirection(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+            var column = ValidationHelper.GetString(parameters[0], string.Empty);
+            var currentUrl = CMSHttpContext.Current.Request.RawUrl;
+
+            return TableSortingHelper.GetColumnDirection(column, currentUrl);
+        }
+
+        [MacroMethod(typeof(string), "Returns URL for sorting by given column and switching between asc and desc", 0)]
+        [MacroMethodParam(0, "column", typeof(string), "Column to test")]
+        public static object TableSortingColumnURL(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+            var column = ValidationHelper.GetString(parameters[0], string.Empty);
+            var currentUrl = CMSHttpContext.Current.Request.RawUrl;
+
+            return TableSortingHelper.GetColumnURL(column, currentUrl);
+        }
+
+
         /// <summary>
         /// Returns Division name based on Division ID
         /// </summary>
@@ -766,9 +811,12 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                         var Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
                         if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
                         {
-                            var estimationdto = new[] { ShoppingCartHelper.GetEstimationDTO(Cart) };
-                            var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
-                            cartTotal += ValidationHelper.GetDecimal(estimation?.Payload?[0]?.Cost, default(decimal));
+                            try
+                            {
+                                var estimation = ShoppingCartHelper.GetOrderShippingTotal(Cart);
+                                cartTotal += ValidationHelper.GetDecimal(estimation, default(decimal));
+                            }
+                            catch { }
                         }
                     });
                     return ValidationHelper.GetDecimal(cartTotal, default(decimal));

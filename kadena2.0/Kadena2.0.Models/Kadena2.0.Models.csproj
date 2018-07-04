@@ -56,6 +56,7 @@
     <Compile Include="BusinessUnits\BusinessUnit.cs" />
     <Compile Include="CampaignData\Campaign.cs" />
     <Compile Include="CampaignData\CampaignData.cs" />
+    <Compile Include="CampaignData\OrderType.cs" />
     <Compile Include="Checkout\CartItemEntity.cs" />
     <Compile Include="Checkout\ChiliProcess.cs" />
     <Compile Include="Common\Environment.cs" />
@@ -80,7 +81,7 @@
     <Compile Include="Orders\OrderFilter.cs" />
     <Compile Include="Orders\OrderItemUpdate.cs" />
     <Compile Include="Orders\OrderNumber.cs" />
-    <Compile Include="Orders\OrderReport.cs" />
+    <Compile Include="Orders\OrderReportViewItem.cs" />
     <Compile Include="Orders\OrderStatus.cs" />
     <Compile Include="Orders\OrderUpdate.cs" />
     <Compile Include="Orders\OrderUpdateResult.cs" />
@@ -130,7 +131,10 @@
     <Compile Include="Checkout\SubmitButton.cs" />
     <Compile Include="Checkout\Total.cs" />
     <Compile Include="Checkout\Totals.cs" />
+    <Compile Include="Shipping\ShippingOption.cs" />
     <Compile Include="Shipping\TrackingInfo.cs" />
+    <Compile Include="ShoppingCarts\ShoppingCart.cs" />
+    <Compile Include="ShoppingCarts\ShoppingCartItem.cs" />
     <Compile Include="ShoppingCarts\ShoppingCartTypes.cs" />
     <Compile Include="SiteSettings\Permissions\PermissionModules.cs" />
     <Compile Include="SiteSettings\Permissions\ModulePermissions.cs" />
@@ -142,8 +146,10 @@
     <Compile Include="SubmitOrder\MailingList.cs" />
     <Compile Include="SubmitOrder\OrderCartItem.cs" />
     <Compile Include="SubmitOrder\OrderItemSku.cs" />
-    <Compile Include="SubmitOrder\Weight.cs" />
+    <Compile Include="TableSorting\OrderBy.cs" />
+    <Compile Include="TableSorting\TableSortingHelper.cs" />
     <Compile Include="TemplatedProduct\EmailProofRequest.cs" />
+    <Compile Include="SubmitOrder\Weight.cs" />
     <Compile Include="Common\ContentTypes.cs" />
     <Compile Include="Common\Country.cs" />
     <Compile Include="CreditCard\SaveTokenData.cs" />

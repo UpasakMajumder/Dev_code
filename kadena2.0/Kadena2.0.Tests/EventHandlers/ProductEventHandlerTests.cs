@@ -28,8 +28,7 @@ namespace Kadena.Tests.EventHandlers
             {
                 NodeSKUID = 1,
                 SKUNeedsShipping = true,
-                SKUWeight = 2,
-                ProductSKUNumberOfItemsInPackage = 100
+                SKUWeight = 2
             };
             var sut = new ProductEventHandlerFake() { Product = product };
             var skuProviderMock = new Mock<IKenticoSkuProvider>();
@@ -40,8 +39,7 @@ namespace Kadena.Tests.EventHandlers
             skuProviderMock.Verify(p => p.UpdateSkuMandatoryFields(It.Is<Sku>(s
                 => s.SkuId == product.NodeSKUID
                     && s.NeedsShipping == product.SKUNeedsShipping
-                    && s.Weight == product.SKUWeight
-                    && s.NumberOfItemsInPackage == 100)));
+                    && s.Weight == product.SKUWeight)));
         }
 
         [Fact(DisplayName = "ProductEventHandlerFake.CopyProductSKUFieldsToSKU_EventHandler()")]

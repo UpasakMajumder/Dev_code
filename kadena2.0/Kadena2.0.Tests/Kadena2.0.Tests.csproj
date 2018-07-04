@@ -486,10 +486,14 @@
     <Compile Include="MicroserviceClients\FileClientTests.cs" />
     <Compile Include="BusinessLogic\OrderListServiceTests.cs" />
     <Compile Include="BusinessLogic\PdfHiresServiceTests.cs" />
+    <Compile Include="BusinessLogic\XlsxConvertTests.cs" />
     <Compile Include="Dto\Approval\MicroserviceRequests\ApprovalStateTests.cs" />
     <Compile Include="Helpers\EnumHelperTests.cs" />
     <Compile Include="BusinessLogic\SettingsServiceTests.cs" />
-    <Compile Include="Infrastructure\AutoMapperTests.cs" />
+    <Compile Include="Helpers\UrlHelperTests.cs" />
+    <Compile Include="Infrastructure\Mapping\AutoMapperTests.cs" />
+    <Compile Include="Infrastructure\Mapping\DefaultProfileTests.cs" />
+    <Compile Include="Infrastructure\Mapping\ProfileTest.cs" />
     <Compile Include="MicroserviceClients\FileSystemTests.cs" />
     <Compile Include="MicroserviceClients\ParsingClientTests.cs" />
     <Compile Include="MicroserviceClients\StatisticsClientTests.cs" />
@@ -512,9 +516,11 @@
     <Compile Include="MicroserviceClients\TemplateClientTest.cs" />
     <Compile Include="Models\ProductValidatorTests.cs" />
     <Compile Include="Models\DeliveryAddressesTests.cs" />
+    <Compile Include="Models\TableSortingHelperTests.cs" />
     <Compile Include="BusinessLogic\OrderResubmissionServiceTests.cs" />
     <Compile Include="BusinessLogic\OrderReportFactoryTests.cs" />
     <Compile Include="BusinessLogic\OrderReportTestHelper.cs" />
+    <Compile Include="Models\Shipping\TrackingInfoTests.cs" />
     <Compile Include="Models\Site\KenticoSiteTests.cs" />
     <Compile Include="BusinessLogic\Approval\OrderManualUpdateServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -527,6 +533,7 @@
     <Compile Include="WebApi\KListControllerTests.cs" />
     <Compile Include="WebApi\CampaignsContollerTests.cs" />
     <Compile Include="WebApi\LoginControllerTest.cs" />
+    <Compile Include="WebApi\OrderReportControllerTests.cs" />
     <Compile Include="WebApi\ProductsControllerTest.cs" />
     <Compile Include="BusinessLogic\OrderReportServiceTests.cs" />
     <Compile Include="BusinessLogic\ProductsServiceTests.cs" />

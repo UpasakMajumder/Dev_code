@@ -129,7 +129,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public Product[] GetProductsByDocumentIds(int[] documentIds)
         {
-            var docs = DocumentHelper.GetDocuments().WhereIn("DocumentID", documentIds).ToArray();
+            var docs = DocumentHelper.GetDocuments("KDA.Product").WhereIn("DocumentID", documentIds).ToArray();
             var skuIds = docs.Select(d => d.NodeSKUID).ToArray();
             var skuInfos = SKUInfoProvider.GetSKUs().WhereIn("SKUId", skuIds).ToArray();
             var products = mapper.Map<Product[]>(docs);
@@ -288,7 +288,8 @@ namespace Kadena.WebAPI.KenticoProviders
                     EstimatedPrice = document.GetValue("EstimatedPrice", default(decimal)),
                     POSNumber = sku.GetStringValue("SKUProductCustomerReferenceNumber", string.Empty),
                     ProgramID = document.GetIntegerValue("ProgramID", default(int)),
-                    CampaignID = new KenticoProgramsProvider().GetProgram(document.GetIntegerValue("ProgramID", default(int)))?.CampaignID ?? 0
+                    CampaignID = new KenticoProgramsProvider().GetProgram(document.GetIntegerValue("ProgramID", default(int)))?.CampaignID ?? 0,
+                    DocumentId = document.DocumentID
                 };
             }
             else

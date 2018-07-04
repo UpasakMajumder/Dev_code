@@ -52,8 +52,7 @@ namespace Kadena.Old_App_Code.EventHandlers
                 {
                     SkuId = product.NodeSKUID,
                     NeedsShipping = product.SKUNeedsShipping,
-                    Weight = product.SKUWeight,
-                    NumberOfItemsInPackage = product.ProductSKUNumberOfItemsInPackage
+                    Weight = product.SKUWeight
                 };
                 SkuProvider.UpdateSkuMandatoryFields(sku);
             }

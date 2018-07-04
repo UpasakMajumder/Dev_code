@@ -120,9 +120,9 @@ namespace Kadena.BusinessLogic.Services.Orders
                 OrderDate = dto.CreateDate,
                 OrderStatus = dto.Status,
                 SiteName = dto.SiteName,
-                CustomerName = GetCustomerName(dto.CustomerId),
+                CustomerName = GetCustomerName(dto.ClientId),
                 SubmissionAttemptsCount = dto.StatusAmounts[(int)OrderStatus.SentToTibcoError],
-                TotalPrice = dto.TotalPrice
+                TotalPrice = dto.TotalCost
             };
 
         public async Task<OperationResult> ResubmitOrder(string orderId)

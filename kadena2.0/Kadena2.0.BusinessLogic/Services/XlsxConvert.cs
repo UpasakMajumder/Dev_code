@@ -1,29 +1,31 @@
-﻿using Kadena.Infrastructure.Contracts;
+﻿using Kadena.BusinessLogic.Contracts;
+using Kadena.Models.Common;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Kadena.Infrastructure.FileConversion
+namespace Kadena.BusinessLogic.Services
 {
-    public class ExcelConvert : IExcelConvert
+    public class XlsxConvert : IConvert
     {
-        public byte[] Convert(Table table)
+        public byte[] GetBytes(TableView data)
         {
-            if (table == null)
+            if (data == null)
             {
-                throw new ArgumentNullException(nameof(table));
+                throw new ArgumentNullException(nameof(data));
             }
 
             var sheet = CreateSheet();
-            AddSheetHeaderRow(sheet, table.Headers);
-            AddSheetDataRows(sheet, table);
-            AdjustColumnsSize(sheet, table);
+            AddSheetHeaderRow(sheet, data.Headers);
+            AddSheetDataRows(sheet, data);
+            AdjustColumnsSize(sheet, data);
             return GetWorkbookBytes(sheet.Workbook);
         }
 
-        private static void AdjustColumnsSize(ISheet sheet, Table table)
+        private static void AdjustColumnsSize(ISheet sheet, TableView table)
         {
             var charWidth = 256;
             var minimalCharCount = 16;
@@ -40,7 +42,7 @@ namespace Kadena.Infrastructure.FileConversion
             }
 
             var columnCount = Math.Max(headersCount, dataMaxCellCount);
-            
+
             for (int i = 0; i < columnCount; i++)
             {
                 sheet.AutoSizeColumn(i);
@@ -61,7 +63,7 @@ namespace Kadena.Infrastructure.FileConversion
             }
         }
 
-        private static void AddSheetDataRows(ISheet sheet, Table table)
+        private static void AddSheetDataRows(ISheet sheet, TableView table)
         {
             var firstDataRowNumber = sheet.LastRowNum + 1;
             for (int rowIndex = 0; rowIndex < table.Rows.Length; rowIndex++)
@@ -75,7 +77,14 @@ namespace Kadena.Infrastructure.FileConversion
                     if (rowData[cellIndex] != null)
                     {
                         // if needed it could be casted to excel supported primitive types
-                        cell.SetCellValue(rowData[cellIndex].ToString());
+                        if (rowData[cellIndex] is IEnumerable<object> enumerable)
+                        {
+                            cell.SetCellValue(string.Join(", ", enumerable));
+                        }
+                        else
+                        {
+                            cell.SetCellValue(rowData[cellIndex].ToString());
+                        }
                     }
                 }
             }
@@ -108,7 +117,7 @@ namespace Kadena.Infrastructure.FileConversion
             return style;
         }
 
-        private ISheet CreateSheet()
+        private static ISheet CreateSheet()
         {
             IWorkbook workbook = new XSSFWorkbook();
             var sheet = workbook.CreateSheet();

@@ -1,13 +1,9 @@
 ﻿using Kadena.BusinessLogic.Services;
 using Xunit;
-using Moq;
 using System;
-using System.Collections.Generic;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.AmazonFileSystemProvider;
-using System.Threading.Tasks;
-using Kadena.Dto.General;
 
 namespace Kadena.Tests.BusinessLogic
 {
