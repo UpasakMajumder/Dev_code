@@ -19,11 +19,7 @@
     {
         public const string cartItems = "KDA.Transformations.xCartItems";
     }
-    public static class OrderType
-    {
-        public const string prebuy = "prebuy";
-        public const string generalInventory = "general";
-    }
+    
     /// <summary>
     /// This class represents orderstatus
     /// </summary>
@@ -45,13 +41,6 @@
         public const string OrderFail = "orderfail";
         public const string InvalidCartItems = "invalidcartitems";
         public const string InvalidProduct = "invalidproduct";
-    }
-    /// <summary>
-    /// This class represents shipping options
-    /// </summary>
-    public class ShippingOption
-    {
-        public const string Ground = "ground";
     }
     /// <summary>
     /// This class represents SKU Measuring Units

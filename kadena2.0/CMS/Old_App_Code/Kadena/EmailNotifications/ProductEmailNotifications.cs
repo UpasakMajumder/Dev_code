@@ -4,8 +4,6 @@ using CMS.EventLog;
 using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
-using Kadena.Dto.General;
-using Kadena.Dto.Order;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Container.Default;
@@ -18,6 +16,7 @@ using System.Reflection;
 using CMS.Ecommerce;
 using Kadena.Models.Membership;
 using CMS.Helpers;
+using Kadena.Models.CampaignData;
 
 namespace Kadena.Old_App_Code.Kadena.EmailNotifications
 {
@@ -99,7 +98,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
             try
             {
                 var orderViewClient = DIContainer.Resolve<IOrderViewClient>();
-                var response = orderViewClient.GetOrders(SiteContext.CurrentSiteName, 1, 1000, campaignID, Constants.OrderType.prebuy).Result;
+                var response = orderViewClient.GetOrders(SiteContext.CurrentSiteName, 1, 1000, campaignID, OrderType.prebuy).Result;
                 if (response.Success && response.Payload.TotalCount != 0)
                 {
                     var customerProvider = DIContainer.Resolve<IKenticoCustomerProvider>();

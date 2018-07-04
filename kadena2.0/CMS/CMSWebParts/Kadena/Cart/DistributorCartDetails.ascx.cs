@@ -20,6 +20,7 @@ using System.Data;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Kadena.Models.Shipping;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -283,7 +284,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                BaseResponseDto<EstimateDeliveryPricePayloadDto[]> estimation = null;
                 var estimatedPrice = default(double);
                 if (ValidCart)
                 {
@@ -303,11 +303,12 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 {
                     if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
                     {
-                        estimation = GetShippingResponse();
-                    }
-                    if (estimation != null && estimation.Success && estimation.Payload?[0] != null)
-                    {
-                        estimatedPrice = ValidationHelper.GetDouble(estimation.Payload[0].Cost, default(double));
+                        try
+                        {
+                            var estimation = ShoppingCartHelper.GetOrderShippingTotal(Cart);
+                            estimatedPrice = ValidationHelper.GetDouble(estimation, default(double));
+                        }
+                        catch { }
                     }
                 }
                 BindShippingDropdown(inventoryType, estimatedPrice);
@@ -422,23 +423,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         #endregion "Event handling"
 
         #region "Private Methods"
-        /// <summary>
-        /// gets Shipping cost response
-        /// </summary>
-        /// <returns></returns>
-        private BaseResponseDto<EstimateDeliveryPricePayloadDto[]> GetShippingResponse()
-        {
-            try
-            {
-                var estimationdto = new[] { ShoppingCartHelper.GetEstimationDTO(Cart) };
-                return ShoppingCartHelper.CallEstimationService(estimationdto);
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("Kadena_CMSWebParts_Kadena_Cart_DistributorCartDetails", "OnPreRender", ex.Message);
-                return null;
-            }
-        }
         /// <summary>
         /// gets etimated subtotal
         /// </summary>
