@@ -31,7 +31,7 @@ namespace Kadena.BusinessLogic.Services
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
 
-        public async Task<decimal> EstimateTax(DeliveryAddress deliveryAddress, double pricedItemsPrice, double shippingCost)
+        public async Task<decimal> EstimateTax(DeliveryAddress deliveryAddress, decimal pricedItemsPrice, decimal shippingCost)
         {
             var taxRequest = CreateTaxEstimationRequest(deliveryAddress, pricedItemsPrice, shippingCost);
 
@@ -41,7 +41,7 @@ namespace Kadena.BusinessLogic.Services
 
         private async Task<decimal> EstimateTotalTaxCachedCall(TaxCalculatorRequestDto taxRequest)
         {
-            if (taxRequest.TotalBasePrice == 0.0d && taxRequest.ShipCost == 0.0d)
+            if (taxRequest.TotalBasePrice == decimal.Zero && taxRequest.ShipCost == decimal.Zero)
             {
                 // no need for tax estimation
                 return 0.0m;
@@ -68,7 +68,7 @@ namespace Kadena.BusinessLogic.Services
             }
         }
 
-        private TaxCalculatorRequestDto CreateTaxEstimationRequest(DeliveryAddress deliveryAddress, double totalItemsPrice, double shippingCosts)
+        private TaxCalculatorRequestDto CreateTaxEstimationRequest(DeliveryAddress deliveryAddress, decimal totalItemsPrice, decimal shippingCosts)
         {        
             var addressTo = deliveryAddress ?? shoppingCart.GetCurrentCartShippingAddress();
             var addressFrom = shoppingCart.GetDefaultBillingAddress();

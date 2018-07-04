@@ -56,7 +56,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 Cart = cart;
                 var billingAddress = GetBillingAddress();
                 var taxAddress = mapper.Map<DeliveryAddress>(billingAddress);
-                shoppingCart.TotalTax = taxEstimationService.EstimateTax(taxAddress, (double)shoppingCart.TotalPrice, (double)shippingCost).Result;
+                shoppingCart.TotalTax = taxEstimationService.EstimateTax(taxAddress, shoppingCart.TotalPrice, shippingCost).Result;
                 return new OrderDTO
                 {
                     Type = orderType,

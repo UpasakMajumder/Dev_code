@@ -184,7 +184,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     requestDto.TotalShipping = shippingCost;
 
                     var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
-                    requestDto.TotalTax = await taxEstimationService.EstimateTax(taxAddress, (double)requestDto.TotalPrice, (double)requestDto.TotalShipping);
+                    requestDto.TotalTax = await taxEstimationService.EstimateTax(taxAddress, requestDto.TotalPrice, requestDto.TotalShipping);
                 }
                 catch (Exception exc)
                 {
@@ -381,7 +381,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 log.LogInfo("Approval", "Info", $"NOT going to call estimation microservice");
             }
             var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
-            request.TotalTax = await taxEstimationService.EstimateTax(taxAddress, (double)request.TotalPrice, (double)request.TotalShipping);
+            request.TotalTax = await taxEstimationService.EstimateTax(taxAddress, request.TotalPrice, request.TotalShipping);
         }
 
         private decimal GetShippinCost(string provider, string shippingService, decimal shippableWeight, AddressDto targetAddress)
