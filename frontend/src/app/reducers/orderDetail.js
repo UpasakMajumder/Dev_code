@@ -28,7 +28,7 @@ export default (state = defaultState, action) => {
       }
     };
 
-   case ORDER_DETAIL + EDIT_ORDERS:
+  case ORDER_DETAIL + EDIT_ORDERS:
     return {
       ui: {
         ...state.ui,
