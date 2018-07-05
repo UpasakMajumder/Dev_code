@@ -153,17 +153,30 @@ namespace Kadena.BusinessLogic.Services.Orders
                     }
                     );
 
+                    // deleted items will not be shopping cart, need to add them manually
+                    var deletedItems = updatedItemsData
+                        .Where(u => u.UpdatedItem.Quantity == 0)
+                        .Select(u => new ItemUpdateDto
+                        {
+                            LineNumber = u.UpdatedItem.LineNumber,
+                            Quantity = 0,
+                            TotalPrice = 0,
+                            UnitPrice = 0
+                        });
+
                     // get updated data from cart
                     var cart = shoppingCartProvider.GetShoppingCart(cartId, orderDetail.Type);
                     requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart);
                     requestDto.OrderId = request.OrderId;
-                    requestDto.Items = cart.Items.Select(i =>
-                    {
-                        var item = mapper.Map<ItemUpdateDto>(i);
-                        item.LineNumber = skuLines[i.SkuId];
-                        return item;
-                    })
-                    .ToList();
+                    requestDto.Items = cart.Items
+                        .Select(i =>
+                        {
+                            var item = mapper.Map<ItemUpdateDto>(i);
+                            item.LineNumber = skuLines[i.SkuId];
+                            return item;
+                        })
+                        .Concat(deletedItems)
+                        .ToList();
 
                     var weight = shoppingCartProvider.GetCartWeight(cartId);
                     var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
@@ -309,10 +322,10 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             inventoryProductsData.ForEach(data =>
             {
-                var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
+                var freedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
 
                 // Not using Set... because when waiting for result of OrderUpdate, quantity can change
-                skuProvider.IncreaseSkuAvailableQty(data.Sku.SKUNumber, addedQuantity);
+                skuProvider.UpdateAvailableQuantity(data.Sku.SkuId, freedQuantity);
             });
         }
 
@@ -320,8 +333,8 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             updateData.ToList().ForEach(data =>
             {
-                var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
-                skuProvider.SetSkuAvailableQty(data.OriginalItem.SkuId, addedQuantity);
+                var freedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
+                skuProvider.UpdateAvailableQuantity(data.OriginalItem.SkuId, freedQuantity);
             });
         }
 

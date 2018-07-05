@@ -152,12 +152,21 @@ namespace Kadena.BusinessLogic.Services
             }
             CampaignsProduct product = productsProvider.GetCampaignProduct(cartDistributorData.SKUID) ?? throw new Exception("Invalid product");
 
-            cartDistributorData.Items.Where(i => i.ShoppingCartID.Equals(default(int)) && i.Quantity > 0)
-                                    ?.ToList().ForEach(x => CreateDistributorCart(x, product, userId, cartDistributorData.CartType));
-            cartDistributorData.Items.Where(i => i.ShoppingCartID > 0 && i.Quantity > 0)
-                                    ?.ToList().ForEach(x => shoppingCart.UpdateDistributorCart(x, product, cartDistributorData.CartType));
-            cartDistributorData.Items.Where(i => i.ShoppingCartID > 0 && i.Quantity == 0)
-                                    ?.ToList().ForEach(x => shoppingCart.DeleteDistributorCartItem(x.ShoppingCartID, cartDistributorData.SKUID));
+            cartDistributorData.Items
+                .Where(i => i.ShoppingCartID.Equals(default(int)) && i.Quantity > 0)
+                ?.ToList()
+                .ForEach(x => CreateDistributorCart(x, product, userId, cartDistributorData.CartType));
+
+            cartDistributorData.Items
+                .Where(i => i.ShoppingCartID > 0 && i.Quantity > 0)
+                ?.ToList()
+                .ForEach(x => shoppingCart.UpdateDistributorCart(x, product, cartDistributorData.CartType));
+
+            cartDistributorData.Items
+                .Where(i => i.ShoppingCartID > 0 && i.Quantity == 0)
+                ?.ToList()
+                .ForEach(x => shoppingCart.DeleteDistributorCartItem(x.ShoppingCartID, cartDistributorData.SKUID));
+
             return shoppingCart.GetDistributorCartCount(userId, product.CampaignID, (ShoppingCartTypes)cartDistributorData.CartType);
         }
 

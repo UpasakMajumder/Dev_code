@@ -497,7 +497,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 var product = DIContainer.Resolve<IKenticoSkuProvider>();
                 cart.CartItems.ForEach(cartItem =>
                 {
-                    product.SetSkuAvailableQty(cartItem.SKUID, cartItem.CartItemUnits);
+                    product.UpdateAvailableQuantity(cartItem.SKUID, -cartItem.CartItemUnits);
                 });
             }
             catch (Exception ex)
