@@ -1,6 +1,7 @@
 ﻿using Kadena.BusinessLogic.Services.Orders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Moq;
+using System.Linq;
 using Xunit;
 
 namespace Kadena.Tests.BusinessLogic
@@ -16,12 +17,13 @@ namespace Kadena.Tests.BusinessLogic
             Setup<IKenticoResourceService, string>(r => r.GetMassUnit(), mass);
 
             // Act
-            var result = Sut.GetWeightInSiteUnit(weight);
+            var result = Sut.GetDeliveryEstimationRequestData("", "", weight, null).FirstOrDefault();
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(mass, result.Unit);
-            Assert.Equal(weight, result.Value);
+            Assert.NotNull(result.Weight);
+            Assert.Equal(mass, result.Weight.Unit);
+            Assert.Equal(weight, result.Weight.Value);
             Verify<IKenticoResourceService>(r => r.GetMassUnit(), Times.Once);
         }
 
