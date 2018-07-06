@@ -167,7 +167,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if(!IsPostBack)
+        if (!IsPostBack)
         {
             BindPrograms();
             BindCategories();
@@ -324,29 +324,27 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <summary>
     /// Get Skudetails
     /// </summary>
-    /// <param name="productsDetails"></param>
+    /// <param name="skuIds"></param>
     /// <returns></returns>
-    public List<SKUInfo> GetSkuDetails(List<CampaignsProduct> productsDetails)
+    private IEnumerable<SKUInfo> GetSkuDetails(IEnumerable<int> skuIds)
     {
-        List<SKUInfo> skuDetails = new List<SKUInfo>();
         try
         {
-            List<int> skuIds = productsDetails.Select(x => x.NodeSKUID).ToList<int>();
             if (!DataHelper.DataSourceIsEmpty(skuIds))
             {
-                skuDetails = SKUInfoProvider.GetSKUs()
-                               .WhereIn("SKUID", skuIds)
+                return SKUInfoProvider.GetSKUs()
+                               .WhereIn("SKUID", skuIds.ToList())
                                .And()
                                .WhereEquals("SKUEnabled", true)
-                               .Columns("SKUProductCustomerReferenceNumber,SKUNumber,SKUName,SKUPrice,SKUEnabled,SKUAvailableItems,SKUNumberOfItemsInPackage,SKUID,SKUDescription")
+                               .Columns("SKUProductCustomerReferenceNumber, SKUNumber, SKUName, SKUPrice, SKUEnabled, SKUAvailableItems, SKUNumberOfItemsInPackage, SKUID, SKUDescription")
                                .ToList();
             }
         }
         catch (Exception ex)
         {
-            EventLogProvider.LogException("Get Sku Details", "GetSkuDetails()", ex, CurrentSite.SiteID, ex.Message);
+            EventLogProvider.LogException("Get Sku Details", "GetSkuDetails()", ex, CurrentSite.SiteID, additionalMessage: ex.Message);
         }
-        return skuDetails;
+        return Enumerable.Empty<SKUInfo>();
     }
 
     /// <summary>
@@ -364,7 +362,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             List<CampaignsProduct> productsDetails = GetProductsDetails(programID, categoryID, posNumber, brandID);
             if (!DataHelper.DataSourceIsEmpty(productsDetails))
             {
-                List<SKUInfo> skuDetails = GetSkuDetails(productsDetails);
+                var skuDetails = GetSkuDetails(productsDetails.Select(d => d.NodeSKUID));
                 if (!string.IsNullOrEmpty(posNumber) && !string.IsNullOrWhiteSpace(posNumber) && !DataHelper.DataSourceIsEmpty(skuDetails))
                 {
                     skuDetails = skuDetails
@@ -374,22 +372,25 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
                 {
                     var productAndSKUDetails = productsDetails
-                          .Join(skuDetails, 
-                                cp => cp.NodeSKUID, 
-                                sku => sku.SKUID, 
-                                (cp, sku) => new { cp.ProgramID,
-                                                cp.CategoryID,
-                                                QtyPerPack = sku.GetIntegerValue("SKUNumberOfItemsInPackage",1),
-                                                cp.EstimatedPrice,
-                                                sku.SKUNumber,
-                                                cp.Product.SKUProductCustomerReferenceNumber,
-                                                sku.SKUName,
-                                                sku.SKUPrice,
-                                                sku.SKUEnabled,
-                                                cp.ProductImage,
-                                                sku.SKUAvailableItems,
-                                                sku.SKUID,
-                                                sku.SKUDescription })
+                          .Join(skuDetails,
+                                cp => cp.NodeSKUID,
+                                sku => sku.SKUID,
+                                (cp, sku) => new
+                                {
+                                    cp.ProgramID,
+                                    cp.CategoryID,
+                                    QtyPerPack = sku.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
+                                    cp.EstimatedPrice,
+                                    sku.SKUNumber,
+                                    cp.Product.SKUProductCustomerReferenceNumber,
+                                    sku.SKUName,
+                                    sku.SKUPrice,
+                                    sku.SKUEnabled,
+                                    cp.ProductImage,
+                                    sku.SKUAvailableItems,
+                                    sku.SKUID,
+                                    sku.SKUDescription
+                                })
                            .OrderBy(p => p.SKUName)
                           .ToList();
                     rptProductLists.DataSource = productAndSKUDetails;
