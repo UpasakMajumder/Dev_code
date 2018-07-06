@@ -72,6 +72,13 @@ namespace Kadena.WebAPI.KenticoProviders
             return doc?.AbsoluteURL ?? "#";
         }
 
+        public int GetDocumentIdByNodeId(int nodeId)
+        {
+            var doc = DocumentHelper.GetDocument(nodeId, LocalizationContext.CurrentCulture.CultureCode,
+                new TreeProvider(MembershipContext.AuthenticatedUser));
+            return doc.DocumentID;
+        }
+
         public List<string> GetBreadcrumbs(int documentId)
         {
             var breadcrubs = new List<string>();
