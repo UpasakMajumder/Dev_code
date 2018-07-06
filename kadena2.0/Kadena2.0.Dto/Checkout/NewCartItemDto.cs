@@ -6,8 +6,8 @@ namespace Kadena.Dto.Checkout
 {
     public class NewCartItemDto
     {
-        [Required]
         public int DocumentId { get; set; }
+        public int NodeId { get; set; }
         public string CustomProductName { get; set; }
         [Required]
         public int Quantity { get; set; }
