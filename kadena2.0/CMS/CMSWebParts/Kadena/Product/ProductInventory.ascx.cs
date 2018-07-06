@@ -7,7 +7,6 @@ using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
-using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Container.Default;
 using System;
@@ -355,7 +354,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// </summary>
     /// <param name="programID"></param>
     /// <param name="categoryID"></param>
-    public void BindData(int programID = default(int), int categoryID = default(int), string posNumber = null, int brandID = default(int))
+    private void BindData(int programID = default(int), int categoryID = default(int), string posNumber = null, int brandID = default(int))
     {
         try
         {
