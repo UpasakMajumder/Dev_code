@@ -229,72 +229,47 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="categoryID"></param>
     /// <param name="posNumber"></param>
     /// <returns></returns>
-    public List<CampaignsProduct> GetProductsDetails(int programID = default(int), int categoryID = default(int), string posNumber = null, int brandID = default(int))
+    private List<CampaignsProduct> GetProductsDetails(int categoryID = default(int), int brandID = default(int))
     {
-        List<CampaignsProduct> productsDetails = new List<CampaignsProduct>();
+        var query = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID);
         try
         {
-            if (ProductType != default(int))
+            List<int> programIds = new List<int>();
+            if (ProductType == (int)ProductsType.GeneralInventory)
             {
-                if (ProductType == (int)ProductsType.GeneralInventory)
-                {
-                    ddlCategory.Visible = true;
-                    ddlBrand.Visible = true;
-                    productsDetails = CampaignsProductProvider.GetCampaignsProducts()
-                                      .WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                                      .Where(new WhereCondition().WhereEquals("ProgramID", null).Or().WhereEquals("ProgramID", 0))
-                                      .ToList();
-                    if (!DataHelper.DataSourceIsEmpty(productsDetails))
-                    {
-                        if (categoryID != default(int))
-                        {
-                            productsDetails = productsDetails
-                                .Where(x => x.CategoryID == categoryID)
-                                .ToList();
-                        }
-                        if (brandID != default(int))
-                        {
-                            productsDetails = productsDetails
-                                .Where(x => x.BrandID == brandID)
-                                .ToList();
-                        }
-                    }
-                }
-                else if (ProductType == (int)ProductsType.PreBuy)
-                {
-                    ddlBrand.Visible = true;
-                    ddlCategory.Visible = true;
-                    List<int> programIds = GetProgramIDs();
-                    if (!DataHelper.DataSourceIsEmpty(programIds))
-                    {
-                        productsDetails = CampaignsProductProvider.GetCampaignsProducts()
-                                          .WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                                          .WhereIn("ProgramID", programIds)
-                                          .ToList();
-                        if (!DataHelper.DataSourceIsEmpty(productsDetails))
-                        {
-                            if (brandID != default(int))
-                            {
-                                productsDetails = productsDetails
-                                    .Where(x => x.BrandID == brandID)
-                                    .ToList();
-                            }
-                            if (categoryID != default(int))
-                            {
-                                productsDetails = productsDetails
-                                    .Where(x => x.CategoryID == categoryID)
-                                    .ToList();
-                            }
-                        }
-                    }
-                }
+                ddlCategory.Visible = true;
+                ddlBrand.Visible = true;
+            }
+            else if (ProductType == (int)ProductsType.PreBuy)
+            {
+                ddlBrand.Visible = true;
+                ddlCategory.Visible = true;
+                programIds = GetProgramIDs();
+            }
+
+            if (DataHelper.DataSourceIsEmpty(programIds))
+            {
+                query = query.Where(new WhereCondition().WhereEquals("ProgramID", null).Or().WhereEquals("ProgramID", 0));
+            }
+            else
+            {
+                query = query.WhereIn("ProgramID", programIds);
+            }
+            if (categoryID != default(int))
+            {
+                query = query.WhereEquals("CategoryID", categoryID);
+            }
+            if (brandID != default(int))
+            {
+                query = query.WhereEquals("BrandID", brandID);
             }
         }
         catch (Exception ex)
         {
             EventLogProvider.LogException("Get Product Details", "GetProductsDetails()", ex, CurrentSite.SiteID, ex.Message);
         }
-        return productsDetails;
+
+        return query.ToList();
     }
 
     private void BindBrands()
@@ -359,7 +334,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             divNoRecords.Visible = false;
             rptProductLists.DataSource = null;
             rptProductLists.DataBind();
-            List<CampaignsProduct> productsDetails = GetProductsDetails(programID, categoryID, posNumber, brandID);
+            List<CampaignsProduct> productsDetails = GetProductsDetails(categoryID, brandID);
             if (!DataHelper.DataSourceIsEmpty(productsDetails))
             {
                 var skuDetails = GetSkuDetails(productsDetails.Select(d => d.NodeSKUID));
