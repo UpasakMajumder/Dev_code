@@ -144,7 +144,7 @@
           <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
           <property name="documentid" ismacro="true">
-            <![CDATA[{% QueryString.documentId |(user)administrator|(hash)16d5165354d695c656ff6f90147287a4f647a0b4be726634b78d2de5ba7b901b%}]]>
+            <![CDATA[{% KadenaNamespace.GetDocumentIdByNodeId(QueryString.nodeId) |(user)administrator|(hash)93a0864205c89204f7c9445d756090b047537d756bc8093821a8a2ba85dc4f7a%}]]>
           </property>
           <property name="enableoutputfilter">False</property>
           <property name="hideonsubpages">False</property>
@@ -175,27 +175,12 @@
         </webpart>
       </webpartzone>
       <webpartzone id="zoneProductName" v="1">
-        <webpart controlid="ProductName" guid="0a0e371e-6a12-43ca-b691-64206edc3698" type="repeater" v="1">
-          <property name="alternatingtransformationname"></property>
-          <property name="backnextlocation">split</property>
-          <property name="cachedependencies">
-<![CDATA[
-##DEFAULT##
-
-]]>
-          </property>
-          <property name="cacheitemname"></property>
-          <property name="cacheminutes"></property>
+        <webpart controlid="ProductNameText" guid="dcae5db7-76ad-4357-a9ef-a38c1fcd7089" type="statictext" v="1">
           <property name="cat_open_ajax"></property>
-          <property name="cat_open_output_filter">False</property>
-          <property name="cat_open_performance">False</property>
+          <property name="cat_open_output_filter"></property>
+          <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility">False</property>
-          <property name="categoryname"></property>
-          <property name="checkpermissions">False</property>
-          <property name="classnames">KDA.Product</property>
-          <property name="columns">DocumentName</property>
-          <property name="combinewithdefaultculture"></property>
+          <property name="cat_open_visibility"></property>
           <property name="container"></property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
@@ -212,39 +197,22 @@
 </span>
 ]]>
           </property>
-          <property name="controlid">ProductName</property>
-          <property name="culturecode"></property>
+          <property name="controlid">ProductNameText</property>
           <property name="customtimezone"></property>
-          <property name="datasourcename"></property>
           <property name="disablemacros">False</property>
-          <property name="disableviewstate">True</property>
+          <property name="disableviewstate">False</property>
           <property name="displaytoroles"></property>
           <property name="enableoutputfilter">False</property>
-          <property name="enablepaging">False</property>
-          <property name="filtername"></property>
-          <property name="filteroutduplicates">False</property>
-          <property name="hidecontrolforzerorows">True</property>
+          <property name="encodetext">False</property>
           <property name="hideonsubpages">False</property>
-          <property name="instanceguid">0a0e371e-6a12-43ca-b691-64206edc3698</property>
-          <property name="itemseparator"></property>
-          <property name="loadpagesindividually">False</property>
-          <property name="maxrelativelevel">-1</property>
-          <property name="nestedcontrolsid"></property>
-          <property name="newbuttontext"></property>
-          <property name="orderby">NodeOrder ASC</property>
+          <property name="instanceguid">dcae5db7-76ad-4357-a9ef-a38c1fcd7089</property>
           <property name="outputconverttablestodivs">none</property>
-          <property name="outputfixattributes">False</property>
-          <property name="outputfixhtml5">False</property>
-          <property name="outputfixjavascript">False</property>
-          <property name="outputfixlowercase">False</property>
-          <property name="outputfixselfclose">False</property>
-          <property name="outputresolveurls">False</property>
-          <property name="pagenumbersseparator">-</property>
-          <property name="pagerhtmlafter"></property>
-          <property name="pagerhtmlbefore"></property>
-          <property name="pagerposition">bottom</property>
-          <property name="pagesize">10</property>
-          <property name="pagingmode">querystring</property>
+          <property name="outputfixattributes">True</property>
+          <property name="outputfixhtml5">True</property>
+          <property name="outputfixjavascript">True</property>
+          <property name="outputfixlowercase">True</property>
+          <property name="outputfixselfclose">True</property>
+          <property name="outputresolveurls">True</property>
           <property name="partialcachedependencies">
 <![CDATA[
 ##DEFAULT##
@@ -252,33 +220,22 @@
 ]]>
           </property>
           <property name="partialcacheminutes"></property>
-          <property name="path">
-            <![CDATA[{%Settings.KDA_ProductsPageUrl|(user)administrator|(hash)36c2555c94496093ee5fc6c3ed77e9e71bcc89d25b273f8730d5dd62becb02b2%}/%]]>
-          </property>
-          <property name="preservepartialcacheonpostback">True</property>
-          <property name="querystringkey"></property>
-          <property name="relatednodeisontheleftside">False</property>
-          <property name="relationshipname">KDA.HasAddOn</property>
-          <property name="relationshipwithnodeguid">00000000-0000-0000-0000-000000000000</property>
-          <property name="resultsposition">top</property>
-          <property name="selecteditemtransformationname"></property>
-          <property name="selectonlypublished">True</property>
-          <property name="selecttopn">1</property>
-          <property name="showdeletebutton">False</property>
-          <property name="showeditbutton">False</property>
-          <property name="showeditdeletebuttons">False</property>
-          <property name="showfirstlast">True</property>
+          <property name="preservepartialcacheonpostback">False</property>
+          <property name="resolvedynamiccontrols">True</property>
           <property name="showfordocumenttypes"></property>
-          <property name="shownewbutton">False</property>
-          <property name="sitename"></property>
+          <property name="tag"></property>
+          <property name="text">
+<![CDATA[
+<input name="customizedProductName" type="text" class="input__text js-add-to-cart-name" 
+value="{%  String.IsNullOrWhiteSpace(QueryString.customName) ? KadenaNamespace.GetProductNameByNodeId(QueryString.nodeId) : QueryString.customName |(user)administrator|(hash)46e6a98cc8c0d80ef9fc230c6cca84b1824ffd5e9b94220e4a41ad168d354c7d%}">
+
+]]>
+          </property>
           <property name="timezonetype">inherit</property>
-          <property name="transformationname">KDA.Product._Product_Editor_Name</property>
           <property name="useupdatepanel">False</property>
           <property name="visible">True</property>
           <property name="webparttitle"></property>
-          <property name="webparttype">repeater</property>
-          <property name="wherecondition">DocumentID = {?documentId?}</property>
-          <property name="zerorowstext">No data found</property>
+          <property name="webparttype">statictext</property>
         </webpart>
       </webpartzone>
       <webpartzone id="zoneChiliActionButtons" v="1">

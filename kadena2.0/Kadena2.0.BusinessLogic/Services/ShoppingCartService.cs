@@ -26,6 +26,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoCustomerProvider kenticoCustomer;
         private readonly IKenticoAddressBookProvider kenticoAddresses;
         private readonly IKenticoResourceService resources;
+        private readonly IKenticoProductsProvider productsProvider;
         private readonly ITaxEstimationService taxCalculator;
         private readonly IKListService mailingService;
         private readonly IUserDataServiceClient userDataClient;
@@ -45,6 +46,7 @@ namespace Kadena.BusinessLogic.Services
                                    IKenticoCustomerProvider kenticoCustomer,
                                    IKenticoAddressBookProvider addresses,
                                    IKenticoResourceService resources,
+                                   IKenticoProductsProvider productsProvider,
                                    ITaxEstimationService taxCalculator,
                                    IKListService mailingService,
                                    IUserDataServiceClient userDataClient,
@@ -64,6 +66,7 @@ namespace Kadena.BusinessLogic.Services
             this.kenticoCustomer = kenticoCustomer ?? throw new ArgumentNullException(nameof(kenticoCustomer));
             this.kenticoAddresses = addresses ?? throw new ArgumentNullException(nameof(addresses));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.productsProvider = productsProvider ?? throw new ArgumentNullException(nameof(productsProvider));
             this.taxCalculator = taxCalculator ?? throw new ArgumentNullException(nameof(taxCalculator));
             this.mailingService = mailingService ?? throw new ArgumentNullException(nameof(mailingService));
             this.userDataClient = userDataClient ?? throw new ArgumentNullException(nameof(userDataClient));
@@ -438,6 +441,11 @@ namespace Kadena.BusinessLogic.Services
             if (addedAmount < 1)
             {
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
+            }
+
+            if (newItem.NodeId > 0)
+            {
+                newItem.DocumentId = productsProvider.GetProductByNodeId(newItem.NodeId).Id;
             }
 
             var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);
