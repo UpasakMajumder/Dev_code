@@ -198,7 +198,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         {
             BindUnipagerTransformations();
             divNoRecords.Visible = false;
-            txtPos.Attributes.Add("placeholder", PosSearchPlaceholder);
+            txtSearch.Attributes.Add("placeholder", PosSearchPlaceholder);
         }
     }
 
@@ -227,9 +227,9 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// </summary>
     /// <param name="programID"></param>
     /// <param name="categoryID"></param>
-    /// <param name="posNumber"></param>
+    /// <param name="searchText"></param>
     /// <returns></returns>
-    private List<CampaignsProduct> GetProductsDetails(int categoryID = default(int), int brandID = default(int), string posNumber = null)
+    private List<CampaignsProduct> GetProductsDetails(int categoryID = default(int), int brandID = default(int), string searchText = null)
     {
         var query = CampaignsProductProvider.GetCampaignsProducts()
             .WhereEquals("NodeSiteID", CurrentSite.SiteID)
@@ -260,9 +260,9 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 query = query.WhereEquals("BrandID", brandID);
             }
 
-            if (!string.IsNullOrWhiteSpace(posNumber))
+            if (!string.IsNullOrWhiteSpace(searchText))
             {
-                query = query.WhereContains("SKUProductCustomerReferenceNumber", posNumber);
+                query = query.WhereContains("SKUProductCustomerReferenceNumber", searchText);
             }
         }
         catch (Exception ex)
@@ -302,14 +302,14 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// </summary>
     /// <param name="programID"></param>
     /// <param name="categoryID"></param>
-    private void BindData(int programID = default(int), int categoryID = default(int), string posNumber = null, int brandID = default(int))
+    private void BindData(int programID = default(int), int categoryID = default(int), string searchText = null, int brandID = default(int))
     {
         try
         {
             divNoRecords.Visible = false;
             rptProductLists.DataSource = null;
             rptProductLists.DataBind();
-            List<CampaignsProduct> productsDetails = GetProductsDetails(categoryID, brandID, posNumber);
+            List<CampaignsProduct> productsDetails = GetProductsDetails(categoryID, brandID, searchText);
             if (!DataHelper.DataSourceIsEmpty(productsDetails))
             {
                 var productAndSKUDetails = productsDetails
@@ -442,7 +442,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
 
     private void SetFilter()
     {
-        BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtPos.Text, string.Empty), ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)));
+        BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtSearch.Text, string.Empty), ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)));
     }
 
     /// <summary>
@@ -480,7 +480,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    protected void txtPos_TextChanged(object sender, EventArgs e)
+    protected void txtSearch_TextChanged(object sender, EventArgs e)
     {
         SetFilter();
     }
