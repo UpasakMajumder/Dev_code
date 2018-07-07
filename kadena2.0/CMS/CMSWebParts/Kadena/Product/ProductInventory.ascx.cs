@@ -348,17 +348,17 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                                 {
                                     cp.ProgramID,
                                     cp.CategoryID,
-                                    QtyPerPack = sku.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
+                                    QtyPerPack = cp.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
                                     cp.EstimatedPrice,
-                                    sku.SKUNumber,
+                                    cp.Product.SKUNumber,
                                     cp.Product.SKUProductCustomerReferenceNumber,
-                                    sku.SKUName,
-                                    sku.SKUPrice,
-                                    sku.SKUEnabled,
+                                    SKUName = cp.Product.Name,
+                                    SKUPrice = cp.GetDoubleValue("SKUPrice", 0.0d),
+                                    SKUEnabled = cp.GetBooleanValue("SKUEnabled", false),
                                     cp.ProductImage,
-                                    sku.SKUAvailableItems,
-                                    sku.SKUID,
-                                    sku.SKUDescription
+                                    SKUAvailableItems = cp.GetIntegerValue("SKUAvailableItems", 0),
+                                    SKUID = cp.Product.ID,
+                                    SKUDescription = cp.Product.Description
                                 })
                            .OrderBy(p => p.SKUName)
                           .ToList();
@@ -372,7 +372,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     divNoRecords.Visible = true;
                 }
             }
-            else if (DataHelper.DataSourceIsEmpty(productsDetails) && OpenCampaign == null && ProductType == (int)ProductsType.PreBuy)
+            else if (OpenCampaign == null && ProductType == (int)ProductsType.PreBuy)
             {
                 orderControls.Visible = false;
                 divNoRecords.Visible = false;
