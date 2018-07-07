@@ -234,7 +234,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         var query = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID);
         try
         {
-            List<int> programIds = new List<int>();
+            var programIds = GetProgramIDs();
             if (ProductType == (int)ProductsType.GeneralInventory)
             {
                 ddlCategory.Visible = true;
@@ -244,7 +244,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             {
                 ddlBrand.Visible = true;
                 ddlCategory.Visible = true;
-                programIds = GetProgramIDs();
             }
 
             if (DataHelper.DataSourceIsEmpty(programIds))
@@ -253,7 +252,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             }
             else
             {
-                query = query.WhereIn("ProgramID", programIds);
+                query = query.WhereIn("ProgramID", programIds.ToList());
             }
             if (categoryID != default(int))
             {
@@ -401,24 +400,23 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// Get the Program Ids in Open Campaign
     /// </summary>
     /// <returns></returns>
-    public List<int> GetProgramIDs()
+    private IEnumerable<int> GetProgramIDs()
     {
-        List<int> programIds = new List<int>();
         try
         {
-            if (OpenCampaign != null)
+            if (OpenCampaign != null && ProductType == (int)ProductsType.PreBuy)
             {
-                programIds = ProgramProvider.GetPrograms()
-                               .WhereEquals("CampaignID", OpenCampaign.CampaignID)
-                               .Columns("ProgramID")
-                               .Select(x => x.ProgramID).ToList<int>();
+                return ProgramProvider.GetPrograms()
+                    .WhereEquals("CampaignID", OpenCampaign.CampaignID)
+                    .Columns("ProgramID")
+                    .Select(x => x.ProgramID);
             }
         }
         catch (Exception ex)
         {
             EventLogProvider.LogException("Get ProgramsIDs from CVampaign", "GetProgramIDs()", ex, CurrentSite.SiteID, ex.Message);
         }
-        return programIds;
+        return Enumerable.Empty<int>();
     }
 
     /// <summary>
