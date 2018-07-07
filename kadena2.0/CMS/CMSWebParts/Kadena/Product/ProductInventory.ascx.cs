@@ -229,7 +229,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="categoryID"></param>
     /// <param name="posNumber"></param>
     /// <returns></returns>
-    private List<CampaignsProduct> GetProductsDetails(int categoryID = default(int), int brandID = default(int))
+    private List<CampaignsProduct> GetProductsDetails(int categoryID = default(int), int brandID = default(int), string posNumber = null)
     {
         var query = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID);
         try
@@ -256,6 +256,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             if (brandID != default(int))
             {
                 query = query.WhereEquals("BrandID", brandID);
+            }
+
+            if (!string.IsNullOrWhiteSpace(posNumber))
+            {
+                query = query.WhereContains("SKUProductCustomerReferenceNumber", posNumber);
             }
         }
         catch (Exception ex)
@@ -302,46 +307,33 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             divNoRecords.Visible = false;
             rptProductLists.DataSource = null;
             rptProductLists.DataBind();
-            List<CampaignsProduct> productsDetails = GetProductsDetails(categoryID, brandID);
+            List<CampaignsProduct> productsDetails = GetProductsDetails(categoryID, brandID, posNumber);
             if (!DataHelper.DataSourceIsEmpty(productsDetails))
             {
-                if (!string.IsNullOrWhiteSpace(posNumber))
-                {
-                    productsDetails = productsDetails
-                                 .Where(x => x.Product.SKUProductCustomerReferenceNumber.ToLower().Contains(posNumber.ToLower()))
-                                 .ToList();
-                }
-                if (!DataHelper.DataSourceIsEmpty(productsDetails))
-                {
-                    var productAndSKUDetails = productsDetails
-                        .Select((cp) => new
-                        {
-                            cp.ProgramID,
-                            cp.CategoryID,
-                            QtyPerPack = cp.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
-                            cp.EstimatedPrice,
-                            cp.Product.SKUNumber,
-                            cp.Product.SKUProductCustomerReferenceNumber,
-                            SKUName = cp.Product.Name,
-                            SKUPrice = cp.GetDoubleValue("SKUPrice", 0.0d),
-                            SKUEnabled = cp.GetBooleanValue("SKUEnabled", false),
-                            cp.ProductImage,
-                            SKUAvailableItems = cp.GetIntegerValue("SKUAvailableItems", 0),
-                            SKUID = cp.Product.ID,
-                            SKUDescription = cp.Product.Description
-                        })
-                        .Where(i => i.SKUEnabled)
-                        .OrderBy(p => p.SKUName)
-                        .ToList();
-                    rptProductLists.DataSource = productAndSKUDetails;
-                    rptProductLists.DataBind();
-                    rptProductLists.UniPagerControl = unipager;
-                    unipager.PagedControl = rptProductLists;
-                }
-                else
-                {
-                    divNoRecords.Visible = true;
-                }
+                var productAndSKUDetails = productsDetails
+                    .Select((cp) => new
+                    {
+                        cp.ProgramID,
+                        cp.CategoryID,
+                        QtyPerPack = cp.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
+                        cp.EstimatedPrice,
+                        cp.Product.SKUNumber,
+                        cp.Product.SKUProductCustomerReferenceNumber,
+                        SKUName = cp.Product.Name,
+                        SKUPrice = cp.GetDoubleValue("SKUPrice", 0.0d),
+                        SKUEnabled = cp.GetBooleanValue("SKUEnabled", false),
+                        cp.ProductImage,
+                        SKUAvailableItems = cp.GetIntegerValue("SKUAvailableItems", 0),
+                        SKUID = cp.Product.ID,
+                        SKUDescription = cp.Product.Description
+                    })
+                    .Where(i => i.SKUEnabled)
+                    .OrderBy(p => p.SKUName)
+                    .ToList();
+                rptProductLists.DataSource = productAndSKUDetails;
+                rptProductLists.DataBind();
+                rptProductLists.UniPagerControl = unipager;
+                unipager.PagedControl = rptProductLists;
             }
             else if (OpenCampaign == null && ProductType == (int)ProductsType.PreBuy)
             {
