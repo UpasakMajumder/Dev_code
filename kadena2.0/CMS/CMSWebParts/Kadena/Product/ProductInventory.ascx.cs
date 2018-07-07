@@ -235,15 +235,10 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         try
         {
             var programIds = GetProgramIDs();
-            if (ProductType == (int)ProductsType.GeneralInventory)
+            if (ProductType == (int)ProductsType.GeneralInventory || ProductType == (int)ProductsType.PreBuy)
             {
                 ddlCategory.Visible = true;
                 ddlBrand.Visible = true;
-            }
-            else if (ProductType == (int)ProductsType.PreBuy)
-            {
-                ddlBrand.Visible = true;
-                ddlCategory.Visible = true;
             }
 
             if (DataHelper.DataSourceIsEmpty(programIds))
