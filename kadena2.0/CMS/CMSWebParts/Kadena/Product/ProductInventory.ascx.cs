@@ -231,7 +231,9 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <returns></returns>
     private List<CampaignsProduct> GetProductsDetails(int categoryID = default(int), int brandID = default(int), string posNumber = null)
     {
-        var query = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID);
+        var query = CampaignsProductProvider.GetCampaignsProducts()
+            .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+            .WhereTrue("SKUEnabled");
         try
         {
             var programIds = GetProgramIDs();
@@ -327,7 +329,6 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                         SKUID = cp.Product.ID,
                         SKUDescription = cp.Product.Description
                     })
-                    .Where(i => i.SKUEnabled)
                     .OrderBy(p => p.SKUName)
                     .ToList();
                 rptProductLists.DataSource = productAndSKUDetails;
