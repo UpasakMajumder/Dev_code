@@ -251,11 +251,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             {
                 query = query.WhereIn(nameof(CampaignsProduct.ProgramID), programIds.ToList());
             }
-            if (categoryID != default(int))
+            if (categoryID > 0)
             {
                 query = query.WhereEquals(nameof(CampaignsProduct.CategoryID), categoryID);
             }
-            if (brandID != default(int))
+            if (brandID > 0)
             {
                 query = query.WhereEquals(nameof(CampaignsProduct.BrandID), brandID);
             }
