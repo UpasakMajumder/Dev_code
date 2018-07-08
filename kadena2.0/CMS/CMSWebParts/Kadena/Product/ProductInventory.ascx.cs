@@ -233,7 +233,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         var query = CampaignsProductProvider.GetCampaignsProducts()
             .OnCurrentSite()
-            .WhereTrue("SKUEnabled");
+            .WhereTrue(nameof(SKUInfo.SKUEnabled));
         try
         {
             var programIds = GetProgramIDs();
@@ -245,19 +245,19 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
 
             if (DataHelper.DataSourceIsEmpty(programIds))
             {
-                query = query.WhereEqualsOrNull("ProgramID", 0);
+                query = query.WhereEqualsOrNull(nameof(CampaignsProduct.ProgramID), 0);
             }
             else
             {
-                query = query.WhereIn("ProgramID", programIds.ToList());
+                query = query.WhereIn(nameof(CampaignsProduct.ProgramID), programIds.ToList());
             }
             if (categoryID != default(int))
             {
-                query = query.WhereEquals("CategoryID", categoryID);
+                query = query.WhereEquals(nameof(CampaignsProduct.CategoryID), categoryID);
             }
             if (brandID != default(int))
             {
-                query = query.WhereEquals("BrandID", brandID);
+                query = query.WhereEquals(nameof(CampaignsProduct.BrandID), brandID);
             }
 
             if (!string.IsNullOrWhiteSpace(searchText))
