@@ -229,7 +229,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="categoryID"></param>
     /// <param name="searchText"></param>
     /// <returns></returns>
-    private List<CampaignsProduct> GetProductsDetails(int categoryID = default(int), int brandID = default(int), string searchText = null)
+    private List<CampaignsProduct> GetProductsDetails(int categoryID, int brandID, string searchText)
     {
         var query = CampaignsProductProvider.GetCampaignsProducts()
             .OnCurrentSite()
