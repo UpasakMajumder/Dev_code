@@ -340,10 +340,10 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                         cp.Product.SKUNumber,
                         cp.Product.SKUProductCustomerReferenceNumber,
                         SKUName = cp.Product.Name,
-                        SKUPrice = cp.GetDoubleValue("SKUPrice", 0.0d),
-                        SKUEnabled = cp.GetBooleanValue("SKUEnabled", false),
+                        SKUPrice = cp.GetDoubleValue(nameof(SKUInfo.SKUPrice), 0.0d),
+                        SKUEnabled = cp.GetBooleanValue(nameof(SKUInfo.SKUEnabled), false),
                         cp.ProductImage,
-                        SKUAvailableItems = cp.GetIntegerValue("SKUAvailableItems", 0),
+                        SKUAvailableItems = cp.GetIntegerValue(nameof(SKUInfo.SKUAvailableItems), 0),
                         SKUID = cp.Product.ID,
                         SKUDescription = cp.Product.Description
                     })
