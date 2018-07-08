@@ -320,7 +320,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// Bind the Products data to repeater
     /// </summary>
     /// <param name="categoryID"></param>
-    private void BindData(int categoryID = default(int), string searchText = null, int brandID = default(int))
+    private void BindData(int categoryID = 0, string searchText = null, int brandID = 0)
     {
         try
         {
