@@ -232,7 +232,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     private List<CampaignsProduct> GetProductsDetails(int categoryID = default(int), int brandID = default(int), string searchText = null)
     {
         var query = CampaignsProductProvider.GetCampaignsProducts()
-            .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+            .OnCurrentSite()
             .WhereTrue("SKUEnabled");
         try
         {
@@ -245,7 +245,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
 
             if (DataHelper.DataSourceIsEmpty(programIds))
             {
-                query = query.Where(new WhereCondition().WhereEquals("ProgramID", null).Or().WhereEquals("ProgramID", 0));
+                query = query.WhereEqualsOrNull("ProgramID", 0);
             }
             else
             {
