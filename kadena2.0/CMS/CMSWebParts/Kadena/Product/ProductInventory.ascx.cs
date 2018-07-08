@@ -300,9 +300,8 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <summary>
     /// Bind the Products data to repeater
     /// </summary>
-    /// <param name="programID"></param>
     /// <param name="categoryID"></param>
-    private void BindData(int programID = default(int), int categoryID = default(int), string searchText = null, int brandID = default(int))
+    private void BindData(int categoryID = default(int), string searchText = null, int brandID = default(int))
     {
         try
         {
@@ -442,7 +441,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
 
     private void SetFilter()
     {
-        BindData(ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtSearch.Text, string.Empty), ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)));
+        BindData(ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtSearch.Text, string.Empty), ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)));
     }
 
     /// <summary>
