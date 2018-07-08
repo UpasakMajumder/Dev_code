@@ -262,7 +262,14 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
 
             if (!string.IsNullOrWhiteSpace(searchText))
             {
-                query = query.WhereContains("SKUProductCustomerReferenceNumber", searchText);
+                query = query.Where(new WhereCondition()
+                    .WhereContains("SKUProductCustomerReferenceNumber", searchText)
+                    .Or()
+                    .WhereContains(nameof(SKUInfo.SKUName), searchText)
+                    .Or()
+                    .WhereContains(nameof(SKUInfo.SKUDescription), searchText)
+                    .Or()
+                    .WhereContains("SKUNumberOfItemsInPackage", searchText));
             }
         }
         catch (Exception ex)
