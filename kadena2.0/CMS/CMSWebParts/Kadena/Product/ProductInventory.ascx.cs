@@ -262,14 +262,26 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
 
             if (!string.IsNullOrWhiteSpace(searchText))
             {
-                query = query.Where(new WhereCondition()
+                var where = new WhereCondition()
                     .WhereContains("SKUProductCustomerReferenceNumber", searchText)
                     .Or()
                     .WhereContains(nameof(SKUInfo.SKUName), searchText)
                     .Or()
                     .WhereContains(nameof(SKUInfo.SKUDescription), searchText)
                     .Or()
-                    .WhereContains("SKUNumberOfItemsInPackage", searchText));
+                    .WhereContains("SKUNumberOfItemsInPackage", searchText);
+
+                var brandIds = CustomTableItemProvider.GetItems<BrandItem>()
+                    .WhereContains(nameof(BrandItem.BrandName), searchText)
+                    .Columns(nameof(BrandItem.ItemID))
+                    .Select(i => i.Field<int>(nameof(BrandItem.ItemID)))
+                    .ToList();
+                if (brandIds.Any())
+                {
+                    where = where.Or().WhereIn(nameof(CampaignsProduct.BrandID), brandIds);
+                }
+
+                query = query.Where(where);
             }
         }
         catch (Exception ex)
