@@ -531,9 +531,9 @@ namespace Kadena.BusinessLogic.Services
             return otherAddressAvailable;
         }
 
-        public List<int> GetLoggedInUserCartData(int inventoryType, int userID, int campaignID = 0)
+        public List<int> GetLoggedInUserCartData(ShoppingCartTypes cartType, int userID, int campaignID = 0)
         {
-            return shoppingCart.GetShoppingCartIDByInventoryType(inventoryType, userID, campaignID);
+            return shoppingCart.GetShoppingCartIDByInventoryType(cartType, userID, campaignID);
         }
     }
 }
