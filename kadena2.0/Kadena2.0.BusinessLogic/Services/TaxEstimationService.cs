@@ -35,7 +35,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var taxRequest = CreateTaxEstimationRequest(deliveryAddress, pricedItemsPrice, shippingCost);
 
-            var estimate = await EstimateTotalTaxCachedCall(taxRequest);
+            var estimate = await EstimateTotalTaxCachedCall(taxRequest).ConfigureAwait(false);
             return estimate;
         }
 
@@ -54,7 +54,7 @@ namespace Kadena.BusinessLogic.Services
                 return (decimal)cachedResult;
             }
 
-            var response = await taxCalculator.CalculateTax(taxRequest);
+            var response = await taxCalculator.CalculateTax(taxRequest).ConfigureAwait(false);
             if (response.Success)
             {
                 var result = response.Payload;
