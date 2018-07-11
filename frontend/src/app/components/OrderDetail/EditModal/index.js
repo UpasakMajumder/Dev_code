@@ -157,6 +157,7 @@ class EditModal extends Component {
             orderedItems,
             ordersPrice: payload.ordersPrice
           });
+          // TODO:
           this.props.closeModal();
           window.store.dispatch({
             type: SUCCESS,

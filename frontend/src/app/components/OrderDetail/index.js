@@ -55,6 +55,18 @@ class OrderDetail extends Component {
     getUI(orderID);
   }
 
+  changeApprovalMessage = (text) => {
+    this.setState({
+      orderHistory: {
+        ...this.state.orderHistory,
+        message: {
+          ...this.state.orderHistory.message,
+          text
+        }
+      }
+    });
+  };
+
   getMaxOrderQuantity = () => {
     if (this.maxOrderQuantity) return this.maxOrderQuantity;
 
@@ -152,6 +164,7 @@ class OrderDetail extends Component {
             general={general}
             changeStatus={changeStatus}
             showEditModal={this.showEditModal}
+            changeApprovalMessage={this.changeApprovalMessage}
           />
         </div>
       </div>
