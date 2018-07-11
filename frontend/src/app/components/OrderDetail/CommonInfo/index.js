@@ -5,7 +5,11 @@ import SVG from 'app.dump/SVG';
 /* helpers */
 import timeFormat from 'app.helpers/time';
 
-const CommonInfo = ({ ui, dateTimeNAString }) => {
+const CommonInfo = ({
+  ui,
+  dateTimeNAString,
+  orderHistoryLabel
+}) => {
   const { status, orderDate, shippingDate, totalCost } = ui;
 
   const tiles = [
@@ -32,6 +36,13 @@ const CommonInfo = ({ ui, dateTimeNAString }) => {
     }
   ];
 
+  const getViewHistoryButton = (icon) => {
+    if (icon !== 'flag') return null;
+    if (!orderHistoryLabel) return null;
+
+    return <button type="button" className="btn--off mt-2 link">{orderHistoryLabel}</button>;
+  };
+
   const tileList = tiles.map((tile) => {
     const { value, icon, title, note } = tile;
 
@@ -43,7 +54,7 @@ const CommonInfo = ({ ui, dateTimeNAString }) => {
         <div>
           <p className="tile-bar__title">{title}</p>
           <p className="tile-bar__description">{value}</p>
-          {noteElement}
+          {getViewHistoryButton(tile.icon)}
         </div>
       </div>
     );
@@ -78,7 +89,8 @@ CommonInfo.propTypes = {
       title: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired
     }).isRequired
-  })
+  }),
+  orderHistoryLabel: PropTypes.string
 };
 
 export default CommonInfo;

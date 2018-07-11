@@ -8,6 +8,8 @@ import { getUI, changeStatus, editOrders } from 'app.ac/orderDetail';
 import toogleEmailProof from 'app.ac/emailProof';
 /* utilities */
 import { getSearchObj } from 'app.helpers/location';
+/* globals */
+import { ORDER_HISTORY } from 'app.globals';
 /* local components */
 import CommonInfo from './CommonInfo';
 import ShippingInfo from './ShippingInfo';
@@ -40,7 +42,9 @@ class OrderDetail extends Component {
   };
 
   state = {
-    showEditModal: false // managed in Actions component
+    showEditModal: false, // managed in Actions component
+    orderHistory: ORDER_HISTORY,
+    showOrderHistory: false
   }
 
   componentDidMount() {
@@ -111,6 +115,7 @@ class OrderDetail extends Component {
         <CommonInfo
           ui={commonInfo}
           dateTimeNAString={dateTimeNAString}
+          orderHistoryLabel={this.state.orderHistory ? this.state.orderHistory.label : null}
         />
 
         <div className="order-block">

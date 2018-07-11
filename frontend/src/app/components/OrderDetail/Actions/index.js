@@ -26,8 +26,8 @@ class Actions extends Component {
 
   static propTypes = {
     actions: PropTypes.shape({
-      accept: { ...actionPropTypes },
-      reject: { ...actionPropTypes }
+      accept: PropTypes.shape({ ...actionPropTypes }),
+      reject: PropTypes.shape({ ...actionPropTypes })
     }).isRequired,
     editOrders: PropTypes.shape({
       button: PropTypes.string.isRequired,

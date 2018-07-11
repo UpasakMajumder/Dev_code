@@ -25,7 +25,8 @@ const {
   filteredRecentOrders,
   emailProof,
   registration,
-  productDetail
+  productDetail,
+  orderHistory
 } = localization;
 
 export const LOGIN = login;
@@ -53,3 +54,4 @@ export const FILTERED_RECENT_ORDERS = filteredRecentOrders;
 export const EMAIL_PROOF = emailProof;
 export const REGISTRATION = registration;
 export const PRODUCT_DETAIL = productDetail;
+export const ORDER_HISTORY = orderHistory;
