@@ -45,7 +45,7 @@ class OrderDetail extends Component {
   state = {
     showEditModal: false, // managed in Actions component
     orderHistory: ORDER_HISTORY,
-    showOrderHistory: false
+    showOrderHistory: true // TODO:
   }
 
   componentDidMount() {

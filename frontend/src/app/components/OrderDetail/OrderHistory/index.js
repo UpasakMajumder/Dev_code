@@ -1,10 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import uuid from 'uuid';
 /* components */
 import Dialog from 'app.dump/Dialog';
 
 const OrderHistory = ({ orderHistory, closeDialog, open }) => {
   if (!orderHistory) return null;
+
+  const getChangeElement = (changes) => {
+    if (!changes.items.length) return null;
+
+    const headers = changes.headers.map(header => <th key={uuid()}>{header}</th>);
+    const rows = changes.items.map((row) => {
+      const items = row.map((item) => {
+        switch (item.type) {
+        case 'link':
+          return <td key={uuid()}><a target="_blank" href={item.url}>{item.text}</a></td>;
+        default:
+          return <td key={uuid()}>{item.text}</td>;
+        }
+      });
+
+      return <tr key={uuid()}>{items}</tr>;
+    });
+
+    return (
+      <div className="mb-5">
+        <p>{changes.title}</p>
+        <table className="table">
+          <tbody>
+            <tr>{headers}</tr>
+            {rows}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
 
   const getBody = () => {
     const messageElement = orderHistory.message.text
@@ -17,6 +48,8 @@ const OrderHistory = ({ orderHistory, closeDialog, open }) => {
 
     return (
       <div>
+        {getChangeElement(orderHistory.itemChanges)}
+        {getChangeElement(orderHistory.orderChanges)}
         {messageElement}
       </div>
     );
@@ -42,6 +75,15 @@ OrderHistory.propTypes = {
     message: PropTypes.shape({
       title: PropTypes.string.isRequired,
       text: PropTypes.string
+    }).isRequired,
+    itemChanges: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      headers: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+      items: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+        url: PropTypes.string
+      }).isRequired))
     }).isRequired
   })
 };
