@@ -36,12 +36,11 @@ export const getUI = (orderID = '') => {
   };
 };
 
-export const changeStatus = ({ status, note }) => {
+export const changeStatus = ({ status }) => {
   return {
     type: ORDER_DETAIL + CHANGE_STATUS,
     payload: {
-      status,
-      note
+      status
     }
   };
 };

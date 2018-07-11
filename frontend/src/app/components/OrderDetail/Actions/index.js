@@ -64,10 +64,7 @@ class Actions extends Component {
       } else {
         this.handleProceed();
         toastr.success(payload.title, payload.text);
-        this.props.changeStatus({
-          status: payload.newStatus,
-          note: this.state.rejectionNote
-        });
+        this.props.changeStatus({ status: payload.newStatus });
         this.handleChangeRejectionNote('');
       }
     } catch (e) {

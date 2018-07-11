@@ -16,8 +16,7 @@ const CommonInfo = ({
     {
       title: status.title,
       value: status.value,
-      icon: 'flag',
-      note: status.note
+      icon: 'flag'
     },
     {
       title: orderDate.title,
@@ -40,13 +39,11 @@ const CommonInfo = ({
     if (icon !== 'flag') return null;
     if (!orderHistoryLabel) return null;
 
-    return <button type="button" className="btn--off mt-2 link">{orderHistoryLabel}</button>;
+    return <button type="button" className="mt-2 btn--off link">{orderHistoryLabel}</button>;
   };
 
   const tileList = tiles.map((tile) => {
-    const { value, icon, title, note } = tile;
-
-    const noteElement = note ? <p className={`tile-bar__note ${icon === 'flag' ? 'tile-bar__note--red' : ''}`}>{note}</p> : null;
+    const { value, icon, title } = tile;
 
     return (
       <div key={icon} className="tile-bar__item">
@@ -74,8 +71,7 @@ CommonInfo.propTypes = {
   ui: PropTypes.shape({
     status: PropTypes.shape({
       title: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-      note: PropTypes.string
+      value: PropTypes.string.isRequired
     }).isRequired,
     orderDate: PropTypes.shape({
       title: PropTypes.string.isRequired,

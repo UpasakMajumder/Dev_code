@@ -21,8 +21,7 @@ export default (state = defaultState, action) => {
           ...state.ui.commonInfo,
           status: {
             ...state.ui.commonInfo.status,
-            value: payload.status,
-            note: payload.note
+            value: payload.status
           }
         }
       }
