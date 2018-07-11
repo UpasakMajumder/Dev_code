@@ -18,6 +18,7 @@ import PricingInfo from './PricingInfo';
 import OrderedItems from './OrderedItems';
 import Actions from './Actions';
 import EditModal from './EditModal';
+import OrderHistory from './OrderHistory';
 import EmailProof from '../EmailProof';
 
 class OrderDetail extends Component {
@@ -71,6 +72,8 @@ class OrderDetail extends Component {
 
   showEditModal = showEditModal => this.setState({ showEditModal });
 
+  showOrderHistoryModal = () => this.setState({ showOrderHistory: !this.state.showOrderHistory });
+
   render() {
     const { ui, emailProof, toogleEmailProof, changeStatus } = this.props;
     if (!Object.keys(ui).length) return <Spinner />;
@@ -111,11 +114,17 @@ class OrderDetail extends Component {
     return (
       <div>
         <EmailProof open={emailProof.show} />
+        <OrderHistory
+          orderHistory={this.state.orderHistory}
+          open={this.state.showOrderHistory}
+          closeDialog={this.showOrderHistoryModal}
+        />
         {editModal}
         <CommonInfo
           ui={commonInfo}
           dateTimeNAString={dateTimeNAString}
           orderHistoryLabel={this.state.orderHistory ? this.state.orderHistory.label : null}
+          showOrderHistoryModal={this.showOrderHistoryModal}
         />
 
         <div className="order-block">

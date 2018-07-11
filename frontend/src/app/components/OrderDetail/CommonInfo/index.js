@@ -8,7 +8,8 @@ import timeFormat from 'app.helpers/time';
 const CommonInfo = ({
   ui,
   dateTimeNAString,
-  orderHistoryLabel
+  orderHistoryLabel,
+  showOrderHistoryModal
 }) => {
   const { status, orderDate, shippingDate, totalCost } = ui;
 
@@ -39,7 +40,7 @@ const CommonInfo = ({
     if (icon !== 'flag') return null;
     if (!orderHistoryLabel) return null;
 
-    return <button type="button" className="mt-2 btn--off link">{orderHistoryLabel}</button>;
+    return <button onClick={showOrderHistoryModal} type="button" className="mt-2 btn--off link">{orderHistoryLabel}</button>;
   };
 
   const tileList = tiles.map((tile) => {
@@ -86,7 +87,8 @@ CommonInfo.propTypes = {
       value: PropTypes.string.isRequired
     }).isRequired
   }),
-  orderHistoryLabel: PropTypes.string
+  orderHistoryLabel: PropTypes.string,
+  showOrderHistoryModal: PropTypes.func.isRequired
 };
 
 export default CommonInfo;
