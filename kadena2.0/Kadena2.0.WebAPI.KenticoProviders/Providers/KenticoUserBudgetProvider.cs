@@ -16,18 +16,15 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
     public class KenticoUserBudgetProvider : IkenticoUserBudgetProvider
     {
         private readonly IMapper mapper;
-
+        private readonly IKenticoLogger logger;
         private readonly string CustomTableClassName = "KDA.UserFYBudgetAllocation";
 
         private readonly string FiscalYearClassName = "KDA.FiscalYearManagement";
 
-        public KenticoUserBudgetProvider(IMapper mapper)
+        public KenticoUserBudgetProvider(IMapper mapper, IKenticoLogger logger)
         {
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            this.mapper = mapper;
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         public string UpdateUserBudgetAllocation(int itemID, decimal userBudget)
         {
@@ -76,8 +73,25 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
 
         public void UpdateUserBudgetAllocationRecords(int userId, string year, decimal? totalToBeDeducted)
         {
-            var userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("UserID", userId).WhereEquals("Year", year).FirstOrDefault();
-            userBudgetDetails.SetValue("UserRemainingBudget", userBudgetDetails.GetValue("UserRemainingBudget", default(decimal)) - totalToBeDeducted);
+            var userBudgetDetails = CustomTableItemProvider
+                .GetItems(CustomTableClassName)
+                .WhereEquals("UserID", userId)
+                .WhereEquals("Year", year)
+                .FirstOrDefault();
+
+            var defaultBudget = 0;
+            var remainingBudget = userBudgetDetails?.GetValue("UserRemainingBudget", default(decimal)) ?? defaultBudget;
+            if (userBudgetDetails == null)
+            {
+                logger.LogInfo(
+                    nameof(KenticoUserBudgetProvider), 
+                    nameof(UpdateUserBudgetAllocationRecords), 
+                    $"User budget allocation for user {userId} and year {year} not found. Using {defaultBudget} instead.");
+            }
+
+            var newBudget = remainingBudget - totalToBeDeducted;
+
+            userBudgetDetails.SetValue("UserRemainingBudget", newBudget);
             userBudgetDetails.Update();
         }
 
