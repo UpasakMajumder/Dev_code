@@ -537,7 +537,7 @@
         title: "Order History",
         message: {
           title: "Message",
-          text: "This is message"
+          text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nulla porro quos adipisci dolor aliquam odit accusamus hic, voluptatibus sapiente magnam, quidem explicabo maxime labore ea? Sequi esse culpa dolorem hic!"
         },
         itemChanges: {
           title: "Item Changes",

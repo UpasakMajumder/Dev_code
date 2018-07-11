@@ -83,6 +83,7 @@ $dialog-footer-height: 100px;
   &__block {
     @include rem(padding, 20px);
     max-height: $dialog-height;
+    max-width: 90vw;
     margin: auto;
     align-self: flex-start;
     background-color: $brand-white;

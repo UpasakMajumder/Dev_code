@@ -6,12 +6,28 @@ import Dialog from 'app.dump/Dialog';
 const OrderHistory = ({ orderHistory, closeDialog, open }) => {
   if (!orderHistory) return null;
 
+  const getBody = () => {
+    const messageElement = orderHistory.message.text
+      ? (
+        <div>
+          <p>{orderHistory.message.title}</p>
+          <p>{orderHistory.message.text}</p>
+        </div>
+      ) : null;
+
+    return (
+      <div>
+        {messageElement}
+      </div>
+    );
+  };
+
   return (
     <Dialog
       closeDialog={closeDialog}
       hasCloseBtn={true}
       title={orderHistory.title}
-      body={null}
+      body={getBody()}
       footer={null}
       open={open}
     />
