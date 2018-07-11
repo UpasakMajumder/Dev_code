@@ -5,7 +5,7 @@
     <asp:Label ID="lblSearch" runat="server" AssociatedControlID="txtWord" EnableViewState="false" Style="display: none;" />
     <cms:CMSTextBox ID="txtWord" runat="server" ClientIDMode="Static" CssClass="input__text" />
 
-    <button class="search__submit btn--off" type="submit">
+    <button id="btnSearch" runat="server" onserverclick="btnSearch_ServerClick" class="search__submit btn--off">
         <svg class="icon icon-dollar">
             <use xlink:href="/gfx/svg/sprites/icons.svg#search"></use>
         </svg>
