@@ -45,7 +45,7 @@ class OrderDetail extends Component {
   state = {
     showEditModal: false, // managed in Actions component
     orderHistory: ORDER_HISTORY,
-    showOrderHistory: true // TODO:
+    showOrderHistory: false
   }
 
   componentDidMount() {
@@ -86,6 +86,16 @@ class OrderDetail extends Component {
 
   showOrderHistoryModal = () => this.setState({ showOrderHistory: !this.state.showOrderHistory });
 
+  updateOrderHistory = (orderHistory) => {
+    this.setState({
+      orderHistory: {
+        ...this.state.orderHistory,
+        itemChanges: orderHistory.itemChanges,
+        orderChanges: orderHistory.orderChanges
+      }
+    });
+  };
+
   render() {
     const { ui, emailProof, toogleEmailProof, changeStatus } = this.props;
     if (!Object.keys(ui).length) return <Spinner />;
@@ -118,6 +128,7 @@ class OrderDetail extends Component {
           editOrders={this.props.editOrders}
           general={general}
           maxOrderQuantity={this.getMaxOrderQuantity()}
+          updateOrderHistory={this.updateOrderHistory}
         />
       ) : null;
 

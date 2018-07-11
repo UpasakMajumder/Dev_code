@@ -603,7 +603,69 @@ module.exports.edit = {
         lineNumber: "lineNumber-2", // like 737 row
         price: "$ 50"
       }
-    ]
+    ],
+    "orderHistory": {
+      itemChanges: {
+        title: "Item Changes",
+        headers: ['Item Desc.', 'Chage Type', 'Original', 'New', 'Date', 'User'],
+        items: [
+          [
+            {
+              type: "text",
+              text: "Item Name #1"
+            },
+            {
+              type: "text",
+              text: "Qty Change"
+            },
+            {
+              type: "text",
+              text: "20"
+            },
+            {
+              type: "text",
+              text: "15"
+            },
+            {
+              type: "text",
+              text: "05/29/2018 10:35:20 AM"
+            },
+            {
+              type: "text",
+              text: "asdasd@gmail.com"
+            }
+          ]
+        ]
+      },
+      orderChanges: {
+        title: "Order Changes",
+        headers: ['Category', 'Original', 'New', 'Date', 'User'],
+        items: [
+          [
+            {
+              type: "text",
+              text: "Shipping"
+            },
+            {
+              type: "text",
+              text: "Overnight"
+            },
+            {
+              type: "text",
+              text: "Order: #1450"
+            },
+            {
+              type: "text",
+              text: "05/29/2018 10:35:20 AM"
+            },
+            {
+              type: "text",
+              text: "asdasd@gmail.com"
+            }
+          ]
+        ]
+      }
+    }
   }
 }
 
