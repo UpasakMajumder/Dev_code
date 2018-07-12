@@ -151,12 +151,14 @@ class RecentOrders extends Component {
 
         content = (
           <div>
-            <table className="show-table">
-              <tbody>
-              {this.getTableHeader()}
-              {this.getTableRows()}
-              </tbody>
-            </table>
+            <div className="overflow--auto">
+              <table className="show-table">
+                <tbody>
+                  {this.getTableHeader()}
+                  {this.getTableRows()}
+                </tbody>
+              </table>
+            </div>
 
             {this.getPaginationComponent()}
           </div>
