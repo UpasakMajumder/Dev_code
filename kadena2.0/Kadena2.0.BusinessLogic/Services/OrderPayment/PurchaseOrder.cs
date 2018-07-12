@@ -26,12 +26,17 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         public async Task<SubmitOrderResult> SubmitPOOrder(SubmitOrderRequest request)
         {
             var orderData = await orderDataProvider.GetSubmitOrderData(request);
-            var serviceResult = await sendOrder.SubmitOrderData(orderData);
+            var serviceResult = new SubmitOrderResult
+            {
+                Success = true,
+                OrderId = "ShoppingCart",
+            };//await sendOrder.SubmitOrderData(orderData);
 
             if (serviceResult.Success)
             {
-                shoppingCart.RemoveCurrentItemsFromStock();
-                shoppingCart.ClearCart();
+                //shoppingCart.RemoveCurrentItemsFromStock();
+                //shoppingCart.ClearCart();
+                shoppingCart.ClearCurrent();
             }
 
             serviceResult.RedirectURL = resultUrlFactory.GetOrderResultPageUrl(serviceResult);

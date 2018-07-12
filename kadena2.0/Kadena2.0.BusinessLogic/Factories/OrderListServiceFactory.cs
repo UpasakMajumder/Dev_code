@@ -21,17 +21,19 @@ namespace Kadena.BusinessLogic.Factories
         private readonly IKenticoDocumentProvider _documents;
         private readonly IKenticoLogger _logger;
         private readonly IKenticoAddressBookProvider _kenticoAddressBook;
+        private readonly IShoppingCartProvider shoppingCart;
 
         public OrderListServiceFactory(IMapper mapper,
                                        IOrderViewClient orderClient,
                                        IKenticoCustomerProvider kenticoCustomer,
-                                       IKenticoResourceService kenticoResources, 
-                                       IKenticoSiteProvider site, 
-                                       IKenticoOrderProvider order, 
+                                       IKenticoResourceService kenticoResources,
+                                       IKenticoSiteProvider site,
+                                       IKenticoOrderProvider order,
                                        IKenticoPermissionsProvider permissions,
-                                       IKenticoDocumentProvider documents, 
-                                       IKenticoLogger logger, 
-                                       IKenticoAddressBookProvider kenticoAddressBook)
+                                       IKenticoDocumentProvider documents,
+                                       IKenticoLogger logger,
+                                       IKenticoAddressBookProvider kenticoAddressBook,
+                                       IShoppingCartProvider shoppingCart)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _orderClient = orderClient ?? throw new ArgumentNullException(nameof(orderClient));
@@ -43,11 +45,12 @@ namespace Kadena.BusinessLogic.Factories
             _documents = documents ?? throw new ArgumentNullException(nameof(documents));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _kenticoAddressBook = kenticoAddressBook ?? throw new ArgumentNullException(nameof(kenticoAddressBook));
+            this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
         }
 
         public IOrderListService GetDashboard()
         {
-            return new OrderListService(_mapper, _orderClient, _kenticoCustomer, _kenticoResources, _site, _order, _documents, _permissions, _logger, _kenticoAddressBook)
+            return new OrderListService(_mapper, _orderClient, _kenticoCustomer, _kenticoResources, _site, _order, _documents, _permissions, _logger, _kenticoAddressBook, shoppingCart)
             {
                 PageCapacityKey = Settings.KDA_DashboardOrdersPageCapacity
             };
@@ -55,7 +58,7 @@ namespace Kadena.BusinessLogic.Factories
 
         public IOrderListService GetRecentOrders()
         {
-            return new OrderListService(_mapper, _orderClient, _kenticoCustomer, _kenticoResources, _site, _order, _documents, _permissions, _logger, _kenticoAddressBook)
+            return new OrderListService(_mapper, _orderClient, _kenticoCustomer, _kenticoResources, _site, _order, _documents, _permissions, _logger, _kenticoAddressBook, shoppingCart)
             {
                 PageCapacityKey = Settings.KDA_RecentOrdersPageCapacity,
                 EnablePaging = true

@@ -627,5 +627,63 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             ShoppingCartInfoProvider.DeleteShoppingCartInfo(cartId);
         }
+
+        public void ClearCurrent()
+        {
+            var currentCart = ECommerceContext.CurrentShoppingCart;
+            var newCart = mapper.Map<ShoppingCartInfo>(currentCart);
+            //new ShoppingCartInfo();
+                                                           //{
+                                                           //    ShoppingCartSiteID = currentCart.ShoppingCartSiteID,
+                                                           //    ShoppingCartCustomerID = currentCart.ShoppingCartCustomerID,
+                                                           //    ShoppingCartCurrencyID = currentCart.ShoppingCartCurrencyID,
+                                                           //    User = currentCart.User,
+                                                           //    ShoppingCartShippingOptionID = currentCart.ShoppingCartShippingOptionID,
+                                                           //    ShoppingCartShippingAddress = currentCart.ShoppingCartShippingAddress,
+                                                           //    ShoppingCartBillingAddress = currentCart.ShoppingCartBillingAddress,
+                                                           //    ShoppingCartCompanyAddress = currentCart.compa
+                                                           //};
+
+            newCart.ShoppingCartID = 0;
+            ShoppingCartInfoProvider.SetShoppingCartInfo(newCart);
+            currentCart.CartItems.ForEach(i =>
+            {
+                i.ShoppingCartID = newCart.ShoppingCartID;
+                i.Update();
+            });
+        }
+
+        public IEnumerable<ShoppingCart> GetShoppingCarts()
+        {
+            var customerId = ECommerceContext.CurrentCustomer.CustomerID;
+            var carts = ShoppingCartInfoProvider
+                .GetShoppingCarts(SiteContext.CurrentSiteID)
+                .WhereEquals(nameof(ShoppingCartInfo.ShoppingCartCustomerID), customerId)
+                //.Columns("TotalItemsPrice", "ShoppingCartID", "ShoppingCartLastUpdate")
+                .ToList();
+            carts.ForEach(c => c.CartItems = ShoppingCartItemInfoProvider
+            .GetShoppingCartItems()
+            .WhereEquals(nameof(ShoppingCartItemInfo.ShoppingCartID), c.ShoppingCartID)
+            //.Columns("SKUID", "SKUUnits", "CartItemPrice")
+            .ToList());
+            return carts.Select(cart => new ShoppingCart
+            {
+                Items = cart.CartItems
+                    .Select(i => new ShoppingCartItem
+                    {
+                        SkuId = i.SKUID,
+                        Quantity = i.CartItemUnits,
+                        UnitPrice = ValidationHelper.GetDecimal(i.UnitPrice, default(decimal)),
+                        TotalPrice = ValidationHelper.GetDecimal(i.TotalPrice, default(decimal))
+                    })
+                    .ToList(),
+                PricedItemsTax = 0,
+                TotalTax = 0,
+                TotalPrice = ValidationHelper.GetDecimal(cart.TotalItemsPrice, default(decimal)),
+                Id = cart.ShoppingCartID,
+                LastUpdate = cart.ShoppingCartLastUpdate
+            });
+
+        }
     }
 }

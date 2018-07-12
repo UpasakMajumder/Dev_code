@@ -96,5 +96,9 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void DeleteShoppingCart(int cartId);
 
         ShoppingCart GetShoppingCart(int cartId, string orderType);
+
+        void ClearCurrent();
+
+        IEnumerable<ShoppingCart> GetShoppingCarts();
     }
 }

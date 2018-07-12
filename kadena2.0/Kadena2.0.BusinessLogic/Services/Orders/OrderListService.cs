@@ -30,6 +30,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoLogger _logger;
         private readonly IKenticoAddressBookProvider _kenticoAddressBook;
         private readonly IKenticoDocumentProvider _documents;
+        private readonly IShoppingCartProvider _shoppingCart;
 
         private string _orderDetailUrl = string.Empty;
         public string OrderDetailUrl
@@ -75,7 +76,8 @@ namespace Kadena.BusinessLogic.Services.Orders
                                 IKenticoDocumentProvider documents,
                                 IKenticoPermissionsProvider permissions,
                                 IKenticoLogger logger,
-                                IKenticoAddressBookProvider kenticoAddressBook)
+                                IKenticoAddressBookProvider kenticoAddressBook,
+                                IShoppingCartProvider shoppingCart)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _orderClient = orderClient ?? throw new ArgumentNullException(nameof(orderClient));
@@ -87,6 +89,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _kenticoAddressBook = kenticoAddressBook ?? throw new ArgumentNullException(nameof(kenticoAddressBook));
             _documents = documents ?? throw new ArgumentNullException(nameof(documents));
+            _shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
         }
 
         public async Task<OrderHead> GetOrdersToApprove()
@@ -96,7 +99,33 @@ namespace Kadena.BusinessLogic.Services.Orders
             var filter = CreateFilterForOrdersToApprove();
             var orderHeaders = await GetHeaders(filter, postFilter);
             orderHeaders.PageInfo = Pagination.Empty;
-
+            var shoppingCarts = _shoppingCart.GetShoppingCarts();
+            orderHeaders.Rows = shoppingCarts.Select(c => new Order
+            {
+                Id = c.Id.ToString(),
+                ShippingDate = c.LastUpdate,
+                Items = c.Items.Select(i => new CheckoutCartItem
+                {
+                    Id = i.SkuId,
+                    Quantity = i.Quantity,
+                    UnitPrice = i.UnitPrice,
+                    TotalPrice = i.TotalPrice
+                }),
+                ViewBtn = new Button
+                {
+                    Exists=false
+                },
+                campaign = new Campaign(),
+                CreateDate = DateTime.Today,
+                Status = "Shopping cart"
+            });
+            //orderHeaders.PageInfo = new Pagination
+            //{
+            //    PagesCount = 1,
+            //    RowsOnPage = 100,
+            //    CurrentPage = 1,
+            //    RowsCount = orderHeaders.Rows.Count()
+            //};
             return orderHeaders;
         }
 
