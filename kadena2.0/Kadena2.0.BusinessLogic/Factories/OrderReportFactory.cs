@@ -74,7 +74,7 @@ namespace Kadena.BusinessLogic.Factories
                         res.User = FormatCustomer(kenticoCustomerProvider.GetCustomer(r.ClientId));
                         res.Status = FormatOrderStatus(r.Status);
                         res.ShippingDate = FormatDate(i.ShippingDate);
-                        res.Price = FormatPrice(r.TotalCost);
+                        res.Price = FormatPrice(i.UnitPrice * i.Quantity);
                         return res;
                     })
                 );

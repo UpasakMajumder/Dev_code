@@ -71,21 +71,21 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         bool ValidateAllCarts(int userID = 0, int campaignID = 0);
 
-        List<int> GetShoppingCartIDByInventoryType(int inventoryType, int userID, int campaignID = 0);
+        List<int> GetShoppingCartIDByInventoryType(ShoppingCartTypes cartType, int userID, int campaignID = 0);
 
         int GetPreBuyDemandCount(int SKUID);
 
-        int GetDistributorCartID(int distributorID, int inventoryType = 1, int campaignID = 0);
+        int GetDistributorCartID(int distributorID, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory, int campaignID = 0);
 
         int GetAllocatedQuantity(int SKUID, int userID);
 
         int GetItemQuantity(int SKUID, int shoppingCartID);
 
-        int CreateDistributorCart(int distributorId, int campaignId, int programId, int userID, int inventoryType = 1);
+        int CreateDistributorCart(int distributorId, int campaignId, int programId, int userID, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory);
 
-        void UpdateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int inventoryType = 1);
+        void UpdateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory);
 
-        void AddDistributorCartItem(int cartID, DistributorCartItem distributorCartItem, CampaignsProduct product, int inventoryType = 1);
+        void AddDistributorCartItem(int cartID, DistributorCartItem distributorCartItem, CampaignsProduct product, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory);
 
         void DeleteDistributorCartItem(int cartID, int SKUID);
 
