@@ -62,7 +62,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                                         IMapper mapper,
                                         IDistributorShoppingCartService distributorShoppingCartService,
                                         IShoppingCartProvider shoppingCartProvider,
-                                        IKenticoUserBudgetProvider budgetProvider)
+                                        IKenticoUserBudgetProvider budgetProvider,
                                         ITaxEstimationService taxEstimationService)
         {
             this.updateService = updateService ?? throw new ArgumentNullException(nameof(updateService));
