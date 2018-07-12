@@ -238,11 +238,6 @@ public partial class CMSWebParts_Kadena_Search_KDASqlSearchBox : CMSAbstractWebP
                 txtWord.SkinID = skinId;
             }
         }
-
-        if (IsPostBack)
-        {
-            Search();
-        }
     }
 
     /// <summary>
@@ -282,5 +277,10 @@ public partial class CMSWebParts_Kadena_Search_KDASqlSearchBox : CMSAbstractWebP
         mPagesActivityLogger.LogInternalSearch(txtWord.Text, DocumentContext.CurrentDocument);
 
         URLHelper.Redirect(UrlResolver.ResolveUrl(url.Trim()));
+    }
+
+    protected void btnSearch_ServerClick(object sender, EventArgs e)
+    {
+        Search();
     }
 }
