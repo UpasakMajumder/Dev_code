@@ -61,7 +61,7 @@
           <property name="contentbefore" ismacro="true">
 <![CDATA[
 <div class="itemcount">
-  <label>{$ KDA.DistributorCart.CartItemsCountStartText $} {%KadenaMacroMethods.GetCartCountByInventoryType(CurrentUser.UserID,1,KadenaMacroMethods.OpenCampaignID()) |(user)administrator|(hash)65501451e3f7deb7aa1a09f43219f1e40217ea7eb4b59ec821f924b574f623b8%} {$ KDA.DistributorCart.CartItemsCountEndText $}</label>
+  <label>{$ KDA.DistributorCart.CartItemsCountStartText $} {% KadenaNamespace.GetCartCountByInventoryType(CurrentUser.UserID,1,KadenaMacroMethods.OpenCampaignID()) |(user)administrator|(hash)455dd023b1a8b6cfc92dce8df6821290c54f0a622c1ef06fb2ec518781016e11%} {$ KDA.DistributorCart.CartItemsCountEndText $}</label>
   <label>{$ KDA.DistributorCart.CartTotalPrice $} : {% Formatprice(KadenaMacroMethods.GetCartTotalByInventoryType(CurrentUser.UserID,1,KadenaMacroMethods.OpenCampaignID())) |(user)administrator|(hash)56da8eb6a33c6307b9268f300181ff7c2e294b9a09c07a6fdaaa8b09e9ce0511%}</label>
 </div>
 ]]>

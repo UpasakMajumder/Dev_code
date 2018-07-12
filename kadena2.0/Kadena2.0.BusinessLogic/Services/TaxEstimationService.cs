@@ -14,50 +14,34 @@ namespace Kadena.BusinessLogic.Services
     {
         private readonly IKenticoLocalizationProvider kenticoLocalization;
         private readonly IKenticoLogger kenticoLog;
-        private readonly IKenticoResourceService resources;
         private readonly ITaxEstimationServiceClient taxCalculator;
         private readonly IShoppingCartProvider shoppingCart;
         private readonly ICache cache;
 
         public TaxEstimationService(IKenticoLocalizationProvider kenticoLocalization,
-                                   IKenticoResourceService resources,                                    
                                    ITaxEstimationServiceClient taxCalculator,
                                    IKenticoLogger kenticoLog,
                                    IShoppingCartProvider shoppingCart,
                                    ICache cache)
         {
             this.kenticoLocalization = kenticoLocalization ?? throw new ArgumentNullException(nameof(kenticoLocalization));
-            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));            
             this.taxCalculator = taxCalculator ?? throw new ArgumentNullException(nameof(taxCalculator));            
             this.kenticoLog = kenticoLog ?? throw new ArgumentNullException(nameof(kenticoLog));
             this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
 
-        public async Task<decimal> EstimateTotalTax(DeliveryAddress deliveryAddress)
+        public async Task<decimal> EstimateTax(DeliveryAddress deliveryAddress, decimal pricedItemsPrice, decimal shippingCost)
         {
-            double totalItemsPrice = shoppingCart.GetCurrentCartTotalItemsPrice();
-            double shippingCosts = shoppingCart.GetCurrentCartShippingCost();
+            var taxRequest = CreateTaxEstimationRequest(deliveryAddress, pricedItemsPrice, shippingCost);
 
-            var taxRequest = CreateTaxEstimationRequest(deliveryAddress, totalItemsPrice, shippingCosts);
-
-            var estimate = await EstimateTotalTaxCachedCall(taxRequest);
-            return estimate;
-        }
-
-        public async Task<decimal> EstimatePricedItemsTax(DeliveryAddress deliveryAddress, double pricedItemsPrice)
-        {
-            double shippingCosts = shoppingCart.GetCurrentCartShippingCost();
-
-            var taxRequest = CreateTaxEstimationRequest(deliveryAddress, pricedItemsPrice, shippingCosts);
-
-            var estimate = await EstimateTotalTaxCachedCall(taxRequest);
+            var estimate = await EstimateTotalTaxCachedCall(taxRequest).ConfigureAwait(false);
             return estimate;
         }
 
         private async Task<decimal> EstimateTotalTaxCachedCall(TaxCalculatorRequestDto taxRequest)
         {
-            if (taxRequest.TotalBasePrice == 0.0d && taxRequest.ShipCost == 0.0d)
+            if (taxRequest.TotalBasePrice == decimal.Zero && taxRequest.ShipCost == decimal.Zero)
             {
                 // no need for tax estimation
                 return 0.0m;
@@ -70,7 +54,7 @@ namespace Kadena.BusinessLogic.Services
                 return (decimal)cachedResult;
             }
 
-            var response = await taxCalculator.CalculateTax(taxRequest);
+            var response = await taxCalculator.CalculateTax(taxRequest).ConfigureAwait(false);
             if (response.Success)
             {
                 var result = response.Payload;
@@ -84,7 +68,7 @@ namespace Kadena.BusinessLogic.Services
             }
         }
 
-        private TaxCalculatorRequestDto CreateTaxEstimationRequest(DeliveryAddress deliveryAddress, double totalItemsPrice, double shippingCosts)
+        private TaxCalculatorRequestDto CreateTaxEstimationRequest(DeliveryAddress deliveryAddress, decimal totalItemsPrice, decimal shippingCosts)
         {        
             var addressTo = deliveryAddress ?? shoppingCart.GetCurrentCartShippingAddress();
             var addressFrom = shoppingCart.GetDefaultBillingAddress();
@@ -107,7 +91,7 @@ namespace Kadena.BusinessLogic.Services
             if (addressTo != null)
             {
                 taxRequest.ShipToCity = addressTo.City ?? string.Empty;
-                taxRequest.ShipToState = stateTo?.StateCode ?? string.Empty;
+                taxRequest.ShipToState = addressTo.State?.StateCode ?? stateTo?.StateCode ?? string.Empty;
                 taxRequest.ShipToZip = addressTo.Zip ?? string.Empty;
             }
 

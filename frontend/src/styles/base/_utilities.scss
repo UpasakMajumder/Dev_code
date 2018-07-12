@@ -133,4 +133,8 @@
   &--y-scroll {
     overflow-y: scroll;
   }
+
+  &--auto {
+    overflow: auto;
+  }
 }

@@ -62,7 +62,7 @@
     </div>
     <div>
       <div class="product-editor__iframe">
-        <iframe src="" frameborder="0" class="js-chili-editor"></iframe>
+        <iframe src="https://chili.kadenastage.com/chili/Cenveo/editor.aspx?doc=30129967-82b7-4ddf-bffa-0e7a32888c10&amp;ws=bb6b39fb-ea09-45c1-8b25-9176b8f9373a&amp;apiKey=DAPe3wbd2+SJCesn9erLwSuLj+vXpABJ8J9dBoQjxTZQ356SYDzyxSKdoz0WuaNXFThZ4ay2fJP1ur9qCKY7bQ==&amp;fullWS=true&amp;enable3D=true&amp;d=kadenastage.com" frameborder="0" class="js-chili-editor"></iframe>
       </div>
     </div>
   </div>

@@ -47,14 +47,27 @@ namespace Kadena.Helpers
                 throw new ArgumentNullException(nameof(parameterName));
             }
 
-            var urlParts = url.Split('?');
+            return SetQueryParameters(url, new[] { new KeyValuePair<string, string>(parameterName, value) });
+        }
+
+        public static string SetQueryParameters(string url, IEnumerable<KeyValuePair<string, string>> ppp)
+        {
+            if (url == null)
+            {
+                throw new ArgumentNullException(nameof(url));
+            }
+
+            var urlParts = url?.Split('?') ?? new[] { string.Empty };
             var path = urlParts[0];
             var query = urlParts
                 .Skip(1)
                 .FirstOrDefault() ?? string.Empty;
             var parameters = HttpUtility.ParseQueryString(query);
 
-            parameters[parameterName] = value;
+            foreach (var paramValue in ppp)
+            {
+                parameters[paramValue.Key] = paramValue.Value;
+            }
 
             var newParameters = new List<string>(parameters.Count + 1);
             foreach (var key in parameters.AllKeys)
@@ -65,6 +78,37 @@ namespace Kadena.Helpers
 
             var newUrl = $"{path}?{string.Join("&", newParameters)}";
             return newUrl;
+        }
+
+        public static string GetPathFromUrl(string url)
+        {
+            var uri = new Uri(url, UriKind.RelativeOrAbsolute);
+            if (uri.IsAbsoluteUri)
+            {
+                return uri.LocalPath;
+            }
+
+            var path = url
+                .Split('?')
+                .FirstOrDefault();
+
+            if (path?.Length > 0)
+            {
+                return path;
+            }
+
+            return "/";
+        }
+
+        public static string GetQueryFromUrl(string url)
+        {
+            var queryStartIndex = url.IndexOf('?');
+            if (queryStartIndex >= 0)
+            {
+                return url.Substring(queryStartIndex + 1);
+            }
+
+            return string.Empty;
         }
 
         public static Uri GetMailingListExportUrl(Guid containerId)

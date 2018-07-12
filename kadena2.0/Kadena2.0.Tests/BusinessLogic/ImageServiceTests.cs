@@ -40,7 +40,7 @@ namespace Kadena.Tests.BusinessLogic
         [InlineData(@"~/api/file/get?path=kda/media/images/image.jpg&path1=blablabla.jpg", @"/kda/media", @"thumbnails/thumbnail.jpg")]
         public void GetThumbnailLink_S3Image(string originalImageLink, string mediaLibrariesLink, string thumbnailLink)
         {
-            var expectedResult = @"/api/file/get?path=kda/media/images/thumbnails/thumbnail.jpg";
+            var expectedResult = @"/api/file/get?path=kda%2fmedia%2fimages%2fthumbnails%2fthumbnail.jpg";
 
             Setup<IKenticoSiteProvider, string>(s => s.GetFullUrl(), @"http://example.com");
             Setup<IKenticoMediaProvider, string>(s => s.GetMediaLibrariesLocation(), mediaLibrariesLink);

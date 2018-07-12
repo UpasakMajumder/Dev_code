@@ -2,11 +2,14 @@
 using Kadena.BusinessLogic.Services.Approval;
 using Kadena.Dto.Approval.MicroserviceRequests;
 using Kadena.Dto.General;
+using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.Models.Membership;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -18,6 +21,20 @@ namespace Kadena.Tests.BusinessLogic.Approval
         const int customerId = 56;
         const string customerName = "John Customer";
         const int approverUserId = 11;
+
+        [Theory]
+        [ClassData(typeof(ApprovalServiceTests))]
+        public void ApprovalService(IApproverService approvers,
+            IApprovalServiceClient approvalClient,
+            IKenticoLogger log,
+            IKenticoOrderProvider kenticoOrderProvider,
+            IKenticoResourceService kenticoResource,
+            IOrderViewClient orderService,
+            IKenticoSkuProvider skuProvider)
+        {
+            Assert.Throws<ArgumentNullException>(() => new ApprovalService(approvers, approvalClient, log, kenticoOrderProvider,
+                kenticoResource, orderService, skuProvider));
+        }
 
         [Fact]
         public async Task ApproveOrderTest()
@@ -78,6 +95,15 @@ namespace Kadena.Tests.BusinessLogic.Approval
         {
             const string rejectNote = "because";
 
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(s => s.GetOrderByOrderId(orderId),
+                Task.FromResult(new BaseResponseDto<GetOrderByOrderIdResponseDTO>
+                {
+                    Success = true,
+                    Payload = new GetOrderByOrderIdResponseDTO
+                    {
+                        Items = new List<OrderItemDTO>()
+                    }
+                }));
             Setup<IKenticoUserProvider, User>(u => u.GetCurrentUser(), new User { UserId = approverUserId });
             Setup<IApproverService, bool>(a => a.IsCustomersApprover(approverUserId, customerId), true);
             Setup<IApprovalServiceClient, Task<BaseResponseDto<string>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
@@ -103,6 +129,8 @@ namespace Kadena.Tests.BusinessLogic.Approval
         [Fact]
         public async Task RejectOrderTest_ErrorLogged()
         {
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(s => s.GetOrderByOrderId(orderId),
+                Task.FromResult(new BaseResponseDto<GetOrderByOrderIdResponseDTO> { Success = true }));
             Setup<IKenticoUserProvider, User>(u => u.GetCurrentUser(), new User { UserId = approverUserId });
             Setup<IApproverService, bool>(a => a.IsCustomersApprover(approverUserId, customerId), true);
             Setup<IApprovalServiceClient, Task<BaseResponseDto<string>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
@@ -118,6 +146,8 @@ namespace Kadena.Tests.BusinessLogic.Approval
         public async Task RejectOrderTest_StatusLogged()
         {
             const string badStatus = "SomeUnknownStatus";
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(s => s.GetOrderByOrderId(orderId),
+                Task.FromResult(new BaseResponseDto<GetOrderByOrderIdResponseDTO> { Success = true }));
             Setup<IKenticoUserProvider, User>(u => u.GetCurrentUser(), new User { UserId = approverUserId });
             Setup<IApproverService, bool>(a => a.IsCustomersApprover(approverUserId, customerId), true);
             Setup<IApprovalServiceClient, Task<BaseResponseDto<string>>>(s => s.Approval(It.IsAny<ApprovalRequestDto>()),
@@ -132,17 +162,21 @@ namespace Kadena.Tests.BusinessLogic.Approval
         [Fact]
         public async Task ApproveOrderTest_Exception()
         {
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(s => s.GetOrderByOrderId(orderId),
+                Task.FromResult(new BaseResponseDto<GetOrderByOrderIdResponseDTO> { Success = true }));
             SetupThrows<IApproverService>(a => a.CheckIsCustomersApprover(customerId, customerName), new Exception());
 
             await Assert.ThrowsAsync<Exception>(async () => await Sut.ApproveOrder(orderId, customerId, customerName));
+            await Assert.ThrowsAsync<Exception>(async () => await Sut.RejectOrder(orderId, customerId, customerName));
         }
 
         [Fact]
-        public async Task RejectOrderTest_Exception()
+        public async Task Reject_OrderNotFound()
         {
-            SetupThrows<IApproverService>(a => a.CheckIsCustomersApprover(customerId, customerName), new Exception());
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(s => s.GetOrderByOrderId(orderId),
+                Task.FromResult(new BaseResponseDto<GetOrderByOrderIdResponseDTO> { Success = false }));
 
-            await Assert.ThrowsAsync<Exception>(async () => await Sut.RejectOrder(orderId, customerId, customerName));
+            await Assert.ThrowsAsync<ApprovalServiceException>(async () => await Sut.RejectOrder(orderId, customerId, customerName));
         }
     }
 }

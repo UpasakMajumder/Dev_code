@@ -12,6 +12,7 @@ using Kadena.Helpers;
 using Kadena.Models.Common;
 using Kadena.Models.SiteSettings;
 using System.Collections.Generic;
+using Kadena.Models.TemplatedProduct;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -91,7 +92,8 @@ namespace Kadena.WebAPI.KenticoProviders
 
             if (checkoutCartItem.IsTemplated)
             {
-                var templateLowResSettingId = productProvider.GetProductByDocumentId(checkoutCartItem.ProductPageId)?.TemplateLowResSettingId ?? Guid.Empty;
+                var product = productProvider.GetProductByDocumentId(checkoutCartItem.ProductPageId);
+                var templateLowResSettingId = product?.TemplateLowResSettingId ?? Guid.Empty;
                 var previewUrl = UrlHelper.GetUrlForTemplatePreview(i.GetValue("ChilliEditorTemplateID", Guid.Empty), templateLowResSettingId);
                 var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
 
@@ -99,12 +101,18 @@ namespace Kadena.WebAPI.KenticoProviders
                 checkoutCartItem.Preview.Exists = true;
 
                 var editorUrl = documents.GetDocumentUrl(URLHelper.ResolveUrl(resources.GetSiteSettingsKey("KDA_Templating_ProductEditorUrl")));
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "documentId", checkoutCartItem.ProductPageId.ToString());
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "templateId", i.GetValue("ChilliEditorTemplateID", Guid.Empty).ToString());
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "workspaceid", i.GetValue("ProductChiliWorkspaceId", Guid.Empty).ToString());
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "containerId", checkoutCartItem.MailingListGuid.ToString());
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "quantity", checkoutCartItem.Quantity.ToString());
-                editorUrl = URLHelper.AddParameterToUrl(editorUrl, "customName", URLHelper.URLEncode(checkoutCartItem.CartItemText));
+
+                var documentId = checkoutCartItem.ProductPageId;
+                var templateId = i.GetValue("ChilliEditorTemplateID", Guid.Empty).ToString();
+                var workspaceid = i.GetValue("ProductChiliWorkspaceId", Guid.Empty).ToString();
+                var containerId = checkoutCartItem.MailingListGuid.ToString();
+                var quantity = checkoutCartItem.Quantity;
+                var customName = checkoutCartItem.CartItemText;
+                var nodeId = product?.NodeId ?? 0;
+                var use3d = product?.Use3d ?? false;
+
+                editorUrl = ProductTemplate.CreateEditorUrl(editorUrl, nodeId, templateId, workspaceid, quantity, use3d, containerId, customName);
+
                 checkoutCartItem.EditorURL = editorUrl;
 
                 checkoutCartItem.EmailProof = new Button()

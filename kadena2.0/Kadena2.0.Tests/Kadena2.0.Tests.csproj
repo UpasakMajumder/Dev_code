@@ -473,11 +473,12 @@
     <Compile Include="BusinessLogic\BusinessUnitServiceTests.cs" />
     <Compile Include="BusinessLogic\CreditCard\SavedCreditCard3dsiTests.cs" />
     <Compile Include="BusinessLogic\CreditCard\CreditCard3dsiTests.cs" />
-    <Compile Include="BusinessLogic\FileServiceTests.cs" />
     <Compile Include="BusinessLogic\DeliveryEstimationDataTests.cs" />
     <Compile Include="BusinessLogic\DialogServiceTests.cs" />
     <Compile Include="BusinessLogic\Factories\Checkout\CheckoutPageFactoryTests.cs" />
     <Compile Include="BusinessLogic\OrderItemCheckerServiceTests.cs" />
+    <Compile Include="BusinessLogic\LocalizationServiceTests.cs" />
+    <Compile Include="BusinessLogic\FileServiceTests.cs" />
     <Compile Include="BusinessLogic\TieredPricingTests.cs" />
     <Compile Include="BusinessLogic\DynamicPricingTests.cs" />
     <Compile Include="BusinessLogic\ImageServiceTests.cs" />
@@ -514,6 +515,7 @@
     <Compile Include="Infrastructure\DIContainerTests.cs" />
     <Compile Include="KadenaUnitTest.cs" />
     <Compile Include="MicroserviceClients\TemplateClientTest.cs" />
+    <Compile Include="Models\Products\Templated\ProductTemplateTests.cs" />
     <Compile Include="Models\ProductValidatorTests.cs" />
     <Compile Include="Models\DeliveryAddressesTests.cs" />
     <Compile Include="Models\TableSortingHelperTests.cs" />

@@ -93,8 +93,16 @@ namespace Kadena.WebAPI.KenticoProviders
                 return string.Empty;
             }
 
-            var sku = SKUInfoProvider.GetSKUInfo(skuid);
-            var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
+            var document = GetDocBySkuid(skuid);
+
+            // check if SKU is product variant and get image from parent SKU
+            if(document == null)
+            {
+                var sku = SKUInfoProvider.GetSKUInfo(skuid);
+                if(sku.IsProductVariant)
+                    document = GetDocBySkuid(sku.SKUParentSKUID);
+            }
+
             var imgurl = document?.GetStringValue("ProductImage", string.Empty) ?? string.Empty;
 
             return URLHelper.GetAbsoluteUrl(imgurl);
@@ -142,6 +150,11 @@ namespace Kadena.WebAPI.KenticoProviders
             }
 
             return products;
+        }
+
+        private TreeNode GetDocBySkuid(int skuid)
+        {
+            return DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
         }
 
         private Product GetProduct(TreeNode doc)
