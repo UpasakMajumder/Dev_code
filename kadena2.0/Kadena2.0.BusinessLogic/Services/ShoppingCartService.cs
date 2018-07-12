@@ -27,6 +27,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoCustomerProvider kenticoCustomer;
         private readonly IKenticoAddressBookProvider kenticoAddresses;
         private readonly IKenticoResourceService resources;
+        private readonly IKenticoProductsProvider productsProvider;
         private readonly ITaxEstimationService taxCalculator;
         private readonly IKListService mailingService;
         private readonly IUserDataServiceClient userDataClient;
@@ -47,6 +48,7 @@ namespace Kadena.BusinessLogic.Services
                                    IKenticoCustomerProvider kenticoCustomer,
                                    IKenticoAddressBookProvider addresses,
                                    IKenticoResourceService resources,
+                                   IKenticoProductsProvider productsProvider,
                                    ITaxEstimationService taxCalculator,
                                    IKListService mailingService,
                                    IUserDataServiceClient userDataClient,
@@ -67,6 +69,7 @@ namespace Kadena.BusinessLogic.Services
             this.kenticoCustomer = kenticoCustomer ?? throw new ArgumentNullException(nameof(kenticoCustomer));
             this.kenticoAddresses = addresses ?? throw new ArgumentNullException(nameof(addresses));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.productsProvider = productsProvider ?? throw new ArgumentNullException(nameof(productsProvider));
             this.taxCalculator = taxCalculator ?? throw new ArgumentNullException(nameof(taxCalculator));
             this.mailingService = mailingService ?? throw new ArgumentNullException(nameof(mailingService));
             this.userDataClient = userDataClient ?? throw new ArgumentNullException(nameof(userDataClient));
@@ -228,7 +231,8 @@ namespace Kadena.BusinessLogic.Services
             var shoppingCartTotals = shoppingCart.GetShoppingCartTotals();
             if (deliveryAddress != null)
             {
-                shoppingCartTotals.TotalTax = await taxCalculator.EstimateTotalTax(deliveryAddress);
+                var shippingCost = shoppingCart.GetCurrentCartShippingCost();
+                shoppingCartTotals.TotalTax = await taxCalculator.EstimateTax(deliveryAddress, shoppingCartTotals.TotalItemsPrice, (decimal)shippingCost);
             }
             totals.Items = new Total[]
             {
@@ -456,6 +460,11 @@ namespace Kadena.BusinessLogic.Services
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
 
+            if (newItem.NodeId > 0)
+            {
+                newItem.DocumentId = productsProvider.GetProductByNodeId(newItem.NodeId).Id;
+            }
+
             var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);
 
             var sku = skus.GetSKU(cartItem.SKUID) ?? throw new ArgumentException($"Unable to find SKU {cartItem.SKUID}");
@@ -486,7 +495,7 @@ namespace Kadena.BusinessLogic.Services
                                     totalQuantity);
                 cartItem.SKUUnits = totalQuantity;
             }
-            
+
             var price = productsService.GetPriceByCustomModel(newItem.DocumentId, cartItem.SKUUnits);
             if (price != decimal.MinusOne)
             {
@@ -510,7 +519,7 @@ namespace Kadena.BusinessLogic.Services
             };
             return result;
         }
-       
+
         private async Task SetMailingList(CartItemEntity cartItem, Guid containerId, int addedAmount)
         {
             var mailingList = await mailingService.GetMailingList(containerId);
@@ -529,9 +538,9 @@ namespace Kadena.BusinessLogic.Services
             cartItem.SKUUnits = addedAmount;
         }
 
-        public List<int> GetLoggedInUserCartData(int inventoryType, int userID, int campaignID = 0)
+        public List<int> GetLoggedInUserCartData(ShoppingCartTypes cartType, int userID, int campaignID = 0)
         {
-            return shoppingCart.GetShoppingCartIDByInventoryType(inventoryType, userID, campaignID);
+            return shoppingCart.GetShoppingCartIDByInventoryType(cartType, userID, campaignID);
         }
     }
 }

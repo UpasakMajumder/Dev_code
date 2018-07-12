@@ -50,15 +50,6 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             var variant = VariantHelper.GetProductVariant(skuId, attributeSet);
             return mapper.Map<Sku>(variant);
         }
-        public void SetSkuAvailableQty(int skuid, int qty)
-        {
-            SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
-            if (sku != null)
-            {
-                sku.SKUAvailableItems = sku.SKUAvailableItems - qty;
-                sku.Update();
-            }
-        }
 
         public int GetSkuAvailableQty(int skuid)
         {
@@ -69,7 +60,11 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
         public void SetSkuAvailableQty(string skunumber, int availableItems)
         {
             var sku = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", skunumber).FirstOrDefault();
+            SetAvailableItems(sku, availableItems);
+        }
 
+        private static void SetAvailableItems(SKUInfo sku, int availableItems)
+        {
             if (sku != null)
             {
                 sku.SKUAvailableItems = availableItems;
@@ -79,18 +74,11 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             }
         }
 
-        public void IncreaseSkuAvailableQty(string skunumber, int diff)
+        public void UpdateAvailableQuantity(int skuId, int addQuantity)
         {
             // TODO for future, improve Availability methods to be thread safe 
-            var sku = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", skunumber).FirstOrDefault();
-
-            if (sku != null)
-            {
-                sku.SKUAvailableItems += diff;
-                sku.SubmitChanges(false);
-                sku.MakeComplete(true);
-                sku.Update();
-            }
+            var sku = SKUInfoProvider.GetSKUInfo(skuId);
+            SetAvailableItems(sku, sku.SKUAvailableItems + addQuantity);
         }
 
         public Price GetSkuPrice(int skuId)

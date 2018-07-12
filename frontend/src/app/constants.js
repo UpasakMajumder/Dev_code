@@ -84,3 +84,7 @@ export const EMAIL_PROOF_TOGGLE = 'EMAIL_PROOF_TOGGLE';
 /* config */
 export const isDevelopment = process.env.NODE_ENV === 'development';
 export const DOMAIN = 'com';
+
+/* classnames */
+export const HAS_OVERLAY = 'has-overlay';
+export const HAS_DIALOG = 'has-dialog';

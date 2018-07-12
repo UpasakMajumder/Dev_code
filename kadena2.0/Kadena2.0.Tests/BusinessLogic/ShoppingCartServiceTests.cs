@@ -33,6 +33,16 @@ namespace Kadena.Tests.BusinessLogic
             };
         }
 
+        NewCartItem CreateNewTemplatedCartItem(string customName = null)
+        {
+            return new NewCartItem
+            {
+                Quantity = 2,
+                NodeId = 32,
+                CustomProductName = customName
+            };
+        }
+
         private DeliveryAddress CreateDeliveryAddress()
         {
             return new DeliveryAddress()
@@ -176,7 +186,7 @@ namespace Kadena.Tests.BusinessLogic
         public async Task AddToCart_TemplatedProduct()
         {
             // Arrange             
-            var newCartItem = CreateNewCartItem(CustomName);
+            var newCartItem = CreateNewTemplatedCartItem(CustomName);
             newCartItem.Quantity = 5;
 
             var originalCartItemEntity = new CartItemEntity
@@ -187,6 +197,10 @@ namespace Kadena.Tests.BusinessLogic
                 SKUID = 123
             };
 
+            const int nodeId = 32;
+            const int documentId = 1123;
+
+            Setup<IKenticoProductsProvider, Product>(p => p.GetProductByNodeId(nodeId), new Product { Id = documentId });
             Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku { });
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
 
@@ -196,7 +210,7 @@ namespace Kadena.Tests.BusinessLogic
             // Assert
             Assert.NotNull(result);
             VerifyNoOtherCalls<IKListService>();
-            Verify<IShoppingCartItemsProvider>(ip => ip.SetArtwork(It.IsAny<CartItemEntity>(), 1123), Times.Once);
+            Verify<IShoppingCartItemsProvider>(ip => ip.SetArtwork(It.IsAny<CartItemEntity>(), documentId), Times.Once);
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
                     e => e.CartItemText == CustomName &&
                          e.SKUUnits == 5)
@@ -432,6 +446,7 @@ namespace Kadena.Tests.BusinessLogic
                                    IKenticoCustomerProvider kenticoCustomer,
                                    IKenticoAddressBookProvider addresses,
                                    IKenticoResourceService resources,
+                                   IKenticoProductsProvider productsProvider,
                                    ITaxEstimationService taxCalculator,
                                    IKListService mailingService,
                                    IUserDataServiceClient userDataClient,
@@ -446,7 +461,7 @@ namespace Kadena.Tests.BusinessLogic
                                    ISettingsService settingsService)
         {
             Assert.Throws<ArgumentNullException>(() => new ShoppingCartService(kenticoSite, localization, permissions, kenticoUsers,
-                kenticoCustomer, addresses, resources, taxCalculator, mailingService, userDataClient, shoppingCart, shoppingCartItems,
+                kenticoCustomer, addresses, resources, productsProvider, taxCalculator, mailingService, userDataClient, shoppingCart, shoppingCartItems,
                 checkoutfactory, log, productsService, imageService, skus, orderChecker, settingsService));
         }
 

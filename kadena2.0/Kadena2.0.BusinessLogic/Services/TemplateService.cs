@@ -134,8 +134,8 @@ namespace Kadena.BusinessLogic.Services
 
                         return new ProductTemplate
                         {
-                            EditorUrl = BuildTemplateEditorUrl(productEditorUrl, documentId, t.TemplateId.ToString(),
-                                product.ProductChiliWorkgroupID.ToString(), quantity, t.MailingList?.ContainerId, t.Name),
+                            EditorUrl = ProductTemplate.CreateEditorUrl(productEditorUrl, product.NodeId, t.TemplateId.ToString(),
+                                product.ProductChiliWorkgroupID.ToString(), quantity, product.Use3d, t.MailingList?.ContainerId, t.Name),
                             TemplateId = t.TemplateId,
                             CreatedDate = t.Created,
                             UpdatedDate = t.Updated,
@@ -154,25 +154,6 @@ namespace Kadena.BusinessLogic.Services
             return productTemplates;
         }
 
-        private string BuildTemplateEditorUrl(string productEditorBaseUrl, int nodeId, string templateId, string productChiliWorkgroupID, int mailingListRowCount,
-            string containerId = null, string customName = null)
-        {
-            var argumentFormat = "&{0}={1}";
-            var url = new StringBuilder(productEditorBaseUrl + "?documentId=" + nodeId)
-                .AppendFormat(argumentFormat, "templateId", templateId)
-                .AppendFormat(argumentFormat, "workspaceid", productChiliWorkgroupID)
-                .AppendFormat(argumentFormat, "quantity", mailingListRowCount);
-            if (containerId != null)
-            {
-                url.AppendFormat(argumentFormat, "containerId", containerId);
-            }
-            if (!string.IsNullOrWhiteSpace(customName))
-            {
-                url.AppendFormat(argumentFormat, "customName", HttpUtility.UrlEncode(customName));
-            }
-            return url.ToString();
-        }
-
         public async Task<Uri> GetPreviewUri(Guid templateId, Guid settingId)
         {
             var url = await _templateClient.GetPreview(templateId, settingId);
@@ -185,7 +166,7 @@ namespace Kadena.BusinessLogic.Services
         }
 
 
-        public async Task<string> TemplatedProductEditorUrl(int documentId, int userId, string productType,  Guid masterTemplateID, Guid workspaceId, bool use3d)
+        public async Task<string> TemplatedProductEditorUrl(int nodeId, int userId, string productType,  Guid masterTemplateID, Guid workspaceId, bool use3d)
         {
             var productEditorUrl = _documents.GetDocumentUrl(_resources.GetSiteSettingsKey(Settings.KDA_Templating_ProductEditorUrl));
             var selectMailingListUrl = _documents.GetDocumentUrl(_resources.GetSiteSettingsKey(Settings.KDA_Templating_SelectListPageUrl));
@@ -208,7 +189,7 @@ namespace Kadena.BusinessLogic.Services
             
             var uri = new Uri(newTemplateUrl.Payload);
             var newTemplateID = HttpUtility.ParseQueryString(uri.Query).Get("doc");
-            var destinationUrl = $"{productEditorUrl}?documentId={documentId}&templateId={newTemplateID}&workspaceid={workspaceId}&use3d={use3d}";
+            var destinationUrl = ProductTemplate.CreateEditorUrl(productEditorUrl, nodeId, newTemplateID, workspaceId.ToString(), use3d: use3d);
 
             if (ProductTypes.IsOfType(productType, ProductTypes.MailingProduct) && ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct))
             {
