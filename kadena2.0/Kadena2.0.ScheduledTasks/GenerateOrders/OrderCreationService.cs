@@ -1,4 +1,5 @@
 ﻿using CMS.SiteProvider;
+using Kadena.Models.ShoppingCarts;
 using Kadena.Models.SiteSettings;
 using Kadena.ScheduledTasks.Infrastructure;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -55,7 +56,7 @@ namespace Kadena.ScheduledTasks.GenerateOrders
             usersWithShoppingCartItems.ForEach(shoppingCartUser =>
             {
                 var salesPerson = KenticoUserProvider.GetUserByUserId(shoppingCartUser);
-                var salesPersonrCartIDs = shoppingCartProvider.GetShoppingCartIDByInventoryType(shoppingCartUser, 2, openCampaignID);
+                var salesPersonrCartIDs = shoppingCartProvider.GetShoppingCartIDByInventoryType(ShoppingCartTypes.PreBuy, shoppingCartUser, openCampaignID);
             });
             var distributors = kenticoAddressBookService.GetAddressesByAddressIds(unprocessedDistributorIDs.Select(x => x.Item1).ToList()).Select(x =>
             {

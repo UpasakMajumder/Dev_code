@@ -72,8 +72,9 @@ namespace Kadena2.BusinessLogic.Services.Orders
             var cartItems = orderCartItems.GetOrderCartItems();
             var currency = siteProvider.GetSiteCurrency();
             var totals = shoppingCart.GetShoppingCartTotals();
+            var shippingCost = shoppingCart.GetCurrentCartShippingCost();
+            totals.TotalTax = await taxService.EstimateTax(shippingAddress, totals.TotalItemsPrice, (decimal)shippingCost);
             totals.TotalItemsPrice = cartItems.Sum(i => i.TotalPrice); // cannot round whole sum, need to sum rounded numbers
-            totals.TotalTax = await taxService.EstimateTotalTax(shippingAddress);
 
             var pricedItemsTax = totals.TotalTax;
             if (cartItems.Any(c => !c.SendPriceToErp))
@@ -82,7 +83,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
                     .Where(c => c.SendPriceToErp)
                     .Sum(c => c.TotalPrice);
 
-                pricedItemsTax = await taxService.EstimatePricedItemsTax(shippingAddress, (double)pricedItemsPrice);
+                pricedItemsTax = await taxService.EstimateTax(shippingAddress, pricedItemsPrice, (decimal)shippingCost);
             }
 
             if (string.IsNullOrWhiteSpace(customer.Company))
