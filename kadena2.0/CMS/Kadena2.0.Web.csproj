@@ -1134,13 +1134,6 @@
     <Compile Include="CMSWebParts\Kadena\Chili\ChiliIframe.ascx.designer.cs">
       <DependentUpon>ChiliIframe.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSWebParts\Kadena\Chili\OpenTemplatedProductButton.ascx.cs">
-      <DependentUpon>OpenTemplatedProductButton.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSWebParts\Kadena\Chili\OpenTemplatedProductButton.ascx.designer.cs">
-      <DependentUpon>OpenTemplatedProductButton.ascx</DependentUpon>
-    </Compile>
     <Compile Include="CMSWebParts\Kadena\MailingList\StatisticLabel.ascx.cs">
       <DependentUpon>StatisticLabel.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1549,7 +1542,6 @@
     <Content Include="CMSPages\Kadena\OrderServiceTestPage.aspx" />
     <Content Include="CMSScripts\Custom\Kadena\custom.js" />
     <Content Include="CMSWebParts\Kadena\Chili\ChiliIframe.ascx" />
-    <Content Include="CMSWebParts\Kadena\Chili\OpenTemplatedProductButton.ascx" />
     <Content Include="CMSWebParts\Kadena\Product\AddTemplatedToCartButton.ascx" />
   </ItemGroup>
   <ItemGroup>

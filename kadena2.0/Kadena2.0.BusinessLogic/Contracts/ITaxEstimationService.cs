@@ -5,7 +5,6 @@ namespace Kadena.BusinessLogic.Contracts
 {
     public interface ITaxEstimationService
     {
-        Task<decimal> EstimatePricedItemsTax(DeliveryAddress deliveryAddress, double pricedItemsPrice);
-        Task<decimal> EstimateTotalTax(DeliveryAddress deliveryAddress);
+        Task<decimal> EstimateTax(DeliveryAddress deliveryAddress, decimal pricedItemsPrice, decimal shippingCost);
     }
 }
