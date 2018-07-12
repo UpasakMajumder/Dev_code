@@ -1,19 +1,17 @@
 ﻿using AutoMapper;
 using CMS.CustomTables;
-using CMS.DataEngine;
-using CMS.Helpers;
+using CMS.Ecommerce;
+using CMS.SiteProvider;
 using Kadena.Models.FyBudget;
 using Kadena.Models.UserBudget;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CMS.Ecommerce;
-using CMS.SiteProvider;
 
 namespace Kadena.WebAPI.KenticoProviders.Providers
 {
-    public class KenticoUserBudgetProvider : IkenticoUserBudgetProvider
+    public class KenticoUserBudgetProvider : IKenticoUserBudgetProvider
     {
         private readonly IMapper mapper;
         private readonly IKenticoLogger logger;
@@ -45,55 +43,24 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
 
         public List<UserBudgetItem> GetUserBudgetAllocationRecords(int userId, int siteId)
         {
-            List<UserBudgetItem> userBudgetItems = new List<UserBudgetItem>();
-            var userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("UserID", userId).WhereEquals("SiteID", siteId).ToList();
-            if (userBudgetDetails.Count > 0)
-            {
-                foreach (CustomTableItem item in userBudgetDetails)
-                {
-                    userBudgetItems.Add(new UserBudgetItem()
-                    {
-                        ItemID = item.ItemID,
-                        Budget = item.GetValue("Budget", default(decimal)),
-                        Year = item.GetValue("Year", default(string)),
-                        UserRemainingBudget = item.GetValue("UserRemainingBudget", default(decimal)),
-                        UserID = item.GetValue("UserID", default(int))
-                    });
-                }
-            }
-            return userBudgetItems;
-        }
-
-        public bool CheckIfYearExists(string year, int userId)
-        {
-            var userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("UserID", userId).WhereEquals("Year", year).ToList();
-            return !DataHelper.DataSourceIsEmpty(userBudgetDetails) ? true : false;
-
-        }
-
-        public void UpdateUserBudgetAllocationRecords(int userId, string year, decimal? totalToBeDeducted)
-        {
-            var userBudgetDetails = CustomTableItemProvider
-                .GetItems(CustomTableClassName)
+            var userBudgetItems = new List<UserBudgetItem>();
+            var userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName)
                 .WhereEquals("UserID", userId)
-                .WhereEquals("Year", year)
-                .FirstOrDefault();
-
-            var defaultBudget = 0;
-            var remainingBudget = userBudgetDetails?.GetValue("UserRemainingBudget", default(decimal)) ?? defaultBudget;
-            if (userBudgetDetails == null)
-            {
-                logger.LogInfo(
-                    nameof(KenticoUserBudgetProvider), 
-                    nameof(UpdateUserBudgetAllocationRecords), 
-                    $"User budget allocation for user {userId} and year {year} not found. Using {defaultBudget} instead.");
-            }
-
-            var newBudget = remainingBudget - totalToBeDeducted;
-
-            userBudgetDetails.SetValue("UserRemainingBudget", newBudget);
-            userBudgetDetails.Update();
+                .WhereEquals("SiteID", siteId)
+                .ToList()
+                .Select(MapToUserBudgetItem)
+                .ToList();
+            return userBudgetDetails;
         }
+
+        private UserBudgetItem MapToUserBudgetItem(CustomTableItem item) => new UserBudgetItem()
+        {
+            ItemID = item.ItemID,
+            Budget = item.GetValue("Budget", default(decimal)),
+            UserID = item.GetValue("UserID", 0),
+            UserRemainingBudget = item.GetValue("UserRemainingBudget", default(decimal)),
+            Year = item.GetValue("Year", default(string))
+        };
 
         public List<FiscalYear> GetFiscalYearRecords()
         {
@@ -115,37 +82,47 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             return fiscalYearsList;
         }
 
-        public UserBudgetItem CreateUserBudgetWithYear(string year, int siteID, int userId)
+        public UserBudgetItem GetOrCreateUserBudgetWithYear(string year, int siteID, int userId)
         {
-            DataClassInfo customTable = DataClassInfoProvider.GetDataClassInfo(CustomTableClassName);
-            CustomTableItem newCustomTableItem = CustomTableItem.New(CustomTableClassName);
-            if (customTable != null)
+            var userBudget = CustomTableItemProvider.GetItems(CustomTableClassName)
+                .WhereEquals("UserID", userId)
+                .WhereEquals("SiteID", siteID)
+                .WhereEquals("Year", year)
+                .FirstOrDefault();
+
+            if (userBudget == null)
             {
-                newCustomTableItem.SetValue("UserID", userId);
-                newCustomTableItem.SetValue("Year", year);
-                newCustomTableItem.SetValue("Budget", default(decimal));
-                newCustomTableItem.SetValue("UserRemainingBudget", default(decimal));
-                newCustomTableItem.SetValue("SiteID", siteID);
-                newCustomTableItem.Insert();
-                return new UserBudgetItem()
-                {
-                    ItemID = newCustomTableItem.ItemID,
-                    Budget = newCustomTableItem.GetValue("Budget", default(decimal)),
-                    UserID = userId,
-                    UserRemainingBudget = newCustomTableItem.GetValue("UserRemainingBudget", default(decimal)),
-                    Year = year
-                };
+                userBudget = CustomTableItem.New(CustomTableClassName);
+                userBudget.SetValue("UserID", siteID);
+                userBudget.SetValue("Year", year);
+                userBudget.SetValue("Budget", 0);
+                userBudget.SetValue("UserRemainingBudget", 0);
+                userBudget.SetValue("SiteID", siteID);
+                userBudget.Insert();
             }
-            return null;
+
+            return MapToUserBudgetItem(userBudget);
         }
 
         public void AdjustUserRemainingBudget(string year, int userID, decimal adjustment)
         {
-            CustomTableItem userBudgetDetails = CustomTableItemProvider.GetItems(CustomTableClassName).WhereEquals("UserID", userID).WhereEquals("Year", year).FirstOrDefault();
+            var userBudgetDetails = CustomTableItemProvider
+                .GetItems(CustomTableClassName)
+                .WhereEquals("UserID", userID)
+                .WhereEquals("Year", year)
+                .FirstOrDefault();
+
             if (userBudgetDetails != null)
             {
                 userBudgetDetails.SetValue("UserRemainingBudget", userBudgetDetails.GetValue("UserRemainingBudget", default(decimal)) + (adjustment));
                 userBudgetDetails.Update();
+            }
+            else
+            {
+                logger.LogInfo(
+                    nameof(KenticoUserBudgetProvider),
+                    nameof(AdjustUserRemainingBudget),
+                    $"User budget allocation for user {userID} and year {year} not found.");
             }
         }
     }
