@@ -263,7 +263,9 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     isoCountryCode = country.CountryTwoLetterCode,
                     KenticoStateID = distributorAddress.AddressStateID,
                     AddressPersonalName = distributorAddress.AddressPersonalName,
-                    AddressCompanyName = distributorAddress.GetStringValue("CompanyName", string.Empty)
+                    AddressCompanyName = distributorAddress.GetStringValue("CompanyName", string.Empty),
+                    Phone = distributorAddress.AddressPhone,
+                    Email = distributorAddress.GetStringValue("Email", string.Empty)
                 };
             }
             catch (Exception ex)
