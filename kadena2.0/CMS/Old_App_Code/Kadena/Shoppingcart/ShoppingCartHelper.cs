@@ -28,14 +28,19 @@ using Kadena2.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Models.CampaignData;
 using Kadena.Models.ShoppingCarts;
+using Kadena.BusinessLogic.Contracts;
+using AutoMapper;
+using Kadena.Models;
 
 namespace Kadena.Old_App_Code.Kadena.Shoppingcart
 {
     public class ShoppingCartHelper
     {
         private static ShoppingCartInfo Cart { get; set; }
+        private static readonly IMapper mapper = DIContainer.Resolve<IMapper>();
         private static readonly IGetOrderDataService getOrderData = DIContainer.Resolve<IGetOrderDataService>();
         private static readonly IDeliveryEstimationDataService estimationData = DIContainer.Resolve<IDeliveryEstimationDataService>();
+        private static readonly ITaxEstimationService taxEstimationService = DIContainer.Resolve<ITaxEstimationService>();
         private static readonly IShoppingCartProvider shoppingCartProvider = DIContainer.Resolve<IShoppingCartProvider>();
         /// <summary>
         /// Returns order dto
@@ -50,6 +55,8 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 var shoppingCart = shoppingCartProvider.GetShoppingCart(cart.ShoppingCartID, orderType);
                 Cart = cart;
                 var billingAddress = GetBillingAddress();
+                var taxAddress = mapper.Map<DeliveryAddress>(billingAddress);
+                shoppingCart.TotalTax = taxEstimationService.EstimateTax(taxAddress, shoppingCart.TotalPrice, shippingCost).Result;
                 return new OrderDTO
                 {
                     Type = orderType,
@@ -256,7 +263,9 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     isoCountryCode = country.CountryTwoLetterCode,
                     KenticoStateID = distributorAddress.AddressStateID,
                     AddressPersonalName = distributorAddress.AddressPersonalName,
-                    AddressCompanyName = distributorAddress.GetStringValue("CompanyName", string.Empty)
+                    AddressCompanyName = distributorAddress.GetStringValue("CompanyName", string.Empty),
+                    Phone = distributorAddress.AddressPhone,
+                    Email = distributorAddress.GetStringValue("Email", string.Empty)
                 };
             }
             catch (Exception ex)
@@ -278,7 +287,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 return new ShippingOptionDTO
                 {
                     KenticoShippingOptionID = Cart.ShoppingCartShippingOptionID,
-                    ShippingService = Cart.ShippingOption.ShippingOptionName.ToLower().Equals(Models.Shipping.ShippingOption.Ground.ToLower()) 
+                    ShippingService = Cart.ShippingOption.ShippingOptionName.ToLower().Equals(Models.Shipping.ShippingOption.Ground.ToLower())
                         ? Models.Shipping.ShippingOption.Ground
                         : Cart.ShippingOption.ShippingOptionCarrierServiceName,
                     ShippingCompany = carrier != null ? carrier.CarrierName : Cart.ShippingOption.ShippingOptionName,
@@ -369,31 +378,31 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
 
             try
             {
-                return items.GroupJoin(cartItems, i=>i.SKUID, ci=>ci.SkuId, (item, ci) =>
-                {
-                    var cartItem = ci.DefaultIfEmpty().First();
-                    var uom = item.SKU.GetStringValue("SKUUnitOfMeasure", string.Empty);
-                    if (string.IsNullOrEmpty(uom))
+                return items.GroupJoin(cartItems, i => i.SKUID, ci => ci.SkuId, (item, ci) =>
                     {
-                        uom = SKUUnitOfMeasure.Default;
-                    }
-
-                    return new OrderItemDTO
-                    {
-                        SKU = new SKUDTO
+                        var cartItem = ci.DefaultIfEmpty().First();
+                        var uom = item.SKU.GetStringValue("SKUUnitOfMeasure", string.Empty);
+                        if (string.IsNullOrEmpty(uom))
                         {
-                            KenticoSKUID = cartItem?.SkuId ?? item.SKUID,
-                            Name = item.SKU.SKUName,
-                            SKUNumber = item.SKU.SKUNumber
-                        },
-                        UnitCount = cartItem?.Quantity ?? item.CartItemUnits,
-                        UnitOfMeasure = uomProvider.GetUnitOfMeasure(uom).ErpCode,
-                        RequiresApproval = item.SKU.GetBooleanValue("SKUApprovalRequired", false),
-                        UnitPrice = cartItem?.UnitPrice ?? ValidationHelper.GetDecimal(item.UnitPrice, default(decimal)),
-                        TotalPrice = cartItem?.TotalPrice ?? ValidationHelper.GetDecimal(item.TotalPrice, default(decimal)),
-                        DocumentId = item.GetIntegerValue("ProductPageID", 0)
-                    };
-                })
+                            uom = SKUUnitOfMeasure.Default;
+                        }
+
+                        return new OrderItemDTO
+                        {
+                            SKU = new SKUDTO
+                            {
+                                KenticoSKUID = cartItem?.SkuId ?? item.SKUID,
+                                Name = item.SKU.SKUName,
+                                SKUNumber = item.SKU.SKUNumber
+                            },
+                            UnitCount = cartItem?.Quantity ?? item.CartItemUnits,
+                            UnitOfMeasure = uomProvider.GetUnitOfMeasure(uom).ErpCode,
+                            RequiresApproval = item.SKU.GetBooleanValue("SKUApprovalRequired", false),
+                            UnitPrice = cartItem?.UnitPrice ?? ValidationHelper.GetDecimal(item.UnitPrice, default(decimal)),
+                            TotalPrice = cartItem?.TotalPrice ?? ValidationHelper.GetDecimal(item.TotalPrice, default(decimal)),
+                            DocumentId = item.GetIntegerValue("ProductPageID", 0)
+                        };
+                    })
                 .ToList();
             }
             catch (Exception ex)
@@ -454,7 +463,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                Campaign campaign = CampaignProvider.GetCampaigns()
+                var campaign = CampaignProvider.GetCampaigns()
                     .WhereEquals("NodeSiteID", SiteContext.CurrentSiteID)
                     .WhereEquals("CampaignID", campaignID)
                     .FirstObject;
@@ -497,7 +506,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 var product = DIContainer.Resolve<IKenticoSkuProvider>();
                 cart.CartItems.ForEach(cartItem =>
                 {
-                    product.SetSkuAvailableQty(cartItem.SKUID, cartItem.CartItemUnits);
+                    product.UpdateAvailableQuantity(cartItem.SKUID, -cartItem.CartItemUnits);
                 });
             }
             catch (Exception ex)
@@ -533,7 +542,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// </summary>
         /// <param name="inventoryType"></param>
         /// <returns></returns>
-        public static Campaign GetOpenCampaign()
+        public static CMS.DocumentEngine.Types.KDA.Campaign GetOpenCampaign()
         {
             try
             {
@@ -560,11 +569,11 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
             try
             {
                 var campaignFiscalYear = DIContainer.Resolve<IKenticoCampaignsProvider>().GetCampaignFiscalYear(orderDetails.Campaign.ID);
-                var totalToBeDeducted = orderDetails.Totals.Price + orderDetails.Totals.Shipping;
+                var totalToBeDeducted = -(orderDetails.Totals.Price + orderDetails.Totals.Shipping ?? 0);
                 var fiscalYear = orderDetails.Type == OrderType.generalInventory ?
                                  ValidationHelper.GetString(orderDetails.OrderDate.Year, string.Empty) :
                                  orderDetails.Type == OrderType.prebuy ? campaignFiscalYear : string.Empty;
-                DIContainer.Resolve<IkenticoUserBudgetProvider>().UpdateUserBudgetAllocationRecords(userID, fiscalYear, totalToBeDeducted);
+                DIContainer.Resolve<IKenticoUserBudgetProvider>().AdjustUserRemainingBudget(fiscalYear, userID, totalToBeDeducted);
             }
             catch (Exception ex)
             {

@@ -36,13 +36,13 @@ export default (state = defaultState, action) => {
           ...state.ui.commonInfo,
           totalCost: {
             ...state.ui.commonInfo.totalCost,
-            value: payload.pricingInfo[payload.pricingInfo.length - 1].value // totalCost is always the last item
+            value: payload.pricingInfo.length ? payload.pricingInfo[payload.pricingInfo.length - 1].value : '' // totalCost is always the last item
           }
         },
-        pricingInfo: {
+        pricingInfo: payload.pricingInfo.length ? {
           ...state.ui.pricingInfo,
           items: payload.pricingInfo
-        },
+        } : null,
         orderedItems: {
           ...state.ui.orderedItems,
           items: state.ui.orderedItems.items.map((item) => {

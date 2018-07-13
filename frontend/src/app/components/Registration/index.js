@@ -12,6 +12,8 @@ import defineStrength from 'app.helpers/password';
 import { FAILURE } from 'app.consts';
 /* globals */
 import { REGISTRATION } from 'app.globals';
+/* local components */
+import LoginModal from './LoginModal';
 
 class Registration extends Component {
   static defaultProps = {
@@ -35,7 +37,12 @@ class Registration extends Component {
         url: '#',
         text: 'Sign Inn'
       },
-      strength: REGISTRATION.strength || null
+      strength: REGISTRATION.strength || null,
+      loginModal: REGISTRATION.loginModal || {
+        body: 'Your account was successfully created. Click the login link below to access the storefront.',
+        btnLabel: 'Login',
+        title: 'Registration successful'
+      }
     } : {
       title: 'Sign Up',
       labels: {
@@ -56,7 +63,12 @@ class Registration extends Component {
         url: '#',
         text: 'Sign In'
       },
-      strength: null
+      strength: null,
+      loginModal: {
+        body: 'Your account was successfully created. Click the login link below to access the storefront.',
+        btnLabel: 'Login',
+        title: 'Registration successful'
+      }
     }
   }
 
@@ -90,7 +102,12 @@ class Registration extends Component {
         policyStrings: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
         usePolicy: PropTypes.bool,
         info: PropTypes.string.isRequire
-      })
+      }),
+      loginModal: PropTypes.shape({
+        btnLabel: PropTypes.string.isRequired,
+        body: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired
+      }).isRequired
     }).isRequired
   }
 
@@ -109,7 +126,8 @@ class Registration extends Component {
       level: 0,
       message: this.props.config.strength.policyStrings[0],
       valid: false
-    }
+    },
+    showLoginModal: false
   };
 
   getErrorMessage = (name) => {
@@ -147,6 +165,10 @@ class Registration extends Component {
       this.getStrength(value);
     }
   };
+
+  handleRegistrationSuccess = () => {
+    this.setState({ showLoginModal: true });
+  }
 
   isValid = () => {
     const {
@@ -234,7 +256,7 @@ class Registration extends Component {
               this.setState({ invalids });
             }
           } else {
-            location.assign(this.props.config.toLogin.url);
+            this.handleRegistrationSuccess();
           }
         } else {
           window.store.dispatch({
@@ -281,8 +303,22 @@ class Registration extends Component {
     this.setState({ isPending: false });
   };
 
+  renderLoginModal = () => {
+    const { toLogin, loginModal } = this.props.config;
+    const { btnLabel, body, title } = loginModal;
+
+    return (
+      <LoginModal
+        body={body}
+        btnLabel={btnLabel}
+        btnLink={toLogin.url}
+        title={title}
+      />
+    );
+  }
+
   render() {
-    const { fields } = this.state;
+    const { fields, showLoginModal } = this.state;
     const { config } = this.props;
 
     return (
@@ -344,18 +380,20 @@ class Registration extends Component {
         </div>
 
         <div className="mb-3">
-            <Button
-              text={config.labels.button}
-              type="action"
-              btnClass="login__login-button btn--no-shadow"
-              onClick={this.handleSubmit}
-              isLoading={this.state.isPending}
-            />
-          </div>
+          <Button
+            text={config.labels.button}
+            type="action"
+            btnClass="login__login-button btn--no-shadow"
+            onClick={this.handleSubmit}
+            isLoading={this.state.isPending}
+          />
+        </div>
 
-          <div>
-            <a className="link" href={config.toLogin.url}>{config.toLogin.text}</a>
-          </div>
+        <div>
+          <a className="link" href={config.toLogin.url}>{config.toLogin.text}</a>
+        </div>
+
+        {showLoginModal && this.renderLoginModal()}
       </div>
     );
   }

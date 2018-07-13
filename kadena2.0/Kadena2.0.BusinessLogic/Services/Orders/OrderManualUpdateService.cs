@@ -5,13 +5,14 @@ using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
+using Kadena.Models;
 using Kadena.Models.CampaignData;
 using Kadena.Models.OrderDetail;
 using Kadena.Models.Orders;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
-using Kadena2.MicroserviceClients.MicroserviceRequests;
+using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,41 +36,43 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IApproverService approvers;
         private readonly IKenticoProductsProvider productsProvider;
         private readonly IKenticoSkuProvider skuProvider;
+        private readonly IKenticoPermissionsProvider permissions;
         private readonly IOrderItemCheckerService orderChecker;
         private readonly IProductsService products;
-        private readonly ITaxEstimationServiceClient taxes;
         private readonly IKenticoResourceService resources;
         private readonly IDeliveryEstimationDataService deliveryData;
         private readonly IKenticoLogger log;
         private readonly IMapper mapper;
-        private readonly IkenticoUserBudgetProvider budgetProvider;
+        private readonly IKenticoUserBudgetProvider budgetProvider;
         private readonly IDistributorShoppingCartService distributorShoppingCartService;
         private readonly IShoppingCartProvider shoppingCartProvider;
+        private readonly ITaxEstimationService taxEstimationService;
 
         public OrderManualUpdateService(IOrderManualUpdateClient updateService,
                                         IOrderViewClient orderService,
                                         IApproverService approvers,
                                         IKenticoProductsProvider productsProvider,
                                         IKenticoSkuProvider skuProvider,
+                                        IKenticoPermissionsProvider permissions,
                                         IOrderItemCheckerService orderChecker,
                                         IProductsService products,
-                                        ITaxEstimationServiceClient taxes,
                                         IKenticoResourceService resources,
                                         IDeliveryEstimationDataService deliveryData,
                                         IKenticoLogger log,
                                         IMapper mapper,
                                         IDistributorShoppingCartService distributorShoppingCartService,
                                         IShoppingCartProvider shoppingCartProvider,
-                                        IkenticoUserBudgetProvider budgetProvider)
+                                        IKenticoUserBudgetProvider budgetProvider,
+                                        ITaxEstimationService taxEstimationService)
         {
             this.updateService = updateService ?? throw new ArgumentNullException(nameof(updateService));
             this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
             this.approvers = approvers ?? throw new ArgumentNullException(nameof(approvers));
             this.productsProvider = productsProvider ?? throw new ArgumentNullException(nameof(productsProvider));
             this.skuProvider = skuProvider ?? throw new ArgumentNullException(nameof(skuProvider));
+            this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             this.orderChecker = orderChecker ?? throw new ArgumentNullException(nameof(orderChecker));
             this.products = products ?? throw new ArgumentNullException(nameof(products));
-            this.taxes = taxes ?? throw new ArgumentNullException(nameof(taxes));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.deliveryData = deliveryData ?? throw new ArgumentNullException(nameof(deliveryData));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
@@ -77,6 +80,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.distributorShoppingCartService = distributorShoppingCartService ?? throw new ArgumentNullException(nameof(distributorShoppingCartService));
             this.shoppingCartProvider = shoppingCartProvider ?? throw new ArgumentNullException(nameof(shoppingCartProvider));
             this.budgetProvider = budgetProvider ?? throw new ArgumentNullException(nameof(budgetProvider));
+            this.taxEstimationService = taxEstimationService ?? throw new ArgumentNullException(nameof(taxEstimationService));
         }
 
         public async Task<OrderUpdateResult> UpdateOrder(OrderUpdate request)
@@ -124,6 +128,11 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new Exception("Couldn't match all given line numbers in original order");
             }
 
+            if(IsCreditCardPayment(orderDetail.PaymentInfo.PaymentMethod) && updatedItemsData.Any(i => i.UpdatedItem.Quantity > i.OriginalItem.Quantity))
+            {
+                throw new Exception("Can't increase item quantity, if payment method is credit card.");
+            }
+
             var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
             targetAddress.Country = orderDetail.ShippingInfo.AddressTo.isoCountryCode;
 
@@ -153,22 +162,38 @@ namespace Kadena.BusinessLogic.Services.Orders
                     }
                     );
 
+                    // deleted items will not be shopping cart, need to add them manually
+                    var deletedItems = updatedItemsData
+                        .Where(u => u.UpdatedItem.Quantity == 0)
+                        .Select(u => new ItemUpdateDto
+                        {
+                            LineNumber = u.UpdatedItem.LineNumber,
+                            Quantity = 0,
+                            TotalPrice = 0,
+                            UnitPrice = 0
+                        });
+
                     // get updated data from cart
                     var cart = shoppingCartProvider.GetShoppingCart(cartId, orderDetail.Type);
                     requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart);
                     requestDto.OrderId = request.OrderId;
-                    requestDto.Items = cart.Items.Select(i =>
-                    {
-                        var item = mapper.Map<ItemUpdateDto>(i);
-                        item.LineNumber = skuLines[i.SkuId];
-                        return item;
-                    })
-                    .ToList();
+                    requestDto.Items = cart.Items
+                        .Select(i =>
+                        {
+                            var item = mapper.Map<ItemUpdateDto>(i);
+                            item.LineNumber = skuLines[i.SkuId];
+                            return item;
+                        })
+                        .Concat(deletedItems)
+                        .ToList();
 
                     var weight = shoppingCartProvider.GetCartWeight(cartId);
                     var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
                         weight, targetAddress);
                     requestDto.TotalShipping = shippingCost;
+
+                    var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
+                    requestDto.TotalTax = await taxEstimationService.EstimateTax(taxAddress, requestDto.TotalPrice, requestDto.TotalShipping);
                 }
                 catch (Exception exc)
                 {
@@ -191,8 +216,9 @@ namespace Kadena.BusinessLogic.Services.Orders
                 AdjustAvailableItems(updatedItemsData);
 
                 // Adjust budget
-                budgetProvider.UpdateUserBudgetAllocationRecords(orderDetail.Customer.KenticoUserID,
+                budgetProvider.AdjustUserRemainingBudget(
                     orderDetail.OrderDate.Year.ToString(),
+                    orderDetail.Customer.KenticoUserID,
                     requestDto.TotalShipping - Convert.ToDecimal(orderDetail.PaymentInfo.Shipping));
             }
             else
@@ -259,6 +285,11 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         OrderUpdateResult GetUpdatesForFrontend(OrderManualUpdateRequestDto requestDto)
         {
+            if (!permissions.UserCanSeePrices())
+            {
+                return null;
+            }
+
             var result = new OrderUpdateResult
             {
                 PricingInfo = new[]
@@ -307,21 +338,16 @@ namespace Kadena.BusinessLogic.Services.Orders
                 .Where(u => ProductTypes.IsOfType(u.Product.ProductType, ProductTypes.InventoryProduct))
                 .ToList();
 
-            inventoryProductsData.ForEach(data =>
-            {
-                var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
-
-                // Not using Set... because when waiting for result of OrderUpdate, quantity can change
-                skuProvider.IncreaseSkuAvailableQty(data.Sku.SKUNumber, addedQuantity);
-            });
+            AdjustAvailableItems(inventoryProductsData);
         }
 
         void AdjustAvailableItems(IEnumerable<UpdatedItemCheckData> updateData)
         {
             updateData.ToList().ForEach(data =>
             {
-                var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
-                skuProvider.SetSkuAvailableQty(data.OriginalItem.SkuId, addedQuantity);
+                var freedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
+                // Not using Set... because when waiting for result of OrderUpdate, quantity can change
+                skuProvider.UpdateAvailableQuantity(data.OriginalItem.SkuId, freedQuantity);
             });
         }
 
@@ -357,9 +383,6 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             request.TotalShipping = 0.0m;
 
-            var sourceAddress = deliveryData.GetSourceAddress();
-
-
             log.LogInfo("Approval", "Info", $"Provider is '{orderDetail.ShippingInfo.Provider}'");
             log.LogInfo("Approval", "Info", $"Total shippable weight is '{shippableWeight}'");
 
@@ -372,8 +395,13 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 log.LogInfo("Approval", "Info", $"NOT going to call estimation microservice");
             }
+            var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
+            request.TotalTax = await taxEstimationService.EstimateTax(taxAddress, request.TotalPrice, request.TotalShipping);
+        }
 
-            request.TotalTax = await EstimateTax(request.TotalPrice, request.TotalShipping, sourceAddress, targetAddress);
+        private bool IsCreditCardPayment(string paymentMethod)
+        {
+            return paymentMethod == "CreditCard" || paymentMethod == "CreditCardDemo";
         }
 
         private decimal GetShippinCost(string provider, string shippingService, decimal shippableWeight, AddressDto targetAddress)
@@ -381,37 +409,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             log.LogInfo("Approval", "Info", $"Going to call estimation microservice");
 
             return deliveryData.GetShippingCost(provider, shippingService, shippableWeight, targetAddress);
-        }
-
-        async Task<decimal> EstimateTax(decimal totalBasePrice, decimal shipppingCosts, AddressDto sourceAddress, AddressDto targetAddress)
-        {
-            if (totalBasePrice == 0.0m)
-            {
-                return 0.0m;
-            }
-
-            var taxRequest = new TaxCalculatorRequestDto
-            {
-                ShipCost = (double)shipppingCosts,
-                TotalBasePrice = (double)totalBasePrice,
-
-                ShipFromCity = sourceAddress.City,
-                ShipFromState = sourceAddress.State,
-                ShipFromZip = sourceAddress.Postal,
-
-                ShipToCity = targetAddress.City,
-                ShipToState = targetAddress.State,
-                ShipToZip = targetAddress.Postal
-            };
-
-            var taxResult = await taxes.CalculateTax(taxRequest);
-
-            if (!taxResult.Success)
-            {
-                throw new Exception("Failed to estimate tax");
-            }
-
-            return taxResult.Payload;
         }
 
         ItemUpdateDto CreateChangedItem(UpdatedItemCheckData data)
