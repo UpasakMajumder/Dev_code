@@ -1,6 +1,16 @@
 .registration {
   &__form {
+    $width: 400px;
+
     @extend .new-login__form;
-    width: 400px;
+    width: $width;
+    margin-left: -($width / 2);
+    transform: none; // unset transformation inherited from new-login__form to enable fullscreen nested dialog
+
+    // make dialog fullscreen
+    .dialog.active {
+      width: 100vw;
+      height: 100vh;
+    }
   }
 }
