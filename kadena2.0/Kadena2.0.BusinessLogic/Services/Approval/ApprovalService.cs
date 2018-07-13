@@ -18,18 +18,24 @@ namespace Kadena.BusinessLogic.Services.Approval
         private readonly IKenticoLogger log;
         private readonly IKenticoOrderProvider kenticoOrderProvider;
         private readonly IKenticoResourceService kenticoResource;
+        private readonly IOrderViewClient orderService;
+        private readonly IKenticoSkuProvider skuProvider;
 
         public ApprovalService(IApproverService approvers,
-                               IApprovalServiceClient approvalClient,
-                                       IKenticoLogger log,
-                               IKenticoOrderProvider kenticoOrderProvider,
-                               IKenticoResourceService kenticoResource)
+            IApprovalServiceClient approvalClient,
+            IKenticoLogger log,
+            IKenticoOrderProvider kenticoOrderProvider,
+            IKenticoResourceService kenticoResource,
+            IOrderViewClient orderService,
+            IKenticoSkuProvider skuProvider)
         {
             this.approvers = approvers ?? throw new ArgumentNullException(nameof(approvers));
             this.approvalClient = approvalClient ?? throw new ArgumentNullException(nameof(approvalClient));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
             this.kenticoOrderProvider = kenticoOrderProvider ?? throw new ArgumentNullException(nameof(kenticoOrderProvider));
             this.kenticoResource = kenticoResource ?? throw new ArgumentNullException(nameof(kenticoResource));
+            this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+            this.skuProvider = skuProvider ?? throw new ArgumentNullException(nameof(skuProvider));
         }
 
         public async Task<ApprovalResult> ApproveOrder(string orderId, int customerId, string customerName, string note = "")
@@ -45,7 +51,16 @@ namespace Kadena.BusinessLogic.Services.Approval
 
         public async Task<ApprovalResult> RejectOrder(string orderId, int customerId, string customerName, string rejectionNote = "")
         {
+            var order = await orderService.GetOrderByOrderId(orderId);
+            if (!order.Success)
+            {
+                throw new ApprovalServiceException(order.ErrorMessages);
+            }
+
             await CallApprovalService(orderId, customerId, customerName, rejectionNote, ApprovalState.ApprovalRejected);
+
+            order.Payload.Items.ForEach(i => skuProvider.UpdateAvailableQuantity(i.SkuId, i.Quantity));
+
             return new ApprovalResult
             {
                 Title = kenticoResource.GetResourceString("Kadena.Order.Reject.Success.ToastTitle"),
@@ -79,8 +94,6 @@ namespace Kadena.BusinessLogic.Services.Approval
 
             log.LogInfo(approvalState.GetDisplayName(), "Info", $"Order '{approveRequest.OrderId}' successfully processed, approval status : {microserviceResult.Payload}. {noteLog}");
         }
-
-        
 
         private ApprovalRequestDto GetApprovalData(string orderId, int customerId, string customerName, ApprovalState state, string rejectionNote)
         {
