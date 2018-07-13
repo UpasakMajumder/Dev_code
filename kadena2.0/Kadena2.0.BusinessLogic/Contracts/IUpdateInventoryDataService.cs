@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Kadena.ScheduledTasks.Infrastructure
+namespace Kadena.BusinessLogic.Contracts
 {
     public interface IUpdateInventoryDataService
     {
