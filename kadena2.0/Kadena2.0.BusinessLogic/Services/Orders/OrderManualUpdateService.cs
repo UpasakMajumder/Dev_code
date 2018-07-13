@@ -128,6 +128,11 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new Exception("Couldn't match all given line numbers in original order");
             }
 
+            if(IsCreditCardPayment(orderDetail.PaymentInfo.PaymentMethod) && updatedItemsData.Any(i => i.UpdatedItem.Quantity > i.OriginalItem.Quantity))
+            {
+                throw new Exception("Can't increase item quantity, if payment method is credit card.");
+            }
+
             var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
             targetAddress.Country = orderDetail.ShippingInfo.AddressTo.isoCountryCode;
 
@@ -392,6 +397,11 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
             var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
             request.TotalTax = await taxEstimationService.EstimateTax(taxAddress, request.TotalPrice, request.TotalShipping);
+        }
+
+        private bool IsCreditCardPayment(string paymentMethod)
+        {
+            return paymentMethod == "CreditCard" || paymentMethod == "CreditCardDemo";
         }
 
         private decimal GetShippinCost(string provider, string shippingService, decimal shippableWeight, AddressDto targetAddress)
