@@ -43,7 +43,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IDeliveryEstimationDataService deliveryData;
         private readonly IKenticoLogger log;
         private readonly IMapper mapper;
-        private readonly IkenticoUserBudgetProvider budgetProvider;
+        private readonly IKenticoUserBudgetProvider budgetProvider;
         private readonly IDistributorShoppingCartService distributorShoppingCartService;
         private readonly IShoppingCartProvider shoppingCartProvider;
         private readonly ITaxEstimationService taxEstimationService;
@@ -62,7 +62,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                                         IMapper mapper,
                                         IDistributorShoppingCartService distributorShoppingCartService,
                                         IShoppingCartProvider shoppingCartProvider,
-                                        IkenticoUserBudgetProvider budgetProvider,
+                                        IKenticoUserBudgetProvider budgetProvider,
                                         ITaxEstimationService taxEstimationService)
         {
             this.updateService = updateService ?? throw new ArgumentNullException(nameof(updateService));
@@ -211,8 +211,9 @@ namespace Kadena.BusinessLogic.Services.Orders
                 AdjustAvailableItems(updatedItemsData);
 
                 // Adjust budget
-                budgetProvider.UpdateUserBudgetAllocationRecords(orderDetail.Customer.KenticoUserID,
+                budgetProvider.AdjustUserRemainingBudget(
                     orderDetail.OrderDate.Year.ToString(),
+                    orderDetail.Customer.KenticoUserID,
                     requestDto.TotalShipping - Convert.ToDecimal(orderDetail.PaymentInfo.Shipping));
             }
             else
