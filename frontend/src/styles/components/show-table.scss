@@ -33,7 +33,10 @@
     background-color: rgba($brand-white, 1);
     border-top: 1px solid $brand-grey;
     border-bottom: 1px solid $brand-grey;
-    white-space: nowrap;
+
+    @media (min-width: 1400px) {
+      white-space: nowrap;
+    }
 
     &:last-child {
       border-right: 1px solid $brand-grey;
@@ -116,10 +119,14 @@
   }
 
   &__text-appear {
-    max-width: 250px;
+    max-width: 100px;
     position: relative;
     overflow: hidden;
     white-space: nowrap;
+
+    @media (min-width: 1400px) {
+      max-width: 250px;
+    }
 
     &:after {
       content: '';

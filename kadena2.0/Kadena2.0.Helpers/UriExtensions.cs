@@ -7,12 +7,9 @@ namespace Kadena.Helpers
     {
         public static Uri AddParameter(this Uri url, string paramName, string paramValue)
         {
-            var uriBuilder = new UriBuilder(url);
-            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-            query[paramName] = paramValue;
-            uriBuilder.Query = HttpUtility.UrlDecode(query.ToString());
-
-            return uriBuilder.Uri;
+            var urlString = url.ToString();
+            var newUrl = UrlHelper.SetQueryParameter(urlString, paramName, paramValue);
+            return new Uri(newUrl, UriKind.RelativeOrAbsolute);
         }
 
         public static string GetParameter(this Uri uri, string parameterName)

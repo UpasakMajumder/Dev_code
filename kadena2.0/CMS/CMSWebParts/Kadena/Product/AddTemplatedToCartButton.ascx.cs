@@ -7,6 +7,7 @@ using Kadena.BusinessLogic.Contracts;
 using Kadena.Container.Default;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System;
 using System.IO;
 using System.Linq;
 using System.Web.UI;
@@ -41,7 +42,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
             btnAddToCart.Disabled = true;
             
-            Controls.Add(new LiteralControl(GetHiddenInput("documentId", _productDocument.DocumentID.ToString())));
+            Controls.Add(new LiteralControl(GetHiddenInput("nodeId", _productDocument.NodeID.ToString())));
             if (!string.IsNullOrWhiteSpace(Request.QueryString["templateId"]))
             {
                 Controls.Add(new LiteralControl(GetHiddenInput("templateId", Request.QueryString["templateId"])));
@@ -94,20 +95,18 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         private void SetupDocument()
         {
-            if(!int.TryParse(Request.QueryString["documentId"], out int documentId))
+            if(!int.TryParse(Request.QueryString["nodeId"], out var nodeId))
             {
-                _productDocument = DocumentContext.CurrentDocument;
+                throw new ArgumentException("Missing node id parameter");
             }
-            else
-            {
-                _productDocument = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser));
-            }
+
+            _productDocument = DocumentHelper.GetDocument(nodeId, LocalizationContext.CurrentCulture.CultureCode, new TreeProvider(MembershipContext.AuthenticatedUser));
 
             if (_productDocument.GetStringValue("ProductPricingModel", PricingModel.GetDefault()) == PricingModel.Tiered)
             {
                 _hasTieredPricing = true;
 
-                var ranges = DIContainer.Resolve<ITieredPriceRangeProvider>().GetTieredRanges(documentId).ToList();
+                var ranges = DIContainer.Resolve<ITieredPriceRangeProvider>().GetTieredRanges(_productDocument.DocumentID).ToList();
 
                 selNumberOfItems.Items.Clear();
                 selNumberOfItems.Items.Add( new ListItem( ResHelper.GetString("Kadena.Product.SelectPriceTier") , "0", false));
