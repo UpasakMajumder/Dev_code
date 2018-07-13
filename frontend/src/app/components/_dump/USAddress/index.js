@@ -10,6 +10,7 @@ const USAddress = (props) => {
   return (
     <div>
       {createAddressElement(props.customerName)}
+      {createAddressElement(props.company)}
       <p>{props.address1}</p>
       {createAddressElement(props.address2)}
       <p>{props.city}, {props.state} {props.zip}</p>
@@ -22,6 +23,7 @@ const USAddress = (props) => {
 
 USAddress.propTypes = {
   customerName: PropTypes.string,
+  company: PropTypes.string,
   email: PropTypes.string,
   address1: PropTypes.string.isRequired,
   address2: PropTypes.string,
