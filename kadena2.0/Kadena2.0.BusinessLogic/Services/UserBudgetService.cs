@@ -10,9 +10,9 @@ namespace Kadena.BusinessLogic.Services
 {
     public class UserBudgetService : IUserBudgetService
     {
-        private readonly IkenticoUserBudgetProvider kenticoUserBudget;
+        private readonly IKenticoUserBudgetProvider kenticoUserBudget;
 
-        public UserBudgetService(IkenticoUserBudgetProvider kenticoUserBudget)
+        public UserBudgetService(IKenticoUserBudgetProvider kenticoUserBudget)
         {
             if (kenticoUserBudget == null)
             {

@@ -127,6 +127,11 @@ config.localization.registration = {
               ],
               usePolicy: {% Settings.CMSUsePasswordPolicy.ToLower() |(user)administrator|(hash)06e70c8de1e153dfd8833f1e997f32538b230ffe45464e591f00631bfbbef641%},
               info: '{%JSEscape(GetResourceString("Kadena.Common.PasswordTooltipText"))|(user)administrator|(hash)37684934dabda706ab1f89909496d586b35e1a1c5434fb9b3ad9dfe0c9d19789%}'
+            },
+            loginModal: {
+              body: '{%JSEscape(GetResourceString("Kadena.Signup.SuccessMessage"))|(user)administrator|(hash)24ab778f73c664707fa991525f67bd857183bb1cb350f133fc507595eb59aa28%}',
+              btnLabel: '{%JSEscape(GetResourceString("Kadena.Signup.LoginText"))|(user)administrator|(hash)d5430d784fe8e5a8e2c2835d07dd5fb6364a500c972420cf74d6d64fc0417ce4%}',
+              title: '{%JSEscape(GetResourceString("Kadena.Signup.SuccessTitle"))|(user)administrator|(hash)6790eac68a8a18e3ce91a062f8f8d9765ec1f94ec2b45e5cbd6134f636eec239%}'
             }
       };
 ]]>

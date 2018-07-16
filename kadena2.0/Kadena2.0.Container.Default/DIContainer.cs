@@ -114,6 +114,7 @@ namespace Kadena.Container.Default
             container.Register<IDistributorShoppingCartService, DistributorShoppingCartService>();
             container.Register<IOrderItemCheckerService, OrderItemCheckerService>();
             container.Register<IConvert, XlsxConvert>();
+            container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
             return container;
         }
 
@@ -146,7 +147,7 @@ namespace Kadena.Container.Default
             container.Register<IKenticoCustomerProvider, KenticoCustomerProvider>();
             container.Register<IKenticoSettingsProvider, KenticoSettingsProvider>();
             container.Register<IDynamicPriceRangeProvider, DynamicPriceRangeProvider>();
-            container.Register<IkenticoUserBudgetProvider, KenticoUserBudgetProvider>();
+            container.Register<IKenticoUserBudgetProvider, KenticoUserBudgetProvider>();
             container.Register<IFailedOrderStatusProvider, FailedOrderStatusProvider>();
             container.Register<IKenticoIBTFProvider, KenticoIBTFProvider>();
             container.Register<IKenticoRoleProvider, KenticoRoleProvider>();
