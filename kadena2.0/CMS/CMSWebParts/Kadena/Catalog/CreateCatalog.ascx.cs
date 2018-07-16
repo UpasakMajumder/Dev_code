@@ -849,12 +849,19 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             var programs = ProgramProvider.GetPrograms()
                 .Columns("ProgramName,BrandID,DeliveryDateToDistributors,ProgramID")
                 .WhereEquals("CampaignID", OpenCampaign?.CampaignID ?? default(int))
+                .ToList()
+                .Join(Brands.Value.Values, prg => prg.BrandID, br => br.ItemID, (prg, br) => new
+                {
+                    Program = prg,
+                    Brand = br
+                })
+                .OrderBy(p => p.Brand.BrandName)
                 .ToList();
             var productData = CampaignsProductProvider.GetCampaignsProducts()
                 .WhereEquals("NodeSiteID", CurrentSite.SiteID)
                 .WhereNotNull("ProgramID")
                 .WhereGreaterThan("ProgramID", default(int))
-                .WhereIn("ProgramID", programs.Select(p => p.ProgramID).ToList())
+                .WhereIn("ProgramID", programs.Select(p => p.Program.ProgramID).ToList())
                 .ToList();
             var skuDetails = SKUInfoProvider.GetSKUs()
                 .WhereIn("SKUID", productData.Select(s => s.SKU.SKUID).ToList())
@@ -866,9 +873,11 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             foreach (var program in programs)
             {
                 var programContent = programContentTemplate
-                    .Replace("^ProgramName^", program?.ProgramName)
-                    .Replace("^ProgramBrandName^", GetBrandName(program.BrandID))
-                    .Replace("ProgramDate", program.DeliveryDateToDistributors == default(DateTime) ? string.Empty : program.DeliveryDateToDistributors.ToString("MMM dd, yyyy"));
+                    .Replace("^ProgramName^", program.Program.ProgramName)
+                    .Replace("^ProgramBrandName^", program.Brand.BrandName)
+                    .Replace("ProgramDate", program.Program.DeliveryDateToDistributors == default(DateTime) 
+                        ? string.Empty 
+                        : program.Program.DeliveryDateToDistributors.ToString("MMM dd, yyyy"));
 
                 programsContent.Append(programContent);
             }
@@ -882,14 +891,16 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             var closingDiv = SettingsKeyInfoProvider.GetValue(Settings.ClosingDIV).ToString();
 
             var programBrands = programs
-                .Select(p => p.BrandID)
-                .Distinct()
+                .GroupBy(p => p.Brand.ItemID)
+                .Select(pg => pg.First())
+                .OrderBy(p => p.Brand.BrandName)
                 .ToList();
             var productBrandHeaderTemplate = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.{Settings.PDFBrand}");
-            foreach (var brand in programBrands)
+            foreach (var programBrand in programBrands)
             {
-                var productBrandHeader = productBrandHeaderTemplate.Replace("^PROGRAMNAME^", programs.Where(x => x.BrandID == brand).Select(y => y.ProgramName).FirstOrDefault());
-                productBrandHeader = productBrandHeader.Replace("^BrandName^", GetBrandName(brand));
+                var productBrandHeader = productBrandHeaderTemplate
+                    .Replace("^PROGRAMNAME^", programBrand.Program.ProgramName)
+                    .Replace("^BrandName^", programBrand.Brand.BrandName);
                 var catalogList = productData
                  .Join(skuDetails,
                        cp => cp.NodeSKUID,
@@ -910,7 +921,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                            cp.ProductImage,
                            sku.SKUValidUntil
                        })
-                 .Where(x => x.BrandID == brand)
+                 .Where(x => x.BrandID == programBrand.Brand.ItemID)
                  .ToList();
 
                 if (catalogList.Count == 0)
