@@ -361,6 +361,8 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.State
                     , opt => opt.ResolveUsing(src => !string.IsNullOrEmpty(src.State?.StateCode) ? src.State.StateCode : src.Country?.Name));
             CreateMap<DeliveryAddress, Dto.ViewOrder.Responses.AddressDto>()
+                .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.CompanyName))
+                .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.AddressPersonalName))
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State.StateDisplayName))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name));
             CreateMap<LogonUserRequestDTO, LoginRequest>();
