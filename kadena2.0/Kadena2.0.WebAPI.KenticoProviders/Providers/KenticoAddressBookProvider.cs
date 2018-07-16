@@ -16,16 +16,12 @@ namespace Kadena.WebAPI.KenticoProviders
 
         private readonly IMapper mapper;
         private readonly IShoppingCartProvider shoppingCartProvider;
-        private readonly IKadenaSettings kadenaSettings;
-        private readonly IKenticoLocalizationProvider localizationProvider;
         private readonly IKenticoCustomerProvider customers;
 
-        public KenticoAddressBookProvider(IMapper mapper, IShoppingCartProvider shoppingCartProvider, IKadenaSettings kadenaSettings, IKenticoLocalizationProvider localizationProvider, IKenticoCustomerProvider customers)
+        public KenticoAddressBookProvider(IMapper mapper, IShoppingCartProvider shoppingCartProvider, IKenticoCustomerProvider customers)
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.shoppingCartProvider = shoppingCartProvider ?? throw new ArgumentNullException(nameof(shoppingCartProvider));
-            this.kadenaSettings = kadenaSettings ?? throw new ArgumentNullException(nameof(kadenaSettings));
-            this.localizationProvider = localizationProvider ?? throw new ArgumentNullException(nameof(localizationProvider));
             this.customers = customers ?? throw new ArgumentNullException(nameof(customers));
         }
         public void DeleteAddress(int addressID)
@@ -70,15 +66,6 @@ namespace Kadena.WebAPI.KenticoProviders
             return mapper.Map<DeliveryAddress[]>(query.ToArray());
         }
 
-        public DeliveryAddress[] GetCustomerShippingAddresses(int customerId)
-        {
-            var addresses = AddressInfoProvider.GetAddresses(customerId)
-                .Where(a => a.GetStringValue("AddressType", string.Empty) == AddressType.Shipping)
-                .ToArray();
-
-            return mapper.Map<DeliveryAddress[]>(addresses.ToArray());
-        }
-
         public void SetDefaultShippingAddress(int addressId)
         {
             var customer = ECommerceContext.CurrentCustomer;
@@ -95,57 +82,14 @@ namespace Kadena.WebAPI.KenticoProviders
             SetDefaultShippingAddress(0);
         }
 
-        public void SaveShippingAddress(DeliveryAddress address, int customerId = 0)
+        public void SaveShippingAddress(DeliveryAddress address)
         {
-            if (address != null)
+            var info = mapper.Map<AddressInfo>(address);
+            if (info != null)
             {
-                if (address.State != null && address.State.Id == 0)
-                {
-                    address.State = localizationProvider.GetStates().FirstOrDefault(c => c.StateCode == address.State.StateCode);
-                }
-
-                if (address.Country != null && address.Country.Id == 0)
-                {
-                    address.Country = localizationProvider.GetCountries().FirstOrDefault(c => c.Code == address.Country.Code);
-                }
-
-                if (address.Country != null)
-                {
-                    var info = mapper.Map<AddressInfo>(address);
-
-                    CustomerInfo customer = customerId > 0
-                        ? CustomerInfoProvider.GetCustomerInfo(customerId)
-                        : ECommerceContext.CurrentCustomer;
-
-
-                    if (string.IsNullOrWhiteSpace(info.AddressPersonalName))
-                    {
-                        info.AddressPersonalName = $"{customer.CustomerFirstName} {customer.CustomerLastName}";
-                        if (string.IsNullOrWhiteSpace(info.GetStringValue("CompanyName", string.Empty)))
-                        {
-                            if (customer.CustomerHasCompanyInfo)
-                            {
-                                info.SetValue("CompanyName", customer.CustomerCompany);
-                            }
-                            else
-                            {
-                                info.SetValue("CompanyName", kadenaSettings.DefaultCustomerCompanyName);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        info.SetValue("CompanyName", address.CompanyName);
-                    }
-
-                    info.AddressName = $"{info.AddressPersonalName}, {info.AddressLine1}, {info.AddressCity}";
-                    info.SetValue("AddressType", AddressType.Shipping.Code);
-                    info.SetValue("Email", address.Email);
-                    info.AddressCustomerID = customer.CustomerID;
-
-                    AddressInfoProvider.SetAddressInfo(info);
-                    address.Id = info.AddressID;
-                }
+                info.SetValue("AddressType", AddressType.Shipping.Code);
+                AddressInfoProvider.SetAddressInfo(info);
+                address.Id = info.AddressID;
             }
         }
 
