@@ -689,7 +689,8 @@ function imageEdit_FileSystemRefresh(arg){{{{
     {
         plcFolderActions.Visible = plcMenu.Visible = Config.AllowManage;
 
-        folderActions.TargetFolderPath = menuElem.TargetFolderPath = NodeID;
+        folderActions.TargetFolderPath = NodeID;
+        folderActions.FullStartingPath = FullStartingPath;
 
         menuElem.TargetFolderPath = NodeID;
         menuElem.AllowedExtensions = Config.AllowedExtensions;
@@ -768,10 +769,10 @@ function imageEdit_FileSystemRefresh(arg){{{{
             if (argArr.Length >= 2)
             {
                 // Get information from argument
-                string path = argArr[0];
+                string path = Path.GetFullPath(argArr[0]);
                 bool isFile = ValidationHelper.GetBoolean(argArr[2], true);
 
-                if (path.StartsWithCSafe(NodeID, true))
+                if (path.StartsWith(FullStartingPath, StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (isFile && File.Exists(path))
                     {

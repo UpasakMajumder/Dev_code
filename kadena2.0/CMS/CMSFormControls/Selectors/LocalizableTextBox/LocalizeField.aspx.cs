@@ -171,7 +171,8 @@ public partial class CMSFormControls_Selectors_LocalizableTextBox_LocalizeField 
                 using (LocalizationActionContext context = new LocalizationActionContext())
                 {
                     context.ResolveSubstitutionMacros = false;
-                    string script = ScriptHelper.GetScript("wopener.SetResource('" + hdnValue + "', '" + key + "', '" + textbox + "', " + ScriptHelper.GetLocalizedString(key) + ", '" + btnLocalizeField + "', '" + btnLocalizeString + "', '" + btnRemoveLocalization + "', '" + localizedInputContainer + "'); CloseDialog();");
+                    var localizedText = ScriptHelper.GetString(GetString(key), true, true);
+                    string script = ScriptHelper.GetScript("wopener.SetResource('" + hdnValue + "', '" + key + "', '" + textbox + "', " + localizedText + ", '" + btnLocalizeField + "', '" + btnLocalizeString + "', '" + btnRemoveLocalization + "', '" + localizedInputContainer + "'); CloseDialog();");
                     ScriptHelper.RegisterStartupScript(this, typeof(string), "localizeField", script);
                 }
                 

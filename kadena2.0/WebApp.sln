@@ -4,6 +4,38 @@ VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSApp", "CMS\CMSApp.csproj", "{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Web", "CMS\Kadena2.0.Web.csproj", "{E6315B0E-21C7-499B-B249-F13CE913A51E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Tests", "Kadena2.0.Tests\Kadena2.0.Tests.csproj", "{B9C7A9A6-74EC-44C3-977E-56028745E841}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Carriers", "Carriers", "{69A8D6E8-F543-443C-B98D-DEE86478B247}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carriers", "Carriers\Carriers\Carriers.csproj", "{15EF35C6-B6E1-40E7-A423-9B1E3F856D4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarriersCustomers", "carriers\CarriersCustomers\CarriersCustomers.csproj", "{A2100BCE-E8FB-4D02-AB61-22D0EDFDF632}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.WebAPI", "Kadena2.0.WebAPI\Kadena2.0.WebAPI.csproj", "{FB19606B-D327-4F43-AB3F-825000079B1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Dto", "Kadena2.0.Dto\Kadena2.0.Dto.csproj", "{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.MicroserviceClients", "Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj", "{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.WebAPI.KenticoProviders", "Kadena2.0.WebAPI.KenticoProviders\Kadena2.0.WebAPI.KenticoProviders.csproj", "{7CEEEF15-AFB6-4EF0-B04E-CB8D7843F31A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Models", "Kadena2.0.Models\Kadena2.0.Models.csproj", "{918EBDFB-D345-4BE2-97A2-9D71513E0617}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.ScheduledTasks", "Kadena2.0.ScheduledTasks\Kadena2.0.ScheduledTasks.csproj", "{43388B1F-8597-46EB-8346-E9C6544C5306}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Helpers", "Kadena2.0.Helpers\Kadena2.0.Helpers.csproj", "{6B1835F6-5564-40D8-8AB8-63B6ADC56976}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.BusinessLogic", "Kadena2.0.BusinessLogic\Kadena2.0.BusinessLogic.csproj", "{D3AB43E6-7A41-4212-BF22-507CC2B2E3AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Container.Default", "Kadena2.0.Container.Default\Kadena2.0.Container.Default.csproj", "{BF079DF3-1E13-44C5-8B87-C040257EAC07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Infrastructure", "Kadena2.0.Infrastructure\Kadena2.0.Infrastructure.csproj", "{21862471-4FCE-4096-82CB-79B23FE63A22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena.AmazonFileSystemProvider", "Kadena.AmazonFileSystemProvider\Kadena.AmazonFileSystemProvider.csproj", "{91C29A0F-7655-405E-ABB0-990877D6FCFA}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{16761108-9229-4A1A-88E0-02796DFAFA89}"
 	ProjectSection(SolutionItems) = preProject
 		Lib\AjaxControlToolkit.dll = Lib\AjaxControlToolkit.dll
@@ -310,38 +342,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure", "Azure", "{04C3408E
 		Lib\Azure\System.Spatial.xml = Lib\Azure\System.Spatial.xml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Web", "CMS\Kadena2.0.Web.csproj", "{E6315B0E-21C7-499B-B249-F13CE913A51E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Tests", "Kadena2.0.Tests\Kadena2.0.Tests.csproj", "{B9C7A9A6-74EC-44C3-977E-56028745E841}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Carriers", "Carriers", "{69A8D6E8-F543-443C-B98D-DEE86478B247}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carriers", "Carriers\Carriers\Carriers.csproj", "{15EF35C6-B6E1-40E7-A423-9B1E3F856D4C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarriersCustomers", "carriers\CarriersCustomers\CarriersCustomers.csproj", "{A2100BCE-E8FB-4D02-AB61-22D0EDFDF632}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.WebAPI", "Kadena2.0.WebAPI\Kadena2.0.WebAPI.csproj", "{FB19606B-D327-4F43-AB3F-825000079B1A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Dto", "Kadena2.0.Dto\Kadena2.0.Dto.csproj", "{EB3A4438-837D-4CCD-A42C-B2C58C90D6AE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.MicroserviceClients", "Kadena2.0.MicroserviceClients\Kadena2.0.MicroserviceClients.csproj", "{B1FCBFC9-FC06-4C02-8DF4-9D1A66E44910}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.WebAPI.KenticoProviders", "Kadena2.0.WebAPI.KenticoProviders\Kadena2.0.WebAPI.KenticoProviders.csproj", "{7CEEEF15-AFB6-4EF0-B04E-CB8D7843F31A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Models", "Kadena2.0.Models\Kadena2.0.Models.csproj", "{918EBDFB-D345-4BE2-97A2-9D71513E0617}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.ScheduledTasks", "Kadena2.0.ScheduledTasks\Kadena2.0.ScheduledTasks.csproj", "{43388B1F-8597-46EB-8346-E9C6544C5306}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Helpers", "Kadena2.0.Helpers\Kadena2.0.Helpers.csproj", "{6B1835F6-5564-40D8-8AB8-63B6ADC56976}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.BusinessLogic", "Kadena2.0.BusinessLogic\Kadena2.0.BusinessLogic.csproj", "{D3AB43E6-7A41-4212-BF22-507CC2B2E3AC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Container.Default", "Kadena2.0.Container.Default\Kadena2.0.Container.Default.csproj", "{BF079DF3-1E13-44C5-8B87-C040257EAC07}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena2.0.Infrastructure", "Kadena2.0.Infrastructure\Kadena2.0.Infrastructure.csproj", "{21862471-4FCE-4096-82CB-79B23FE63A22}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kadena.AmazonFileSystemProvider", "Kadena.AmazonFileSystemProvider\Kadena.AmazonFileSystemProvider.csproj", "{91C29A0F-7655-405E-ABB0-990877D6FCFA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -417,9 +417,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{04C3408E-84B8-4FF2-A2FE-7C79CEEF084D} = {16761108-9229-4A1A-88E0-02796DFAFA89}
 		{15EF35C6-B6E1-40E7-A423-9B1E3F856D4C} = {69A8D6E8-F543-443C-B98D-DEE86478B247}
 		{A2100BCE-E8FB-4D02-AB61-22D0EDFDF632} = {69A8D6E8-F543-443C-B98D-DEE86478B247}
+		{04C3408E-84B8-4FF2-A2FE-7C79CEEF084D} = {16761108-9229-4A1A-88E0-02796DFAFA89}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {485EA660-5225-425C-986D-E05C95688359}

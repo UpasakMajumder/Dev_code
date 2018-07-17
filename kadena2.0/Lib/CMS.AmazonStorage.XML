@@ -885,6 +885,12 @@
             </summary>
             <param name="location">String value returned from Amazon S3 service that defines bucket location.</param>
         </member>
+        <member name="P:CMS.AmazonStorage.AmazonS3ClientFactory.RestApiEndPointUrl">
+            <summary>
+            Gets URL of the Amazon REST API endpoint specified by <c>CMSAmazonRestApiEndPoint</c> application configuration key. Returns <see cref="F:CMS.AmazonStorage.AmazonS3ClientFactory.S3_SERVICE_ENDPOINT"/>
+            if the application configuration key does not specify any URL.
+            </summary>
+        </member>
         <member name="T:CMS.AmazonStorage.IS3ObjectInfo">
             <summary>
             Interface of the S3ObjectInfo object.

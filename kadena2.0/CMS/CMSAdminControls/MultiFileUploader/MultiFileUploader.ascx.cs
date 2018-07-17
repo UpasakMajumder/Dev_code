@@ -14,7 +14,7 @@ using CMS.IO;
 using CMS.Localization;
 using CMS.SiteProvider;
 using CMS.UIControls;
-
+using CMS.Membership;
 
 public partial class CMSAdminControls_MultiFileUploader_MultiFileUploader : CMSUserControl, IUploadHandler
 {
@@ -365,22 +365,24 @@ public partial class CMSAdminControls_MultiFileUploader_MultiFileUploader : CMSU
             {
                 return URLHelper.GetAbsoluteUrl(mUploadHandlerUrl);
             }
+
+            // Using different path for authenticated user to enforce authentication under AD
+            var authenticatedHandlerPath = MembershipContext.AuthenticatedUser.IsPublic() ? "" : "/Authenticated";
             string url;
+
             if (MediaLibraryID > 0)
             {
-                url = "~/CMSModules/MediaLibrary/CMSPages/MultiFileUploader.ashx";
+                url = String.Format("~/CMSModules/MediaLibrary/CMSPages{0}/MultiFileUploader.ashx", authenticatedHandlerPath);
+            }
+            else if (PostForumID > 0)
+            {
+                url = "~/CMSModules/Forums/CMSPages/MultiFileUploader.ashx";
             }
             else
             {
-                if (PostForumID > 0)
-                {
-                    url = "~/CMSModules/Forums/CMSPages/MultiFileUploader.ashx";
-                }
-                else
-                {
-                    url = "~/CMSModules/Content/CMSPages/MultiFileUploader.ashx";
-                }
+                url = String.Format("~/CMSModules/Content/CMSPages{0}/MultiFileUploader.ashx", authenticatedHandlerPath);
             }
+
             return URLHelper.GetAbsoluteUrl(url);
         }
         set

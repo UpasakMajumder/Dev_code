@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Net;
+using System.Net.Security;
+using System.Web.Script.Serialization;
 
 using CMS.Base;
 
@@ -12,16 +15,97 @@ using System.Web.UI.WebControls;
 using CMS.Base.Web.UI;
 using CMS.Base.Web.UI.ActionsConfig;
 using CMS.DocumentEngine;
+using CMS.EventLog;
 using CMS.Helpers;
 using CMS.IO;
 using CMS.UIControls;
-
+using CMS.UIControls.UniGridConfig;
 
 public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidator
 {
     #region "Constants"
 
-    private const string DEFAULT_VALIDATOR_URL = "http://validator.w3.org/check";
+    private const string OBSOLETE_VALIDATOR_URL = "http://validator.w3.org/check";
+    private const string VALIDATOR_URL = "https://validator.w3.org/nu/?out=json";
+
+    #endregion
+
+
+    #region "Nested classes"
+
+    private enum MessageTypeEnum
+    {
+        [EnumStringRepresentation("error")]
+        Error,
+
+        [EnumStringRepresentation("info")]
+        Info
+    }
+
+
+    /// <summary>
+    /// Represents the strong-typed validation results. 
+    /// </summary>
+    private class HtmlValidationResult
+    {
+        /// <summary>
+        /// A collection of validation messages.
+        /// </summary>
+        public List<HtmlValidationMessage> Messages { get; set; }
+    }
+
+
+    /// <summary>
+    /// Represents a single validation message that contains structured information.
+    /// </summary>
+    private class HtmlValidationMessage
+    {
+        /// <summary>
+        /// Type of message. Possible values are: <c>error</c>, <c>info</c> and <c>non-document-error</c>. 
+        /// This item is mandatory and should always be present in the results. 
+        /// </summary>
+        public string Type { get; set; }
+
+        /// <summary>
+        /// Indicates the first line onto which the source range associated with the message falls. If the attribute is missing, it is assumed to have the same value as <see cref="LastLine"/>
+        /// </summary>
+        public int FirstLine { get; set; }
+
+        /// <summary>
+        /// Indicates the last line (inclusive) onto which the source range associated with the message falls.
+        /// </summary>
+        public int LastLine { get; set; }
+
+        /// <summary>
+        /// Indicates the last column (inclusive) onto which the source range associated with the message falls on the last line onto which is falls.
+        /// </summary>
+        public int LastColumn { get; set; }
+
+        /// <summary>
+        /// Indicates the first column onto which the source range associated with the message falls on the first line onto which is falls.
+        /// </summary>
+        public int FirstColumn { get; set; }
+
+        /// <summary>
+        /// Represents a paragraph of text (suitable for rendering to the user as plain text without further processing) that is the message stated succinctly in natural language.
+        /// </summary>
+        public string Message { get; set; }
+
+        /// <summary>
+        /// Represents an extract of the document source from around the point in source designated for the message by the "line" and "column" numbers.
+        /// </summary>
+        public string Extract { get; set; }
+
+        /// <summary>
+        /// Designates the starting point of highlighting at the <see cref="Extract"/>.
+        /// </summary>
+        public int HiliteStart { get; set; }
+
+        /// <summary>
+        /// Indicates the range of highlighting in <see cref="Extract"/>.
+        /// </summary>
+        public int HiliteLength { get; set; }
+    }
 
     #endregion
 
@@ -44,7 +128,7 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
     {
         get
         {
-            return mValidatorURL ?? (mValidatorURL = DataHelper.GetNotEmpty(SettingsHelper.AppSettings["CMSValidationHTMLValidatorURL"], DEFAULT_VALIDATOR_URL));
+            return mValidatorURL ?? (mValidatorURL = DataHelper.GetNotEmpty(SettingsHelper.AppSettings["CMSValidationHTMLValidatorURL"], OBSOLETE_VALIDATOR_URL));
         }
         set
         {
@@ -128,6 +212,22 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
         }
     }
 
+
+    /// <summary>
+    /// Indicates whether a page should be validated using the obsolete web service.
+    /// </summary>
+    public bool UseObsoleteService
+    {
+        get
+        {
+            return ValidationHelper.GetBoolean(ViewState["UseObsoleteService"], false);
+        }
+        set
+        {
+            ViewState["UseObsoleteService"] = value;
+        }
+    }
+
     #endregion
 
 
@@ -145,11 +245,6 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
 
         // Configure controls
         SetupControls();
-
-        if (RequestHelper.IsPostBack())
-        {
-            ReloadData();
-        }
     }
 
 
@@ -158,9 +253,9 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
     /// </summary>
     protected void Page_PreRender(object sender, EventArgs e)
     {
-        if (!string.IsNullOrEmpty(mErrorText))
+        if (RequestHelper.IsPostBack())
         {
-            ShowError(mErrorText);
+            ReloadData();
         }
     }
 
@@ -192,41 +287,76 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
         viewCode.Tooltip = viewCode.Text;
         viewCode.ButtonStyle = ButtonStyle.Default;
 
-        // Show results in new window
-        HeaderAction newWindow = new HeaderAction();
-        newWindow.OnClientClick = click;
-        newWindow.Text = GetString("validation.showresultsnewwindow");
-        newWindow.Tooltip = newWindow.Text;
-        newWindow.ButtonStyle = ButtonStyle.Default;
-
-        if (DataHelper.DataSourceIsEmpty(DataSource))
-        {
-            newWindow.Enabled = false;
-            newWindow.OnClientClick = null;
-        }
-        else
-        {
-            newWindow.Enabled = true;
-            string encodedKey = ScriptHelper.GetString(HttpUtility.UrlEncode(ResultKey), false);
-            newWindow.OnClientClick = String.Format("modalDialog('" + ResolveUrl("~/CMSModules/Content/CMSDesk/Validation/ValidationResults.aspx") + "?datakey={0}&docid={1}&hash={2}', 'ViewValidationResult', 800, 600);return false;", encodedKey, Node.DocumentID, QueryHelper.GetHash(String.Format("?datakey={0}&docid={1}", encodedKey, Node.DocumentID)));
-        }
-
         HeaderActions.AddAction(validate);
         HeaderActions.AddAction(viewCode);
-        HeaderActions.AddAction(newWindow);
+
         HeaderActions.ActionPerformed += HeaderActions_ActionPerformed;
 
-        // Set sorting and add events       
+        chkErrorsOnly.ResourceString = "validation.html.showerrorsonly";
+        chkErrorsOnly.AddCssClass("dont-check-changes");
+
+        // Set sorting and add events    
         gridValidationResult.OrderBy = "line ASC";
         gridValidationResult.IsLiveSite = IsLiveSite;
+        gridValidationResult.OnExternalDataBound += GridExternalDataBound;
         gridValidationResult.OnExternalDataBound += gridValidationResult_OnExternalDataBound;
         gridValidationResult.OnDataReload += gridValidationResult_OnDataReload;
+        gridValidationResult.GridView.RowDataBound += GridView_RowDataBound;
+        gridValidationResult.OnLoadColumns += GridValidationResult_OnLoadColumns;
         gridValidationResult.ZeroRowsText = GetString("validation.html.notvalidated");
         gridValidationResult.ShowActionsMenu = true;
-        gridValidationResult.AllColumns = "line, column, message, explanation, source";
+        gridValidationResult.DelayedReload = true;
+        gridValidationResult.StopProcessing = !RequestHelper.IsPostBack();
+        gridValidationResult.RememberState = false;
 
         // Set custom validating text
         up.ProgressText = GetString("validation.validating");
+    }
+
+
+    private void GridValidationResult_OnLoadColumns()
+    {
+        if (UseObsoleteService)
+        {
+            var columnDefinition = new Column
+            {
+                Caption = "$validation.html.explanation$",
+                Source = "explanation",
+                ExternalSourceName = "explanation",
+                AllowSorting = false,
+                Wrap = true,
+                Width = "40%"
+            };
+
+            var gridColumns = gridValidationResult.GridColumns.Columns;
+
+            // Remove "type" column
+            gridColumns.RemoveAt(0);
+
+            // Add "explanation" column
+            gridColumns.Insert(3, columnDefinition);
+
+            // Set width of "Message" column
+            gridColumns[2].Width = "30%";
+        }
+    }
+
+
+    private void GridView_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (!UseObsoleteService)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                var dataRow = UniGridFunctions.GetDataRowView(e.Row);
+                string messageType = ValidationHelper.GetString(dataRow["type"], String.Empty);
+
+                if (messageType.ToEnum<MessageTypeEnum>() == MessageTypeEnum.Error)
+                {
+                    e.Row.CssClass = "error";
+                }
+            }
+        }
     }
 
 
@@ -251,7 +381,7 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
     {
         DataSource = null;
         DataSource = ValidateHtml();
-        ReloadData();
+        gridValidationResult.StopProcessing = false;
     }
 
 
@@ -260,22 +390,56 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
     /// </summary>
     public void ReloadData()
     {
-        SetupControls();
+        ReloadGrid();
+        ReloadHeaderActions();
+        UpdateControlsVisibility();
+    }
 
+
+    private void ReloadGrid()
+    {
+        gridValidationResult.AllColumns = UseObsoleteService ? "line, column, message, explanation, source" : "type, line, column, message, source";
+        gridValidationResult.GridView.Columns.Clear();
         gridValidationResult.ReloadData();
+    }
 
-        ProcessResult(DataSource);
+
+    private void ReloadHeaderActions()
+    {
+        // Show results in new window
+        if (UseObsoleteService)
+        {
+            HeaderAction newWindow = new HeaderAction();
+            newWindow.Text = GetString("validation.showresultsnewwindow");
+            newWindow.Tooltip = newWindow.Text;
+            newWindow.ButtonStyle = ButtonStyle.Default;
+
+            if (DataHelper.DataSourceIsEmpty(DataSource))
+            {
+                newWindow.Enabled = false;
+                newWindow.OnClientClick = null;
+            }
+            else
+            {
+                newWindow.Enabled = true;
+                string encodedKey = ScriptHelper.GetString(HttpUtility.UrlEncode(ResultKey), false);
+                newWindow.OnClientClick = String.Format("modalDialog('" + ResolveUrl("~/CMSModules/Content/CMSDesk/Validation/ValidationResults.aspx") + "?datakey={0}&docid={1}&hash={2}', 'ViewValidationResult', 800, 600);return false;", encodedKey, Node.DocumentID, QueryHelper.GetHash(String.Format("?datakey={0}&docid={1}", encodedKey, Node.DocumentID)));
+            }
+
+            HeaderActions.AddAction(newWindow);
+            HeaderActions.ReloadData();
+        }
     }
 
 
     protected DataSet gridValidationResult_OnDataReload(string completeWhere, string currentOrder, int currentTopN, string columns, int currentOffset, int currentPageSize, ref int totalRecords)
     {
-        return DataSource;
+        return GetDataSource();
     }
 
 
     /// <summary>
-    /// On external databound event
+    /// On external data-bound event handler.
     /// </summary>
     /// <param name="sender">Sender</param>
     /// <param name="sourceName">Action what is called</param>
@@ -283,7 +447,48 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
     /// <returns>Result object</returns>
     protected object gridValidationResult_OnExternalDataBound(object sender, string sourceName, object parameter)
     {
-        return GridExternalDataBound(sender, sourceName, parameter);
+        if (!UseObsoleteService)
+        {
+            switch (sourceName.ToLower(CultureHelper.EnglishCulture))
+            {
+                case "source":
+                    const string LINE_BREAK_SIGN = "\u21A9";
+                    string source = (string)parameter;
+                    var drv = UniGridFunctions.GetDataRowView(sender as DataControlFieldCell);
+                    int highlightStartIndex = Convert.ToInt32(drv["highlightStart"]);
+                    int highlightLength = Convert.ToInt32(drv["highlightLength"]);
+                    var messageType = Convert.ToString(drv["type"]).ToEnum<MessageTypeEnum>();
+
+                    // Get parts to be able to highlight code in the code extract
+                    IEnumerable<string> parts = new List<string>(new[]
+                    {
+                        source.Substring(0, highlightStartIndex),
+                        source.Substring(highlightStartIndex, highlightLength),
+                        source.Substring(highlightStartIndex + highlightLength)
+                    });
+
+                    // HTML encode each part
+                    parts = parts.Select(HttpUtility.HtmlEncode).ToList();
+
+                    // Update the second (~ highlighted) part
+                    var partList = parts as List<string>;
+                    partList[1] = String.Format("<strong class=\"{0}\">{1}</strong>", messageType.ToStringRepresentation(), partList[1]);
+
+                    source = String.Concat(parts);
+                    source = source.Replace("\n", LINE_BREAK_SIGN);
+
+                    return String.Format(@"<div class=""Source"">{0}</div>", source);
+
+                case "message":
+                    return HttpUtility.HtmlEncode(parameter);
+
+                case "type":
+                    var typeEnum = ((string)parameter).ToEnum<MessageTypeEnum>();
+                    return typeEnum.ToLocalizedString("validation.html.messagetype");
+            }
+        }
+
+        return parameter;
     }
 
     #endregion
@@ -306,19 +511,19 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
 
 
     /// <summary>
-    /// Send validation request to validator and obtain result 
+    /// Send validation request to validator and obtain result using obsolete SOAP service.
     /// </summary>
     /// <param name="validatorParameters">Validator parameters</param>
     /// <returns>DataSet containing validator response</returns>
-    private DataSet GetValidationResult(string validatorParameters)
+    private DataSet GetValidationResultUsingObsoleteService(string validatorParameters)
     {
         try
         {
             DataSet dsValResult = null;
 
             // Create web request
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(ValidatorURL);
-            req.Method = "POST";
+            var req = WebRequest.CreateHttp(OBSOLETE_VALIDATOR_URL);
+            req.Method = WebRequestMethods.Http.Post;
             req.UserAgent = HttpContext.Current.Request.UserAgent;
             req.ContentType = "application/x-www-form-urlencoded";
             byte[] data = Encoding.GetEncoding("UTF-8").GetBytes(validatorParameters);
@@ -349,6 +554,72 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
 
 
     /// <summary>
+    /// Send validation request to validator and obtain result 
+    /// </summary>
+    /// <param name="documentHtml">Validator parameters</param>
+    /// <returns>DataSet containing validator response</returns>
+    private DataSet GetValidationResult(string documentHtml)
+    {
+        try
+        {
+            DataSet dsValResult = null;
+
+            // Create web request
+            var req = WebRequest.CreateHttp(VALIDATOR_URL);
+            req.Method = WebRequestMethods.Http.Post;
+            req.UserAgent = HttpContext.Current.Request.UserAgent;
+            req.ContentType = "text/html; charset=utf-8";
+
+            byte[] data = Encoding.UTF8.GetBytes(documentHtml);
+            req.ContentLength = data.Length;
+
+            if (req.RequestUri.Scheme == Uri.UriSchemeHttps)
+            {
+                req.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) =>
+                {
+                    // Accept certificate if the certificate is valid and signed
+                    return (sslPolicyErrors == SslPolicyErrors.None);
+                };
+            }
+
+            using (var requestStream = req.GetRequestStream())
+            {
+                requestStream.Write(data, 0, data.Length);
+            }
+
+
+            // Process server answer
+            using (var answer = req.GetResponse().GetResponseStream())
+            using (var reader = StreamReader.New(answer, Encoding.UTF8))
+            {
+                string responseString = reader.ReadToEnd();
+                reader.Close();
+                answer.Close();
+
+                var js = new JavaScriptSerializer().Deserialize<HtmlValidationResult>(responseString);
+
+                dsValResult = GetDataSetFromResult(js);
+            }
+
+            return dsValResult;
+        }
+        catch (Exception ex)
+        {
+            if ((ex is WebException) && (((WebException)ex).Status == WebExceptionStatus.TrustFailure))
+            {
+                EventLogProvider.LogException("AccessibilityValidator", "GetValidationResult", ex);
+                mErrorText = GetString("validation.servercertificateerror");
+                return null;
+            }
+
+            mErrorText = GetString("validation.servererror");
+        }
+
+        return null;
+    }
+
+
+    /// <summary>
     /// General method to process validation and return validation results
     /// </summary>
     private DataSet ValidateHtml()
@@ -356,28 +627,38 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
         if (!String.IsNullOrEmpty(Url))
         {
             string docHtml = GetHtml(Url);
+
             if (!String.IsNullOrEmpty(docHtml))
             {
-                DataSet dsValidationResult = GetValidationResult(GetRequestParameters(docHtml));
-
-                if (!DataHelper.DataSourceIsEmpty(dsValidationResult))
+                if (UseObsoleteService = !IsHtml5(docHtml))
                 {
-                    // Check if result contains error table
-                    if (!DataHelper.DataSourceIsEmpty(dsValidationResult.Tables["error"]))
-                    {
-                        Dictionary<string, object> parameters = new Dictionary<string, object>();
-                        parameters["validatorurl"] = ValidatorURL;
-                        parameters["validatorapppath"] = AppValidatorPath;
+                    var resultDataSet = GetValidationResultUsingObsoleteService(GetRequestParameters(docHtml));
 
-                        DataTable tbError = DocumentValidationHelper.ProcessValidationResult(dsValidationResult, DocumentValidationEnum.HTML, parameters);
-                        DataSet result = new DataSet();
-                        result.Tables.Add(tbError);
-                        return result;
-                    }
-                    else
+                    if (!DataHelper.DataSourceIsEmpty(resultDataSet))
                     {
-                        return new DataSet();
+                        // Check if result contains error table
+                        if (!DataHelper.DataSourceIsEmpty(resultDataSet.Tables["error"]))
+                        {
+                            Dictionary<string, object> parameters = new Dictionary<string, object>();
+                            parameters["validatorurl"] = ValidatorURL;
+                            parameters["validatorapppath"] = AppValidatorPath;
+
+                            DataTable tbError = DocumentValidationHelper.ProcessValidationResult(resultDataSet, DocumentValidationEnum.HTML, parameters);
+                            DataSet result = new DataSet();
+                            result.Tables.Add(tbError);
+
+                            return result;
+                        }
+                        else
+                        {
+                            return new DataSet();
+                        }
                     }
+                }
+                else
+                {
+                    var resultDataSet = GetValidationResult(docHtml);
+                    return resultDataSet;
                 }
             }
             else
@@ -391,29 +672,111 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
 
 
     /// <summary>
+    /// Converts the <see cref="HtmlValidationResult"/> object to the <see cref="DataSet"/> in order to display it in the UniGrid. 
+    /// </summary>
+    /// <param name="result">Results object</param>
+    private DataSet GetDataSetFromResult(HtmlValidationResult result)
+    {
+        var ds = new DataSet();
+        ds.CaseSensitive = false;
+        var messages = GetMessages(result);
+
+        if (messages.Any())
+        {
+            var table = new DataTable();
+
+            table.Columns.AddRange(new[]
+            {
+                new DataColumn("type"),
+                new DataColumn("line", typeof(Int32)),
+                new DataColumn("column", typeof(Int32)),
+                new DataColumn("message"),
+                new DataColumn("source"),
+                new DataColumn("highlightStart", typeof(Int32)),
+                new DataColumn("highlightLength", typeof(Int32))
+            });
+
+            foreach (var message in messages)
+            {
+                var row = table.NewRow();
+
+                row.ItemArray = new object[]
+                {
+                    message.Type,
+                    (message.FirstLine == 0) ? message.LastLine : message.FirstLine,
+                    (message.FirstColumn == 0) ? message.LastColumn : message.FirstColumn,
+                    message.Message,
+                    message.Extract,
+                    message.HiliteStart,
+                    message.HiliteLength
+                };
+
+                table.Rows.Add(row);
+            }
+
+            ds.Tables.Add(table);
+        }
+
+        return ds;
+    }
+
+
+    /// <summary>
+    /// Extracts a collection of messages from the <see cref="HtmlValidationResult"/> object given by <paramref name="result"/> parameter. 
+    /// </summary>
+    /// <param name="result">Results object</param>
+    private IEnumerable<HtmlValidationMessage> GetMessages(HtmlValidationResult result)
+    {
+        if ((result == null) || (result.Messages == null))
+        {
+            return Enumerable.Empty<HtmlValidationMessage>();
+        }
+
+        return result.Messages;
+    }
+
+
+    private bool IsHtml5(string docHtml)
+    {
+        return (docHtml.IndexOf(HTMLHelper.DOCTYPE_HTML5, StringComparison.OrdinalIgnoreCase) >= 0);
+    }
+
+
+    /// <summary>
     /// Process validation results
     /// </summary>
     /// <param name="validationResult">Validation result</param>
-    public void ProcessResult(DataSet validationResult)
+    public void UpdateControlsVisibility()
     {
-        if (validationResult != null)
+        if (DataSource != null)
         {
             mErrorText = null;
 
-            // Check if result is not empty
-            if (!DataHelper.DataSourceIsEmpty(validationResult) && !DataHelper.DataSourceIsEmpty(validationResult.Tables["error"]))
+            if (DataSourceIsNotEmpty())
             {
-                // Show validation errors
-                lblResults.Text = GetString("validation.validationresults");
-                lblResults.Visible = true;
-                gridValidationResult.Visible = true;
-                ShowError(GetString("validation.html.resultinvalid"));
+                if (!UseObsoleteService)
+                {
+                    chkErrorsOnly.Visible = true;
+                    bool hideGrid = chkErrorsOnly.Checked && DataSourceContainsOnlyWarnings();
+                    lblResults.Visible = !hideGrid;
+                    gridValidationResult.Visible = !hideGrid;
+                    ShowConfirmation(GetString("validation.html.validbutwithwarnings"), true);
+                }
+                else
+                {
+                    lblResults.Text = GetString("validation.validationresults");
+                    lblResults.Visible = true;
+                    gridValidationResult.Visible = true;
+                    chkErrorsOnly.Visible = false;
+                    ShowError(GetString("validation.html.resultinvalid"));
+                }
             }
             else
             {
                 // Show validation is valid
                 lblResults.Visible = false;
                 gridValidationResult.Visible = false;
+                chkErrorsOnly.Visible = false;
                 ShowConfirmation(GetString("validation.html.resultvalid"));
             }
         }
@@ -422,6 +785,8 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
             // No results obtained from validator, show error
             lblResults.Visible = false;
             gridValidationResult.Visible = false;
+            chkErrorsOnly.Visible = false;
+
             if (string.IsNullOrEmpty(mErrorText))
             {
                 mErrorText = GetString("validation.errorinitialization");
@@ -451,6 +816,56 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
             // Get HTML stored using javascript
             return ValidationHelper.Base64Decode(hdnHTML.Value);
         }
+    }
+
+
+    /// <summary>
+    /// Returns a <see cref="DataSet"/> reduced just to error messages if required. Otherwise return a complete results.
+    /// </summary>
+    private DataSet GetDataSource()
+    {
+        if (!UseObsoleteService && chkErrorsOnly.Checked)
+        {
+            return GetOnlyErrorsDataSet(DataSource);
+        }
+
+        return DataSource;
+    }
+
+
+    private bool DataSourceIsNotEmpty()
+    {
+        return !DataHelper.DataSourceIsEmpty(DataSource);
+    }
+
+
+    /// <summary>
+    /// Returns <see cref="DataSet"/> only containing errors which is generated by filtering data source given by <paramref name="ds"/>.
+    /// </summary>
+    /// <param name="ds">Data source to filter</param>
+    private DataSet GetOnlyErrorsDataSet(DataSet ds)
+    {
+        if (ds == null)
+        {
+            return ds;
+        }
+
+        var dataView = ds.Tables[0].DefaultView;
+        dataView.RowFilter = "type = 'error'";
+        var table = dataView.ToTable();
+        var dataSet = new DataSet();
+        dataSet.Tables.Add(table);
+
+        return dataSet;
+    }
+
+
+    /// <summary>
+    /// Indicates whether a data source with results contains only warnings.
+    /// </summary>
+    private bool DataSourceContainsOnlyWarnings()
+    {
+        return DataSourceIsNotEmpty() && DataHelper.DataSourceIsEmpty(GetOnlyErrorsDataSet(DataSource));
     }
 
     #endregion

@@ -521,6 +521,25 @@ public partial class CMSModules_Content_Controls_UserContributions_EditForm : CM
         set;
     }
 
+
+    /// <summary>
+    /// Indicates if the control should perform the operations.
+    /// </summary>
+    public override bool StopProcessing
+    {
+        get
+        {
+            return base.StopProcessing;
+        }
+        set
+        {
+            base.StopProcessing = value;
+
+            menuElem.StopProcessing = value;
+            formElem.StopProcessing = value;
+        }
+    }
+
     #endregion
 
 
@@ -561,6 +580,11 @@ public partial class CMSModules_Content_Controls_UserContributions_EditForm : CM
     /// <param name="forceReload">Forces nested CMSForm to reload if true</param>
     public void ReloadData(bool forceReload)
     {
+        if (StopProcessing)
+        {
+            return;
+        }
+
         if (!mFormLoaded || forceReload)
         {
             // Check License
