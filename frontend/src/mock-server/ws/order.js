@@ -596,12 +596,8 @@ module.exports.edit = {
     ],
     "ordersPrice": [
       {
-        lineNumber: "lineNumber-1", // like 693 row
+        lineNumber: "lineNumber-3",
         price: "$ 5"
-      },
-      {
-        lineNumber: "lineNumber-2", // like 737 row
-        price: "$ 50"
       }
     ]
   }

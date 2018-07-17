@@ -8,8 +8,6 @@ import { EMAIL_PROOF } from 'app.globals';
 import { FAILURE } from 'app.consts';
 /* helpers */
 import { emailRegExp } from 'app.helpers/regexp';
-/* ac */
-import toggleModal from 'app.ac/emailProof';
 /* components */
 import Alert from 'app.dump/Alert';
 import Dialog from 'app.dump/Dialog';
@@ -238,5 +236,5 @@ export default connect((state) => {
   const { emailProof } = state;
   return { store: emailProof };
 }, {
-  toggleModal
+  // toggleModal
 })(EmailProof);

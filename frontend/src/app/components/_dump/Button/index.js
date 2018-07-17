@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 /* components */
 import SVG from 'app.dump/SVG';
@@ -10,7 +10,8 @@ const Button = (props: {
   btnClass: ?string,
   disabled: ?boolean,
   onClick: ?() => void,
-  isLoading: ?boolean
+  isLoading: ?boolean,
+  children: ?React.Children
 }) => {
   const { text, type, disabled, isLoading, onClick, btnClass, children } = props;
   const isDisabled: boolean = !!isLoading || !!disabled;

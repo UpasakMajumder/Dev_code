@@ -24,7 +24,6 @@ import {
   changePaymentMethod
 } from 'app.ac/checkout';
 import { changeProducts } from 'app.ac/cartPreview';
-import toggleEmailProof from 'app.ac/emailProof';
 import { addAddress as saveAddress } from 'app.ac/settingsAddresses';
 /* local components */
 import DeliveryAddress from './DeliveryAddress';
@@ -446,5 +445,5 @@ export default connect((state) => {
   changeDeliveryAddress,
   changeDeliveryMethod,
   changePaymentMethod,
-  toggleEmailProof
+  // toggleEmailProof
 })(Checkout);
