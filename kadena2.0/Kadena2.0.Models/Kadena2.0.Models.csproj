@@ -143,6 +143,7 @@
     <Compile Include="SiteSettings\Settings.TWE.cs" />
     <Compile Include="Site\Culture.cs" />
     <Compile Include="Site\DocumentLocalization.cs" />
+    <Compile Include="Site\KenticoSiteWithDeliveryOptions.cs" />
     <Compile Include="Site\ModuleMapping.cs" />
     <Compile Include="SubmitOrder\MailingList.cs" />
     <Compile Include="SubmitOrder\OrderCartItem.cs" />

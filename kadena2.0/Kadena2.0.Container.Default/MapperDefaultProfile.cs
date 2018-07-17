@@ -178,6 +178,12 @@ namespace Kadena.Container.Default
             CreateMap<Total, TotalDTO>();
             CreateMap<Totals, TotalsDTO>();
             CreateMap<DeliveryOption, DeliveryServiceDTO>();
+            CreateMap<DeliveryOption, DeliveryOptionDto>()
+                .ForMember(dest => dest.ShippingOptionId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.CarrierCode, opt => opt.MapFrom(src => src.SAPName))
+                .ForMember(dest => dest.Provider, opt => opt.MapFrom(src => src.CarrierCode))
+                .ForMember(dest => dest.ShippingService, opt => opt.MapFrom(src => src.Service.Replace("#", "")))
+                .ForMember(dest => dest.ShippingServiceDisplayName, opt => opt.MapFrom(src => src.Title));
             CreateMap<DeliveryCarriers, DeliveryMethodsDTO>();
             CreateMap<DeliveryCarrier, DeliveryMethodDTO>();
             CreateMap<DeliveryAddresses, DeliveryAddressesDTO>();
@@ -321,7 +327,8 @@ namespace Kadena.Container.Default
             CreateMap<FtpCredentials, FtpCredentialsDto>();
             CreateMap<CartEmptyInfo, CartEmptyInfoDTO>();
             CreateMap<MailTemplate, MailTemplateDto>();
-            CreateMap<KenticoSite, SiteDataResponseDto>();
+            CreateMap<KenticoSite, KenticoSiteWithDeliveryOptions>();
+            CreateMap<KenticoSiteWithDeliveryOptions, SiteDataResponseDto>();
             CreateMap<ProductsPage, GetProductsDto>();
             CreateMap<ProductCategoryLink, ProductCategoryDto>();
             CreateMap<ProductLink, ProductDto>();
