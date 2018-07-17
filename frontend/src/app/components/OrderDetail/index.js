@@ -19,7 +19,7 @@ import PricingInfo from './PricingInfo';
 import OrderedItems from './OrderedItems';
 import Actions from './Actions';
 import EditModal from './EditModal';
-// import EmailProof from '../EmailProof';
+import EmailProof from '../EmailProof';
 
 type UI = {
   dateTimeNAString: string,
@@ -90,13 +90,13 @@ class OrderDetail extends Component<void, void, State> {
       }): void => {
         const { payload, success, errorMessage } = response.data;
         if (!success) {
-          window.sessionStorage.dispatch({ type: FAILURE, alert: errorMessage });
+          window.store.dispatch({ type: FAILURE, alert: errorMessage });
         } else {
           this.setState({ ui: payload });
         }
       })
       .catch((error): void => {
-        window.sessionStorage.dispatch({ type: FAILURE });
+        window.store.dispatch({ type: FAILURE, error });
       });
   }
 
@@ -133,11 +133,11 @@ class OrderDetail extends Component<void, void, State> {
 
   showEditModal = (showEditModal: boolean) => this.setState({ showEditModal });
 
-  toogleEmailProof = (url: string): void => {
+  toggleEmailProof = (url: string): void => {
     this.setState((prevState) => {
       return {
         emailProof: {
-          show: !prevState.show,
+          show: !prevState.emailProof.show,
           url
         }
       };
@@ -229,7 +229,11 @@ class OrderDetail extends Component<void, void, State> {
 
     return (
       <div>
-        {/* <EmailProof open={emailProof.show} /> */}
+        <EmailProof
+          open={emailProof.show}
+          toggleEmailProof={this.toggleEmailProof}
+          emailProofUrl={emailProof.url}
+        />
         {editModal}
         <CommonInfo
           ui={commonInfo}
@@ -246,7 +250,7 @@ class OrderDetail extends Component<void, void, State> {
 
         {nonZeroProductsExist && (
           <OrderedItems
-            toogleEmailProof={this.toogleEmailProof}
+            toggleEmailProof={this.toggleEmailProof}
             ui={orderedItems}
             showRejectionLabel={false}
           />

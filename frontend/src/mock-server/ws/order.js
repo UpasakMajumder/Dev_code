@@ -728,7 +728,7 @@ module.exports.detail =  {
             "emailProof": {
               "exists": true,
               "text": "Email",
-              "url": "2"
+              "url": "1"
             }
           },
           {
@@ -886,7 +886,7 @@ module.exports.detail =  {
             "emailProof": {
               "exists": true,
               "text": "Email",
-              "url": "2"
+              "url": "3"
             }
           }
         ]

@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 /* components */
 import Product from 'app.dump/Product/Order';
 
-const OrderedItems = ({ ui, toogleEmailProof, showRejectionLabel }) => {
+const OrderedItems = ({ ui, toggleEmailProof, showRejectionLabel }) => {
   const { title, items } = ui;
 
   const products = items.filter(item => item.quantity).map((item, i) => (
     <Product
-      toogleEmailProof={toogleEmailProof}
+      toggleEmailProof={toggleEmailProof}
       key={i}
       showRejectionLabel={showRejectionLabel}
       {...item}
@@ -28,7 +28,7 @@ OrderedItems.propTypes = {
     title: PropTypes.string.isRequired,
     items: PropTypes.array.isRequired
   }),
-  toogleEmailProof: PropTypes.func.isRequired,
+  toggleEmailProof: PropTypes.func.isRequired,
   showRejectionLabel: PropTypes.bool.isRequired
 };
 
