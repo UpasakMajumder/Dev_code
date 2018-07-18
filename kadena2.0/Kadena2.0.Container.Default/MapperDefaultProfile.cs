@@ -327,7 +327,8 @@ namespace Kadena.Container.Default
             CreateMap<FtpCredentials, FtpCredentialsDto>();
             CreateMap<CartEmptyInfo, CartEmptyInfoDTO>();
             CreateMap<MailTemplate, MailTemplateDto>();
-            CreateMap<KenticoSite, KenticoSiteWithDeliveryOptions>();
+            CreateMap<KenticoSite, KenticoSiteWithDeliveryOptions>()
+                .ForMember(dest => dest.DeliveryOptions, opt => opt.Ignore());
             CreateMap<KenticoSiteWithDeliveryOptions, SiteDataResponseDto>();
             CreateMap<ProductsPage, GetProductsDto>();
             CreateMap<ProductCategoryLink, ProductCategoryDto>();
