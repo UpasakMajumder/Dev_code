@@ -14,7 +14,7 @@ namespace Kadena.WebAPI.Controllers
         private readonly ISiteDataService _service;        
         private readonly IMapper _mapper;
 
-        public SiteDataController(ISiteDataService service, IMapper mapper, IShoppingCartService shoppingCartService)
+        public SiteDataController(ISiteDataService service, IMapper mapper)
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -23,7 +23,7 @@ namespace Kadena.WebAPI.Controllers
         
         [HttpGet]
         [Route("api/site")]
-        //[IdentityBasicAuthentication]
+        [IdentityBasicAuthentication]
         public IHttpActionResult GetSiteData( [FromUri]SiteDataRequestDto request)
         {
             var result = _service.GetKenticoSite(request.SiteId, request.SiteName);
