@@ -53,6 +53,7 @@ const Order = ({
   options,
   preview,
   unitOfMeasure,
+  groupped,
   // emailProof
   emailProof,
   toggleEmailProof,
@@ -142,7 +143,7 @@ const Order = ({
    ) : null;
 
   return (
-    <div className="cart-product">
+    <div className={`cart-product ${groupped ? 'cart-product--groupped' : ''}`}>
       {showRejectionLabel && rejection}
       <div className="cart-product__img">
         <img src={image} alt={template} />
@@ -189,7 +190,7 @@ Order.propTypes = {
   downloadPdfURL: PropTypes.string,
   shippingDate: PropTypes.string,
   mailingList: PropTypes.string,
-  trackingPrefix: PropTypes.string.isRequired,
+  trackingPrefix: PropTypes.string,
   tracking: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
     url: PropTypes.string
@@ -205,7 +206,8 @@ Order.propTypes = {
   unitOfMeasure: PropTypes.string.isRequired,
   emailProof: PropTypes.object.isRequired,
   toggleEmailProof: PropTypes.func.isRequired,
-  removeLabel: PropTypes.string.isRequired
+  removeLabel: PropTypes.string.isRequired,
+  groupped: PropTypes.bool
 };
 
 Order.defaultProps = {

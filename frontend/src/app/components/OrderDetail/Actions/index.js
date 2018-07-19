@@ -28,7 +28,7 @@ class Actions extends Component {
     actions: PropTypes.shape({
       accept: PropTypes.shape({ ...actionPropTypes }),
       reject: PropTypes.shape({ ...actionPropTypes })
-    }).isRequired,
+    }),
     editOrders: PropTypes.shape({
       button: PropTypes.string.isRequired,
       proceedUrl: PropTypes.string.isRequired

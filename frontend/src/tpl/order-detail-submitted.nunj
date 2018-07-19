@@ -1,0 +1,29 @@
+{% extends "layouts/default.nunj" %}
+{% from "macro/svg.nunj" import svg %}
+
+{% set title = 'Recent orders' %}
+{% set sidebarActive = title %}
+{% set breadcrumbs = [title] %}
+{% set headerTitle = title %}
+{% set btns = [
+  {
+    type: 'button',
+    name: 'Track package',
+    class: 'btn-action btn-action--secondary'
+  }, {
+    type: 'button',
+    name: 'Print',
+    class: 'btn-action btn-action--secondary'
+  }, {
+    type: 'button',
+    name: 'Reorder',
+    class: 'btn-action'
+  }
+] %}
+
+{% block content %}
+  <div class="r-order-detail"></div>
+  <script>
+    window.config.localization.orderDetail.orderDetailUrl = PATH + 'order/detail/submitted';
+  </script>
+{% endblock %}

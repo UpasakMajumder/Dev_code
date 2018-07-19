@@ -20,6 +20,7 @@ import OrderedItems from './OrderedItems';
 import Actions from './Actions';
 import EditModal from './EditModal';
 import EmailProof from '../EmailProof';
+import GroupContainer from './GroupContainer';
 
 type UI = {
   dateTimeNAString: string,
@@ -144,6 +145,40 @@ class OrderDetail extends Component<void, void, State> {
     });
   };
 
+  getOrders = (nonZeroProductsExist: boolean) => {
+    const { ui } = this.state;
+    if (!ui) return null;
+    if (ui.orderedItems.items) {
+      return nonZeroProductsExist && (
+        <OrderedItems
+          toggleEmailProof={this.toggleEmailProof}
+          ui={ui.orderedItems}
+          showRejectionLabel={false}
+        />
+      );
+    }
+
+    return (
+      <div>
+        {/* shipped items */}
+        <GroupContainer
+          {...ui.orderedItems.shippedItems}
+          toggleEmailProof={this.toggleEmailProof}
+        />
+        {/* mailing items */}
+        <GroupContainer
+          {...ui.orderedItems.mailingItems}
+          toggleEmailProof={this.toggleEmailProof}
+        />
+        {/* open items */}
+        <GroupContainer
+          {...ui.orderedItems.openItems}
+          toggleEmailProof={this.toggleEmailProof}
+        />
+      </div>
+    );
+  };
+
   editOrders = ({
     pricingInfo,
     orderedItems,
@@ -210,7 +245,7 @@ class OrderDetail extends Component<void, void, State> {
     const paymentInfoEl = paymentInfo ? <div className="col-lg-4 mb-4"><PaymentInfo ui={paymentInfo} dateTimeNAString={dateTimeNAString} /></div> : null;
     const pricingInfoEl = pricingInfo ? <div className="col-lg-4 mb-4"><PricingInfo ui={pricingInfo} /></div> : null;
 
-    const editModal = editOrders
+    const editModal = editOrders && orderedItems.items
       ? (
         <EditModal
           closeModal={() => this.showEditModal(false)}
@@ -225,7 +260,7 @@ class OrderDetail extends Component<void, void, State> {
         />
       ) : null;
 
-    const nonZeroProductsExist = Boolean(orderedItems.items.filter(item => item.quantity > 0).length);
+    const nonZeroProductsExist: boolean = !!orderedItems.items && !!(orderedItems.items.filter((item: { quantity: number }): number => item.quantity > 0).length);
 
     return (
       <div>
@@ -248,13 +283,7 @@ class OrderDetail extends Component<void, void, State> {
           </div>
         </div>
 
-        {nonZeroProductsExist && (
-          <OrderedItems
-            toggleEmailProof={this.toggleEmailProof}
-            ui={orderedItems}
-            showRejectionLabel={false}
-          />
-        )}
+        {this.getOrders(nonZeroProductsExist)}
 
         <div className="order-block">
           <Actions
