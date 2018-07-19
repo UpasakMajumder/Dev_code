@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import axios from 'axios';
 /* components */
 import Spinner from 'app.dump/Spinner';
 /* ac */
@@ -8,8 +9,8 @@ import { getUI, changeStatus, editOrders } from 'app.ac/orderDetail';
 import toogleEmailProof from 'app.ac/emailProof';
 /* utilities */
 import { getSearchObj } from 'app.helpers/location';
-/* globals */
-import { ORDER_HISTORY } from 'app.globals';
+/* constants */
+import { FAILURE } from 'app.consts';
 /* local components */
 import CommonInfo from './CommonInfo';
 import ShippingInfo from './ShippingInfo';
@@ -44,7 +45,7 @@ class OrderDetail extends Component {
 
   state = {
     showEditModal: false, // managed in Actions component
-    orderHistory: ORDER_HISTORY,
+    orderHistory: null,
     showOrderHistory: false
   }
 
@@ -56,6 +57,7 @@ class OrderDetail extends Component {
   }
 
   changeApprovalMessage = (text) => {
+    if (!this.state.orderHistory) return; // by default orderHistory is null and has lazyLoading
     this.setState({
       orderHistory: {
         ...this.state.orderHistory,
@@ -84,9 +86,26 @@ class OrderDetail extends Component {
 
   showEditModal = showEditModal => this.setState({ showEditModal });
 
-  showOrderHistoryModal = () => this.setState({ showOrderHistory: !this.state.showOrderHistory });
+  showOrderHistoryModal = (url) => {
+    this.setState({ showOrderHistory: !this.state.showOrderHistory });
+    if (this.state.orderHistory) return; // lazyLoading
+    axios
+      .get(url)
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
+        if (!success) {
+          window.store.dispatch({ type: FAILURE, alert: errorMessage });
+        } else {
+          this.setState({ orderHistory: payload });
+        }
+      })
+      .catch((error) => {
+        window.store.dispatch({ type: FAILURE, error });
+      });
+  };
 
   updateOrderHistory = (orderHistory) => {
+    if (!this.state.orderHistory) return; // by default orderHistory is null and has lazyLoading
     this.setState({
       orderHistory: {
         ...this.state.orderHistory,
@@ -146,7 +165,6 @@ class OrderDetail extends Component {
         <CommonInfo
           ui={commonInfo}
           dateTimeNAString={dateTimeNAString}
-          orderHistoryLabel={this.state.orderHistory ? this.state.orderHistory.label : null}
           showOrderHistoryModal={this.showOrderHistoryModal}
         />
 

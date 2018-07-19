@@ -8,7 +8,6 @@ import timeFormat from 'app.helpers/time';
 const CommonInfo = ({
   ui,
   dateTimeNAString,
-  orderHistoryLabel,
   showOrderHistoryModal
 }) => {
   const { status, orderDate, shippingDate, totalCost } = ui;
@@ -38,9 +37,10 @@ const CommonInfo = ({
 
   const getViewHistoryButton = (icon) => {
     if (icon !== 'flag') return null;
-    if (!orderHistoryLabel) return null;
+    const { orderHistory } = status;
+    if (!orderHistory) return null;
 
-    return <button onClick={showOrderHistoryModal} type="button" className="mt-2 btn--off link">{orderHistoryLabel}</button>;
+    return <button onClick={() => showOrderHistoryModal(orderHistory.url)} type="button" className="mt-2 btn--off link">{orderHistory.label}</button>;
   };
 
   const tileList = tiles.map((tile) => {
