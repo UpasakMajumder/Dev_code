@@ -106,7 +106,7 @@ namespace Kadena.BusinessLogic.Services
             return items.Select(i =>
             {
                 int availableQty = GetInventoryAvailableQuantity(i.Key, inventoryType);
-                if (availableQty < i.Value)
+                if (availableQty> -1 && availableQty < i.Value)
                 {
                     throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));
                 }
