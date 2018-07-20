@@ -48,7 +48,15 @@ namespace Kadena.BusinessLogic.Services
             ValidateBusinessUnits(userId);
             ValidateSku(skuID, cartType);
             int availableQty = GetInventoryAvailableQuantity(skuID, cartType);
+            if (availableQty == 0)
+            {
+                throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));
+            }
             int allocatedQty = GetAllocatedQuantity(skuID, cartType, userId);
+            if (allocatedQty == 0)
+            {
+                throw new Exception(resources.GetResourceString("KDA.Cart.Update.ProductNotAllocatedMessage"));
+            }
             return new DistributorCart()
             {
                 SKUID = skuID,
@@ -78,27 +86,17 @@ namespace Kadena.BusinessLogic.Services
 
         private int GetAllocatedQuantity(int skuID, ShoppingCartTypes cartType, int userId)
         {
-            int allocatedQty = cartType == ShoppingCartTypes.GeneralInventory 
-                ? shoppingCart.GetAllocatedQuantity(skuID, userId) 
+            int allocatedQty = cartType == ShoppingCartTypes.GeneralInventory
+                ? shoppingCart.GetAllocatedQuantity(skuID, userId)
                 : -1;
-            if (allocatedQty == 0)
-            {
-                throw new Exception(resources.GetResourceString("KDA.Cart.Update.ProductNotAllocatedMessage"));
-            }
-
             return allocatedQty;
         }
 
         private int GetInventoryAvailableQuantity(int skuID, ShoppingCartTypes cartType)
         {
-            int availableQty = cartType == ShoppingCartTypes.GeneralInventory 
-                ? skus.GetSkuAvailableQty(skuID) 
+            int availableQty = cartType == ShoppingCartTypes.GeneralInventory
+                ? skus.GetSkuAvailableQty(skuID)
                 : -1;
-            if (availableQty == 0)
-            {
-                throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));
-            }
-
             return availableQty;
         }
 
