@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.SiteSettings;
+using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -19,6 +20,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoResourceService _resources;
         private readonly IKenticoAddressBookProvider _addresses;
         private readonly IDialogService _dialogService;
+        private readonly IKadenaSettings _kadenaSettings;
 
         public SettingsService(IKenticoPermissionsProvider permissions,
                                IKenticoLocalizationProvider localization,
@@ -27,7 +29,8 @@ namespace Kadena.BusinessLogic.Services
                                IKenticoCustomerProvider kenticoCustomers,
                                IKenticoResourceService resources,
                                IKenticoAddressBookProvider addresses,
-                               IDialogService dialogService)
+                               IDialogService dialogService,
+                               IKadenaSettings kadenaSettings)
         {
             _permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             _localization = localization ?? throw new ArgumentNullException(nameof(localization));
@@ -37,6 +40,7 @@ namespace Kadena.BusinessLogic.Services
             _resources = resources ?? throw new ArgumentNullException(nameof(resources));
             _addresses = addresses ?? throw new ArgumentNullException(nameof(addresses));
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            _kadenaSettings = kadenaSettings ?? throw new ArgumentNullException(nameof(kadenaSettings));
         }
 
         public SettingsAddresses GetAddresses()
@@ -135,6 +139,43 @@ namespace Kadena.BusinessLogic.Services
 
         public void SaveShippingAddress(DeliveryAddress address)
         {
+            if (address.Country != null && address.Country.Id == 0)
+            {
+                address.Country = _localization.GetCountries()?.FirstOrDefault(c => c.Code == address.Country.Code);
+            }
+
+            if (address.State != null && address.State.Id == 0)
+            {
+                address.State = _localization.GetStates()?.FirstOrDefault(c => c.StateCode == address.State.StateCode);
+            }
+
+            var customer = address.CustomerId > 0
+                ? _kenticoCustomers.GetCustomer(address.CustomerId)
+                : _kenticoCustomers.GetCurrentCustomer();
+
+            if (string.IsNullOrWhiteSpace(address.AddressPersonalName))
+            {
+                address.AddressPersonalName = customer?.FullName;
+            }
+
+            if (string.IsNullOrWhiteSpace(address.CompanyName))
+            {
+                if (!string.IsNullOrWhiteSpace(customer?.Company))
+                {
+                    address.CompanyName = customer.Company;
+                }
+                else
+                {
+                    address.CompanyName = _kadenaSettings.DefaultCustomerCompanyName;
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(address.AddressName))
+            {
+                address.AddressName = $"{address.AddressPersonalName}, {address.Address1}, {address.City}";
+            }
+
+            address.CustomerId = customer?.Id ?? 0;
             _addresses.SaveShippingAddress(address);
         }
 

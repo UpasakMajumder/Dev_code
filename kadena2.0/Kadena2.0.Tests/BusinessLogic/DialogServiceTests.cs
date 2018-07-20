@@ -21,6 +21,7 @@ namespace Kadena.Tests.BusinessLogic
 
             Assert.Collection(actualResult,
                 i => Assert.Equal("customerName", i.Id),
+                i => Assert.Equal("company", i.Id),
                 i => Assert.Equal("address1", i.Id),
                 i => Assert.Equal("address2", i.Id),
                 i => Assert.Equal("city", i.Id),
