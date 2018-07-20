@@ -1,5 +1,4 @@
 ﻿using CMS.CustomTables;
-using CMS.DataEngine;
 using Kadena.Models.Brand;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
@@ -9,28 +8,22 @@ namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoBrandsProvider : IKenticoBrandsProvider
     {
-        private readonly string CustomTableName = "KDA.Brand";
+        private readonly string BrandTable = "KDA.Brand";
         private readonly string AddressBrandTable = "KDA.AddressBrands";
 
         public void DeleteBrand(int brandID)
         {
-            CustomTableItem brand = CustomTableItemProvider.GetItem(brandID, CustomTableName);
+            CustomTableItem brand = CustomTableItemProvider.GetItem(brandID, BrandTable);
             if (brand != null)
             {
                 brand.Delete();
             }
         }
 
-        public List<Brand> GetBrands()
-        {
-            ObjectQuery<CustomTableItem> brands = CustomTableItemProvider.GetItems(CustomTableName)
-                .Columns("ItemID,BrandCode,BrandName");
-            if (brands != null)
-            {
-                return brands.Select(x => CreateBrand(x)).ToList();
-            }
-            return null;
-        }
+        public List<Brand> GetBrands() => CustomTableItemProvider.GetItems(BrandTable)
+            .Columns("ItemID,BrandCode,BrandName")
+            .Select(CreateBrand)
+            .ToList();
 
         private Brand CreateBrand(CustomTableItem brandItem)
         {
@@ -51,21 +44,20 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public List<Brand> GetAddressBrands(int addressID)
         {
-            List<CustomTableItem> addressBrandsList = CustomTableItemProvider.GetItems(AddressBrandTable)
+            var addressBrandsList = CustomTableItemProvider.GetItems(AddressBrandTable)
                        .WhereEquals("AddressID", addressID)
                        .Columns("BrandID")
+                       .ToList()
+                       .Select(ab => ab.GetIntegerValue("BrandID", default(int)))
                        .ToList();
-            List<CustomTableItem> brandList = new List<CustomTableItem>();
-            if (addressBrandsList != null)
-            {
-                addressBrandsList.ForEach(b =>
-                {
-                    var brandData = CustomTableItemProvider.GetItem(b.GetIntegerValue("BrandID", default(int)), CustomTableName);
-                    brandList.Add(brandData);
-                });
-                return brandList.Select(x => CreateBrand(x)).Where(x => x != null).ToList();
-            }
-            return null;
+
+            var brandsList = addressBrandsList
+                .Select(b => CustomTableItemProvider.GetItem(b, BrandTable))
+                .Select(CreateBrand)
+                .Where(b => b != null)
+                .ToList();
+
+            return brandsList;
         }
     }
 }

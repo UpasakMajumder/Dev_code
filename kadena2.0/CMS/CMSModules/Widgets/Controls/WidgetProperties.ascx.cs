@@ -2,24 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
-using CMS.Base;
-using CMS.DocumentEngine;
-using CMS.Helpers;
-using CMS.PortalEngine;
-
 using System.Linq;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using CMS.Base;
 using CMS.Base.Web.UI;
 using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.EventLog;
 using CMS.FormEngine;
 using CMS.FormEngine.Web.UI;
+using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
+using CMS.PortalEngine;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
 using CMS.Synchronization;
@@ -996,7 +994,8 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
 
         DataRow dr = formCustom.DataRow;
 
-        string script = PortalHelper.GetAddInlineWidgetScript(mWidgetInfo, dr, mFields);
+        var additionalFieldNames = GetAdditionalFieldsNames();
+        string script = PortalHelper.GetAddInlineWidgetScript(mWidgetInfo, dr, mFields, additionalFieldNames);
 
         if (!string.IsNullOrEmpty(script))
         {
@@ -1006,6 +1005,29 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
         }
 
         return string.Empty;
+    }
+
+
+    /// <summary>
+    /// Retrieves fields names that are required to be stored besides the field in form.
+    /// </summary>
+    private IEnumerable<string> GetAdditionalFieldsNames()
+    {
+        var controlsNameValuePairs = formCustom
+          .FieldControls
+          .TypedValues
+          .Select(fieldControl => fieldControl.GetOtherValues())
+          .Where(nameValuePairs => nameValuePairs != null);
+
+        var aditionalFieldNames = new List<string>();
+        foreach (var aditionalFields in controlsNameValuePairs)
+        {
+            for (int valueIndex = 0; valueIndex <= aditionalFields.GetUpperBound(0); valueIndex++)
+            {
+                aditionalFieldNames.Add(aditionalFields[valueIndex, 0].ToString());
+            }
+        }
+        return aditionalFieldNames;
     }
 
 
@@ -1135,10 +1157,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                             }
                         }
 
-                        if (!DataHelper.IsEmpty(value))
-                        {
-                            DataHelper.SetDataRowValue(dr, column.ColumnName, value);
-                        }
+                        DataHelper.SetDataRowValue(dr, column.ColumnName, value);
                     }
                 }
                 catch

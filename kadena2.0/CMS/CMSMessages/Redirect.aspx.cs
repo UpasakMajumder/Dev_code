@@ -1,4 +1,5 @@
 ﻿using System;
+
 using CMS.Base;
 using CMS.Base.Web.UI;
 using CMS.Helpers;
@@ -15,7 +16,7 @@ public partial class CMSMessages_Redirect : MessagePage
     /// </summary>
     protected override void OnPreInit(EventArgs e)
     {
-        string url = QueryHelper.GetText("url", String.Empty);     
+        string url = QueryHelper.GetString("url", String.Empty);
         CheckHashValidationAttribute = !(URLHelper.IsLocalUrl(url));
 
         base.OnPreInit(e);
@@ -30,9 +31,9 @@ public partial class CMSMessages_Redirect : MessagePage
         titleElem.TitleText = GetString("Redirect.Header");
         lblInfo.Text = GetString("Redirect.Info");
 
-        string url = QueryHelper.GetText("url", String.Empty);
-        string target = QueryHelper.GetText("target", String.Empty);
-        string frame = QueryHelper.GetText("frame", String.Empty);
+        string url = QueryHelper.GetString("url", String.Empty);
+        string target = QueryHelper.GetString("target", String.Empty);
+        string frame = QueryHelper.GetString("frame", String.Empty);
         
         // Change view mode to live site
         bool liveSite = QueryHelper.GetBoolean("livesite", false);
@@ -43,27 +44,26 @@ public partial class CMSMessages_Redirect : MessagePage
 
         bool urlIsRelative = URLHelper.IsLocalUrl(url);
 
-        string script = String.Empty;
         url = ResolveUrl(url);
 
         // Information about the target page
-        lnkTarget.Text = url;
+        lnkTarget.Text = HTMLHelper.HTMLEncode(url);
         lnkTarget.NavigateUrl = url;
-        lnkTarget.Target = target;
+        lnkTarget.Target = HTMLHelper.EncodeForHtmlAttribute(target);
 
-        string redirectUrlString = ScriptHelper.GetString(url);
+        string script = String.Format("var url = encodeURI({0}); ", ScriptHelper.GetString(url));
 
         // Generate redirect script
         if (urlIsRelative && frame.EqualsCSafe("top", true))
         {
-            script += "if (self.location != top.location) { top.location = " + redirectUrlString + "; } else { document.location = " + redirectUrlString + " }";
+            script += "if (self.location != top.location) { top.location = url; } else { document.location = url; }";
+            ltlScript.Text += ScriptHelper.GetScript(script);
         }
         else if ((target == String.Empty) && (url != String.Empty))
         {
-            script += "if (IsCMSDesk()) { window.open(" + redirectUrlString + "); } else { document.location = " + redirectUrlString + "; }";
+            script += "if (IsCMSDesk()) { window.open(url); } else { document.location = url; }";
+            ltlScript.Text += ScriptHelper.GetScript(script);
         }
-
-        ltlScript.Text += ScriptHelper.GetScript(script);       
     }
 
     #endregion

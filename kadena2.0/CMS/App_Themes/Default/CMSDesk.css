@@ -813,12 +813,12 @@ ADMIN
     }
 
     .ContentMenuSlider.LeftSlider {
-        position:absolute;
+        position: absolute;
         left: 0;
     }
 
     .ContentMenuSlider.RightSlider {
-        position:absolute;
+        position: absolute;
         right: 0;
     }
 
@@ -4002,8 +4002,20 @@ ul.ComboSelector {
     color: red;
 }
 
+.Validation .Source .error {
+    color: red;
+}
+
+.Validation .Source .info {
+    color: #1175ae;
+}
+
 .HeaderActionsLabel {
     margin: 0 5px;
+}
+
+.Validation .unigrid .error {
+    background-color: #ffdddd;
 }
 
 /* Categories */
@@ -4013,17 +4025,17 @@ ul.ComboSelector {
     width: 100%;
 }
 
-.Categories .CategoryTrees td {
-    vertical-align: top;
-}
+    .Categories .CategoryTrees td {
+        vertical-align: top;
+    }
 
-.Categories .InnerCategoryTrees {
-    margin: 8px;
-}
+    .Categories .InnerCategoryTrees {
+        margin: 8px;
+    }
 
-.Categories .MenuItemDisabled {
-    color: #AAA;
-}
+    .Categories .MenuItemDisabled {
+        color: #AAA;
+    }
 
 select {
     height: 22px;
@@ -5185,7 +5197,7 @@ th.UnigridSelection {
     left: 0;
 }
 
-.message-edit .PageFooterLine{
+.message-edit .PageFooterLine {
     position: fixed;
 }
 

@@ -22,6 +22,16 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
 
 
     /// <summary>
+    /// Full file system starting path of dialog. Expects physical file system path with backslashes.
+    /// </summary>
+    public string FullStartingPath
+    {
+        get;
+        set;
+    }
+
+
+    /// <summary>
     /// Enable delete folder button
     /// </summary>
     public bool EnableDeleteFolder
@@ -107,17 +117,25 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
     {
         try
         {
-            // Delete the folder
-            Directory.Delete(TargetFolderPath, true);
+            var path = Path.GetFullPath(TargetFolderPath);
+            if (path.StartsWith(FullStartingPath, StringComparison.InvariantCultureIgnoreCase))
+            {
+                // Delete the folder
+                Directory.Delete(path, true);
 
-            // Refresh the tree
-            string parentPath = Path.GetDirectoryName(TargetFolderPath);
+                // Refresh the tree
+                string parentPath = Path.GetDirectoryName(path);
 
-            string script = String.Format("SetParentAction({0})", ScriptHelper.GetString(parentPath));
+                string script = String.Format("SetParentAction({0})", ScriptHelper.GetString(parentPath));
 
-            ScriptHelper.RegisterStartupScript(Page, typeof(string), "DeleteRefresh", ScriptHelper.GetScript(script));
+                ScriptHelper.RegisterStartupScript(Page, typeof(string), "DeleteRefresh", ScriptHelper.GetScript(script));
 
-            pnlUpdateSelectors.Update();
+                pnlUpdateSelectors.Update();
+            }
+            else
+            {
+                ShowError(GetString("dialogs.filesystem.invalidfilepath"));
+            }
         }
         catch (Exception ex)
         {

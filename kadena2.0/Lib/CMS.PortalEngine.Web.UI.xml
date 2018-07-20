@@ -5671,13 +5671,14 @@
             <param name="manager">Current document manager</param>
             <param name="viewMode">Current view mode</param>
         </member>
-        <member name="M:CMS.PortalEngine.Web.UI.PortalHelper.GetAddInlineWidgetScript(CMS.PortalEngine.WidgetInfo,System.Data.DataRow,System.Collections.Generic.List{CMS.FormEngine.FormFieldInfo})">
+        <member name="M:CMS.PortalEngine.Web.UI.PortalHelper.GetAddInlineWidgetScript(CMS.PortalEngine.WidgetInfo,System.Data.DataRow,System.Collections.Generic.List{CMS.FormEngine.FormFieldInfo},System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Gets the javascript code which ensures adding a new inline widget to the page.
             </summary>
             <param name="widgetInfo">The widget info object</param>
             <param name="row">The widget data</param>
             <param name="fields">The list of inline widget properties which will be saved in the text editor</param>
+            <param name="additionalFieldsNames">Names of fields that are required to be saved within widget properties.</param>
         </member>
         <member name="M:CMS.PortalEngine.Web.UI.PortalHelper.AddNewWebPart(System.Int32,System.String,System.Boolean,System.Int32,System.Int32,CMS.PortalEngine.PageTemplateInstance,System.Data.DataRow)">
             <summary>
