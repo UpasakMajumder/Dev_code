@@ -86,18 +86,16 @@ namespace Kadena.BusinessLogic.Services
 
         private int GetAllocatedQuantity(int skuID, ShoppingCartTypes cartType, int userId)
         {
-            int allocatedQty = cartType == ShoppingCartTypes.GeneralInventory
+            return cartType == ShoppingCartTypes.GeneralInventory
                 ? shoppingCart.GetAllocatedQuantity(skuID, userId)
                 : -1;
-            return allocatedQty;
         }
 
         private int GetInventoryAvailableQuantity(int skuID, ShoppingCartTypes cartType)
         {
-            int availableQty = cartType == ShoppingCartTypes.GeneralInventory
+            return cartType == ShoppingCartTypes.GeneralInventory
                 ? skus.GetSkuAvailableQty(skuID)
                 : -1;
-            return availableQty;
         }
 
         // items - order item relation (skuid -> quantity), 
