@@ -512,6 +512,24 @@ public partial class CMSModules_Content_Controls_UserContributions_ContributionL
         }
     }
 
+
+    /// <summary>
+    /// Indicates if the control should perform the operations.
+    /// </summary>
+    public override bool StopProcessing
+    {
+        get
+        {
+            return base.StopProcessing;
+        }
+        set
+        {
+            base.StopProcessing = value;
+
+            editDoc.StopProcessing = value;
+        }
+    }
+
     #endregion
 
 

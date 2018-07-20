@@ -227,6 +227,13 @@ public partial class CMSFormControls_Basic_HtmlAreaControl : FormEngineUserContr
         if (Form != null)
         {
             editor.DialogParameters = Form.DialogParameters;
+
+            // Set current node
+            var node = Form.EditedObject as CMS.DocumentEngine.TreeNode;
+            if (node != null)
+            {
+                editor.Node = node;
+            }
         }
 
         // Get editor area toolbar

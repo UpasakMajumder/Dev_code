@@ -6,6 +6,13 @@
     <ObjectType>cms.documenttype</ObjectType>
   </Parent>
   <Bindings>
+    <Binding id="cms.documenttype_KDA.Category">
+      <ParentClassID>
+        <CodeName>KDA.Category</CodeName>
+        <GUID>e575ee9c-24a6-4aa5-87c2-0a3e3e3e0bfc</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
     <Binding id="cms.documenttype_KDA.ProductCategory">
       <ParentClassID>
         <CodeName>KDA.ProductCategory</CodeName>
@@ -17,13 +24,6 @@
       <ParentClassID>
         <CodeName>KDA.ProductsModule</CodeName>
         <GUID>aba96492-ba9e-4302-b541-9b4235cde1a5</GUID>
-        <ObjectType>cms.documenttype</ObjectType>
-      </ParentClassID>
-    </Binding>
-    <Binding id="cms.documenttype_KDA.Category">
-      <ParentClassID>
-        <CodeName>KDA.Category</CodeName>
-        <GUID>e575ee9c-24a6-4aa5-87c2-0a3e3e3e0bfc</GUID>
         <ObjectType>cms.documenttype</ObjectType>
       </ParentClassID>
     </Binding>
