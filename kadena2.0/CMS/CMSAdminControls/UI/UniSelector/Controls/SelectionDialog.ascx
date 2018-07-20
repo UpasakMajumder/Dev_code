@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true"
+﻿<%@ Control Language="C#" AutoEventWireup="false"
     Inherits="CMSAdminControls_UI_UniSelector_Controls_SelectionDialog"  Codebehind="SelectionDialog.ascx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
@@ -40,9 +40,6 @@
     <cms:CMSUpdatePanel runat="server" ID="pnlHidden" UpdateMode="Conditional">
         <ContentTemplate>
             <asp:HiddenField ID="hidItem" runat="server" EnableViewState="false" />
-            <asp:HiddenField ID="hidName" runat="server" EnableViewState="false" />
-            <asp:HiddenField ID="hidHash" runat="server" EnableViewState="false" />
         </ContentTemplate>
     </cms:CMSUpdatePanel>
 </asp:Panel>
-<asp:Literal runat="server" ID="ltlScript" EnableViewState="false" />

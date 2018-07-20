@@ -6,31 +6,10 @@
     <ObjectType>cms.documenttype</ObjectType>
   </Parent>
   <Bindings>
-    <Binding id="cms.documenttype_CMS.ImageGallery">
-      <ParentClassID>
-        <CodeName>CMS.ImageGallery</CodeName>
-        <GUID>5d649c19-7348-47a3-9f19-356912545e8d</GUID>
-        <ObjectType>cms.documenttype</ObjectType>
-      </ParentClassID>
-    </Binding>
-    <Binding id="cms.documenttype_CMS.MenuItem">
-      <ParentClassID>
-        <CodeName>CMS.MenuItem</CodeName>
-        <GUID>60787c08-18f1-40df-ab59-49b0415800b5</GUID>
-        <ObjectType>cms.documenttype</ObjectType>
-      </ParentClassID>
-    </Binding>
     <Binding id="cms.documenttype_CMS.Article">
       <ParentClassID>
         <CodeName>CMS.Article</CodeName>
         <GUID>2568ad70-17a5-4c58-91d2-67101cdf4fb3</GUID>
-        <ObjectType>cms.documenttype</ObjectType>
-      </ParentClassID>
-    </Binding>
-    <Binding id="cms.documenttype_CMS.Product">
-      <ParentClassID>
-        <CodeName>CMS.Product</CodeName>
-        <GUID>1f1decea-2d34-4ecc-b53a-e38187922bd9</GUID>
         <ObjectType>cms.documenttype</ObjectType>
       </ParentClassID>
     </Binding>
@@ -45,6 +24,27 @@
       <ParentClassID>
         <CodeName>CMS.Folder</CodeName>
         <GUID>8fa3e50a-b5ef-48f1-b506-fad8f3f9e50a</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_CMS.ImageGallery">
+      <ParentClassID>
+        <CodeName>CMS.ImageGallery</CodeName>
+        <GUID>5d649c19-7348-47a3-9f19-356912545e8d</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_CMS.MenuItem">
+      <ParentClassID>
+        <CodeName>CMS.MenuItem</CodeName>
+        <GUID>60787c08-18f1-40df-ab59-49b0415800b5</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_CMS.Product">
+      <ParentClassID>
+        <CodeName>CMS.Product</CodeName>
+        <GUID>1f1decea-2d34-4ecc-b53a-e38187922bd9</GUID>
         <ObjectType>cms.documenttype</ObjectType>
       </ParentClassID>
     </Binding>

@@ -256,12 +256,16 @@
             </summary>
             <param name="site">Site info for which the domain alias redirection is applied.</param>
         </member>
-        <member name="M:CMS.Routing.Web.DomainPolicy.GetDomainAliasRedirectionUrl(CMS.SiteProvider.SiteDomainAliasInfo)">
+        <member name="M:CMS.Routing.Web.DomainPolicy.GetDomainAliasRedirectionUrl(CMS.SiteProvider.SiteDomainAliasInfo,System.String)">
             <summary>
             Returns domain alias redirection URL.
             </summary>
             <param name="alias">Domain alias which matches domain of the current request.</param>
-            <returns>Redirection URL when specified and redirect is necessary, <c>null</c> otherwise.</returns>
+            <param name="currentDomain">The current domain, including "www." prefix if present</param>
+            <returns>
+            Redirection URL when specified and redirect is necessary, <c>null</c> otherwise.
+            </returns>
+            <exception cref="T:System.NotSupportedException">Only absolute URL is supported for the redirection URL of a site domain alias.</exception>
         </member>
         <member name="P:CMS.Routing.Web.DomainPolicy.ProviderObject">
             <summary>

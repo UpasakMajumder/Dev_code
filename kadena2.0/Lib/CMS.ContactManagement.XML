@@ -3497,6 +3497,16 @@
             Sets campaign, geolocation and creation time to a new contact
             </summary>
         </member>
+        <member name="M:CMS.ContactManagement.ContactInfoProvider.GetTruncatedName(System.String)">
+            <summary>
+            Returns name trimmed to 100 chars. If the string is shorter, returns the same string.
+            </summary>
+        </member>
+        <member name="M:CMS.ContactManagement.ContactInfoProvider.ContactFieldCanBeModified(System.Boolean,CMS.ContactManagement.ContactInfo,CMS.FormEngine.FormFieldInfo)">
+            <summary>
+            Returns true if contact's field can be modified.
+            </summary>
+        </member>
         <member name="T:CMS.ContactManagement.ContactListInfo">
             <summary>
             "Virtual" object for loading data from contact view.
@@ -3854,6 +3864,11 @@
             </summary>
             <param name="fieldName">Field name</param>
             <param name="value">Field value</param>
+        </member>
+        <member name="P:CMS.ContactManagement.ContactImporter.EmailComparer">
+            <summary>
+            Gets the email comparer which determines email's uniqueness.
+            </summary>
         </member>
         <member name="P:CMS.ContactManagement.ContactImportException.UIMessage">
             <summary>

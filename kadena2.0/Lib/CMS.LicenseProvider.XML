@@ -1053,7 +1053,7 @@
         </member>
         <member name="T:CMS.LicenseProvider.ProductEditionEnum">
             <summary>
-            License types.
+            License types. The higher the integer value, the better the license type is.
             </summary>
         </member>
         <member name="F:CMS.LicenseProvider.ProductEditionEnum.Free">
@@ -1071,14 +1071,14 @@
             Small business license.
             </summary>
         </member>
-        <member name="F:CMS.LicenseProvider.ProductEditionEnum.EnterpriseMarketingSolution">
-            <summary>
-            Enterprise marketing solution
-            </summary>
-        </member>
         <member name="F:CMS.LicenseProvider.ProductEditionEnum.UltimateV7">
             <summary>
             Ultimate version 7 and higher.
+            </summary>
+        </member>
+        <member name="F:CMS.LicenseProvider.ProductEditionEnum.EnterpriseMarketingSolution">
+            <summary>
+            Enterprise marketing solution
             </summary>
         </member>
         <member name="T:CMS.LicenseProvider.LicenseModule">

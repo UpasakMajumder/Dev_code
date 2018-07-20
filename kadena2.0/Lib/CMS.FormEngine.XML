@@ -2425,6 +2425,14 @@
             <param name="alternative">Alternative form definition (just differences from original)</param>
             <param name="includeAllAltFields">If true, result will contain even those fields which are not in the original definition (optional, default value is true)</param>
         </member>
+        <member name="M:CMS.FormEngine.FormHelper.GetElementOrderIndex(System.Xml.XmlNode,System.Int32@)">
+            <summary>
+            Returns value of element's "order" attribute if specified, -1 if not specified and previous siblings don't specify the "order" attribute
+            or index calculated based on a previous sibling specified index.
+            </summary>
+            <param name="element">Xml element</param>
+            <param name="lastKnownIndex">Holds value of the last element index</param>
+        </member>
         <member name="M:CMS.FormEngine.FormHelper.CombineFormDefinitions(System.String,System.String)">
             <summary>
             Combines two form definitions together. Fields from second definition are added at the end of first definition.
