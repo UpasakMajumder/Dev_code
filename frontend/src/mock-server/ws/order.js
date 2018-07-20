@@ -1039,8 +1039,8 @@ module.exports.detail =  {
               text: "10"
             },
             {
-              type: "text",
-              text: "05/29/2018 10:35:20 AM"
+              type: "date",
+              text: "2017-08-07T09:12:08.108892Z"
             },
             {
               type: "text",
@@ -1067,8 +1067,8 @@ module.exports.detail =  {
               url: "#"
             },
             {
-              type: "text",
-              text: "05/29/2018 10:35:20 AM"
+              type: "date",
+              text: "2017-08-07T15:12:08.108892Z"
             },
             {
               type: "text",

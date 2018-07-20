@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import uuid from 'uuid';
 /* components */
 import Dialog from 'app.dump/Dialog';
+/* helpers */
+import timeFormat from 'app.helpers/time';
 
 const OrderHistory = ({ orderHistory, closeDialog, open }) => {
   if (!orderHistory) return null;
@@ -16,6 +18,8 @@ const OrderHistory = ({ orderHistory, closeDialog, open }) => {
         switch (item.type) {
         case 'link':
           return <td key={uuid()}><a target="_blank" href={item.url}>{item.text}</a></td>;
+        case 'date':
+          return <td key={uuid()}>{timeFormat(item.text, '', true)}</td>;
         default:
           return <td key={uuid()}>{item.text}</td>;
         }
