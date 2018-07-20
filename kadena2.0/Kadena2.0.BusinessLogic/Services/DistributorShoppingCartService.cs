@@ -106,7 +106,15 @@ namespace Kadena.BusinessLogic.Services
             return items.Select(i =>
             {
                 int availableQty = GetInventoryAvailableQuantity(i.Key, inventoryType);
+                if (availableQty < i.Value)
+                {
+                    throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));
+                }
                 int allocatedQty = GetAllocatedQuantity(i.Key, inventoryType, userId);
+                if (allocatedQty > -1 && allocatedQty < i.Value)
+                {
+                    throw new Exception(resources.GetResourceString("KDA.Cart.Update.ProductNotAllocatedMessage"));
+                }
                 return new DistributorCart
                 {
                     CartType = inventoryType,
