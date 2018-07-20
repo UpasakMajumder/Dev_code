@@ -1,21 +1,22 @@
 ﻿using AutoMapper;
-using CMS.Globalization;
-using CMS.Ecommerce;
-using Kadena.Models;
-using CMS.Membership;
-using System;
-using Kadena.Models.Site;
-using CMS.SiteProvider;
-using Kadena.WebAPI.KenticoProviders;
-using CMS.DocumentEngine;
-using Kadena.Models.Product;
-using CMS.Helpers;
 using CMS.CustomTables;
+using CMS.DocumentEngine;
+using CMS.Ecommerce;
+using CMS.Globalization;
+using CMS.Helpers;
+using CMS.Localization;
+using CMS.Membership;
+using CMS.SiteProvider;
+using Kadena.Models;
+using Kadena.Models.BusinessUnit;
+using Kadena.Models.Checkout;
 using Kadena.Models.CreditCard;
 using Kadena.Models.Membership;
-using Kadena.Models.Checkout;
+using Kadena.Models.Product;
+using Kadena.Models.Site;
+using Kadena.WebAPI.KenticoProviders;
+using System;
 using System.Data;
-using Kadena.Models.BusinessUnit;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -29,6 +30,9 @@ namespace Kadena2.WebAPI.KenticoProviders
 
             CreateMap<StateInfo, State>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.StateID));
+            CreateMap<CultureInfo, Culture>()
+                .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.CultureCode))
+                .ForMember(dest => dest.ShortName, opt => opt.MapFrom(src => src.CultureShortName));
             CreateMap<CountryInfo, Country>()
                 .ProjectUsing(src => new Country
                 {
@@ -47,6 +51,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.GetStringValue("Email", string.Empty)))
                 .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.GetStringValue("CompanyName", string.Empty)))
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.AddressPhone))
+                .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.AddressCustomerID))
                 .ForMember(dest => dest.Checked, opt => opt.Ignore());
             CreateMap<AddressInfo, State>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.AddressStateID))
@@ -67,8 +72,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.AddressStateID, opt => opt.MapFrom(src => src.State.Id))
                 .ForMember(dest => dest.AddressCountryID, opt => opt.MapFrom(src => src.Country.Id))
                 .ForMember(dest => dest.AddressPhone, opt => opt.MapFrom(src => src.Phone))
-                .ForMember(dest => dest.AddressCustomerID, opt => opt.Ignore())
-                .ForMember(dest => dest.AddressName, opt => opt.Ignore())
+                .ForMember(dest => dest.AddressCustomerID, opt => opt.MapFrom(src => src.CustomerId))
                 .ForMember(dest => dest.AddressGUID, opt => opt.Ignore())
                 .ForMember(dest => dest.AddressLastModified, opt => opt.Ignore())
                 .ForMember(dest => dest.AllowPartialUpdate, opt => opt.Ignore())
@@ -142,6 +146,9 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.DatePrefix, opt => opt.Ignore())
                 .ForMember(dest => dest.Date, opt => opt.Ignore())
                 .ForMember(dest => dest.items, opt => opt.Ignore());
+            CreateMap<TreeNode, DocumentLocalization>()
+                .ForMember(dest => dest.CultureCode, opt => opt.MapFrom(src => src.DocumentCulture))
+                .ForMember(dest => dest.UrlPath, opt => opt.MapFrom(src => src.DocumentUrlPath));
             CreateMap<TreeNode, ProductCategoryLink>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.DocumentID))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.DocumentName))
@@ -359,6 +366,8 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.DynamicPricingJson, opt => opt.MapFrom(src => src.GetStringValue("ProductDynamicPricing", string.Empty)))
                 .ForMember(dest => dest.TieredPricingJson, opt => opt.MapFrom(src => src.GetStringValue("ProductTieredPricing", string.Empty)))
                 .ForMember(dest => dest.SkuId, opt => opt.MapFrom(src => src.NodeSKUID))
+                .ForMember(dest => dest.Use3d, opt => opt.MapFrom(src => src.GetBooleanValue("ProductChili3dEnabled", false)))
+                .ForMember(dest => dest.NodeId, opt => opt.MapFrom(src => src.NodeID))
                 .ForAllOtherMembers(m => m.Ignore());
 
         }

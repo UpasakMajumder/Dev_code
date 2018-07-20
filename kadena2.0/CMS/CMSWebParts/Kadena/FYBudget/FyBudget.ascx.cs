@@ -15,9 +15,12 @@ using Kadena.Container.Default;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System.Collections.Generic;
 using Kadena.Models.FyBudget;
+using Kadena.Models.UserBudget;
 
 public partial class CMSWebParts_Kadena_FYBudget_FyBudget : CMSAbstractWebPart
 {
+    public IKenticoUserBudgetProvider UserBudgetProvider { get; protected set; } = DIContainer.Resolve<IKenticoUserBudgetProvider>();
+
     #region "Properties"
 
     /// <summary>
@@ -107,40 +110,14 @@ public partial class CMSWebParts_Kadena_FYBudget_FyBudget : CMSAbstractWebPart
     {
         try
         {
-            var userBudgetData = DIContainer.Resolve<IkenticoUserBudgetProvider>().GetUserBudgetAllocationRecords(CurrentUser.UserID, CurrentSite.SiteID);
-            var fiscalYearData = DIContainer.Resolve<IkenticoUserBudgetProvider>().GetFiscalYearRecords();
-            List<FyBudget> userBudgetDetails = new List<FyBudget>();
+            var userBudgetData = UserBudgetProvider.GetUserBudgetAllocationRecords(CurrentUser.UserID, CurrentSite.SiteID);
+            var fiscalYearData = UserBudgetProvider.GetFiscalYearRecords();
+            var userBudgetDetails = new List<FyBudget>();
             foreach (var fisYear in fiscalYearData)
             {
                 var userData = userBudgetData.Where(x => x.Year == fisYear.Year).FirstOrDefault();
-                if (DIContainer.Resolve<IkenticoUserBudgetProvider>().CheckIfYearExists(fisYear.Year, CurrentUser.UserID))
-                {
-                    userBudgetDetails.Add(new FyBudget()
-                    {
-                        ItemID = userData.ItemID,
-                        Budget = userData.Budget,
-                        IsYearEnded = fisYear.EndDate < DateTime.Now,
-                        UserID = userData.UserID,
-                        UserRemainingBudget = userData.UserRemainingBudget,
-                        Year = fisYear.Year
-                    });
-                }
-                else
-                {
-                    var newUserRecord = DIContainer.Resolve<IkenticoUserBudgetProvider>().CreateUserBudgetWithYear(fisYear.Year, CurrentSite.SiteID, CurrentUser.UserID);
-                    if (newUserRecord != null)
-                    {
-                        userBudgetDetails.Add(new FyBudget()
-                        {
-                            ItemID = newUserRecord.ItemID,
-                            Budget = newUserRecord.Budget,
-                            IsYearEnded = fisYear.EndDate < DateTime.Now,
-                            UserID = newUserRecord.UserID,
-                            UserRemainingBudget = newUserRecord.UserRemainingBudget,
-                            Year = fisYear.Year
-                        });
-                    }
-                }
+                var userBudget = UserBudgetProvider.GetOrCreateUserBudgetWithYear(fisYear.Year, CurrentSite.SiteID, CurrentUser.UserID);
+                userBudgetDetails.Add(MapToFyBudget(userBudget, fisYear));
             }
             if (!DataHelper.DataSourceIsEmpty(userBudgetDetails))
             {
@@ -153,6 +130,16 @@ public partial class CMSWebParts_Kadena_FYBudget_FyBudget : CMSAbstractWebPart
             EventLogProvider.LogException("Get fiscal year data of current user", "BindFiscalYearData()", ex, CurrentSite.SiteID, ex.Message);
         }
     }
+
+    private FyBudget MapToFyBudget(UserBudgetItem item, FiscalYear fisYear) => new FyBudget
+    {
+        ItemID = item.ItemID,
+        Budget = item.Budget,
+        IsYearEnded = fisYear.EndDate < DateTime.Now,
+        UserID = item.UserID,
+        UserRemainingBudget = item.UserRemainingBudget,
+        Year = item.Year
+    };
 
     #endregion
 }

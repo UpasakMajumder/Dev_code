@@ -8,9 +8,11 @@ using Kadena.Models.Membership;
 using Kadena.Models.Product;
 using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -27,6 +29,16 @@ namespace Kadena.Tests.BusinessLogic
             {
                 Quantity = 2,
                 DocumentId = 1123,
+                CustomProductName = customName
+            };
+        }
+
+        NewCartItem CreateNewTemplatedCartItem(string customName = null)
+        {
+            return new NewCartItem
+            {
+                Quantity = 2,
+                NodeId = 32,
                 CustomProductName = customName
             };
         }
@@ -126,7 +138,7 @@ namespace Kadena.Tests.BusinessLogic
                 SKUID = 123,
                 CartItemID = cartItemId
             };
-            
+
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
             Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku {  });
             Setup<IProductsService, decimal>(p => p.GetPriceByCustomModel(1123, 5), dynamicPrice);
@@ -174,7 +186,7 @@ namespace Kadena.Tests.BusinessLogic
         public async Task AddToCart_TemplatedProduct()
         {
             // Arrange             
-            var newCartItem = CreateNewCartItem(CustomName);
+            var newCartItem = CreateNewTemplatedCartItem(CustomName);
             newCartItem.Quantity = 5;
 
             var originalCartItemEntity = new CartItemEntity
@@ -185,6 +197,10 @@ namespace Kadena.Tests.BusinessLogic
                 SKUID = 123
             };
 
+            const int nodeId = 32;
+            const int documentId = 1123;
+
+            Setup<IKenticoProductsProvider, Product>(p => p.GetProductByNodeId(nodeId), new Product { Id = documentId });
             Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku { });
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
 
@@ -194,7 +210,7 @@ namespace Kadena.Tests.BusinessLogic
             // Assert
             Assert.NotNull(result);
             VerifyNoOtherCalls<IKListService>();
-            Verify<IShoppingCartItemsProvider>(ip => ip.SetArtwork(It.IsAny<CartItemEntity>(), 1123), Times.Once);
+            Verify<IShoppingCartItemsProvider>(ip => ip.SetArtwork(It.IsAny<CartItemEntity>(), documentId), Times.Once);
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
                     e => e.CartItemText == CustomName &&
                          e.SKUUnits == 5)
@@ -319,14 +335,14 @@ namespace Kadena.Tests.BusinessLogic
             const int skuid = 456;
             var cartItem = new CartItemEntity { CartItemID = 1, ProductType = ProductTypes.POD, SKUID = skuid };
             Setup<IShoppingCartItemsProvider, CartItemEntity>(m => m.GetCartItemEntity(1), cartItem);
-            Setup<IKenticoSkuProvider, Sku>(m => m.GetSKU(skuid), new Sku {  });
+            Setup<IKenticoSkuProvider, Sku>(m => m.GetSKU(skuid), new Sku { });
 
             // Act
             var result = Sut.ChangeItemQuantity(1, 100);
 
             // Assert
             Assert.NotNull(result);
-            Verify<IShoppingCartItemsProvider>(m => m.SetCartItemQuantity(It.Is<CartItemEntity>(e => e.CartItemID == 1) , 100), Times.Once);
+            Verify<IShoppingCartItemsProvider>(m => m.SetCartItemQuantity(It.Is<CartItemEntity>(e => e.CartItemID == 1), 100), Times.Once);
         }
 
 
@@ -419,6 +435,65 @@ namespace Kadena.Tests.BusinessLogic
 
             // Assert
             Assert.NotNull(result);
+        }
+
+        [Theory(DisplayName = "ShoppingCartService()")]
+        [ClassData(typeof(ShoppingCartServiceTests))]
+        public void ShoppingCartService(IKenticoSiteProvider kenticoSite,
+                                   IKenticoLocalizationProvider localization,
+                                   IKenticoPermissionsProvider permissions,
+                                   IKenticoUserProvider kenticoUsers,
+                                   IKenticoCustomerProvider kenticoCustomer,
+                                   IKenticoAddressBookProvider addresses,
+                                   IKenticoResourceService resources,
+                                   IKenticoProductsProvider productsProvider,
+                                   ITaxEstimationService taxCalculator,
+                                   IKListService mailingService,
+                                   IUserDataServiceClient userDataClient,
+                                   IShoppingCartProvider shoppingCart,
+                                   IShoppingCartItemsProvider shoppingCartItems,
+                                   ICheckoutPageFactory checkoutfactory,
+                                   IKenticoLogger log,
+                                   IProductsService productsService,
+                                   IImageService imageService,
+                                   IKenticoSkuProvider skus,
+                                   IOrderItemCheckerService orderChecker,
+                                   ISettingsService settingsService)
+        {
+            Assert.Throws<ArgumentNullException>(() => new ShoppingCartService(kenticoSite, localization, permissions, kenticoUsers,
+                kenticoCustomer, addresses, resources, productsProvider, taxCalculator, mailingService, userDataClient, shoppingCart, shoppingCartItems,
+                checkoutfactory, log, productsService, imageService, skus, orderChecker, settingsService));
+        }
+
+        [Fact(DisplayName = "ShoppingCartService.SaveTemporaryAddress() | Null address")]
+        public void SaveTemporaryAddress_Null()
+        {
+            Assert.Throws<NullReferenceException>(() => Sut.SaveTemporaryAddress(null));
+        }
+
+        public static IEnumerable<object[]> GetTestAddresses()
+        {
+            yield return new[] {
+                new DeliveryAddress()
+            };
+            yield return new[] {
+                new DeliveryAddress{
+                    CustomerId = 1
+                }
+            };
+        }
+        [Theory(DisplayName = "ShoppingCartService.SaveTemporaryAddress() | Null address")]
+        [MemberData(nameof(GetTestAddresses))]
+        public void SaveTemporaryAddress(DeliveryAddress address)
+        {
+            Setup<IKenticoAddressBookProvider, DeliveryAddress[]>(s => s.GetCustomerAddresses(It.IsAny<int>(), AddressType.Shipping), null);
+            Setup<IKenticoAddressBookProvider, DeliveryAddress[]>(s => s.GetCustomerAddresses(AddressType.Shipping),
+                new[] { new DeliveryAddress { Id = 123, AddressName = "TemporaryAddress" } });
+
+
+            var actualResult = Sut.SaveTemporaryAddress(address);
+
+            Assert.Equal(address.Id, actualResult);
         }
     }
 }

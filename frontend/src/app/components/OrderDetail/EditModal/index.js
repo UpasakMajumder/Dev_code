@@ -153,10 +153,11 @@ class EditModal extends Component {
       .then((response) => {
         const { success, payload, errorMessage } = response.data;
         if (success) {
+          // payload might be null if user lacks permissions to see prices
           this.props.editOrders({
-            pricingInfo: payload.pricingInfo,
+            pricingInfo: payload ? payload.pricingInfo : [],
             orderedItems,
-            ordersPrice: payload.ordersPrice
+            ordersPrice: payload ? payload.ordersPrice : []
           });
           this.props.updateOrderHistory(payload.orderHistory);
           this.props.closeModal();

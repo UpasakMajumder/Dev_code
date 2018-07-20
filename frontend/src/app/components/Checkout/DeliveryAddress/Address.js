@@ -16,7 +16,8 @@ const Address = ({
   customerName,
   email,
   country,
-  phone
+  phone,
+  company
 }) => {
 
   return (
@@ -40,6 +41,7 @@ const Address = ({
           zip={zip}
           country={country}
           phone={phone}
+          company={company}
         />
       </label>
     </div>
@@ -57,7 +59,8 @@ Address.propTypes = {
   checked: PropTypes.bool,
   state: PropTypes.string,
   disableInteractivity: PropTypes.bool.isRequired,
-  customerName: PropTypes.string,
+  customerName: PropTypes.string.isRequired,
+  company: PropTypes.string,
   country: PropTypes.string,
   phone: PropTypes.string,
   email: PropTypes.string
