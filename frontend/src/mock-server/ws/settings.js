@@ -35,7 +35,8 @@ const address = {
             "city": "Shakopee",
             "state": "22",
             "zip": "55379",
-            "country": "2"
+            "country": "2",
+            "customerName": "Andrei"
           },
           {
             "id": 2,
@@ -43,7 +44,8 @@ const address = {
             "address2": "",
             "city": "Shakopee",
             "zip": "55379",
-            "country": "1"
+            "country": "1",
+            "customerName": "Andrei"
           }
         ]
       },
@@ -62,6 +64,13 @@ const address = {
             "label": "Customer Name",
             "values": [],
             "type": "text"
+          },
+          {
+            "id": "company",
+            "label": "Company",
+            "values": [],
+            "type": "text",
+            "isOptional": true
           },
           {
             "id": "address1",

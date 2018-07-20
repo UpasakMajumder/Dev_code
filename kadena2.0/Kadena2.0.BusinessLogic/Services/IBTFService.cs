@@ -15,9 +15,9 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoIBTFProvider kenticoIBTF;
         private readonly IKenticoProductsProvider kenticoProductsProvider;
         private readonly IKenticoCampaignsProvider kenticoCampaignsProvider;
-        private readonly IkenticoUserBudgetProvider kenticoUserBudgetProvider;
+        private readonly IKenticoUserBudgetProvider kenticoUserBudgetProvider;
 
-        public IBTFService(IKenticoIBTFProvider kenticoIBTF, IKenticoProductsProvider kenticoProductsProvider, IKenticoCampaignsProvider kenticoCampaignsProvider, IkenticoUserBudgetProvider kenticoUserBudgetProvider)
+        public IBTFService(IKenticoIBTFProvider kenticoIBTF, IKenticoProductsProvider kenticoProductsProvider, IKenticoCampaignsProvider kenticoCampaignsProvider, IKenticoUserBudgetProvider kenticoUserBudgetProvider)
         {
             if (kenticoIBTF == null)
             {

@@ -33,6 +33,13 @@ namespace Kadena.BusinessLogic.Services
                     },
                     new DialogField
                     {
+                        Id = "company",
+                        Label = resources.GetResourceString("Kadena.ContactForm.Company"),
+                        Type = "text",
+                        IsOptional = true
+                    },
+                    new DialogField
+                    {
                         Id = "address1",
                         Label = resources.GetResourceString("Kadena.Settings.Addresses.AddressLine1"),
                         Type = "text"

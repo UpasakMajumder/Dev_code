@@ -54,15 +54,21 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
         try
         {
             string where = null;
+
+            txtSearchProducts.Text = !string.IsNullOrEmpty(txtSearchProducts.Text) ? txtSearchProducts.Text : ValidationHelper.GetString(Request.QueryString["searchProducts"], null);
             if (!string.IsNullOrEmpty(txtSearchProducts.Text))
             {
                 where += $"(p.ProductName like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}%' OR SKUProductCustomerReferenceNumber like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}%')";
             }
+
+            ddlPrograms.SelectedValue = ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0) != 0 ? ddlPrograms.SelectedValue : ValidationHelper.GetInteger(Request.QueryString["program"], 0).ToString();
             if (ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0) != 0)
             {
                 int programID = ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0);
                 where += where != null ? $"and p.ProgramID={ programID}" : $"p.ProgramID={ programID}";
             }
+
+            ddlProductcategory.SelectedValue = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0) != 0 ? ddlProductcategory.SelectedValue : ValidationHelper.GetInteger(Request.QueryString["category"], 0).ToString();
             if (ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0) != 0)
             {
                 int categoryID = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0);
@@ -74,6 +80,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             }
             this.RaiseOnFilterChanged();
             BindButtons();
+
         }
         catch (Exception ex)
         {
@@ -451,10 +458,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
     /// </summary>
     protected override void OnPreRender(EventArgs e)
     {
-        if (RequestHelper.IsPostBack())
-        {
-            SetFilter();
-        }
+        SetFilter();
         base.OnPreRender(e);
     }
 
@@ -695,7 +699,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
                     var document = new TreeProvider().SelectSingleNode(nodeGUID, CurrentDocument.DocumentCulture, CurrentSite.SiteName);
                     if (document != null)
                     {
-                        Response.Redirect($"{document.DocumentUrlPath}?camp={CurrentDocument.NodeID}");
+                        Response.Redirect($"{document.DocumentUrlPath}?camp={CurrentDocument.NodeID}&category={ddlProductcategory.SelectedValue}&program={ddlPrograms.SelectedValue}&searchProducts={txtSearchProducts.Text}");
                     }
                 }
             }
