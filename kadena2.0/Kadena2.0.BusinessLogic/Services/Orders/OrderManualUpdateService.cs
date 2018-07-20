@@ -158,7 +158,11 @@ namespace Kadena.BusinessLogic.Services.Orders
                 {
                     distributorCartItems.ForEach(c =>
                     {
-                        c.Items.ForEach(i => i.ShoppingCartID = cartId);
+                        c.Items.ForEach(i =>
+                        {
+                            i.ShoppingCartID = cartId;
+                            i.Quantity = skuNewQty[c.SKUID];
+                        });
                         distributorShoppingCartService.UpdateDistributorCarts(c, orderDetail.Customer.KenticoUserID);
                     }
                     );
@@ -183,7 +187,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                         {
                             var item = mapper.Map<ItemUpdateDto>(i);
                             item.LineNumber = skuLines[i.SkuId];
-                            item.Quantity = skuNewQty[i.SkuId];
                             return item;
                         })
                         .Concat(deletedItems)
