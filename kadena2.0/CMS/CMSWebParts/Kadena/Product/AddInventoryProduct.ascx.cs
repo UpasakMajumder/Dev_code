@@ -34,15 +34,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         #region WebpartSetupMethods
 
-        public override void OnContentLoaded()
+        protected override void OnPreRender(EventArgs e)
         {
-            base.OnContentLoaded();
-            SetupControl();
-        }
-
-        public override void ReloadData()
-        {
-            base.ReloadData();
+            base.OnPreRender(e);
             SetupControl();
         }
 
@@ -60,29 +54,18 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 {
                     btnSave.Click += btnSave_SavePOS;
                 }
+
                 if (!IsPostBack)
                 {
+
                     BindData();
                     if (productId > 0)
                     {
                         SetFeild(productId);
                     }
-                    else
-                    {
-                        var pos = ConnectionHelper.ExecuteQuery("KDA.CampaignsProduct.GetGIPos", null);
-                        if (!DataHelper.DataSourceIsEmpty(pos))
-                        {
-                            ddlPosNo.DataSource = pos;
-                            ddlPosNo.DataTextField = "POSNumber";
-                            ddlPosNo.DataValueField = "POSNumber";
-                            ddlPosNo.DataBind();
-                            string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.InvProductForm.PosNoWaterMark"), string.Empty);
-                            ddlPosNo.Items.Insert(0, new ListItem(selectText, "0"));
-                        }
-                    }
                     BindUsers(1);
-
                 }
+
 
                 btnAllocateProduct.Click += AllocateProduct_Click;
                 btnCancel.Click += BtnCancel_Cancel;
@@ -93,6 +76,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 }
             }
         }
+
         /// <summary>
         /// Binding the resource string text
         /// </summary>
@@ -348,6 +332,14 @@ namespace Kadena.CMSWebParts.Kadena.Product
         /// </summary>
         private void SaveProduct()
         {
+            // check POS number
+            var posSKU = SKUInfoProvider.GetSKUs().WhereEquals("SKUProductCustomerReferenceNumber", ddlPosNo.SelectedValue).FirstOrDefault();
+            if (posSKU != null)
+            {
+                lblFailureText.Visible = true;
+                return;
+            }
+
             string imagePath = string.Empty;
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
             CMS.DocumentEngine.TreeNode parentPage = tree.SelectNodes()
@@ -512,7 +504,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                             txtQuantity.Text = ValidationHelper.GetString(skuDetails.SKUAvailableItems, string.Empty);
                             txtWeight.Text = ValidationHelper.GetString(skuDetails.SKUWeight, string.Empty);
                         }
-                        txtBundleQnt.Text = ValidationHelper.GetString(skuDetails.GetIntegerValue("SKUNumberOfItemsInPackage",1), string.Empty);
+                        txtBundleQnt.Text = ValidationHelper.GetString(skuDetails.GetIntegerValue("SKUNumberOfItemsInPackage", 1), string.Empty);
                         ddlState.SelectedValue = ValidationHelper.GetString(product.State, string.Empty);
                         ddlProdCategory.SelectedValue = ValidationHelper.GetString(product.CategoryID, string.Empty);
                         BindEditProduct(ValidationHelper.GetInteger(product.CampaignsProductID, 0));
@@ -863,6 +855,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     .Columns("BrandCode")
                     .FirstOrDefault().BrandCode.ToString() : "0";
                 string where = null;
+
                 if (brandCode != "0" && PosCatId != "0")
                 {
                     where += "BrandID=" + brandCode + "AND POSCategoryID=" + PosCatId;
@@ -879,6 +872,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 {
                     where = string.Empty;
                 }
+
                 if (!DataHelper.DataSourceIsEmpty(pos))
                 {
                     var posData = pos.Tables[0].Select(where);
@@ -895,6 +889,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         ddlPosNo.Items.Clear();
                         ddlPosNo.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.SelectPosNO"), "0"));
                     }
+                }
+                else
+                {
+                    ddlPosNo.Items.Clear();
+                    ddlPosNo.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.InvProductForm.SelectPosNO"), "0"));
                 }
             }
             catch (Exception ex)
