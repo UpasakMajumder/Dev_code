@@ -359,7 +359,7 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
                     // Wrap in update panel for inherit checkbox postback
                     var pnlValueUpdate = new UpdatePanel
                     {
-                        ID = string.Format("pnlValueUpdate{0}{1}", groupCount, keyCount),
+                        ID = string.Format("pnlValueUpdate{0}_{1}", groupCount, keyCount),
                         UpdateMode = UpdatePanelUpdateMode.Conditional,
                     };
                     pnlRow.Controls.Add(pnlValueUpdate);
@@ -809,7 +809,7 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
             return null;
         }
 
-        control.ID = string.Format(@"key{0}{1}", groupNo, keyNo);
+        control.ID = string.Format("key{0}_{1}", groupNo, keyNo);
         control.IsLiveSite = false;
 
         return control;
@@ -872,7 +872,7 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
     {
         var chkValue = new CMSCheckBox
         {
-            ID = string.Format("chkKey{0}{1}", groupNo, keyNo),
+            ID = string.Format("chkKey{0}_{1}", groupNo, keyNo),
             EnableViewState = false,
             Checked = @checked,
             Enabled = enabled,
@@ -894,7 +894,7 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
     {
         var txtValue = new CMSTextBox
         {
-            ID = string.Format("txtKey{0}{1}", groupNo, keyNo),
+            ID = string.Format("txtKey{0}_{1}", groupNo, keyNo),
             EnableViewState = false,
             Text = text,
             Enabled = enabled,
@@ -916,7 +916,7 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
         try
         {
             var txtValue = (FormEngineUserControl)LoadControl("~/CMSFormControls/Inputs/LargeTextArea.ascx");
-            txtValue.ID = string.Format("txtKey{0}{1}", groupNo, keyNo);
+            txtValue.ID = string.Format("txtKey{0}_{1}", groupNo, keyNo);
             txtValue.EnableViewState = false;
             txtValue.Enabled = enabled;
             txtValue.Value = text;
@@ -939,7 +939,7 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
     {
         var chkInherit = new CMSCheckBox
         {
-            ID = string.Format(@"chkInherit{0}{1}", groupNo, keyNo),
+            ID = string.Format("chkInherit{0}_{1}", groupNo, keyNo),
             Text = GetString("settings.keys.checkboxinheritglobal"),
             EnableViewState = true,
             AutoPostBack = true,
@@ -959,7 +959,7 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
     {
         var label = new Label
         {
-            ID = string.Format(@"lblError{0}{1}", groupNo, keyNo),
+            ID = string.Format("lblError{0}_{1}", groupNo, keyNo),
             EnableViewState = false,
             CssClass = "form-control-error",
             Visible = false
@@ -981,7 +981,7 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
         LocalizedLabel label = new LocalizedLabel
         {
             EnableViewState = false,
-            ID = string.Format(@"lblDispName{0}{1}", groupNo, keyNo),
+            ID = string.Format("lblDispName{0}_{1}", groupNo, keyNo),
             CssClass = "control-label editing-form-label",
             Text = HTMLHelper.HTMLEncode(settingsKey.KeyDisplayName),
             DisplayColon = true

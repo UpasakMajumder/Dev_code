@@ -498,7 +498,7 @@ public partial class CMSInstall_JoinDB : GlobalAdminPage
     /// </summary>
     private string GetManualCopyText()
     {
-        SeparatedTables tables = new SeparatedTables(Server.MapPath("~/App_Data/DBSeparation"), null);
+        SeparatedTables tables = new SeparatedTables(Server.MapPath("~/App_Data/DBSeparation"), String.Empty);
         return ResHelper.GetString("separationDB.manualcopy") + tables.GetTableNames("<br />");
     }
 

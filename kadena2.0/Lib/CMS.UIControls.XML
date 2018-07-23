@@ -5093,11 +5093,6 @@
             ID of the related node version history.
             </summary>
         </member>
-        <member name="P:CMS.UIControls.ContentInnerMediaView.ActionsWithRequiredUrl">
-            <summary>
-            Returns list of unigrid actions where URL of item is required.
-            </summary>
-        </member>
         <member name="P:CMS.UIControls.ContentInnerMediaView.EmptyAttachment">
             <summary>
             Empty attachment object to fake attachment data
@@ -12834,6 +12829,11 @@
             If true, relative ancestor div is checked
             </summary>
         </member>
+        <member name="P:CMS.UIControls.GridViewTemplate.ActionsAuthorization">
+            <summary>
+            Cache for UniGrid actions authorization.
+            </summary>
+        </member>
         <member name="T:CMS.UIControls.IFieldEditorControl">
             <summary>
             Used for loading / updating configuration of the control from the field editor parameters.
@@ -14359,6 +14359,16 @@
             Constructor.
             </summary>
             <param name="action">XML element with the action definition</param>
+        </member>
+        <member name="M:CMS.UIControls.UniGridConfig.Action.CheckPermissionsAuthorization">
+            <summary>
+            Check whether authenticated user has given permissions for given resource on current site to perform this action.
+            </summary>
+        </member>
+        <member name="M:CMS.UIControls.UniGridConfig.Action.CheckUIElementsAuthorization">
+            <summary>
+            Check whether authenticated user is authorized for given UI elements on current site to perform this action.
+            </summary>
         </member>
         <member name="P:CMS.UIControls.UniGridConfig.Action.CaptionText">
             <summary>

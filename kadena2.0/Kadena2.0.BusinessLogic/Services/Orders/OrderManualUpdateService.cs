@@ -142,10 +142,11 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 var skuLines = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.LineNumber);
                 var skuNewQty = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.Quantity);
+                var skuAdjustedQuantities = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.Quantity - v.OriginalItem.Quantity);
 
                 // create distributor cart items
                 var distributorCartItems = distributorShoppingCartService
-                    .CreateCart(skuNewQty, orderDetail.Customer.KenticoUserID, orderDetail.campaign.DistributorID)
+                    .CreateCart(skuAdjustedQuantities, orderDetail.Customer.KenticoUserID, orderDetail.campaign.DistributorID)
                     .ToList();
                 // create fake cart with new data
                 // distributor set to 0 so cart won't be visible for active users
@@ -157,7 +158,11 @@ namespace Kadena.BusinessLogic.Services.Orders
                 {
                     distributorCartItems.ForEach(c =>
                     {
-                        c.Items.ForEach(i => i.ShoppingCartID = cartId);
+                        c.Items.ForEach(i =>
+                        {
+                            i.ShoppingCartID = cartId;
+                            i.Quantity = skuNewQty[c.SKUID];
+                        });
                         distributorShoppingCartService.UpdateDistributorCarts(c, orderDetail.Customer.KenticoUserID);
                     }
                     );

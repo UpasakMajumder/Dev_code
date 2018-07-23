@@ -175,6 +175,9 @@ public partial class CMSModules_AdminControls_Controls_Preview_PreviewHierarchy 
 
     protected override void OnLoad(EventArgs e)
     {
+        // This loads the user control itself. User control then sets the UIContext.EditedObject value.
+        var previewControl = PaneContent.UserControl as CMSPreviewControl;
+
         ICMSMasterPage master = Page.Master as ICMSMasterPage;
         if ((master != null) && (master.FooterContainer != null))
         {
@@ -238,8 +241,7 @@ public partial class CMSModules_AdminControls_Controls_Preview_PreviewHierarchy 
         PaneFooter.SpacingOpen = 0;
 
         // Check if inner control denied displaying preview
-        var pw = PaneContent.UserControl as CMSPreviewControl;
-        if ((pw != null) && !pw.ShowPreview)
+        if ((previewControl != null) && !previewControl.ShowPreview)
         {
             previewValue = 0;
         }
@@ -309,9 +311,9 @@ public partial class CMSModules_AdminControls_Controls_Preview_PreviewHierarchy 
 
         if (previewValue != 0)
         {
-            if (pw != null)
+            if (previewControl != null)
             {
-                pw.IsInPreview = true;
+                previewControl.IsInPreview = true;
             }
 
             ScriptHelper.HideVerticalTabs(Page);

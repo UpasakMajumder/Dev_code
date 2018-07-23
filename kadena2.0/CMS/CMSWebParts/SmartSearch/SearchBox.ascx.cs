@@ -899,7 +899,7 @@ public partial class CMSWebParts_SmartSearch_SearchBox : CMSAbstractWebPart, ICa
         else
         {
             UIRepeater repSearchResults = new UIRepeater();
-            IDictionary<string, DataView> indexCategories = new Dictionary<string, DataView>();
+            IDictionary<string, DataView> indexCategories = new Dictionary<string, DataView>(StringComparer.InvariantCultureIgnoreCase);
             StringWriter stringWriter = new StringWriter();
 
             // Display categories - create DataView for each index

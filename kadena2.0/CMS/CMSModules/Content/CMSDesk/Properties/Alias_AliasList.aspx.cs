@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Data;
-
-using CMS.Base;
-using CMS.DocumentEngine;
-using CMS.Helpers;
-
-using System.Linq;
 using System.Text;
 
+using CMS.Base;
 using CMS.Base.Web.UI;
 using CMS.DataEngine;
+using CMS.DocumentEngine;
+using CMS.Helpers;
 using CMS.Membership;
 using CMS.Modules;
 using CMS.SiteProvider;
@@ -63,6 +60,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_AliasList : CMS
         var columnList = GetColumns(columns);
         var where = SqlHelper.AddWhereCondition(completeWhere, "AliasSiteID = " + SiteContext.CurrentSiteID);
         return DocumentAliasInfoProvider.GetDocumentAliasesWithNodesDataQuery()
+                                        .Source(s => s.InnerJoin<DataClassInfo>("NodeClassID", "ClassID"))
                                         .Where(where)
                                         .OrderBy(currentOrder)
                                         .TopN(currentTopN)
@@ -74,7 +72,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_AliasList : CMS
     private static string[] GetColumns(string columns)
     {
         // Columns NodeSiteID, NodeACLID and NodeOwner are required for permission check. Do not remove them.
-        const string REQUIRED_COLUMNS = "AliasID, AliasCulture AS DocumentCulture, AliasUrlPath, AliasExtensions, NodeAliasPath, NodeName, NodeParentID, NodeClassID, NodeSiteID, NodeACLID, NodeOwner";
+        const string REQUIRED_COLUMNS = "AliasID, AliasCulture AS DocumentCulture, AliasUrlPath, AliasExtensions, NodeAliasPath, NodeName, NodeParentID, ClassName, NodeSiteID, NodeACLID, NodeOwner";
         return SqlHelper.MergeColumns(columns, REQUIRED_COLUMNS).Split(',');
     }
 
@@ -154,7 +152,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_AliasList : CMS
         var documentName = ValidationHelper.GetString(data["NodeName"], string.Empty);
         var documentAliasPath = ValidationHelper.GetString(DataHelper.GetDataRowViewValue(data, "NodeAliasPath"), String.Empty);
         var tooltip = GetTooltip(documentName, documentAliasPath);
-        var pageTypeIcon = GetNodeIcon(ValidationHelper.GetInteger(data["NodeClassId"], 0));
+        var pageTypeIcon = GetNodeIcon(Convert.ToString(data["ClassName"]));
 
         var sb = new StringBuilder();
         sb.Append(
@@ -177,10 +175,10 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_AliasList : CMS
     }
 
 
-    private string GetNodeIcon(int nodeClassId)
+    private string GetNodeIcon(string className)
     {
-        var type = DataClassInfoProvider.GetDataClassInfo(nodeClassId);
-        var icon = UIHelper.GetDocumentTypeIcon(this, type.ClassName, (string)type.GetValue("ClassIconClass"));
+        var documentType = DataClassInfoProvider.GetDataClassInfo(className);
+        var icon = UIHelper.GetDocumentTypeIcon(this, documentType.ClassName, (string)documentType.GetValue("ClassIconClass"));
         return icon;
     }
 

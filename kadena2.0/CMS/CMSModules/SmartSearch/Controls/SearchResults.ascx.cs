@@ -1493,7 +1493,7 @@ public partial class CMSModules_SmartSearch_Controls_SearchResults : CMSUserCont
                         Exception searchError = SearchContext.LastError;
                         if (searchError != null)
                         {
-                            ShowError(GetString("smartsearch.searcherror") + " " + searchError.Message);
+                            ShowError(GetString("smartsearch.searcherror") + " " + HTMLHelper.HTMLEncode(searchError.Message));
                         }
                     }
                     lblNoResults.Text = NoResultsText;

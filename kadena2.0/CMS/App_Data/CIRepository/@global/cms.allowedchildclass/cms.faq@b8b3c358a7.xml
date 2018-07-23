@@ -6,17 +6,17 @@
     <ObjectType>cms.documenttype</ObjectType>
   </Parent>
   <Bindings>
-    <Binding id="cms.documenttype_CMS.MenuItem">
-      <ParentClassID>
-        <CodeName>CMS.MenuItem</CodeName>
-        <GUID>60787c08-18f1-40df-ab59-49b0415800b5</GUID>
-        <ObjectType>cms.documenttype</ObjectType>
-      </ParentClassID>
-    </Binding>
     <Binding id="cms.documenttype_CMS.Folder">
       <ParentClassID>
         <CodeName>CMS.Folder</CodeName>
         <GUID>8fa3e50a-b5ef-48f1-b506-fad8f3f9e50a</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_CMS.MenuItem">
+      <ParentClassID>
+        <CodeName>CMS.MenuItem</CodeName>
+        <GUID>60787c08-18f1-40df-ab59-49b0415800b5</GUID>
         <ObjectType>cms.documenttype</ObjectType>
       </ParentClassID>
     </Binding>
