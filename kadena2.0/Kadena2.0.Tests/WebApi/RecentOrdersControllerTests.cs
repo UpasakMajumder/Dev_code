@@ -9,6 +9,7 @@ using Kadena.BusinessLogic.Contracts;
 using AutoMapper;
 using System;
 using Kadena.Dto.ViewOrder.Responses;
+using Kadena.BusinessLogic.Factories;
 
 namespace Kadena.Tests.WebApi
 {
@@ -16,11 +17,19 @@ namespace Kadena.Tests.WebApi
     {
         [Theory(DisplayName = "RecentOrdersController()")]
         [ClassData(typeof(RecentOrdersControllerTests))]
-        public void RecentOrdersController(IOrderDetailService orderDetailService,
+        public void RecentOrdersController(
+            IOrderDetailService orderDetailService,
             IOrderListServiceFactory orderListServiceFactory,
+            IOrderHistoryService orderHistoryService,
+            IOrderHistoryFactory orderHistoryFactory,
             IMapper mapper)
         {
-            Assert.Throws<ArgumentNullException>(() => new RecentOrdersController(orderDetailService, orderListServiceFactory, mapper));
+            Assert.Throws<ArgumentNullException>(() => new RecentOrdersController(
+                orderDetailService, 
+                orderListServiceFactory, 
+                orderHistoryService, 
+                orderHistoryFactory, 
+                mapper));
         }
 
 

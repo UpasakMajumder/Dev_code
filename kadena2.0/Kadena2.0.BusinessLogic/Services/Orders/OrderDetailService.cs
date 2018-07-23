@@ -108,7 +108,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             var canCurrentUserEditInApproval = permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.EditOrdersInApproval);
             var showApprovalButtons = canCurrentUserApproveOrder;
             var showEditButton = canCurrentUserApproveOrder && canCurrentUserEditInApproval;
-            var approvalMessages = data.Approvals?.Select(a => a.Note) ?? Enumerable.Empty<string>();
 
             CheckOrderDetailPermisson(orderNumber, kenticoCustomers.GetCurrentCustomer(), canCurrentUserApproveOrder);
 
@@ -185,7 +184,11 @@ namespace Kadena.BusinessLogic.Services.Orders
                     {
                         Title = resources.GetResourceString("Kadena.Order.StatusPrefix"),
                         Value = genericStatus,
-                        Note = string.Join(", ", approvalMessages)
+                        OrderHistory = new Link
+                        {
+                            Label = resources.GetResourceString("Kadena.Order.Status.OrderHistory"),
+                            Url = '/' + Routes.Order.History
+                        }
                     },
                     TotalCost = new TitleValuePair<string>
                     {

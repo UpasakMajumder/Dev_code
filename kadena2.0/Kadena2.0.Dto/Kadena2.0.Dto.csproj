@@ -250,6 +250,8 @@
     <Compile Include="ViewOrder\Responses\OrderDetailDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemsDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderHistoryChangesDto.cs" />
+    <Compile Include="ViewOrder\Responses\OrderHistoryDto.cs" />
     <Compile Include="ViewOrder\Responses\OrderInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderStatusInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\PaymentInfoDTO.cs" />
@@ -260,9 +262,12 @@
     <Compile Include="_Attributes\StringListValidationAttribute.cs" />
     <Compile Include="_Common\DialogButtonDTO.cs" />
     <Compile Include="_Common\DialogDTO.cs" />
+    <Compile Include="_Common\LinkDto.cs" />
     <Compile Include="_Common\PaginationDto.cs" />
+    <Compile Include="_Common\TableCellDto.cs" />
     <Compile Include="_Common\TableViewDto.cs" />
     <Compile Include="_Common\TableRowDto.cs" />
+    <Compile Include="_Common\TitledMessageDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="SubmitOrder\MicroserviceResponses\" />

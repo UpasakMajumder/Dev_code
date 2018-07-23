@@ -66,6 +66,8 @@ namespace Kadena.Container.Default
             container.Register<ITaxEstimationService, TaxEstimationService>();
             container.Register<ISubmitOrderService, SubmitOrderService>();
             container.Register<IOrderDetailService, OrderDetailService>();
+            container.Register<IOrderHistoryService, OrderHistoryService>();
+            container.Register<IOrderHistoryFactory, OrderHistoryFactory>();
             container.Register<IOrderReportService, OrderReportService>();
             container.Register<IOrderResubmissionService, OrderResubmissionService>();
             container.Register<IKListService, KListService>();

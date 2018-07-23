@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.BusinessLogic.Factories;
 using Kadena.Dto.RecentOrders;
 using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Helpers.Routes;
@@ -17,20 +18,26 @@ namespace Kadena.WebAPI.Controllers
         private readonly IOrderDetailService orderDetailService;
         private readonly IMapper _mapper;
         private readonly IOrderListService _orderService;
+        private readonly IOrderHistoryService _orderHistoryService;
+        private readonly IOrderHistoryFactory _orderHistoryFactory;
 
         public RecentOrdersController(
             IOrderDetailService orderDetailService, 
-            IOrderListServiceFactory orderListServiceFactory, 
+            IOrderListServiceFactory orderListServiceFactory,
+            IOrderHistoryService orderHistoryService,
+            IOrderHistoryFactory orderHistoryFactory,
             IMapper mapper)
         {
+            _orderHistoryFactory = orderHistoryFactory ?? throw new ArgumentNullException(nameof(orderHistoryFactory));
+            _orderHistoryService = orderHistoryService ?? throw new ArgumentNullException(nameof(orderHistoryService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.orderDetailService = orderDetailService ?? throw new ArgumentNullException(nameof(orderDetailService));
+
             if (orderListServiceFactory == null)
             {
                 throw new ArgumentNullException(nameof(orderListServiceFactory));
             }
-
             _orderService = orderListServiceFactory.GetRecentOrders();
-            this.orderDetailService = orderDetailService ?? throw new ArgumentNullException(nameof(orderDetailService));
         }
 
         [HttpGet]
@@ -89,11 +96,20 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpGet]
         [Route(Routes.Order.Detail)]
-        public async Task<IHttpActionResult> Get([FromUri]string orderId)
+        public async Task<IHttpActionResult> Get(string orderId)
         {
             var detailPage = await orderDetailService.GetOrderDetail(orderId);
             var detailPageDto = _mapper.Map<OrderDetailDTO>(detailPage);
             return ResponseJson(detailPageDto);
+        }
+
+        [HttpGet]
+        [Route(Routes.Order.History)]
+        public async Task<IHttpActionResult> GetHistory(string orderId)
+        {
+            var history = await _orderHistoryService.GetOrderHistory(orderId);
+            var historyDto = _orderHistoryFactory.Create(history);
+            return ResponseJson(historyDto);
         }
     }
 }
