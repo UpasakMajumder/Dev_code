@@ -234,6 +234,11 @@
             If this bit is true, value is not forcibly loaded after postback if value was set
             </summary>
         </member>
+        <member name="P:CMS.CKEditor.Web.UI.CKEditorControl.Node">
+            <summary>
+            Gets or sets the current node.
+            </summary>
+        </member>
         <member name="P:CMS.CKEditor.Web.UI.CKEditorControl.AutoGrowMaxHeight">
              <summary>
              The maximum height to which the editor can reach using AutoGrow.

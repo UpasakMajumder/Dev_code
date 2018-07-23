@@ -3106,6 +3106,12 @@
             <param name="subscriberID">Subscriber ID</param>
             <param name="newsletterID">Newsletter ID</param>
         </member>
+        <member name="M:CMS.Newsletters.ISubscriptionProvider.IsExceeded(CMS.Newsletters.SubscriberNewsletterInfo)">
+            <summary>
+            Returns true if given subscription exceeded the opt-in interval (Interval is defined in settings).
+            </summary>
+            <param name="subscription">Subscription</param>
+        </member>
         <member name="M:CMS.Newsletters.ISubscriptionProvider.Subscribe(System.Int32,System.Int32,System.Boolean)">
             <summary>
             Subscribes the subscriber to the newsletter.
@@ -3557,6 +3563,12 @@
             </summary>
             <param name="subscriberID">Subscriber ID</param>
             <param name="newsletterID">Newsletter ID</param>
+        </member>
+        <member name="M:CMS.Newsletters.SubscriptionProvider.IsExceeded(CMS.Newsletters.SubscriberNewsletterInfo)">
+            <summary>
+            Returns true if given subscription exceeded the opt-in interval (Interval is defined in settings).
+            </summary>
+            <param name="subscription">Subscription</param>
         </member>
         <member name="M:CMS.Newsletters.SubscriptionProvider.Subscribe(System.Int32,System.Int32,System.Boolean)">
             <summary>

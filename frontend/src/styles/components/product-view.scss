@@ -123,7 +123,7 @@
   }
 
   &__footer {
-    @extend %flex--center--between;
+    @extend %flex--start--between;
     flex-wrap: wrap;
 
     & > * {

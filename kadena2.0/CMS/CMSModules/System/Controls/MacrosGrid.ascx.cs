@@ -285,7 +285,7 @@ public partial class CMSModules_System_Controls_MacrosGrid : CMSUserControl, IUn
                         if (!reportProblems)
                         {
                             // Apply paging. (endIndex is -1 when paging is off)
-                            if ((endIndex < 0) || ((index >= startIndex) && (index <= endIndex)))
+                            if ((endIndex < 0) || ((index >= startIndex) && (index < endIndex)))
                             {
                                 e = GetMacroExpr(originalExpression, processedExpression);
                                 add = true;
@@ -302,7 +302,7 @@ public partial class CMSModules_System_Controls_MacrosGrid : CMSUserControl, IUn
                             if (pass)
                             {
                                 // Apply paging. (endIndex is -1 when paging is off)
-                                if ((endIndex < 0) || ((index >= startIndex) && (index <= endIndex)))
+                                if ((endIndex < 0) || ((index >= startIndex) && (index < endIndex)))
                                 {
                                     add = true;
                                 }

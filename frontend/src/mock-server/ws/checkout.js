@@ -116,6 +116,13 @@ const deliveryAddresses = {
         "type": "text"
       },
       {
+        "id": "company",
+        "label": "Company Name",
+        "values": [],
+        "type": "text",
+        "isOptional": true
+      },
+      {
         "id": "address1",
         "label": "Address 1",
         "values": [],
@@ -213,7 +220,8 @@ const deliveryAddresses = {
       "country": "3",
       "phone": "776 884 228",
       "email": "lol@gmail.com",
-      "customerName": "Andrei"
+      "customerName": "Andrei",
+      "company": "Actum"
     },
     {
       "address1": "Test Address line 1",
@@ -223,17 +231,18 @@ const deliveryAddresses = {
       "zip": "13228",
       "id": 3,
       "checked": false,
-      "country": "2"
+      "country": "2",
+      "customerName": "Andrei"
     },
     {
       "address1": "Test Address line 1",
-      "address2": "Test Address line 2",
       "city": "Prague",
       "state": "",
       "zip": "14000",
       "id": 4,
       "checked": false,
-      "country": "1"
+      "country": "1",
+      "customerName": "Andrei"
     }
   ]
 };

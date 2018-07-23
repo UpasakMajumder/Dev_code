@@ -1732,12 +1732,13 @@
             <param name="translationHelper">Translation helper object. Used to optimize database calls when asked for the same information multiple times.</param>
             <param name="includeIfExcludedObjectType">Indicates if dependent object is included even if reference object type is excluded</param>
         </member>
-        <member name="M:CMS.ContinuousIntegration.Internal.RepositoryConfigurationEvaluator.IsObjectIncludedByReference(CMS.ContinuousIntegration.Internal.ExtendedTranslationReference,CMS.ContinuousIntegration.Internal.FileSystemRepositoryConfiguration,System.Boolean)">
+        <member name="M:CMS.ContinuousIntegration.Internal.RepositoryConfigurationEvaluator.IsObjectIncludedByReference(CMS.ContinuousIntegration.Internal.ExtendedTranslationReference,CMS.ContinuousIntegration.Internal.FileSystemRepositoryConfiguration,CMS.DataEngine.TranslationHelper,System.Boolean)">
             <summary>
             Returns true if given reference does not filter out its dependent object.
             </summary>
             <param name="reference">Reference to check</param>
             <param name="configuration">File system repository configuration</param>
+            <param name="translationHelper">Translation helper object. Used to optimize database calls when asked for the same information multiple times.</param>
             <param name="includeIfExcludedObjectType">Indicates if dependent object is included even if reference object type is excluded</param>
         </member>
         <member name="M:CMS.ContinuousIntegration.Internal.RepositoryConfigurationEvaluator.IsObjectIncludedByFilterDependencies(CMS.DataEngine.BaseInfo,CMS.ContinuousIntegration.Internal.FileSystemRepositoryConfiguration,CMS.ContinuousIntegration.Internal.ContinuousIntegrationTranslationHelper)">
@@ -1745,15 +1746,16 @@
             Returns true if the given object is not filtered out by its dependencies defined in <see cref="P:CMS.DataEngine.ContinuousIntegrationSettings.FilterDependencies"/>.
             </summary>
         </member>
-        <member name="M:CMS.ContinuousIntegration.Internal.RepositoryConfigurationEvaluator.IsIncludedByObject(CMS.ContinuousIntegration.Internal.ExtendedTranslationReference,CMS.ContinuousIntegration.Internal.FileSystemRepositoryConfiguration,System.Boolean)">
+        <member name="M:CMS.ContinuousIntegration.Internal.RepositoryConfigurationEvaluator.IsIncludedByObject(CMS.ContinuousIntegration.Internal.ExtendedTranslationReference,CMS.ContinuousIntegration.Internal.FileSystemRepositoryConfiguration,CMS.DataEngine.TranslationHelper,System.Boolean)">
             <summary>
             Returns true if the given object does not restrict its children.
             </summary>
             <param name="checkedObject">Translation reference of checked object</param>
             <param name="configuration">File system repository configuration</param>
+            <param name="translationHelper">Translation helper object. Used to optimize database calls when asked for the same information multiple times.</param>
             <param name="includeIfParentObjectTypeExcluded">If true, excluded parent object type does not exclude the object</param>
         </member>
-        <member name="M:CMS.ContinuousIntegration.Internal.RepositoryConfigurationEvaluator.IsIncludedByFilterDependencies(CMS.ContinuousIntegration.Internal.ExtendedTranslationReference,CMS.ContinuousIntegration.Internal.FileSystemRepositoryConfiguration)">
+        <member name="M:CMS.ContinuousIntegration.Internal.RepositoryConfigurationEvaluator.IsIncludedByFilterDependencies(CMS.ContinuousIntegration.Internal.ExtendedTranslationReference,CMS.ContinuousIntegration.Internal.FileSystemRepositoryConfiguration,CMS.DataEngine.TranslationHelper)">
             <summary>
              Returns true if the given object is not restricted by its filter dependencies.
             </summary>
@@ -1773,7 +1775,7 @@
             Checks if object meets the object type filter condition.
             </summary>
         </member>
-        <member name="M:CMS.ContinuousIntegration.Internal.RepositoryConfigurationEvaluator.IsObjectIncludedByFilterCondition(CMS.ContinuousIntegration.Internal.ExtendedTranslationReference,CMS.ContinuousIntegration.Internal.FileSystemRepositoryConfiguration)">
+        <member name="M:CMS.ContinuousIntegration.Internal.RepositoryConfigurationEvaluator.IsObjectIncludedByFilterCondition(CMS.ContinuousIntegration.Internal.ExtendedTranslationReference,CMS.ContinuousIntegration.Internal.FileSystemRepositoryConfiguration,CMS.DataEngine.TranslationHelper)">
             <summary>
             Checks if the object represented by the given translation reference meets filter condition.
             Returns true if the object can be stored.
@@ -1865,6 +1867,31 @@
             along with other translation data (to improve performance of file system names creation).
             </summary>
         </member>
+        <member name="T:CMS.ContinuousIntegration.Internal.IFilterConditionCache">
+            <summary>
+            Contains cached filter condition results organized by object types and their where conditions.
+            </summary>
+        </member>
+        <member name="M:CMS.ContinuousIntegration.Internal.IFilterConditionCache.TryGet(System.String,System.String,System.Boolean@)">
+            <summary>
+            Tries to get a value indicating whether object type and its where condition meet filter condition.
+            </summary>
+        </member>
+        <member name="M:CMS.ContinuousIntegration.Internal.IFilterConditionCache.Add(System.String,System.String,System.Boolean)">
+            <summary>
+            Adds a new cache entry indicating, whether object type and its where condition meet filter condition.
+            </summary>
+        </member>
+        <member name="M:CMS.ContinuousIntegration.Internal.IFilterConditionCache.Clear">
+            <summary>
+            Clears the whole cache.
+            </summary>
+        </member>
+        <member name="F:CMS.ContinuousIntegration.Internal.ContinuousIntegrationTranslationHelper.filterConditionCache">
+            <summary>
+            Cache of filter conditions organized by object type and where condition.
+            </summary>
+        </member>
         <member name="M:CMS.ContinuousIntegration.Internal.ContinuousIntegrationTranslationHelper.GetAdditionalFieldNames(CMS.DataEngine.ObjectTypeInfo)">
             <summary>
             Gets collection of names of additional fields that will be retrieved along with translation record.
@@ -1873,6 +1900,21 @@
         <member name="M:CMS.ContinuousIntegration.Internal.ContinuousIntegrationTranslationHelper.GetAdditionalFieldsData(CMS.DataEngine.BaseInfo)">
             <summary>
             Gets dictionary with data of additional fields [fieldName -> value].
+            </summary>
+        </member>
+        <member name="M:CMS.ContinuousIntegration.Internal.ContinuousIntegrationTranslationHelper.CMS#ContinuousIntegration#Internal#IFilterConditionCache#TryGet(System.String,System.String,System.Boolean@)">
+            <summary>
+            Tries to get a value indicating whether object type and its where condition meet filter condition.
+            </summary>
+        </member>
+        <member name="M:CMS.ContinuousIntegration.Internal.ContinuousIntegrationTranslationHelper.CMS#ContinuousIntegration#Internal#IFilterConditionCache#Add(System.String,System.String,System.Boolean)">
+            <summary>
+            Adds a new cache entry indicating, whether object type and its where condition meet filter condition.
+            </summary>
+        </member>
+        <member name="M:CMS.ContinuousIntegration.Internal.ContinuousIntegrationTranslationHelper.Clear">
+            <summary>
+            Clears the whole cache.
             </summary>
         </member>
         <member name="T:CMS.ContinuousIntegration.Internal.FileSystemRepositoryConfiguration">
@@ -1973,10 +2015,16 @@
             Returns object types derived from the main object types specified in the loaded configuration <seealso cref="M:CMS.ContinuousIntegration.Internal.FileSystemRepositoryConfigurationBuilder.GetMainTypeInfos(CMS.ContinuousIntegration.Internal.RepositoryConfigurationFile)"/>
             </summary>
         </member>
-        <member name="M:CMS.ContinuousIntegration.Internal.FileSystemRepositoryConfigurationBuilder.GetDynamicObjectTypeInfos(CMS.ContinuousIntegration.Internal.RepositoryConfigurationFile)">
+        <member name="M:CMS.ContinuousIntegration.Internal.FileSystemRepositoryConfigurationBuilder.GetCustomTableObjectTypes(CMS.ContinuousIntegration.Internal.RepositoryConfigurationFile)">
             <summary>
-            Returns all dynamic object types according to given configuration
+            Returns all custom table object types according to given configuration
             </summary>
+        </member>
+        <member name="M:CMS.ContinuousIntegration.Internal.FileSystemRepositoryConfigurationBuilder.IsCustomTableObjectType(System.String)">
+            <summary>
+            Returns <c>true</c>, if given <paramref name="objectType"/> is a custom table object type.
+            </summary>
+            <param name="objectType">Object type name.</param>
         </member>
         <member name="M:CMS.ContinuousIntegration.Internal.FileSystemRepositoryConfigurationBuilder.LoadDefaultFilterConditions(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
@@ -4695,6 +4743,12 @@
         <member name="M:CMS.ContinuousIntegration.Internal.ContinuousIntegrationEventHandling.HasObjectFormDefinitionChanged(CMS.Base.IAdvancedDataContainer)">
             <summary>
             Returns true when passed object has changed any column containing form definition.
+            </summary>
+        </member>
+        <member name="M:CMS.ContinuousIntegration.Internal.ContinuousIntegrationEventHandling.RequiresFormDefinitionChangeRepositoryRefresh(CMS.Base.IAdvancedDataContainer)">
+            <summary>
+            Returns true when form definition change in passed object requires CI repository refresh.
+            This includes: addition or removal of a field, field's name or data type change.
             </summary>
         </member>
         <member name="M:CMS.ContinuousIntegration.Internal.ContinuousIntegrationEventHandling.HasObjectCodeNameChanged(CMS.DataEngine.IInfo)">

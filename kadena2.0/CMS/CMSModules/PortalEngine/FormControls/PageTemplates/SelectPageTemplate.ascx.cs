@@ -349,7 +349,12 @@ public partial class CMSModules_PortalEngine_FormControls_PageTemplates_SelectPa
             int templateId = template.PageTemplateId;
 
             // Hide Clone as AdHoc button for page templates when is used for UIElement edit page and UIElement does not exists
-            var uiElement = Form.EditedObject as UIElementInfo;
+            UIElementInfo uiElement = null;
+            if (Form != null)
+            {
+                uiElement = Form.EditedObject as UIElementInfo;
+            }
+
             plcUIClone.Visible = uiElement != null ? (template.IsReusable && UIElementInfoProvider.GetUIElementInfo(uiElement.ElementID) != null) : template.IsReusable;
 
             if (Enabled)

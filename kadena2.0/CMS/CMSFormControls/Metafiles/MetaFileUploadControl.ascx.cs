@@ -2,7 +2,6 @@
 
 using CMS.Base.Web.UI;
 using CMS.DataEngine;
-using CMS.FormEngine;
 using CMS.FormEngine.Web.UI;
 using CMS.Helpers;
 using CMS.SiteProvider;
@@ -12,28 +11,12 @@ public partial class CMSFormControls_Metafiles_MetaFileUploadControl : FormEngin
 {
     #region "Variables"
 
-    private string mValue = null;
+    private string mValue;
 
     #endregion
 
 
     #region "Properties"
-
-    /// <summary>
-    /// Gets or sets the enabled state of the control.
-    /// </summary>
-    public override bool Enabled
-    {
-        get
-        {
-            return fileUploader.Enabled;
-        }
-        set
-        {
-            fileUploader.Enabled = value;
-        }
-    }
-
 
     /// <summary>
     /// Gets or sets field value.
@@ -46,24 +29,7 @@ public partial class CMSFormControls_Metafiles_MetaFileUploadControl : FormEngin
         }
         set
         {
-            mValue = (value != null ? value.ToString() : null);
-        }
-    }
-
-
-    /// <summary>
-    /// Field info object.
-    /// </summary>
-    public override FormFieldInfo FieldInfo
-    {
-        get
-        {
-            return base.FieldInfo;
-        }
-        set
-        {
-            base.FieldInfo = value;
-            fileUploader.FieldInfo = value;
+            mValue = value != null ? value.ToString() : null;
         }
     }
 
@@ -80,6 +46,15 @@ public partial class CMSFormControls_Metafiles_MetaFileUploadControl : FormEngin
         set
         {
             fileUploader.IsLiveSite = value;
+        }
+    }
+
+
+    protected override FormEngineUserControl UnderlyingFormControl
+    {
+        get
+        {
+            return fileUploader;
         }
     }
 
@@ -131,7 +106,7 @@ public partial class CMSFormControls_Metafiles_MetaFileUploadControl : FormEngin
 
     private void InitializeUploadControl()
     {
-        BaseInfo info = Form.EditedObject as BaseInfo;
+        var info = Form.EditedObject as BaseInfo;
         if (info != null)
         {
             fileUploader.ObjectType = info.TypeInfo.ObjectType;
@@ -145,7 +120,7 @@ public partial class CMSFormControls_Metafiles_MetaFileUploadControl : FormEngin
         }
         else
         {
-            IDataClass item = Form.EditedObject as IDataClass;
+            var item = Form.EditedObject as IDataClass;
             if (item != null)
             {
                 fileUploader.ObjectType = item.ClassName;

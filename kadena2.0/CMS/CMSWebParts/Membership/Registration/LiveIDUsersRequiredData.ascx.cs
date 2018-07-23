@@ -204,7 +204,7 @@ public partial class CMSWebParts_Membership_Registration_LiveIDUsersRequiredData
     {
         get
         {
-            return ValidationHelper.GetString(GetValue("TrackConversionName"), SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSLiveIDConversionName"));
+            return ValidationHelper.GetString(GetValue("TrackConversionName"), "");
         }
         set
         {
