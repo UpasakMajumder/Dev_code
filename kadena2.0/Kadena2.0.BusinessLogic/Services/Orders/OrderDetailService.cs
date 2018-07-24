@@ -283,10 +283,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             var items = await MapOrderedItems(responseItems, id);
 
             // filter out mailing items and process them
-            items.Where(item =>
-            {
-                return !ProcessMailingItem(item, orderedItems, mailingTypeCode);
-            });
+            items = items.Where(item => !ProcessMailingItem(item, orderedItems, mailingTypeCode)).ToList();
 
             // expand items to match each TrackingInfo object
             var expandedItems = ExpandItems(items);
@@ -323,6 +320,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     var itemClone = mapper.Map<OrderedItem>(item);
                     itemClone.Quantity = itemClone.Quantity - itemClone.QuantityShipped;
                     itemClone.QuantityShipped = 0;
+                    itemClone.Tracking = null;
 
                     expandedItems.Add((itemClone, null));
                 }
@@ -331,6 +329,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 {
                     var itemClone = mapper.Map<OrderedItem>(item);
                     itemClone.QuantityShipped = trackingInfo.QuantityShipped;
+                    itemClone.Tracking = null;
 
                     expandedItems.Add((itemClone, trackingInfo));
                 }
