@@ -238,6 +238,9 @@
     <Compile Include="Tax\MicroserviceRequests\TaxCalculatorRequestDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\GeneratePdfTaskStatusResponseDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\GeneratePdfTaskResponseDto.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\History\ItemDto.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\History\OrderHistoryUpdateDto.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\History\PaymentoptionsDto.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\OrderItemDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\PaymentInfoDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\ShippingInfoDTO.cs" />
