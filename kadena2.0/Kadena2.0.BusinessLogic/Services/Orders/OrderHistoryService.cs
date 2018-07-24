@@ -49,7 +49,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             var changes = changesTask.Result.Payload;
 
             var history = CreateOrderHistory();
-            history.Message.Text = string.Join(", ", detail.Approvals.Select(a => a.Note));
+            history.Message.Text = string.Join(", ", detail.Approvals?.Select(a => a.Note) ?? Enumerable.Empty<string>());
 
             HandleChanges(changes, history);
 
@@ -91,7 +91,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                             ? resources.GetResourceString("Kadena.Order.History.OrderChanges.Category.ItemRemoved")
                             : resources.GetResourceString("Kadena.Order.History.OrderChanges.Category.QuantityChange"),
                         Date = new DateTime(change.ServiceRecordDateTimeCreated),
-                        User = GetChangedByUserName(change.UserId),
+                        User = GetChangedByUserInfo(change.UserId),
                         OldValue = wasRemoved ? "" : previousItem.Quantity.ToString(),
                         NewValue = wasRemoved ? "" : item.Quantity.ToString(),
                     });
@@ -119,20 +119,20 @@ namespace Kadena.BusinessLogic.Services.Orders
                 NewValue = kenticoOrderProvider.MapOrderStatus(newStatus),
                 Category = resources.GetResourceString("Kadena.Order.History.OrderChanges.Category.Status"),
                 Date = new DateTime(change.ServiceRecordDateTimeCreated),
-                User = GetChangedByUserName(change.UserId)
+                User = GetChangedByUserInfo(change.UserId)
             });
 
             return true;
         }
 
-        private string GetChangedByUserName(string changeUserId)
+        private string GetChangedByUserInfo(string changeUserId)
         {
             if (!int.TryParse(changeUserId, out var userId))
             {
                 return string.Empty;
             }
 
-            return kenticoUserProvider.GetUserByUserId(userId)?.UserName ?? string.Empty;
+            return kenticoUserProvider.GetUserByUserId(userId)?.Email ?? string.Empty;
         }
 
         private OrderHistory CreateOrderHistory() => new OrderHistory
