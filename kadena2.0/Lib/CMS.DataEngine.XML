@@ -10614,11 +10614,6 @@
             </summary>
             <returns>Returns true, if the application was initialized during this call.</returns>
         </member>
-        <member name="M:CMS.DataEngine.CMSApplication.CanInitialize">
-            <summary>
-            Returns true if the initialization of application is allowed with current request
-            </summary>
-        </member>
         <member name="M:CMS.DataEngine.CMSApplication.ReInitAppState">
             <summary>
             Reinitializes the application state
@@ -20007,6 +20002,64 @@
             Fires when reader is executed
             </summary>
         </member>
+        <member name="F:CMS.DataEngine.SqlEvents.BulkInsert">
+            <summary>
+            Fires when bulk insert is executed
+            </summary>
+        </member>
+        <member name="T:CMS.DataEngine.BulkInsertDataHandler">
+            <summary>
+            Bulk insert handler enables insert result processing.
+            </summary>
+        </member>
+        <member name="M:CMS.DataEngine.BulkInsertDataHandler.StartEvent(System.Data.DataTable,System.String,CMS.DataEngine.BulkInsertSettings,CMS.DataEngine.IDataConnection)">
+            <summary>
+            Initiates the event handling.
+            </summary>
+            <param name="sourceData">Source data.</param>
+            <param name="targetTable">Target table.</param>
+            <param name="insertSettings">Bulk insert configuration.</param>
+            <param name="connection">Data connection.</param>
+        </member>
+        <member name="T:CMS.DataEngine.BulkInsertDataEventArgs">
+            <summary>
+            Bulk insert event arguments.
+            </summary>
+        </member>
+        <member name="M:CMS.DataEngine.BulkInsertDataEventArgs.#ctor">
+            <summary>
+            Creates new instance of <see cref="T:CMS.DataEngine.BulkInsertDataEventArgs"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.DataEngine.BulkInsertDataEventArgs.#ctor(System.Data.DataTable,System.String,CMS.DataEngine.BulkInsertSettings,CMS.DataEngine.IDataConnection)">
+            <summary>
+            Creates new instance of <see cref="T:CMS.DataEngine.BulkInsertDataEventArgs"/>.
+            </summary>
+            <param name="sourceData">Source data.</param>
+            <param name="targetTable">Target table.</param>
+            <param name="insertSettings">Bulk insert configuration.</param>
+            <param name="connection">Data connection.</param>
+        </member>
+        <member name="P:CMS.DataEngine.BulkInsertDataEventArgs.SourceData">
+            <summary>
+            Inserted data.
+            </summary>
+        </member>
+        <member name="P:CMS.DataEngine.BulkInsertDataEventArgs.TargetTable">
+            <summary>
+            Target table.
+            </summary>
+        </member>
+        <member name="P:CMS.DataEngine.BulkInsertDataEventArgs.InsertSettings">
+            <summary>
+            Bulk insert configuration.
+            </summary>
+        </member>
+        <member name="P:CMS.DataEngine.BulkInsertDataEventArgs.Connection">
+            <summary>
+            Data connection.
+            </summary>
+        </member>
         <member name="T:CMS.DataEngine.DatabaseFieldAttribute">
             <summary>
             Specifies to which database column the property maps
@@ -27548,6 +27601,11 @@
             Returns true if the given class object can be synchronized
             </summary>
             <param name="classObj">Class object</param>
+        </member>
+        <member name="M:CMS.DataEngine.DataClassInfo.GetClonedColumns(System.String)">
+            <summary>
+            Returns list of columns used during object cloning.
+            </summary>
         </member>
         <member name="M:CMS.DataEngine.DataClassInfo.LoadDefaultData">
             <summary>

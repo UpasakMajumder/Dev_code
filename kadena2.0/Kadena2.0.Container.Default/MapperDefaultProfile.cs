@@ -116,8 +116,10 @@ namespace Kadena.Container.Default
             CreateMap<Dto.ViewOrder.MicroserviceResponses.TrackingInfoDto, TrackingInfo>();
             CreateMap<TrackingInfo, TrackingInfoDto>();
 
+            CreateMap<OrderedItem, OrderedItem>();
             CreateMap<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO, OrderedItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.SkuId))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
                 .ForMember(dest => dest.Image, opt => opt.Ignore())
                 .ForMember(dest => dest.DownloadPdfURL, opt => opt.Ignore())
                 .ForMember(dest => dest.TemplatePrefix, opt => opt.Ignore())
@@ -239,6 +241,10 @@ namespace Kadena.Container.Default
             CreateMap<SettingsAddresses, SettingsAddressesDto>();
             CreateMap<OrderedItem, OrderedItemDTO>();
             CreateMap<OrderedItems, OrderedItemsDTO>();
+            CreateMap<OrderedItemsSection, OrderedItemsSectionDTO>();
+            CreateMap<OrderedItemsGroup, OrderedItemsGroupDTO>();
+            CreateMap<OrderedItemsGroupTracking, OrderedItemsGroupTrackingDTO>();
+            CreateMap<OrderedItemsGroupShippingDate, OrderedItemsGroupShippingDateDTO>();
             CreateMap<OrderDetail, OrderDetailDTO>();
             CreateMap<CommonInfo, CommonInfoDTO>();
             CreateMap<OrderStatusInfo, OrderStatusInfoDTO>();

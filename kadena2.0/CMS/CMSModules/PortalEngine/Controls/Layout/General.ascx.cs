@@ -37,7 +37,6 @@ public partial class CMSModules_PortalEngine_Controls_Layout_General : CMSPrevie
     bool isNew;
     bool isDefault;
 
-    protected bool startWithFullScreen = true;
     CurrentUserInfo currentUser;
 
     private WebPartInfo webPartInfo;
@@ -62,7 +61,7 @@ public partial class CMSModules_PortalEngine_Controls_Layout_General : CMSPrevie
     private WebPartInstance webPart;
 
     private string mLayoutCodeName;
-    int previewState;
+    bool previewIsActive;
     int layoutID;
 
     #endregion
@@ -182,7 +181,6 @@ public partial class CMSModules_PortalEngine_Controls_Layout_General : CMSPrevie
             if (wpi == null)
             {
                 ShowError(GetString("WebPartProperties.WebPartNotFound"));
-                startWithFullScreen = false;
                 return;
             }
         }
@@ -232,7 +230,6 @@ public partial class CMSModules_PortalEngine_Controls_Layout_General : CMSPrevie
 
                         // Load default web part CSS
                         cssLayoutEditor.Text = wpi.WebPartCSS;
-                        startWithFullScreen = false;
                     }
                 }
             }
@@ -268,7 +265,7 @@ public partial class CMSModules_PortalEngine_Controls_Layout_General : CMSPrevie
     {
         if (ShowPreview)
         {
-            previewState = GetPreviewStateFromCookies(WEBPARTLAYOUT);
+            previewIsActive = (GetPreviewStateFromCookies(WEBPARTLAYOUT) > 0);
         }
 
         if (!RequestHelper.IsPostBack() && IsChecked)
@@ -276,7 +273,7 @@ public partial class CMSModules_PortalEngine_Controls_Layout_General : CMSPrevie
             ShowMessage();
         }
 
-        if (previewState != 0)
+        if (previewIsActive)
         {
             etaCode.TopOffset = 40;
         }
@@ -288,7 +285,7 @@ public partial class CMSModules_PortalEngine_Controls_Layout_General : CMSPrevie
             {
                 Text = GetString("general.preview"),
                 OnClientClick = "performToolbarAction('split');return false;",
-                Visible = (previewState == 0),
+                Visible = !previewIsActive,
                 Tooltip = GetString("preview.tooltip"),
                 Index = 1,
             };
@@ -322,12 +319,9 @@ public partial class CMSModules_PortalEngine_Controls_Layout_General : CMSPrevie
     {
         base.OnPreRender(e);
 
-        startWithFullScreen = ((previewState != 0) && editMenuElem.ObjectManager.IsObjectChecked());
+        bool startWithFullScreen = previewIsActive && editMenuElem.ObjectManager.IsObjectChecked();
 
-        // Wrong calculation for these browsers, when div is hidden.
-        bool hide = (BrowserHelper.IsSafari() || BrowserHelper.IsChrome());
-        pnlBody.Attributes["style"] = (startWithFullScreen && !hide) ? "display:none" : "display:block";
-
+        pnlBody.Attributes["style"] = startWithFullScreen ? "display:none" : "display:block";
         // Check whether virtual objects are allowed
         if (!SettingsKeyInfoProvider.VirtualObjectsAllowed)
         {
@@ -535,6 +529,11 @@ public partial class CMSModules_PortalEngine_Controls_Layout_General : CMSPrevie
                 etaCode.Text = GetDefaultCode();
             }
 
+            // Do not display the layout control in a preview mode for a new or default layout
+            previewIsActive = false;
+            // Tell parent preview hierarchy control to hide preview
+            ShowPreview = false;
+
             if ((LayoutCodeName == "|new|") || isSiteManager)
             {
                 // New layout
@@ -558,10 +557,6 @@ public partial class CMSModules_PortalEngine_Controls_Layout_General : CMSPrevie
                 cssLayoutEditor.Editor.ReadOnly = true;
                 editMenuElem.MenuPanel.Visible = false;
                 pnlFormArea.Attributes["style"] = "";
-
-                // Tell parent preview hierarchy control to hide preview
-                ShowPreview = false;
-                previewState = 0;
                 pnlFormArea.CssClass = "";
                 etaCode.Editor.Height = Unit.Pixel(300);
             }

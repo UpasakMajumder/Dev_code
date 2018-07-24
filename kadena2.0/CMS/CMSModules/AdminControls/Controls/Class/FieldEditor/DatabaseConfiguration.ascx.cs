@@ -1110,7 +1110,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Databas
 
                 // Set default precision for new field
                 if ((IsNewItemEdited || String.IsNullOrEmpty(txtAttributePrecision.Text)) &&
-                    (dataType.DefaultPrecision > 0))
+                    (dataType.DefaultPrecision >= 0))
                 {
                     txtAttributePrecision.Text = dataType.DefaultPrecision.ToString();
                 }

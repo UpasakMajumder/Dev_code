@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Web.UI;
 
 using CMS.Base.Web.UI;
@@ -193,7 +194,7 @@ public partial class CMSModules_Forums_Controls_Unsubscription : CMSUserControl
         {
             try
             {
-                datetime = DateTime.ParseExact(requestTime, SecurityHelper.EMAIL_CONFIRMATION_DATETIME_FORMAT, null);
+                datetime = DateTime.ParseExact(requestTime, SecurityHelper.EMAIL_CONFIRMATION_DATETIME_FORMAT, CultureInfo.InvariantCulture);
             }
             catch
             {

@@ -770,8 +770,26 @@ public partial class CMSModules_Content_Controls_ViewVersion : VersionHistoryCon
                     
                     if (!empty)
                     {
-                        valueCell.Text += sbOriginal.ToString();
-                        valueCompare.Text = sbCompared.ToString();
+                        // No compare mode
+                        if (compareNode == null)
+                        {
+                            valueCell.Text += sbOriginal.ToString();
+                        }
+                        // Comparison mode
+                        else
+                        {
+                            // Source text must be older version
+                            if (versionHistoryId < versionCompare)
+                            {
+                                valueCell.Text += sbOriginal.ToString();
+                                valueCompare.Text = sbCompared.ToString();
+                            }
+                            else
+                            {
+                                valueCell.Text += sbCompared.ToString();
+                                valueCompare.Text = sbOriginal.ToString();
+                            }
+                        }
                     }
                     break;
 
