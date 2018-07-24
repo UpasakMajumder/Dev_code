@@ -1,15 +1,13 @@
 var enableSearchLogo = false;
-var infoHeight = 126;
-var infoWidth = 256;
 function addBingMarker(map, latitude, longtitude, title, content, iconURL) {
     var offset = new MM.Point(0, 5);
     if (iconURL) {
-        var pushpinOptions = { icon: iconURL, width: 30, height: 50, textOffset: offset };
+        var pushpinOptions = { icon: iconURL, textOffset: offset };
     }
     else {
         var pushpinOptions = { textOffset: offset };
     }
-    var pushpin = new MM.Pushpin(new Microsoft.Maps.Location(latitude, longtitude), pushpinOptions);
+    var pushpin = new MM.Pushpin(new MM.Location(latitude, longtitude), pushpinOptions);
     pushpin.description = content;
     map.entities.push(pushpin);
     pushpin.title = title;
@@ -17,13 +15,12 @@ function addBingMarker(map, latitude, longtitude, title, content, iconURL) {
 }
 function showInfo(map, pushpin, zoom) {
     var location = pushpin.getLocation();
-    var infoboxOptions = { width: infoWidth, height: infoHeight, title: pushpin.title, description: pushpin.description, offset: new MM.Point(0, pushpin.getHeight()) };
+    var infoboxOptions = { title: pushpin.title, description: pushpin.description };
     var infobox = new MM.Infobox(location, infoboxOptions);
-    map.setView({ zoom: zoom, center: new MM.Location(location.latitude, location.longitude) });
-    map.entities.push(infobox);
-}
-function customKeyDown(e) {
-    e.handled = true;
+    infobox.setMap(map);
+    map.setView({
+        zoom: zoom, center: location
+    });
 }
 function callBingService(url) {
     var script = document.createElement("script");

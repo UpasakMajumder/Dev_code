@@ -252,7 +252,7 @@ public partial class CMSFormControls_System_UIElementPropertiesEditor : FormEngi
             // This ensures, labels and textboxes have the same value (textboxes values are loaded from control state and are actual)
             for (int i = 0; i < textboxes.Count; i++)
             {
-                labels[i].Text = textboxes[i].Text;
+                labels[i].Text = HTMLHelper.HTMLEncode(textboxes[i].Text);
             }
         }
 
@@ -362,7 +362,7 @@ public partial class CMSFormControls_System_UIElementPropertiesEditor : FormEngi
 
             Label lblValue = new Label();
             lblValue.ID = "sv" + key;
-            lblValue.Text = value;
+            lblValue.Text = HTMLHelper.HTMLEncode(value);
 
             // Textboxes
             CMSTextBox txtName = new CMSTextBox();

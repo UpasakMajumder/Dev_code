@@ -1721,12 +1721,12 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
                 btnDeleteItem.Visible = false;
                 disableSaveAction = true;
 
-                ShowInformation(String.Format(GetString("DocumentType.FieldIsInherited"), ResHelper.LocalizeString(parentCi.ClassDisplayName)));
+                ShowInformation(String.Format(GetString("DocumentType.FieldIsInherited"), HTMLHelper.HTMLEncode(ResHelper.LocalizeString(parentCi.ClassDisplayName))));
             }
         }
         else if (!isPrimaryKey && databaseConfiguration.HasDependentChildren)
         {
-            ShowInformation(String.Format(ResHelper.GetString("documenttype.datatypechangeerror"), databaseConfiguration.DependentClassDisplayName));
+            ShowInformation(String.Format(GetString("documenttype.datatypechangeerror"), HTMLHelper.HTMLEncode(ResHelper.LocalizeString(databaseConfiguration.DependentClassDisplayName))));
         }
     }
 

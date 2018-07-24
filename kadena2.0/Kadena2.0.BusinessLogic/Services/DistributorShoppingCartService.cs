@@ -48,7 +48,15 @@ namespace Kadena.BusinessLogic.Services
             ValidateBusinessUnits(userId);
             ValidateSku(skuID, cartType);
             int availableQty = GetInventoryAvailableQuantity(skuID, cartType);
+            if (availableQty == 0)
+            {
+                throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));
+            }
             int allocatedQty = GetAllocatedQuantity(skuID, cartType, userId);
+            if (allocatedQty == 0)
+            {
+                throw new Exception(resources.GetResourceString("KDA.Cart.Update.ProductNotAllocatedMessage"));
+            }
             return new DistributorCart()
             {
                 SKUID = skuID,
@@ -78,28 +86,16 @@ namespace Kadena.BusinessLogic.Services
 
         private int GetAllocatedQuantity(int skuID, ShoppingCartTypes cartType, int userId)
         {
-            int allocatedQty = cartType == ShoppingCartTypes.GeneralInventory 
-                ? shoppingCart.GetAllocatedQuantity(skuID, userId) 
+            return cartType == ShoppingCartTypes.GeneralInventory
+                ? shoppingCart.GetAllocatedQuantity(skuID, userId)
                 : -1;
-            if (allocatedQty == 0)
-            {
-                throw new Exception(resources.GetResourceString("KDA.Cart.Update.ProductNotAllocatedMessage"));
-            }
-
-            return allocatedQty;
         }
 
         private int GetInventoryAvailableQuantity(int skuID, ShoppingCartTypes cartType)
         {
-            int availableQty = cartType == ShoppingCartTypes.GeneralInventory 
-                ? skus.GetSkuAvailableQty(skuID) 
+            return cartType == ShoppingCartTypes.GeneralInventory
+                ? skus.GetSkuAvailableQty(skuID)
                 : -1;
-            if (availableQty == 0)
-            {
-                throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));
-            }
-
-            return availableQty;
         }
 
         // items - order item relation (skuid -> quantity), 
@@ -110,7 +106,15 @@ namespace Kadena.BusinessLogic.Services
             return items.Select(i =>
             {
                 int availableQty = GetInventoryAvailableQuantity(i.Key, inventoryType);
+                if (availableQty> -1 && availableQty < i.Value)
+                {
+                    throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));
+                }
                 int allocatedQty = GetAllocatedQuantity(i.Key, inventoryType, userId);
+                if (allocatedQty > -1 && allocatedQty < i.Value)
+                {
+                    throw new Exception(resources.GetResourceString("KDA.Cart.Update.ProductNotAllocatedMessage"));
+                }
                 return new DistributorCart
                 {
                     CartType = inventoryType,

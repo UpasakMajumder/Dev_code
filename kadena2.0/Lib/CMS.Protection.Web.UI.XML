@@ -69,6 +69,12 @@
             <summary>
             Ensures the CSRF token exists. If not it will create a new one.
             </summary>
+            <exception cref="T:CMS.Protection.Web.UI.CsrfException">Thrown when the current request is vulnerable and the CSRF cookie is missing or malformed.</exception>
+        </member>
+        <member name="M:CMS.Protection.Web.UI.CsrfProtection.EnsureCsrfTokenInternal">
+            <summary>
+            Sets a newly created CSRF token into the corresponding cookie. Returns the CSRF token.
+            </summary>
         </member>
         <member name="M:CMS.Protection.Web.UI.CsrfProtection.CreateCsrfToken">
             <summary>
@@ -101,7 +107,7 @@
             <param name="page">Page the CSRF token should be includes to.</param>
             <param name="csrfToken">CSRF token.</param>
         </member>
-        <member name="M:CMS.Protection.Web.UI.CsrfProtection.ThrowCsrfException(System.Exception)">
+        <member name="M:CMS.Protection.Web.UI.CsrfProtection.ThrowCsrfException(System.String,System.Exception)">
             <summary>
             Throws a CSRF exception.
             </summary>
