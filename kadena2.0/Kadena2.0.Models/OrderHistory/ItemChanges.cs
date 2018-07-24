@@ -1,4 +1,6 @@
-﻿namespace Kadena.Models.OrderHistory
+﻿using System.Collections.Generic;
+
+namespace Kadena.Models.OrderHistory
 {
     public class ItemChanges
     {
@@ -9,6 +11,6 @@
         public string ColumnHeaderNewValue { get; set; }
         public string ColumnHeaderDate { get; set; }
         public string ColumnHeaderUser { get; set; }
-        public ItemChange[] Items { get; set; }
+        public List<ItemChange> Items { get; set; }
     }
 }

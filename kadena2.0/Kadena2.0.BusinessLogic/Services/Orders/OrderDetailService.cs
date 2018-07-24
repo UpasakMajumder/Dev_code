@@ -187,7 +187,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                         OrderHistory = new Link
                         {
                             Label = resources.GetResourceString("Kadena.Order.Status.OrderHistory"),
-                            Url = '/' + Routes.Order.History
+                            Url = UrlHelper.GetUrlForOrderHistory(orderId)
                         }
                     },
                     TotalCost = new TitleValuePair<string>
