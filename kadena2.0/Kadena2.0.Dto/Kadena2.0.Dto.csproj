@@ -250,6 +250,10 @@
     <Compile Include="ViewOrder\Responses\OrderDetailDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemsDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderedItemsGroupDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderedItemsGroupShippingDateDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderedItemsGroupTrackingDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderedItemsSectionDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderStatusInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\PaymentInfoDTO.cs" />
