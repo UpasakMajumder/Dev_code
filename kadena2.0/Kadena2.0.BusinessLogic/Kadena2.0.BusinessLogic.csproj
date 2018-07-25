@@ -131,11 +131,11 @@
     <Compile Include="Factories\Checkout\CheckoutPageFactory.cs" />
     <Compile Include="Factories\Checkout\IOrderDataFactory.cs" />
     <Compile Include="Factories\Checkout\ICheckoutPageFactory.cs" />
-    <Compile Include="Factories\OrderHistoryFactory.cs" />
     <Compile Include="Factories\OrderListServiceFactory.cs" />
     <Compile Include="Factories\IOrderResultPageUrlFactory.cs" />
     <Compile Include="Factories\OrderReportFactory.cs" />
     <Compile Include="Factories\OrderResultPageUrlFactory.cs" />
+    <Compile Include="Mapping\OrderHistoryProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Approval\ApprovalService.cs" />
     <Compile Include="Services\Approval\ApprovalServiceException.cs" />

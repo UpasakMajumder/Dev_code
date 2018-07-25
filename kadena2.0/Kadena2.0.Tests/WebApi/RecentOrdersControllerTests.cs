@@ -21,14 +21,12 @@ namespace Kadena.Tests.WebApi
             IOrderDetailService orderDetailService,
             IOrderListServiceFactory orderListServiceFactory,
             IOrderHistoryService orderHistoryService,
-            IOrderHistoryFactory orderHistoryFactory,
             IMapper mapper)
         {
             Assert.Throws<ArgumentNullException>(() => new RecentOrdersController(
                 orderDetailService, 
                 orderListServiceFactory, 
                 orderHistoryService, 
-                orderHistoryFactory, 
                 mapper));
         }
 

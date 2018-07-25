@@ -19,16 +19,13 @@ namespace Kadena.WebAPI.Controllers
         private readonly IMapper _mapper;
         private readonly IOrderListService _orderService;
         private readonly IOrderHistoryService _orderHistoryService;
-        private readonly IOrderHistoryFactory _orderHistoryFactory;
 
         public RecentOrdersController(
             IOrderDetailService orderDetailService, 
             IOrderListServiceFactory orderListServiceFactory,
             IOrderHistoryService orderHistoryService,
-            IOrderHistoryFactory orderHistoryFactory,
             IMapper mapper)
         {
-            _orderHistoryFactory = orderHistoryFactory ?? throw new ArgumentNullException(nameof(orderHistoryFactory));
             _orderHistoryService = orderHistoryService ?? throw new ArgumentNullException(nameof(orderHistoryService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.orderDetailService = orderDetailService ?? throw new ArgumentNullException(nameof(orderDetailService));
@@ -108,7 +105,7 @@ namespace Kadena.WebAPI.Controllers
         public async Task<IHttpActionResult> GetHistory(string orderId)
         {
             var history = await _orderHistoryService.GetOrderHistory(orderId);
-            var historyDto = _orderHistoryFactory.Create(history);
+            var historyDto = _mapper.Map<OrderHistoryDto>(history);
             return ResponseJson(historyDto);
         }
     }
