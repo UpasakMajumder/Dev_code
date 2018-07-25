@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import axios from 'axios';
 /* components */
 import Spinner from 'app.dump/Spinner';
 /* ac */
@@ -8,6 +9,8 @@ import { getUI, changeStatus, editOrders } from 'app.ac/orderDetail';
 import toogleEmailProof from 'app.ac/emailProof';
 /* utilities */
 import { getSearchObj } from 'app.helpers/location';
+/* constants */
+import { FAILURE } from 'app.consts';
 /* local components */
 import CommonInfo from './CommonInfo';
 import ShippingInfo from './ShippingInfo';
@@ -16,6 +19,7 @@ import PricingInfo from './PricingInfo';
 import OrderedItems from './OrderedItems';
 import Actions from './Actions';
 import EditModal from './EditModal';
+import OrderHistory from './OrderHistory';
 import EmailProof from '../EmailProof';
 
 class OrderDetail extends Component {
@@ -40,7 +44,9 @@ class OrderDetail extends Component {
   };
 
   state = {
-    showEditModal: false // managed in Actions component
+    showEditModal: false, // managed in Actions component
+    orderHistory: null,
+    showOrderHistory: false
   }
 
   componentDidMount() {
@@ -49,6 +55,19 @@ class OrderDetail extends Component {
 
     getUI(orderID);
   }
+
+  changeApprovalMessage = (text) => {
+    if (!this.state.orderHistory) return; // by default orderHistory is null and has lazyLoading
+    this.setState({
+      orderHistory: {
+        ...this.state.orderHistory,
+        message: {
+          ...this.state.orderHistory.message,
+          text
+        }
+      }
+    });
+  };
 
   getMaxOrderQuantity = () => {
     if (this.maxOrderQuantity) return this.maxOrderQuantity;
@@ -66,6 +85,35 @@ class OrderDetail extends Component {
   changeStatus = newStatus => this.props.changeStatus(newStatus);
 
   showEditModal = showEditModal => this.setState({ showEditModal });
+
+  showOrderHistoryModal = (url) => {
+    this.setState({ showOrderHistory: !this.state.showOrderHistory });
+    if (this.state.orderHistory) return; // lazyLoading
+    axios
+      .get(url)
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
+        if (!success) {
+          window.store.dispatch({ type: FAILURE, alert: errorMessage });
+        } else {
+          this.setState({ orderHistory: payload });
+        }
+      })
+      .catch((error) => {
+        window.store.dispatch({ type: FAILURE, error });
+      });
+  };
+
+  updateOrderHistory = (orderHistory) => {
+    if (!this.state.orderHistory) return; // by default orderHistory is null and has lazyLoading
+    this.setState({
+      orderHistory: {
+        ...this.state.orderHistory,
+        itemChanges: orderHistory.itemChanges,
+        orderChanges: orderHistory.orderChanges
+      }
+    });
+  };
 
   render() {
     const { ui, emailProof, toogleEmailProof, changeStatus } = this.props;
@@ -99,6 +147,7 @@ class OrderDetail extends Component {
           editOrders={this.props.editOrders}
           general={general}
           maxOrderQuantity={this.getMaxOrderQuantity()}
+          updateOrderHistory={this.updateOrderHistory}
         />
       ) : null;
 
@@ -107,10 +156,16 @@ class OrderDetail extends Component {
     return (
       <div>
         <EmailProof open={emailProof.show} />
+        <OrderHistory
+          orderHistory={this.state.orderHistory}
+          open={this.state.showOrderHistory}
+          closeDialog={this.showOrderHistoryModal}
+        />
         {editModal}
         <CommonInfo
           ui={commonInfo}
           dateTimeNAString={dateTimeNAString}
+          showOrderHistoryModal={this.showOrderHistoryModal}
         />
 
         <div className="order-block">
@@ -138,6 +193,7 @@ class OrderDetail extends Component {
             general={general}
             changeStatus={changeStatus}
             showEditModal={this.showEditModal}
+            changeApprovalMessage={this.changeApprovalMessage}
           />
         </div>
       </div>
