@@ -95,7 +95,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var data = microserviceResponse.Payload;
             var genericStatus = kenticoOrder.MapOrderStatus(data.Status);
-
+            
             var businessUnitName = "";
             if (long.TryParse(data.campaign?.BusinessUnitNumber, out var bun))
             {
@@ -389,9 +389,9 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
 
             // Allow admin who has set permission to see all orders in Kentico
-            // or Allow orders belonging to currently logged User and Customer
+            // or Allow orders belonging to currently logged Customer
             var isAdmin = permissions.UserCanSeeAllOrders();
-            var isOrderOwner = (orderId.UserId == customer.UserID && orderId.CustomerId == customer.Id);
+            var isOrderOwner = (orderId.CustomerId == customer.Id);
 
             var canViewOrder = isAdmin || isOrderOwner || canCurrentUserApproveOrder;
             if (!canViewOrder)
