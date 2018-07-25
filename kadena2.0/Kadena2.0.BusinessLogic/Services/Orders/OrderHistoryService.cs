@@ -14,7 +14,7 @@ namespace Kadena.BusinessLogic.Services.Orders
     public class OrderHistoryService : IOrderHistoryService
     {
         private readonly IKenticoResourceService resources;
-        private readonly IOrderHistoryClient orderHistoryClient;
+        private readonly IOrderManualUpdateClient orderHistoryClient;
         private readonly IOrderViewClient orderViewClient;
         private readonly IKenticoOrderProvider kenticoOrderProvider;
         private readonly IKenticoUserProvider kenticoUserProvider;
@@ -26,8 +26,8 @@ namespace Kadena.BusinessLogic.Services.Orders
         }
 
         public OrderHistoryService(
-            IKenticoResourceService resources, 
-            IOrderHistoryClient orderHistoryClient,
+            IKenticoResourceService resources,
+            IOrderManualUpdateClient orderHistoryClient,
             IOrderViewClient orderViewClient,
             IKenticoUserProvider kenticoUserProvider,
             IKenticoOrderProvider kenticoOrderProvider)

@@ -171,7 +171,6 @@ namespace Kadena.Container.Default
         {
             container.Register<IMailingListClient, MailingListClient>();
             container.Register<IOrderSubmitClient, OrderSubmitClient>();
-            container.Register<IOrderHistoryClient, OrderHistoryClient>();
             container.Register<IOrderViewClient, OrderViewClient>();
             container.Register<ITaxEstimationServiceClient, TaxEstimationServiceClient>();
             container.Register<ITemplatedClient, TemplatedClient>();

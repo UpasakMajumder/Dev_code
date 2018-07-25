@@ -19,7 +19,7 @@ namespace Kadena.Tests.BusinessLogic
         [ClassData(typeof(OrderHistoryServiceTests))]
         public void ServiceConstructor_ShouldThrow_WhenAnyArgumentsNull(
             IKenticoResourceService kenticoResourceService,
-            IOrderHistoryClient orderHistoryClient,
+            IOrderManualUpdateClient orderHistoryClient,
             IOrderViewClient orderViewClient,
             IKenticoUserProvider kenticoUserProvider,
             IKenticoOrderProvider kenticoOrderProvider)
@@ -66,7 +66,7 @@ namespace Kadena.Tests.BusinessLogic
             const string orderId = "123";
             const int statusChangeRecordTypeId = 2;
             SetupOrder(orderId);
-            Setup<IOrderHistoryClient, Task<BaseResponseDto<List<OrderHistoryUpdateDto>>>>(
+            Setup<IOrderManualUpdateClient, Task<BaseResponseDto<List<OrderHistoryUpdateDto>>>>(
                 ohc => ohc.Get(orderId),
                 Task.FromResult(new BaseResponseDto<List<OrderHistoryUpdateDto>>
                 {
@@ -92,7 +92,7 @@ namespace Kadena.Tests.BusinessLogic
             const string orderId = "123";
             const int statusChangeRecordTypeId = 5;
             SetupOrder(orderId);
-            Setup<IOrderHistoryClient, Task<BaseResponseDto<List<OrderHistoryUpdateDto>>>>(
+            Setup<IOrderManualUpdateClient, Task<BaseResponseDto<List<OrderHistoryUpdateDto>>>>(
                 ohc => ohc.Get(orderId),
                 Task.FromResult(new BaseResponseDto<List<OrderHistoryUpdateDto>>
                 {
@@ -129,7 +129,7 @@ namespace Kadena.Tests.BusinessLogic
 
         private void SetupEmptyHistory(string orderId)
         {
-            Setup<IOrderHistoryClient, Task<BaseResponseDto<List<OrderHistoryUpdateDto>>>>(
+            Setup<IOrderManualUpdateClient, Task<BaseResponseDto<List<OrderHistoryUpdateDto>>>>(
                 ohc => ohc.Get(orderId),
                 Task.FromResult(new BaseResponseDto<List<OrderHistoryUpdateDto>>
                 {
