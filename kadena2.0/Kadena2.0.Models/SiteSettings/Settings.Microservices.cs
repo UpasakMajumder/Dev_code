@@ -4,6 +4,14 @@ namespace Kadena.Models.SiteSettings
 {
     public partial class Settings
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Microservices settings")]
+        [DefaultValueAttribute(@"1")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IlVzZXIgTWFuYWdlciB2ZXJzaW9uIiwiS2V5TmFtZSI6IktEQV9Vc2VyTWFuYWdlclZlcnNpb24iLCJLZXlUeXBlIjoiaW50IiwiS2V5RGVmYXVsdFZhbHVlIjoiMSIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjoiTnVtZXJpY1VwRG93biIsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOiI8c2V0dGluZ3M+PE1heGltdW0+MTAwPC9NYXhpbXVtPjxNaW5pbXVtPjE8L01pbmltdW0+PFN0ZXA+MTwvU3RlcD48L3NldHRpbmdzPiIsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiTWljcm9zZXJ2aWNlcyIsIk5hbWUiOiJLREFNaWNyb3NlcnZpY2VzU2V0dGluZ0NhdGVnb3J5IiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiS2FkZW5hIn0sIkRpc3BsYXlOYW1lIjoiVmVyc2lvbnMifX0=")]
+        public const string KDA_UserManagerVersion = "KDA_UserManagerVersion";
 
         /// <summary>
         /// 
