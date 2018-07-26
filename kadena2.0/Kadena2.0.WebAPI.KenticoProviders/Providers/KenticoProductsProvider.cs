@@ -205,11 +205,13 @@ namespace Kadena.WebAPI.KenticoProviders
             return sku != null ? (sku.SKUEnabled ? ResHelper.GetString("KDA.Common.Status.Active") : ResHelper.GetString("KDA.Common.Status.Inactive")) : string.Empty;
         }
 
-
-
         public int GetAllocatedProductQuantityForUser(int skuId, int userID)
         {
             var productID = this.GetCampaignProductIDBySKUID(skuId);
+            if (!this.IsProductHasAllocation(productID))
+            {
+                return -1;
+            }
             CustomTableItem allocatedItem = CustomTableItemProvider.GetItems(CustomTableName)
                                           .WhereEquals("ProductID", productID)
                                           .WhereEquals("UserID", userID).FirstOrDefault();
