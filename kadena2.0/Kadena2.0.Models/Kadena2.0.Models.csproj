@@ -75,6 +75,11 @@
     <Compile Include="OrderDetail\OrderActions.cs" />
     <Compile Include="OrderDetail\OrderInfo.cs" />
     <Compile Include="OrderDetail\OrderStatusInfo.cs" />
+    <Compile Include="OrderHistory\ItemChange.cs" />
+    <Compile Include="OrderHistory\ItemChanges.cs" />
+    <Compile Include="OrderHistory\OrderChange.cs" />
+    <Compile Include="OrderHistory\OrderChanges.cs" />
+    <Compile Include="OrderHistory\OrderHistory.cs" />
     <Compile Include="Orders\Failed\FailedOrder.cs" />
     <Compile Include="Orders\ItemUpdateResult.cs" />
     <Compile Include="Orders\OrderFilter.cs" />
@@ -196,6 +201,7 @@
     <Compile Include="_Common\Dialog.cs" />
     <Compile Include="_Common\DialogButton.cs" />
     <Compile Include="_Common\FileResult.cs" />
+    <Compile Include="_Common\Link.cs" />
     <Compile Include="_Common\MailTemplate.cs" />
     <Compile Include="RecentOrders\Order.cs" />
     <Compile Include="OrderDetail\CommonInfo.cs" />
@@ -252,6 +258,7 @@
     <Compile Include="_Common\TableView.cs" />
     <Compile Include="Membership\User.cs" />
     <Compile Include="UserBudget\UserBudgetItem.cs" />
+    <Compile Include="_Common\TitledMessage.cs" />
     <Compile Include="_Common\ValidationFieldResult.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -603,7 +603,69 @@ module.exports.edit = {
         lineNumber: "lineNumber-2", // like 737 row
         price: "$ 50"
       }
-    ]
+    ],
+    "orderHistory": {
+      itemChanges: {
+        title: "Item Changes",
+        headers: ['Item Desc.', 'Chage Type', 'Original', 'New', 'Date', 'User'],
+        items: [
+          [
+            {
+              type: "text",
+              text: "Item Name #1"
+            },
+            {
+              type: "text",
+              text: "Qty Change"
+            },
+            {
+              type: "text",
+              text: "20"
+            },
+            {
+              type: "text",
+              text: "15"
+            },
+            {
+              type: "text",
+              text: "05/29/2018 10:35:20 AM"
+            },
+            {
+              type: "text",
+              text: "asdasd@gmail.com"
+            }
+          ]
+        ]
+      },
+      orderChanges: {
+        title: "Order Changes",
+        headers: ['Category', 'Original', 'New', 'Date', 'User'],
+        items: [
+          [
+            {
+              type: "text",
+              text: "Shipping"
+            },
+            {
+              type: "text",
+              text: "Overnight"
+            },
+            {
+              type: "text",
+              text: "Order: #1450"
+            },
+            {
+              type: "text",
+              text: "05/29/2018 10:35:20 AM"
+            },
+            {
+              type: "text",
+              text: "asdasd@gmail.com"
+            }
+          ]
+        ]
+      }
+    }
   }
 }
 
@@ -621,7 +683,11 @@ module.exports.detail =  {
       "commonInfo": {
         status: {
           title: 'Status',
-          value: 'In progress'
+          value: 'In progress',
+          orderHistory: {
+            label: 'View Order History',
+            url: 'http://localhost:3000/api/order/detail/history'
+          }
         },
         orderDate: {
           title: 'Order date',
@@ -947,5 +1013,104 @@ module.exports.detail =  {
       newStatus: 'Rejected'
     },
     errorMessage: ''
+  },
+  history: {
+    success: true,
+    errorMessage: '',
+    payload: {
+      title: "Order History",
+      message: {
+        title: "Message",
+        text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nulla porro quos adipisci dolor aliquam odit accusamus hic, voluptatibus sapiente magnam, quidem explicabo maxime labore ea? Sequi esse culpa dolorem hic!"
+      },
+      itemChanges: {
+        title: "Item Changes",
+        headers: ['Item Desc.', 'Chage Type', 'Original', 'New', 'Date', 'User'],
+        items: [
+          [
+            {
+              type: "text",
+              text: "Item Name #1"
+            },
+            {
+              type: "text",
+              text: "Qty Change"
+            },
+            {
+              type: "text",
+              text: "20"
+            },
+            {
+              type: "text",
+              text: "10"
+            },
+            {
+              type: "date",
+              text: "2017-08-07T09:12:08.108892Z"
+            },
+            {
+              type: "text",
+              text: "asdasd@gmail.com"
+            }
+          ],
+          [
+            {
+              type: "text",
+              text: "Item Name #1"
+            },
+            {
+              type: "text",
+              text: "Qty Change"
+            },
+            {
+              type: "link",
+              text: "View Proof",
+              url: "#"
+            },
+            {
+              type: "link",
+              text: "View Proof",
+              url: "#"
+            },
+            {
+              type: "date",
+              text: "2017-08-07T15:12:08.108892Z"
+            },
+            {
+              type: "text",
+              text: "asdasd@gmail.com"
+            }
+          ]
+        ]
+      },
+      orderChanges: {
+        title: "Order Changes",
+        headers: ['Category', 'Original', 'New', 'Date', 'User'],
+        items: [
+          [
+            {
+              type: "text",
+              text: "Shipping"
+            },
+            {
+              type: "text",
+              text: "Overnight"
+            },
+            {
+              type: "text",
+              text: "Order: #1450"
+            },
+            {
+              type: "text",
+              text: "05/29/2018 10:35:20 AM"
+            },
+            {
+              type: "text",
+              text: "asdasd@gmail.com"
+            }
+          ]
+        ]
+      }
+    }
   }
 };

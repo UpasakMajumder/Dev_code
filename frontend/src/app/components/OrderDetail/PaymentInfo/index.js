@@ -34,8 +34,8 @@ PaymentInfo.propTypes = {
     paymentDetail: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
     datePrefix: PropTypes.string.isRequired,
-    bUnitName: PropTypes.string.isRequired,
-    bUnitLabel: PropTypes.string.isRequired
+    bUnitName: PropTypes.string,
+    bUnitLabel: PropTypes.string
   })
 };
 
