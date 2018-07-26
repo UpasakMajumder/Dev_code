@@ -64,6 +64,7 @@ apiRouter.get('/order/recent/page/:page', Orders.recent.page);
 apiRouter.get('/order/reports/rows', Orders.reports.rows);
 apiRouter.get('/order/detail', Orders.detail.ui);
 apiRouter.get('/order/detail/submitted', Orders.detail.uiSubmitted);
+apiRouter.get('/order/detail/history', Orders.detail.history);
 apiRouter.post('/order/detail/accept', Orders.detail.accept);
 apiRouter.post('/order/detail/reject', Orders.detail.reject);
 

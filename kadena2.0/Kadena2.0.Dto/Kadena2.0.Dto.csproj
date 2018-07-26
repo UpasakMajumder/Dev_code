@@ -238,6 +238,9 @@
     <Compile Include="Tax\MicroserviceRequests\TaxCalculatorRequestDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\GeneratePdfTaskStatusResponseDto.cs" />
     <Compile Include="TemplatedProduct\MicroserviceResponses\GeneratePdfTaskResponseDto.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\History\ItemDto.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\History\OrderHistoryUpdateDto.cs" />
+    <Compile Include="ViewOrder\MicroserviceResponses\History\PaymentoptionsDto.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\OrderItemDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\PaymentInfoDTO.cs" />
     <Compile Include="ViewOrder\MicroserviceResponses\ShippingInfoDTO.cs" />
@@ -254,6 +257,8 @@
     <Compile Include="ViewOrder\Responses\OrderedItemsGroupShippingDateDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemsGroupTrackingDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemsSectionDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderHistoryChangesDto.cs" />
+    <Compile Include="ViewOrder\Responses\OrderHistoryDto.cs" />
     <Compile Include="ViewOrder\Responses\OrderInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderStatusInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\PaymentInfoDTO.cs" />
@@ -264,9 +269,12 @@
     <Compile Include="_Attributes\StringListValidationAttribute.cs" />
     <Compile Include="_Common\DialogButtonDTO.cs" />
     <Compile Include="_Common\DialogDTO.cs" />
+    <Compile Include="_Common\LinkDto.cs" />
     <Compile Include="_Common\PaginationDto.cs" />
+    <Compile Include="_Common\TableCellDto.cs" />
     <Compile Include="_Common\TableViewDto.cs" />
     <Compile Include="_Common\TableRowDto.cs" />
+    <Compile Include="_Common\TitledMessageDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="SubmitOrder\MicroserviceResponses\" />

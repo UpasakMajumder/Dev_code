@@ -54,7 +54,7 @@ const GroupContainer = ({ title, items, toggleEmailProof }: Props) => {
           <SVG name="courier"/>
           {shippingDate.prefix}: <strong>{timeFormat(shippingDate.date)}</strong>
         </div>
-      ) : null
+      ) : null;
 
     const orderItems = orders.map((order) => {
       return (

@@ -19,6 +19,7 @@ import PricingInfo from './PricingInfo';
 import OrderedItems from './OrderedItems';
 import Actions from './Actions';
 import EditModal from './EditModal';
+import OrderHistory from './OrderHistory';
 import EmailProof from '../EmailProof';
 import GroupContainer from './GroupContainer';
 
@@ -73,7 +74,9 @@ class OrderDetail extends Component<void, void, State> {
     emailProof: {
       show: false,
       url: ''
-    }
+    },
+    orderHistory: null,
+    showOrderHistory: false
   }
 
   componentDidMount() {
@@ -101,7 +104,20 @@ class OrderDetail extends Component<void, void, State> {
       });
   }
 
-  getMaxOrderQuantity = (): {} => {
+  changeApprovalMessage = (text: string) => {
+    if (!this.state.orderHistory) return; // by default orderHistory is null and has lazyLoading
+    this.setState({
+      orderHistory: {
+        ...this.state.orderHistory,
+        message: {
+          ...this.state.orderHistory.message,
+          text
+        }
+      }
+    });
+  };
+
+  getMaxOrderQuantity = () => {
     if (this.maxOrderQuantity || !this.state.ui) return this.maxOrderQuantity;
 
     const maxOrderQuantity = {};
@@ -225,6 +241,35 @@ class OrderDetail extends Component<void, void, State> {
     });
   };
 
+  showOrderHistoryModal = (url: string) => {
+    this.setState({ showOrderHistory: !this.state.showOrderHistory });
+    if (this.state.orderHistory) return; // lazyLoading
+    axios
+      .get(url)
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
+        if (!success) {
+          window.store.dispatch({ type: FAILURE, alert: errorMessage });
+        } else {
+          this.setState({ orderHistory: payload });
+        }
+      })
+      .catch((error) => {
+        window.store.dispatch({ type: FAILURE, error });
+      });
+  };
+
+  updateOrderHistory = (orderHistory: { itemChanges: any, orderChanges: any }) => {
+    if (!this.state.orderHistory) return; // by default orderHistory is null and has lazyLoading
+    this.setState({
+      orderHistory: {
+        ...this.state.orderHistory,
+        itemChanges: orderHistory.itemChanges,
+        orderChanges: orderHistory.orderChanges
+      }
+    });
+  };
+
   render() {
     const { ui, emailProof } = this.state;
     if (!ui) return <Spinner />;
@@ -257,10 +302,11 @@ class OrderDetail extends Component<void, void, State> {
           editOrders={this.editOrders}
           general={general}
           maxOrderQuantity={this.getMaxOrderQuantity()}
+          updateOrderHistory={this.updateOrderHistory}
         />
       ) : null;
 
-    const nonZeroProductsExist: boolean = !!orderedItems.items && !!(orderedItems.items.filter((item: { quantity: number }): number => item.quantity > 0).length);
+    const nonZeroProductsExist: boolean = !!orderedItems.items && !!(orderedItems.items.filter((item: { quantity: number }): boolean => item.quantity > 0).length);
 
     return (
       <div>
@@ -269,10 +315,16 @@ class OrderDetail extends Component<void, void, State> {
           toggleEmailProof={this.toggleEmailProof}
           emailProofUrl={emailProof.url}
         />
+        <OrderHistory
+          orderHistory={this.state.orderHistory}
+          open={this.state.showOrderHistory}
+          closeDialog={this.showOrderHistoryModal}
+        />
         {editModal}
         <CommonInfo
           ui={commonInfo}
           dateTimeNAString={dateTimeNAString}
+          showOrderHistoryModal={this.showOrderHistoryModal}
         />
 
         <div className="order-block">
@@ -294,6 +346,7 @@ class OrderDetail extends Component<void, void, State> {
             general={general}
             changeStatus={this.changeStatus}
             showEditModal={this.showEditModal}
+            changeApprovalMessage={this.changeApprovalMessage}
           />
         </div>
       </div>

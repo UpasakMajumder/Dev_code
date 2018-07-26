@@ -37,7 +37,8 @@ class Actions extends Component {
     changeStatus: PropTypes.func.isRequired,
     showEditModal: PropTypes.func.isRequired,
     acceptEnabled: PropTypes.bool.isRequired,
-    editEnabled: PropTypes.bool.isRequired
+    editEnabled: PropTypes.bool.isRequired,
+    changeApprovalMessage: PropTypes.func.isRequired
   };
 
   handleShowReject = () => this.setState({ showReject: true });
@@ -65,6 +66,7 @@ class Actions extends Component {
         this.handleProceed();
         toastr.success(payload.title, payload.text);
         this.props.changeStatus(payload.newStatus, this.state.rejectionNote);
+        this.props.changeApprovalMessage(this.state.rejectionNote);
         this.handleChangeRejectionNote('');
       }
     } catch (error) {

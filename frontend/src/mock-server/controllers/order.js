@@ -11,6 +11,7 @@ module.exports.detail = {
   uiSubmitted: (req, res) => res.json(order.detail.uiSubmitted),
   accept: (req, res) => res.json(order.detail.accept),
   reject: (req, res) => res.json(order.detail.reject),
+  history: (req, res) => res.json(order.detail.history)
 };
 
 module.exports.reports = {
