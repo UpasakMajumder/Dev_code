@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
+import moment from 'moment';
 /* globals */
 import { CHECKOUT, NOTIFICATION } from 'app.globals';
 /* helpers */
@@ -32,6 +33,7 @@ import DeliveryMethod from './DeliveryMethod';
 import PaymentMethod from './PaymentMethod';
 import Products from './Products';
 import Total from './Total';
+import DeliveryDate from './DeliveryDate';
 import EmailConfirmation from './EmailConfirmation';
 import EmailProof from '../EmailProof';
 
@@ -50,8 +52,54 @@ class Checkout extends Component {
       },
       agreeWithTandC: !CHECKOUT.tAndC.exists,
       initChecked: true,
-      scrolled: false
+      scrolled: false,
+      deliveryDate: {
+        value: null,
+        error: null
+      }
     };
+  }
+
+  changeDeliveryDate = (date) => {
+    this.setState({
+      deliveryDate: {
+        value: date,
+        error: null
+      }
+    });
+  }
+
+  blurDeliveryDate = (e) => {
+    const date = moment(e.target.value);
+    if (this.state.deliveryDate.value !== null) {
+      this.setState({
+        deliveryDate: {
+          ...this.state.deliveryDate,
+          error: ''
+        }
+      });
+    } else if (!date.isValid()) {
+      this.setState({
+        deliveryDate: {
+          value: null,
+          error: this.props.checkout.ui.deliveryDate.messages.invalid
+        }
+      });
+    } else if (date <= moment()) {
+      this.setState({
+        deliveryDate: {
+          value: null,
+          error: this.props.checkout.ui.deliveryDate.messages.upcoming
+        }
+      });
+    } else {
+      this.setState({
+        deliveryDate: {
+          value: date,
+          error: null
+        }
+      });
+    }
   }
 
   changeInput = (id, value) => {
@@ -102,13 +150,15 @@ class Checkout extends Component {
     };
   }
 
-  static fireNotification(fields) {
+  fireNotification = (fields) => {
     fields.forEach((field, index) => {
       const { checkoutValidation } = NOTIFICATION;
 
       if (checkoutValidation) {
         if (checkoutValidation[field]) {
           toastr.error(checkoutValidation[field].title, checkoutValidation[field].text);
+        } else if (field === 'deliveryDate') {
+          toastr.error(checkoutValidation.invoice.title, this.props.checkout.ui.deliveryDate.messages.invalid);
         }
       }
     });
@@ -138,20 +188,34 @@ class Checkout extends Component {
     if (itemFromProps.items.length && checkedPM.card === undefined) invalidFields.push('paymentMethod'); // new card has id = ''
   }
 
+  checkDeliveryDate = (invalidFields) => {
+    const { value, error } = this.state.deliveryDate;
+    if (!value || error) {
+      invalidFields.push('deliveryDate');
+    }
+  }
+
   placeOrder = (checkedData) => {
     const { sendData, checkout } = this.props;
     const invalidFields = Object.keys(checkedData).filter(key => checkedData[key] === 0);
 
     this.checkPaymentMethod(checkedData, invalidFields);
+    this.checkDeliveryDate(invalidFields);
+
 
     const newEmailConfirmation = Checkout.orginizeEmailConfirmation(checkedData.emailConfirmation);
 
     if (newEmailConfirmation.invalid) invalidFields.push('emailConfirmation');
 
     if (invalidFields.length) {
-      Checkout.fireNotification(invalidFields);
+      this.fireNotification(invalidFields);
     } else {
-      const data = { ...checkedData, emailConfirmation: newEmailConfirmation.list };
+      const data = {
+        ...checkedData,
+        emailConfirmation: newEmailConfirmation.list,
+        deliveryDate: this.state.deliveryDate.value.toString()
+      };
+
       if (checkedData.deliveryAddress === 'non-deliverable') data.deliveryAddress = 0;
       if (checkedData.deliveryMethod === 'non-deliverable') data.deliveryMethod = 0;
       if (checkedData.deliveryAddress === -1) {
@@ -309,7 +373,8 @@ class Checkout extends Component {
         paymentMethods,
         totals,
         validationMessage,
-        emailConfirmation
+        emailConfirmation,
+        deliveryDate
       } = ui;
 
       // cart is empty
@@ -390,6 +455,13 @@ class Checkout extends Component {
           {deliveryAddressComponent}
           {emailConfirmationContent}
           {this.getDeliveryMethodComponent()}
+
+          <DeliveryDate
+            ui={deliveryDate}
+            deliveryDate={this.state.deliveryDate}
+            changeDeliveryDate={this.changeDeliveryDate}
+            blurDeliveryDate={this.blurDeliveryDate}
+          />
 
           <div className="shopping-cart__block">
             <PaymentMethod
