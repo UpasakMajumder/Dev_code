@@ -292,9 +292,6 @@ namespace Kadena.WebAPI.KenticoProviders
                     }
                 });
                 var sku = SKUInfoProvider.GetSKUInfo(shoppingCartItem.SKUID);
-                var currentProduct= DocumentHelper.GetDocuments(campaignClassName).WhereEquals("NodeSKUID", sku.SKUID).Columns("CampaignsProductID").FirstOrDefault();
-                var productHasAllocation = currentProduct != null ? productProvider.IsProductHasAllocation(currentProduct.GetValue<int>("CampaignsProductID", default(int))) : false;
-                var allocatedQuantityItem = GetAllocatedProductQuantityForUser(currentProduct.GetValue<int>("CampaignsProductID", default(int)), distributorData.UserID);
                 var allocatedQuantity = productProvider.GetAllocatedProductQuantityForUser(sku.SKUID, distributorData.UserID);
                 if (sku.SKUAvailableItems < totalItems + distributorData.ItemQuantity)
                 {
@@ -376,11 +373,6 @@ namespace Kadena.WebAPI.KenticoProviders
                 }
             }
             return isValid;
-        }
-        private CustomTableItem GetAllocatedProductQuantityForUser(int productID, int userID)
-        {
-            return CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
-
         }
         public ShoppingCartInfo GetShoppingCartByID(int cartID)
         {

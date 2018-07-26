@@ -20,7 +20,7 @@ namespace Kadena.WebAPI.KenticoProviders
     public class KenticoProductsProvider : IKenticoProductsProvider
     {
         private readonly IMapper mapper;
-        private readonly string CustomTableName = "KDA.UserAllocatedProducts";
+        private const string CustomTableName = "KDA.UserAllocatedProducts";
 
         public KenticoProductsProvider(IMapper mapper)
         {
@@ -207,8 +207,8 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public int GetAllocatedProductQuantityForUser(int skuId, int userID)
         {
-            var productID = this.GetCampaignProductIDBySKUID(skuId);
-            if (!this.IsProductHasAllocation(productID))
+            var productID = GetCampaignProductIDBySKUID(skuId);
+            if (!IsProductHasAllocation(productID))
             {
                 return -1;
             }
@@ -256,7 +256,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public bool IsProductHasAllocation(int productID)
+        private static bool IsProductHasAllocation(int productID)
         {
             return CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).Any();
         }
@@ -282,7 +282,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return null;
         }
 
-        public int GetCampaignProductIDBySKUID(int skuid)
+        private static int GetCampaignProductIDBySKUID(int skuid)
         {
             var document = DocumentHelper.GetDocument(new NodeSelectionParameters
             {
