@@ -14,7 +14,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         Product GetProductByNodeId(int nodeId);
         Product GetProductBySkuId(int skuId);
         string GetProductStatus(int skuid);        
-        int GetAllocatedProductQuantityForUser(int productID, int userID);
+        int GetAllocatedProductQuantityForUser(int skuId, int userID);
         void UpdateAllocatedProductQuantityForUser(int productID, int userID, int quantity);
         List<CampaignsProduct> GetCampaignsProductSKUIDs(int campaignID);
         bool IsProductHasAllocation(int productID);

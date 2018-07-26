@@ -94,7 +94,7 @@ namespace Kadena.BusinessLogic.Services
             int campaignProductID = productsProvider.GetCampaignProductIDBySKUID(skuID);
             if (productsProvider.IsProductHasAllocation(campaignProductID))
             {
-                return productsProvider.GetAllocatedProductQuantityForUser(campaignProductID, userId);
+                return productsProvider.GetAllocatedProductQuantityForUser(skuID, userId);
             }
             else
             {
