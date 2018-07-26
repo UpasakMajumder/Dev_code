@@ -86,9 +86,20 @@ namespace Kadena.BusinessLogic.Services
 
         private int GetAllocatedQuantity(int skuID, ShoppingCartTypes cartType, int userId)
         {
-            return cartType == ShoppingCartTypes.GeneralInventory
-                ? shoppingCart.GetAllocatedQuantity(skuID, userId)
-                : -1;
+            if (cartType != ShoppingCartTypes.GeneralInventory)
+            {
+                return -1;
+            }
+
+            int campaignProductID = productsProvider.GetCampaignProductIDBySKUID(skuID);
+            if (productsProvider.IsProductHasAllocation(campaignProductID))
+            {
+                return productsProvider.GetAllocatedProductQuantityForUser(campaignProductID, userId);
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         private int GetInventoryAvailableQuantity(int skuID, ShoppingCartTypes cartType)
@@ -106,7 +117,7 @@ namespace Kadena.BusinessLogic.Services
             return items.Select(i =>
             {
                 int availableQty = GetInventoryAvailableQuantity(i.Key, inventoryType);
-                if (availableQty> -1 && availableQty < i.Value)
+                if (availableQty > -1 && availableQty < i.Value)
                 {
                     throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));
                 }

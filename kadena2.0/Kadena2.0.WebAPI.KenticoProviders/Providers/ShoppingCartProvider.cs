@@ -422,19 +422,6 @@ namespace Kadena.WebAPI.KenticoProviders
             return cart != null ? cart.ShoppingCartID : 0;
         }
 
-        public int GetAllocatedQuantity(int SKUID, int userID)
-        {
-            int campaignProductID = productProvider.GetCampaignProductIDBySKUID(SKUID);
-            if (productProvider.IsProductHasAllocation(campaignProductID))
-            {
-                return productProvider.GetAllocatedProductQuantityForUser(campaignProductID, userID);
-            }
-            else
-            {
-                return -1;
-            }
-        }
-
         public int GetItemQuantity(int SKUID, int shoppingCartID)
         {
             return ShoppingCartItemInfoProvider.GetShoppingCartItems()

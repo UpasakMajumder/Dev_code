@@ -70,8 +70,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         int GetDistributorCartID(int distributorID, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory, int campaignID = 0);
 
-        int GetAllocatedQuantity(int SKUID, int userID);
-
         int GetItemQuantity(int SKUID, int shoppingCartID);
 
         int CreateDistributorCart(int distributorId, int campaignId, int programId, int userID, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory);
