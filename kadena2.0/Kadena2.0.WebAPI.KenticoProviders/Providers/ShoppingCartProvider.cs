@@ -373,7 +373,7 @@ namespace Kadena.WebAPI.KenticoProviders
             cart.Update();
         }
 
-        public List<int> GetShoppingCartIDByInventoryType(ShoppingCartTypes cartType, int userID, int campaignID = 0)
+        public List<int> GetShoppingCartIDByInventoryType(CampaignProductType cartType, int userID, int campaignID = 0)
         {
             return ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID)
                                     .OnSite(SiteContext.CurrentSiteID)
@@ -391,7 +391,7 @@ namespace Kadena.WebAPI.KenticoProviders
                                          .Sum(x => x.CartItemUnits);
         }
 
-        public int GetDistributorCartID(int distributorID, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory, int campaignID = 0)
+        public int GetDistributorCartID(int distributorID, CampaignProductType cartType = CampaignProductType.GeneralInventory, int campaignID = 0)
         {
             ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCarts(SiteContext.CurrentSiteID)
                                     .OnSite(SiteContext.CurrentSiteID)
@@ -429,7 +429,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 }
             }
         }
-        public int CreateDistributorCart(int distributorId, int campaignId, int programId, int userID, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory)
+        public int CreateDistributorCart(int distributorId, int campaignId, int programId, int userID, CampaignProductType cartType = CampaignProductType.GeneralInventory)
         {
             ShippingOptionInfo shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(resources.GetSiteSettingsKey(Settings.KDA_DefaultShipppingOption), SiteContext.CurrentSiteName);
             var customerAddress = AddressInfoProvider.GetAddressInfo(distributorId);
@@ -450,7 +450,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return cart?.ShoppingCartID ?? 0;
         }
 
-        public void UpdateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory)
+        public void UpdateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, CampaignProductType cartType = CampaignProductType.GeneralInventory)
         {
             ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCartInfo(distributorCartItem.ShoppingCartID);
             ShoppingCartItemInfo item = cart.CartItems.Where(g => g.SKUID == product.SKUID).FirstOrDefault();
@@ -467,7 +467,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public void AddDistributorCartItem(int cartID, DistributorCartItem distributorCartItem, CampaignsProduct product, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory)
+        public void AddDistributorCartItem(int cartID, DistributorCartItem distributorCartItem, CampaignsProduct product, CampaignProductType cartType = CampaignProductType.GeneralInventory)
         {
             ShoppingCartInfo cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
             if (cart != null)
@@ -475,7 +475,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 ShoppingCartItemParameters parameters = new ShoppingCartItemParameters(product.SKUID, distributorCartItem.Quantity);
                 parameters.CustomParameters.Add("CartItemCustomerID", distributorCartItem.DistributorID);
                 ShoppingCartItemInfo cartItem = cart.SetShoppingCartItem(parameters);
-                cartItem.SetValue("CartItemPrice", (cartType == ShoppingCartTypes.GeneralInventory ? product.ActualPrice : product.EstimatedPrice));
+                cartItem.SetValue("CartItemPrice", (cartType == CampaignProductType.GeneralInventory ? product.ActualPrice : product.EstimatedPrice));
                 cartItem.SetValue("CartItemDistributorID", distributorCartItem.DistributorID);
                 cartItem.SetValue("CartItemCampaignID", product.CampaignID);
                 cartItem.SetValue("CartItemProgramID", product.ProgramID);
@@ -499,7 +499,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public int GetDistributorCartCount(int userID, int campaignID, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory)
+        public int GetDistributorCartCount(int userID, int campaignID, CampaignProductType cartType = CampaignProductType.GeneralInventory)
         {
             var query = new DataQuery("Ecommerce.Shoppingcart.GetShoppingCartCount");
             QueryDataParameters queryParams = new QueryDataParameters();

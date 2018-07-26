@@ -538,7 +538,7 @@ namespace Kadena.BusinessLogic.Services
             cartItem.SKUUnits = addedAmount;
         }
 
-        public List<int> GetLoggedInUserCartData(ShoppingCartTypes cartType, int userID, int campaignID = 0)
+        public List<int> GetLoggedInUserCartData(CampaignProductType cartType, int userID, int campaignID = 0)
         {
             return shoppingCart.GetShoppingCartIDByInventoryType(cartType, userID, campaignID);
         }

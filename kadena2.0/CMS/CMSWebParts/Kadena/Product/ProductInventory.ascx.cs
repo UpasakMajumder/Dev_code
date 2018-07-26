@@ -37,7 +37,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <summary>
     /// get the open campaign
     /// </summary>
-    public CMS.DocumentEngine.Types.KDA.Campaign OpenCampaign
+    public Campaign OpenCampaign
     {
         get
         {
@@ -237,7 +237,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         try
         {
             var programIds = GetProgramIDs();
-            if (ProductType == (int)ProductsType.GeneralInventory || ProductType == (int)ProductsType.PreBuy)
+            if (ProductType == (int)Kadena.Models.Product.CampaignProductType.GeneralInventory || ProductType == (int)Kadena.Models.Product.CampaignProductType.PreBuy)
             {
                 ddlCategory.Visible = true;
                 ddlBrand.Visible = true;
@@ -354,7 +354,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 rptProductLists.UniPagerControl = unipager;
                 unipager.PagedControl = rptProductLists;
             }
-            else if (OpenCampaign == null && ProductType == (int)ProductsType.PreBuy)
+            else if (OpenCampaign == null && ProductType == (int)Kadena.Models.Product.CampaignProductType.PreBuy)
             {
                 orderControls.Visible = false;
                 divNoRecords.Visible = false;
@@ -381,7 +381,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         try
         {
-            if (OpenCampaign != null && ProductType == (int)ProductsType.PreBuy)
+            if (OpenCampaign != null && ProductType == (int)Kadena.Models.Product.CampaignProductType.PreBuy)
             {
                 return ProgramProvider.GetPrograms()
                     .WhereEquals("CampaignID", OpenCampaign.CampaignID)
@@ -514,10 +514,4 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         SetFilter();
     }
-}
-
-public enum ProductsType
-{
-    GeneralInventory = 1,
-    PreBuy
 }

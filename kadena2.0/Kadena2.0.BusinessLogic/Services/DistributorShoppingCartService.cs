@@ -7,7 +7,6 @@ using Kadena.Models.Product;
 using System.Collections.Generic;
 using Kadena.Models.AddToCart;
 using Kadena.Models.CustomerData;
-using Kadena.Models.ShoppingCarts;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -41,7 +40,7 @@ namespace Kadena.BusinessLogic.Services
             this.skus = skus ?? throw new ArgumentNullException(nameof(skus));
         }
 
-        public DistributorCart GetCartDistributorData(int skuID, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory)
+        public DistributorCart GetCartDistributorData(int skuID, CampaignProductType cartType = CampaignProductType.GeneralInventory)
         {
             var userId = kenticoUsers.GetCurrentUser().UserId;
 
@@ -76,17 +75,17 @@ namespace Kadena.BusinessLogic.Services
             }
         }
 
-        private void ValidateSku(int skuID, ShoppingCartTypes cartType)
+        private void ValidateSku(int skuID, CampaignProductType cartType)
         {
-            if (cartType == ShoppingCartTypes.GeneralInventory && !productsService.ProductHasValidSKUNumber(skuID))
+            if (cartType == CampaignProductType.GeneralInventory && !productsService.ProductHasValidSKUNumber(skuID))
             {
                 throw new Exception(resources.GetResourceString("KDA.Cart.InvalidProduct"));
             }
         }
 
-        private int GetAllocatedQuantity(int skuID, ShoppingCartTypes cartType, int userId)
+        private int GetAllocatedQuantity(int skuID, CampaignProductType cartType, int userId)
         {
-            if (cartType != ShoppingCartTypes.GeneralInventory)
+            if (cartType != CampaignProductType.GeneralInventory)
             {
                 return -1;
             }
@@ -94,9 +93,9 @@ namespace Kadena.BusinessLogic.Services
             return productsProvider.GetAllocatedProductQuantityForUser(skuID, userId);
         }
 
-        private int GetInventoryAvailableQuantity(int skuID, ShoppingCartTypes cartType)
+        private int GetInventoryAvailableQuantity(int skuID, CampaignProductType cartType)
         {
-            return cartType == ShoppingCartTypes.GeneralInventory
+            return cartType == CampaignProductType.GeneralInventory
                 ? skus.GetSkuAvailableQty(skuID)
                 : -1;
         }
@@ -105,7 +104,7 @@ namespace Kadena.BusinessLogic.Services
         // userid - creator of order, addressid - distributors address id
         public IEnumerable<DistributorCart> CreateCart(Dictionary<int, int> items, int userId, int addressId)
         {
-            var inventoryType = ShoppingCartTypes.GeneralInventory;
+            var inventoryType = CampaignProductType.GeneralInventory;
             return items.Select(i =>
             {
                 int availableQty = GetInventoryAvailableQuantity(i.Key, inventoryType);
@@ -130,7 +129,7 @@ namespace Kadena.BusinessLogic.Services
             });
         }
 
-        private List<DistributorCartItem> GetDistributorCartItems(int skuID, int userId, ShoppingCartTypes cartType = ShoppingCartTypes.GeneralInventory)
+        private List<DistributorCartItem> GetDistributorCartItems(int skuID, int userId, CampaignProductType cartType = CampaignProductType.GeneralInventory)
         {
             CampaignsProduct product = productsProvider.GetCampaignProduct(skuID) ?? throw new Exception("Invalid product");
 
@@ -183,7 +182,7 @@ namespace Kadena.BusinessLogic.Services
         }
 
         private void CreateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int userId,
-            ShoppingCartTypes inventoryType = ShoppingCartTypes.GeneralInventory)
+            CampaignProductType inventoryType = CampaignProductType.GeneralInventory)
         {
             int cartID = shoppingCart.CreateDistributorCart(distributorCartItem.DistributorID,
                 product.CampaignID, product.ProgramID,
