@@ -292,15 +292,15 @@ namespace Kadena.WebAPI.KenticoProviders
                     }
                 });
                 var sku = SKUInfoProvider.GetSKUInfo(shoppingCartItem.SKUID);
-                var currentProduct = DocumentHelper.GetDocuments(campaignClassName).WhereEquals("NodeSKUID", sku.SKUID).Columns("CampaignsProductID").FirstOrDefault();
+                var currentProduct= DocumentHelper.GetDocuments(campaignClassName).WhereEquals("NodeSKUID", sku.SKUID).Columns("CampaignsProductID").FirstOrDefault();
                 var productHasAllocation = currentProduct != null ? productProvider.IsProductHasAllocation(currentProduct.GetValue<int>("CampaignsProductID", default(int))) : false;
                 var allocatedQuantityItem = GetAllocatedProductQuantityForUser(currentProduct.GetValue<int>("CampaignsProductID", default(int)), distributorData.UserID);
-                var allocatedQuantity = allocatedQuantityItem != null ? allocatedQuantityItem.GetValue<int>("Quantity", default(int)) : default(int);
+                var allocatedQuantity = productProvider.GetAllocatedProductQuantityForUser(sku.SKUID, distributorData.UserID);
                 if (sku.SKUAvailableItems < totalItems + distributorData.ItemQuantity)
                 {
                     throw new Exception(ResHelper.GetString("KDA.Cart.Update.InsufficientStockMessage", LocalizationContext.CurrentCulture.CultureCode));
                 }
-                else if (allocatedQuantity < totalItems + distributorData.ItemQuantity && productHasAllocation)
+                else if (allocatedQuantity > -1 && allocatedQuantity < totalItems + distributorData.ItemQuantity)
                 {
                     throw new Exception(ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError", LocalizationContext.CurrentCulture.CultureCode));
                 }
