@@ -208,14 +208,22 @@ namespace Kadena.WebAPI.KenticoProviders
         public int GetAllocatedProductQuantityForUser(int skuId, int userID)
         {
             var productID = GetCampaignProductIDBySKUID(skuId);
-            if (!IsProductHasAllocation(productID))
+            var allocatedItems = CustomTableItemProvider.GetItems(CustomTableName)
+                                .WhereEquals("ProductID", productID)
+                                .Columns("UserID", "Quantity")
+                                .Select(i => new
+                                {
+                                    UserId = i.GetValue("UserID", default(int)),
+                                    Quantity = i.GetValue("Quantity", default(int))
+                                })
+                                .ToList();
+            if (!allocatedItems.Any())
             {
                 return -1;
             }
-            CustomTableItem allocatedItem = CustomTableItemProvider.GetItems(CustomTableName)
-                                          .WhereEquals("ProductID", productID)
-                                          .WhereEquals("UserID", userID).FirstOrDefault();
-            return allocatedItem != null ? allocatedItem.GetIntegerValue("Quantity", default(int)) : default(int);
+
+            var userAllocation = allocatedItems.FirstOrDefault(i => i.UserId == userID);
+            return userAllocation?.Quantity ?? 0;
         }
 
         public void UpdateAllocatedProductQuantityForUser(int productID, int userID, int quantity)
@@ -254,11 +262,6 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 return new List<CampaignsProduct>();
             }
-        }
-
-        private static bool IsProductHasAllocation(int productID)
-        {
-            return CustomTableItemProvider.GetItems(CustomTableName).WhereEquals("ProductID", productID).Any();
         }
 
         public OptionCategory GetOptionCategory(string codeName)
