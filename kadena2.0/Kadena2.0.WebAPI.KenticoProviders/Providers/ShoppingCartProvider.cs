@@ -278,40 +278,29 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 throw new Exception(ResHelper.GetString("KDA.Cart.Update.MinimumQuantityError", LocalizationContext.CurrentCulture.CultureCode));
             }
-            var shoppingCartItem = ShoppingCartItemInfoProvider.GetShoppingCartItemInfo(distributorData.CartItemId);
+            var shoppingCartItem = ShoppingCartItemInfoProvider.GetShoppingCartItemInfo(distributorData.CartItemId)
+                ?? throw new Exception(ResHelper.GetString("KDA.Cart.Update.Failure", LocalizationContext.CurrentCulture.CultureCode));
             if (distributorData.InventoryType == 1)
             {
                 var shoppingCartIDs = ShoppingCartInfoProvider.GetShoppingCarts().WhereEquals("ShoppingCartUserID", distributorData.UserID).WhereEquals("ShoppingCartInventoryType", 1).ToList().Select(x => x.ShoppingCartID).ToList();
                 var shoppingcartItems = ShoppingCartItemInfoProvider.GetShoppingCartItems().WhereIn("ShoppingCartID", shoppingCartIDs).WhereEquals("SKUID", shoppingCartItem.SKUID).ToList();
-                int totalItems = 0;
-                shoppingcartItems.ForEach(cartItem =>
-                {
-                    if (cartItem != null && cartItem.CartItemID != distributorData.CartItemId)
-                    {
-                        totalItems += cartItem.CartItemUnits;
-                    }
-                });
+                int totalItems = shoppingcartItems
+                    .Where(i => i != null && i.CartItemID != distributorData.CartItemId)
+                    .Sum(i => i.CartItemUnits);
                 var sku = SKUInfoProvider.GetSKUInfo(shoppingCartItem.SKUID);
                 var allocatedQuantity = productProvider.GetAllocatedProductQuantityForUser(sku.SKUID, distributorData.UserID);
                 if (sku.SKUAvailableItems < totalItems + distributorData.ItemQuantity)
                 {
                     throw new Exception(ResHelper.GetString("KDA.Cart.Update.InsufficientStockMessage", LocalizationContext.CurrentCulture.CultureCode));
                 }
-                else if (allocatedQuantity > -1 && allocatedQuantity < totalItems + distributorData.ItemQuantity)
+                if (allocatedQuantity > -1 && allocatedQuantity < totalItems + distributorData.ItemQuantity)
                 {
                     throw new Exception(ResHelper.GetString("Kadena.AddToCart.AllocatedProductQuantityError", LocalizationContext.CurrentCulture.CultureCode));
                 }
             }
-            if (shoppingCartItem != null)
-            {
-                shoppingCartItem.CartItemUnits = distributorData.ItemQuantity;
-                shoppingCartItem.Update();
-                return ResHelper.GetString("KDA.Cart.Update.Success");
-            }
-            else
-            {
-                throw new Exception(ResHelper.GetString("KDA.Cart.Update.Failure", LocalizationContext.CurrentCulture.CultureCode));
-            }
+            shoppingCartItem.CartItemUnits = distributorData.ItemQuantity;
+            shoppingCartItem.Update();
+            return ResHelper.GetString("KDA.Cart.Update.Success");
         }
 
         public List<int> GetUserIDsWithShoppingCart(int campaignID, int productType)

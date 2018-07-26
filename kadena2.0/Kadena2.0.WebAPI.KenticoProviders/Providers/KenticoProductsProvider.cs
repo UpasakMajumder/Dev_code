@@ -291,7 +291,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 CultureCode = LocalizationContext.PreferredCultureCode,
                 CombineWithDefaultCulture = false
             }, new TreeProvider(MembershipContext.AuthenticatedUser));
-            return document != null ? document.GetIntegerValue("CampaignsProductID", default(int)) : default(int);
+            return document?.GetIntegerValue("CampaignsProductID", default(int)) ?? default(int);
         }
 
         public CampaignsProduct GetCampaignProduct(int skuid)
