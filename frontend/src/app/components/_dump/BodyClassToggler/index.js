@@ -1,19 +1,19 @@
 // @flow
-import React, { Component, type Node } from 'react';
+import * as React from 'react';
 
 type Props = {
   className: string,
   isActive: boolean,
-  children?: Node
+  children: ?React.Children
 };
 
-class BodyClassToggler extends Component<Props> {
-  bodyEl: HTMLBodyElement
+class BodyClassToggler extends React.Component<void, Props, void> {
+  bodyEl: HTMLElement;
 
   constructor() {
     super();
 
-    this.bodyEl = ((document.body: any): HTMLBodyElement);
+    this.bodyEl = ((document.body: any): HTMLElement);
   }
 
   componentWillReceiveProps(nextProps: Props) {
