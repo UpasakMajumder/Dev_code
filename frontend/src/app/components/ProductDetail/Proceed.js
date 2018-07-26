@@ -77,7 +77,7 @@ const Proceed = ({
 
   const quantityTextComponent = quantityText
       ? (
-        <p className="text--danger mt-2">{quantityText}</p>
+        <p className="text--danger">{quantityText}</p>
       ) : null;
 
   if (addToCart) {
