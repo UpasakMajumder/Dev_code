@@ -863,8 +863,12 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 .WhereGreaterThan("ProgramID", default(int))
                 .WhereIn("ProgramID", programs.Select(p => p.Program.ProgramID).ToList())
                 .ToList();
+            var skuIds = productData
+                .Where(pd => pd.SKU != null)
+                .Select(pd => pd.SKU.SKUID)
+                .ToList();
             var skuDetails = SKUInfoProvider.GetSKUs()
-                .WhereIn("SKUID", productData.Select(s => s.SKU.SKUID).ToList())
+                .WhereIn("SKUID", skuIds)
                 .ToList();
 
             // cover page
