@@ -208,22 +208,8 @@ namespace Kadena.WebAPI.KenticoProviders
         public int GetAllocatedProductQuantityForUser(int skuId, int userID)
         {
             var productID = GetCampaignProductIDBySKUID(skuId);
-            var allocatedItems = CustomTableItemProvider.GetItems(CustomTableName)
-                                .WhereEquals("ProductID", productID)
-                                .Columns("UserID", "Quantity")
-                                .Select(i => new
-                                {
-                                    UserId = i.GetValue("UserID", default(int)),
-                                    Quantity = i.GetValue("Quantity", default(int))
-                                })
-                                .ToList();
-            if (!allocatedItems.Any())
-            {
-                return -1;
-            }
-
-            var userAllocation = allocatedItems.FirstOrDefault(i => i.UserId == userID);
-            return userAllocation?.Quantity ?? 0;
+            var allocatedItems = GetAllocatedProductQuantityForUser(new[] { productID }, userID);
+            return allocatedItems[productID];
         }
 
         public void UpdateAllocatedProductQuantityForUser(int productID, int userID, int quantity)
