@@ -73,6 +73,10 @@
     <Compile Include="OrderDetail\EditOrderDialog.cs" />
     <Compile Include="OrderDetail\EditOrderDialogButtons.cs" />
     <Compile Include="OrderDetail\OrderActions.cs" />
+    <Compile Include="OrderDetail\OrderedItems.cs" />
+    <Compile Include="OrderDetail\OrderedItemsGroup.cs" />
+    <Compile Include="OrderDetail\OrderedItemsGroupShippingDate.cs" />
+    <Compile Include="OrderDetail\OrderedItemsGroupTracking.cs" />
     <Compile Include="OrderDetail\OrderInfo.cs" />
     <Compile Include="OrderDetail\OrderStatusInfo.cs" />
     <Compile Include="OrderHistory\ItemChange.cs" />
@@ -207,7 +211,7 @@
     <Compile Include="OrderDetail\CommonInfo.cs" />
     <Compile Include="OrderDetail\OrderDetail.cs" />
     <Compile Include="OrderDetail\OrderedItem.cs" />
-    <Compile Include="OrderDetail\OrderedItems.cs" />
+    <Compile Include="OrderDetail\OrderedItemsSection.cs" />
     <Compile Include="OrderDetail\PaymentInfo.cs" />
     <Compile Include="OrderDetail\PricingInfo.cs" />
     <Compile Include="OrderDetail\PricingInfoItem.cs" />
