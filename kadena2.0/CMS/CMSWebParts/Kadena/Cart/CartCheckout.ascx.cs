@@ -133,7 +133,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     var response = ProcessOrder(Cart, CurrentUser.UserID, OrderType.generalInventory, ordersDTO, shippingCost);
                     if (response != null && response.Success)
                     {
-                        ordersDTO.OrderID = response.Payload;
                         UpdateAvailableSKUQuantity(Cart);
                         UpdateAllocatedProductQuantity(Cart, salesPerson.UserId);
                         ProductEmailNotifications.SendMail(salesPerson, ordersDTO, orderTemplateSettingKey);
