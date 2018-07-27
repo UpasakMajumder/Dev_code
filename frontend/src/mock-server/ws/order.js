@@ -596,7 +596,7 @@ module.exports.edit = {
     ],
     "ordersPrice": [
       {
-        lineNumber: "lineNumber-3",
+        lineNumber: "lineNumber-123",
         price: "$ 5"
       }
     ],
@@ -741,6 +741,39 @@ const orderDetailPayload = {
         "value": "$ 112.20"
       }
     ]
+  },
+  "actions": {
+    "accept": {
+      "button": "Accept Order",
+      "proceedUrl": "http://localhost:3000/api/order/detail/accept"
+    },
+    "reject": {
+      "button": "Reject Order",
+      "proceedUrl": "http://localhost:3000/api/order/detail/reject",
+      "dialog": {
+        "title": "Are you sure?",
+        "cancelButton": "Cancel",
+        "proceedButton": "Reject Order"
+      }
+    },
+    "comment": {
+      "title": "Comment"
+    }
+  },
+  "editOrders": {
+    "button": "Edit",
+    "proceedUrl": "http://localhost:3000/api/order/edit",
+    "dialog": {
+      title: "Title",
+      description: "Description",
+      validationMessage: "Maximum quantity is", // no space
+      successMessage: "Cool! 🚀",
+      buttons: {
+        proceed: "Save Edits",
+        cancel: "Cancel",
+        remove: "Remove"
+      }
+    }
   }
 };
 
@@ -880,7 +913,7 @@ module.exports.detail =  {
             "SKUId": "SKUId-3",
             "removed": false,
             "removeLabel": "Rejected",
-            "lineNumber": "lineNumber-3",
+            "lineNumber": "lineNumber-123",
             "isReport": true,
             "image": "http://satyr.io/200-500x300-700",
             "template": "Product with null mailingList property",
@@ -955,39 +988,6 @@ module.exports.detail =  {
             }
           }
         ]
-      },
-      "actions": {
-        "accept": {
-          "button": "Accept Order",
-          "proceedUrl": "http://localhost:3000/api/order/detail/accept"
-        },
-        "reject": {
-          "button": "Reject Order",
-          "proceedUrl": "http://localhost:3000/api/order/detail/reject",
-          "dialog": {
-            "title": "Are you sure?",
-            "cancelButton": "Cancel",
-            "proceedButton": "Reject Order"
-          }
-        },
-        "comment": {
-          "title": "Comment"
-        }
-      },
-      "editOrders": {
-        "button": "Edit",
-        "proceedUrl": "http://localhost:3000/api/order/edit",
-        "dialog": {
-          title: "Title",
-          description: "Description",
-          validationMessage: "Maximum quantity is", // no space
-          successMessage: "Cool! 🚀",
-          buttons: {
-            proceed: "Save Edits",
-            cancel: "Cancel",
-            remove: "Remove"
-          }
-        }
       }
     })
   },

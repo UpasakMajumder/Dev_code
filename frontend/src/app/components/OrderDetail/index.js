@@ -117,11 +117,17 @@ class OrderDetail extends Component<void, void, State> {
     });
   };
 
-  getMaxOrderQuantity = () => {
+  getMaxOrderQuantity = (isSubmitted: boolean): number => {
     if (this.maxOrderQuantity || !this.state.ui) return this.maxOrderQuantity;
 
     const maxOrderQuantity = {};
-    this.state.ui.orderedItems.items.forEach((orderedItem: { id: string, quantity: number }) => {
+    let { items } = this.state.ui.orderedItems;
+
+    if (isSubmitted) {
+      items = this.state.ui.orderedItems.openItems.items[0].orders;
+    }
+
+    items.forEach((orderedItem: { id: string, quantity: number }) => {
       maxOrderQuantity[orderedItem.id] = orderedItem.quantity;
     });
 
@@ -207,6 +213,44 @@ class OrderDetail extends Component<void, void, State> {
     const { ui } = this.state;
     if (!ui) return;
 
+    let { items } = ui.orderedItems;
+    let newOrderedItems = null;
+
+    const editOrdersCb = (item) => {
+      const orderedItem = orderedItems.find(orderedItem => orderedItem.lineNumber === item.lineNumber);
+      if (!orderedItem) return item;
+
+      const priceItem = ordersPrice.find(order => order.lineNumber === item.lineNumber);
+
+      return {
+        ...item,
+        removed: orderedItem.removed,
+        quantity: orderedItem.quantity,
+        price: priceItem && priceItem.price
+      };
+    };
+
+    if (!items) {
+      items = ui.orderedItems.openItems.items[0].orders;
+      newOrderedItems = {
+        ...ui.orderedItems,
+        openItems: {
+          ...ui.orderedItems.openItems,
+          items: [
+            {
+              ...ui.orderedItems.openItems.items[0],
+              orders: items.map(editOrdersCb)
+            }
+          ]
+        }
+      };
+    } else {
+      newOrderedItems = {
+        ...ui.orderedItems,
+        items: items.map(editOrdersCb)
+      };
+    }
+
     this.setState({
       ui: {
         ...ui,
@@ -221,22 +265,7 @@ class OrderDetail extends Component<void, void, State> {
           ...ui.pricingInfo,
           items: pricingInfo
         } : null,
-        orderedItems: {
-          ...ui.orderedItems,
-          items: ui.orderedItems.items.map((item) => {
-            const orderedItem = orderedItems.find(orderedItem => orderedItem.lineNumber === item.lineNumber);
-            if (!orderedItem) return item;
-
-            const priceItem = ordersPrice.find(order => order.lineNumber === item.lineNumber);
-
-            return {
-              ...item,
-              removed: orderedItem.removed,
-              quantity: orderedItem.quantity,
-              price: priceItem && priceItem.price
-            };
-          })
-        }
+        orderedItems: newOrderedItems
       }
     });
   };
@@ -270,6 +299,21 @@ class OrderDetail extends Component<void, void, State> {
     });
   };
 
+  static getIsNonZeroProducExists = (orderedItems): { nonZeroProductsExist: boolean, isSubmitted: boolean } => {
+    const result = { nonZeroProductsExist: false, isSubmitted: false };
+
+    if (orderedItems.items) {
+      result.nonZeroProductsExist = !!orderedItems.items.filter((item: { quantity: number }): boolean => item.quantity > 0).length;
+    } else if (orderedItems.openItems
+      && orderedItems.openItems.items
+      && orderedItems.openItems.items[0]
+      && orderedItems.openItems.items[0].orders) {
+      result.isSubmitted = true;
+      result.nonZeroProductsExist = !!orderedItems.openItems.items[0].orders.filter((item: { quantity: number }): boolean => item.quantity > 0).length;
+    }
+    return result;
+  };
+
   render() {
     const { ui, emailProof } = this.state;
     if (!ui) return <Spinner />;
@@ -290,23 +334,23 @@ class OrderDetail extends Component<void, void, State> {
     const paymentInfoEl = paymentInfo ? <div className="col-lg-4 mb-4"><PaymentInfo ui={paymentInfo} dateTimeNAString={dateTimeNAString} /></div> : null;
     const pricingInfoEl = pricingInfo ? <div className="col-lg-4 mb-4"><PricingInfo ui={pricingInfo} /></div> : null;
 
-    const editModal = editOrders && orderedItems.items
+    const { nonZeroProductsExist, isSubmitted } = OrderDetail.getIsNonZeroProducExists(orderedItems);
+
+    const editModal = editOrders && nonZeroProductsExist
       ? (
         <EditModal
           closeModal={() => this.showEditModal(false)}
           open={this.state.showEditModal}
-          orderedItems={orderedItems.items}
+          orderedItems={orderedItems.items || orderedItems.openItems.items[0].orders}
           {...editOrders.dialog}
           proceedUrl={this.state.ui ? this.state.ui.editOrders.proceedUrl : ''}
           paidByCreditCard={paymentInfo.paymentIcon === 'credit-card'}
           editOrders={this.editOrders}
           general={general}
-          maxOrderQuantity={this.getMaxOrderQuantity()}
+          maxOrderQuantity={this.getMaxOrderQuantity(isSubmitted)}
           updateOrderHistory={this.updateOrderHistory}
         />
       ) : null;
-
-    const nonZeroProductsExist: boolean = !!orderedItems.items && !!(orderedItems.items.filter((item: { quantity: number }): boolean => item.quantity > 0).length);
 
     return (
       <div>
