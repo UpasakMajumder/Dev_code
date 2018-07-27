@@ -430,5 +430,30 @@ namespace Kadena.WebAPI.KenticoProviders
                 Value = value
             };
         }
+
+        public Dictionary<int, int> GetAllocatedProductQuantityForUser(IEnumerable<int> campaignProductIds, int userID)
+        {
+            var distinctIds = campaignProductIds.Distinct().ToList();
+            var allocatedItems = CustomTableItemProvider.GetItems(CustomTableName)
+                               .WhereIn("ProductID", distinctIds)
+                               .Columns("ProductID", "UserID", "Quantity")
+                               .Select(i => new
+                               {
+                                   ProductId = i.GetValue("ProductID", default(int)),
+                                   UserId = i.GetValue("UserID", default(int)),
+                                   Quantity = i.GetValue("Quantity", default(int))
+                               })
+                               .ToList();
+            return distinctIds
+                .GroupJoin(allocatedItems,
+                    i => i,
+                    ai => ai.ProductId,
+                    (i, ai) => new
+                    {
+                        ProductId = i,
+                        Quantity = ai.Any() ? ai.FirstOrDefault(q => q.UserId == userID)?.Quantity ?? 0 : -1
+                    })
+                .ToDictionary(i => i.ProductId, i => i.Quantity);
+        }
     }
 }
