@@ -419,6 +419,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         try
         {
             rptCatalogProducts.DataSource = null;
+            hdncheckedValues.Value = string.Empty;
             rptCatalogProducts.DataBind();
             lblNoProducts.Visible = false;
             noProductSelected.Visible = false;
