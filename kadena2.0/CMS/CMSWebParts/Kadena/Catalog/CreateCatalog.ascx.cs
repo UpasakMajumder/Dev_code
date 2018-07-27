@@ -108,6 +108,14 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         }
     }
 
+    public string BrandName
+    {
+        get
+        {
+            return TypeOfProduct == (int)CampaignProductType.GeneralInventory ? GetBrandName(ValidationHelper.GetInteger(Eval("BrandID"), default(int))) : string.Empty;
+        }
+    }
+
     /// <summary>
     /// Gets or sets the value of Program filter
     /// </summary>
