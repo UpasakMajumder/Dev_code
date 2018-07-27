@@ -120,4 +120,25 @@
   <data name="validation.servercertificateerror" xml:space="preserve">
     <value>Page validation failed due to invalid server certificate. See Event log for more information.</value>
   </data>
+  <data name="validation.html.type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="validation.html.showerrorsonly" xml:space="preserve">
+    <value>Show only errors</value>
+  </data>
+  <data name="validation.html.messagetype.error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="validation.html.messagetype.info" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="validation.html.validbutwithwarnings" xml:space="preserve">
+    <value>Page is valid but contains some minor issues.</value>
+  </data>
+  <data name="ecommerce.isproductoption" xml:space="preserve">
+    <value>Is product option</value>
+  </data>
+  <data name="ecommerce.productoptioncategory" xml:space="preserve">
+    <value>Product option category</value>
+  </data>
 </root>

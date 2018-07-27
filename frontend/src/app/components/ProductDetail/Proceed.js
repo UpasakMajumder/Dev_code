@@ -14,7 +14,8 @@ const Proceed = ({
   quantity,
   proceedProduct,
   isLoading,
-  quanityError
+  quanityError,
+  quantityText
 }) => {
   if (!addToCart && !openTemplate) return null;
 
@@ -74,17 +75,25 @@ const Proceed = ({
     );
   };
 
+  const quantityTextComponent = quantityText
+      ? (
+        <p className="text--danger">{quantityText}</p>
+      ) : null;
+
   if (addToCart) {
     return (
-      <div className="product-view__proceed">
-        {getInput()}
-        <Button
-          type="action"
-          isLoading={false}
-          text={addToCart.get('text')}
-          onClick={proceedProduct}
-          isLoading={isLoading}
-        />
+      <div>
+        <div className="product-view__proceed">
+          {getInput()}
+          <Button
+            type="action"
+            isLoading={false}
+            text={addToCart.get('text')}
+            onClick={proceedProduct}
+            isLoading={isLoading}
+          />
+        </div>
+        {quantityTextComponent}
       </div>
     );
   }

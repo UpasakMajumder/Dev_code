@@ -1,13 +1,16 @@
+// @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import axios from 'axios';
 /* components */
 import Spinner from 'app.dump/Spinner';
-/* ac */
-import { getUI, changeStatus, editOrders } from 'app.ac/orderDetail';
-import toogleEmailProof from 'app.ac/emailProof';
 /* utilities */
 import { getSearchObj } from 'app.helpers/location';
+/* globals */
+import { ORDER_DETAIL as ORDER_DETAIL_URL } from 'app.globals';
+/* constants */
+import { FAILURE } from 'app.consts';
 /* local components */
 import CommonInfo from './CommonInfo';
 import ShippingInfo from './ShippingInfo';
@@ -16,45 +19,109 @@ import PricingInfo from './PricingInfo';
 import OrderedItems from './OrderedItems';
 import Actions from './Actions';
 import EditModal from './EditModal';
+import OrderHistory from './OrderHistory';
 import EmailProof from '../EmailProof';
+import GroupContainer from './GroupContainer';
 
-class OrderDetail extends Component {
-  static propTypes = {
-    getUI: PropTypes.func.isRequired,
-    ui: PropTypes.shape({
-      dateTimeNAString: PropTypes.string,
-      commonInfo: PropTypes.object,
-      orderedItems: PropTypes.object,
-      paymentInfo: PropTypes.object,
-      pricingInfo: PropTypes.object,
-      shippingInfo: PropTypes.object,
-      actions: PropTypes.object,
-      general: PropTypes.object,
-      editOrders: PropTypes.shape({
-        proceedUrl: PropTypes.string.isRequired,
-        dialog: PropTypes.object.isRequired
-      })
-    }).isRequired,
-    emailProof: PropTypes.object.isRequired,
-    toogleEmailProof: PropTypes.func.isRequired
-  };
+type UI = {
+  dateTimeNAString: string,
+  commonInfo: {
+    status: {
+      value: string,
+      note: string
+    },
+    totalCost: {
+      value: string
+    }
+  },
+  orderedItems: {
+    items: Array<{ id: string, quantity: number, lineNumber: number }>
+  },
+  paymentInfo: {
+    paymentIcon: string
+  },
+  pricingInfo: ?{
+    items: []
+  },
+  shippingInfo: {},
+  actions: {},
+  general: {},
+  editOrders: {
+    proceedUrl: string,
+    dialog: {}
+  },
+  emailProof: {
+    show: boolean,
+    url: string
+  }
+}
+
+type State = {
+  showEditModal: boolean,
+  ui: ?UI,
+  emailProof: {
+    show: boolean,
+    url: string
+  }
+}
+
+class OrderDetail extends Component<void, void, State> {
+  maxOrderQuantity: any;
 
   state = {
-    showEditModal: false // managed in Actions component
+    showEditModal: false, // managed in Actions component
+    ui: null,
+    emailProof: {
+      show: false,
+      url: ''
+    },
+    orderHistory: null,
+    showOrderHistory: false
   }
 
   componentDidMount() {
-    const { getUI } = this.props;
-    const { orderID } = getSearchObj();
+    const orderID: string = getSearchObj().orderID || '';
+    const url: string = `${ORDER_DETAIL_URL.orderDetailUrl}/${orderID}`;
 
-    getUI(orderID);
+    axios
+      .get(url)
+      .then((response: {
+        data: {
+          payload: UI,
+          success: boolean,
+          errorMessage: string
+        }
+      }): void => {
+        const { payload, success, errorMessage } = response.data;
+        if (!success) {
+          window.store.dispatch({ type: FAILURE, alert: errorMessage });
+        } else {
+          this.setState({ ui: payload });
+        }
+      })
+      .catch((error): void => {
+        window.store.dispatch({ type: FAILURE, error });
+      });
   }
 
+  changeApprovalMessage = (text: string) => {
+    if (!this.state.orderHistory) return; // by default orderHistory is null and has lazyLoading
+    this.setState({
+      orderHistory: {
+        ...this.state.orderHistory,
+        message: {
+          ...this.state.orderHistory.message,
+          text
+        }
+      }
+    });
+  };
+
   getMaxOrderQuantity = () => {
-    if (this.maxOrderQuantity) return this.maxOrderQuantity;
+    if (this.maxOrderQuantity || !this.state.ui) return this.maxOrderQuantity;
 
     const maxOrderQuantity = {};
-    this.props.ui.orderedItems.items.forEach((orderedItem) => {
+    this.state.ui.orderedItems.items.forEach((orderedItem: { id: string, quantity: number }) => {
       maxOrderQuantity[orderedItem.id] = orderedItem.quantity;
     });
 
@@ -63,13 +130,149 @@ class OrderDetail extends Component {
     return maxOrderQuantity;
   };
 
-  changeStatus = newStatus => this.props.changeStatus(newStatus);
+  changeStatus = (newStatus: string, note: string): void => {
+    const { ui } = this.state;
+    if (!ui) return;
+    this.setState({
+      ui: {
+        ...ui,
+        commonInfo: {
+          ...ui.commonInfo,
+          status: {
+            ...ui.commonInfo.status,
+            value: newStatus,
+            note
+          }
+        }
+      }
+    });
+  };
 
-  showEditModal = showEditModal => this.setState({ showEditModal });
+  showEditModal = (showEditModal: boolean) => this.setState({ showEditModal });
+
+  toggleEmailProof = (url: string): void => {
+    this.setState((prevState) => {
+      return {
+        emailProof: {
+          show: !prevState.emailProof.show,
+          url
+        }
+      };
+    });
+  };
+
+  getOrders = (nonZeroProductsExist: boolean) => {
+    const { ui } = this.state;
+    if (!ui) return null;
+    if (ui.orderedItems.items) {
+      return nonZeroProductsExist && (
+        <OrderedItems
+          toggleEmailProof={this.toggleEmailProof}
+          ui={ui.orderedItems}
+          showRejectionLabel={false}
+        />
+      );
+    }
+
+    return (
+      <div>
+        {/* shipped items */}
+        <GroupContainer
+          {...ui.orderedItems.shippedItems}
+          toggleEmailProof={this.toggleEmailProof}
+        />
+        {/* mailing items */}
+        <GroupContainer
+          {...ui.orderedItems.mailingItems}
+          toggleEmailProof={this.toggleEmailProof}
+        />
+        {/* open items */}
+        <GroupContainer
+          {...ui.orderedItems.openItems}
+          toggleEmailProof={this.toggleEmailProof}
+        />
+      </div>
+    );
+  };
+
+  editOrders = ({
+    pricingInfo,
+    orderedItems,
+    ordersPrice
+  }: {
+    pricingInfo: [],
+    orderedItems: [],
+    ordersPrice: []
+  }) => {
+    const { ui } = this.state;
+    if (!ui) return;
+
+    this.setState({
+      ui: {
+        ...ui,
+        commonInfo: {
+          ...ui.commonInfo,
+          totalCost: {
+            ...ui.commonInfo.totalCost,
+            value: pricingInfo.length ? pricingInfo[pricingInfo.length - 1].value : '' // totalCost is always the last item
+          }
+        },
+        pricingInfo: pricingInfo.length ? {
+          ...ui.pricingInfo,
+          items: pricingInfo
+        } : null,
+        orderedItems: {
+          ...ui.orderedItems,
+          items: ui.orderedItems.items.map((item) => {
+            const orderedItem = orderedItems.find(orderedItem => orderedItem.lineNumber === item.lineNumber);
+            if (!orderedItem) return item;
+
+            const priceItem = ordersPrice.find(order => order.lineNumber === item.lineNumber);
+
+            return {
+              ...item,
+              removed: orderedItem.removed,
+              quantity: orderedItem.quantity,
+              price: priceItem && priceItem.price
+            };
+          })
+        }
+      }
+    });
+  };
+
+  showOrderHistoryModal = (url: string) => {
+    this.setState({ showOrderHistory: !this.state.showOrderHistory });
+    if (this.state.orderHistory) return; // lazyLoading
+    axios
+      .get(url)
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
+        if (!success) {
+          window.store.dispatch({ type: FAILURE, alert: errorMessage });
+        } else {
+          this.setState({ orderHistory: payload });
+        }
+      })
+      .catch((error) => {
+        window.store.dispatch({ type: FAILURE, error });
+      });
+  };
+
+  updateOrderHistory = (orderHistory: { itemChanges: any, orderChanges: any }) => {
+    if (!this.state.orderHistory) return; // by default orderHistory is null and has lazyLoading
+    this.setState({
+      orderHistory: {
+        ...this.state.orderHistory,
+        itemChanges: orderHistory.itemChanges,
+        orderChanges: orderHistory.orderChanges
+      }
+    });
+  };
 
   render() {
-    const { ui, emailProof, toogleEmailProof, changeStatus } = this.props;
-    if (!Object.keys(ui).length) return <Spinner />;
+    const { ui, emailProof } = this.state;
+    if (!ui) return <Spinner />;
 
     const {
       commonInfo,
@@ -87,30 +290,41 @@ class OrderDetail extends Component {
     const paymentInfoEl = paymentInfo ? <div className="col-lg-4 mb-4"><PaymentInfo ui={paymentInfo} dateTimeNAString={dateTimeNAString} /></div> : null;
     const pricingInfoEl = pricingInfo ? <div className="col-lg-4 mb-4"><PricingInfo ui={pricingInfo} /></div> : null;
 
-    const editModal = editOrders
+    const editModal = editOrders && orderedItems.items
       ? (
         <EditModal
           closeModal={() => this.showEditModal(false)}
           open={this.state.showEditModal}
           orderedItems={orderedItems.items}
           {...editOrders.dialog}
-          proceedUrl={this.props.ui.editOrders.proceedUrl}
+          proceedUrl={this.state.ui ? this.state.ui.editOrders.proceedUrl : ''}
           paidByCreditCard={paymentInfo.paymentIcon === 'credit-card'}
-          editOrders={this.props.editOrders}
+          editOrders={this.editOrders}
           general={general}
           maxOrderQuantity={this.getMaxOrderQuantity()}
+          updateOrderHistory={this.updateOrderHistory}
         />
       ) : null;
 
-    const nonZeroProductsExist = Boolean(orderedItems.items.filter(item => item.quantity > 0).length);
+    const nonZeroProductsExist: boolean = !!orderedItems.items && !!(orderedItems.items.filter((item: { quantity: number }): boolean => item.quantity > 0).length);
 
     return (
       <div>
-        <EmailProof open={emailProof.show} />
+        <EmailProof
+          open={emailProof.show}
+          toggleEmailProof={this.toggleEmailProof}
+          emailProofUrl={emailProof.url}
+        />
+        <OrderHistory
+          orderHistory={this.state.orderHistory}
+          open={this.state.showOrderHistory}
+          closeDialog={this.showOrderHistoryModal}
+        />
         {editModal}
         <CommonInfo
           ui={commonInfo}
           dateTimeNAString={dateTimeNAString}
+          showOrderHistoryModal={this.showOrderHistoryModal}
         />
 
         <div className="order-block">
@@ -121,13 +335,7 @@ class OrderDetail extends Component {
           </div>
         </div>
 
-        {nonZeroProductsExist && (
-          <OrderedItems
-            toogleEmailProof={toogleEmailProof}
-            ui={orderedItems}
-            showRejectionLabel={false}
-          />
-        )}
+        {this.getOrders(nonZeroProductsExist)}
 
         <div className="order-block">
           <Actions
@@ -136,8 +344,9 @@ class OrderDetail extends Component {
             editOrders={editOrders}
             editEnabled={nonZeroProductsExist}
             general={general}
-            changeStatus={changeStatus}
+            changeStatus={this.changeStatus}
             showEditModal={this.showEditModal}
+            changeApprovalMessage={this.changeApprovalMessage}
           />
         </div>
       </div>
@@ -145,12 +354,4 @@ class OrderDetail extends Component {
   }
 }
 
-export default connect(({ orderDetail, emailProof }) => {
-  const { ui } = orderDetail;
-  return { ui, emailProof };
-}, {
-  getUI,
-  toogleEmailProof,
-  changeStatus,
-  editOrders
-})(OrderDetail);
+export default OrderDetail;

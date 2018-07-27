@@ -190,9 +190,7 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
             InitializeUser();
 
             usNewsletters.WhereCondition = new WhereCondition().WhereEquals("NewsletterSiteID", SiteID).WhereEquals("NewsletterType", (int)EmailCommunicationTypeEnum.Newsletter).ToString(true);
-            usNewsletters.OnSelectionChanged += usNewsletters_OnSelectionChanged;
-            usNewsletters.IsLiveSite = IsLiveSite;
-
+            
             if (IsUserIdentified())
             {
                 usNewsletters.Visible = true;
@@ -278,6 +276,9 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
     /// </summary>
     protected void Page_Load(object sender, EventArgs e)
     {
+        usNewsletters.OnSelectionChanged += usNewsletters_OnSelectionChanged;
+        usNewsletters.IsLiveSite = IsLiveSite;
+
         if (ExternalUse)
         {
             LoadData();

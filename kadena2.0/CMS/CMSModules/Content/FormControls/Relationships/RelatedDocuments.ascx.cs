@@ -804,7 +804,10 @@ public partial class CMSModules_Content_FormControls_Relationships_RelatedDocume
 
     private int GetRelationshipCount()
     {
-        return RelationshipInfoProvider.GetCount(query => query.WhereEquals("RelationshipNameID", GetRelationshipNameId()));
+        return RelationshipInfoProvider.GetCount(query => query
+            .WhereEquals("RelationshipNameID", GetRelationshipNameId())
+            .WhereEquals("LeftNodeID", TreeNode.NodeID)
+        );
     }
     
     #endregion

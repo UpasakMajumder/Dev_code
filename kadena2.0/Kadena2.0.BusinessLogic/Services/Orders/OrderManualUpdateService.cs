@@ -43,7 +43,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IDeliveryEstimationDataService deliveryData;
         private readonly IKenticoLogger log;
         private readonly IMapper mapper;
-        private readonly IkenticoUserBudgetProvider budgetProvider;
+        private readonly IKenticoUserBudgetProvider budgetProvider;
         private readonly IDistributorShoppingCartService distributorShoppingCartService;
         private readonly IShoppingCartProvider shoppingCartProvider;
         private readonly ITaxEstimationService taxEstimationService;
@@ -62,7 +62,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                                         IMapper mapper,
                                         IDistributorShoppingCartService distributorShoppingCartService,
                                         IShoppingCartProvider shoppingCartProvider,
-                                        IkenticoUserBudgetProvider budgetProvider,
+                                        IKenticoUserBudgetProvider budgetProvider,
                                         ITaxEstimationService taxEstimationService)
         {
             this.updateService = updateService ?? throw new ArgumentNullException(nameof(updateService));
@@ -128,6 +128,11 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new Exception("Couldn't match all given line numbers in original order");
             }
 
+            if(IsCreditCardPayment(orderDetail.PaymentInfo.PaymentMethod) && updatedItemsData.Any(i => i.UpdatedItem.Quantity > i.OriginalItem.Quantity))
+            {
+                throw new Exception("Can't increase item quantity, if payment method is credit card.");
+            }
+
             var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
             targetAddress.Country = orderDetail.ShippingInfo.AddressTo.isoCountryCode;
 
@@ -137,10 +142,11 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 var skuLines = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.LineNumber);
                 var skuNewQty = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.Quantity);
+                var skuAdjustedQuantities = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.Quantity - v.OriginalItem.Quantity);
 
                 // create distributor cart items
                 var distributorCartItems = distributorShoppingCartService
-                    .CreateCart(skuNewQty, orderDetail.Customer.KenticoUserID, orderDetail.campaign.DistributorID)
+                    .CreateCart(skuAdjustedQuantities, orderDetail.Customer.KenticoUserID, orderDetail.campaign.DistributorID)
                     .ToList();
                 // create fake cart with new data
                 // distributor set to 0 so cart won't be visible for active users
@@ -152,7 +158,11 @@ namespace Kadena.BusinessLogic.Services.Orders
                 {
                     distributorCartItems.ForEach(c =>
                     {
-                        c.Items.ForEach(i => i.ShoppingCartID = cartId);
+                        c.Items.ForEach(i =>
+                        {
+                            i.ShoppingCartID = cartId;
+                            i.Quantity = skuNewQty[c.SKUID];
+                        });
                         distributorShoppingCartService.UpdateDistributorCarts(c, orderDetail.Customer.KenticoUserID);
                     }
                     );
@@ -211,8 +221,9 @@ namespace Kadena.BusinessLogic.Services.Orders
                 AdjustAvailableItems(updatedItemsData);
 
                 // Adjust budget
-                budgetProvider.UpdateUserBudgetAllocationRecords(orderDetail.Customer.KenticoUserID,
+                budgetProvider.AdjustUserRemainingBudget(
                     orderDetail.OrderDate.Year.ToString(),
+                    orderDetail.Customer.KenticoUserID,
                     requestDto.TotalShipping - Convert.ToDecimal(orderDetail.PaymentInfo.Shipping));
             }
             else
@@ -391,6 +402,11 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
             var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
             request.TotalTax = await taxEstimationService.EstimateTax(taxAddress, request.TotalPrice, request.TotalShipping);
+        }
+
+        private bool IsCreditCardPayment(string paymentMethod)
+        {
+            return paymentMethod == "CreditCard" || paymentMethod == "CreditCardDemo";
         }
 
         private decimal GetShippinCost(string provider, string shippingService, decimal shippableWeight, AddressDto targetAddress)

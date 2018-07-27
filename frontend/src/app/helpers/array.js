@@ -12,9 +12,9 @@ export const paginationFilter = (list: {}[], currentPage: number, pagesNumber: n
  * @returns {Array}
  */
 
-export const filterByLessNumber = (number, arr) => {
+export const filterByLessNumber = (number: number, arr: number[]): number[] => {
   if (!arr) return [];
-  return arr.filter((item, index) => index < number);
+  return arr.filter((item: number, index: number): boolean => index < number);
 };
 
 /**
@@ -24,7 +24,7 @@ export const filterByLessNumber = (number, arr) => {
  * @returns {Array}
  */
 
-export const compareArrays = (func, list1, list2) => {
+export const compareArrays = (func: Function, list1: any[], list2: any[]) => {
   const array = [];
   list1.forEach((item, index) => {
     func(item, list2[index], array);
@@ -32,7 +32,7 @@ export const compareArrays = (func, list1, list2) => {
   return array;
 };
 
-export const sortObjs = (array, name, sortOrderAsc, level) => {
+export const sortObjs = (array: any[], name: string, sortOrderAsc: boolean, level: number) => {
   return [...array].sort((obj1, obj2) => {
     const prop1 = level ? obj1[level][name] : obj1[name];
     const prop2 = level ? obj2[level][name] : obj2[name];

@@ -596,92 +596,159 @@ module.exports.edit = {
     ],
     "ordersPrice": [
       {
-        lineNumber: "lineNumber-1", // like 693 row
+        lineNumber: "lineNumber-3",
         price: "$ 5"
+      }
+    ],
+    "orderHistory": {
+      itemChanges: {
+        title: "Item Changes",
+        headers: ['Item Desc.', 'Chage Type', 'Original', 'New', 'Date', 'User'],
+        items: [
+          [
+            {
+              type: "text",
+              text: "Item Name #1"
+            },
+            {
+              type: "text",
+              text: "Qty Change"
+            },
+            {
+              type: "text",
+              text: "20"
+            },
+            {
+              type: "text",
+              text: "15"
+            },
+            {
+              type: "text",
+              text: "05/29/2018 10:35:20 AM"
+            },
+            {
+              type: "text",
+              text: "asdasd@gmail.com"
+            }
+          ]
+        ]
+      },
+      orderChanges: {
+        title: "Order Changes",
+        headers: ['Category', 'Original', 'New', 'Date', 'User'],
+        items: [
+          [
+            {
+              type: "text",
+              text: "Shipping"
+            },
+            {
+              type: "text",
+              text: "Overnight"
+            },
+            {
+              type: "text",
+              text: "Order: #1450"
+            },
+            {
+              type: "text",
+              text: "05/29/2018 10:35:20 AM"
+            },
+            {
+              type: "text",
+              text: "asdasd@gmail.com"
+            }
+          ]
+        ]
+      }
+    }
+  }
+}
+
+const orderDetailPayload = {
+  "dateTimeNAString": "N/A",
+  "general": {
+    customerName: 'customerName',
+    customerId: 'customerId',
+    orderId: 'orderId'
+  },
+  "commonInfo": {
+    status: {
+      title: 'Status',
+      value: 'In progress'
+    },
+    orderDate: {
+      title: 'Order date',
+      value: '2017-02-01T09:12:08.108892Z'
+    },
+    shippingDate: {
+      title: 'Shipping date',
+      value: null
+    },
+    totalCost: {
+      title: 'Total cost',
+      value: '$ 1,383.68'
+    }
+  },
+  "shippingInfo": {
+    "title": "Shipping",
+    "deliveryMethod": "fedex-delivery",
+    "message": "All items will be mailed according to the selected mailing list",
+    "address": {
+      "customerName": "Andrei Fidelman",
+      "company": "Actum",
+      "address1": "4001 Valley Industrial Blvd",
+      "address2": "4002 Valley Industrial Blvd",
+      "city": "Shakopee",
+      "state": "MN",
+      "zip": "55379",
+      "county": "CZ",
+      "phone": "+420 664 234 254",
+      "email": "andrei.fidelman@actum.cz"
+    },
+    "trackingPrefix": "Track your packages",
+    "tracking": null
+  },
+  "paymentInfo": {
+    "title": "Payment",
+    "paymentIcon": "credit-card",
+    "paidBy": "Paid by credit card",
+    "paymentDetail": "Mastercard •••• 4062",
+    "date": "2017-08-07T09:12:08.108892Z",
+    "datePrefix": "Payment date"
+  },
+  "pricingInfo": {
+    "title": "Pricing",
+    "items": [
+      {
+        "title": "Summary",
+        "value": "$ 112.20"
       },
       {
-        lineNumber: "lineNumber-2", // like 737 row
-        price: "$ 50"
+        "title": "Shipping",
+        "value": "$ 0.00"
+      },
+      {
+        "title": "Subtotal",
+        "value": "$ 112.20"
+      },
+      {
+        "title": "Tax",
+        "value": "$ 0.00"
+      },
+      {
+        "title": "Totals",
+        "value": "$ 112.20"
       }
     ]
   }
-}
+};
 
 module.exports.detail =  {
   ui: {
     "success": true,
     "errorMessage": null,
-    "payload": {
-      "dateTimeNAString": "N/A",
-      "general": {
-        customerName: 'customerName',
-        customerId: 'customerId',
-        orderId: 'orderId'
-      },
-      "commonInfo": {
-        status: {
-          title: 'Status',
-          value: 'In progress'
-        },
-        orderDate: {
-          title: 'Order date',
-          value: '2017-02-01T09:12:08.108892Z'
-        },
-        shippingDate: {
-          title: 'Shipping date',
-          value: null
-        },
-        totalCost: {
-          title: 'Total cost',
-          value: '$ 1,383.68'
-        }
-      },
-      "shippingInfo": {
-        "title": "Shipping",
-        "deliveryMethod": "fedex-delivery",
-        "message": "All items will be mailed according to the selected mailing list",
-        "address": {
-          "address1": "4001 Valley Industrial Blvd",
-          "city": "Shakopee",
-          "state": "MN",
-          "zip": "55379"
-        },
-        "trackingPrefix": "Track your packages",
-        "tracking": null
-      },
-      "paymentInfo": {
-        "title": "Payment",
-        "paymentIcon": "credit-card",
-        "paidBy": "Paid by credit card",
-        "paymentDetail": "Mastercard •••• 4062",
-        "date": "2017-08-07T09:12:08.108892Z",
-        "datePrefix": "Payment date"
-      },
-      "pricingInfo": {
-        "title": "Pricing",
-        "items": [
-          {
-            "title": "Summary",
-            "value": "$ 112.20"
-          },
-          {
-            "title": "Shipping",
-            "value": "$ 0.00"
-          },
-          {
-            "title": "Subtotal",
-            "value": "$ 112.20"
-          },
-          {
-            "title": "Tax",
-            "value": "$ 0.00"
-          },
-          {
-            "title": "Totals",
-            "value": "$ 112.20"
-          }
-        ]
-      },
+    "payload": Object.assign({}, orderDetailPayload, {
       "orderedItems": {
         "title": "Ordered Items",
         "items": [
@@ -726,7 +793,7 @@ module.exports.detail =  {
             "emailProof": {
               "exists": true,
               "text": "Email",
-              "url": "2"
+              "url": "1"
             }
           },
           {
@@ -884,7 +951,7 @@ module.exports.detail =  {
             "emailProof": {
               "exists": true,
               "text": "Email",
-              "url": "2"
+              "url": "3"
             }
           }
         ]
@@ -922,7 +989,283 @@ module.exports.detail =  {
           }
         }
       }
-    }
+    })
+  },
+  uiSubmitted: {
+    "success": true,
+    "errorMessage": null,
+    "payload": Object.assign({}, orderDetailPayload, {
+      "orderedItems": {
+        shippedItems: {
+          title: "Shipped Items",
+          items: [
+            {
+              tracking: {
+                prefix: "Tracking ID",
+                id: "123151252",
+                url: "#"
+              },
+              shippingDate: {
+                prefix: "Ship Date",
+                date: "2017-08-07T09:12:08.108892Z"
+              },
+              orders: [
+                {
+                  "id": 3,
+                  "SKUId": "SKUId-3",
+                  "removed": false,
+                  "removeLabel": "Rejected",
+                  "lineNumber": "lineNumber-3",
+                  "isReport": true,
+                  "image": "http://satyr.io/200-500x300-700",
+                  "template": "Product with null mailingList property",
+                  "mailingList": null,
+                  "mailingListPrefix": "Mailing list",
+                  "shippingDatePrefix": "Shipping date",
+                  "templatePrefix": "Template",
+                  "price": "$ 112.2",
+                  "quantityPrefix": "Quantity:", // Addresses/Quantity,
+                  "quantityShippedPrefix": "Quantity shipped:",
+                  "quantityShipped": 22,
+                  "quantity": 11,
+                  "unitOfMeasure": "pc",
+                  "downloadPdfURL": "#",
+                  "options": [
+                    {
+                      "name": "Color",
+                      "value": "Blue"
+                    }
+                  ],
+                  "preview": {
+                    "exists": false,
+                    "text": "Preview",
+                    "url": "#"
+                  },
+                  "emailProof": {
+                    "exists": true,
+                    "text": "Email",
+                    "url": "2"
+                  }
+                },
+                {
+                  "id": 65,
+                  "SKUId": "SKUId-65",
+                  "removed": false,
+                  "removeLabel": "Rejected",
+                  "lineNumber": "lineNumber-65",
+                  "isReport": true,
+                  "image": "http://satyr.io/200-500x300-700",
+                  "template": "Product with null mailingList property",
+                  "mailingList": null,
+                  "mailingListPrefix": "Mailing list",
+                  "shippingDatePrefix": "Shipping date",
+                  "templatePrefix": "Template",
+                  "price": "$ 112.2",
+                  "quantityPrefix": "Quantity:", // Addresses/Quantity,
+                  "quantityShippedPrefix": "Quantity shipped:",
+                  "quantityShipped": 22,
+                  "quantity": 11,
+                  "unitOfMeasure": "pc",
+                  "downloadPdfURL": "#",
+                  "options": [
+                    {
+                      "name": "Color",
+                      "value": "Blue"
+                    }
+                  ],
+                  "preview": {
+                    "exists": false,
+                    "text": "Preview",
+                    "url": "#"
+                  },
+                  "emailProof": {
+                    "exists": true,
+                    "text": "Email",
+                    "url": "2"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        openItems: {
+          title: "Open Items",
+          items: [
+            {
+              tracking: {
+                prefix: "Tracking ID",
+                id: "Not Yet Shipped"
+              },
+              shippingDate: {
+                prefix: "Ship Date",
+                date: "N/A"
+              },
+              orders: [
+                {
+                  "id": 123,
+                  "SKUId": "SKUId-123",
+                  "removed": false,
+                  "removeLabel": "Rejected",
+                  "lineNumber": "lineNumber-123",
+                  "isReport": true,
+                  "image": "http://satyr.io/200-500x300-700",
+                  "template": "Product with null mailingList property",
+                  "mailingList": null,
+                  "mailingListPrefix": "Mailing list",
+                  "shippingDatePrefix": "Shipping date",
+                  "templatePrefix": "Template",
+                  "price": "$ 112.2",
+                  "quantityPrefix": "Quantity:", // Addresses/Quantity,
+                  "quantityShippedPrefix": "Quantity shipped:",
+                  "quantityShipped": 22,
+                  "quantity": 11,
+                  "unitOfMeasure": "pc",
+                  "downloadPdfURL": "#",
+                  "options": [
+                    {
+                      "name": "Color",
+                      "value": "Blue"
+                    }
+                  ],
+                  "preview": {
+                    "exists": false,
+                    "text": "Preview",
+                    "url": "#"
+                  },
+                  "emailProof": {
+                    "exists": true,
+                    "text": "Email",
+                    "url": "2"
+                  }
+                },
+                {
+                  "id": 165,
+                  "SKUId": "SKUId-165",
+                  "removed": false,
+                  "removeLabel": "Rejected",
+                  "lineNumber": "lineNumber-165",
+                  "isReport": true,
+                  "image": "http://satyr.io/200-500x300-700",
+                  "template": "Product with null mailingList property",
+                  "mailingList": null,
+                  "mailingListPrefix": "Mailing list",
+                  "shippingDatePrefix": "Shipping date",
+                  "templatePrefix": "Template",
+                  "price": "$ 112.2",
+                  "quantityPrefix": "Quantity:", // Addresses/Quantity,
+                  "quantityShippedPrefix": "Quantity shipped:",
+                  "quantityShipped": 22,
+                  "quantity": 11,
+                  "unitOfMeasure": "pc",
+                  "downloadPdfURL": "#",
+                  "options": [
+                    {
+                      "name": "Color",
+                      "value": "Blue"
+                    }
+                  ],
+                  "preview": {
+                    "exists": false,
+                    "text": "Preview",
+                    "url": "#"
+                  },
+                  "emailProof": {
+                    "exists": true,
+                    "text": "Email",
+                    "url": "2"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        mailingItems: {
+          title: "Mailing Items",
+          items: [
+            {
+              tracking: null,
+              shippingDate: null,
+              orders: [
+                {
+                  "id": 1231,
+                  "SKUId": "SKUId-1231",
+                  "removed": false,
+                  "removeLabel": "Rejected",
+                  "lineNumber": "lineNumber-1231",
+                  "isReport": true,
+                  "image": "http://satyr.io/200-500x300-700",
+                  "template": "Template",
+                  "mailingList": "Mailing",
+                  "mailingListPrefix": "Mailing list",
+                  "shippingDatePrefix": "Shipping date",
+                  "templatePrefix": "Template",
+                  "price": "$ 112.2",
+                  "quantityPrefix": "Quantity:", // Addresses/Quantity,
+                  "quantityShippedPrefix": "Quantity shipped:",
+                  "quantityShipped": 22,
+                  "quantity": 11,
+                  "unitOfMeasure": "pc",
+                  "downloadPdfURL": "#",
+                  "options": [
+                    {
+                      "name": "Color",
+                      "value": "Blue"
+                    }
+                  ],
+                  "preview": {
+                    "exists": false,
+                    "text": "Preview",
+                    "url": "#"
+                  },
+                  "emailProof": {
+                    "exists": true,
+                    "text": "Email",
+                    "url": "2"
+                  }
+                },
+                {
+                  "id": 1651,
+                  "SKUId": "SKUId-1651",
+                  "removed": false,
+                  "removeLabel": "Rejected",
+                  "lineNumber": "lineNumber-1651",
+                  "isReport": true,
+                  "image": "http://satyr.io/200-500x300-700",
+                  "template": "Template",
+                  "mailingList": "Email",
+                  "mailingListPrefix": "Mailing list",
+                  "shippingDatePrefix": "Shipping date",
+                  "templatePrefix": "Template",
+                  "price": "$ 112.2",
+                  "quantityPrefix": "Quantity:", // Addresses/Quantity,
+                  "quantityShippedPrefix": "Quantity shipped:",
+                  "quantityShipped": 22,
+                  "quantity": 11,
+                  "unitOfMeasure": "pc",
+                  "downloadPdfURL": "#",
+                  "options": [
+                    {
+                      "name": "Color",
+                      "value": "Blue"
+                    }
+                  ],
+                  "preview": {
+                    "exists": false,
+                    "text": "Preview",
+                    "url": "#"
+                  },
+                  "emailProof": {
+                    "exists": true,
+                    "text": "Email",
+                    "url": "2"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    })
   },
   accept: {
     success: true,
@@ -941,5 +1284,104 @@ module.exports.detail =  {
       newStatus: 'Rejected'
     },
     errorMessage: ''
+  },
+  history: {
+    success: true,
+    errorMessage: '',
+    payload: {
+      title: "Order History",
+      message: {
+        title: "Message",
+        text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nulla porro quos adipisci dolor aliquam odit accusamus hic, voluptatibus sapiente magnam, quidem explicabo maxime labore ea? Sequi esse culpa dolorem hic!"
+      },
+      itemChanges: {
+        title: "Item Changes",
+        headers: ['Item Desc.', 'Chage Type', 'Original', 'New', 'Date', 'User'],
+        items: [
+          [
+            {
+              type: "text",
+              text: "Item Name #1"
+            },
+            {
+              type: "text",
+              text: "Qty Change"
+            },
+            {
+              type: "text",
+              text: "20"
+            },
+            {
+              type: "text",
+              text: "10"
+            },
+            {
+              type: "date",
+              text: "2017-08-07T09:12:08.108892Z"
+            },
+            {
+              type: "text",
+              text: "asdasd@gmail.com"
+            }
+          ],
+          [
+            {
+              type: "text",
+              text: "Item Name #1"
+            },
+            {
+              type: "text",
+              text: "Qty Change"
+            },
+            {
+              type: "link",
+              text: "View Proof",
+              url: "#"
+            },
+            {
+              type: "link",
+              text: "View Proof",
+              url: "#"
+            },
+            {
+              type: "date",
+              text: "2017-08-07T15:12:08.108892Z"
+            },
+            {
+              type: "text",
+              text: "asdasd@gmail.com"
+            }
+          ]
+        ]
+      },
+      orderChanges: {
+        title: "Order Changes",
+        headers: ['Category', 'Original', 'New', 'Date', 'User'],
+        items: [
+          [
+            {
+              type: "text",
+              text: "Shipping"
+            },
+            {
+              type: "text",
+              text: "Overnight"
+            },
+            {
+              type: "text",
+              text: "Order: #1450"
+            },
+            {
+              type: "text",
+              text: "05/29/2018 10:35:20 AM"
+            },
+            {
+              type: "text",
+              text: "asdasd@gmail.com"
+            }
+          ]
+        ]
+      }
+    }
   }
 };

@@ -684,10 +684,12 @@
         </member>
         <member name="M:CMS.AzureStorage.ContainerInfoProvider.InitContainerInfo(CMS.AzureStorage.ContainerInfo,System.Boolean)">
             <summary>
-            Returns reference to cloud container (creates it if not exists).
+            Assigns reference to cloud container to <see cref="P:CMS.AzureStorage.ContainerInfo.BlobContainer"/> property of <paramref name="ci"/>.
+            Creates a new container, if it does not exist.
             </summary>
             <param name="ci">Container info object.</param>   
             <param name="referenceOnly">Sets container reference only. No existence verification, creation or permission setting.</param>
+            <exception cref="T:System.IO.IOException">Thrown when initialization of the container fails.</exception>
         </member>
         <member name="T:CMS.AzureStorage.Directory">
             <summary>

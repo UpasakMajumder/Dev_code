@@ -7,6 +7,7 @@ using CMS.Base;
 using CMS.Base.Web.UI;
 
 using System.Text;
+using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -15,9 +16,9 @@ using CMS.Helpers;
 using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.Modules;
+using CMS.PortalEngine;
 using CMS.UIControls;
 using CMS.UIControls.UniMenuConfig;
-
 
 public partial class CMSAdminControls_UI_UniMenu_UniMenu : CMSUserControl
 {
@@ -36,6 +37,7 @@ public partial class CMSAdminControls_UI_UniMenu_UniMenu : CMSUserControl
     private List<Group> mGroups = null;
     private bool mHorizontalLayout = true;
     private bool mUseIFrame = false;
+    private string mLocalizationCulture;
 
     #endregion
 
@@ -293,6 +295,28 @@ public partial class CMSAdminControls_UI_UniMenu_UniMenu : CMSUserControl
     {
         get;
         set;
+    }
+
+
+    /// <summary>
+    /// Gets or sets the culture (culture code) which is used for localizing resource strings.
+    /// </summary>
+    private string ResourceCulture
+    {
+        get
+        {
+            if (String.IsNullOrEmpty(mLocalizationCulture))
+            {
+                mLocalizationCulture = PortalContext.ViewMode.IsEditLive() ?
+                    MembershipContext.AuthenticatedUser.PreferredUICultureCode : Thread.CurrentThread.CurrentUICulture.ToString();
+            }
+
+            return mLocalizationCulture;
+        }
+        set
+        {
+            mLocalizationCulture = value;
+        }
     }
 
     #endregion
@@ -734,7 +758,8 @@ function SelectButton(elem) {{
                 string elementName = uiElement.ElementName;
 
                 // Display only caption - do not substitute with Display name when empty
-                string elementCaption = ResHelper.LocalizeString(uiElement.ElementCaption);
+                string elementCaption = ResHelper.LocalizeString(uiElement.ElementCaption, ResourceCulture);
+
 
                 // Create main button panel
                 CMSPanel pnlButton = new CMSPanel()
@@ -802,7 +827,7 @@ function SelectButton(elem) {{
                 // Tooltip
                 if (!string.IsNullOrEmpty(uiElement.ElementDescription))
                 {
-                    pnlButton.ToolTip = ResHelper.LocalizeString(uiElement.ElementDescription);
+                    pnlButton.ToolTip = ResHelper.LocalizeString(uiElement.ElementDescription, ResourceCulture);
                 }
                 else
                 {

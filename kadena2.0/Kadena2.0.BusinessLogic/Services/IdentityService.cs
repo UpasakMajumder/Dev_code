@@ -21,17 +21,19 @@ namespace Kadena.BusinessLogic.Services
         private readonly IRoleService roleService;
         private readonly IKenticoLoginProvider loginProvider;
         private readonly IKenticoResourceService kenticoResourceService;
+        private readonly ISettingsService settingsService;
 
-        public IdentityService(IKenticoLogger logger, 
-                               IMapper mapper, 
-                               ISaml2Service saml2Service, 
+        public IdentityService(IKenticoLogger logger,
+                               IMapper mapper,
+                               ISaml2Service saml2Service,
                                IKenticoUserProvider userProvider,
                                IKenticoCustomerProvider customerProvider,
                                IKenticoSiteProvider siteProvider,
-                               IKenticoAddressBookProvider addressProvider, 
-                               IRoleService roleService, 
-                               IKenticoLoginProvider loginProvider, 
-                               IKenticoResourceService kenticoResourceService)
+                               IKenticoAddressBookProvider addressProvider,
+                               IRoleService roleService,
+                               IKenticoLoginProvider loginProvider,
+                               IKenticoResourceService kenticoResourceService,
+                               ISettingsService settingsService)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -43,6 +45,7 @@ namespace Kadena.BusinessLogic.Services
             this.roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
             this.loginProvider = loginProvider ?? throw new ArgumentNullException(nameof(loginProvider));
             this.kenticoResourceService = kenticoResourceService ?? throw new ArgumentNullException(nameof(kenticoResourceService));
+            this.settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
         }
 
         public Uri TryAuthenticate(string samlString)
@@ -125,10 +128,16 @@ namespace Kadena.BusinessLogic.Services
         private DeliveryAddress EnsureUpdateAddress(AddressDto address, int customerId)
         {
             var newAddress = mapper.Map<DeliveryAddress>(address);
+            if (newAddress == null)
+            {
+                logger.LogInfo(this.GetType().Name, "ENSURESAMLADDRESS", "Customer info extraction has failed.");
+                return null;
+            }
             var existingAddresses = addressProvider.GetCustomerAddresses(customerId, AddressType.Shipping);
             if (existingAddresses.Length == 0)
             {
-                addressProvider.SaveShippingAddress(newAddress, customerId);
+                newAddress.CustomerId = customerId;
+                settingsService.SaveShippingAddress(newAddress);
             }
             return newAddress;
         }

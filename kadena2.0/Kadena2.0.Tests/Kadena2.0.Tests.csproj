@@ -476,6 +476,7 @@
     <Compile Include="BusinessLogic\DeliveryEstimationDataTests.cs" />
     <Compile Include="BusinessLogic\DialogServiceTests.cs" />
     <Compile Include="BusinessLogic\Factories\Checkout\CheckoutPageFactoryTests.cs" />
+    <Compile Include="BusinessLogic\OrderHistoryServiceTests.cs" />
     <Compile Include="BusinessLogic\OrderItemCheckerServiceTests.cs" />
     <Compile Include="BusinessLogic\LocalizationServiceTests.cs" />
     <Compile Include="BusinessLogic\FileServiceTests.cs" />
@@ -487,6 +488,7 @@
     <Compile Include="MicroserviceClients\FileClientTests.cs" />
     <Compile Include="BusinessLogic\OrderListServiceTests.cs" />
     <Compile Include="BusinessLogic\PdfHiresServiceTests.cs" />
+    <Compile Include="BusinessLogic\UpdateInventoryDataServiceTests.cs" />
     <Compile Include="BusinessLogic\XlsxConvertTests.cs" />
     <Compile Include="Dto\Approval\MicroserviceRequests\ApprovalStateTests.cs" />
     <Compile Include="Helpers\EnumHelperTests.cs" />

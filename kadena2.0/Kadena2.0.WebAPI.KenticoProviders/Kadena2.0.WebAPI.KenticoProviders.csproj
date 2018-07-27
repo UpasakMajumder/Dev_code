@@ -131,7 +131,7 @@
     <Compile Include="Contracts\IKenticoSettingsProvider.cs" />
     <Compile Include="Contracts\IKenticoSkuProvider.cs" />
     <Compile Include="Contracts\IKenticoUnitOfMeasureProvider.cs" />
-    <Compile Include="Contracts\IkenticoUserBudgetProvider.cs" />
+    <Compile Include="Contracts\IKenticoUserBudgetProvider.cs" />
     <Compile Include="Contracts\IOrderCartItemsProvider.cs" />
     <Compile Include="Contracts\IShoppingCartItemsProvider.cs" />
     <Compile Include="Contracts\ITieredPriceRangeProvider.cs" />

@@ -155,7 +155,7 @@ class CheckoutProduct extends Component {
     if (!emailProof.exists) return null;
     return (
       <button
-        onClick={() => { toggleEmailProof(true, emailProof.url); }}
+        onClick={() => { toggleEmailProof(emailProof.url); }}
         type="button"
         className="cart-product__btn"
       >

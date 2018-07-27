@@ -199,13 +199,13 @@
   </ul>
   <div>
     <div class="css-tabs__content js-tab-orders">
-      <div data-react='{ "initURL": "/api/recentorders/getheaders", "getPageItemsURL": "/api/recentorders/getbody" }' class="r-recent-orders"></div>
+      <div data-react="{ &quot;initURL&quot;: &quot;/api/recentorders/getheaders&quot;, &quot;getPageItemsURL&quot;: &quot;/api/recentorders/getbody&quot; }" class="r-recent-orders"></div>
     </div>
     {% if(KadenaNamespace.IsCurrentUserApprover()) { %}
     <div class="css-tabs__content js-tab-requiring-approval">
-      <div data-react='{ "initURL": "/api/orders/toApprove" }' class="r-recent-orders"></div>
+      <div data-react="{ &quot;initURL&quot;: &quot;/api/orders/toApprove&quot; }" class="r-recent-orders"></div>
     </div>
-    {% }|(user)administrator|(hash)2f06457b101d8320b74aa94e9b846dcd1c74fba152b24eee1617da00ae316894%}
+    {% }|(user)administrator|(hash)7d8326e15f75dab0e0f14fa9baedd03807d6e10df027eb59bb8ae70d77601cd5%}
   </div>
 </div>
 ]]>

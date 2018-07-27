@@ -19,6 +19,7 @@ namespace Kadena.BusinessLogic.Services
 {
     public class ShoppingCartService : IShoppingCartService
     {
+        const string tempAddressName = "TemporaryAddress";
         private readonly IKenticoSiteProvider kenticoSite;
         private readonly IKenticoLocalizationProvider localization;
         private readonly IKenticoPermissionsProvider permissions;
@@ -38,6 +39,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IImageService imageService;
         private readonly IKenticoSkuProvider skus;
         private readonly IOrderItemCheckerService orderChecker;
+        private readonly ISettingsService settingsService;
         private readonly IArtworkService artworkService;
 
         public ShoppingCartService(IKenticoSiteProvider kenticoSite,
@@ -59,7 +61,8 @@ namespace Kadena.BusinessLogic.Services
                                    IImageService imageService,
                                    IKenticoSkuProvider skus,
                                    IArtworkService artworkService,
-                                   IOrderItemCheckerService orderChecker)
+                                   IOrderItemCheckerService orderChecker,
+                                   ISettingsService settingsService)
         {
             this.kenticoSite = kenticoSite ?? throw new ArgumentNullException(nameof(kenticoSite));
             this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
@@ -80,6 +83,7 @@ namespace Kadena.BusinessLogic.Services
             this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
             this.skus = skus ?? throw new ArgumentNullException(nameof(skus));
             this.orderChecker = orderChecker ?? throw new ArgumentNullException(nameof(orderChecker));
+            this.settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
             this.artworkService = artworkService ?? throw new ArgumentNullException(nameof(artworkService));
         }
 
@@ -173,8 +177,19 @@ namespace Kadena.BusinessLogic.Services
 
         public int SaveTemporaryAddress(DeliveryAddress deliveryAddress)
         {
-            return shoppingCart.SetTemporaryShoppingCartAddress(deliveryAddress);
+            var customerAdresses = deliveryAddress.CustomerId > 0 ?
+                kenticoAddresses.GetCustomerAddresses(deliveryAddress.CustomerId, AddressType.Shipping)
+                : kenticoAddresses.GetCustomerAddresses(AddressType.Shipping);
+            var existingTemporaryAddress = customerAdresses?.FirstOrDefault(a => tempAddressName.Equals(a.AddressName));
+            if (existingTemporaryAddress != null)
+            {
+                deliveryAddress.Id = existingTemporaryAddress.Id;
+            }
 
+            deliveryAddress.AddressName = tempAddressName;
+            settingsService.SaveShippingAddress(deliveryAddress);
+            shoppingCart.SetShoppingCartAddress(deliveryAddress.Id);
+            return deliveryAddress.Id;
         }
 
         private DeliveryCarriers GetDeliveryMethods(bool isShippingApplicable)
@@ -307,9 +322,11 @@ namespace Kadena.BusinessLogic.Services
 
         private DeliveryAddresses GetDeliveryAddresses(int checkedAddressId = 0)
         {
-            var customerAddresses = kenticoAddresses.GetCustomerAddresses(AddressType.Shipping);
+            var customerAddresses = kenticoAddresses
+                .GetCustomerAddresses(AddressType.Shipping)
+                .Where(a => !tempAddressName.Equals(a.AddressName));
             var userNotificationString = GetUserNotificationString();
-            var otherAddressEnabled = GetOtherAddressSettingsValue();
+            var otherAddressEnabled = resources.GetSiteSettingsKey<bool>(Settings.KDA_AllowCustomShippingAddress);
 
             var addresses = checkoutfactory.CreateDeliveryAddresses(customerAddresses.ToList(), userNotificationString, otherAddressEnabled);
 
@@ -522,16 +539,6 @@ namespace Kadena.BusinessLogic.Services
             }
 
             cartItem.SKUUnits = addedAmount;
-        }
-
-
-
-        private bool GetOtherAddressSettingsValue()
-        {
-            var settingsKey = resources.GetSiteSettingsKey(Settings.KDA_AllowCustomShippingAddress);
-            bool otherAddressAvailable = false;
-            bool.TryParse(settingsKey, out otherAddressAvailable);
-            return otherAddressAvailable;
         }
 
         public List<int> GetLoggedInUserCartData(ShoppingCartTypes cartType, int userID, int campaignID = 0)

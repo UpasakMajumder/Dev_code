@@ -611,6 +611,28 @@ public partial class CMSWebParts_Widgets_WidgetActions : CMSAbstractWebPart, IPo
         base.ReloadData();
     }
 
+
+    /// <summary>
+    /// Returns the localized string of the control's hierarchically highest parent that has the <see cref="ResourcePrefix"/> property and its translation defined. 
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// If no parent but the control has the property defined, returns the control's localized string.
+    /// </para>
+    /// <para>
+    /// If none of them have the <see cref="ResourcePrefix"/> property defined, returns the default resource string translation.
+    /// </para>
+    /// </remarks>
+    /// <param name="stringName">String to localize.</param>
+    /// <param name="culture">Culture to be used for localization.</param>
+    /// <seealso cref="ResourcePrefix"/>
+    public override string GetString(string stringName, string culture = null)
+    {
+        string cultureCode = culture ?? (PortalContext.ViewMode.IsEditLive() ? MembershipContext.AuthenticatedUser.PreferredUICultureCode : null);
+
+        return base.GetString(stringName, cultureCode);
+    }
+
     #endregion
 
 
@@ -675,8 +697,7 @@ public partial class CMSWebParts_Widgets_WidgetActions : CMSAbstractWebPart, IPo
     /// <returns></returns>
     private string GetAddWidgetButtonText()
     {
-        String culture = ((PortalContext.ViewMode == ViewModeEnum.EditLive) || (PortalContext.ViewMode == ViewModeEnum.LiveSite)) ? DocumentContext.CurrentDocumentCulture.CultureCode : CultureHelper.PreferredUICultureCode;
-        return DataHelper.GetNotEmpty(AddButtonText, GetString("widgets.addwidget", culture));
+        return DataHelper.GetNotEmpty(AddButtonText, GetString("widgets.addwidget"));
     }
 
 
@@ -686,8 +707,7 @@ public partial class CMSWebParts_Widgets_WidgetActions : CMSAbstractWebPart, IPo
     /// <returns></returns>
     private string GetResetButtonText()
     {
-        String culture = ((PortalContext.ViewMode == ViewModeEnum.EditLive) || (PortalContext.ViewMode == ViewModeEnum.LiveSite)) ? DocumentContext.CurrentDocumentCulture.CultureCode : CultureHelper.PreferredUICultureCode;
-        return DataHelper.GetNotEmpty(ResetButtonText, GetString("widgets.resettodefault", culture));
+        return DataHelper.GetNotEmpty(ResetButtonText, GetString("widgets.resettodefault"));
     }
 
     #endregion

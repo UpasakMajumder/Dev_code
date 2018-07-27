@@ -19,6 +19,9 @@ namespace Kadena.Helpers
             return new Uri("/api/login/saml2", UriKind.Relative);
         }
 
+        public static string GetUrlForOrderHistory(string orderId)
+            => '/' + Routes.Routes.Order.History.Replace("{orderId}", orderId);
+
         public static NameValueCollection ParseQueryStringFromUrl(string url)
         {
             if (string.IsNullOrWhiteSpace(url))

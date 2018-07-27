@@ -167,7 +167,9 @@ public partial class CMSModules_Modules_Controls_NuGetPackages_ExportModule : Ex
     /// <param name="metadata">Metadata of the package</param>
     private string GetPackageFilePath(ModulePackageMetadata metadata)
     {
-        return Path.EnsureBackslashes(Path.Combine(Path.Combine(ImportExportHelper.GetSiteUtilsFolder(), "Export"), String.Format("{0}_{1}.nupkg", metadata.Id, metadata.Version)));
+        var packageName = String.Format("{0}.{1}.nupkg", metadata.Id, metadata.Version);
+
+        return Path.EnsureBackslashes(Path.Combine(ImportExportHelper.GetSiteUtilsFolder(), "Export", packageName));
     }
 
 
