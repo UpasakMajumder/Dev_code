@@ -14,7 +14,6 @@ class EditModal extends Component {
     proceedUrl: PropTypes.string.isRequired,
     // func
     closeModal: PropTypes.func.isRequired,
-    editOrders: PropTypes.func.isRequired,
     clearHistory: PropTypes.func.isRequired,
     // ui
     title: PropTypes.string.isRequired,

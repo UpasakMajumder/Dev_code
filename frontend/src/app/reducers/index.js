@@ -1,11 +1,9 @@
 import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
 import { reducer as toastr } from 'react-redux-toastr';
 import tac from './tac';
 import checkout from './checkout';
 import isLoading from './isLoading';
 import settingsAddresses from './settingsAddresses';
-import orderDetail from './orderDetail';
 import searchPage from './searchPage';
 import search from './search';
 import isShownHeaderShadow from './headerShadow';
@@ -19,7 +17,6 @@ import dialogAlert from './dialogAlert';
 import cardPayment from './card-payment';
 import languageSelector from './languageSelector';
 import filteredRecentOrders from './filteredRecentOrders';
-import emailProof from './emailProof';
 import thumbnailPreview from './thumbnailPreview';
 
 const rootReducer = combineReducers({
@@ -30,7 +27,6 @@ const rootReducer = combineReducers({
   searchPage,
   search,
   isShownHeaderShadow,
-  orderDetail,
   ordersReports,
   manageProducts,
   modifyMailingList,
@@ -42,7 +38,6 @@ const rootReducer = combineReducers({
   languageSelector,
   filteredRecentOrders,
   recentOrders,
-  emailProof,
   thumbnailPreview
 });
 
