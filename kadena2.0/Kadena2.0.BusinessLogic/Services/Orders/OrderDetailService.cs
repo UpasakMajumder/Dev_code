@@ -29,6 +29,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IOrderViewClient orderViewClient;
         private readonly IMailingListClient mailingClient;
         private readonly IKenticoOrderProvider kenticoOrder;
+        private readonly IOrderManualUpdateClient orderHistoryClient;
         private readonly IShoppingCartProvider shoppingCart;
         private readonly IKenticoProductsProvider products;
         private readonly IKenticoCustomerProvider kenticoCustomers;
@@ -46,6 +47,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             IOrderViewClient orderViewClient,
             IMailingListClient mailingClient,
             IKenticoOrderProvider kenticoOrder,
+            IOrderManualUpdateClient orderHistoryClient,
             IShoppingCartProvider shoppingCart,
             IKenticoProductsProvider products,
             IKenticoCustomerProvider kenticoCustomers,
@@ -63,6 +65,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.orderViewClient = orderViewClient ?? throw new ArgumentNullException(nameof(orderViewClient));
             this.kenticoOrder = kenticoOrder ?? throw new ArgumentNullException(nameof(kenticoOrder));
+            this.orderHistoryClient = orderHistoryClient ?? throw new ArgumentNullException(nameof(orderHistoryClient));
             this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.kenticoCustomers = kenticoCustomers ?? throw new ArgumentNullException(nameof(kenticoCustomers));
@@ -110,6 +113,13 @@ namespace Kadena.BusinessLogic.Services.Orders
             var canCurrentUserEditInApproval = permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.EditOrdersInApproval);
             var showApprovalButtons = canCurrentUserApproveOrder;
             var showEditButton = canCurrentUserApproveOrder && canCurrentUserEditInApproval;
+            var showOrderHistory = isWaitingForApproval;
+            if (!showOrderHistory)
+            {
+                var history = await orderHistoryClient.Get(orderId);
+                showOrderHistory = history.Payload
+                    .Any(a => a.StatusId == (int)OrderStatus.WaitingForApproval);
+            }
 
             CheckOrderDetailPermisson(orderNumber, kenticoCustomers.GetCurrentCustomer(), canCurrentUserApproveOrder);
 
@@ -186,11 +196,13 @@ namespace Kadena.BusinessLogic.Services.Orders
                     {
                         Title = resources.GetResourceString("Kadena.Order.StatusPrefix"),
                         Value = genericStatus,
-                        OrderHistory = new Link
-                        {
-                            Label = resources.GetResourceString("Kadena.Order.Status.OrderHistory"),
-                            Url = UrlHelper.GetUrlForOrderHistory(orderId)
-                        }
+                        OrderHistory = showOrderHistory
+                            ? new Link
+                            {
+                                Label = resources.GetResourceString("Kadena.Order.Status.OrderHistory"),
+                                Url = UrlHelper.GetUrlForOrderHistory(orderId)
+                            }
+                            : null
                     },
                     TotalCost = new TitleValuePair<string>
                     {
