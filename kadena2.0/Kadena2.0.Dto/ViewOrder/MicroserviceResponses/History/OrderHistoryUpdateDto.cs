@@ -4,7 +4,7 @@
     {
         public string OrderId { get; set; }
         public long ServiceRecordDateTimeCreated { get; set; }
-        public int AdapterDateTimeReceived { get; set; }
+        public long AdapterDateTimeReceived { get; set; }
         public string ClientId { get; set; }
         public string UserId { get; set; }
         public string ErpClientId { get; set; }
@@ -17,7 +17,7 @@
         public string Description { get; set; }
         public string SapOrderId { get; set; }
         public int IsDeleted { get; set; }
-        public int DateTimeDeleted { get; set; }
+        public long DateTimeDeleted { get; set; }
         public string UID { get; set; }
         public decimal TotalPrice { get; set; }
         public decimal TotalTax { get; set; }

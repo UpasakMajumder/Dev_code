@@ -4,7 +4,7 @@
     {
         public string ArtWorkKey { get; set; }
         public string ClientId { get; set; }
-        public int DateTimeDeleted { get; set; }
+        public long DateTimeDeleted { get; set; }
         public int IsDeleted { get; set; }
         public string ItemId { get; set; }
         public string ItemName { get; set; }
