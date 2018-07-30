@@ -56,17 +56,8 @@ class OrderDetail extends Component {
     getUI(orderID);
   }
 
-  changeApprovalMessage = (text) => {
-    if (!this.state.orderHistory) return; // by default orderHistory is null and has lazyLoading
-    this.setState({
-      orderHistory: {
-        ...this.state.orderHistory,
-        message: {
-          ...this.state.orderHistory.message,
-          text
-        }
-      }
-    });
+  clearHistory = () => {
+    this.setState({ orderHistory: null });
   };
 
   getMaxOrderQuantity = () => {
@@ -104,17 +95,6 @@ class OrderDetail extends Component {
       });
   };
 
-  updateOrderHistory = (orderHistory) => {
-    if (!this.state.orderHistory) return; // by default orderHistory is null and has lazyLoading
-    this.setState({
-      orderHistory: {
-        ...this.state.orderHistory,
-        itemChanges: orderHistory.itemChanges,
-        orderChanges: orderHistory.orderChanges
-      }
-    });
-  };
-
   render() {
     const { ui, emailProof, toogleEmailProof, changeStatus } = this.props;
     if (!Object.keys(ui).length) return <Spinner />;
@@ -144,10 +124,10 @@ class OrderDetail extends Component {
           {...editOrders.dialog}
           proceedUrl={this.props.ui.editOrders.proceedUrl}
           paidByCreditCard={paymentInfo.paymentIcon === 'credit-card'}
-          editOrders={this.props.editOrders}
           general={general}
           maxOrderQuantity={this.getMaxOrderQuantity()}
-          updateOrderHistory={this.updateOrderHistory}
+          editOrders={this.props.editOrders}
+          clearHistory={this.clearHistory}
         />
       ) : null;
 
@@ -193,7 +173,7 @@ class OrderDetail extends Component {
             general={general}
             changeStatus={changeStatus}
             showEditModal={this.showEditModal}
-            changeApprovalMessage={this.changeApprovalMessage}
+            clearHistory={this.clearHistory}
           />
         </div>
       </div>
