@@ -117,8 +117,10 @@ namespace Kadena.BusinessLogic.Services.Orders
             if (!showOrderHistory)
             {
                 var history = await orderHistoryClient.Get(orderId);
-                showOrderHistory = history.Payload
-                    .Any(a => a.StatusId == (int)OrderStatus.WaitingForApproval);
+                showOrderHistory = history
+                    ?.Payload
+                    ?.Any(a => a.StatusId == (int)OrderStatus.WaitingForApproval)
+                    ?? false;
             }
 
             CheckOrderDetailPermisson(orderNumber, kenticoCustomers.GetCurrentCustomer(), canCurrentUserApproveOrder);
