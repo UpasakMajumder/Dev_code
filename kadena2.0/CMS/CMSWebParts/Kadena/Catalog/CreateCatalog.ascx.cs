@@ -306,7 +306,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             .ToList();
         if (notAllowedProducts?.Any() ?? false)
         {
-            query = query.WhereNotIn(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.ProgramID), notAllowedProducts);
+            query = query.WhereNotIn(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.CampaignsProductID), notAllowedProducts);
         }
 
         BindingProductsToRepeater(query.ToList());
