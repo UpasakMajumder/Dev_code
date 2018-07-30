@@ -23,10 +23,12 @@ using Kadena.Container.Default;
 using Kadena.Models.Brand;
 using Kadena.Models.Common;
 using Kadena.Models.Product;
+using CMS.Membership;
 
 public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPart
 {
     public IKenticoBrandsProvider BrandsProvider { get; protected set; } = DIContainer.Resolve<IKenticoBrandsProvider>();
+    private readonly IKenticoProductsProvider productsProvider = DIContainer.Resolve<IKenticoProductsProvider>();
 
     private Lazy<Dictionary<int, Brand>> Brands
         => new Lazy<Dictionary<int, Brand>>(() => BrandsProvider.GetBrands().ToDictionary(b => b.ItemID, b => b));
@@ -267,7 +269,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             if (!IsPostBack)
             {
                 posNumber.Attributes.Add("placeholder", PosSearchPlaceholder);
-                Bindproducts();
+                BindProducts();
             }
         }
     }
@@ -275,31 +277,37 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// <summary>
     /// Binding products on page load
     /// </summary>
-    private void Bindproducts()
+    private void BindProducts()
     {
-        List<CMS.DocumentEngine.Types.KDA.CampaignsProduct> products = null;
-        if (TypeOfProduct == (int)CampaignProductType.PreBuy && OpenCampaign != null)
-        {
-            BindBrands();
-            BindProductTypes();
-            products = CampaignsProductProvider.GetCampaignsProducts()
-                       .WhereIn("ProgramID", GetProgramIDs()).WhereEquals("NodeSiteID", CurrentSite.SiteID).ToList();
-            BindingProductsToRepeater(products);
-        }
-        else if (TypeOfProduct == (int)CampaignProductType.PreBuy && OpenCampaign == null)
+        if (TypeOfProduct == (int)CampaignProductType.PreBuy && OpenCampaign == null)
         {
             catalogControls.Visible = false;
             lblNoProducts.Visible = false;
             campaignIsNotOpen.Visible = true;
+            return;
         }
-        if (TypeOfProduct == (int)CampaignProductType.GeneralInventory)
+        BindBrands();
+        BindProductTypes();
+
+        var query = CampaignsProductProvider.GetCampaignsProducts().OnCurrentSite();
+        var programs = GetProgramIDs();
+        if (programs == null)
         {
-            BindBrands();
-            BindProductTypes();
-            products = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                .Where(new WhereCondition().WhereEquals("ProgramID", null).Or().WhereEquals("ProgramID", 0)).ToList();
-            BindingProductsToRepeater(products);
+            query = query.WhereEqualsOrNull(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.ProgramID), 0);
         }
+        else
+        {
+            query = query.WhereIn(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.ProgramID), programs);
+        }
+
+        var products = query.ToList();
+
+        var allowedProducts = productsProvider
+            .GetAllocatedProductQuantityForUser(products.Select(p => p.CampaignsProductID), MembershipContext.AuthenticatedUser.UserID)
+            .Where(i => i.Value != 0)
+            .Select(i => i.Key);
+
+        BindingProductsToRepeater(products.Where(p => allowedProducts.Contains(p.CampaignsProductID)).ToList());
     }
 
     /// <summary>
@@ -308,6 +316,11 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// <returns></returns>
     public List<int> GetProgramIDs()
     {
+        if (OpenCampaign == null)
+        {
+            return null;
+        }
+
         try
         {
             return ProgramProvider.GetPrograms()
@@ -388,18 +401,16 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     {
         try
         {
-            {
-                var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
-                                .Columns("BrandName,ItemID")
-                                .Select(x => new BrandItem { ItemID = x.Field<int>("ItemID"), BrandName = x.Field<string>("BrandName") })
-                                .OrderBy(x => x.BrandName)
-                                .ToList();
-                ddlBrands.DataSource = brand;
-                ddlBrands.DataTextField = "BrandName";
-                ddlBrands.DataValueField = "ItemID";
-                ddlBrands.DataBind();
-                ddlBrands.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.Catalog.SelectBrandText"), "0"));
-            }
+            var brand = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
+                            .Columns("BrandName,ItemID")
+                            .Select(x => new BrandItem { ItemID = x.Field<int>("ItemID"), BrandName = x.Field<string>("BrandName") })
+                            .OrderBy(x => x.BrandName)
+                            .ToList();
+            ddlBrands.DataSource = brand;
+            ddlBrands.DataTextField = "BrandName";
+            ddlBrands.DataValueField = "ItemID";
+            ddlBrands.DataBind();
+            ddlBrands.Items.Insert(0, new ListItem(ResHelper.GetString("Kadena.Catalog.SelectBrandText"), "0"));
         }
         catch (Exception ex)
         {
@@ -672,7 +683,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             }
             else
             {
-                Bindproducts();
+                BindProducts();
                 noProductSelected.Visible = true;
             }
         }
@@ -1188,7 +1199,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     {
         if (string.IsNullOrEmpty(hdncheckedValues.Value))
         {
-            Bindproducts();
+            BindProducts();
             noProductSelected.Visible = true;
             return;
         }
