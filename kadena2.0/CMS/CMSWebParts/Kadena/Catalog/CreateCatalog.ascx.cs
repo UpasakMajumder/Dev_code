@@ -307,7 +307,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             .Where(i => i.Value != 0)
             .Select(i => i.Key);
 
-        BindingProductsToRepeater(products.Where(p => allowedProducts.Contains(p.CampaignsProductID)).ToList());
+        BindingProductsToRepeater(products.Where(p => allowedProducts.Contains(p.CampaignsProductID)));
     }
 
     /// <summary>
@@ -748,18 +748,11 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// Binding products to repeater
     /// </summary>
     /// <param name="productsList"></param>
-    public void BindingProductsToRepeater(List<CMS.DocumentEngine.Types.KDA.CampaignsProduct> productsList, string posNum = null)
+    private void BindingProductsToRepeater(IEnumerable<CMS.DocumentEngine.Types.KDA.CampaignsProduct> productsList, string posNum = null)
     {
         try
         {
-            List<int> skuIds = new List<int>();
-            if (!DataHelper.DataSourceIsEmpty(productsList))
-            {
-                foreach (var product in productsList)
-                {
-                    skuIds.Add(product.NodeSKUID);
-                }
-            }
+            var skuIds = productsList.Select(p => p.NodeSKUID).ToList();
             if (!DataHelper.DataSourceIsEmpty(skuIds))
             {
                 var skuDetails = SKUInfoProvider.GetSKUs()
