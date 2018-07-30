@@ -303,7 +303,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         var products = query.ToList();
 
         var allowedProducts = productsProvider
-            .GetAllocatedProductQuantityForUser(products.Select(p => p.CampaignsProductID), MembershipContext.AuthenticatedUser.UserID)
+            .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
             .Where(i => i.Value != 0)
             .Select(i => i.Key);
 

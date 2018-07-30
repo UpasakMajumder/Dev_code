@@ -208,7 +208,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public int GetAllocatedProductQuantityForUser(int skuId, int userID)
         {
             var productID = GetCampaignProductIDBySKUID(skuId);
-            var allocatedItems = GetAllocatedProductQuantityForUser(new[] { productID }, userID);
+            var allocatedItems = GetAllocatedProductQuantityForUser(userID, new List<int> { productID });
             return allocatedItems[productID];
         }
 
@@ -417,12 +417,17 @@ namespace Kadena.WebAPI.KenticoProviders
             };
         }
 
-        public Dictionary<int, int> GetAllocatedProductQuantityForUser(IEnumerable<int> campaignProductIds, int userID)
+        public Dictionary<int, int> GetAllocatedProductQuantityForUser(int userID, List<int> campaignProductIds = null)
         {
-            var distinctIds = campaignProductIds.Distinct().ToList();
-            var allocatedItems = CustomTableItemProvider.GetItems(CustomTableName)
-                               .WhereIn("ProductID", distinctIds)
-                               .Columns("ProductID", "UserID", "Quantity")
+            var query = CustomTableItemProvider.GetItems(CustomTableName)
+                               .Columns("ProductID", "UserID", "Quantity");
+
+            if (campaignProductIds?.Any() ?? false)
+            {
+                query = query.WhereIn("ProductID", campaignProductIds);
+            }
+
+            var allocatedItems = query
                                .Select(i => new
                                {
                                    ProductId = i.GetValue("ProductID", default(int)),
@@ -430,15 +435,12 @@ namespace Kadena.WebAPI.KenticoProviders
                                    Quantity = i.GetValue("Quantity", default(int))
                                })
                                .ToList();
-            return distinctIds
-                .GroupJoin(allocatedItems,
-                    i => i,
-                    ai => ai.ProductId,
-                    (i, ai) => new
-                    {
-                        ProductId = i,
-                        Quantity = ai.Any() ? ai.FirstOrDefault(q => q.UserId == userID)?.Quantity ?? 0 : -1
-                    })
+            return allocatedItems
+                .GroupBy(ai => ai.ProductId, (id, ai) => new
+                {
+                    ProductId = id,
+                    Quantity = ai.Any() ? ai.FirstOrDefault(q => q.UserId == userID)?.Quantity ?? 0 : -1
+                })
                 .ToDictionary(i => i.ProductId, i => i.Quantity);
         }
     }

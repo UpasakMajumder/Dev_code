@@ -337,7 +337,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             rptProductLists.DataBind();
             List<CampaignsProduct> productsDetails = GetProductsDetails(categoryID, brandID, searchText);
             var allowedProducts = productsProvider
-                .GetAllocatedProductQuantityForUser(productsDetails.Select(p => p.CampaignsProductID), MembershipContext.AuthenticatedUser.UserID)
+                .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
                 .Where(i => i.Value != 0)
                 .Select(i => i.Key);
 
