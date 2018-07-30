@@ -441,6 +441,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         try
         {
             rptCatalogProducts.DataSource = null;
+            hdncheckedValues.Value = string.Empty;
             rptCatalogProducts.DataBind();
             lblNoProducts.Visible = false;
             noProductSelected.Visible = false;
@@ -878,8 +879,12 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 .WhereGreaterThan("ProgramID", default(int))
                 .WhereIn("ProgramID", programs.Select(p => p.Program.ProgramID).ToList())
                 .ToList();
+            var skuIds = productData
+                .Where(pd => pd.SKU != null)
+                .Select(pd => pd.SKU.SKUID)
+                .ToList();
             var skuDetails = SKUInfoProvider.GetSKUs()
-                .WhereIn("SKUID", productData.Select(s => s.SKU.SKUID).ToList())
+                .WhereIn("SKUID", skuIds)
                 .ToList();
 
             // cover page
@@ -1108,11 +1113,11 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     ProductId = p.CampaignsProductID,
                     ProductName = p.ProductName,
                     ShortDescription = p.DocumentSKUShortDescription,
-                    BundleQuantity = p.SKU.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
+                    BundleQuantity = p.SKU?.GetIntegerValue("SKUNumberOfItemsInPackage", 1) ?? 1,
                     ProductCost = CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(p.EstimatedPrice, default(double)), CurrentSite.SiteID, true),
                     ProgramName = GetProgramFormId(p.ProgramID),
                     BrandName = GetBrandName(p.BrandID),
-                    PosNumber = GetPosNumber(p.SKU.SKUID),
+                    PosNumber = GetPosNumber(p.SKU?.SKUID ?? 0),
                     States = GetStateInfo(p.State)
                 });
             });
@@ -1132,10 +1137,10 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     ProductId = p.CampaignsProductID,
                     ProductName = p.ProductName,
                     ShortDescription = p.DocumentSKUShortDescription,
-                    BundleQuantity = p.SKU.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
-                    ProductCost = CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(p.SKU.SKUPrice, default(double)), CurrentSite.SiteID, true),
+                    BundleQuantity = p.SKU?.GetIntegerValue("SKUNumberOfItemsInPackage", 1) ?? 1,
+                    ProductCost = CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(p.SKU?.SKUPrice, default(double)), CurrentSite.SiteID, true),
                     BrandName = GetBrandName(p.BrandID),
-                    PosNumber = GetPosNumber(p.SKU.SKUID),
+                    PosNumber = GetPosNumber(p.SKU?.SKUID ?? 0),
                     States = GetStateInfo(p.State)
                 });
             });
