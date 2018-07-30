@@ -282,11 +282,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         {
             BindBrands();
             BindProductTypes();
-            if (OpenCampaign != null)
-            {
-                products = CampaignsProductProvider.GetCampaignsProducts()
-                           .WhereIn("ProgramID", GetProgramIDs()).WhereEquals("NodeSiteID", CurrentSite.SiteID).ToList();
-            }
+            products = CampaignsProductProvider.GetCampaignsProducts()
+                       .WhereIn("ProgramID", GetProgramIDs()).WhereEquals("NodeSiteID", CurrentSite.SiteID).ToList();
             BindingProductsToRepeater(products);
         }
         else if (TypeOfProduct == (int)CampaignProductType.PreBuy && OpenCampaign == null)
