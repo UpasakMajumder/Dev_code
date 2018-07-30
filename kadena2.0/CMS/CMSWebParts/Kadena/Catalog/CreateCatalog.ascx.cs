@@ -27,7 +27,7 @@ using CMS.Membership;
 
 public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPart
 {
-    public IKenticoBrandsProvider BrandsProvider { get; protected set; } = DIContainer.Resolve<IKenticoBrandsProvider>();
+    private readonly IKenticoBrandsProvider BrandsProvider = DIContainer.Resolve<IKenticoBrandsProvider>();
     private readonly IKenticoProductsProvider productsProvider = DIContainer.Resolve<IKenticoProductsProvider>();
 
     private Lazy<Dictionary<int, Brand>> Brands
