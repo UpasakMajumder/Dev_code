@@ -914,7 +914,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_AddCampaignProducts : 
             var campDoc = DocumentHelper.GetDocument(capaignNodeID, CurrentDocument.DocumentCulture, tree);
             if (campDoc != null)
             {
-                Response.Redirect($"{campDoc.DocumentUrlPath}?status={QueryStringStatus.Updated}&category={Request.QueryString["category"]}&program={Request.QueryString["program"]}&searchProducts={Request.QueryString["searchProducts"]}");
+                Response.Redirect($"{campDoc.DocumentUrlPath}?category={Request.QueryString["category"]}&program={Request.QueryString["program"]}&searchProducts={Request.QueryString["searchProducts"]}");
             }
         }
         catch (Exception ex)
