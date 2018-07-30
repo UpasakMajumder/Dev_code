@@ -209,7 +209,12 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var productID = GetCampaignProductIDBySKUID(skuId);
             var allocatedItems = GetAllocatedProductQuantityForUser(userID, new List<int> { productID });
-            return allocatedItems[productID];
+            if (allocatedItems.ContainsKey(productID))
+            {
+                return allocatedItems[productID];
+            }
+
+            return -1;
         }
 
         public void UpdateAllocatedProductQuantityForUser(int productID, int userID, int quantity)
@@ -439,7 +444,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 .GroupBy(ai => ai.ProductId, (id, ai) => new
                 {
                     ProductId = id,
-                    Quantity = ai.Any() ? ai.FirstOrDefault(q => q.UserId == userID)?.Quantity ?? 0 : -1
+                    Quantity = ai.FirstOrDefault(q => q.UserId == userID)?.Quantity ?? 0
                 })
                 .ToDictionary(i => i.ProductId, i => i.Quantity);
         }
