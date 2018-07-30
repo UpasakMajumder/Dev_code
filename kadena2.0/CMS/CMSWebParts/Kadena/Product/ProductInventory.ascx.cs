@@ -237,7 +237,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="categoryID"></param>
     /// <param name="searchText"></param>
     /// <returns></returns>
-    private List<CampaignsProduct> GetProductsDetails(int categoryID, int brandID, string searchText)
+    private List<CampaignsProduct> GetProductsDetails(int categoryID, int brandID, string searchText, List<int> excludeIds)
     {
         var query = CampaignsProductProvider.GetCampaignsProducts()
             .OnCurrentSite()
@@ -249,6 +249,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             {
                 ddlCategory.Visible = true;
                 ddlBrand.Visible = true;
+            }
+
+            if (excludeIds?.Any() ?? false)
+            {
+                query = query.WhereNotIn(nameof(CampaignsProduct.CampaignsProductID), excludeIds);
             }
 
             if (DataHelper.DataSourceIsEmpty(programIds))
@@ -335,16 +340,16 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             divNoRecords.Visible = false;
             rptProductLists.DataSource = null;
             rptProductLists.DataBind();
-            List<CampaignsProduct> productsDetails = GetProductsDetails(categoryID, brandID, searchText);
-            var allowedProducts = productsProvider
+            var notAllowedProducts = productsProvider
                 .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
-                .Where(i => i.Value != 0)
-                .Select(i => i.Key);
+                .Where(i => i.Value == 0)
+                .Select(i => i.Key)
+                .ToList();
+            var productsDetails = GetProductsDetails(categoryID, brandID, searchText, notAllowedProducts);
 
             if (!DataHelper.DataSourceIsEmpty(productsDetails))
             {
                 var productAndSKUDetails = productsDetails
-                    .Where(cp => allowedProducts.Contains(cp.CampaignsProductID))
                     .Select((cp) => new
                     {
                         cp.ProgramID,
