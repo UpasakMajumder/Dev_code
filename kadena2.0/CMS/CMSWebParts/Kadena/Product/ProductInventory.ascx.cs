@@ -15,9 +15,12 @@ using System.Data;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Kadena.Models.Shipping;
+using CMS.Membership;
 
 public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWebPart
 {
+    private readonly IKenticoProductsProvider productsProvider;
+
     #region "Properties"
 
     /// <summary>
@@ -162,6 +165,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         }
     }
     #endregion "Properties"
+
+    public CMSWebParts_Kadena_Product_ProductInventory()
+    {
+        productsProvider = DIContainer.Resolve<IKenticoProductsProvider>();
+    }
 
     #region "Methods"
 
@@ -328,9 +336,15 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             rptProductLists.DataSource = null;
             rptProductLists.DataBind();
             List<CampaignsProduct> productsDetails = GetProductsDetails(categoryID, brandID, searchText);
+            var allowedProducts = productsProvider
+                .GetAllocatedProductQuantityForUser(productsDetails.Select(p => p.CampaignsProductID), MembershipContext.AuthenticatedUser.UserID)
+                .Where(i => i.Value != 0)
+                .Select(i => i.Key);
+
             if (!DataHelper.DataSourceIsEmpty(productsDetails))
             {
                 var productAndSKUDetails = productsDetails
+                    .Where(cp => allowedProducts.Contains(cp.CampaignsProductID))
                     .Select((cp) => new
                     {
                         cp.ProgramID,
