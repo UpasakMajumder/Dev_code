@@ -299,14 +299,18 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         {
             query = query.WhereIn(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.ProgramID), programs);
         }
-        var notAllowedProducts = productsProvider
-            .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
-            .Where(i => i.Value == 0)
-            .Select(i => i.Key)
-            .ToList();
-        if (notAllowedProducts?.Any() ?? false)
+
+        if (TypeOfProduct == (int)CampaignProductType.GeneralInventory)
         {
-            query = query.WhereNotIn(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.CampaignsProductID), notAllowedProducts);
+            var notAllowedProducts = productsProvider
+                .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
+                .Where(i => i.Value == 0)
+                .Select(i => i.Key)
+                .ToList();
+            if (notAllowedProducts?.Any() ?? false)
+            {
+                query = query.WhereNotIn(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.CampaignsProductID), notAllowedProducts);
+            }
         }
 
         BindingProductsToRepeater(query.ToList());

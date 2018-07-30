@@ -340,11 +340,17 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             divNoRecords.Visible = false;
             rptProductLists.DataSource = null;
             rptProductLists.DataBind();
-            var notAllowedProducts = productsProvider
-                .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
-                .Where(i => i.Value == 0)
-                .Select(i => i.Key)
-                .ToList();
+
+            List<int> notAllowedProducts = null;
+            if (ProductType == (int)Kadena.Models.Product.CampaignProductType.GeneralInventory)
+            {
+                notAllowedProducts = productsProvider
+                    .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
+                    .Where(i => i.Value == 0)
+                    .Select(i => i.Key)
+                    .ToList();
+            }
+
             var productsDetails = GetProductsDetails(categoryID, brandID, searchText, notAllowedProducts);
 
             if (!DataHelper.DataSourceIsEmpty(productsDetails))
