@@ -1040,7 +1040,7 @@ public partial class CMSModules_Forums_Controls_NewPost : ForumViewer
         else
         {
             pnlReplyPost.Visible = true;
-            lblSubjectPreview.Text = txtSubject.Text;
+            lblSubjectPreview.Text = HTMLHelper.HTMLEncode(txtSubject.Text);
 
             // Get forum text from HTML editor or text area
             if (ForumContext.CurrentForum.ForumHTMLEditor)

@@ -8,6 +8,7 @@ using CMS.Base.Web.UI;
 using CMS.Base.Web.UI.ActionsConfig;
 using CMS.DataEngine;
 using CMS.Helpers;
+using CMS.Scheduler;
 using CMS.SiteProvider;
 using CMS.Synchronization;
 using CMS.Synchronization.Web.UI;
@@ -350,8 +351,16 @@ public partial class CMSModules_Staging_Tools_Objects_Tasks : CMSStagingTasksPag
             {
                 AddLog(String.Format(GetString("Synchronization.LoggingTasks"), syncType));
 
-                // Create update tasks
-                SynchronizationHelper.LogObjectChange(syncType, synchronizedSiteId, DateTimeHelper.ZERO_TIME, TaskTypeEnum.UpdateObject, true, false, false, false, false, CurrentSiteID, sid);
+                // Scheduled tasks have disabled staging, they have to be dealt in extra manner
+                if (syncType.Equals(TaskInfo.OBJECT_TYPE, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    CreateStagingTasksForScheduledTasks(synchronizedSiteId, CurrentSiteID);
+                }
+                else
+                {
+                    // Create update tasks
+                    SynchronizationHelper.LogObjectChange(syncType, synchronizedSiteId, DateTimeHelper.ZERO_TIME, TaskTypeEnum.UpdateObject, true, false, false, false, false, CurrentSiteID, sid);
+                }
 
                 AddLog(GetString("Synchronization.RunningTasks"));
 
@@ -365,6 +374,43 @@ public partial class CMSModules_Staging_Tools_Objects_Tasks : CMSStagingTasksPag
         }
 
         return result;
+    }
+
+
+    private void CreateStagingTasksForScheduledTasks(int objectSiteId, int currentSiteId)
+    {
+        var where = new WhereCondition().And(new WhereCondition().WhereNull("TaskType").Or().WhereNotEquals("TaskType", (int)ScheduledTaskTypeEnum.System));
+
+        // Synchronize tree root (all objects from current site and all global objects)
+        if (objectSiteId < 0)
+        {
+            where.WhereEqualsOrNull("TaskSiteID", currentSiteId);
+        }
+        // Synchronize global objects
+        else if (objectSiteId == 0)
+        {
+            where.WhereNull("TaskSiteID");
+        }
+        // Synchronize site objects
+        else
+        {
+            where.WhereEquals("TaskSiteID", objectSiteId);
+        }
+
+        using (new CMSActionContext() { AllowAsyncActions = false })
+        {
+            var tasks = TaskInfoProvider.GetTasks().Where(where).TypedResult;
+            foreach (var task in tasks)
+            {
+                task.Generalized.StoreSettings();
+                task.Generalized.LogSynchronization = SynchronizationTypeEnum.LogSynchronization;
+                task.Generalized.LogEvents = true;
+
+                TaskInfoProvider.SetTaskInfo(task);
+
+                task.Generalized.RestoreSettings();
+            }
+        }
     }
 
 

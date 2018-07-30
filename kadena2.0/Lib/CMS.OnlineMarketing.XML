@@ -1837,13 +1837,14 @@
             </summary>
             <param name="variantId">The variant id</param>
         </member>
-        <member name="M:CMS.OnlineMarketing.ContentPersonalizationVariantInfoProvider.LoadContentPersonalizationVariants(System.Object,System.Boolean)">
+        <member name="M:CMS.OnlineMarketing.ContentPersonalizationVariantInfoProvider.LoadContentPersonalizationVariants(System.Object,System.Boolean,System.Int32)">
             <summary>
             Loads the Content personalization variants for the specified instance (web part/zone/widget).
             Return true, if the variants were successfully loaded.
             </summary>
-            <param name="instance">The instance</param>
+            <param name="instance">The zone instance or web part instance</param>
             <param name="isZone">Indicates if the parameter instance object is a zone</param>
+            <param name="documentId">Document ID if the instance holds a widget</param>
             <returns>True, if the variants were successfully loaded. False, if it was not possible to load variants, for example due to missing information in the instance.</returns>
         </member>
         <member name="M:CMS.OnlineMarketing.ContentPersonalizationVariantInfoProvider.CloneTemplateVariants(System.Int32,System.Int32)">
@@ -1981,13 +1982,14 @@
             <param name="viewMode">The view mode</param>
             <param name="chosenVariants">The hash table containing chosen variants</param>
         </member>
-        <member name="M:CMS.OnlineMarketing.ContentPersonalizationVariantInfoProvider.LoadContentPersonalizationVariantsInternal(System.Object,System.Boolean)">
+        <member name="M:CMS.OnlineMarketing.ContentPersonalizationVariantInfoProvider.LoadContentPersonalizationVariantsInternal(System.Object,System.Boolean,System.Int32)">
             <summary>
             Loads the Content personalization variants for the specified instance (web part/zone/widget).
             Return true, if the variants were successfully loaded.
             </summary>
-            <param name="instance">The instance</param>
+            <param name="instance">The zone instance of web part instance</param>
             <param name="isZone">Indicates if the parameter instance object is a zone</param>
+            <param name="documentId">Document ID if the instance holds a widget</param> 
             <returns>True, if the variants were successfully loaded. False, if it was not possible to load variants, for example due to missing information in the instance.</returns>
         </member>
         <member name="M:CMS.OnlineMarketing.ContentPersonalizationVariantInfoProvider.CloneTemplateVariantsInternal(System.Int32,System.Int32)">
@@ -2261,13 +2263,14 @@
             Helper class for MVTests
             </summary>
         </member>
-        <member name="M:CMS.OnlineMarketing.MVTHelper.LoadVariants(System.Boolean,CMS.PortalEngine.VariantModeEnum,CMS.PortalEngine.WebPartInstance)">
+        <member name="M:CMS.OnlineMarketing.MVTHelper.LoadVariants(System.Boolean,CMS.PortalEngine.VariantModeEnum,CMS.PortalEngine.WebPartInstance,System.Int32)">
             <summary>
             Loads all the MVT/Content personalization variants for this web part instance.
             </summary>
             <param name="forceLoad">Indicates if already loaded variants should be reloaded</param>
             <param name="variantMode">Specifies which variants should be loaded (MVT/ContentPersonalization/None - means both MVT+CP variants should try to load)</param>
             <param name="wpInstance">Web part's instance</param>
+            <param name="documentId">Document ID if the instance holds a widget</param>
         </member>
         <member name="M:CMS.OnlineMarketing.MVTHelper.LoadZoneVariants(System.Boolean,CMS.PortalEngine.VariantModeEnum,CMS.PortalEngine.WebPartZoneInstance)">
             <summary>
@@ -3711,13 +3714,14 @@
             <param name="instanceGuid">The instance GUID</param>
             <param name="documentId">The document id</param>
         </member>
-        <member name="M:CMS.OnlineMarketing.MVTVariantInfoProvider.LoadMVTVariants(System.Object,System.Boolean)">
+        <member name="M:CMS.OnlineMarketing.MVTVariantInfoProvider.LoadMVTVariants(System.Object,System.Boolean,System.Int32)">
             <summary>
             Loads the MVT variants for the specified instance (web part/zone/widget).
             Return true, if the variants were successfully loaded.
             </summary>
             <param name="instance">The instance</param>
             <param name="isZone">Indicates if the parameter instance object is a zone</param>
+            <param name="documentId">Document ID if the instance holds a widget</param>
             <returns>True, if the variants were successfully loaded. False, if it was not possible to load variants, for example due to missing information in the instance.</returns>
         </member>
         <member name="M:CMS.OnlineMarketing.MVTVariantInfoProvider.GetMVTVariantId(System.Int32,System.String)">
@@ -3866,13 +3870,14 @@
             <param name="pageTemplateId">The page template id</param>
             <param name="variantName">The variant code name</param>
         </member>
-        <member name="M:CMS.OnlineMarketing.MVTVariantInfoProvider.LoadMVTVariantsInternal(System.Object,System.Boolean)">
+        <member name="M:CMS.OnlineMarketing.MVTVariantInfoProvider.LoadMVTVariantsInternal(System.Object,System.Boolean,System.Int32)">
             <summary>
             Loads the MVT variants for the specified instance (web part/zone/widget).
             Return true, if the variants were successfully loaded. 
             </summary>
             <param name="instance">The instance</param>
             <param name="isZone">Indicates if the parameter instance object is a zone</param>
+            <param name="documentId">Document ID if the instance holds a widget</param>
             <returns>True, if the variants were successfully loaded. False, if it was not possible to load variants, for example due to missing information in the instance.</returns>
         </member>
         <member name="M:CMS.OnlineMarketing.MVTVariantInfoProvider.CloneTemplateVariantsInternal(System.Int32,System.Int32)">
@@ -4068,6 +4073,11 @@
             Returns contact ID for specified user
             </summary>
             <param name="parameters">Parameters array</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingModule.GetTruncatedName(System.String)">
+            <summary>
+            Returns name trimmed to 100 chars. If the string is shorter, returns the same string.
+            </summary>
         </member>
     </members>
 </doc>

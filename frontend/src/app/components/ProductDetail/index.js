@@ -303,13 +303,6 @@ class ProductDetail extends Component {
         </div>
       ) : null;
 
-    const quantityTextComponent = ui.get('quantityText')
-      ? (
-        <div className="block">
-          <h2 className="block__heading text--danger pt-4 pb-2">{ui.get('quantityText')}</h2>
-        </div>
-      ) : null;
-
     return (
       <div>
         <div className="product-view">
@@ -356,12 +349,12 @@ class ProductDetail extends Component {
                 proceedProduct={this.proceedProduct}
                 isLoading={this.state.isLoading}
                 quanityError={this.state.quanityError}
+                quantityText={ui.get('quantityText')}
               />
             </div>
           </div>
         </div>
         {descriptionComponent}
-        {quantityTextComponent}
       </div>
     );
   }

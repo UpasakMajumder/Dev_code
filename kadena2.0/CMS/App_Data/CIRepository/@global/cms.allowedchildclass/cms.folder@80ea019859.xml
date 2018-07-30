@@ -6,10 +6,10 @@
     <ObjectType>cms.documenttype</ObjectType>
   </Parent>
   <Bindings>
-    <Binding id="cms.documenttype_CMS.Root">
+    <Binding id="cms.documenttype_CMS.Folder">
       <ParentClassID>
-        <CodeName>CMS.Root</CodeName>
-        <GUID>a585aea3-10b5-4b74-9aad-747fcce72493</GUID>
+        <CodeName>CMS.Folder</CodeName>
+        <GUID>8fa3e50a-b5ef-48f1-b506-fad8f3f9e50a</GUID>
         <ObjectType>cms.documenttype</ObjectType>
       </ParentClassID>
     </Binding>
@@ -20,10 +20,24 @@
         <ObjectType>cms.documenttype</ObjectType>
       </ParentClassID>
     </Binding>
-    <Binding id="cms.documenttype_CMS.Folder">
+    <Binding id="cms.documenttype_CMS.Root">
       <ParentClassID>
-        <CodeName>CMS.Folder</CodeName>
-        <GUID>8fa3e50a-b5ef-48f1-b506-fad8f3f9e50a</GUID>
+        <CodeName>CMS.Root</CodeName>
+        <GUID>a585aea3-10b5-4b74-9aad-747fcce72493</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_KDA.AdminModule">
+      <ParentClassID>
+        <CodeName>KDA.AdminModule</CodeName>
+        <GUID>7c5eae26-851f-4af1-b8af-e85f79c0dc0d</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_KDA.FAQModule">
+      <ParentClassID>
+        <CodeName>KDA.FAQModule</CodeName>
+        <GUID>148beec3-c2f9-479e-a018-6092b43a4c38</GUID>
         <ObjectType>cms.documenttype</ObjectType>
       </ParentClassID>
     </Binding>
@@ -38,20 +52,6 @@
       <ParentClassID>
         <CodeName>KDA.Program</CodeName>
         <GUID>3014d09e-c493-4c7d-8e58-6564e28a1344</GUID>
-        <ObjectType>cms.documenttype</ObjectType>
-      </ParentClassID>
-    </Binding>
-    <Binding id="cms.documenttype_KDA.FAQModule">
-      <ParentClassID>
-        <CodeName>KDA.FAQModule</CodeName>
-        <GUID>148beec3-c2f9-479e-a018-6092b43a4c38</GUID>
-        <ObjectType>cms.documenttype</ObjectType>
-      </ParentClassID>
-    </Binding>
-    <Binding id="cms.documenttype_KDA.AdminModule">
-      <ParentClassID>
-        <CodeName>KDA.AdminModule</CodeName>
-        <GUID>7c5eae26-851f-4af1-b8af-e85f79c0dc0d</GUID>
         <ObjectType>cms.documenttype</ObjectType>
       </ParentClassID>
     </Binding>

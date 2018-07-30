@@ -987,6 +987,18 @@
             <param name="pageId">The Facebook page identifier, if the specified URL is a valid Facebook page URL; otherwise, null.</param>
             <returns>True, if the specified URL is a valid Facebook page URL; otherwise, false.</returns>
         </member>
+        <member name="M:CMS.SocialMarketing.FacebookHelper.ParseOAuthAccessToken(System.String)">
+            <summary>
+            <para>
+            Parses an OAuth access token in JSON format to <see cref="T:CMS.SocialMarketing.OAuthAccessToken"/>.
+            </para>
+            <para>
+            This member was added in hotfix 31 (version 10.0.31). Do not use this member when writing hotfix independent code.
+            </para>
+            </summary>
+            <param name="oAuthAccessToken">OAuth access token JSON string.</param>
+            <returns>Parsed token.</returns>
+        </member>
         <member name="M:CMS.SocialMarketing.FacebookHelper.GetPageAccessToken(System.String,System.String)">
             <summary>
             Downloads account info from https://graph.facebook.com/me/accounts/ and finds page access token in it.
@@ -1070,6 +1082,18 @@
             <exception cref="T:Facebook.FacebookApiException">FacebookApiException is thrown when an error occurs while communicating with Facebook.</exception>
             <exception cref="T:System.Exception">Exception is thrown if the post could not be deleted.</exception>
         </member>
+        <member name="M:CMS.SocialMarketing.FacebookHelper.ParseOAuthAccessTokenInternal(System.String)">
+            <summary>
+            <para>
+            Parses an OAuth access token in JSON format to <see cref="T:CMS.SocialMarketing.OAuthAccessToken"/>.
+            </para>
+            <para>
+            This member was added in hotfix 31 (version 10.0.31). Do not use this member when writing hotfix independent code.
+            </para>
+            </summary>
+            <param name="oAuthAccessToken">OAuth access token JSON string.</param>
+            <returns>Parsed token.</returns>
+        </member>
         <member name="M:CMS.SocialMarketing.FacebookHelper.GetFacebookResponse(System.String,System.String)">
             <summary>
             Gets Facebook Graph API response for given URL and access token.
@@ -1090,6 +1114,45 @@
             Checks whether a Facebook request succeeded. The Facebook response is in JSON format. 
             </summary>
             <param name="response">Facebook response</param>
+        </member>
+        <member name="T:CMS.SocialMarketing.OAuthAccessToken">
+            <summary>
+            <para>
+            Represents a response for an OAuth access token request.
+            </para>
+            <para>
+            This class was added in hotfix 31 (version 10.0.31). Do not use this class when writing hotfix independent code.
+            </para>
+            </summary>
+            <remarks>
+            The response has be following format:
+            <code>
+            {
+                "access_token": {access-token}, 
+                "token_type": {type},
+                "expires_in":  {seconds-til-expiration}
+            }
+            </code>
+            See https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow#exchangecode for details.
+            </remarks>
+        </member>
+        <member name="P:CMS.SocialMarketing.OAuthAccessToken.AccessToken">
+            <summary>
+            Gets or sets the access token.
+            </summary>
+        </member>
+        <member name="P:CMS.SocialMarketing.OAuthAccessToken.TokenType">
+            <summary>
+            Gets or sets the access token type.
+            </summary>
+        </member>
+        <member name="P:CMS.SocialMarketing.OAuthAccessToken.ExpiresIn">
+            <summary>
+            Gets or sets the number of seconds till the access token expires.
+            </summary>
+            <remarks>
+            The token expiration value is 0 for access tokens which never expire.
+            </remarks>
         </member>
         <member name="T:CMS.SocialMarketing.FacebookPageAccessTokenData">
             <summary>

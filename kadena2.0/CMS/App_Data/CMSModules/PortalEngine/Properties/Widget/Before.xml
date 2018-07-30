@@ -33,7 +33,7 @@
             <controlname>checkboxcontrol</controlname>
         </settings>
     </field>
-    <field column="ShowForDocumentTypes" columntype="text" allowempty="true" columnsize="400" publicfield="false" guid="b3b46d10-668e-4d4b-8805-af671b474a31">
+    <field column="ShowForDocumentTypes" columntype="text" allowempty="true" columnsize="1000" publicfield="false" guid="b3b46d10-668e-4d4b-8805-af671b474a31">
         <properties>
             <fielddescription>{$documentation.webpartproperties.showfordocumenttypes$}</fielddescription>
             <fieldcaption>Show for page types</fieldcaption>
@@ -47,7 +47,7 @@
             <AllowAll>False</AllowAll>
         </settings>
     </field>
-    <field column="DisplayToRoles" columntype="text" allowempty="true" columnsize="200" publicfield="false" guid="190c38c7-904b-4044-bc78-6998b50ae31a">
+    <field column="DisplayToRoles" columntype="text" allowempty="true" columnsize="1000" publicfield="false" guid="190c38c7-904b-4044-bc78-6998b50ae31a">
         <properties>
             <fielddescription>{$documentation.webpartproperties.displaytoroles$}</fielddescription>
             <fieldcaption>Display to roles</fieldcaption>

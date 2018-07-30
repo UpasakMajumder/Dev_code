@@ -2,7 +2,6 @@
 using System.Data;
 
 using CMS.Base;
-using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.Membership;
@@ -15,8 +14,7 @@ public partial class CMSModules_Ecommerce_Pages_Administration_Membership_Member
     #region "Variables"
 
     private int membershipID;
-    private bool isSiteManager;
-
+    
     #endregion
 
 
@@ -26,8 +24,7 @@ public partial class CMSModules_Ecommerce_Pages_Administration_Membership_Member
     {
         // Get query parameters
         membershipID = QueryHelper.GetInteger("membershipid", 0);
-        isSiteManager = (QueryHelper.GetInteger("siteid", 0) == 0);
-
+        
         // Get membership
         MembershipInfo mi = MembershipInfoProvider.GetMembershipInfo(membershipID);
 
@@ -45,14 +42,8 @@ public partial class CMSModules_Ecommerce_Pages_Administration_Membership_Member
             }
         }
 
-        // Setup where condition
-        string where = String.Empty;
-
-        // Products associated with this membership
-        where = SqlHelper.AddWhereCondition(where, String.Format("SKUMembershipGUID = '{0}'", mi.MembershipGUID));
-
-        // Set where condition
-        productsUniGridElem.WhereCondition = where;
+        // Get products associated with this membership
+        productsUniGridElem.WhereCondition = string.Format("(SKUMembershipGUID = '{0}') AND ((SKUSiteID = '{1}') OR SKUSiteID IS NULL)", mi.MembershipGUID, mi.MembershipSiteID);
     }
 
     #endregion
@@ -64,7 +55,7 @@ public partial class CMSModules_Ecommerce_Pages_Administration_Membership_Member
     {
         DataRowView row;
 
-        switch (sourceName.ToLowerCSafe())
+        switch (sourceName.ToLowerInvariant())
         {
             case "skuprice":
                 row = (DataRowView)parameter;
@@ -86,8 +77,56 @@ public partial class CMSModules_Ecommerce_Pages_Administration_Membership_Member
 
                 // Return formatted SKU validity
                 return DateTimeHelper.GetFormattedValidity(validity, validFor, validUntil);
+
+            case "skuisproductoption":
+                row = (DataRowView)parameter;
+
+                var skuInfo = SKUInfoProvider.GetSKUInfo(ValidationHelper.GetInteger(row["SKUID"], 0));
+                if (skuInfo != null)
+                {
+                    if (skuInfo.IsProductOption)
+                    {
+                        return ResHelper.GetString("general.yes");
+                    }
+                }
+
+                return ResHelper.GetString("general.no");
+
+            case "skuproductoptioncategoryname":
+                row = (DataRowView)parameter;
+
+                var resultCategoryName = "";
+                var optionCategoryID = ValidationHelper.GetInteger(row["SKUOptionCategoryID"], 0);
+
+                if (optionCategoryID > 0)
+                {
+                    var optionCategory = OptionCategoryInfoProvider.GetOptionCategoryInfo(optionCategoryID);
+                    if (optionCategory != null)
+                    {
+                        resultCategoryName = optionCategory.CategoryDisplayName;
+                    }
+                }
+
+                return resultCategoryName;
         }
         return null;
+    }
+
+    
+    protected DataSet productsUniGridElem_OnDataReload(string completeWhere, string currentOrder, int currentTopN, string columns, int currentOffset, int currentPageSize, ref int totalRecords)
+    {
+        var query = SKUInfoProvider.GetSKUs()
+                                   .Where(completeWhere)
+                                   .OrderBy(currentOrder)
+                                   .TopN(currentTopN);
+        
+        query.Offset = currentOffset;
+        query.MaxRecords = currentPageSize;
+
+        var results = query.Result;
+        totalRecords = query.TotalRecords;
+
+        return results;
     }
 
     #endregion

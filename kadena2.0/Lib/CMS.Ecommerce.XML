@@ -7832,12 +7832,33 @@
             Collection of customer orders represented by OrderInfo objects
             </summary>
         </member>
+        <member name="M:CMS.Ecommerce.OrdersCollection.Clone">
+            <summary>
+            Creates the clone of the collection.
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.OrdersCollection.GetCompleteWhereCondition">
+            <summary>
+            Gets the complete where condition for the collection
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.OrdersCollection.CopyPropertiesTo(CMS.DataEngine.IInfoObjectCollection)">
+            <summary>
+            Copies the properties of this collection to the other collection
+            </summary>
+            <param name="col">Target collection</param>
+        </member>
         <member name="M:CMS.Ecommerce.OrdersCollection.#ctor(System.Int32,System.Int32)">
             <summary>
             Constructor - creates collection of orders for the given customer
             </summary>
             <param name="customerId">Customer ID</param>
             <param name="siteId">ID of the site from which the customer orders should be loaded. Use 0 to fill collection with customer orders from all sites.</param>
+        </member>
+        <member name="P:CMS.Ecommerce.OrdersCollection.CustomerID">
+            <summary>
+            The ID of customer whose orders should be loaded
+            </summary>
         </member>
         <member name="P:CMS.Ecommerce.OrdersCollection.TotalVolume">
             <summary>
@@ -16006,6 +16027,11 @@
         <member name="M:CMS.Ecommerce.ShoppingCartItemInfo.RegisterProperties">
             <summary>
             Registers the properties of this object
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.ShoppingCartItemInfo.GetParent">
+            <summary>
+            Returns the parent object.
             </summary>
         </member>
         <member name="P:CMS.Ecommerce.ShoppingCartItemInfo.CartItemID">

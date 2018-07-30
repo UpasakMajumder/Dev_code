@@ -22,25 +22,32 @@ public partial class CMSWebParts_Ecommerce_Checkout_Selectors_PaymentMethodSelec
     {
         base.OnInit(e);
 
-        // Enable post back for the drop-down list and subscribe to the selection change
-        drpPayment.AutoPostBack = true;
         // Subscribe to the wizard events
         SubscribeToWizardEvents();
     }
-
+    
 
     protected override void OnLoad(EventArgs e)
     {
         base.OnLoad(e);
+
         SetupControl();
     }
 
 
-    protected override void OnPreRender(EventArgs e)
+    /// <summary>
+    /// Handles the payment option change and rises the <see cref="CMSCheckoutWebPart.SHOPPING_CART_CHANGED"/>.
+    /// </summary>
+    private void PaymentSelected(object sender, EventArgs e)
     {
-        base.OnPreRender(e);
-        // Set currency for the shopping cart according to the selected value
-        ShoppingCart.ShoppingCartPaymentOptionID = drpPayment.SelectedID;
+        // Only if selection is different
+        if (ShoppingCart.ShoppingCartPaymentOptionID != drpPayment.SelectedID)
+        {
+            ShoppingCart.ShoppingCartPaymentOptionID = drpPayment.SelectedID;
+
+            // Raise the change event for all subscribed web parts
+            ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
+        }
     }
 
 
@@ -149,6 +156,10 @@ public partial class CMSWebParts_Ecommerce_Checkout_Selectors_PaymentMethodSelec
         {
             // Set up empty record text. The macro ResourcePrefix + .empty represents empty record value.
             drpPayment.UniSelector.ResourcePrefix = "com.livesiteselector";
+
+            // Enable post back for the drop-down list and subscribe to the selection change
+            drpPayment.AutoPostBack = true;
+            drpPayment.Changed += PaymentSelected;
 
             var paymentOptions = PaymentOptionInfoProvider.GetPaymentOptions(ShoppingCart.ShoppingCartSiteID, true)
                             .Column("PaymentOptionID")

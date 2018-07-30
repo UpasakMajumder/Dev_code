@@ -2754,6 +2754,22 @@
             <param name="width">Image width</param>
             <param name="height">Image height</param>
         </member>
+        <member name="M:CMS.Membership.AvatarInfoProvider.GetUserAvatarImageUrlInternal(System.Object,System.Object,System.Object,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            <para>
+            Returns avatar or gravatar image url, if it is not defined returns gender dependent avatar or user default avatar.
+            </para>
+            <para>
+            This member was added in hotfix 47 (version 10.0.47). Do not use this member when writing hotfix independent code.
+            </para>
+            </summary>
+            <param name="avatarID">Avatar ID</param>
+            <param name="userID">User ID, load gender avatar or user avatar for specified user if avatar given by avatar id doesn't exist</param>
+            <param name="userEmail">User e-mail</param>
+            <param name="maxSideSize">Max side size</param>
+            <param name="width">Image width</param>
+            <param name="height">Image height</param>
+        </member>
         <member name="M:CMS.Membership.AvatarInfoProvider.GetUserAvatarImageForUser(System.Object,System.Int32,System.Int32,System.Int32,System.Object)">
             <summary>
             Returns avatar image tag, if avatar is not defined returns gender depend avatar or user default avatar if is defined.
@@ -5906,6 +5922,12 @@
             </summary>
             <param name="userId">User identifier.</param>
         </member>
+        <member name="M:CMS.Membership.SessionsCachingAction.GetRemoveAction(CMS.Membership.SessionInfo)">
+            <summary>
+            Gets action for removing given <paramref name="session"/>.
+            </summary>
+            <param name="session">Session to be removed.</param>
+        </member>
         <member name="M:CMS.Membership.SessionsCachingAction.GetClearAction(System.String)">
             <summary>
             Get action that clears given site in hashtables.
@@ -5985,6 +6007,12 @@
             Remove user session from all sites in sessions hashtables.
             </summary>
             <param name="userId">User identifier</param>
+        </member>
+        <member name="M:CMS.Membership.SessionsCachingWorker.RemoveSessionsAsync(CMS.Membership.SessionInfo)">
+            <summary>
+            Removes user session from all sites in sessions hashtables.
+            </summary>
+            <param name="session">User session info.</param>
         </member>
         <member name="M:CMS.Membership.SessionsCachingWorker.ChangeSiteNameAsync(System.String,System.String)">
             <summary>
@@ -6077,6 +6105,23 @@
             <summary>
             Remove user session from all sites in sessions hashtables.
             </summary>
+        </member>
+        <member name="M:CMS.Membership.SessionsCachingWorker.RemoveSessionFromSessionCollections(System.Collections.IDictionary,System.Collections.Hashtable,System.Object)">
+            <summary>
+            Removes <see cref="T:CMS.Membership.SessionInfo"/> for user with <paramref name="userId"/> from <paramref name="sessions"/> if found in <paramref name="specializedSessionCollection"/>.
+            </summary>
+            <param name="sessions">
+            Collection of users <see cref="T:CMS.Membership.SessionInfo"/>s. Dictionary keys are string session identifiers.
+            </param>
+            <param name="specializedSessionCollection">
+            Specialized collection contains user id as key and value is session identifier used in <paramref name="sessions"/>.
+            Expected input is <see cref="P:CMS.Membership.SessionsInfo.HiddenSessions"/> or <see cref="P:CMS.Membership.SessionsInfo.AuthenticatedSessions"/> collection.
+            </param>
+            <param name="userId">
+            User for whom to remove <see cref="T:CMS.Membership.SessionInfo"/> from <paramref name="sessions"/>. 
+            If <paramref name="userId"/> is not found in <paramref name="specializedSessionCollection"/>, 
+            then <see cref="T:CMS.Membership.SessionInfo"/> is not removed from <paramref name="sessions"/>.
+            </param>
         </member>
         <member name="M:CMS.Membership.SessionsCachingWorker.ChangeSiteNameInternal(CMS.Membership.SessionsCachingAction)">
             <summary>

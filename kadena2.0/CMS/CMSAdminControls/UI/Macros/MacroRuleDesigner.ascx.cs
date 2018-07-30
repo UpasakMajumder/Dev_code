@@ -666,10 +666,9 @@ $cmsj(document).ready(InitDesignerAreaSize);
                     if (ctrl != null)
                     {
                         var dataType = ctrl.FieldInfo.DataType;
-                        bool nullForDefaultValue = !DataTypeManager.IsNumber(TypeEnum.Field, dataType);
+                        var useNullInsteadOfDefaultValue = UseNullInsteadOfDefaultValue(dataType);
                         
-                        // If value is not a number and it is default value of its data type (e.g. Guid.Empty for Guid), convert it to null
-                        object convertedValue = DataTypeManager.ConvertToSystemType(TypeEnum.Field, dataType, ctrl.Value, null, nullForDefaultValue);
+                        object convertedValue = DataTypeManager.ConvertToSystemType(TypeEnum.Field, dataType, ctrl.Value, null, useNullInsteadOfDefaultValue);
 
                         // Convert values to EN culture
                         string value = ValidationHelper.GetString(convertedValue, String.Empty, CultureHelper.EnglishCulture);
@@ -807,6 +806,14 @@ $cmsj(document).ready(InitDesignerAreaSize);
         pnlFooter.Visible = true;
         mdlDialog.Visible = true;
         mdlDialog.Show();
+    }
+
+
+    private static bool UseNullInsteadOfDefaultValue(string dataType)
+    {
+        // For data types except numeric and boolean ones we need to use null value instead of default one
+        // To avoid usage of Guid.Empty for Guid data type etc.
+        return !DataTypeManager.IsNumber(TypeEnum.Field, dataType) && !DataTypeManager.IsType<bool>(TypeEnum.Field, dataType);
     }
 
     #endregion

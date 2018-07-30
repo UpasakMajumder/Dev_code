@@ -12,10 +12,16 @@ namespace Kadena.Container.Default
         static MapperBuilder()
         {
 
-            mapper = new MapperConfiguration(cfg => cfg.AddProfiles(typeof(KenticoModelMappingsProfile),
-                                                                    typeof(MapperDefaultProfile),
-                                                                    typeof(SystemDtoProfile)
-                                             )).CreateMapper();
+            mapper = new MapperConfiguration(cfg => 
+            {
+                cfg.AddProfiles(
+                    typeof(KenticoModelMappingsProfile),
+                    typeof(MapperDefaultProfile),
+                    typeof(SystemDtoProfile)
+                );
+                cfg.AddProfiles("Kadena2.0.BusinessLogic");
+
+            }).CreateMapper();
         }
      
     }

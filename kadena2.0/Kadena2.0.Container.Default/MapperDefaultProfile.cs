@@ -48,6 +48,7 @@ using Kadena.Models.CustomerData;
 using Kadena.Models.Login;
 using Kadena.Models.Membership;
 using Kadena.Models.OrderDetail;
+using Kadena.Models.OrderHistory;
 using Kadena.Models.Orders;
 using Kadena.Models.Orders.Failed;
 using Kadena.Models.Product;
@@ -242,6 +243,7 @@ namespace Kadena.Container.Default
             CreateMap<OrderDetail, OrderDetailDTO>();
             CreateMap<CommonInfo, CommonInfoDTO>();
             CreateMap<OrderStatusInfo, OrderStatusInfoDTO>();
+            CreateMap<Link, LinkDto>();
             CreateMap<OrderInfo, OrderInfoDTO>();
             CreateMap<OrderActions, OrderActionsDTO>();
             CreateMap<DialogButton<Dialog>, DialogButtonDTO<DialogDTO>>();
@@ -284,13 +286,13 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.DeliveryDate, opt => opt.MapFrom(src => src.ShippingDate.GetValueOrDefault()));
             CreateMap<OrderBody, OrderBodyDto>();
 
-
             CreateMap<TableView, TableViewDto>();
             CreateMap<TableRow, TableRowDto>()
                 .AfterMap((src, dest, ctx) => dest.Items[10] = ctx.Mapper.Map<TrackingFieldDto>(dest.Items[10]));
             CreateMap<Pagination, PaginationDto>();
             CreateMap<IEnumerable<TrackingInfo>, TrackingFieldDto>()
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src));
+            CreateMap<TitledMessage, TitledMessageDto>();
 
             CreateMap<NewAddressButton, NewAddressButtonDTO>();
             CreateMap<DeliveryAddressesBounds, DeliveryAddressesBoundsDTO>();

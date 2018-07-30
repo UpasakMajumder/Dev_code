@@ -111,6 +111,8 @@ public partial class CMSModules_Newsletters_Controls_Newsletter_Preview : CMSUse
                 // Insert subscriber GUID
                 script = string.Format("{0} guid[{1}] = '{2}'; \n ", script, i, subscriber.SubscriberGUID);
 
+                var subscriberIsContact = string.Equals(subscriber.SubscriberType, PredefinedObjectType.CONTACT, StringComparison.InvariantCultureIgnoreCase);
+
                 // Get subscriber's member
                 SortedDictionary<int, SubscriberInfo> subMembers = SubscriberInfoProvider.GetSubscribers(subscriber, 1);
                 if ((subMembers != null) && (subMembers.Count > 0))
@@ -125,14 +127,8 @@ public partial class CMSModules_Newsletters_Controls_Newsletter_Preview : CMSUse
                             string infoLine = ScriptHelper.GetString(sbMember.SubscriberEmail, false);
 
                             // Add info about subscriber type
-                            if (sbMember.SubscriberType.EqualsCSafe(PredefinedObjectType.CONTACTGROUP, true))
-                            {
-                                infoLine = string.Format("{0} ({1})", infoLine, GetString("objecttype.om_contactgroup").ToLowerCSafe());
-                            }
-                            else if (sbMember.SubscriberType.EqualsCSafe(PredefinedObjectType.CONTACT, true))
-                            {
-                                infoLine = string.Format("{0} ({1})", infoLine, GetString("objecttype.om_contact").ToLowerCSafe());
-                            }
+                            var subscriberString = subscriberIsContact ? "objecttype.om_contact" : "objecttype.om_contactgroup";
+                            infoLine = string.Format("{0} ({1})", infoLine, GetString(subscriberString).ToLowerInvariant());
 
                             script = string.Format("{0}email[{1}] = '{2}'; \n ", script, i, HTMLHelper.HTMLEncode(infoLine));
 
