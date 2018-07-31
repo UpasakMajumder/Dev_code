@@ -901,9 +901,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             var productBrandHeaderTemplate = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.{Settings.PDFBrand}");
             foreach (var programBrand in programBrands)
             {
-                var productBrandHeader = productBrandHeaderTemplate
-                    .Replace("^PROGRAMNAME^", programBrand.Program.ProgramName)
-                    .Replace("^BrandName^", programBrand.Brand.BrandName);
+
                 var catalogList = productData
                  .Join(skuDetails,
                        cp => cp.NodeSKUID,
@@ -953,6 +951,9 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     pdfProductsContent.Append(pdfProductContent);
                 }
 
+                var productBrandHeader = productBrandHeaderTemplate
+                    .Replace("^PROGRAMNAME^", programBrand.Program.ProgramName)
+                    .Replace("^BrandName^", programBrand.Brand.BrandName);
                 pdfProductsContentWithBrands.Append(productBrandHeader + pdfProductsContent + closingDiv);
             }
 
