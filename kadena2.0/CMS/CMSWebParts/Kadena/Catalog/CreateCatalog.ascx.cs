@@ -24,6 +24,7 @@ using Kadena.Models.Brand;
 using Kadena.Models.Common;
 using Kadena.Models.Product;
 using CMS.Membership;
+using KenticoCampaignProduct = CMS.DocumentEngine.Types.KDA.CampaignsProduct;
 
 public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPart
 {
@@ -293,11 +294,11 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         var programs = GetProgramIDs();
         if (programs == null)
         {
-            query = query.WhereEqualsOrNull(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.ProgramID), 0);
+            query = query.WhereEqualsOrNull(nameof(KenticoCampaignProduct.ProgramID), 0);
         }
         else
         {
-            query = query.WhereIn(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.ProgramID), programs);
+            query = query.WhereIn(nameof(KenticoCampaignProduct.ProgramID), programs);
         }
 
         if (TypeOfProduct == (int)CampaignProductType.GeneralInventory)
@@ -309,7 +310,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 .ToList();
             if (notAllowedProducts?.Any() ?? false)
             {
-                query = query.WhereNotIn(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.CampaignsProductID), notAllowedProducts);
+                query = query.WhereNotIn(nameof(KenticoCampaignProduct.CampaignsProductID), notAllowedProducts);
             }
         }
 
@@ -555,24 +556,24 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                         .WhereEquals(nameof(Program.CampaignID), OpenCampaign?.CampaignID ?? default(int))
                         .ToList();
 
-                    var products = new List<CMS.DocumentEngine.Types.KDA.CampaignsProduct>();
+                    var products = new List<KenticoCampaignProduct>();
 
                     if (TypeOfProduct == (int)CampaignProductType.PreBuy && OpenCampaign != null)
                     {
                         products = CampaignsProductProvider
                             .GetCampaignsProducts()
-                            .WhereNotNull(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.ProgramID))
-                            .WhereEquals(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.NodeSiteID), CurrentSite.SiteID)
-                            .WhereIn(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.ProgramID), GetProgramIDs())
+                            .WhereNotNull(nameof(KenticoCampaignProduct.ProgramID))
+                            .WhereEquals(nameof(KenticoCampaignProduct.NodeSiteID), CurrentSite.SiteID)
+                            .WhereIn(nameof(KenticoCampaignProduct.ProgramID), GetProgramIDs())
                             .ToList();
                     }
                     else
                     {
                         products = CampaignsProductProvider
                             .GetCampaignsProducts()
-                            .WhereEquals(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.NodeSiteID), CurrentSite.SiteID)
-                            .Where(new WhereCondition().WhereNull(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.ProgramID))
-                                .Or().WhereEquals(nameof(CMS.DocumentEngine.Types.KDA.CampaignsProduct.ProgramID), 0))
+                            .WhereEquals(nameof(KenticoCampaignProduct.NodeSiteID), CurrentSite.SiteID)
+                            .Where(new WhereCondition().WhereNull(nameof(KenticoCampaignProduct.ProgramID))
+                                .Or().WhereEquals(nameof(KenticoCampaignProduct.ProgramID), 0))
                             .ToList();
                     }
 
@@ -755,7 +756,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// Binding products to repeater
     /// </summary>
     /// <param name="productsList"></param>
-    private void BindingProductsToRepeater(IEnumerable<CMS.DocumentEngine.Types.KDA.CampaignsProduct> productsList, string posNum = null)
+    private void BindingProductsToRepeater(IEnumerable<KenticoCampaignProduct> productsList, string posNum = null)
     {
         try
         {
@@ -1098,7 +1099,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
 
     protected void llbExportFull_Click(object sender, EventArgs e)
     {
-        var products = new List<CMS.DocumentEngine.Types.KDA.CampaignsProduct>();
+        var products = new List<KenticoCampaignProduct>();
         List<PrebuyProduct> exportList = new List<PrebuyProduct>();
         string fileName = "Kadena.Catalog.ExcelExportPrebuy";
         if (TypeOfProduct == (int)CampaignProductType.PreBuy)

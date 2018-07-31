@@ -16,6 +16,7 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using Kadena.Models.Shipping;
 using CMS.Membership;
+using ProductTypes = Kadena.Models.Product.CampaignProductType;
 
 public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWebPart
 {
@@ -245,7 +246,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         try
         {
             var programIds = GetProgramIDs();
-            if (ProductType == (int)Kadena.Models.Product.CampaignProductType.GeneralInventory || ProductType == (int)Kadena.Models.Product.CampaignProductType.PreBuy)
+            if (ProductType == (int)ProductTypes.GeneralInventory || ProductType == (int)ProductTypes.PreBuy)
             {
                 ddlCategory.Visible = true;
                 ddlBrand.Visible = true;
@@ -342,7 +343,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             rptProductLists.DataBind();
 
             List<int> notAllowedProducts = null;
-            if (ProductType == (int)Kadena.Models.Product.CampaignProductType.GeneralInventory)
+            if (ProductType == (int)ProductTypes.GeneralInventory)
             {
                 notAllowedProducts = productsProvider
                     .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
@@ -379,7 +380,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 rptProductLists.UniPagerControl = unipager;
                 unipager.PagedControl = rptProductLists;
             }
-            else if (OpenCampaign == null && ProductType == (int)Kadena.Models.Product.CampaignProductType.PreBuy)
+            else if (OpenCampaign == null && ProductType == (int)ProductTypes.PreBuy)
             {
                 orderControls.Visible = false;
                 divNoRecords.Visible = false;
@@ -406,7 +407,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         try
         {
-            if (OpenCampaign != null && ProductType == (int)Kadena.Models.Product.CampaignProductType.PreBuy)
+            if (OpenCampaign != null && ProductType == (int)ProductTypes.PreBuy)
             {
                 return ProgramProvider.GetPrograms()
                     .WhereEquals("CampaignID", OpenCampaign.CampaignID)
