@@ -28,7 +28,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
 {
     public IKenticoBrandsProvider BrandsProvider { get; protected set; } = DIContainer.Resolve<IKenticoBrandsProvider>();
 
-    private Lazy<Dictionary<int, Brand>> Brands 
+    private Lazy<Dictionary<int, Brand>> Brands
         => new Lazy<Dictionary<int, Brand>>(() => BrandsProvider.GetBrands().ToDictionary(b => b.ItemID, b => b));
 
     #region "Properties"
@@ -859,9 +859,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 .OrderBy(p => p.Brand.BrandName)
                 .ToList();
             var productData = CampaignsProductProvider.GetCampaignsProducts()
-                .WhereEquals("NodeSiteID", CurrentSite.SiteID)
-                .WhereNotNull("ProgramID")
-                .WhereGreaterThan("ProgramID", default(int))
+                .OnCurrentSite()
                 .WhereIn("ProgramID", programs.Select(p => p.Program.ProgramID).ToList())
                 .ToList();
             var skuIds = productData
@@ -880,8 +878,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 var programContent = programContentTemplate
                     .Replace("^ProgramName^", program.Program.ProgramName)
                     .Replace("^ProgramBrandName^", program.Brand.BrandName)
-                    .Replace("ProgramDate", program.Program.DeliveryDateToDistributors == default(DateTime) 
-                        ? string.Empty 
+                    .Replace("ProgramDate", program.Program.DeliveryDateToDistributors == default(DateTime)
+                        ? string.Empty
                         : program.Program.DeliveryDateToDistributors.ToString("MMM dd, yyyy"));
 
                 programsContent.Append(programContent);
@@ -946,8 +944,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                         .Replace("PRODUCTSHORTDESCRIPTION", product?.ProductName ?? string.Empty)
                         .Replace("PRODUCTDESCRIPTION", product?.SKUDescription ?? string.Empty)
                         .Replace("PRODUCTVALIDSTATES", stateInfo?.States.Replace(",", ", ") ?? string.Empty)
-                        .Replace("PRODUCTCOSTBUNDLE", TypeOfProduct == (int)ProductsType.PreBuy 
-                            ? ($"{CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(product.EstimatedPrice, default(double)), CurrentSite.SiteID, true)}") 
+                        .Replace("PRODUCTCOSTBUNDLE", TypeOfProduct == (int)ProductsType.PreBuy
+                            ? ($"{CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(product.EstimatedPrice, default(double)), CurrentSite.SiteID, true)}")
                             : ($"{CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(product.SKUPrice, default(double)), CurrentSite.SiteID, true)}"))
                         .Replace("PRODUCTBUNDLEQUANTITY", product?.QtyPerPack.ToString() ?? string.Empty)
                         .Replace("PRODUCTEXPIRYDATE", product?.SKUValidUntil != default(DateTime) ? product?.SKUValidUntil.ToString("MMM dd, yyyy") : string.Empty ?? string.Empty);
