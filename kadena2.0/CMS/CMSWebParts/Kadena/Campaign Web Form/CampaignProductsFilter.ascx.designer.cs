@@ -12,15 +12,6 @@
 public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter {
     
     /// <summary>
-    /// txtSearchProducts control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.TextBox txtSearchProducts;
-    
-    /// <summary>
     /// ddlPrograms control.
     /// </summary>
     /// <remarks>
@@ -37,6 +28,15 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.DropDownList ddlProductcategory;
+    
+    /// <summary>
+    /// txtSearchProducts control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.TextBox txtSearchProducts;
     
     /// <summary>
     /// btnNotifyAdmin control.
