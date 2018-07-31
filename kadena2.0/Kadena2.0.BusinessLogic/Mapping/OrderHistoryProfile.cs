@@ -26,7 +26,6 @@ namespace Kadena.BusinessLogic.Mapping
                     new TableCellDto { Text = oc.OldValue, Type = CellTypeText },
                     new TableCellDto { Text = oc.NewValue, Type = CellTypeText },
                     new TableCellDto { Text = oc.Date.ToString(), Type = CellTypeDate },
-                    new TableCellDto { Text = oc.User, Type = CellTypeText },
                 });
             CreateMap<OrderChanges, OrderHistoryChangesDto>()
                 .ForMember(dest => dest.Headers, opt => opt.MapFrom(src => new[]
@@ -35,7 +34,6 @@ namespace Kadena.BusinessLogic.Mapping
                     src.ColumnHeaderOldValue,
                     src.ColumnHeaderNewValue,
                     src.ColumnHeaderDate,
-                    src.ColumnHeaderUser
                 }));
             CreateMap<ItemChange, TableCellDto[]>()
                 .ConvertUsing(ic => new[]
@@ -45,7 +43,6 @@ namespace Kadena.BusinessLogic.Mapping
                     new TableCellDto { Text = ic.OldValue, Type = CellTypeText },
                     new TableCellDto { Text = ic.NewValue, Type = CellTypeText },
                     new TableCellDto { Text = ic.Date.ToString(), Type = CellTypeDate },
-                    new TableCellDto { Text = ic.User, Type = CellTypeText },
                 });
             CreateMap<ItemChanges, OrderHistoryChangesDto>()
                 .ForMember(dest => dest.Headers, opt => opt.MapFrom(src => new[] 
@@ -55,7 +52,6 @@ namespace Kadena.BusinessLogic.Mapping
                     src.ColumnHeaderOldValue,
                     src.ColumnHeaderNewValue,
                     src.ColumnHeaderDate,
-                    src.ColumnHeaderUser
                 }));
         }
     }
