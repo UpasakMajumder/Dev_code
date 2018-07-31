@@ -327,44 +327,44 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             divNoRecords.Visible = false;
             rptProductLists.DataSource = null;
             rptProductLists.DataBind();
-            List<CampaignsProduct> productsDetails = GetProductsDetails(categoryID, brandID, searchText);
-            if (!DataHelper.DataSourceIsEmpty(productsDetails))
-            {
-                var productAndSKUDetails = productsDetails
-                    .Select((cp) => new
-                    {
-                        cp.ProgramID,
-                        cp.CategoryID,
-                        QtyPerPack = cp.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
-                        cp.EstimatedPrice,
-                        cp.Product.SKUNumber,
-                        cp.Product.SKUProductCustomerReferenceNumber,
-                        SKUName = cp.Product.Name,
-                        SKUPrice = cp.GetDoubleValue(nameof(SKUInfo.SKUPrice), 0.0d),
-                        SKUEnabled = cp.GetBooleanValue(nameof(SKUInfo.SKUEnabled), false),
-                        cp.ProductImage,
-                        SKUAvailableItems = cp.GetIntegerValue(nameof(SKUInfo.SKUAvailableItems), 0),
-                        SKUID = cp.Product.ID,
-                        SKUDescription = cp.Product.Description
-                    })
-                    .OrderBy(p => p.SKUName)
-                    .ToList();
-                rptProductLists.DataSource = productAndSKUDetails;
-                rptProductLists.DataBind();
-                rptProductLists.UniPagerControl = unipager;
-                unipager.PagedControl = rptProductLists;
-            }
-            else if (OpenCampaign == null && ProductType == (int)ProductsType.PreBuy)
+            if (OpenCampaign == null && ProductType == (int)ProductsType.PreBuy)
             {
                 orderControls.Visible = false;
-                divNoRecords.Visible = false;
                 divNoCampaign.Visible = true;
-                rptProductLists.DataSource = null;
-                rptProductLists.DataBind();
             }
             else
             {
-                divNoRecords.Visible = true;
+                List<CampaignsProduct> productsDetails = GetProductsDetails(categoryID, brandID, searchText);
+                if (!DataHelper.DataSourceIsEmpty(productsDetails))
+                {
+                    var productAndSKUDetails = productsDetails
+                        .Select((cp) => new
+                        {
+                            cp.ProgramID,
+                            cp.CategoryID,
+                            QtyPerPack = cp.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
+                            cp.EstimatedPrice,
+                            cp.Product.SKUNumber,
+                            cp.Product.SKUProductCustomerReferenceNumber,
+                            SKUName = cp.Product.Name,
+                            SKUPrice = cp.GetDoubleValue(nameof(SKUInfo.SKUPrice), 0.0d),
+                            SKUEnabled = cp.GetBooleanValue(nameof(SKUInfo.SKUEnabled), false),
+                            cp.ProductImage,
+                            SKUAvailableItems = cp.GetIntegerValue(nameof(SKUInfo.SKUAvailableItems), 0),
+                            SKUID = cp.Product.ID,
+                            SKUDescription = cp.Product.Description
+                        })
+                        .OrderBy(p => p.SKUName)
+                        .ToList();
+                    rptProductLists.DataSource = productAndSKUDetails;
+                    rptProductLists.DataBind();
+                    rptProductLists.UniPagerControl = unipager;
+                    unipager.PagedControl = rptProductLists;
+                }
+                else
+                {
+                    divNoRecords.Visible = true;
+                }
             }
         }
         catch (Exception ex)
