@@ -862,13 +862,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 .OnCurrentSite()
                 .WhereIn("ProgramID", programs.Select(p => p.Program.ProgramID).ToList())
                 .ToList();
-            var skuIds = productData
-                .Where(pd => pd.SKU != null)
-                .Select(pd => pd.SKU.SKUID)
-                .ToList();
-            var skuDetails = SKUInfoProvider.GetSKUs()
-                .WhereIn("SKUID", skuIds)
-                .ToList();
 
             // cover page
             var programContentTemplate = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.{Settings.ProgramsContent}");
@@ -903,26 +896,23 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             {
 
                 var catalogList = productData
-                 .Join(skuDetails,
-                       cp => cp.NodeSKUID,
-                       sku => sku.SKUID,
-                       (cp, sku) => new
-                       {
-                           cp.ProductName,
-                           cp.EstimatedPrice,
-                           cp.BrandID,
-                           cp.ProgramID,
-                           QtyPerPack = sku.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
-                           cp.State,
-                           sku.SKUPrice,
-                           sku.SKUNumber,
-                           cp.Product.SKUProductCustomerReferenceNumber,
-                           sku.SKUDescription,
-                           sku.SKUShortDescription,
-                           cp.ProductImage,
-                           sku.SKUValidUntil
-                       })
                  .Where(x => x.BrandID == programBrand.Brand.ItemID)
+                 .Select((cp) => new
+                 {
+                     cp.ProductName,
+                     cp.EstimatedPrice,
+                     cp.BrandID,
+                     cp.ProgramID,
+                     QtyPerPack = cp.SKU.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
+                     cp.State,
+                     cp.SKU.SKUPrice,
+                     cp.SKU.SKUNumber,
+                     cp.Product.SKUProductCustomerReferenceNumber,
+                     cp.SKU.SKUDescription,
+                     cp.SKU.SKUShortDescription,
+                     cp.ProductImage,
+                     cp.SKU.SKUValidUntil
+                 })
                  .ToList();
 
                 if (catalogList.Count == 0)
