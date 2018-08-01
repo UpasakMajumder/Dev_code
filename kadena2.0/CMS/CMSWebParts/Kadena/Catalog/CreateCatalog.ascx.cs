@@ -23,6 +23,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Container.Default;
 using Kadena.Models.Brand;
 using Kadena.Models.Common;
+using Kadena.BusinessLogic.Contracts;
 
 public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPart
 {
@@ -664,7 +665,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.GeneralInventory"), string.Empty) + ".pdf";
                 }
 
-                var pdfBytes = GetPdfBytes(contentHtml, coverHtml);
+                var service = DIContainer.Resolve<ICatalogService>();
+                var pdfBytes = service.GetPdfBytes(contentHtml, coverHtml);
                 RespondWithFile(fileName, pdfBytes);
             }
             else
@@ -677,14 +679,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         {
             EventLogProvider.LogException("creating html", ex.Message, ex);
         }
-    }
-
-    private byte[] GetPdfBytes(string contentHtml, string coverHtml)
-    {
-        var PDFConverter = new HtmlToPdfConverter();
-        PDFConverter.License.SetLicenseKey(SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoOwner, CurrentSite.SiteID), SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoKey, CurrentSite.SiteID));
-        PDFConverter.LowQuality = SettingsKeyInfoProvider.GetBoolValue(Settings.KDA_NRecoLowQuality, CurrentSite.SiteID);
-        return PDFConverter.GeneratePdf(contentHtml, coverHtml);
     }
 
     private void RespondWithFile(string fileName, byte[] pdfByte)
@@ -962,9 +956,10 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             var pdfClosingDivs = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.{Settings.PdfEndingTags}");
             var html = pdfProductsContentWithBrands + pdfClosingDivs;
             var cover = htmlTextheader + programsContent + closingDiv;
+            
             var fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.PrebuyFileName"), string.Empty) + ".pdf";
-
-            var pdfBytes = GetPdfBytes(html, cover);
+            var service = DIContainer.Resolve<ICatalogService>();
+            var pdfBytes = service.GetPdfBytes(html, cover);
             RespondWithFile(fileName, pdfBytes);
         }
         catch (Exception ex)
