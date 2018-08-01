@@ -663,8 +663,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.GeneralInventory"), string.Empty) + ".pdf";
                 }
 
-                var service = DIContainer.Resolve<ICatalogService>();
-                var pdfBytes = service.GetPdfBytes(contentHtml, coverHtml);
+                var service = DIContainer.Resolve<IByteConverter>();
+                var pdfBytes = service.GetBytes(contentHtml, coverHtml);
                 RespondWithFile(fileName, pdfBytes);
             }
             else
@@ -956,8 +956,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             var cover = htmlTextheader + programsContent + closingDiv;
             
             var fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.PrebuyFileName"), string.Empty) + ".pdf";
-            var service = DIContainer.Resolve<ICatalogService>();
-            var pdfBytes = service.GetPdfBytes(html, cover);
+            var service = DIContainer.Resolve<IByteConverter>();
+            var pdfBytes = service.GetBytes(html, cover);
             RespondWithFile(fileName, pdfBytes);
         }
         catch (Exception ex)
@@ -1049,8 +1049,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             string pdfClosingDivs = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.{Settings.PdfEndingTags}");
             string html = pdfProductsContentWithBrands + pdfClosingDivs;
             byte[] pdfByte = default(byte[]);
-            var service = DIContainer.Resolve<ICatalogService>();
-            pdfByte = service.GetPdfBytes(html, generalInventory + closingDiv);
+            var service = DIContainer.Resolve<IByteConverter>();
+            pdfByte = service.GetBytes(html, generalInventory + closingDiv);
             string fileName = string.Empty;
             fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.GeneralInventory"), string.Empty) + ".pdf";
             Response.Clear();
