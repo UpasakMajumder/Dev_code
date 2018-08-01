@@ -684,6 +684,11 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         PDFConverter.License.SetLicenseKey(SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoOwner, CurrentSite.SiteID), SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoKey, CurrentSite.SiteID));
         PDFConverter.LowQuality = SettingsKeyInfoProvider.GetBoolValue(Settings.KDA_NRecoLowQuality, CurrentSite.SiteID);
         var pdfByte = PDFConverter.GeneratePdf(contentHtml, coverHtml);
+        RespondWithFile(fileName, pdfByte);
+    }
+
+    private void RespondWithFile(string fileName, byte[] pdfByte)
+    {
         using (var ms = new MemoryStream(pdfByte))
         {
             Response.Clear();
