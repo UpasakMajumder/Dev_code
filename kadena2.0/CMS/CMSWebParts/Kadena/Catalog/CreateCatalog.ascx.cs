@@ -258,7 +258,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         }
         else
         {
-            chkOnlyAllocatedToMe.InputAttributes.Add("class", "input__checkbox");
+            chkOnlyAllocatedToMe.Visible = TypeOfProduct == (int)CampaignProductType.GeneralInventory;
+            chkOnlyAllocatedToMe.InputAttributes.Add("class", "input__checkbox"); // if specified in markup asp generates extra span around
 
             catalogControls.Visible = true;
             lblNoProducts.Visible = false;
