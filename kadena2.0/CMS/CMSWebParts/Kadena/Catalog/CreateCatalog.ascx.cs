@@ -290,6 +290,12 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         BindBrands();
         BindProductTypes();
 
+        var products = GetProducts();
+        BindingProductsToRepeater(products);
+    }
+
+    private List<KenticoCampaignProduct> GetProducts()
+    {
         var query = CampaignsProductProvider.GetCampaignsProducts().OnCurrentSite();
         var programs = GetProgramIDs();
         if (programs == null)
@@ -314,7 +320,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             }
         }
 
-        BindingProductsToRepeater(query.ToList());
+        return query.ToList();
     }
 
     /// <summary>
