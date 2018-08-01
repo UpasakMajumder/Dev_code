@@ -118,7 +118,7 @@ namespace Kadena.Container.Default
             container.Register<IOrderItemCheckerService, OrderItemCheckerService>();
             container.Register<IConvert, XlsxConvert>();
             container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
-            container.Register<ICatalogService, PdfCatalogService>();
+            container.Register<IByteConverter, PdfByteConverter>();
             return container;
         }
 

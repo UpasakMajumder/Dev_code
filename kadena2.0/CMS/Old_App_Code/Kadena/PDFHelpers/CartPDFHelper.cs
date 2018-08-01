@@ -25,7 +25,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
     {
         private const string _cartPDFFileName = "KDA_CartPDFFileName";
         private static IImageService imageService = DIContainer.Resolve<IImageService>();
-        private static ICatalogService catalogService = DIContainer.Resolve<ICatalogService>();
+        private static IByteConverter catalogService = DIContainer.Resolve<IByteConverter>();
         #region Methods
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                     PDFBody = PDFBody.Replace("{INNERCONTENT}", CreateCartInnerContent(cartData, SiteContext.CurrentSiteName, inventoryType));
                 });
                 html = html.Replace("{OUTERCONTENT}", PDFBody);
-                return catalogService.GetPdfBytes(html, string.Empty);
+                return catalogService.GetBytes(html, string.Empty);
             }
             catch (Exception ex)
             {

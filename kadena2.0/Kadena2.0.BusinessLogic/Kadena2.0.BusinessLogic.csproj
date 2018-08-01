@@ -77,7 +77,7 @@
   <ItemGroup>
     <Compile Include="Contracts\Approval\IApprovalService.cs" />
     <Compile Include="Contracts\Approval\IApproverService.cs" />
-    <Compile Include="Contracts\ICatalogService.cs" />
+    <Compile Include="Contracts\IByteConverter.cs" />
     <Compile Include="Contracts\IConvert.cs" />
     <Compile Include="Contracts\IDialogService.cs" />
     <Compile Include="Contracts\IIBTFService.cs" />
@@ -164,7 +164,7 @@
     <Compile Include="Services\Orders\OrderResubmissionService.cs" />
     <Compile Include="Services\Orders\SendSubmitOrder.cs" />
     <Compile Include="Services\DistributorShoppingCartService.cs" />
-    <Compile Include="Services\PdfCatalogService.cs" />
+    <Compile Include="Services\PdfByteConverter.cs" />
     <Compile Include="Services\SSO\KadenaSaml2SecurityTokenHandler.cs" />
     <Compile Include="Services\SSO\Saml2RecipientValidator.cs" />
     <Compile Include="Services\SSO\Saml2HandlerService.cs" />
