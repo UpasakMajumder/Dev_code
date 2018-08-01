@@ -664,7 +664,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                     fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.GeneralInventory"), string.Empty) + ".pdf";
                 }
 
-                RespondWithPdf(contentHtml, coverHtml, fileName);
+                var pdfBytes = GetPdfBytes(contentHtml, coverHtml);
+                RespondWithFile(fileName, pdfBytes);
             }
             else
             {
@@ -678,13 +679,12 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         }
     }
 
-    private void RespondWithPdf(string contentHtml, string coverHtml, string fileName)
+    private byte[] GetPdfBytes(string contentHtml, string coverHtml)
     {
         var PDFConverter = new HtmlToPdfConverter();
         PDFConverter.License.SetLicenseKey(SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoOwner, CurrentSite.SiteID), SettingsKeyInfoProvider.GetValue(Settings.KDA_NRecoKey, CurrentSite.SiteID));
         PDFConverter.LowQuality = SettingsKeyInfoProvider.GetBoolValue(Settings.KDA_NRecoLowQuality, CurrentSite.SiteID);
-        var pdfByte = PDFConverter.GeneratePdf(contentHtml, coverHtml);
-        RespondWithFile(fileName, pdfByte);
+        return PDFConverter.GeneratePdf(contentHtml, coverHtml);
     }
 
     private void RespondWithFile(string fileName, byte[] pdfByte)
@@ -964,7 +964,8 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             var cover = htmlTextheader + programsContent + closingDiv;
             var fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.PrebuyFileName"), string.Empty) + ".pdf";
 
-            RespondWithPdf(html, cover, fileName);
+            var pdfBytes = GetPdfBytes(html, cover);
+            RespondWithFile(fileName, pdfBytes);
         }
         catch (Exception ex)
         {
