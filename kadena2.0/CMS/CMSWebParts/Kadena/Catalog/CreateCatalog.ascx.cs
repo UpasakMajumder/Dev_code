@@ -873,14 +873,13 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             var programsContent = new StringBuilder();
             foreach (var program in programs)
             {
-                var programContent = programContentTemplate
+                programsContent
+                    .Append(programContentTemplate)
                     .Replace("^ProgramName^", program.Program.ProgramName)
                     .Replace("^ProgramBrandName^", program.Brand.BrandName)
                     .Replace("ProgramDate", program.Program.DeliveryDateToDistributors == default(DateTime)
                         ? string.Empty
                         : program.Program.DeliveryDateToDistributors.ToString("MMM dd, yyyy"));
-
-                programsContent.Append(programContent);
             }
 
             var programFooterTextTemplate = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.{Settings.KDA_ProgramFooterText}");
@@ -897,6 +896,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 .OrderBy(p => p.Brand.BrandName)
                 .ToList();
             var productBrandHeaderTemplate = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.{Settings.PDFBrand}");
+            var pdfProductContentTemplate = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.{Settings.PDFInnerHTML}");
             foreach (var programBrand in programBrands)
             {
                 var catalogList = productData
@@ -925,11 +925,11 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                 }
 
                 var pdfProductsContent = new StringBuilder();
-                var pdfProductContentTemplate = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.{Settings.PDFInnerHTML}");
                 foreach (var product in catalogList)
                 {
                     var stateInfo = CustomTableItemProvider.GetItems<StatesGroupItem>().WhereEquals("ItemID", product.State).FirstOrDefault();
-                    var pdfProductContent = pdfProductContentTemplate
+                    pdfProductsContent
+                        .Append(pdfProductContentTemplate)
                         .Replace("IMAGEGUID", CartPDFHelper.GetThumbnailImageAbsolutePath(product.ProductImage))
                         .Replace("PRODUCTPARTNUMBER", product?.SKUProductCustomerReferenceNumber ?? string.Empty)
                         .Replace("PRODUCTBRANDNAME", GetBrandName(product.BrandID))
@@ -942,13 +942,12 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                         .Replace("PRODUCTBUNDLEQUANTITY", product?.QtyPerPack.ToString() ?? string.Empty)
                         .Replace("PRODUCTEXPIRYDATE", product?.SKUValidUntil != default(DateTime) ? product?.SKUValidUntil.ToString("MMM dd, yyyy") : string.Empty ?? string.Empty);
 
-                    pdfProductsContent.Append(pdfProductContent);
                 }
 
-                var productBrandHeader = productBrandHeaderTemplate
+                pdfProductsContentWithBrands
+                    .Append($"{productBrandHeaderTemplate}{pdfProductsContent}{closingDiv}")
                     .Replace("^PROGRAMNAME^", programBrand.Program.ProgramName)
                     .Replace("^BrandName^", programBrand.Brand.BrandName);
-                pdfProductsContentWithBrands.Append(productBrandHeader + pdfProductsContent + closingDiv);
             }
 
             var htmlTextheader = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.{Settings.ProductsPDFHeader}")
