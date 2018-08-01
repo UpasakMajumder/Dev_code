@@ -25,6 +25,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
     {
         private const string _cartPDFFileName = "KDA_CartPDFFileName";
         private static IImageService imageService = DIContainer.Resolve<IImageService>();
+        private static ICatalogService catalogService = DIContainer.Resolve<ICatalogService>();
         #region Methods
 
         /// <summary>
@@ -45,10 +46,7 @@ namespace Kadena.Old_App_Code.Kadena.PDFHelpers
                     PDFBody = PDFBody.Replace("{INNERCONTENT}", CreateCartInnerContent(cartData, SiteContext.CurrentSiteName, inventoryType));
                 });
                 html = html.Replace("{OUTERCONTENT}", PDFBody);
-                NReco.PdfGenerator.HtmlToPdfConverter PDFConverter = new NReco.PdfGenerator.HtmlToPdfConverter();
-                PDFConverter.License.SetLicenseKey(SettingsKeyInfoProvider.GetValue("KDA_NRecoOwner", SiteContext.CurrentSiteID), SettingsKeyInfoProvider.GetValue("KDA_NRecoKey", SiteContext.CurrentSiteID));
-                PDFConverter.LowQuality = SettingsKeyInfoProvider.GetBoolValue("KDA_NRecoLowQuality", SiteContext.CurrentSiteID);
-                return PDFConverter.GeneratePdf(html);
+                return catalogService.GetPdfBytes(html, string.Empty);
             }
             catch (Exception ex)
             {
