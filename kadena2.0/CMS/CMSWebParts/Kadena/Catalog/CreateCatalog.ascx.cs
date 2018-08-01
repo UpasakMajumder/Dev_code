@@ -843,13 +843,18 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// </summary>
     private void GeneratePBFullPDF()
     {
+        var campaign = OpenCampaign;
+        if (campaign == null)
+        {
+            return;
+        }
         try
         {
             lblNoProducts.Visible = false;
 
             var programs = ProgramProvider.GetPrograms()
                 .Columns("ProgramName,BrandID,DeliveryDateToDistributors,ProgramID")
-                .WhereEquals("CampaignID", OpenCampaign?.CampaignID ?? default(int))
+                .WhereEquals("CampaignID", campaign.CampaignID)
                 .ToList()
                 .Join(Brands.Value.Values, prg => prg.BrandID, br => br.ItemID, (prg, br) => new
                 {
@@ -894,26 +899,25 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             var productBrandHeaderTemplate = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.{Settings.PDFBrand}");
             foreach (var programBrand in programBrands)
             {
-
                 var catalogList = productData
-                 .Where(x => x.BrandID == programBrand.Brand.ItemID)
-                 .Select((cp) => new
-                 {
-                     cp.ProductName,
-                     cp.EstimatedPrice,
-                     cp.BrandID,
-                     cp.ProgramID,
-                     QtyPerPack = cp.SKU.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
-                     cp.State,
-                     cp.SKU.SKUPrice,
-                     cp.SKU.SKUNumber,
-                     cp.Product.SKUProductCustomerReferenceNumber,
-                     cp.SKU.SKUDescription,
-                     cp.SKU.SKUShortDescription,
-                     cp.ProductImage,
-                     cp.SKU.SKUValidUntil
-                 })
-                 .ToList();
+                     .Where(x => x.BrandID == programBrand.Brand.ItemID)
+                     .Select((cp) => new
+                     {
+                         cp.ProductName,
+                         cp.EstimatedPrice,
+                         cp.BrandID,
+                         cp.ProgramID,
+                         QtyPerPack = cp.SKU.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
+                         cp.State,
+                         cp.SKU.SKUPrice,
+                         cp.SKU.SKUNumber,
+                         cp.Product.SKUProductCustomerReferenceNumber,
+                         cp.SKU.SKUDescription,
+                         cp.SKU.SKUShortDescription,
+                         cp.ProductImage,
+                         cp.SKU.SKUValidUntil
+                     })
+                     .ToList();
 
                 if (catalogList.Count == 0)
                 {
@@ -948,10 +952,9 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             }
 
             var htmlTextheader = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.{Settings.ProductsPDFHeader}")
-                .Replace("CAMPAIGNNAME", OpenCampaign?.Name)
-                .Replace("OrderStartDate", OpenCampaign.StartDate == default(DateTime) ? string.Empty : OpenCampaign.StartDate.ToString("MMM dd, yyyy"))
-                .Replace("OrderEndDate", OpenCampaign.EndDate == default(DateTime) ? string.Empty : OpenCampaign.EndDate.ToString("MMM dd, yyyy"));
-
+                .Replace("CAMPAIGNNAME", campaign.Name)
+                .Replace("OrderStartDate", campaign.StartDate == default(DateTime) ? string.Empty : campaign.StartDate.ToString("MMM dd, yyyy"))
+                .Replace("OrderEndDate", campaign.EndDate == default(DateTime) ? string.Empty : campaign.EndDate.ToString("MMM dd, yyyy"));
             var pdfClosingDivs = SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.{Settings.PdfEndingTags}");
             var html = pdfProductsContentWithBrands + pdfClosingDivs;
             var cover = htmlTextheader + programsContent + closingDiv;
