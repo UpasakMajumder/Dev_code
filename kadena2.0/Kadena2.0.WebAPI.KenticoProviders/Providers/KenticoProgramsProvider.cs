@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
+using CMS.Localization;
 using CMS.Membership;
 using Kadena.Models.Program;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -57,6 +58,17 @@ namespace Kadena.WebAPI.KenticoProviders
                                     .WhereEquals("ProgramID", programID)
                                     .OnCurrentSite();
             return mapper.Map<CampaignProgram>(program);
+        }
+
+        public IEnumerable<CampaignProgram> GetProgramsForCampaign(int campaignId)
+        {
+            var programs = new TreeProvider(MembershipContext.AuthenticatedUser)
+                .SelectNodes(PageTypeClassName)
+                .WhereEquals("CampaignID", campaignId)
+                .OnCurrentSite()
+                .ToList();
+
+            return mapper.Map<IEnumerable<CampaignProgram>>(programs);
         }
     }
 }
