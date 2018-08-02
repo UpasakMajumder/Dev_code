@@ -111,7 +111,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 .WhereTrue("OpenCampaign")
                 .WhereEqualsOrNull("CloseCampaign", false)
                 .Columns("CampaignID, Name, StartDate, EndDate")
-                .FirstOrDefault();
+                .TopN(1)
+                .FirstObject;
 
             return mapper.Map<CampaignData>(document);
         }
