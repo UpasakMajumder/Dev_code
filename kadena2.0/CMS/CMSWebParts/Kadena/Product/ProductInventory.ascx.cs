@@ -242,7 +242,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="categoryID"></param>
     /// <param name="searchText"></param>
     /// <returns></returns>
-    private List<KenticoCampaignProduct> GetProductsDetails(int categoryID, int brandID, string searchText, List<int> excludeIds)
+    private List<KenticoCampaignProduct> GetProductsDetails(int categoryID, int brandID, string searchText, List<int> excludeIds, List<int> includeIds)
     {
         var query = CampaignsProductProvider.GetCampaignsProducts()
             .OnCurrentSite()
@@ -259,6 +259,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             if (excludeIds?.Any() ?? false)
             {
                 query = query.WhereNotIn(nameof(KenticoCampaignProduct.CampaignsProductID), excludeIds);
+            }
+
+            if (includeIds?.Any() ?? false)
+            {
+                query = query.WhereIn(nameof(KenticoCampaignProduct.CampaignsProductID), includeIds);
             }
 
             if (DataHelper.DataSourceIsEmpty(programIds))
@@ -338,7 +343,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// Bind the Products data to repeater
     /// </summary>
     /// <param name="categoryID"></param>
-    private void BindData(int categoryID = 0, string searchText = null, int brandID = 0)
+    private void BindData(int categoryID = 0, string searchText = null, int brandID = 0, bool onlyAllocatedToMe = false)
     {
         try
         {
@@ -347,7 +352,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             rptProductLists.DataBind();
 
             List<int> notAllowedProducts = null;
-            if (ProductType == (int)CampaignProductType.GeneralInventory)
+            if (ProductType == (int)CampaignProductType.GeneralInventory && !onlyAllocatedToMe)
             {
                 notAllowedProducts = productsProvider
                     .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
@@ -356,7 +361,17 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     .ToList();
             }
 
-            var productsDetails = GetProductsDetails(categoryID, brandID, searchText, notAllowedProducts);
+            List<int> allocatedToMe = null;
+            if (ProductType == (int)CampaignProductType.GeneralInventory && onlyAllocatedToMe)
+            {
+                allocatedToMe = productsProvider
+                    .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
+                    .Where(apq => apq.Value > 0)
+                    .Select(apq => apq.Key)
+                    .ToList();
+            }
+
+            var productsDetails = GetProductsDetails(categoryID, brandID, searchText, notAllowedProducts, allocatedToMe);
 
             if (!DataHelper.DataSourceIsEmpty(productsDetails))
             {
@@ -493,7 +508,8 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         BindData(
             ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), 
             ValidationHelper.GetString(txtSearch.Text, string.Empty), 
-            ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int))
+            ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)),
+            chkOnlyAllocatedToMe.Checked
         );
     }
 
