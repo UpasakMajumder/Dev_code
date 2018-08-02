@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using CMS.CustomTables;
 using CMS.Ecommerce;
 using Kadena.Models;
+using Kadena.Models.Address;
 using Kadena.Models.ShoppingCarts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
@@ -12,6 +14,8 @@ namespace Kadena.WebAPI.KenticoProviders
 {
     public class KenticoAddressBookProvider : IKenticoAddressBookProvider
     {
+        private readonly string StateGroupTableName = "KDA.StatesGroup";
+
         public static string CustomerDefaultShippingAddresIDFieldName => "CustomerDefaultShippingAddresID";
 
         private readonly IMapper mapper;
@@ -24,6 +28,7 @@ namespace Kadena.WebAPI.KenticoProviders
             this.shoppingCartProvider = shoppingCartProvider ?? throw new ArgumentNullException(nameof(shoppingCartProvider));
             this.customers = customers ?? throw new ArgumentNullException(nameof(customers));
         }
+
         public void DeleteAddress(int addressID)
         {
             var address = AddressInfoProvider.GetAddressInfo(addressID);
@@ -106,6 +111,12 @@ namespace Kadena.WebAPI.KenticoProviders
                 }).ToList();
             }
             return myAddressList;
+        }
+
+        public IEnumerable<StateGroup> GetStateGroups()
+        {
+            var stateGroups = CustomTableItemProvider.GetItems(StateGroupTableName).ToList();
+            return mapper.Map<IEnumerable<StateGroup>>(stateGroups);
         }
     }
 }
