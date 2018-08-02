@@ -405,7 +405,14 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.POSNumber, opt => opt.MapFrom(src => src.GetValue("SKUProductCustomerReferenceNumber")))
                 .ForMember(dest => dest.ProgramID, opt => opt.MapFrom(src => src.GetValue("ProgramID", 0)))
                 .ForMember(dest => dest.DocumentId, opt => opt.MapFrom(src => src.DocumentID))
-                .ForMember(dest => dest.CampaignID, opt => opt.Ignore());
+                .ForMember(dest => dest.CampaignID, opt => opt.Ignore())
+                .ForMember(dest => dest.BrandId, opt => opt.MapFrom(src => src.GetValue("BrandID", 0)))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.GetValue("SKUDescription")))
+                .ForMember(dest => dest.ShortDescription, opt => opt.MapFrom(src => src.GetValue("SKUShortDescription")))
+                .ForMember(dest => dest.StateId, opt => opt.MapFrom(src => src.GetValue("State", 0)))
+                .ForMember(dest => dest.NumberOfItemsInPackage, opt => opt.MapFrom(src => src.GetValue("SKUNumberOfItemsInPackage", 1)))
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.GetValue("ProductImage")))
+                .ForMember(dest => dest.ValidTo, opt => opt.MapFrom(src => src.GetValue("SKUValidUntil", DateTime.MinValue)));
 
         }
     }
