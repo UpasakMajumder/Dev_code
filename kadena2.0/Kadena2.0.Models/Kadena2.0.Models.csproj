@@ -59,6 +59,8 @@
     <Compile Include="CampaignData\OrderType.cs" />
     <Compile Include="Checkout\CartItemEntity.cs" />
     <Compile Include="Checkout\ChiliProcess.cs" />
+    <Compile Include="Checkout\DeliveryDate.cs" />
+    <Compile Include="Checkout\DeliveryDateMessages.cs" />
     <Compile Include="CreditCard\SaveCardData.cs" />
     <Compile Include="CreditCard\StoredCard.cs" />
     <Compile Include="CustomCatalog\PrebuyProduct.cs" />

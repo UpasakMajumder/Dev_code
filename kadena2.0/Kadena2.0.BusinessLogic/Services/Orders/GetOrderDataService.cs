@@ -140,7 +140,8 @@ namespace Kadena2.BusinessLogic.Services.Orders
                     KenticoShippingOptionID = deliveryMethod.Id,
                     CarrierCode = deliveryMethod.SAPName,
                     ShippingCompany = deliveryMethod.CarrierCode,
-                    ShippingService = deliveryMethod.Service.Replace("#", "")
+                    ShippingService = deliveryMethod.Service.Replace("#", ""),
+                    RequestedDeliveryDate = shoppingCart.GetRequestedDeliveryDate()
                 };
             }
 

@@ -6,6 +6,7 @@
         public CartItems Products { get;set;}
         public DeliveryAddresses DeliveryAddresses { get; set; }
         public PaymentMethods PaymentMethods { get; set; }
+        public DeliveryDate DeliveryDate { get; set; }
         public SubmitButton Submit { get; set; }
         public NotificationEmail EmailConfirmation { get; set; }
         public string ValidationMessage { get; set; }

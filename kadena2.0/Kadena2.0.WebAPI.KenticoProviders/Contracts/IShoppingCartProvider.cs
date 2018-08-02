@@ -6,6 +6,7 @@ using Kadena.Models.Checkout;
 using Kadena.Models.CustomerData;
 using Kadena.Models.Product;
 using Kadena.Models.ShoppingCarts;
+using System;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
@@ -27,6 +28,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         PaymentMethod[] GetPaymentMethods();
 
         PaymentMethod GetPaymentMethod(int id);
+        DateTime? GetRequestedDeliveryDate();
+        void SetRequestedDeliveryDate(DateTime? requestedDeliveryDate);
 
         void SetShoppingCartAddress(int addressId);
 

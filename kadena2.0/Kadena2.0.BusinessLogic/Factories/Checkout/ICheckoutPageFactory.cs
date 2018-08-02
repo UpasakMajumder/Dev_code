@@ -12,6 +12,7 @@ namespace Kadena.BusinessLogic.Factories.Checkout
         DeliveryAddresses CreateDeliveryAddresses(List<DeliveryAddress> addresses, string userNotificationString, bool otherAddressAvailable);
         PaymentMethods CreatePaymentMethods(PaymentMethod[] paymentMethods);
         SubmitButton CreateSubmitButton();
+        DeliveryDate CreateDeliveryDateInput();
         NotificationEmail CreateNotificationEmail(bool emailConfirmationEnabled);        
     }
 }
