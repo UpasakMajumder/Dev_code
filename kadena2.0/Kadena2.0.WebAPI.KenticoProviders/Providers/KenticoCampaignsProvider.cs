@@ -109,8 +109,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 .OnCurrentSite()
                 .Culture(LocalizationContext.CurrentCulture.CultureCode)
                 .WhereTrue("OpenCampaign")
-                .WhereEqualsOrNull("CloseCampaign", false)
-                .Columns("CampaignID, Name, StartDate, EndDate")
+                .WhereFalse("CloseCampaign")
                 .TopN(1)
                 .FirstObject;
 
