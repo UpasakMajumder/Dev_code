@@ -355,7 +355,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.GetBooleanValue("Status", false)));
 
             CreateMap<CustomTableItem, Brand>()
-                .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.GetValue("BrandName")))
+                .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.GetValue("BrandName", string.Empty)))
                 .ForMember(dest => dest.BrandCode, opt => opt.MapFrom(src => src.GetValue("BrandCode", 0)));
 
             CreateMap<CustomTableItem, StateGroup>()
@@ -384,11 +384,11 @@ namespace Kadena2.WebAPI.KenticoProviders
 
             CreateMap<TreeNode, CampaignData>()
                 .ForMember(dest => dest.CampaignID, opt => opt.MapFrom(src => src.GetValue("CampaignID", 0)))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.GetValue("Name")))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.GetValue("Name", string.Empty)))
                 .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.GetValue("StartDate", DateTime.MinValue)))
                 .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.GetValue("EndDate", DateTime.MinValue)))
                 .ForMember(dest => dest.CloseCampaign, opt => opt.MapFrom(src => src.GetValue("CloseCampaign", false)))
-                .ForMember(dest => dest.FiscalYear, opt => opt.MapFrom(src => src.GetValue("FiscalYear")))
+                .ForMember(dest => dest.FiscalYear, opt => opt.MapFrom(src => src.GetValue("FiscalYear", string.Empty)))
                 .ForMember(dest => dest.IBTFFinalized, opt => opt.MapFrom(src => src.GetValue("IBTFFinalized", false)))
                 .ForMember(dest => dest.OpenCampaign, opt => opt.MapFrom(src => src.GetValue("OpenCampaign", false)))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.GetValue("Status", false)));
@@ -403,20 +403,20 @@ namespace Kadena2.WebAPI.KenticoProviders
 
             CreateMap<TreeNode, CampaignsProduct>()
                 .ForMember(dest => dest.SKUID, opt => opt.MapFrom(src => src.NodeSKUID))
-                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.GetValue("SKUName")))
-                .ForMember(dest => dest.SKUNumber, opt => opt.MapFrom(src => src.GetValue("SKUNumber")))
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.GetValue("SKUName", string.Empty)))
+                .ForMember(dest => dest.SKUNumber, opt => opt.MapFrom(src => src.GetValue("SKUNumber", string.Empty)))
                 .ForMember(dest => dest.ActualPrice, opt => opt.MapFrom(src => src.GetValue("SKUPrice", decimal.Zero)))
                 .ForMember(dest => dest.EstimatedPrice, opt => opt.MapFrom(src => src.GetValue("EstimatedPrice", decimal.Zero)))
-                .ForMember(dest => dest.POSNumber, opt => opt.MapFrom(src => src.GetValue("SKUProductCustomerReferenceNumber")))
+                .ForMember(dest => dest.POSNumber, opt => opt.MapFrom(src => src.GetValue("SKUProductCustomerReferenceNumber", string.Empty)))
                 .ForMember(dest => dest.ProgramID, opt => opt.MapFrom(src => src.GetValue("ProgramID", 0)))
                 .ForMember(dest => dest.DocumentId, opt => opt.MapFrom(src => src.DocumentID))
                 .ForMember(dest => dest.CampaignID, opt => opt.Ignore())
                 .ForMember(dest => dest.BrandId, opt => opt.MapFrom(src => src.GetValue("BrandID", 0)))
-                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.GetValue("SKUDescription")))
-                .ForMember(dest => dest.ShortDescription, opt => opt.MapFrom(src => src.GetValue("SKUShortDescription")))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.GetValue("SKUDescription", string.Empty)))
+                .ForMember(dest => dest.ShortDescription, opt => opt.MapFrom(src => src.GetValue("SKUShortDescription", string.Empty)))
                 .ForMember(dest => dest.StateId, opt => opt.MapFrom(src => src.GetValue("State", 0)))
                 .ForMember(dest => dest.NumberOfItemsInPackage, opt => opt.MapFrom(src => src.GetValue("SKUNumberOfItemsInPackage", 1)))
-                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.GetValue("ProductImage")))
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.GetValue("ProductImage", string.Empty)))
                 .ForMember(dest => dest.ValidTo, opt => opt.MapFrom(src => src.GetValue("SKUValidUntil", DateTime.MinValue)));
 
         }
