@@ -14,6 +14,7 @@ using Kadena.Models.Checkout;
 using Kadena.Models.CreditCard;
 using Kadena.Models.Membership;
 using Kadena.Models.Product;
+using Kadena.Models.Program;
 using Kadena.Models.Site;
 using Kadena.WebAPI.KenticoProviders;
 using System;
@@ -381,6 +382,14 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.IBTFFinalized, opt => opt.MapFrom(src => src.GetValue("IBTFFinalized", false)))
                 .ForMember(dest => dest.OpenCampaign, opt => opt.MapFrom(src => src.GetValue("OpenCampaign", false)))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.GetValue("Status", false)));
+
+            CreateMap<TreeNode, CampaignProgram>()
+                .ForMember(dest => dest.ProgramID, opt => opt.MapFrom(src => src.GetValue("ProgramID", 0)))
+                .ForMember(dest => dest.ProgramName, opt => opt.MapFrom(src => src.DocumentName))
+                .ForMember(dest => dest.BrandID, opt => opt.MapFrom(src => src.GetValue("BrandID", 0)))
+                .ForMember(dest => dest.CampaignID, opt => opt.MapFrom(src => src.GetValue("CampaignID", 0)))
+                .ForMember(dest => dest.GlobalAdminNotified, opt => opt.MapFrom(src => src.GetValue("GlobalAdminNotified", false)));
+
         }
     }
 }

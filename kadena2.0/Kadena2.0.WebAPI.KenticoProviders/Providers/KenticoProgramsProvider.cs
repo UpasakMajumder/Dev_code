@@ -1,4 +1,5 @@
-﻿using CMS.DataEngine;
+﻿using AutoMapper;
+using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Membership;
 using Kadena.Models.Program;
@@ -13,9 +14,11 @@ namespace Kadena.WebAPI.KenticoProviders
     {
         private readonly string PageTypeClassName = "KDA.Program";
         private readonly IKenticoCampaignsProvider campaignsProvider;
+        private readonly IMapper mapper;
 
-        public KenticoProgramsProvider(IKenticoCampaignsProvider campaignsProvider)
+        public KenticoProgramsProvider(IMapper mapper, IKenticoCampaignsProvider campaignsProvider)
         {
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.campaignsProvider = campaignsProvider ?? throw new ArgumentNullException(nameof(campaignsProvider));
         }
 
@@ -51,23 +54,9 @@ namespace Kadena.WebAPI.KenticoProviders
         public CampaignProgram GetProgram(int programID)
         {
             TreeNode program = new TreeProvider(MembershipContext.AuthenticatedUser).SelectNodes(PageTypeClassName)
-                                    .Where("ProgramID", QueryOperator.Equals, programID)
+                                    .WhereEquals("ProgramID", programID)
                                     .OnCurrentSite();
-            if (program != null)
-            {
-                return new CampaignProgram()
-                {
-                    ProgramID = program.GetIntegerValue("ProgramID", default(int)),
-                    ProgramName = program.DocumentName,
-                    BrandID = program.GetIntegerValue("BrandID", default(int)),
-                    CampaignID = program.GetIntegerValue("CampaignID", default(int)),
-                    GlobalAdminNotified= program.GetBooleanValue("GlobalAdminNotified", false)
-                };
-            }
-            else
-            {
-                return null;
-            }
+            return mapper.Map<CampaignProgram>(program);
         }
     }
 }
