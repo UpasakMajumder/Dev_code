@@ -36,14 +36,14 @@
                         <h3>
                             <cms:LocalizedLiteral runat="server" ResourceString="Kadena.Product.QuantityAvailable" />
                             <%#Eval("SKUAvailableItems") %></h3>
-                        <span><%# ProductType == (int)ProductsType.GeneralInventory? $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("SKUPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" : $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("EstimatedPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" %></span>
+                        <span><%# ProductType == (int)Kadena.Models.Product.CampaignProductType.GeneralInventory? $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("SKUPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" : $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("EstimatedPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" %></span>
                         <b>
-                            <asp:Label runat="server" Visible='<%# ProductType == (int)ProductsType.PreBuy %>'>
+                            <asp:Label runat="server" Visible='<%# ProductType == (int)Kadena.Models.Product.CampaignProductType.PreBuy %>'>
                             <cms:LocalizedLiteral runat="server" ResourceString="Kadena.PreBuyOrder.CurrentDemand"></cms:LocalizedLiteral>&nbsp;<%# GetDemandCount(Eval<int>("SKUID")) %>
                             </asp:Label>
                         </b>
-                        <a class="js-addToCart-Modal" href="javascript:void(0);" style='<%=((ProductType == (int)ProductsType.PreBuy && !EnableAddToCart)?"display:none;": "")%>' data-skuid='<%#Eval<int>("SKUID")%>' data-productname='<%#Eval("SKUName")%>'><%#AddToCartLinkText%></a>
-                        <asp:Label runat="server" Visible='<%#(ProductType == (int)ProductsType.PreBuy ? !EnableAddToCart : false)%>'><%#AddToCartLinkText%></asp:Label>
+                        <a class="js-addToCart-Modal" href="javascript:void(0);" style='<%=((ProductType == (int)Kadena.Models.Product.CampaignProductType.PreBuy && !EnableAddToCart)?"display:none;": "")%>' data-skuid='<%#Eval<int>("SKUID")%>' data-productname='<%#Eval("SKUName")%>'><%#AddToCartLinkText%></a>
+                        <asp:Label runat="server" Visible='<%#(ProductType == (int)Kadena.Models.Product.CampaignProductType.PreBuy ? !EnableAddToCart : false)%>'><%#AddToCartLinkText%></asp:Label>
                     </div>
                 </div>
             </ItemTemplate>
