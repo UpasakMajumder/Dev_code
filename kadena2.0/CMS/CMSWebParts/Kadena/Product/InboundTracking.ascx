@@ -31,6 +31,11 @@
             </asp:TemplateField>
             <asp:TemplateField>
                 <ItemTemplate>
+                    <asp:Label runat="server" ID="lblCustomerReferenceNumber" Text='<%#Eval("ProductCustomerReferenceNumber") %>'></asp:Label>
+                </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField>
+                <ItemTemplate>
                     <asp:Label runat="server" ID="lblItemSpecs" Text='<%# Eval("ItemSpec") != null ? (Eval("ItemSpec")?.ToString().Length > 20 ? Eval("ItemSpec").ToString().Substring(0,20) : Eval("ItemSpec"))   : Eval("ItemSpec") %>' class="js-tooltip" data-tooltip-placement="bottom" ToolTip='<%# Eval("ItemSpec") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
