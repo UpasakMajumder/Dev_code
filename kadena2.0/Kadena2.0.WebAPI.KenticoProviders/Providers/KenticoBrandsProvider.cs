@@ -68,5 +68,15 @@ namespace Kadena.WebAPI.KenticoProviders
 
             return brandsList;
         }
+
+        public IEnumerable<Brand> GetBrands(List<int> brandIds)
+        {
+            var brands = CustomTableItemProvider
+                .GetItems(BrandTable)
+                .Columns("ItemID, BrandCode, BrandName")
+                .WhereIn("BrandID", brandIds)
+                .ToList();
+            return mapper.Map<IEnumerable<Brand>>(brands);
+        }
     }
 }
