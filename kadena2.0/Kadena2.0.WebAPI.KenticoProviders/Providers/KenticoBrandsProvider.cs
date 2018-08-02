@@ -68,7 +68,7 @@ namespace Kadena.WebAPI.KenticoProviders
             var brands = CustomTableItemProvider
                 .GetItems(BrandTable)
                 .Columns("ItemID, BrandCode, BrandName")
-                .WhereIn("BrandID", brandIds)
+                .WhereIn("ItemID", brandIds)
                 .ToList();
             return mapper.Map<IEnumerable<Brand>>(brands);
         }
