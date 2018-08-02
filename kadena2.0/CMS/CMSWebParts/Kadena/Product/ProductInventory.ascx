@@ -3,17 +3,23 @@
 <div class="custom__section">
     <div class="custom__block clearfix" runat="server" visible="true" id="orderControls">
         <div class="custom__select">
-            <asp:DropDownList runat="server" ID="ddlBrand" Visible="false" OnSelectedIndexChanged="ddlBrand_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
-            <asp:DropDownList ID="ddlProgram" runat="server" Visible="false" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
-            <asp:DropDownList ID="ddlCategory" runat="server" Visible="false" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+            <asp:DropDownList runat="server" ID="ddlBrand" Visible="false" OnSelectedIndexChanged="OnFilterChanged" AutoPostBack="true"></asp:DropDownList>
+            <asp:DropDownList ID="ddlProgram" runat="server" Visible="false" OnSelectedIndexChanged="OnFilterChanged" AutoPostBack="true"></asp:DropDownList>
+            <asp:DropDownList ID="ddlCategory" runat="server" Visible="false" OnSelectedIndexChanged="OnFilterChanged" AutoPostBack="true"></asp:DropDownList>
         </div>
         <div class="search__block search__recent search__recent--icon">
-            <asp:TextBox ID="txtSearch" runat="server" OnTextChanged="txtSearch_TextChanged" AutoPostBack="true" class="input__text"></asp:TextBox>
+            <asp:TextBox ID="txtSearch" runat="server" OnTextChanged="OnFilterChanged" AutoPostBack="true" class="input__text"></asp:TextBox>
             <button class="search__submit btn--off" type="submit">
                 <svg class="icon icon-dollar">
                     <use xlink:href="/gfx/svg/sprites/icons.svg#search"></use>
                 </svg>
             </button>
+        </div>
+        <div class="custom__check">
+            <div class="input__wrapper">
+                <asp:CheckBox runat="server" ID="chkOnlyAllocatedToMe" Checked="false" OnCheckedChanged="OnFilterChanged" AutoPostBack="true" />
+                <cms:LocalizedLabel runat="server" AssociatedControlID="chkOnlyAllocatedToMe" ID="LocalizedLabel1" CssClass="input__label input__label--checkbox" ResourceString="KDA.InventoryOrder.OnlyAllocatedToMe"></cms:LocalizedLabel>
+            </div>
         </div>
     </div>
     <div class="custom__content row">

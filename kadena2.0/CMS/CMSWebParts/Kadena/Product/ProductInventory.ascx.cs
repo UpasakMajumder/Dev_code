@@ -486,52 +486,21 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
 
     private void SetFilter()
     {
-        BindData(ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtSearch.Text, string.Empty), ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)));
-    }
-
-    /// <summary>
-    /// Filter products by By selected program
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void ddlProgram_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        SetFilter();
-    }
-
-    /// <summary>
-    /// Filter products by selected category
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void ddlCategory_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        SetFilter();
-    }
-
-    /// <summary>
-    /// Filter products by brand
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void ddlBrand_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        SetFilter();
-    }
-
-    /// <summary>
-    /// Filter products by POS Number
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void txtSearch_TextChanged(object sender, EventArgs e)
-    {
-        SetFilter();
+        BindData(
+            ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), 
+            ValidationHelper.GetString(txtSearch.Text, string.Empty), 
+            ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int))
+        );
     }
 
     public string GetDemandCount(int SKUID)
     {
         return string.Format("{0:n0}", DIContainer.Resolve<IShoppingCartProvider>().GetPreBuyDemandCount(SKUID));
+    }
+
+    protected void OnFilterChanged(object sender, EventArgs e)
+    {
+        SetFilter();
     }
 
     #endregion "Methods"
