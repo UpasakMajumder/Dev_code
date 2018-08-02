@@ -68,6 +68,50 @@ class Checkout extends Component {
     });
   };
 
+  changeDeliveryDate = (date) => {
+    this.setState({
+      deliveryDate: {
+        value: date,
+        error: null
+      }
+    });
+  }
+
+  blurDeliveryDate = (e) => {
+    if (e.target.value === '') return;
+
+    const date = moment(e.target.value);
+    if (this.state.deliveryDate.value !== null) {
+      this.setState({
+        deliveryDate: {
+          ...this.state.deliveryDate,
+          error: ''
+        }
+      });
+    } else if (!date.isValid()) {
+      this.setState({
+        deliveryDate: {
+          value: null,
+          error: this.props.checkout.ui.deliveryDate.messages.invalid
+        }
+      });
+    } else if (date <= moment()) {
+      this.setState({
+        deliveryDate: {
+          value: null,
+          error: this.props.checkout.ui.deliveryDate.messages.upcoming
+        }
+      });
+    } else {
+      this.setState({
+        deliveryDate: {
+          value: date,
+          error: null
+        }
+      });
+    }
+  };
+
   changeInput = (id, value) => {
     this.setState({
       fields: {
@@ -166,7 +210,12 @@ class Checkout extends Component {
     if (invalidFields.length) {
       Checkout.fireNotification(invalidFields);
     } else {
-      const data = { ...checkedData, emailConfirmation: newEmailConfirmation.list };
+      const data = {
+        ...checkedData,
+        emailConfirmation: newEmailConfirmation.list,
+        deliveryDate: this.state.deliveryDate.value && this.state.deliveryDate.value.locale('en').format('MMM DD, YYYY H:mm:ss Z')
+      };
+
       if (checkedData.deliveryAddress === 'non-deliverable') data.deliveryAddress = 0;
       if (checkedData.deliveryMethod === 'non-deliverable') data.deliveryMethod = 0;
       if (checkedData.deliveryAddress === -1) {
