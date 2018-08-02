@@ -230,6 +230,11 @@
         return true;
     }
   
+  function ShowZoomEffect(imgsrc){
+    $('#ZoomImage').attr('src', imgsrc);
+    $('#ImageZoomPopup').toggleClass('active');
+  }
+  
 </script> 
 
 ]]>
