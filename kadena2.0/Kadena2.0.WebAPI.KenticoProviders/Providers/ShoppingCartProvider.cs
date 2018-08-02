@@ -199,6 +199,22 @@ namespace Kadena.WebAPI.KenticoProviders
             return method;
         }
 
+        public DateTime? GetRequestedDeliveryDate()
+        {
+            var deliveryDate = ECommerceContext.CurrentShoppingCart.GetDateTimeValue("ShoppingCartRequestedDeliveryDate", DateTime.MinValue);
+            DateTime? nullableDeliveryDate = null;
+
+            if (deliveryDate != DateTime.MinValue)
+                nullableDeliveryDate = deliveryDate;
+
+            return nullableDeliveryDate;
+        }
+
+        public void SetRequestedDeliveryDate(DateTime? requestedDeliveryDate)
+        {
+            ECommerceContext.CurrentShoppingCart.SetValue("ShoppingCartRequestedDeliveryDate", requestedDeliveryDate);
+        }
+
         public ShoppingCartTotals GetShoppingCartTotals()
         {
             return new ShoppingCartTotals()
