@@ -239,15 +239,7 @@ namespace Kadena.WebAPI.KenticoProviders
                                     .OnCurrentSite();
             if (productNodes != null && productNodes.HasResults() && productNodes.TypedResult.Items.Count > 0)
             {
-                return productNodes.TypedResult.Items.ToList().Select(x =>
-                {
-                    return new CampaignsProduct()
-                    {
-                        SKUID = x.NodeSKUID,
-                        ProductName = x.DocumentName,
-                        EstimatedPrice = x.GetValue<decimal>("EstimatedPrice", 0)
-                    };
-                }).ToList();
+                return productNodes.TypedResult.Items.ToList().Select(x => mapper.Map<CampaignsProduct>(x)).ToList();
             }
             else
             {
@@ -291,20 +283,12 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
             SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
+            var campaignId = programsProvider.GetProgram(document.GetIntegerValue("ProgramID", default(int)))?.CampaignID ?? 0;
             if (sku != null && document != null)
             {
-                return new CampaignsProduct()
-                {
-                    SKUID = skuid,
-                    SKUNumber = sku.SKUNumber,
-                    ProductName = sku.SKUName,
-                    ActualPrice = ValidationHelper.GetDecimal(sku.SKUPrice, default(decimal)),
-                    EstimatedPrice = document.GetValue("EstimatedPrice", default(decimal)),
-                    POSNumber = sku.GetStringValue("SKUProductCustomerReferenceNumber", string.Empty),
-                    ProgramID = document.GetIntegerValue("ProgramID", default(int)),
-                    CampaignID = programsProvider.GetProgram(document.GetIntegerValue("ProgramID", default(int)))?.CampaignID ?? 0,
-                    DocumentId = document.DocumentID
-                };
+                var product = mapper.Map<CampaignsProduct>(document);
+                product.CampaignID = campaignId;
+                return product;
             }
             else
             {

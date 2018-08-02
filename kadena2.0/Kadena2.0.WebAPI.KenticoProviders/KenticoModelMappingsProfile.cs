@@ -395,6 +395,18 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.CampaignID, opt => opt.MapFrom(src => src.GetValue("CampaignID", 0)))
                 .ForMember(dest => dest.GlobalAdminNotified, opt => opt.MapFrom(src => src.GetValue("GlobalAdminNotified", false)))
                 .ForMember(dest => dest.DeliveryDateToDistributors, opt => opt.MapFrom(src => src.GetValue("DeliveryDateToDistributors", DateTime.MinValue)));
+
+            CreateMap<TreeNode, CampaignsProduct>()
+                .ForMember(dest => dest.SKUID, opt => opt.MapFrom(src => src.NodeSKUID))
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.GetValue("SKUName")))
+                .ForMember(dest => dest.SKUNumber, opt => opt.MapFrom(src => src.GetValue("SKUNumber")))
+                .ForMember(dest => dest.ActualPrice, opt => opt.MapFrom(src => src.GetValue("SKUPrice", decimal.Zero)))
+                .ForMember(dest => dest.EstimatedPrice, opt => opt.MapFrom(src => src.GetValue("EstimatedPrice", decimal.Zero)))
+                .ForMember(dest => dest.POSNumber, opt => opt.MapFrom(src => src.GetValue("SKUProductCustomerReferenceNumber")))
+                .ForMember(dest => dest.ProgramID, opt => opt.MapFrom(src => src.GetValue("ProgramID", 0)))
+                .ForMember(dest => dest.DocumentId, opt => opt.MapFrom(src => src.DocumentID))
+                .ForMember(dest => dest.CampaignID, opt => opt.Ignore());
+
         }
     }
 }
