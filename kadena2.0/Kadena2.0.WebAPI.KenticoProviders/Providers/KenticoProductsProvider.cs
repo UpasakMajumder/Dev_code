@@ -20,11 +20,13 @@ namespace Kadena.WebAPI.KenticoProviders
     public class KenticoProductsProvider : IKenticoProductsProvider
     {
         private readonly IMapper mapper;
+        private readonly IKenticoProgramsProvider programsProvider;
         private readonly string CustomTableName = "KDA.UserAllocatedProducts";
 
-        public KenticoProductsProvider(IMapper mapper)
+        public KenticoProductsProvider(IMapper mapper, IKenticoProgramsProvider programsProvider)
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.programsProvider = programsProvider ?? throw new ArgumentNullException(nameof(programsProvider));
         }
 
         public List<ProductCategoryLink> GetCategories(string path)
@@ -231,7 +233,7 @@ namespace Kadena.WebAPI.KenticoProviders
         }
         public List<CampaignsProduct> GetCampaignsProductSKUIDs(int campaignID)
         {
-            List<int> programIDs = new KenticoProgramsProvider().GetProgramIDsByCampaign(campaignID);
+            List<int> programIDs = programsProvider.GetProgramIDsByCampaign(campaignID);
             var productNodes = new TreeProvider(MembershipContext.AuthenticatedUser).SelectNodes("KDA.CampaignsProduct")
                                     .WhereIn("ProgramID", programIDs)
                                     .OnCurrentSite();
@@ -300,7 +302,7 @@ namespace Kadena.WebAPI.KenticoProviders
                     EstimatedPrice = document.GetValue("EstimatedPrice", default(decimal)),
                     POSNumber = sku.GetStringValue("SKUProductCustomerReferenceNumber", string.Empty),
                     ProgramID = document.GetIntegerValue("ProgramID", default(int)),
-                    CampaignID = new KenticoProgramsProvider().GetProgram(document.GetIntegerValue("ProgramID", default(int)))?.CampaignID ?? 0,
+                    CampaignID = programsProvider.GetProgram(document.GetIntegerValue("ProgramID", default(int)))?.CampaignID ?? 0,
                     DocumentId = document.DocumentID
                 };
             }

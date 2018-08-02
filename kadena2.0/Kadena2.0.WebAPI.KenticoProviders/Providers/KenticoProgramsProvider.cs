@@ -3,6 +3,7 @@ using CMS.DocumentEngine;
 using CMS.Membership;
 using Kadena.Models.Program;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,6 +12,12 @@ namespace Kadena.WebAPI.KenticoProviders
     public class KenticoProgramsProvider : IKenticoProgramsProvider
     {
         private readonly string PageTypeClassName = "KDA.Program";
+        private readonly IKenticoCampaignsProvider campaignsProvider;
+
+        public KenticoProgramsProvider(IKenticoCampaignsProvider campaignsProvider)
+        {
+            this.campaignsProvider = campaignsProvider ?? throw new ArgumentNullException(nameof(campaignsProvider));
+        }
 
         public void DeleteProgram(int programID)
         {
@@ -27,7 +34,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public List<int> GetProgramIDsByCampaign(int campaignID)
         {
             List<int> programIDs = new List<int>();
-            TreeNode campaign = new KenticoCampaignsProvider().GetCampaign(campaignID);
+            TreeNode campaign = campaignsProvider.GetCampaign(campaignID);
             if (campaign != null)
             {
                 var programNodes = new TreeProvider(MembershipContext.AuthenticatedUser).SelectNodes(PageTypeClassName)
