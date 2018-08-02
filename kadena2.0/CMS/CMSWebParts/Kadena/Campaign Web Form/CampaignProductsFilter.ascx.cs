@@ -15,6 +15,9 @@ using System.Data;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Kadena.Models.SiteSettings;
+using System.Web;
+using System.Collections.Specialized;
+using System.Collections.Generic;
 
 public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter : CMSAbstractBaseFilterControl
 {
@@ -53,22 +56,25 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
     {
         try
         {
+            var rebuildResult = RebuildQueryString();
+            var query = rebuildResult.Item2;
+
             string where = null;
 
-            txtSearchProducts.Text = !string.IsNullOrEmpty(txtSearchProducts.Text) ? txtSearchProducts.Text : ValidationHelper.GetString(Request.QueryString["searchProducts"], null);
+            txtSearchProducts.Text = !string.IsNullOrEmpty(txtSearchProducts.Text) ? txtSearchProducts.Text : ValidationHelper.GetString(query["searchProducts"], null);
             if (!string.IsNullOrEmpty(txtSearchProducts.Text))
             {
                 where += $"(p.ProductName like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}%' OR SKUProductCustomerReferenceNumber like '%{ SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(txtSearchProducts.Text))}%')";
             }
 
-            ddlPrograms.SelectedValue = ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0) != 0 ? ddlPrograms.SelectedValue : ValidationHelper.GetInteger(Request.QueryString["program"], 0).ToString();
+            ddlPrograms.SelectedValue = ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0) != 0 ? ddlPrograms.SelectedValue : ValidationHelper.GetInteger(query["program"], 0).ToString();
             if (ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0) != 0)
             {
                 int programID = ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0);
                 where += where != null ? $"and p.ProgramID={ programID}" : $"p.ProgramID={ programID}";
             }
 
-            ddlProductcategory.SelectedValue = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0) != 0 ? ddlProductcategory.SelectedValue : ValidationHelper.GetInteger(Request.QueryString["category"], 0).ToString();
+            ddlProductcategory.SelectedValue = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0) != 0 ? ddlProductcategory.SelectedValue : ValidationHelper.GetInteger(query["category"], 0).ToString();
             if (ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0) != 0)
             {
                 int categoryID = ValidationHelper.GetInteger(ddlProductcategory.SelectedValue, 0);
@@ -81,11 +87,48 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter
             this.RaiseOnFilterChanged();
             BindButtons();
 
+            if (!IsPostBack) return;
+
+            Response.Redirect(rebuildResult.Item1);
         }
         catch (Exception ex)
         {
             EventLogProvider.LogException("CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter", "SetFilter", ex, CurrentSite.SiteID, ex.Message);
         }
+    }
+
+    private Tuple<string, NameValueCollection> RebuildQueryString()
+    {    
+        var uriBuilder = new UriBuilder(CurrentDocument.AbsoluteURL);
+        var query = new NameValueCollection(Request.QueryString);
+
+        if(IsPostBack)
+        {
+            // Seach
+            query["searchProducts"] = txtSearchProducts.Text;
+
+            // Program
+            query["program"] = ddlPrograms.SelectedValue;
+
+            // Category
+            query["category"] = ddlProductcategory.SelectedValue;
+
+            // clean
+            query.Remove("aliaspath");
+        }
+
+        uriBuilder.Query = ConstructQueryString(query);
+        return Tuple.Create(uriBuilder.Uri.ToString(), query);
+    }
+
+    private static string ConstructQueryString(NameValueCollection parameters)
+    {
+        List<string> items = new List<string>();
+
+        foreach (string name in parameters)
+            items.Add(string.Concat(name, "=", HttpUtility.UrlEncode(parameters[name])));
+
+        return string.Join("&", items.ToArray());
     }
 
     /// <summary>
