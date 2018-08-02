@@ -231,11 +231,11 @@ namespace Kadena.WebAPI.KenticoProviders
                 }
             }
         }
-        public List<CampaignsProduct> GetCampaignsProductSKUIDs(int campaignID)
+
+        public List<CampaignsProduct> GetCampaignsProductSKUIDs(List<int> programIds)
         {
-            List<int> programIDs = programsProvider.GetProgramIDsByCampaign(campaignID);
             var productNodes = new TreeProvider(MembershipContext.AuthenticatedUser).SelectNodes("KDA.CampaignsProduct")
-                                    .WhereIn("ProgramID", programIDs)
+                                    .WhereIn("ProgramID", programIds)
                                     .OnCurrentSite();
             if (productNodes != null && productNodes.HasResults() && productNodes.TypedResult.Items.Count > 0)
             {
