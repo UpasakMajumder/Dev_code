@@ -189,8 +189,8 @@ class Checkout extends Component {
   }
 
   checkDeliveryDate = (invalidFields) => {
-    const { value, error } = this.state.deliveryDate;
-    if (!value || error) {
+    const { error } = this.state.deliveryDate;
+    if (error) {
       invalidFields.push('deliveryDate');
     }
   }
@@ -213,7 +213,7 @@ class Checkout extends Component {
       const data = {
         ...checkedData,
         emailConfirmation: newEmailConfirmation.list,
-        deliveryDate: this.state.deliveryDate.value.toString()
+        deliveryDate: this.state.deliveryDate.value.locale('en').format('MMM DD, YYYY H:mm:ss Z')
       };
 
       if (checkedData.deliveryAddress === 'non-deliverable') data.deliveryAddress = 0;
