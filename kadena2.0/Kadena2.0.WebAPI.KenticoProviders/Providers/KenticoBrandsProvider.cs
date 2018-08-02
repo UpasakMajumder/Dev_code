@@ -60,13 +60,7 @@ namespace Kadena.WebAPI.KenticoProviders
                        .Select(ab => ab.GetIntegerValue("BrandID", default(int)))
                        .ToList();
 
-            var brandsList = addressBrandsList
-                .Select(b => CustomTableItemProvider.GetItem(b, BrandTable))
-                .Select(CreateBrand)
-                .Where(b => b != null)
-                .ToList();
-
-            return brandsList;
+            return this.GetBrands(addressBrandsList).ToList();
         }
 
         public IEnumerable<Brand> GetBrands(List<int> brandIds)
