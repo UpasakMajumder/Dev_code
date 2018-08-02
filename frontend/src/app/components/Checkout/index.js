@@ -70,6 +70,8 @@ class Checkout extends Component {
   }
 
   blurDeliveryDate = (e) => {
+    if (e.target.value === '') return;
+
     const date = moment(e.target.value);
     if (this.state.deliveryDate.value !== null) {
       this.setState({
@@ -213,7 +215,7 @@ class Checkout extends Component {
       const data = {
         ...checkedData,
         emailConfirmation: newEmailConfirmation.list,
-        deliveryDate: this.state.deliveryDate.value.locale('en').format('MMM DD, YYYY H:mm:ss Z')
+        deliveryDate: this.state.deliveryDate.value && this.state.deliveryDate.value.locale('en').format('MMM DD, YYYY H:mm:ss Z')
       };
 
       if (checkedData.deliveryAddress === 'non-deliverable') data.deliveryAddress = 0;
