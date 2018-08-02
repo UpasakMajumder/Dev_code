@@ -9,6 +9,7 @@ using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.Models;
 using Kadena.Models.BusinessUnit;
+using Kadena.Models.CampaignData;
 using Kadena.Models.Checkout;
 using Kadena.Models.CreditCard;
 using Kadena.Models.Membership;
@@ -370,6 +371,16 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.NodeId, opt => opt.MapFrom(src => src.NodeID))
                 .ForAllOtherMembers(m => m.Ignore());
 
+            CreateMap<TreeNode, CampaignData>()
+                .ForMember(dest => dest.CampaignID, opt => opt.MapFrom(src => src.GetValue("CampaignID", 0)))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.GetValue("Name")))
+                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.GetValue("StartDate", DateTime.MinValue)))
+                .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.GetValue("EndDate", DateTime.MinValue)))
+                .ForMember(dest => dest.CloseCampaign, opt => opt.MapFrom(src => src.GetValue("CloseCampaign", false)))
+                .ForMember(dest => dest.FiscalYear, opt => opt.MapFrom(src => src.GetValue("FiscalYear")))
+                .ForMember(dest => dest.IBTFFinalized, opt => opt.MapFrom(src => src.GetValue("IBTFFinalized", false)))
+                .ForMember(dest => dest.OpenCampaign, opt => opt.MapFrom(src => src.GetValue("OpenCampaign", false)))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.GetValue("Status", false)));
         }
     }
 }
