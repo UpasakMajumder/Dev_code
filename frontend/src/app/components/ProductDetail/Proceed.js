@@ -82,7 +82,7 @@ const Proceed = ({
 
   if (addToCart) {
     return (
-      <div>
+      <div className="ml-auto">
         <div className="product-view__proceed">
           {getInput()}
           <Button

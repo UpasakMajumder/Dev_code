@@ -142,7 +142,7 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_ProductEditButton : CM
                     var document = new TreeProvider().SelectSingleNode(nodeGUID, CurrentDocument.DocumentCulture, CurrentSite.SiteName);
                     if (document != null)
                     {
-                        lnkEdit.Attributes.Add("href", $"{document.DocumentUrlPath}?camp={ CurrentDocument.NodeID }&id={ ProductID}");
+                        lnkEdit.Attributes.Add("href", $"{document.DocumentUrlPath}?camp={ CurrentDocument.NodeID }&id={ ProductID}&category={Request.QueryString["category"]}&program={Request.QueryString["program"]}&searchProducts={Request.QueryString["searchProducts"]}");
                     }
                 }
             }
