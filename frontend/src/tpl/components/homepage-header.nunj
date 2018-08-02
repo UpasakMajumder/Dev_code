@@ -1,4 +1,4 @@
-<div class="homepage-header row">
+<div class="homepage-header row mb-3">
   <div class="homepage-header__banner banner col-8">
     <div class="banner__headers">
       <h2>Welcome to Kadena</h2>
