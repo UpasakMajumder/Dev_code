@@ -343,7 +343,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// Bind the Products data to repeater
     /// </summary>
     /// <param name="categoryID"></param>
-    private void BindData(int categoryID = 0, string searchText = null, int brandID = 0, bool onlyAllocatedToMe = false)
+    private void BindData(int categoryID = 0, string searchText = null, int brandID = 0, bool showOnlyAllocatedToMe = false)
     {
         try
         {
@@ -352,7 +352,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             rptProductLists.DataBind();
 
             List<int> notAllowedProducts = null;
-            if (ProductType == (int)CampaignProductType.GeneralInventory && !onlyAllocatedToMe)
+            if (ProductType == (int)CampaignProductType.GeneralInventory && !showOnlyAllocatedToMe)
             {
                 notAllowedProducts = productsProvider
                     .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
@@ -361,17 +361,19 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     .ToList();
             }
 
-            List<int> allocatedToMe = null;
-            if (ProductType == (int)CampaignProductType.GeneralInventory && onlyAllocatedToMe)
-            {
-                allocatedToMe = productsProvider
+            var includeAllocationInfo = ProductType == (int)CampaignProductType.GeneralInventory;
+            var allocatedToMe = productsProvider
                     .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
                     .Where(apq => apq.Value > 0)
-                    .Select(apq => apq.Key)
-                    .ToList();
+                    .ToDictionary(apq => apq.Key, apq => apq.Value);
+
+            List<int> allocatedToMeIds = null;
+            if (includeAllocationInfo && showOnlyAllocatedToMe)
+            {
+                allocatedToMeIds = allocatedToMe.Keys.ToList();
             }
 
-            var productsDetails = GetProductsDetails(categoryID, brandID, searchText, notAllowedProducts, allocatedToMe);
+            var productsDetails = GetProductsDetails(categoryID, brandID, searchText, notAllowedProducts, allocatedToMeIds);
 
             if (!DataHelper.DataSourceIsEmpty(productsDetails))
             {
@@ -389,6 +391,9 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                         SKUEnabled = cp.GetBooleanValue(nameof(SKUInfo.SKUEnabled), false),
                         cp.ProductImage,
                         SKUAvailableItems = cp.GetIntegerValue(nameof(SKUInfo.SKUAvailableItems), 0),
+                        SKUAllocatedQuantity = includeAllocationInfo 
+                            ? (allocatedToMe.TryGetValue(cp.CampaignsProductID, out var quantity) ? quantity : 0)
+                            : 0,
                         SKUID = cp.Product.ID,
                         SKUDescription = cp.Product.Description
                     })
