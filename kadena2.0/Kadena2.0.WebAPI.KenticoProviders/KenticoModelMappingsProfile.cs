@@ -393,8 +393,8 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.ProgramName, opt => opt.MapFrom(src => src.DocumentName))
                 .ForMember(dest => dest.BrandID, opt => opt.MapFrom(src => src.GetValue("BrandID", 0)))
                 .ForMember(dest => dest.CampaignID, opt => opt.MapFrom(src => src.GetValue("CampaignID", 0)))
-                .ForMember(dest => dest.GlobalAdminNotified, opt => opt.MapFrom(src => src.GetValue("GlobalAdminNotified", false)));
-
+                .ForMember(dest => dest.GlobalAdminNotified, opt => opt.MapFrom(src => src.GetValue("GlobalAdminNotified", false)))
+                .ForMember(dest => dest.DeliveryDateToDistributors, opt => opt.MapFrom(src => src.GetValue("DeliveryDateToDistributors", DateTime.MinValue)));
         }
     }
 }
