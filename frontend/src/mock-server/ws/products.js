@@ -297,7 +297,7 @@ module.exports.availability = {
   errorMessage: null,
   payload: {
     type: 'available', // unavailable, outofstock, available
-    text: 'Out of stock'
+    text: '89608 Box(s) in stock'
   }
 }
 

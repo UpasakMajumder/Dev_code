@@ -675,7 +675,11 @@ const orderDetailPayload = {
   "commonInfo": {
     status: {
       title: 'Status',
-      value: 'In progress'
+      value: 'In progress',
+      orderHistory: {
+        label: 'View Order History',
+        url: 'http://localhost:3000/api/order/detail/history'
+      }
     },
     orderDate: {
       title: 'Order date',

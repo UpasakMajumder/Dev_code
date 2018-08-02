@@ -1,0 +1,17 @@
+.twe-search {
+  display: flex;
+  flex-wrap: wrap;
+
+  .search__block {
+    order: 1;
+    margin: 0 10px 10px 0;
+  }
+
+  .custom__select {
+    order: 2;
+  }
+
+  .add__btn {
+    order: 3;
+  }
+}
