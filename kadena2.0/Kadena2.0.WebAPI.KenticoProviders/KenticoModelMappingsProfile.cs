@@ -8,6 +8,7 @@ using CMS.Localization;
 using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.Models;
+using Kadena.Models.Brand;
 using Kadena.Models.BusinessUnit;
 using Kadena.Models.CampaignData;
 using Kadena.Models.Checkout;
@@ -351,6 +352,10 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.BusinessUnitNumber, opt => opt.MapFrom(src => src.GetValue<long>("BusinessUnitNumber", 0)))
                 .ForMember(dest => dest.SiteID, opt => opt.MapFrom(src => src.GetIntegerValue("SiteID", 0)))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.GetBooleanValue("Status", false)));
+
+            CreateMap<CustomTableItem, Brand>()
+                .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.GetValue("BrandName")))
+                .ForMember(dest => dest.BrandCode, opt => opt.MapFrom(src => src.GetValue("BrandCode", 0)));
 
             CreateMap<TreeNode, Product>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.DocumentID))
