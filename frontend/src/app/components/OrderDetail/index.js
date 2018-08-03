@@ -104,20 +104,11 @@ class OrderDetail extends Component<void, void, State> {
       });
   }
 
-  changeApprovalMessage = (text: string) => {
-    if (!this.state.orderHistory) return; // by default orderHistory is null and has lazyLoading
-    this.setState({
-      orderHistory: {
-        ...this.state.orderHistory,
-        message: {
-          ...this.state.orderHistory.message,
-          text
-        }
-      }
-    });
+  clearHistory = () => {
+    this.setState({ orderHistory: null });
   };
 
-  getMaxOrderQuantity = (isSubmitted: boolean): number => {
+  getMaxOrderQuantity = (isSubmitted: boolean): any => {
     if (this.maxOrderQuantity || !this.state.ui) return this.maxOrderQuantity;
 
     const maxOrderQuantity = {};
@@ -288,17 +279,6 @@ class OrderDetail extends Component<void, void, State> {
       });
   };
 
-  updateOrderHistory = (orderHistory: { itemChanges: any, orderChanges: any }) => {
-    if (!this.state.orderHistory) return; // by default orderHistory is null and has lazyLoading
-    this.setState({
-      orderHistory: {
-        ...this.state.orderHistory,
-        itemChanges: orderHistory.itemChanges,
-        orderChanges: orderHistory.orderChanges
-      }
-    });
-  };
-
   static getIsNonZeroProducExists = (orderedItems): { nonZeroProductsExist: boolean, isSubmitted: boolean } => {
     const result = { nonZeroProductsExist: false, isSubmitted: false };
 
@@ -345,10 +325,10 @@ class OrderDetail extends Component<void, void, State> {
           {...editOrders.dialog}
           proceedUrl={this.state.ui ? this.state.ui.editOrders.proceedUrl : ''}
           paidByCreditCard={paymentInfo.paymentIcon === 'credit-card'}
-          editOrders={this.editOrders}
           general={general}
           maxOrderQuantity={this.getMaxOrderQuantity(isSubmitted)}
-          updateOrderHistory={this.updateOrderHistory}
+          editOrders={this.editOrders}
+          clearHistory={this.clearHistory}
         />
       ) : null;
 
@@ -390,7 +370,7 @@ class OrderDetail extends Component<void, void, State> {
             general={general}
             changeStatus={this.changeStatus}
             showEditModal={this.showEditModal}
-            changeApprovalMessage={this.changeApprovalMessage}
+            clearHistory={this.clearHistory}
           />
         </div>
       </div>

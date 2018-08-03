@@ -798,7 +798,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             var openCampaignID = ValidationHelper.GetInteger(parameters[2], 0);
 
             var shoppingCartProvider = DIContainer.Resolve<IShoppingCartProvider>();
-            var count = shoppingCartProvider.GetDistributorCartCount(userID, openCampaignID, (ShoppingCartTypes)inventoryType);
+            var count = shoppingCartProvider.GetDistributorCartCount(userID, openCampaignID, (CampaignProductType)inventoryType);
 
             return count;
         }
