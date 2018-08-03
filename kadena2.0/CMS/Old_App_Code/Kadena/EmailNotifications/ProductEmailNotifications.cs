@@ -4,8 +4,6 @@ using CMS.EventLog;
 using CMS.MacroEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
-using Kadena.Dto.General;
-using Kadena.Dto.Order;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Container.Default;
@@ -18,6 +16,7 @@ using System.Reflection;
 using CMS.Ecommerce;
 using Kadena.Models.Membership;
 using CMS.Helpers;
+using Kadena.Models.CampaignData;
 
 namespace Kadena.Old_App_Code.Kadena.EmailNotifications
 {
@@ -99,13 +98,13 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
             try
             {
                 var orderViewClient = DIContainer.Resolve<IOrderViewClient>();
-                var response = orderViewClient.GetOrders(SiteContext.CurrentSiteName, 1, 1000, campaignID, Constants.OrderType.prebuy).Result;
+                var response = orderViewClient.GetOrders(SiteContext.CurrentSiteName, 1, 1000, campaignID, OrderType.prebuy).Result;
                 if (response.Success && response.Payload.TotalCount != 0)
                 {
                     var customerProvider = DIContainer.Resolve<IKenticoCustomerProvider>();
                     var userProvider = DIContainer.Resolve<IKenticoUserProvider>();
 
-                    var customerOrderData = response.Payload.Orders.GroupBy(x => x.CustomerId,
+                    var customerOrderData = response.Payload.Orders.GroupBy(x => x.ClientId,
                         (key, value) => new
                         {
                             CustomerId = key,
@@ -117,7 +116,8 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                                     .Columns("SKUProductCustomerReferenceNumber", nameof(SKUInfo.SKUEnabled), nameof(SKUInfo.SKUNumber));
                                 return new
                                 {
-                                    ord.TotalPrice,
+                                    ord.Id,
+                                    ord.TotalCost,
                                     ord.ShippingDate,
                                     CampaignId = ord.Campaign.ID,
                                     Items = ord.Items.GroupJoin(skus, i => i.SKUNumber, s => s.SKUNumber, (i, sks) => new
@@ -142,9 +142,10 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                                 var orderDetails = new Dictionary<string, object>
                                 {
                                     { "name", x.User.FirstName },
-                                    { "totalprice", o.TotalPrice },
+                                    { "totalprice", o.TotalCost },
                                     { "shippingdate", o.ShippingDate },
-                                    { "campaignid", o.CampaignId }
+                                    { "campaignid", o.CampaignId },
+                                    { "orderNumber", o.Id }
                                 };
                                 SendEmailNotification(templateName, x.User.Email, o.Items, "orderitems", orderDetails);
                             });
@@ -183,7 +184,8 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                     { "name", user.FirstName },
                     { "totalprice", ordersDTO.Totals.Price },
                     { "totalshipping", ordersDTO.Totals.Shipping },
-                    { "campaignid", ordersDTO.Totals.Shipping }
+                    { "campaignid", ordersDTO.Totals.Shipping },
+                    { "orderNumber", ordersDTO.OrderID }
                 };
                 SendEmailNotification(orderTemplateSettingKey, user.Email, cartItems, "orderitems", orderDetails);
             }

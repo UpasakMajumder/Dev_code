@@ -25,16 +25,55 @@
     <table class="show-table show-table--hide-rows">
       <tbody>
         <tr>
-          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Order date</th>
-          <!-- TODO: Remove ".hidden" after sorting is avalible-->
-          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project name</th>
-          <!-- TODO: Remove ".hidden" after sorting is avalible-->
-          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Request ID</th>
-          <!-- TODO: Remove ".hidden" after sorting is avalible-->
-          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Project status</th>
-          <!-- TODO: Remove ".hidden" after sorting is avalible-->
-          <th>{{ svg('sort-arrows', 'icon-sort show-table__sort-icon hidden') }}Last update</th>
-          <!-- TODO: Remove ".hidden" after sorting is avalible-->
+          <th>
+            <a href="#" class="link--no-blue">
+              <div class="icons-sort">
+                {{ svg('arrowTop', 'icon-sort') }}
+                {{ svg('arrowTop', 'icon-sort') }}
+              </div>
+              <span>Order date</span>
+            </a>
+          </th>
+
+          <th>
+            <a href="#" class="link--no-blue">
+              <div class="icons-sort icons-sort--asc">
+                {{ svg('arrowTop', 'icon-sort') }}
+                {{ svg('arrowTop', 'icon-sort') }}
+              </div>
+              <span>Project name</span>
+            </a>
+          </th>
+
+          <th>
+            <a href="#" class="link--no-blue">
+              <div class="icons-sort icons-sort--desc">
+                {{ svg('arrowTop', 'icon-sort') }}
+                {{ svg('arrowTop', 'icon-sort') }}
+              </div>
+              <span>Request ID</span>
+            </a>
+          </th>
+
+          <th>
+            <a href="#" class="link--no-blue">
+              <div class="icons-sort">
+                {{ svg('arrowTop', 'icon-sort') }}
+                {{ svg('arrowTop', 'icon-sort') }}
+              </div>
+              <span>Project status</span>
+            </a>
+          </th>
+
+          <th>
+            <a href="#" class="link--no-blue">
+              <div class="icons-sort">
+                {{ svg('arrowTop', 'icon-sort') }}
+                {{ svg('arrowTop', 'icon-sort') }}
+              </div>
+              <span>Last update</span>
+            </a>
+          </th>
         </tr>
 
           <tr class="active" data-page="1">

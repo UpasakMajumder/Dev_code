@@ -61,7 +61,7 @@
           <property name="contentbefore" ismacro="true">
 <![CDATA[
 <div class="itemcount">
-  <label>{$ KDA.DistributorCart.CartItemsCountStartText $} {%KadenaMacroMethods.GetCartCountByInventoryType(CurrentUser.UserID,2,KadenaMacroMethods.OpenCampaignID()) |(user)administrator|(hash)eb1055ae05833ed753e7cb03d239870a085051feea3bb7548c1d53bdad75e935%} {$ KDA.DistributorCart.CartItemsCountEndText $} </label>
+  <label>{$ KDA.DistributorCart.CartItemsCountStartText $} {% KadenaNamespace.GetCartCountByInventoryType(CurrentUser.UserID,2,KadenaMacroMethods.OpenCampaignID()) |(user)administrator|(hash)0d6aab49b7e55b529643dd08fa46a01398860b275eb014dda05198893d33a00e%} {$ KDA.DistributorCart.CartItemsCountEndText $} </label>
   <label>{$ KDA.DistributorCart.CartTotalPrice $} : {%Formatprice(KadenaMacroMethods.GetCartTotalByInventoryType(CurrentUser.UserID,2,KadenaMacroMethods.OpenCampaignID())) |(user)administrator|(hash)ee0cb5954ab25731da6ce8342e367259f072093c3eb779c0c4bb7534305e2c42%}</label>
 </div>
 ]]>
@@ -217,7 +217,7 @@ AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN {%KadenaM
           <property name="cat_open_output_filter"></property>
           <property name="cat_open_performance"></property>
           <property name="cat_open_time zones"></property>
-          <property name="cat_open_visibility"></property>
+          <property name="cat_open_visibility">False</property>
           <property name="container"></property>
           <property name="containercssclass"></property>
           <property name="containercustomcontent"></property>
@@ -252,7 +252,9 @@ AND ShoppingCartCampaignID= CASE WHEN ShoppingCartInventoryType=2 THEN {%KadenaM
           <property name="showfordocumenttypes"></property>
           <property name="timezonetype">inherit</property>
           <property name="useupdatepanel">False</property>
-          <property name="visible">True</property>
+          <property name="visible" ismacro="true">
+            <![CDATA[{% KadenaNamespace.GetCartCountByInventoryType(CurrentUser.UserID, 2, KadenaMacroMethods.OpenCampaignID()) > 0 |(user)administrator|(hash)2a35a4f578305d813d6293cd989dfad8c8dd87e3db954ccb2b75b7f6f79863bc%}]]>
+          </property>
           <property name="webparttitle"></property>
           <property name="webparttype">GeneratePDFforCart</property>
         </webpart>

@@ -15,13 +15,13 @@ const getPreviewLink = (preview) => {
   );
 };
 
-const getEmailProofLink = (emailProof, toogleEmailProof) => {
+const getEmailProofLink = (emailProof, toggleEmailProof) => {
   if (!emailProof) return null;
   if (!emailProof.exists) return null;
 
   const onClick = (e) => {
     e.preventDefault();
-    toogleEmailProof(true, emailProof.url);
+    toggleEmailProof(emailProof.url);
   };
 
   return (
@@ -44,6 +44,7 @@ const Order = ({
   quantityShipped,
   mailingListPrefix,
   shippingDatePrefix,
+  showRejectionLabel,
   trackingPrefix,
   tracking,
   templatePrefix,
@@ -52,9 +53,12 @@ const Order = ({
   options,
   preview,
   unitOfMeasure,
+  groupped,
   // emailProof
   emailProof,
-  toogleEmailProof
+  toggleEmailProof,
+  removed,
+  removeLabel
 }) => {
   const downloadPdfLink = downloadPdfURL
     ? (
@@ -127,8 +131,20 @@ const Order = ({
     ? <div className="mr-3">{ options.map((option, i) => <p key={i}>{option.name}: {option.value}</p>) }</div>
     : null;
 
+  const rejection = removed
+   ? (
+    <div className="cart-product__flag flag flag--red">
+      <SVG
+        name="guarantee"
+        className="flag__icon"
+      />
+      <span className="flag__label">{removeLabel}</span>
+    </div>
+   ) : null;
+
   return (
-    <div className="cart-product">
+    <div className={`cart-product ${groupped ? 'cart-product--groupped' : ''}`}>
+      {showRejectionLabel && rejection}
       <div className="cart-product__img">
         <img src={image} alt={template} />
       </div>
@@ -158,7 +174,7 @@ const Order = ({
           {quantityElement}
           {downloadPdfLink}
           {getPreviewLink(preview)}
-          {getEmailProofLink(emailProof, toogleEmailProof)}
+          {getEmailProofLink(emailProof, toggleEmailProof)}
         </div>
       </div>
     </div>
@@ -174,20 +190,28 @@ Order.propTypes = {
   downloadPdfURL: PropTypes.string,
   shippingDate: PropTypes.string,
   mailingList: PropTypes.string,
-  trackingPrefix: PropTypes.string.isRequired,
+  trackingPrefix: PropTypes.string,
   tracking: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
     url: PropTypes.string
   })),
   mailingListPrefix: PropTypes.string.isRequired,
+  removed: PropTypes.bool.isRequired,
   shippingDatePrefix: PropTypes.string.isRequired,
+  showRejectionLabel: PropTypes.bool,
   templatePrefix: PropTypes.string.isRequired,
-  productStatusPrefix: PropTypes.string.isRequired,
-  productStatus: PropTypes.string.isRequired,
+  productStatusPrefix: PropTypes.string,
+  productStatus: PropTypes.string,
   options: PropTypes.arrayOf(PropTypes.object).isRequired,
   unitOfMeasure: PropTypes.string.isRequired,
   emailProof: PropTypes.object.isRequired,
-  toogleEmailProof: PropTypes.func.isRequired
+  toggleEmailProof: PropTypes.func.isRequired,
+  removeLabel: PropTypes.string.isRequired,
+  groupped: PropTypes.bool
+};
+
+Order.defaultProps = {
+  showRejectionLabel: true
 };
 
 export default Order;

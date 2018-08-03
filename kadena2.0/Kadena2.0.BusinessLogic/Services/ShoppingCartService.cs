@@ -11,14 +11,15 @@ using Kadena2.WebAPI.KenticoProviders.Contracts;
 using Kadena.Models.CreditCard;
 using Kadena2.MicroserviceClients.Contracts;
 using System.Collections.Generic;
-using Kadena.Models.AddToCart;
 using Kadena.Models.SiteSettings;
-using Kadena.Infrastructure.Exceptions;
+using Kadena.BusinessLogic.Contracts.Orders;
+using Kadena.Models.ShoppingCarts;
 
 namespace Kadena.BusinessLogic.Services
 {
     public class ShoppingCartService : IShoppingCartService
     {
+        const string tempAddressName = "TemporaryAddress";
         private readonly IKenticoSiteProvider kenticoSite;
         private readonly IKenticoLocalizationProvider localization;
         private readonly IKenticoPermissionsProvider permissions;
@@ -26,6 +27,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoCustomerProvider kenticoCustomer;
         private readonly IKenticoAddressBookProvider kenticoAddresses;
         private readonly IKenticoResourceService resources;
+        private readonly IKenticoProductsProvider productsProvider;
         private readonly ITaxEstimationService taxCalculator;
         private readonly IKListService mailingService;
         private readonly IUserDataServiceClient userDataClient;
@@ -33,13 +35,11 @@ namespace Kadena.BusinessLogic.Services
         private readonly IShoppingCartItemsProvider shoppingCartItems;
         private readonly ICheckoutPageFactory checkoutfactory;
         private readonly IKenticoLogger log;
-        private readonly IKenticoAddressBookProvider addressBookProvider;
-        private readonly IKenticoProductsProvider productsProvider;
-        private readonly IKenticoBusinessUnitsProvider businessUnitsProvider;
-        private readonly IDynamicPriceRangeProvider dynamicPrices;
-        private readonly ITieredPriceRangeProvider tieredPrices;
+        private readonly IProductsService productsService;
         private readonly IImageService imageService;
         private readonly IKenticoSkuProvider skus;
+        private readonly IOrderItemCheckerService orderChecker;
+        private readonly ISettingsService settingsService;
 
         public ShoppingCartService(IKenticoSiteProvider kenticoSite,
                                    IKenticoLocalizationProvider localization,
@@ -48,6 +48,7 @@ namespace Kadena.BusinessLogic.Services
                                    IKenticoCustomerProvider kenticoCustomer,
                                    IKenticoAddressBookProvider addresses,
                                    IKenticoResourceService resources,
+                                   IKenticoProductsProvider productsProvider,
                                    ITaxEstimationService taxCalculator,
                                    IKListService mailingService,
                                    IUserDataServiceClient userDataClient,
@@ -55,21 +56,20 @@ namespace Kadena.BusinessLogic.Services
                                    IShoppingCartItemsProvider shoppingCartItems,
                                    ICheckoutPageFactory checkoutfactory,
                                    IKenticoLogger log,
-                                   IKenticoAddressBookProvider addressBookProvider,
-                                   IKenticoProductsProvider productsProvider,
-                                   IKenticoBusinessUnitsProvider businessUnitsProvider,
-                                   IDynamicPriceRangeProvider dynamicPrices,
-                                   ITieredPriceRangeProvider tieredPrices,
+                                   IProductsService productsService,
                                    IImageService imageService,
-                                   IKenticoSkuProvider skus)
+                                   IKenticoSkuProvider skus,
+                                   IOrderItemCheckerService orderChecker,
+                                   ISettingsService settingsService)
         {
             this.kenticoSite = kenticoSite ?? throw new ArgumentNullException(nameof(kenticoSite));
             this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
             this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             this.kenticoUsers = kenticoUsers ?? throw new ArgumentNullException(nameof(kenticoUsers));
-            this.kenticoCustomer= kenticoCustomer ?? throw new ArgumentNullException(nameof(kenticoCustomer));
+            this.kenticoCustomer = kenticoCustomer ?? throw new ArgumentNullException(nameof(kenticoCustomer));
             this.kenticoAddresses = addresses ?? throw new ArgumentNullException(nameof(addresses));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.productsProvider = productsProvider ?? throw new ArgumentNullException(nameof(productsProvider));
             this.taxCalculator = taxCalculator ?? throw new ArgumentNullException(nameof(taxCalculator));
             this.mailingService = mailingService ?? throw new ArgumentNullException(nameof(mailingService));
             this.userDataClient = userDataClient ?? throw new ArgumentNullException(nameof(userDataClient));
@@ -77,13 +77,11 @@ namespace Kadena.BusinessLogic.Services
             this.shoppingCartItems = shoppingCartItems ?? throw new ArgumentNullException(nameof(shoppingCartItems));
             this.checkoutfactory = checkoutfactory ?? throw new ArgumentNullException(nameof(checkoutfactory));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
-            this.addressBookProvider = addressBookProvider ?? throw new ArgumentNullException(nameof(addressBookProvider));
-            this.productsProvider = productsProvider ?? throw new ArgumentNullException(nameof(productsProvider));
-            this.businessUnitsProvider = businessUnitsProvider ?? throw new ArgumentNullException(nameof(businessUnitsProvider));
-            this.dynamicPrices = dynamicPrices ?? throw new ArgumentNullException(nameof(dynamicPrices));
-            this.tieredPrices = tieredPrices ?? throw new ArgumentNullException(nameof(tieredPrices));
+            this.productsService = productsService ?? throw new ArgumentNullException(nameof(productsService));
             this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
             this.skus = skus ?? throw new ArgumentNullException(nameof(skus));
+            this.orderChecker = orderChecker ?? throw new ArgumentNullException(nameof(orderChecker));
+            this.settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
         }
 
         public async Task<CheckoutPage> GetCheckoutPage()
@@ -176,8 +174,19 @@ namespace Kadena.BusinessLogic.Services
 
         public int SaveTemporaryAddress(DeliveryAddress deliveryAddress)
         {
-            return shoppingCart.SetTemporaryShoppingCartAddress(deliveryAddress);
-            
+            var customerAdresses = deliveryAddress.CustomerId > 0 ?
+                kenticoAddresses.GetCustomerAddresses(deliveryAddress.CustomerId, AddressType.Shipping)
+                : kenticoAddresses.GetCustomerAddresses(AddressType.Shipping);
+            var existingTemporaryAddress = customerAdresses?.FirstOrDefault(a => tempAddressName.Equals(a.AddressName));
+            if (existingTemporaryAddress != null)
+            {
+                deliveryAddress.Id = existingTemporaryAddress.Id;
+            }
+
+            deliveryAddress.AddressName = tempAddressName;
+            settingsService.SaveShippingAddress(deliveryAddress);
+            shoppingCart.SetShoppingCartAddress(deliveryAddress.Id);
+            return deliveryAddress.Id;
         }
 
         private DeliveryCarriers GetDeliveryMethods(bool isShippingApplicable)
@@ -222,7 +231,8 @@ namespace Kadena.BusinessLogic.Services
             var shoppingCartTotals = shoppingCart.GetShoppingCartTotals();
             if (deliveryAddress != null)
             {
-                shoppingCartTotals.TotalTax = await taxCalculator.EstimateTotalTax(deliveryAddress);
+                var shippingCost = shoppingCart.GetCurrentCartShippingCost();
+                shoppingCartTotals.TotalTax = await taxCalculator.EstimateTax(deliveryAddress, shoppingCartTotals.TotalItemsPrice, (decimal)shippingCost);
             }
             totals.Items = new Total[]
             {
@@ -309,9 +319,11 @@ namespace Kadena.BusinessLogic.Services
 
         private DeliveryAddresses GetDeliveryAddresses(int checkedAddressId = 0)
         {
-            var customerAddresses = kenticoAddresses.GetCustomerAddresses(AddressType.Shipping);
+            var customerAddresses = kenticoAddresses
+                .GetCustomerAddresses(AddressType.Shipping)
+                .Where(a => !tempAddressName.Equals(a.AddressName));
             var userNotificationString = GetUserNotificationString();
-            var otherAddressEnabled = GetOtherAddressSettingsValue();
+            var otherAddressEnabled = resources.GetSiteSettingsKey<bool>(Settings.KDA_AllowCustomShippingAddress);
 
             var addresses = checkoutfactory.CreateDeliveryAddresses(customerAddresses.ToList(), userNotificationString, otherAddressEnabled);
 
@@ -326,8 +338,8 @@ namespace Kadena.BusinessLogic.Services
 
             if (item == null)
             {
-                throw new ArgumentOutOfRangeException(string.Format( 
-                    resources.GetResourceString("Kadena.Product.ItemInCartNotFound"),id));
+                throw new ArgumentOutOfRangeException(string.Format(
+                    resources.GetResourceString("Kadena.Product.ItemInCartNotFound"), id));
             }
 
             if (quantity < 1)
@@ -354,11 +366,16 @@ namespace Kadena.BusinessLogic.Services
                     resources.GetResourceString("Kadena.Product.SetQuantityForItemError"), quantity, item.CartItemText));
             }
 
-            CheckMinMaxQuantity(itemSku, quantity);
+            orderChecker.CheckMinMaxQuantity(itemSku, quantity);
 
             item.SKUUnits = quantity;
 
-            SetPriceByCustomModel(item, item.ProductPageID);
+            var price = productsService.GetPriceByCustomModel(item.ProductPageID, item.SKUUnits);
+
+            if (price > decimal.MinusOne)
+            {
+                item.CartItemPrice = price;
+            }
 
             shoppingCartItems.SetCartItemQuantity(item, quantity);
 
@@ -384,7 +401,7 @@ namespace Kadena.BusinessLogic.Services
             var countOfItemsString = cartItems.Count == 1 ? resources.GetResourceString("Kadena.Checkout.ItemSingular") : resources.GetResourceString("Kadena.Checkout.ItemPlural");
             cartItems.ForEach(i => i.Image = imageService.GetThumbnailLink(i.Image));
 
-            cartItems.ForEach(i => 
+            cartItems.ForEach(i =>
                 {
                     i.Delivery = string.Empty;
 
@@ -432,21 +449,7 @@ namespace Kadena.BusinessLogic.Services
             return preview;
         }
 
-        void CheckMinMaxQuantity(Sku sku, int totalAmountAfterAdding)
-        {
-            var min = sku?.MinItemsInOrder ?? 0;
-            var max = sku?.MaxItemsInOrder ?? 0;
 
-            if (min > 0 && totalAmountAfterAdding < min)
-            {
-                throw new NotLoggedException("Cannot order less than minimal count of items");
-            }
-
-            if (max > 0 && totalAmountAfterAdding > max)
-            {
-                throw new NotLoggedException("Cannot order more than maximal count of items");
-            }
-        }
 
         public async Task<AddToCartResult> AddToCart(NewCartItem newItem)
         {
@@ -457,13 +460,20 @@ namespace Kadena.BusinessLogic.Services
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
 
-            var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);            
+            if (newItem.NodeId > 0)
+            {
+                newItem.DocumentId = productsProvider.GetProductByNodeId(newItem.NodeId).Id;
+            }
+
+            var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);
+
+            var sku = skus.GetSKU(cartItem.SKUID) ?? throw new ArgumentException($"Unable to find SKU {cartItem.SKUID}");
 
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.InventoryProduct))
             {
-                EnsureInventoryAmount(cartItem, newItem.Quantity, cartItem.SKUUnits);
+                orderChecker.EnsureInventoryAmount(sku, newItem.Quantity, cartItem.SKUUnits);
             }
-            
+
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.MailingProduct))
             {
                 await SetMailingList(cartItem, newItem.ContainerId, addedAmount);
@@ -474,19 +484,23 @@ namespace Kadena.BusinessLogic.Services
             // do this before calculating dynamic price
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))
             {
-                CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID),
+                orderChecker.CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID),
                                     newItem.Quantity);
                 cartItem.SKUUnits = newItem.Quantity;
             }
-            else if(!ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.MailingProduct))
+            else if (!ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.MailingProduct))
             {
                 var totalQuantity = cartItem.SKUUnits + newItem.Quantity;
-                CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID),
+                orderChecker.CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID),
                                     totalQuantity);
                 cartItem.SKUUnits = totalQuantity;
             }
-            
-            SetPriceByCustomModel(cartItem, newItem.DocumentId);
+
+            var price = productsService.GetPriceByCustomModel(newItem.DocumentId, cartItem.SKUUnits);
+            if (price != decimal.MinusOne)
+            {
+                cartItem.CartItemPrice = price;
+            }
 
             if (!string.IsNullOrEmpty(newItem.CustomProductName))
             {
@@ -504,32 +518,6 @@ namespace Kadena.BusinessLogic.Services
                 }
             };
             return result;
-        }
-
-        private void SetPriceByCustomModel(CartItemEntity cartItem, int documentId)
-        {
-            var product = productsProvider.GetProductByDocumentId(documentId);
-
-            if (product == null)
-            {
-                return;
-            }
-
-            var price = decimal.MinusOne;
-
-            if (product.PricingModel == PricingModel.Dynamic)
-            {
-                price = dynamicPrices.GetDynamicPrice(cartItem.SKUUnits, product.DynamicPricingJson);
-            }
-            else if (product.PricingModel == PricingModel.Tiered)
-            {
-                price = tieredPrices.GetTieredPrice(cartItem.SKUUnits, product.TieredPricingJson);
-            }
-
-            if (price > decimal.MinusOne)
-            {
-                cartItem.CartItemPrice = price;
-            }
         }
 
         private async Task SetMailingList(CartItemEntity cartItem, Guid containerId, int addedAmount)
@@ -550,122 +538,9 @@ namespace Kadena.BusinessLogic.Services
             cartItem.SKUUnits = addedAmount;
         }
 
-        private void EnsureInventoryAmount(CartItemEntity item, int addedQuantity, int resultedQuantity)
+        public List<int> GetLoggedInUserCartData(CampaignProductType cartType, int userID, int campaignID = 0)
         {
-            var sku = skus.GetSKU(item.SKUID);
-
-            if (sku == null)
-            {
-                throw new ArgumentException($"Unable to find SKU {item.SKUID}");
-            }
-
-            if (sku.SellOnlyIfAvailable)
-            {
-                var availableQuantity = sku.AvailableItems;
-
-                if (addedQuantity > availableQuantity)
-                {
-                    throw new ArgumentException(resources.GetResourceString("Kadena.Product.LowerNumberOfAvailableProducts"));
-                }
-
-                if (resultedQuantity > availableQuantity)
-                {
-                    var errorText = string.Format(resources.GetResourceString("Kadena.Product.ItemsInCartExceeded"),
-                                                  resultedQuantity - addedQuantity,
-                                                  availableQuantity - resultedQuantity + addedQuantity);
-
-                    throw new ArgumentException(errorText);
-                }
-            }
-        }
-
-        private bool GetOtherAddressSettingsValue()
-        {
-            var settingsKey = resources.GetSiteSettingsKey(Settings.KDA_AllowCustomShippingAddress);
-            bool otherAddressAvailable = false;
-            bool.TryParse(settingsKey, out otherAddressAvailable);
-            return otherAddressAvailable;
-        }
-
-        public List<int> GetLoggedInUserCartData(int inventoryType, int userID, int campaignID = 0)
-        {
-            return shoppingCart.GetShoppingCartIDByInventoryType(inventoryType, userID, campaignID);
-        }
-
-        public DistributorCart GetCartDistributorData(int skuID, int inventoryType = 1)
-        {
-            int businessUnitsCount = businessUnitsProvider.GetUserBusinessUnits(kenticoUsers.GetCurrentUser().UserId)?.Count ?? 0;
-            if (businessUnitsCount == 0)
-            {
-                throw new Exception(resources.GetResourceString("Kadena.AddToCart.BusinessUnitError"));
-            }
-            if (inventoryType == 1 && !productsProvider.ProductHasValidSKUNumber(skuID))
-            {
-                throw new Exception(resources.GetResourceString("KDA.Cart.InvalidProduct"));
-            }
-            int availableQty = inventoryType == 1 ? skus.GetSkuAvailableQty(skuID) : -1;
-            if (availableQty == 0)
-            {
-                throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));
-            }
-            int allocatedQty = inventoryType == 1 ? shoppingCart.GetAllocatedQuantity(skuID, kenticoUsers.GetCurrentUser().UserId) : -1;
-            if (allocatedQty == 0)
-            {
-                throw new Exception(resources.GetResourceString("KDA.Cart.Update.ProductNotAllocatedMessage"));
-            }
-            return new DistributorCart()
-            {
-                SKUID = skuID,
-                CartType = inventoryType,
-                AvailableQuantity = availableQty,
-                AllocatedQuantity = allocatedQty,
-                Items = GetDistributorCartItems(skuID, inventoryType)
-            };
-        }
-
-        private List<DistributorCartItem> GetDistributorCartItems(int skuID, int inventoryType = 1)
-        {
-            CampaignsProduct product = productsProvider.GetCampaignProduct(skuID);
-            if (product == null)
-            {
-                throw new Exception("Invalid product");
-            }
-            List<AddressData> distributors = addressBookProvider.GetAddressesListByUserID(kenticoUsers.GetCurrentUser().UserId, inventoryType, product.CampaignID);
-            return distributors.Select(x =>
-            {
-                return new DistributorCartItem()
-                {
-                    DistributorID = x.AddressID,
-                    ShoppingCartID = x.DistributorShoppingCartID,
-                    Quantity = shoppingCart.GetItemQuantity(skuID, x.DistributorShoppingCartID)
-                };
-            }).ToList();
-        }
-
-        public int UpdateDistributorCarts(DistributorCart cartDistributorData)
-        {
-            if (cartDistributorData == null || (cartDistributorData != null && cartDistributorData.Items.Count <= 0))
-            {
-                throw new Exception("Invalid request");
-            }
-            CampaignsProduct product = productsProvider.GetCampaignProduct(cartDistributorData.SKUID);
-            if (product == null)
-            {
-                throw new Exception("Invalid product");
-            }
-            cartDistributorData.Items.Where(i => i.ShoppingCartID.Equals(default(int)) && i.Quantity > 0)
-                                    ?.ToList().ForEach(x => CreateDistributorCart(x, product, cartDistributorData.CartType));
-            cartDistributorData.Items.Where(i => i.ShoppingCartID > 0 && i.Quantity > 0)
-                                    ?.ToList().ForEach(x => shoppingCart.UpdateDistributorCart(x, product, cartDistributorData.CartType));
-            cartDistributorData.Items.Where(i => i.ShoppingCartID > 0 && i.Quantity == 0)
-                                    ?.ToList().ForEach(x => shoppingCart.DeleteDistributorCartItem(x.ShoppingCartID, cartDistributorData.SKUID));
-            return shoppingCart.GetDistributorCartCount(kenticoUsers.GetCurrentUser().UserId, product.CampaignID, cartDistributorData.CartType);
-        }
-
-        private void CreateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int inventoryType = 1)
-        {
-            int cartID = shoppingCart.CreateDistributorCart(distributorCartItem, product, kenticoUsers.GetCurrentUser().UserId, inventoryType);
-            shoppingCart.AddDistributorCartItem(cartID, distributorCartItem, product, inventoryType);
+            return shoppingCart.GetShoppingCartIDByInventoryType(cartType, userID, campaignID);
         }
     }
 }

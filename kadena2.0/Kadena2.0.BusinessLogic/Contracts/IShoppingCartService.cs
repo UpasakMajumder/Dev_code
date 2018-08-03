@@ -1,7 +1,7 @@
 ﻿using Kadena.Models;
-using Kadena.Models.AddToCart;
 using Kadena.Models.Checkout;
 using Kadena.Models.Product;
+using Kadena.Models.ShoppingCarts;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,8 +19,6 @@ namespace Kadena.BusinessLogic.Contracts
         CartItems RemoveItem(int id);
         CartItemsPreview ItemsPreview();
         Task<AddToCartResult> AddToCart(NewCartItem item);
-        List<int> GetLoggedInUserCartData(int inventoryType, int userID, int campaignID = 0);
-        DistributorCart GetCartDistributorData(int skuID, int inventoryType = 1);
-        int UpdateDistributorCarts(DistributorCart cartDistributorData);
+        List<int> GetLoggedInUserCartData(CampaignProductType cartType, int userID, int campaignID = 0);
     }
 }

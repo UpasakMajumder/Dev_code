@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Factories;
 using Kadena.Dto.Order;
-using Kadena.Infrastructure.Contracts;
-using Kadena.Infrastructure.FileConversion;
 using Kadena.Models.Common;
 using Kadena.Models.Orders;
 using Kadena.Models.SiteSettings;
@@ -21,7 +20,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoResourceService kenticoResources;
         private readonly IKenticoSiteProvider kenticoSiteProvider;
         private readonly IOrderViewClient orderViewClient;
-        private readonly IExcelConvert excelConvert;
+        private readonly IConvert xlsxConvert;
         private readonly IOrderReportFactory orderReportFactory;
         private readonly IMapper mapper;
         public const int DefaultCountOfOrdersPerPage = 20;
@@ -58,64 +57,36 @@ namespace Kadena.BusinessLogic.Services.Orders
         public OrderReportService(IKenticoResourceService kenticoResources,
             IKenticoSiteProvider kenticoSiteProvider,
             IOrderViewClient orderViewClient,
-            IExcelConvert excelConvert,
+            IConvert xlsxConvert,
             IOrderReportFactory orderReportFactory,
             IMapper mapper)
         {
             this.kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
             this.kenticoSiteProvider = kenticoSiteProvider ?? throw new ArgumentNullException(nameof(kenticoSiteProvider));
             this.orderViewClient = orderViewClient ?? throw new ArgumentNullException(nameof(orderViewClient));
-            this.excelConvert = excelConvert ?? throw new ArgumentNullException(nameof(excelConvert));
+            this.xlsxConvert = xlsxConvert ?? throw new ArgumentNullException(nameof(xlsxConvert));
             this.orderReportFactory = orderReportFactory ?? throw new ArgumentNullException(nameof(orderReportFactory));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public Task<PagedData<OrderReport>> GetOrders(int page, OrderFilter filter)
-        {
-            var currentSite = kenticoSiteProvider.GetCurrentSiteCodeName();
-            return GetOrdersForSite(currentSite, page, filter);
-        }
-
-        public async Task<PagedData<OrderReport>> GetOrdersForSite(string site, int page, OrderFilter filter)
+        public async Task<PagedData<OrderReportViewItem>> GetOrdersForSite(string site, int page, OrderFilter filter)
         {
             var orderFilter = CreateOrderListFilter(filter, site, page);
-            var ordersDto = await orderViewClient.GetOrders(orderFilter).ConfigureAwait(false);
-            var orders = ordersDto.Payload?.Orders ?? new List<RecentOrderDto>();
+            var orders = await GetOrders(orderFilter);
 
-            if (orders.Count() > 0)
+            return new PagedData<OrderReportViewItem>
             {
-                var pagesCount = ordersDto.Payload.TotalCount / OrdersPerPage;
-                if (ordersDto.Payload.TotalCount % OrdersPerPage > 0)
-                {
-                    pagesCount++;
-                }
-
-                return new PagedData<OrderReport>
-                {
-                    Pagination = new Pagination
-                    {
-                        CurrentPage = page,
-                        RowsCount = ordersDto.Payload.TotalCount,
-                        RowsOnPage = OrdersPerPage,
-                        PagesCount = pagesCount
-                    },
-                    Data = orders
-                        .Select(o => orderReportFactory.Create(o))
-                        .ToList()
-                };
-            }
-
-            return PagedData<OrderReport>.Empty();
+                Pagination = orders.Pagination,
+                Data = orderReportFactory.CreateReportView(orders.Data).ToList()
+            };
         }
 
-        public TableView ConvertOrdersToView(PagedData<OrderReport> orders)
+        public async Task<TableView> ConvertOrdersToView(int page, OrderFilter filter)
         {
-            if (orders == null)
-            {
-                throw new ArgumentNullException(nameof(orders));
-            }
-            var report = orderReportFactory.CreateReportView(orders.Data);
-            var table = orderReportFactory.CreateTableView(report);
+            var currentSite = kenticoSiteProvider.GetCurrentSiteCodeName();
+            var orders = await GetOrdersForSite(currentSite, page, filter);
+
+            var table = orderReportFactory.CreateTableView(orders.Data);
             table.Pagination = orders.Pagination;
 
             return table;
@@ -130,22 +101,51 @@ namespace Kadena.BusinessLogic.Services.Orders
         public async Task<FileResult> GetOrdersExportForSite(string site, OrderFilter filter)
         {
             var orderFilter = CreateOrderListFilter(filter, site);
-            var ordersDto = await orderViewClient.GetOrders(orderFilter).ConfigureAwait(false);
-            var orders = ordersDto.Payload?.Orders ?? new List<RecentOrderDto>();
+            var orders = await GetOrders(orderFilter);
 
-            var ordersReport = orders.Select(o => orderReportFactory.Create(o));
-            var report = orderReportFactory.CreateReportView(ordersReport);
+            var report = orderReportFactory.CreateReportView(orders.Data);
             var tableView = orderReportFactory.CreateTableView(report);
 
-            var fileDataTable = mapper.Map<Table>(tableView);
             var fileResult = new FileResult
             {
-                Data = excelConvert.Convert(fileDataTable),
+                Data = xlsxConvert.GetBytes(tableView),
                 Name = "export.xlsx",
                 Mime = ContentTypes.Xlsx
             };
 
             return fileResult;
+        }
+
+        private async Task<PagedData<RecentOrderDto>> GetOrders(OrderListFilter orderFilter)
+        {
+            var ordersDto = await orderViewClient.GetOrders(orderFilter).ConfigureAwait(false);
+            var orders = ordersDto.Payload?.Orders ?? new List<RecentOrderDto>();
+
+            if (orders.Count() > 0)
+            {
+                var pagesCount = ordersDto.Payload.TotalCount / OrdersPerPage;
+                if (ordersDto.Payload.TotalCount % OrdersPerPage > 0)
+                {
+                    pagesCount++;
+                }
+
+                return new PagedData<RecentOrderDto>
+                {
+                    Pagination = new Pagination
+                    {
+                        CurrentPage = orderFilter.PageNumber ?? 0,
+                        RowsCount = ordersDto.Payload.TotalCount,
+                        RowsOnPage = OrdersPerPage,
+                        PagesCount = pagesCount
+                    },
+                    Data = orders.ToList()
+                };
+            }
+
+            return new PagedData<RecentOrderDto>
+            {
+                Data = orders.ToList()
+            };
         }
 
         private OrderListFilter CreateOrderListFilter(OrderFilter filter, string site, int page)

@@ -5,6 +5,7 @@ using Kadena.Models.AddToCart;
 using Kadena.Models.Checkout;
 using Kadena.Models.CustomerData;
 using Kadena.Models.Product;
+using Kadena.Models.ShoppingCarts;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
@@ -28,9 +29,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         PaymentMethod GetPaymentMethod(int id);
 
         void SetShoppingCartAddress(int addressId);
-
-        void SetShoppingCartAddress(DeliveryAddress address);
-        int SetTemporaryShoppingCartAddress(DeliveryAddress address);
 
         void SelectShipping(int shippingOptionsId);
 
@@ -56,10 +54,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         ShoppingCartInfo GetShoppingCartByID(int cartID);
 
-        List<int> GetShoppingCartIDs(WhereCondition where);
-
-        List<ShoppingCartItemInfo> GetShoppingCartItemsByCartIDs(List<int> cartIDs);
-
         void UpdateBusinessUnit(ShoppingCartInfo cart, long businessUnitID);
 
         bool IsCartContainsInvalidProduct(int shoppingCartId = 0);
@@ -70,24 +64,28 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         bool ValidateAllCarts(int userID = 0, int campaignID = 0);
 
-        List<int> GetShoppingCartIDByInventoryType(int inventoryType, int userID, int campaignID = 0);
+        List<int> GetShoppingCartIDByInventoryType(CampaignProductType cartType, int userID, int campaignID = 0);
 
         int GetPreBuyDemandCount(int SKUID);
 
-        int GetDistributorCartID(int distributorID, int inventoryType = 1, int campaignID = 0);
-
-        int GetAllocatedQuantity(int SKUID, int userID);
+        int GetDistributorCartID(int distributorID, CampaignProductType cartType = CampaignProductType.GeneralInventory, int campaignID = 0);
 
         int GetItemQuantity(int SKUID, int shoppingCartID);
 
-        int CreateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int userID, int inventoryType = 1);
+        int CreateDistributorCart(int distributorId, int campaignId, int programId, int userID, CampaignProductType cartType = CampaignProductType.GeneralInventory);
 
-        void UpdateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int inventoryType = 1);
+        void UpdateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, CampaignProductType cartType = CampaignProductType.GeneralInventory);
 
-        void AddDistributorCartItem(int cartID, DistributorCartItem distributorCartItem, CampaignsProduct product, int inventoryType = 1);
+        void AddDistributorCartItem(int cartID, DistributorCartItem distributorCartItem, CampaignsProduct product, CampaignProductType cartType = CampaignProductType.GeneralInventory);
 
         void DeleteDistributorCartItem(int cartID, int SKUID);
 
-        int GetDistributorCartCount(int userID, int campaignID, int inventoryType = 1);        
+        int GetDistributorCartCount(int userID, int campaignID, CampaignProductType cartType = CampaignProductType.GeneralInventory);
+
+        decimal GetCartWeight(int cartId);
+
+        void DeleteShoppingCart(int cartId);
+
+        ShoppingCart GetShoppingCart(int cartId, string orderType);
     }
 }

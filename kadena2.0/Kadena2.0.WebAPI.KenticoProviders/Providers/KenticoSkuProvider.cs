@@ -25,6 +25,12 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             return mapper.Map<Sku>(skuInfo);
         }
 
+        public Sku[] GetSKUsByIds(int[] skuIds)
+        {
+            var skuInfos = SKUInfoProvider.GetSKUs().WhereIn("SKUID", skuIds).ToArray();
+            return mapper.Map<Sku[]>(skuInfos);
+        }
+
         public void UpdateSkuMandatoryFields(Sku sku)
         {
             var skuInfo = SKUInfoProvider.GetSKUInfo(sku.SkuId);
@@ -35,7 +41,6 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
 
             skuInfo.SKUWeight = sku.Weight;
             skuInfo.SKUNeedsShipping = sku.NeedsShipping;
-            skuInfo.SetValue("SKUNumberOfItemsInPackage", sku.NumberOfItemsInPackage);
             skuInfo.Update();
         }
 
@@ -44,15 +49,6 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             var attributeSet = new ProductAttributeSet(optionIds);
             var variant = VariantHelper.GetProductVariant(skuId, attributeSet);
             return mapper.Map<Sku>(variant);
-        }
-        public void SetSkuAvailableQty(int skuid, int qty)
-        {
-            SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
-            if (sku != null)
-            {
-                sku.SKUAvailableItems = sku.SKUAvailableItems - qty;
-                sku.Update();
-            }
         }
 
         public int GetSkuAvailableQty(int skuid)
@@ -64,7 +60,11 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
         public void SetSkuAvailableQty(string skunumber, int availableItems)
         {
             var sku = SKUInfoProvider.GetSKUs().WhereEquals("SKUNumber", skunumber).FirstOrDefault();
+            SetAvailableItems(sku, availableItems);
+        }
 
+        private static void SetAvailableItems(SKUInfo sku, int availableItems)
+        {
             if (sku != null)
             {
                 sku.SKUAvailableItems = availableItems;
@@ -72,6 +72,13 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 sku.MakeComplete(true);
                 sku.Update();
             }
+        }
+
+        public void UpdateAvailableQuantity(int skuId, int addQuantity)
+        {
+            // TODO for future, improve Availability methods to be thread safe 
+            var sku = SKUInfoProvider.GetSKUInfo(skuId);
+            SetAvailableItems(sku, sku.SKUAvailableItems + addQuantity);
         }
 
         public Price GetSkuPrice(int skuId)

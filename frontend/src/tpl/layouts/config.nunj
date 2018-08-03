@@ -156,6 +156,11 @@
           ],
           usePolicy: true,
           info: 'Hello <br> How Are you? <br> Nice!'
+        },
+        loginModal: {
+          body: 'Your account was successfully created. Click the login link below to access the storefront.',
+          btnLabel: 'Login',
+          title: 'Registration successful'
         }
       },
       login: {

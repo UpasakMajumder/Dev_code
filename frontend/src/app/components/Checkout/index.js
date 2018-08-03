@@ -24,7 +24,6 @@ import {
   changePaymentMethod
 } from 'app.ac/checkout';
 import { changeProducts } from 'app.ac/cartPreview';
-import toggleEmailProof from 'app.ac/emailProof';
 import { addAddress as saveAddress } from 'app.ac/settingsAddresses';
 /* local components */
 import DeliveryAddress from './DeliveryAddress';
@@ -50,9 +49,24 @@ class Checkout extends Component {
       },
       agreeWithTandC: !CHECKOUT.tAndC.exists,
       initChecked: true,
-      scrolled: false
+      scrolled: false,
+      emailProof: {
+        show: false,
+        url: ''
+      }
     };
   }
+
+  toggleEmailProof = (url) => {
+    this.setState((prevState) => {
+      return {
+        emailProof: {
+          show: !prevState.emailProof.show,
+          url
+        }
+      };
+    });
+  };
 
   changeInput = (id, value) => {
     this.setState({
@@ -62,6 +76,7 @@ class Checkout extends Component {
       }
     });
   };
+
 
   removeInput = (id) => {
     const items = this.state.items.filter(item => item.id !== id);
@@ -373,7 +388,11 @@ class Checkout extends Component {
 
       content = (
         <div>
-          {this.props.emailProof.show && <EmailProof />}
+          <EmailProof
+            open={this.state.emailProof.show}
+            toggleEmailProof={this.toggleEmailProof}
+            emailProofUrl={this.state.emailProof.url}
+          />
           {welcomeMessage}
           <div className="shopping-cart__block">
             <Products
@@ -381,7 +400,7 @@ class Checkout extends Component {
               disableInteractivity={!totals}
               changeProductQuantity={changeProductQuantity}
               ui={products}
-              toggleEmailProof={this.props.toggleEmailProof}
+              toggleEmailProof={this.toggleEmailProof}
             />
           </div>
 
@@ -426,12 +445,12 @@ class Checkout extends Component {
 }
 
 export default connect((state) => {
-  const { checkout, emailProof } = state;
+  const { checkout } = state;
 
   const { redirectURL } = checkout.sendData;
   if (redirectURL) location.assign(redirectURL);
 
-  return { checkout, emailProof };
+  return { checkout };
 }, {
   getUI,
   initCheckedShoppingData,
@@ -443,6 +462,5 @@ export default connect((state) => {
   saveAddress,
   changeDeliveryAddress,
   changeDeliveryMethod,
-  changePaymentMethod,
-  toggleEmailProof
+  changePaymentMethod
 })(Checkout);

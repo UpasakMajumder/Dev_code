@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Text;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 
@@ -64,7 +64,6 @@ public partial class CMSAdminControls_UI_UniSelector_Controls_SelectionDialog : 
     private string mGlobalObjectSuffix;
 
     private Hashtable parameters;
-    private readonly Dictionary<string, string> hashItems = new Dictionary<string, string>();
 
     private string mSearchColumns;
     private string mZeroRowsText;
@@ -293,14 +292,21 @@ public partial class CMSAdminControls_UI_UniSelector_Controls_SelectionDialog : 
         base.OnInit(e);
 
         LoadParameters();
-
-        LoadCustomFilter();
+        if (!RequestHelper.IsCallback())
+        {
+            LoadCustomFilter();
+        }
     }
 
 
     protected override void OnLoad(EventArgs e)
     {
         base.OnLoad(e);
+
+        if (RequestHelper.IsCallback())
+        {
+            return;
+        }
 
         uniGrid.IsLiveSite = IsLiveSite;
         if (!RequestHelper.IsPostBack())
@@ -317,183 +323,6 @@ public partial class CMSAdminControls_UI_UniSelector_Controls_SelectionDialog : 
         hdnDrpId = QueryHelper.GetString("selectElem", string.Empty);
         hashId = QueryHelper.GetString("hashElem", string.Empty);
         parentClientId = QueryHelper.GetControlClientId("clientId", string.Empty);
-
-        string stringValuesSeparator = valuesSeparator.ToString();
-        string scriptValuesSeparator = ScriptHelper.GetString(stringValuesSeparator);
-        string regexEscapedValuesSeparator = ScriptHelper.GetString(Regex.Escape(stringValuesSeparator), false);
-
-        // Buttons scripts
-        string buttonsScript = "function US_Cancel(){ Cancel(); return false; }";
-
-        switch (selectionMode)
-        {
-            // Button modes
-            case SelectionModeEnum.SingleButton:
-            case SelectionModeEnum.MultipleButton:
-                buttonsScript += "function US_Submit(){ SelectItems(escape(ItemsElem().value),HashElem().value); return false; }";
-                break;
-
-            // Textbox modes
-            case SelectionModeEnum.SingleTextBox:
-            case SelectionModeEnum.MultipleTextBox:
-                if (allowEditTextBox && !mHasDependingFields)
-                {
-                    buttonsScript += "function US_Submit(){ SelectItems(escape(ItemsElem().value), escape(ItemsElem().value.replace(/^" + regexEscapedValuesSeparator + "+|" + regexEscapedValuesSeparator + "+$/g, '')), " + ScriptHelper.GetString(hdnClientId) + ", " + ScriptHelper.GetString(txtClientId) + ", " + ScriptHelper.GetString(hashId) + ", HashElem().value); return false; }";
-                }
-                else if (mHasDependingFields)
-                {
-                    buttonsScript += "function US_Submit(){ SelectItemsReload(escape(ItemsElem().value), escape(ItemsElem().value.replace(/^" + regexEscapedValuesSeparator + "+|" + regexEscapedValuesSeparator + "+$/g, '')), " + ScriptHelper.GetString(hdnClientId) + ", " + ScriptHelper.GetString(txtClientId) + ", " + ScriptHelper.GetString(hdnDrpId) + ", " + ScriptHelper.GetString(hashId) + ", HashElem().value); return false; }";
-                }
-                else
-                {
-                    buttonsScript += "function US_Submit(){ SelectItemsReload(escape(ItemsElem().value), escape(nameElem.value), " + ScriptHelper.GetString(hdnClientId) + ", " + ScriptHelper.GetString(txtClientId) + ", " + ScriptHelper.GetString(hdnDrpId) + ", " + ScriptHelper.GetString(hashId) + ", HashElem().value); return false; }";
-                }
-                break;
-
-            // Other modes
-            default:
-                buttonsScript += "function US_Submit(){ SelectItemsReload(escape(ItemsElem().value), escape(nameElem.value), " + ScriptHelper.GetString(hdnClientId) + ", " + ScriptHelper.GetString(txtClientId) + ", " + ScriptHelper.GetString(hdnDrpId) + ", " + ScriptHelper.GetString(hashId) + ", HashElem().value); return false; }";
-                break;
-        }
-
-        string script;
-
-        switch (selectionMode)
-        {
-            // Button modes
-            case SelectionModeEnum.SingleButton:
-            case SelectionModeEnum.MultipleButton:
-                {
-                    // Register javascript code
-                    if (callbackMethod == null)
-                    {
-                        script = string.Format("function SelectItems(items,hash) {{ wopener.US_SelectItems_{0}(items,hash); CloseDialog(); }}", parentClientId);
-                    }
-                    else
-                    {
-                        script = string.Format("function SelectItems(items,hash) {{ wopener.{0}(items.replace(/^{1}+|{1}+$/g, ''),hash); CloseDialog(); }}", callbackMethod, regexEscapedValuesSeparator);
-                    }
-                }
-                break;
-
-            // Selector modes
-            default:
-                {
-                    // Register javascript code
-                    script = @"
-function SelectItems(items, names, hiddenFieldId, txtClientId, hashClientId, hash) {
-    wopener.US_SetItems(items, names, hiddenFieldId, txtClientId, null, hashClientId, hash);" +
-(fireOnChanged ? "wopener.US_SelectionChanged_" + parentClientId + "();" : "")
-+ @"
-    return CloseDialog(); 
-}
-
-function SelectItemsReload(items, names, hiddenFieldId, txtClientId, hidValue, hashClientId, hash) {
-    wopener.US_SetItems(items, names, hiddenFieldId, txtClientId, hidValue, hashClientId, hash);
-
-    wopener.US_ReloadPage_" + parentClientId + @"();
-    return CloseDialog();
-}";
-                }
-                break;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.Append(@"
-var nameElem = document.getElementById('", hidName.ClientID, @"');
-
-function ItemsElem() {
-    return document.getElementById('", hidItem.ClientID, @"');
-}
-
-function HashElem() {
-    return document.getElementById('", hidHash.ClientID, @"');
-}
-
-function SetHash(hashvalue) {
-    var hashElem = HashElem();
-    if (hashElem != null) {
-        hashElem.value = hashvalue;
-    }
-}
-
-function UpdateCheckboxAllElement() {
-    var checked = true;
-    var checkboxes = document.getElementsByClassName('chckbox');
-
-    for(var i = 0; i < checkboxes.length; i++) {
-        var chkbox = checkboxes[i];
-
-        if (!chkbox.checked) {
-            checked = false;
-            break;
-        }
-    }
-
-    var chkAll = GetCheckboxAllElement();
-
-    if (chkAll != null && chkAll.checked != checked) {
-        chkAll.checked = checked;
-    }
-}
-
-function ProcessItem(chkbox, hash, changeChecked, getHash) {
-    var itemsElem = ItemsElem();
-    var items = itemsElem.value;
-    var checkHash = '';
-    if (chkbox != null) {
-        var item = chkbox.id.substr(3);
-        if (changeChecked) {
-            chkbox.checked = !chkbox.checked;
-        }
-        if (chkbox.checked) {
-            if (items == '') {
-                itemsElem.value = ", scriptValuesSeparator, @" + item + ", scriptValuesSeparator, @";
-            }
-            else if (items.toLowerCase().indexOf(", scriptValuesSeparator, @" + item.toLowerCase() + ", scriptValuesSeparator, @") < 0)
-            {
-                itemsElem.value += item + ", scriptValuesSeparator, @";
-            }
-        }
-        else
-        {
-            var re = new RegExp('", regexEscapedValuesSeparator, @"' + item + '", regexEscapedValuesSeparator, @"', 'i');
-            itemsElem.value = items.replace(re, ", scriptValuesSeparator, @");
-        }
-        checkHash = '|' + item + '#' + hash;
-    }
-    else
-    {
-        checkHash = '|' + items + '#' + hash;
-    }
-    if (getHash) {
-        ", Page.ClientScript.GetCallbackEventReference(this, "itemsElem.value + checkHash", "SetHash", null), @";
-    }
-}
-
-function Cancel() { CloseDialog(); }
-
-function SelectAllItems(checkbox, hash) {
-    var itemsElem = ItemsElem();
-    itemsElem.value = '';
-    SetHash('", ValidationHelper.GetHashString(""), @"');
-    var checkboxes = document.getElementsByClassName('chckbox');
-    var checked = checkbox.checked;
-    for(var i = 0; i < checkboxes.length; i++) {
-        var chkbox = checkboxes[i];
-
-        chkbox.checked = checked;
-
-        if (checked) {
-            ProcessItem(chkbox, null, false, false);
-        }
-    }
-    if (checked) {
-        ProcessItem(null, hash, false, true);
-    }
-}");
-
-        ltlScript.Text = ScriptHelper.GetScript(script + sb + buttonsScript);
     }
 
 
@@ -509,6 +338,9 @@ function SelectAllItems(checkbox, hash) {
 
         // Load the grid data
         ReloadGrid();
+
+        // Register client scripts
+        RegisterBaseClientScripts();
 
         if (uniGrid.GridView.HeaderRow != null)
         {
@@ -526,10 +358,7 @@ function SelectAllItems(checkbox, hash) {
                             ToolTip = GetString("UniSelector.CheckAll"),
                             Checked = allRowsChecked
                         };
-
-                        // Prepare string for hash
-                        string values = String.Join(valuesSeparator.ToString(), hashItems.Keys);
-                        chkAll.Attributes.Add("onclick", String.Format("SelectAllItems(this,'{0}')", ValidationHelper.GetHashString(values)));
+                        chkAll.Attributes.Add("onclick", "SelectAllItems(this)");
 
                         uniGrid.GridView.HeaderRow.Cells[0].Controls.Clear();
                         uniGrid.GridView.HeaderRow.Cells[0].Controls.Add(chkAll);
@@ -537,7 +366,8 @@ function SelectAllItems(checkbox, hash) {
 
                         uniGrid.GridView.HeaderRow.Cells[1].Text = GetString("general.itemname");
 
-                        ltlScript.Text += ScriptHelper.GetScript(@"function GetCheckboxAllElement() { return document.getElementById('" + chkAll.ClientID + @"'); }");
+                        // Register client scripts for multiple modes
+                        RegisterMultipleModeClientScripts(chkAll.ClientID);
                     }
                     break;
 
@@ -577,18 +407,11 @@ function SelectAllItems(checkbox, hash) {
 
                     // Get item ID
                     string itemID = drv[returnColumnName].ToString();
-                    string hashKey = itemID;
 
                     // Add global object name prefix if required
                     if (AddGlobalObjectNamePrefix && HasSiteIdColumn(ti) && (DataHelper.GetIntValue(drv.Row, ti.SiteIDColumn) == 0))
                     {
                         itemID = "." + itemID;
-                    }
-
-                    // Store hash codes for grid items
-                    if (!hashItems.ContainsKey(hashKey))
-                    {
-                        hashItems.Add(hashKey, ValidationHelper.GetHashString(itemID));
                     }
 
                     // Add checkbox for multiple selection
@@ -600,7 +423,7 @@ function SelectAllItems(checkbox, hash) {
                         {
                             var itemWithSeparators = string.Format("{0}{1}{0}", valuesSeparator, itemID);
 
-                            string checkBox = string.Format("<span class=\"checkbox\"><input id=\"chk{0}\" type=\"checkbox\" onchange=\"UpdateCheckboxAllElement();\" onclick=\"ProcessItem(this,'{1}',false,true);\" class=\"chckbox\" ", itemID, hashItems[hashKey]);
+                            string checkBox = string.Format("<span class=\"checkbox\"><input id=\"chk{0}\" type=\"checkbox\" onclick=\"ProcessItem(this,false); UpdateCheckboxAllElement();\" class=\"chckbox\" ", itemID);
                             if (hidItem.Value.IndexOf(itemWithSeparators, StringComparison.OrdinalIgnoreCase) >= 0)
                             {
                                 checkBox += "checked=\"checked\" ";
@@ -629,7 +452,6 @@ function SelectAllItems(checkbox, hash) {
 
                     // Get item ID
                     string itemID = drv[returnColumnName].ToString();
-                    string hashKey = itemID;
 
                     // Get item name
                     string itemName;
@@ -695,7 +517,7 @@ function SelectAllItems(checkbox, hash) {
                             case SelectionModeEnum.Multiple:
                             case SelectionModeEnum.MultipleTextBox:
                             case SelectionModeEnum.MultipleButton:
-                                onclick = string.Format("ProcessItem(document.getElementById('chk{0}'),'{1}',true,true); return false;", ScriptHelper.GetString(itemID).Trim('\''), hashItems[hashKey]);
+                                onclick = string.Format("ProcessItem(document.getElementById('chk{0}'),true); UpdateCheckboxAllElement(); return false;", ScriptHelper.GetString(itemID).Trim('\''));
                                 break;
 
                             case SelectionModeEnum.SingleButton:
@@ -912,6 +734,21 @@ function SelectAllItems(checkbox, hash) {
                 ItemPrefix = itemPrefix;
             }
 
+            // Init object
+            if (!string.IsNullOrEmpty(objectType))
+            {
+                iObjectType = ModuleManager.GetReadOnlyObject(objectType);
+                if (iObjectType == null)
+                {
+                    throw new Exception("[UniSelector.SelectionDialog]: Object type '" + objectType + "' not found.");
+                }
+
+                if (returnColumnName == null)
+                {
+                    returnColumnName = iObjectType.TypeInfo.IDColumn;
+                }
+            }
+
             // Pre-select unigrid values passed from parent window
             if (!RequestHelper.IsPostBack())
             {
@@ -919,7 +756,6 @@ function SelectAllItems(checkbox, hash) {
                 if (!String.IsNullOrEmpty(values))
                 {
                     hidItem.Value = values;
-                    hidHash.Value = ValidationHelper.GetHashString(hidItem.Value);
                     parameters["Values"] = null;
                 }
             }
@@ -932,22 +768,8 @@ function SelectAllItems(checkbox, hash) {
     /// </summary>
     private void LoadControls()
     {
-        // Load objects
-        if (!String.IsNullOrEmpty(objectType))
-        {
-            iObjectType = ModuleManager.GetReadOnlyObject(objectType);
-            if (iObjectType == null)
-            {
-                throw new Exception("[UniSelector.SelectionDialog]: Object type '" + objectType + "' not found.");
-            }
-
-            if (returnColumnName == null)
-            {
-                returnColumnName = iObjectType.TypeInfo.IDColumn;
-            }
-        }
-
         mSearchColumns = GetSearchColumns();
+
         // Display default name filter only if search columns are specified
         if (useDefaultNameFilter && (!String.IsNullOrEmpty(mSearchColumns) || !String.IsNullOrEmpty(additionalSearchColumns) || (displayNameFormat == UniSelector.USER_DISPLAY_FORMAT)))
         {
@@ -984,18 +806,17 @@ function SelectAllItems(checkbox, hash) {
     /// <summary>
     /// Returns dataset for specified GeneralizedInfo.
     /// </summary>
-    /// <param name="returnColumn">Return column</param>
-    private DataSet GetData(string returnColumn)
+    private DataSet GetData(bool applyFilter = true)
     {
         int totalRecords = 0;
-        return GetData(returnColumn, 0, 0, ref totalRecords, true);
+        return GetData(0, 0, ref totalRecords, true, applyFilter);
     }
 
 
     /// <summary>
     /// Returns dataset for specified GeneralizedInfo.
     /// </summary>
-    private DataSet GetData(string returnColumn, int offset, int maxRecords, ref int totalRecords, bool selection)
+    private DataSet GetData(int offset, int maxRecords, ref int totalRecords, bool selection, bool applyFilter = true)
     {
         // If object type is set
         if (iObjectType != null)
@@ -1022,7 +843,7 @@ function SelectAllItems(checkbox, hash) {
             }
 
             // Add return column name
-            columns = SqlHelper.MergeColumns(columns, returnColumn);
+            columns = SqlHelper.MergeColumns(columns, returnColumnName);
 
             // Add additional columns
             columns = SqlHelper.MergeColumns(columns, additionalColumns);
@@ -1041,7 +862,11 @@ function SelectAllItems(checkbox, hash) {
                 columns = SqlHelper.MergeColumns(columns, ti.SiteIDColumn);
             }
 
-            string where = SqlHelper.AddWhereCondition(whereCondition, FilterWhere);
+            string where = whereCondition;
+            if (applyFilter)
+            {
+                where = SqlHelper.AddWhereCondition(where, FilterWhere);
+            }
             if (!String.IsNullOrEmpty(uniGrid.WhereClause))
             {
                 where = SqlHelper.AddWhereCondition(where, uniGrid.WhereClause);
@@ -1088,24 +913,20 @@ function SelectAllItems(checkbox, hash) {
                         ds = q.Result;
                         LocalizeAndFilterDataSet(ds, displayNameColumn, TrimmedSearchText);
                         SortDataSetTable(ds, displayNameColumn);
-                        
+
                         totalRecords = ds.Tables[0].Rows.Count;
                         return ds;
                     }
-                    else
-                    {
-                        totalRecords = 0;
-                        return null;
-                    }
-                }
-                else
-                {
-                    q.Offset = offset;
-                    q.MaxRecords = maxRecords;
 
-                    ds = q.Result;
-                    totalRecords = q.TotalRecords;
+                    totalRecords = 0;
+                    return null;
                 }
+
+                q.Offset = offset;
+                q.MaxRecords = maxRecords;
+
+                ds = q.Result;
+                totalRecords = q.TotalRecords;
             }
             catch (Exception ex)
             {
@@ -1116,10 +937,28 @@ function SelectAllItems(checkbox, hash) {
 
             return ds;
         }
-        else
+
+        totalRecords = 0;
+        return null;
+    }
+
+
+    /// <summary>
+    /// Updates the <paramref name="dataSet"/> and adds global object name prefixes.
+    /// </summary>
+    private void AddGlobalObjectNamePrefixes(DataSet dataSet)
+    {
+        var typeInfo = iObjectType.TypeInfo;
+
+        if (AddGlobalObjectNamePrefix && HasSiteIdColumn(typeInfo))
         {
-            totalRecords = 0;
-            return null;
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                if (row[typeInfo.SiteIDColumn] == DBNull.Value)
+                {
+                    row[returnColumnName] = "." + row[returnColumnName];
+                }
+            }
         }
     }
 
@@ -1268,7 +1107,7 @@ function SelectAllItems(checkbox, hash) {
         // Reload data set with new page index
         if (uniGrid.DataSource == null)
         {
-            uniGrid.DataSource = GetData(returnColumnName, offset, uniGrid.Pager.CurrentPageSize, ref totalRecords, false);
+            uniGrid.DataSource = GetData(offset, uniGrid.Pager.CurrentPageSize, ref totalRecords, false);
             uniGrid.PagerForceNumberOfResults = totalRecords;
         }
 
@@ -1308,9 +1147,11 @@ function SelectAllItems(checkbox, hash) {
     private void UpdateHiddenFields(bool isSelectAllAction)
     {
         // Get all values
-        DataSet ds = GetData(returnColumnName);
+        DataSet ds = GetData();
         if (!DataHelper.DataSourceIsEmpty(ds))
         {
+            AddGlobalObjectNamePrefixes(ds);
+
             var values = hidItem.Value.Split(new[] { valuesSeparator }, StringSplitOptions.RemoveEmptyEntries).ToHashSet();
 
             // Process all items
@@ -1329,10 +1170,194 @@ function SelectAllItems(checkbox, hash) {
             }
 
             hidItem.Value = string.Format("{0}{1}{0}", valuesSeparator, values.Join(valuesSeparator.ToString()));
-            hidHash.Value = ValidationHelper.GetHashString(hidItem.Value);
         }
 
         pnlHidden.Update();
+    }
+
+
+    private void RegisterBaseClientScripts()
+    {
+        string stringValuesSeparator = valuesSeparator.ToString();
+        string scriptValuesSeparator = ScriptHelper.GetString(stringValuesSeparator);
+        string regexEscapedValuesSeparator = ScriptHelper.GetString(Regex.Escape(stringValuesSeparator), false);
+
+        string script;
+
+        switch (selectionMode)
+        {
+            // Button modes
+            case SelectionModeEnum.SingleButton:
+            case SelectionModeEnum.MultipleButton:
+                {
+                    // Register javascript code
+                    if (callbackMethod == null)
+                    {
+                        script = string.Format("function SelectItems(items,hash) {{ wopener.US_SelectItems_{0}(items,hash); CloseDialog(); }}", parentClientId);
+                    }
+                    else
+                    {
+                        script = string.Format("function SelectItems(items,hash) {{ wopener.{0}(items.replace(/^{1}+|{1}+$/g, ''),hash); CloseDialog(); }}", callbackMethod, regexEscapedValuesSeparator);
+                    }
+                }
+                break;
+
+            // Selector modes
+            default:
+                {
+                    // Register javascript code
+                    script = @"
+function SelectItems(items, names, hiddenFieldId, txtClientId, hashClientId, hash) {
+    wopener.US_SetItems(items, names, hiddenFieldId, txtClientId, null, hashClientId, hash);" +
+(fireOnChanged ? "wopener.US_SelectionChanged_" + parentClientId + "();" : "")
++ @"
+    return CloseDialog(); 
+}
+
+function SelectItemsReload(items, names, hiddenFieldId, txtClientId, hidValue, hashClientId, hash) {
+    wopener.US_SetItems(items, names, hiddenFieldId, txtClientId, hidValue, hashClientId, hash);
+
+    wopener.US_ReloadPage_" + parentClientId + @"();
+    return CloseDialog();
+}";
+                }
+                break;
+        }
+
+        script += string.Format(@"
+function ItemsElem() {{
+    return document.getElementById('{0}');
+}}
+
+function GetCheckboxValue(chkbox) {{
+    return chkbox.id.substr(3);
+}}
+
+function ProcessItem(chkbox, changeChecked) {{
+    var itemsElem = ItemsElem();
+    var items = itemsElem.value;
+    if (chkbox != null) {{
+        var item = GetCheckboxValue(chkbox);
+        if (changeChecked) {{
+            chkbox.checked = !chkbox.checked;
+        }}
+        if (chkbox.checked) {{
+            if (items == '') {{
+                itemsElem.value = {1} + item + {1};
+            }}
+            else if (items.toLowerCase().indexOf({1} + item.toLowerCase() + {1}) < 0) {{
+                itemsElem.value += item + {1};
+            }}
+        }}
+        else
+        {{
+            var re = new RegExp('{2}' + item + '{2}', 'i');
+            itemsElem.value = items.replace(re, {1});
+        }}
+    }}
+}}
+", hidItem.ClientID, scriptValuesSeparator, regexEscapedValuesSeparator);
+
+        ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "SelectionDialog_" + ClientID, script, true);
+    }
+
+
+    private void RegisterMultipleModeClientScripts(string checkboxAllClientId)
+    {
+        // Register scripts for multiple modes
+        string stringValuesSeparator = valuesSeparator.ToString();
+        string regexEscapedValuesSeparator = ScriptHelper.GetString(Regex.Escape(stringValuesSeparator), false);
+
+        string script = "function ProcessResult(items, hash){";
+
+        switch (selectionMode)
+        {
+            // Button modes
+            case SelectionModeEnum.MultipleButton:
+                script += "SelectItems(escape(items),hash);";
+                break;
+
+            // Textbox modes
+            case SelectionModeEnum.MultipleTextBox:
+                if (allowEditTextBox && !mHasDependingFields)
+                {
+                    script += "SelectItems(escape(items), escape(items.replace(/^" + regexEscapedValuesSeparator + "+|" + regexEscapedValuesSeparator + "+$/g, '')), " + ScriptHelper.GetString(hdnClientId) + ", " + ScriptHelper.GetString(txtClientId) + ", " + ScriptHelper.GetString(hashId) + ", hash);";
+                }
+                else if (mHasDependingFields)
+                {
+                    script += "SelectItemsReload(escape(items), escape(items.replace(/^" + regexEscapedValuesSeparator + "+|" + regexEscapedValuesSeparator + "+$/g, '')), " + ScriptHelper.GetString(hdnClientId) + ", " + ScriptHelper.GetString(txtClientId) + ", " + ScriptHelper.GetString(hdnDrpId) + ", " + ScriptHelper.GetString(hashId) + ", hash);";
+                }
+                else
+                {
+                    script += "SelectItemsReload(escape(items), '', " + ScriptHelper.GetString(hdnClientId) + ", " + ScriptHelper.GetString(txtClientId) + ", " + ScriptHelper.GetString(hdnDrpId) + ", " + ScriptHelper.GetString(hashId) + ", hash);";
+                }
+                break;
+
+            // Other modes
+            default:
+                script += "SelectItemsReload(escape(items), '', " + ScriptHelper.GetString(hdnClientId) + ", " + ScriptHelper.GetString(txtClientId) + ", " + ScriptHelper.GetString(hdnDrpId) + ", " + ScriptHelper.GetString(hashId) + ", hash);";
+                break;
+        }
+
+        script += @"}
+function GetCheckboxAllElement() {
+    return document.getElementById('" + checkboxAllClientId + @"');
+}
+
+function UpdateCheckboxAllElement() {
+    var checked = true;
+    var checkboxes = document.getElementsByClassName('chckbox');
+
+    for(var i = 0; i < checkboxes.length; i++) {
+        var chkbox = checkboxes[i];
+
+        if (!chkbox.checked) {
+            checked = false;
+            break;
+        }
+    }
+
+    var chkAll = GetCheckboxAllElement();
+
+    if (chkAll != null && chkAll.checked != checked) {
+        chkAll.checked = checked;
+    }
+}
+
+function SelectAllItems(checkbox) {
+    var checkboxes = document.getElementsByClassName('chckbox');
+    var checked = checkbox.checked;
+    
+    for(var i = 0; i < checkboxes.length; i++) {
+        var chkbox = checkboxes[i];
+        chkbox.checked = checked;
+
+        ProcessItem(chkbox, false);
+    }
+}
+
+function GetHash() {
+    " + Page.ClientScript.GetCallbackEventReference(this, "ItemsElem().value", "UpdateSelection", null) + @";
+}
+
+function UpdateSelection(value) {
+    var values = value.split('#');    
+    if (values.length == 2) {
+        ProcessResult(values[0], values[1]);
+    }
+}
+
+function US_Cancel() {
+    CloseDialog();
+    return false;
+}
+
+function US_Submit() {
+    GetHash();
+    return false;
+}
+";
+        ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "SelectionDialogMultipleMode_" + ClientID, script, true);
     }
 
     #endregion
@@ -1346,20 +1371,27 @@ function SelectAllItems(checkbox, hash) {
         string result = string.Empty;
         if (!string.IsNullOrEmpty(callbackValues))
         {
-            // All selected items | newly added item(s) # hash of the new item(s)
-            var paramFormat = new Regex(String.Format(@"^(?<items>{0}(.*{0})?)\|(?<values>({0}.*{0})|([^{0}]*))#(?<hash>.*)$", Regex.Escape(valuesSeparator.ToString())));
-            var paramMatch = paramFormat.Match(callbackValues);
-            if (paramMatch.Success)
-            {
-                string value = paramMatch.Groups["values"].Value.Trim(valuesSeparator);
-                string hash = paramMatch.Groups["hash"].Value;
+            var allowedValues = new List<string>();
 
-                if (ValidationHelper.ValidateHash(value, hash, new HashSettings { Redirect = false }))
+            var values = callbackValues.Split(new[] { valuesSeparator }, StringSplitOptions.RemoveEmptyEntries);
+            if (values.Length > 0)
+            {
+                // Get all (valid) data based on dialog configuration
+                var ds = GetData(false);
+                if (!DataHelper.DataSourceIsEmpty(ds))
                 {
-                    // Get new hash for currently selected items
-                    result = ValidationHelper.GetHashString(paramMatch.Groups["items"].Value);
+                    AddGlobalObjectNamePrefixes(ds);
+
+                    allowedValues = DataHelper.GetStringValues(ds.Tables[0], returnColumnName);
                 }
             }
+
+            // Filter selected items by merging with valid data
+            var filteredValues = values.Intersect(allowedValues, StringComparer.OrdinalIgnoreCase);
+
+            // Update selected items and hash on client
+            var valuesString = string.Format("{0}{1}{0}", valuesSeparator, filteredValues.Join(valuesSeparator.ToString()));
+            result = valuesString + "#" + ValidationHelper.GetHashString(valuesString);
         }
 
         return result;

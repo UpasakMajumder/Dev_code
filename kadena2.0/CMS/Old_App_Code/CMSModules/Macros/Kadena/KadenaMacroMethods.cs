@@ -27,6 +27,9 @@ using Kadena.Models.ModuleAccess;
 using Kadena.BusinessLogic.Contracts.Approval;
 using Newtonsoft.Json;
 using Kadena.Helpers;
+using Kadena.Models.ShoppingCarts;
+using Kadena.Models.TableSorting;
+using Kadena.Models.Shipping;
 
 [assembly: CMS.RegisterExtension(typeof(KadenaMacroMethods), typeof(KadenaMacroNamespace))]
 
@@ -89,13 +92,13 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         }
 
 
-        
+
         [MacroMethod(typeof(string), "Gets URL of editor for mailing or templated product", 1)]
-        [MacroMethodParam(0, "documentId", typeof(int), "Product types piped string")]
-        [MacroMethodParam(1, "productType", typeof(string), "Product types piped string")]
-        [MacroMethodParam(2, "masterTemplateId", typeof(string), "Product types piped string")]
-        [MacroMethodParam(3, "workspaceId", typeof(string), "Product types piped string")]
-        [MacroMethodParam(4, "use3d", typeof(bool), "Product types piped string")]
+        [MacroMethodParam(0, "nodeId", typeof(int), "nodeId")]
+        [MacroMethodParam(1, "productType", typeof(string), "productType")]
+        [MacroMethodParam(2, "masterTemplateId", typeof(string), "masterTemplateId")]
+        [MacroMethodParam(3, "workspaceId", typeof(string), "workspaceId")]
+        [MacroMethodParam(4, "use3d", typeof(bool), "use3d")]
         public static object TemplatedProductEditorUrl(EvaluationContext context, params object[] parameters)
         {
             if (parameters.Length != 5)
@@ -103,16 +106,41 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 throw new NotSupportedException();
             }
 
-            var documentId = Convert.ToInt32(parameters[0]);
+            var nodeId = Convert.ToInt32(parameters[0]);
             var userId = MembershipContext.AuthenticatedUser.UserID;
             var productType = (string)parameters[1];
             Guid masterTemplateId = Guid.Parse((string)parameters[2]);
             Guid workspaceId = Guid.Parse((string)parameters[3]);
             bool use3d = Convert.ToBoolean(parameters[4]);
 
-            return DIContainer.Resolve<ITemplateService>().TemplatedProductEditorUrl(documentId, userId, productType, masterTemplateId, workspaceId, use3d).Result;
+            return DIContainer.Resolve<ITemplateService>().TemplatedProductEditorUrl(nodeId, userId, productType, masterTemplateId, workspaceId, use3d).Result;
         }
 
+        [MacroMethod(typeof(bool), "Get name of product by nodeId and current culture", 1)]
+        [MacroMethodParam(0, "nodeId", typeof(int), "nodeId")]
+        public static object GetProductNameByNodeId(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+
+            var nodeId = Convert.ToInt32(parameters[0]);
+            return DIContainer.Resolve<IKenticoProductsProvider>().GetProductByNodeId(nodeId)?.Name;
+        }
+
+        [MacroMethod(typeof(bool), "Get documentId by nodeId and current culture", 1)]
+        [MacroMethodParam(0, "nodeId", typeof(int), "nodeId")]
+        public static object GetDocumentIdByNodeId(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+
+            var nodeId = Convert.ToInt32(parameters[0]);
+            return DIContainer.Resolve<IKenticoDocumentProvider>().GetDocumentIdByNodeId(nodeId);
+        }
 
         [MacroMethod(typeof(bool), "Checks if related product is of templated type", 1)]
         [MacroMethodParam(0, "skuid", typeof(int), "SKU ID")]
@@ -360,8 +388,8 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 
             var isForEnabledItems = ValidationHelper.GetBoolean(parameters[0], false);
 
-            var moduleState = isForEnabledItems 
-                ? KadenaModuleState.enabled 
+            var moduleState = isForEnabledItems
+                ? KadenaModuleState.enabled
                 : KadenaModuleState.disabled;
 
             var cacheKey = $@"Kadena.MacroMethods.GetMainNavigationWhereCondition_{
@@ -531,12 +559,14 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         public static object GetUrlsForLanguageSelector(EvaluationContext context, params object[] parameters)
         {
             var aliasPath = ValidationHelper.GetString(parameters[0], string.Empty);
-            if (!string.IsNullOrWhiteSpace(aliasPath))
+            if (string.IsNullOrWhiteSpace(aliasPath))
             {
-                var kenticoLocalization = DIContainer.Resolve<IKenticoLocalizationProvider>();
-                return JsonConvert.SerializeObject(kenticoLocalization.GetUrlsForLanguageSelector(aliasPath), CamelCaseSerializer);
+                return string.Empty;
             }
-            return string.Empty;
+
+            var currentUrl = CMSHttpContext.Current.Request.RawUrl;
+            var kenticoLocalization = DIContainer.Resolve<ILocalizationService>();
+            return JsonConvert.SerializeObject(kenticoLocalization.GetUrlsForLanguageSelector(aliasPath, currentUrl), CamelCaseSerializer);
         }
 
         [MacroMethod(typeof(string), "Returns unified date string in Kadena format", 1)]
@@ -568,6 +598,49 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         }
 
         #region TWE macro methods
+
+        [MacroMethod(typeof(string), "Returns ORDER BY expression for table sorting", 0)]
+        [MacroMethodParam(0, "columns", typeof(string), "Comma separated list of columns")]
+        public static object TableSortingOrderBy(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+            var columns = ValidationHelper.GetString(parameters[0], string.Empty).Split(',');
+            var currentUrl = CMSHttpContext.Current.Request.RawUrl;
+
+            return TableSortingHelper.GetOrderBy(columns, currentUrl);
+        }
+
+        [MacroMethod(typeof(string), "Returns 'asc' or 'desc' when current sorting is for given column otherwise 'no'", 0)]
+        [MacroMethodParam(0, "column", typeof(string), "Column to test")]
+        public static object TableSortingColumnDirection(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+            var column = ValidationHelper.GetString(parameters[0], string.Empty);
+            var currentUrl = CMSHttpContext.Current.Request.RawUrl;
+
+            return TableSortingHelper.GetColumnDirection(column, currentUrl);
+        }
+
+        [MacroMethod(typeof(string), "Returns URL for sorting by given column and switching between asc and desc", 0)]
+        [MacroMethodParam(0, "column", typeof(string), "Column to test")]
+        public static object TableSortingColumnURL(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 1)
+            {
+                throw new NotSupportedException();
+            }
+            var column = ValidationHelper.GetString(parameters[0], string.Empty);
+            var currentUrl = CMSHttpContext.Current.Request.RawUrl;
+
+            return TableSortingHelper.GetColumnURL(column, currentUrl);
+        }
+
 
         /// <summary>
         /// Returns Division name based on Division ID
@@ -712,26 +785,22 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
         [MacroMethod(typeof(string), "Returns cart items count", 1)]
         [MacroMethodParam(0, "userID", typeof(int), "UserID")]
         [MacroMethodParam(1, "inventoryType", typeof(int), "InventoryType")]
+        [MacroMethodParam(2, "campaignId", typeof(int), "CampaignId")]
         public static object GetCartCountByInventoryType(EvaluationContext context, params object[] parameters)
         {
-            try
+            if (parameters.Length != 3)
             {
-                int userID = ValidationHelper.GetInteger(parameters[1], default(int));
-                int inventoryType = ValidationHelper.GetInteger(parameters[2], default(int));
-                int openCampaignID = ValidationHelper.GetInteger(parameters[3], default(int));
-                var query = new DataQuery(SQLQueries.getShoppingCartCount);
-                QueryDataParameters queryParams = new QueryDataParameters();
-                queryParams.Add("@ShoppingCartUserID", userID);
-                queryParams.Add("@ShoppingCartInventoryType", inventoryType);
-                queryParams.Add("@ShoppingCartCampaignID", openCampaignID);
-                var countData = ConnectionHelper.ExecuteScalar(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
-                return ValidationHelper.GetInteger(countData, default(int));
+                throw new NotSupportedException();
             }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogInformation("Kadena Macro methods", "BindPrograms", ex.Message);
-                return default(int);
-            }
+
+            var userID = ValidationHelper.GetInteger(parameters[0], 0);
+            var inventoryType = ValidationHelper.GetInteger(parameters[1], 0);
+            var openCampaignID = ValidationHelper.GetInteger(parameters[2], 0);
+
+            var shoppingCartProvider = DIContainer.Resolve<IShoppingCartProvider>();
+            var count = shoppingCartProvider.GetDistributorCartCount(userID, openCampaignID, (CampaignProductType)inventoryType);
+
+            return count;
         }
 
         /// <summary>
@@ -769,9 +838,12 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                         var Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
                         if (Cart.ShippingOption != null && Cart.ShippingOption.ShippingOptionCarrierServiceName.ToLower() != ShippingOption.Ground)
                         {
-                            var estimationdto = new[] { ShoppingCartHelper.GetEstimationDTO(Cart) };
-                            var estimation = ShoppingCartHelper.CallEstimationService(estimationdto);
-                            cartTotal += ValidationHelper.GetDecimal(estimation?.Payload?[0]?.Cost, default(decimal));
+                            try
+                            {
+                                var estimation = ShoppingCartHelper.GetOrderShippingTotal(Cart);
+                                cartTotal += ValidationHelper.GetDecimal(estimation, default(decimal));
+                            }
+                            catch { }
                         }
                     });
                     return ValidationHelper.GetDecimal(cartTotal, default(decimal));

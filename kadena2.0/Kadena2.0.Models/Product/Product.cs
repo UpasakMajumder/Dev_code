@@ -5,6 +5,7 @@ namespace Kadena.Models.Product
     public class Product
     {
         public int Id { get; set; }
+        public int NodeId { get; set; }
         public string Name { get; set; }
         public string Category { get; set; }
         public string Availability { get; set; }
@@ -18,6 +19,7 @@ namespace Kadena.Models.Product
         public double Weight { get; set; }
         public bool HiResPdfDownloadEnabled { get; set; }
         public int SkuId { get; set; }
+        public string SkuNumber { get; set; }
         public bool HasProductTypeFlag(string productType)
         {
             return ProductTypes.IsOfType(ProductType, productType);
@@ -28,6 +30,7 @@ namespace Kadena.Models.Product
         public string ProductionTime { get; set; }
         public string ShipTime { get; set; }
         public string ShippingCost { get; set; }
+        public bool Use3d { get; set; }
         public string PricingModel { get; set; }
         public string TieredPricingJson { get; set; }
         public string DynamicPricingJson { get; set; }

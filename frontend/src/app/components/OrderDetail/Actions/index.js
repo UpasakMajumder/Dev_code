@@ -26,15 +26,19 @@ class Actions extends Component {
 
   static propTypes = {
     actions: PropTypes.shape({
-      accept: { ...actionPropTypes },
-      reject: { ...actionPropTypes }
-    }).isRequired,
+      accept: PropTypes.shape({ ...actionPropTypes }),
+      reject: PropTypes.shape({ ...actionPropTypes })
+    }),
     editOrders: PropTypes.shape({
       button: PropTypes.string.isRequired,
       proceedUrl: PropTypes.string.isRequired
     }),
     general: PropTypes.object.isRequired,
-    changeStatus: PropTypes.func.isRequired
+    changeStatus: PropTypes.func.isRequired,
+    showEditModal: PropTypes.func.isRequired,
+    acceptEnabled: PropTypes.bool.isRequired,
+    editEnabled: PropTypes.bool.isRequired,
+    clearHistory: PropTypes.func.isRequired
   };
 
   handleShowReject = () => this.setState({ showReject: true });
@@ -61,15 +65,14 @@ class Actions extends Component {
       } else {
         this.handleProceed();
         toastr.success(payload.title, payload.text);
-        this.props.changeStatus({
-          status: payload.newStatus,
-          note: this.state.rejectionNote
-        });
+        this.props.changeStatus(payload.newStatus, this.state.rejectionNote);
         this.handleChangeRejectionNote('');
+        this.props.clearHistory();
       }
-    } catch (e) {
+    } catch (error) {
       window.store.dispatch({
-        type: FAILURE
+        type: FAILURE,
+        error
       });
     } finally {
       this.setState({ isLoading: false });
@@ -77,19 +80,29 @@ class Actions extends Component {
   };
 
   render() {
-    const { actions } = this.props;
+    const {
+      acceptEnabled,
+      actions,
+      editEnabled,
+      editOrders
+    } = this.props;
     const { proceeded, rejectionNote, isLoading } = this.state;
 
-    const editButton = this.props.editOrders
+    const editButton = (editOrders && editEnabled)
       ? (
         <Button
           text={this.props.editOrders.button}
+          disabled={proceeded}
           type="action"
           btnClass="mr-2"
+          onClick={() => {
+            if (proceeded) return;
+            this.props.showEditModal(true);
+          }}
         />
       ) : null;
 
-    const commentBlock = actions
+    const commentBlock = this.props.actions
       ? (
         <Textarea
           label={actions.comment.title}
@@ -101,8 +114,8 @@ class Actions extends Component {
         />
       ) : null;
 
-    const approveButtons = actions
-      ? [
+    const acceptButton = (actions && acceptEnabled)
+      ? (
         <Button
           key={1}
           text={actions.accept.button}
@@ -114,27 +127,29 @@ class Actions extends Component {
             if (proceeded) return;
             this.submit(actions.accept.proceedUrl);
           }}
-        />,
+        />
+      ) : null;
+
+    const rejectButton = actions
+      ? (
         <Button
           key={2}
           text={actions.reject.button}
           type="danger"
           disabled={proceeded}
           isLoading={isLoading}
-          onClick={proceeded ? () => {} : this.handleShowReject}
+          onClick={proceeded ? () => { } : this.handleShowReject}
         />
-      ] : null;
-
-    const modal = actions
-      ? this.state.showReject && <Modal submit={() => this.submit(actions.reject.proceedUrl)} closeDialog={this.handleHideReject} { ...actions.reject.dialog } />
-      : null;
+      ) : null;
 
     return (
       <div className="text-right">
-        {modal}
+          {this.state.showReject && <Modal submit={() => this.submit(actions.reject.proceedUrl)} closeDialog={this.handleHideReject} {...actions.reject.dialog } />}
+
         {commentBlock}
         {editButton}
-        {approveButtons}
+        {acceptButton}
+        {rejectButton}
       </div>
     );
   }

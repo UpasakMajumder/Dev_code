@@ -4,8 +4,7 @@
 
 <cms:CMSPanel runat="server" ID="pnlListView">
     <uc1:UsersFilterControl ID="filterUsers" runat="server" />
-    <cms:BasicRepeater ID="repUsers" runat="server" />
-    <cms:UsersDataSource ID="srcUsers" runat="server" />
+    <cms:QueryRepeater ID="repUsers" runat="server" />
     <div class="Pager">
         <cms:UniPager ID="pagerElem" runat="server" />
     </div>

@@ -28,9 +28,7 @@ using Kadena2.WebAPI.KenticoProviders.Providers;
 using Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings;
 using Kadena.BusinessLogic.Contracts.SSO;
 using Kadena.BusinessLogic.Services.SSO;
-using Kadena.Infrastructure.FileConversion;
 using System.IdentityModel.Tokens;
-using Kadena.Infrastructure.Contracts;
 using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.BusinessLogic.Services.Approval;
 
@@ -68,6 +66,7 @@ namespace Kadena.Container.Default
             container.Register<ITaxEstimationService, TaxEstimationService>();
             container.Register<ISubmitOrderService, SubmitOrderService>();
             container.Register<IOrderDetailService, OrderDetailService>();
+            container.Register<IOrderHistoryService, OrderHistoryService>();
             container.Register<IOrderReportService, OrderReportService>();
             container.Register<IOrderResubmissionService, OrderResubmissionService>();
             container.Register<IKListService, KListService>();
@@ -106,11 +105,17 @@ namespace Kadena.Container.Default
             container.Register<IRoleService, RoleService>();
             container.Register<IUserService, UserService>();
             container.Register<IMailService, MailService>();
+            container.Register<ILocalizationService, LocalizationService>();
             container.Register<IImageService, ImageService>();
             container.Register<IApproverService, ApproverService>();
             container.Register<IApprovalService, ApprovalService>();
             container.Register<IDialogService, DialogService>();
             container.Register<IDeliveryEstimationDataService, DeliveryEstimationDataService>();
+            container.Register<IOrderManualUpdateService, OrderManualUpdateService>();
+            container.Register<IDistributorShoppingCartService, DistributorShoppingCartService>();
+            container.Register<IOrderItemCheckerService, OrderItemCheckerService>();
+            container.Register<IConvert, XlsxConvert>();
+            container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
             return container;
         }
 
@@ -143,7 +148,7 @@ namespace Kadena.Container.Default
             container.Register<IKenticoCustomerProvider, KenticoCustomerProvider>();
             container.Register<IKenticoSettingsProvider, KenticoSettingsProvider>();
             container.Register<IDynamicPriceRangeProvider, DynamicPriceRangeProvider>();
-            container.Register<IkenticoUserBudgetProvider, KenticoUserBudgetProvider>();
+            container.Register<IKenticoUserBudgetProvider, KenticoUserBudgetProvider>();
             container.Register<IFailedOrderStatusProvider, FailedOrderStatusProvider>();
             container.Register<IKenticoIBTFProvider, KenticoIBTFProvider>();
             container.Register<IKenticoRoleProvider, KenticoRoleProvider>();
@@ -185,6 +190,7 @@ namespace Kadena.Container.Default
             container.Register<IExportClient, ExportClient>();
             container.Register<INotificationClient, NotificationClient>();
             container.Register<IApprovalServiceClient, ApprovalServiceClient>();
+            container.Register<IOrderManualUpdateClient, OrderManualUpdateClient>();
             return container;
         }
 
@@ -202,7 +208,6 @@ namespace Kadena.Container.Default
         {
             container.RegisterInstance(typeof(IMapper), MapperBuilder.MapperInstance);
             container.Register<ICache>(Reuse.Singleton, Made.Of(() => new InMemoryCache()));
-            container.Register<IExcelConvert, ExcelConvert>();
             return container;
         }
     }

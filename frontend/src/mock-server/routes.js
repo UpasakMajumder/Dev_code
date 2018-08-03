@@ -21,6 +21,7 @@ apiRouter.use((req, res, next) => {
 
 apiRouter.get('/order/recent/filtered/campaigns', Orders.recent.filtered.campaigns);
 apiRouter.get('/order/recent/filtered/orders/:id*?/:campaign*?', Orders.recent.filtered.orders);
+apiRouter.post('/order/edit', Orders.edit);
 
 apiRouter.post('/login', Login);
 apiRouter.get('/accepttac', AcceptTaC);
@@ -62,6 +63,8 @@ apiRouter.get('/order/recent/requiring-approval', Orders.recent.requiringApprova
 apiRouter.get('/order/recent/page/:page', Orders.recent.page);
 apiRouter.get('/order/reports/rows', Orders.reports.rows);
 apiRouter.get('/order/detail', Orders.detail.ui);
+apiRouter.get('/order/detail/submitted', Orders.detail.uiSubmitted);
+apiRouter.get('/order/detail/history', Orders.detail.history);
 apiRouter.post('/order/detail/accept', Orders.detail.accept);
 apiRouter.post('/order/detail/reject', Orders.detail.reject);
 

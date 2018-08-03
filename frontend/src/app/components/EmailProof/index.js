@@ -8,8 +8,6 @@ import { EMAIL_PROOF } from 'app.globals';
 import { FAILURE } from 'app.consts';
 /* helpers */
 import { emailRegExp } from 'app.helpers/regexp';
-/* ac */
-import toggleModal from 'app.ac/emailProof';
 /* components */
 import Alert from 'app.dump/Alert';
 import Dialog from 'app.dump/Dialog';
@@ -19,14 +17,20 @@ import Button from 'app.dump/Button';
 import EmailConfirmation from '../Checkout/EmailConfirmation';
 
 class EmailProof extends Component {
-  state = {
-    form: {
-      recepientEmail: '',
-      subject: '',
-      message: ''
-    },
-    invalids: [], // { field, message }
-    isPending: false
+  constructor() {
+    super();
+
+    this.defaultState = {
+      form: {
+        recepientEmail: '',
+        subject: '',
+        message: ''
+      },
+      invalids: [], // { field, message }
+      isPending: false
+    };
+
+    this.state = { ...this.defaultState };
   }
 
   getInvalids = () => {
@@ -63,7 +67,7 @@ class EmailProof extends Component {
 
     const body = {
       ...this.state.form,
-      emailProofUrl: this.props.store.emailProofUrl
+      emailProofUrl: this.props.emailProofUrl
     };
 
     try {
@@ -74,7 +78,7 @@ class EmailProof extends Component {
 
       if (success) {
         this.setState(prevState => ({ isPending: !prevState.isPending }));
-        this.props.toggleModal(false);
+        this.closeDialog();
         toastr.success(this.props.notificationSuccess.title, this.props.notificationSuccess.text);
       } else {
         this.setState(prevState => ({ isPending: !prevState.isPending }));
@@ -92,7 +96,10 @@ class EmailProof extends Component {
     }
   };
 
-  closeDialog = () => this.props.toggleModal(false);
+  closeDialog = () => {
+    this.setState({ ...this.defaultState });
+    this.props.toggleEmailProof();
+  }
 
   handleChange = (field, value) => {
     this.setState({
@@ -154,7 +161,7 @@ class EmailProof extends Component {
           />
         </div>
 
-        <a href={this.props.store.emailProofUrl} target="_blank" className="link">{dialog.proofLabel}</a>
+        <a href={this.props.emailProofUrl} target="_blank" className="link">{dialog.proofLabel}</a>
       </div>
     );
 
@@ -185,6 +192,7 @@ class EmailProof extends Component {
         title={dialog.title}
         body={body}
         footer={footer}
+        open={this.props.open}
       />
     );
   }
@@ -194,6 +202,7 @@ class EmailProof extends Component {
   };
 
   static propTypes = {
+    open: PropTypes.bool.isRequired,
     // config
     submitUrl: PropTypes.string.isRequired,
     notificationSuccess: PropTypes.shape({
@@ -214,18 +223,9 @@ class EmailProof extends Component {
         email: PropTypes.string.isRequired
       }).isRequired
     }).isRequired,
-    // ac
-    toggleModal: PropTypes.func.isRequired,
-    // store
-    store: PropTypes.shape({
-      emailProofUrl: PropTypes.string.isRequired
-    }).isRequired
+    toggleEmailProof: PropTypes.func.isRequired,
+    emailProofUrl: PropTypes.string
   };
 }
 
-export default connect((state) => {
-  const { emailProof } = state;
-  return { store: emailProof };
-}, {
-  toggleModal
-})(EmailProof);
+export default EmailProof;

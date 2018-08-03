@@ -12,24 +12,7 @@ class AddressDialog extends Component {
   constructor(props) {
     super(props);
 
-    const { address, dialog } = props;
-    const fieldValues = (address && typeof address === 'object') ? address : {};
-
-    this.stateIndex = dialog.fields.findIndex(element => element.id === 'state');
-
-    const defaultCountry = AddressDialog.getDefaultCountry(dialog.fields);
-
-    const fields = (fieldValues.state || defaultCountry) ? this.getNewStateFields(dialog.fields, fieldValues.country || defaultCountry) : dialog.fields;
-
-    this.state = {
-      fieldValues: {
-        ...fieldValues,
-        country: AddressDialog.getCountry(dialog.fields, fieldValues),
-        id: fieldValues.id || -1
-      },
-      fields,
-      inValidFields: []
-    };
+    this.updateAddressLine(props);
   }
 
   static getDefaultCountry(fields) {
@@ -50,6 +33,7 @@ class AddressDialog extends Component {
   }
 
   static propTypes = {
+    open: PropTypes.bool.isRequired,
     addDataAddress: PropTypes.func.isRequired,
     changeDataAddress: PropTypes.func.isRequired,
     closeDialog: PropTypes.func.isRequired,
@@ -87,6 +71,32 @@ class AddressDialog extends Component {
         edit: PropTypes.string.isRequired
       }).isRequired
     })
+  };
+
+  componentWillReceiveProps(nextProps) {
+    this.updateAddressLine(nextProps);
+  }
+
+  updateAddressLine = (props) => {
+    const { address, dialog } = props;
+
+    const fieldValues = (address && typeof address === 'object') ? address : {};
+
+    this.stateIndex = dialog.fields.findIndex(element => element.id === 'state');
+
+    const defaultCountry = AddressDialog.getDefaultCountry(dialog.fields);
+
+    const fields = (fieldValues.state || defaultCountry) ? this.getNewStateFields(dialog.fields, fieldValues.country || defaultCountry) : dialog.fields;
+
+    this.state = {
+      fieldValues: {
+        ...fieldValues,
+        country: AddressDialog.getCountry(dialog.fields, fieldValues),
+        id: fieldValues.id || -1
+      },
+      fields,
+      inValidFields: []
+    };
   };
 
   getNewStateFields = (fields, countryId) => {
@@ -276,6 +286,7 @@ class AddressDialog extends Component {
         title={title}
         body={body}
         footer={footer}
+        open={this.props.open}
       />
     );
   }

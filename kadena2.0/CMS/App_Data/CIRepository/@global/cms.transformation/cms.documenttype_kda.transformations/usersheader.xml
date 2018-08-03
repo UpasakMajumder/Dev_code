@@ -11,12 +11,84 @@
 <table class="table show__table-bottom">
   <tbody>
     <tr>
-      <th>{$KDA.UsersList.FirstName$}</th>
-      <th>{$KDA.UsersList.LastName$}</th>
-      <th>{$KDA.UsersList.Email$}</th>
-      <th>{$KDA.UsersList.Division$}</th>
-      <th>{$KDA.UsersList.BusinessUnits$}</th>
-      <th>{$KDA.UsersList.SalesManager$}</th>
+        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("FirstName") |(user)administrator|(hash)ceeb7846ca1d26f72e63a6aff5c77d10062a0549c75adf05bfd6ba4ce2356b88%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("FirstName") |(user)administrator|(hash)7938720d13eeae44dc7ca3cd6d24b49b7244e51fdefee227d28550044ff22cab%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.UsersList.FirstName$}</span>
+          </a>        
+        </th>
+<th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("LastName") |(user)administrator|(hash)d934d97d7ea51efaf6ddddbdeb45342c8941567dbda50a6b9188ebe567f42ae2%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("LastName") |(user)administrator|(hash)119ebf95ba5cf13842775133743b0c759b8875a5beb0c31c6577c658cea5a23c%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.UsersList.LastName$}</span>
+          </a>        
+        </th>      
+<th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("Email") |(user)administrator|(hash)a569534f93b4c6a03451b2463d674d99bff2b266d9f02b73b46e7a970a38fdf3%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("Email") |(user)administrator|(hash)f5d3fd16bc3b566d18f0c9011d38d0232fdd61505218028db779182c48bebbbf%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.UsersList.Email$}</span>
+          </a>        
+        </th>      
+<th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("DivisionName") |(user)administrator|(hash)63b66fa12dd4d1cfb24cf88cfead4b2767084794f6dbb725beea5d5084d37613%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("DivisionName") |(user)administrator|(hash)25a82164432fba23be13dfda2ae45321f6696087b34619a38bcc4abef8a22f61%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.UsersList.Division$}</span>
+          </a>        
+        </th>      
+<th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("BusinessUnits") |(user)administrator|(hash)0f57facda1fa3b913bec6727bec378ceec53131e251216cbdd3fe31c52c359b0%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("BusinessUnits") |(user)administrator|(hash)af341ce7c41b3462bd9f38e8b34c5ae41200ad15371f201330e164b848fed19e%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.UsersList.BusinessUnits$}</span>
+          </a>        
+        </th>      
+<th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("SalesManagerName") |(user)administrator|(hash)6f124fdce0ea38f6babbd9033ea3d89917dfb95109bdc59a86ad9ff8d3638992%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("SalesManagerName") |(user)administrator|(hash)676fd669c566e0bb9ee209dd145215e2808ff63986252f3f25d7b147b7b4f358%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.UsersList.SalesManager$}</span>
+          </a>        
+        </th>
       <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
     </tr>
 ]]>

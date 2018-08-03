@@ -1,6 +1,8 @@
 ﻿using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
+using Kadena.Models.Shipping;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Linq;
 
@@ -9,10 +11,14 @@ namespace Kadena.BusinessLogic.Services.Orders
     public class DeliveryEstimationDataService : IDeliveryEstimationDataService
     {
         private readonly IKenticoResourceService resources;
-        
-        public DeliveryEstimationDataService(IKenticoResourceService resources)
+        private readonly IShippingCostServiceClient shippingCosts;
+        private readonly IKenticoLogger log;
+
+        public DeliveryEstimationDataService(IKenticoResourceService resources, IShippingCostServiceClient shippingCosts, IKenticoLogger log)
         {
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.shippingCosts = shippingCosts ?? throw new ArgumentNullException(nameof(shippingCosts));
+            this.log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
         public AddressDto GetSourceAddress()
@@ -34,13 +40,44 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         }
 
-        public WeightDto GetWeightInSiteUnit(decimal weight)
+        public EstimateDeliveryPriceRequestDto[] GetDeliveryEstimationRequestData(string provider, string service, decimal weight, AddressDto target)
         {
-            return new WeightDto
+            return new[]
             {
-                Unit = resources.GetMassUnit(),
-                Value = weight
+                new EstimateDeliveryPriceRequestDto
+                {
+                    Provider = provider,
+                    ProviderService = service.Replace("#", ""), // hack to solve non-unique service keys,
+                    SourceAddress = GetSourceAddress(),
+                    TargetAddress = target,
+                    Weight = new WeightDto
+                    {
+                        Value = weight,
+                        Unit = resources.GetMassUnit()
+                    }
+                }
             };
+        }
+
+        public decimal GetShippingCost(string provider, string service, decimal weight, AddressDto target)
+        {
+            if (ShippingOption.Ground.ToLower().Equals(service.ToLower()))
+            {
+                return decimal.Zero;
+            }
+
+            var shippingCostRequest = GetDeliveryEstimationRequestData(provider, service,
+                weight, target);
+
+            var response = shippingCosts.EstimateShippingCost(shippingCostRequest).Result;
+
+            if (response.Success == false || response.Payload.Length < 1 || !response.Payload[0].Success)
+            {
+                log.LogError(this.GetType().Name, $"Call from '{service}' provider resulted with error {response.ErrorMessages}");
+                throw new InvalidOperationException(response.ErrorMessages);
+            }
+
+            return response.Payload[0].Cost;
         }
     }
 }

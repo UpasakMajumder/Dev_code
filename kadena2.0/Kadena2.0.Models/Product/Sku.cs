@@ -12,6 +12,8 @@
         public int MinItemsInOrder { get; set; }
         public int MaxItemsInOrder { get; set; }
         public string UnitOfMeasure { get; set; }
-        public int NumberOfItemsInPackage { get; set; }
+        public string SKUNumber { get; set; }
+        public bool SendPriceToERP { get; set; }
+        public decimal Price { get; set; }
     }
 }

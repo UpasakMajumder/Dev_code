@@ -9,6 +9,7 @@ using Kadena.Models.Common;
 using Kadena.Models.OrderDetail;
 using Kadena.Models.Orders;
 using Kadena.Models.Product;
+using Kadena.Models.Shipping;
 using Kadena.Models.SiteSettings.Permissions;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
@@ -16,6 +17,7 @@ using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security;
 using System.Threading.Tasks;
 
@@ -27,6 +29,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IOrderViewClient orderViewClient;
         private readonly IMailingListClient mailingClient;
         private readonly IKenticoOrderProvider kenticoOrder;
+        private readonly IOrderManualUpdateClient orderHistoryClient;
         private readonly IShoppingCartProvider shoppingCart;
         private readonly IKenticoProductsProvider products;
         private readonly IKenticoCustomerProvider kenticoCustomers;
@@ -44,6 +47,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             IOrderViewClient orderViewClient,
             IMailingListClient mailingClient,
             IKenticoOrderProvider kenticoOrder,
+            IOrderManualUpdateClient orderHistoryClient,
             IShoppingCartProvider shoppingCart,
             IKenticoProductsProvider products,
             IKenticoCustomerProvider kenticoCustomers,
@@ -61,6 +65,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.orderViewClient = orderViewClient ?? throw new ArgumentNullException(nameof(orderViewClient));
             this.kenticoOrder = kenticoOrder ?? throw new ArgumentNullException(nameof(kenticoOrder));
+            this.orderHistoryClient = orderHistoryClient ?? throw new ArgumentNullException(nameof(orderHistoryClient));
             this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.kenticoCustomers = kenticoCustomers ?? throw new ArgumentNullException(nameof(kenticoCustomers));
@@ -95,7 +100,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var data = microserviceResponse.Payload;
             var genericStatus = kenticoOrder.MapOrderStatus(data.Status);
-
+            
             var businessUnitName = "";
             if (long.TryParse(data.campaign?.BusinessUnitNumber, out var bun))
             {
@@ -108,7 +113,15 @@ namespace Kadena.BusinessLogic.Services.Orders
             var canCurrentUserEditInApproval = permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.EditOrdersInApproval);
             var showApprovalButtons = canCurrentUserApproveOrder;
             var showEditButton = canCurrentUserApproveOrder && canCurrentUserEditInApproval;
-            var approvalMessages = data.Approvals?.Select(a => a.Note) ?? Enumerable.Empty<string>();
+            var showOrderHistory = isWaitingForApproval;
+            if (!showOrderHistory)
+            {
+                var history = await orderHistoryClient.Get(orderId);
+                showOrderHistory = history
+                    ?.Payload
+                    ?.Any(a => a.StatusId == (int)OrderStatus.WaitingForApproval)
+                    ?? false;
+            }
 
             CheckOrderDetailPermisson(orderNumber, kenticoCustomers.GetCurrentCustomer(), canCurrentUserApproveOrder);
 
@@ -124,22 +137,34 @@ namespace Kadena.BusinessLogic.Services.Orders
                 },
 
                 EditOrders = showEditButton
-                    ? new DialogButton
+                    ? new DialogButton<EditOrderDialog>
                     {
                         Button = resources.GetResourceString("Kadena.Order.ButtonEdit"),
-                        ProceedUrl = "",
-                        Dialog = null
+                        ProceedUrl = $"/{Routes.Order.OrderUpdate}",
+                        Dialog = new EditOrderDialog
+                        {
+                            Title = resources.GetResourceString("Kadena.Order.EditTite"),
+                            Description = resources.GetResourceString("Kadena.Order.EditDescription"),
+                            SuccessMessage = resources.GetResourceString("Kadena.Order.EditSuccess"),
+                            ValidationMessage = resources.GetResourceString("Kadena.Order.EditValidation"),
+                            Buttons = new EditOrderDialogButtons
+                            {
+                                Cancel = resources.GetResourceString("Kadena.Order.EditCancel"),
+                                Proceed = resources.GetResourceString("Kadena.Order.EditProceed"),
+                                Remove = resources.GetResourceString("Kadena.Order.EditRemove")
+                            }
+                        }
                     }
                     : null,
                 Actions = showApprovalButtons
                     ? new OrderActions
                     {
-                        Accept = new DialogButton
+                        Accept = new DialogButton<Dialog>
                         {
                             Button = resources.GetResourceString("Kadena.Order.ButtonAccept"),
                             ProceedUrl = '/' + Routes.Order.Approve,
                         },
-                        Reject = new DialogButton
+                        Reject = new DialogButton<Dialog>
                         {
                             Button = resources.GetResourceString("Kadena.Order.ButtonReject"),
                             ProceedUrl = '/' + Routes.Order.Reject,
@@ -173,7 +198,13 @@ namespace Kadena.BusinessLogic.Services.Orders
                     {
                         Title = resources.GetResourceString("Kadena.Order.StatusPrefix"),
                         Value = genericStatus,
-                        Note = string.Join(", ", approvalMessages)
+                        OrderHistory = showOrderHistory
+                            ? new Link
+                            {
+                                Label = resources.GetResourceString("Kadena.Order.Status.OrderHistory"),
+                                Url = UrlHelper.GetUrlForOrderHistory(orderId)
+                            }
+                            : null
                     },
                     TotalCost = new TitleValuePair<string>
                     {
@@ -224,15 +255,10 @@ namespace Kadena.BusinessLogic.Services.Orders
                         }
                     }
                 },
-                OrderedItems = new OrderedItems()
-                {
-                    Title = resources.GetResourceString("Kadena.Order.OrderedItemsSection"),
-                    Items = await MapOrderedItems(data.Items, data.Id)
-                }
             };
 
             var mailingTypeCode = OrderItemTypeDTO.Mailing.ToString();
-            var hasOnlyMailingListProducts = data.Items.All(item => item.Type == mailingTypeCode);
+            var hasOnlyMailingListProducts = data.Items?.All(item => item.Type == mailingTypeCode) ?? false;
             if (hasOnlyMailingListProducts)
             {
                 orderDetail.ShippingInfo = new ShippingInfo
@@ -247,12 +273,15 @@ namespace Kadena.BusinessLogic.Services.Orders
                 {
                     Title = resources.GetResourceString("Kadena.Order.ShippingSection"),
                     DeliveryMethod = shoppingCart.GetShippingProviderIcon(data.ShippingInfo.Provider),
-                    Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo)
+                    Address = mapper.Map<DeliveryAddress>(data.ShippingInfo.AddressTo),
                 };
                 orderDetail.ShippingInfo.Address.Country = localization
                     .GetCountries()
                     .FirstOrDefault(s => s.Code.Equals(data.ShippingInfo.AddressTo.isoCountryCode));
             }
+
+            orderDetail.OrderedItems = await ProcessOrderedItems(data.Items, data.Id, mailingTypeCode);
+            orderDetail.OrderedItems.OrderItemsByLineNumber();
 
             if (!permissions.UserCanSeePrices())
             {
@@ -260,6 +289,162 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
 
             return orderDetail;
+        }
+
+        private async Task<OrderedItems> ProcessOrderedItems(List<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO> responseItems, string id, string mailingTypeCode)
+        {
+            // create base instance
+            var orderedItems = CreateOrderedItems();
+
+            // map items
+            var items = await MapOrderedItems(responseItems, id);
+
+            // filter out mailing items and process them
+            items = items.Where(item => !ProcessMailingItem(item, orderedItems, mailingTypeCode)).ToList();
+
+            // expand items to match each TrackingInfo object
+            var expandedItems = ExpandItems(items);
+
+            // sort expanded items to open || shipped sections and tracking groups
+            expandedItems.GroupBy(x => x.Item2?.Id).ToList().ForEach(group =>
+            {
+                if(group.Key == null)
+                    // open
+                    ProcessOpenItems(orderedItems, group);
+                else
+                    // shipped
+                    ProcessShippedItemsGroup(orderedItems, group);
+            });
+
+            return orderedItems;
+        }
+
+        private List<(OrderedItem, TrackingInfo)> ExpandItems(List<OrderedItem> items)
+        {
+            var expandedItems = new List<(OrderedItem, TrackingInfo)>();
+            items.ForEach(item =>
+            {
+                if (item.Tracking == null || item.Tracking.Count() == 0)
+                {
+                    var itemClone = mapper.Map<OrderedItem>(item);
+
+                    expandedItems.Add((itemClone, null));
+                    return;
+                }
+
+                if (item.QuantityShipped < item.Quantity)
+                {
+                    var itemClone = mapper.Map<OrderedItem>(item);
+                    itemClone.Quantity = itemClone.Quantity - itemClone.QuantityShipped;
+                    itemClone.QuantityShipped = 0;
+                    itemClone.Tracking = null;
+
+                    expandedItems.Add((itemClone, null));
+                }
+
+                foreach (var trackingInfo in item.Tracking)
+                {
+                    var itemClone = mapper.Map<OrderedItem>(item);
+                    itemClone.QuantityShipped = trackingInfo.QuantityShipped;
+                    itemClone.Tracking = null;
+
+                    expandedItems.Add((itemClone, trackingInfo));
+                }
+            });
+
+            return expandedItems;
+        }
+
+        private OrderedItems CreateOrderedItems()
+        {
+            var orderedItems = new OrderedItems
+            {
+                ShippedItems = new OrderedItemsSection
+                {
+                    Title = resources.GetResourceString("Kadena.Order.OrderedItemsShippedSection"),
+                    Items = new List<OrderedItemsGroup>()
+                },
+                OpenItems = new OrderedItemsSection()
+                {
+                    Title = resources.GetResourceString("Kadena.Order.OrderedItemsOpenSection"),
+                    Items = new List<OrderedItemsGroup>()
+                },
+                MailingItems = new OrderedItemsSection()
+                {
+                    Title = resources.GetResourceString("Kadena.Order.OrderedItemsMailingSection"),
+                    Items = new List<OrderedItemsGroup>()
+                }
+            };
+
+            return orderedItems;
+        }
+
+        private void ProcessShippedItemsGroup(OrderedItems orderedItems, IGrouping<string, (OrderedItem, TrackingInfo)> group)
+        {
+            var first = group.FirstOrDefault();
+            orderedItems.ShippedItems.Items.Add(new OrderedItemsGroup
+            {
+                Tracking = new OrderedItemsGroupTracking
+                {
+                    Prefix = resources.GetResourceString("Kadena.Order.OrderedItems.TrackingPrefix"),
+                    Id = first.Item2?.Id,
+                    Url = first.Item2?.Url
+                },
+                ShippingDate = new OrderedItemsGroupShippingDate
+                {
+                    Prefix = resources.GetResourceString("Kadena.Order.OrderedItems.ShippingDatePrefix"),
+                    Date = first.Item2.ShippingDate
+                },
+                Orders = group.Select(x => x.Item1).ToList()
+            });
+        }
+
+        private void ProcessOpenItems(OrderedItems orderedItems, IGrouping<string, (OrderedItem, TrackingInfo)> group)
+        {
+            if (orderedItems.OpenItems.Items.Count == 0)
+            {
+                orderedItems.OpenItems.Items.Add(new OrderedItemsGroup
+                {
+                    Tracking = new OrderedItemsGroupTracking
+                    {
+                        Prefix = resources.GetResourceString("Kadena.Order.OrderedItems.TrackingPrefix"),
+                        Id = resources.GetResourceString("Kadena.Order.OrderedItems.TrackingNotFound"),
+                        Url = null
+                    },
+                    ShippingDate = new OrderedItemsGroupShippingDate
+                    {
+                        Prefix = resources.GetResourceString("Kadena.Order.OrderedItems.ShippingDatePrefix"),
+                        Date = resources.GetResourceString("Kadena.Order.OrderedItems.ShippingDateNotFound")
+                    },
+                    Orders = new List<OrderedItem>()
+                });
+            }
+
+            group.Select(x => x.Item1).ToList().ForEach(item =>
+            {
+                orderedItems.OpenItems.Items[0].Orders.Add(item);
+            });
+        }
+
+        private bool ProcessMailingItem(OrderedItem item, OrderedItems orderedItems, string mailingTypeCode)
+        {
+            if (item.Type == mailingTypeCode)
+            {
+                // mailling items have always only one group
+                if (orderedItems.MailingItems.Items.Count == 0)
+                {
+                    orderedItems.MailingItems.Items.Add(new OrderedItemsGroup
+                    {
+                        Orders = new List<OrderedItem>()
+                    });
+                }
+
+                orderedItems.MailingItems.Items[0].Orders.Add(item);
+
+                return true;
+            }
+
+            return false;
         }
 
         private bool IsCurrentUserApproverFor(Customer customer)
@@ -292,46 +477,53 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         private async Task<List<OrderedItem>> MapOrderedItems(List<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO> items, string orderId)
         {
-            var orderedItems = items.Select(i =>
+            if (items == null)
             {
-                var oi = mapper.Map<OrderedItem>(i);
+                return new List<OrderedItem>();
+            }
 
-                var templatedProduct = i.TemplateId != Guid.Empty ? products.GetProductBySkuId(i.SkuId) : null;
-                var previewUrl = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, templatedProduct?.TemplateLowResSettingId ?? Guid.Empty);
-                var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
+            var orderedItems = items
+                .Where(i => i.Quantity > 0)
+                .Select(i =>
+                {
+                    var oi = mapper.Map<OrderedItem>(i);
 
-                oi.Image = imageService.GetThumbnailLink(products.GetSkuImageUrl(i.SkuId));
-                oi.DownloadPdfURL = GetPdfUrl(orderId, i, templatedProduct);
-                oi.UnitOfMeasure = units.GetDisplaynameByCode(oi.UnitOfMeasure);
-                oi.QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ?
-                    resources.GetResourceString("Kadena.Order.QuantityPrefixAddresses")
-                    : resources.GetResourceString("Kadena.Order.QuantityPrefix");
-                oi.QuantityShippedPrefix = resources.GetResourceString("Kadena.Order.QuantityShippedPrefix");
-                oi.MailingListPrefix = resources.GetResourceString("Kadena.Order.MailingListPrefix");
-                oi.ShippingDatePrefix = resources.GetResourceString("Kadena.Order.ItemShippingDatePrefix");
-                oi.TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix");
-                oi.TrackingPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix");
-                oi.ProductStatusPrefix = resources.GetResourceString("Kadena.Order.ProductStatusPrefix");
-                oi.ProductStatus = products.GetProductStatus(i.SkuId);
-                oi.Preview = new Button
-                {
-                    Exists = templatedProduct != null,
-                    Text = resources.GetResourceString("Kadena.Checkout.PreviewButton"),
-                    Url = previewAbsoluteUrl
-                };
-                oi.EmailProof = new Button
-                {
-                    Exists = templatedProduct != null,
-                    Text = resources.GetResourceString("Kadena.EmailProof.ButtonLabel"),
-                    Url = GetPdfUrl(orderId, i, templatedProduct)
-                };
-                if (i.Attributes != null)
-                {
-                    oi.Options = i.Attributes.Select(a => new ItemOption { Name = products.GetOptionCategory(a.Key)?.DisplayName ?? a.Key, Value = a.Value });
-                }
+                    var templatedProduct = i.TemplateId != Guid.Empty ? products.GetProductBySkuId(i.SkuId) : null;
+                    var previewUrl = UrlHelper.GetUrlForTemplatePreview(i.TemplateId, templatedProduct?.TemplateLowResSettingId ?? Guid.Empty);
+                    var previewAbsoluteUrl = site.GetAbsoluteUrl(previewUrl);
 
-                return oi;
-            }).ToList();
+                    oi.Image = imageService.GetThumbnailLink(products.GetSkuImageUrl(i.SkuId));
+                    oi.DownloadPdfURL = GetPdfUrl(orderId, i, templatedProduct);
+                    oi.UnitOfMeasure = units.GetDisplaynameByCode(oi.UnitOfMeasure);
+                    oi.QuantityPrefix = (i.Type ?? string.Empty).Contains("Mailing") ?
+                        resources.GetResourceString("Kadena.Order.QuantityPrefixAddresses")
+                        : resources.GetResourceString("Kadena.Order.QuantityPrefix");
+                    oi.QuantityShippedPrefix = resources.GetResourceString("Kadena.Order.QuantityShippedPrefix");
+                    oi.MailingListPrefix = resources.GetResourceString("Kadena.Order.MailingListPrefix");
+                    oi.ShippingDatePrefix = resources.GetResourceString("Kadena.Order.ItemShippingDatePrefix");
+                    oi.TemplatePrefix = resources.GetResourceString("Kadena.Order.TemplatePrefix");
+                    oi.TrackingPrefix = resources.GetResourceString("Kadena.Order.TrackingIdPrefix");
+                    oi.ProductStatusPrefix = resources.GetResourceString("Kadena.Order.ProductStatusPrefix");
+                    oi.ProductStatus = products.GetProductStatus(i.SkuId);
+                    oi.Preview = new Button
+                    {
+                        Exists = templatedProduct != null,
+                        Text = resources.GetResourceString("Kadena.Checkout.PreviewButton"),
+                        Url = previewAbsoluteUrl
+                    };
+                    oi.EmailProof = new Button
+                    {
+                        Exists = templatedProduct != null,
+                        Text = resources.GetResourceString("Kadena.EmailProof.ButtonLabel"),
+                        Url = GetPdfUrl(orderId, i, templatedProduct)
+                    };
+                    if (i.Attributes != null)
+                    {
+                        oi.Options = i.Attributes.Select(a => new ItemOption { Name = products.GetOptionCategory(a.Key)?.DisplayName ?? a.Key, Value = a.Value });
+                    }
+
+                    return oi;
+                }).ToList();
 
             await SetMailingListNames(orderedItems);
 
@@ -370,9 +562,9 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
 
             // Allow admin who has set permission to see all orders in Kentico
-            // or Allow orders belonging to currently logged User and Customer
+            // or Allow orders belonging to currently logged Customer
             var isAdmin = permissions.UserCanSeeAllOrders();
-            var isOrderOwner = (orderId.UserId == customer.UserID && orderId.CustomerId == customer.Id);
+            var isOrderOwner = (orderId.CustomerId == customer.Id);
 
             var canViewOrder = isAdmin || isOrderOwner || canCurrentUserApproveOrder;
             if (!canViewOrder)

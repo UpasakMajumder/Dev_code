@@ -1,7 +1,6 @@
 ﻿using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Scheduler;
-using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.EmailNotifications;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
@@ -16,6 +15,8 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Old_App_Code.Kadena.InBoundForm;
 using Kadena.Models.SiteSettings;
+using Kadena.Models.CampaignData;
+using Kadena.Models.Product;
 
 namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
 {
@@ -56,15 +57,15 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                 var addrerss = DIContainer.Resolve<IAddressBookService>();
                 var userInfo = DIContainer.Resolve<IKenticoUserProvider>();
                 var kenticoResourceService = DIContainer.Resolve<IKenticoResourceService>();
-                var usersWithShoppingCartItems = shoppingCartInfo.GetUserIDsWithShoppingCart(openCampaignID,Convert.ToInt32(ProductsType.PreBuy));
-                var orderTemplateSettingKey= kenticoResourceService.GetSiteSettingsKey(Settings.KDA_OrderReservationEmailTemplate);
+                var usersWithShoppingCartItems = shoppingCartInfo.GetUserIDsWithShoppingCart(openCampaignID, (int)CampaignProductType.PreBuy);
+                var orderTemplateSettingKey = kenticoResourceService.GetSiteSettingsKey(Settings.KDA_OrderReservationEmailTemplate);
                 var failedOrderTemplateSettingKey = kenticoResourceService.GetSiteSettingsKey(Settings.KDA_FailedOrdersEmailTemplate);
                 var failedOrdersUrl = kenticoResourceService.GetSiteSettingsKey(Settings.KDA_FailedOrdersPageUrl);
                 var unprocessedDistributorIDs = new List<Tuple<int, string>>();
                 usersWithShoppingCartItems.ForEach(shoppingCartUser =>
                 {
                     var salesPerson = userInfo.GetUserByUserId(shoppingCartUser);
-                    var loggedInUserCartIDs = ShoppingCartHelper.GetCartsByUserID(shoppingCartUser, ProductType.PreBuy,openCampaignID);
+                    var loggedInUserCartIDs = ShoppingCartHelper.GetCartsByUserID(shoppingCartUser, ProductType.PreBuy, openCampaignID);
                     loggedInUserCartIDs.ForEach(cart =>
                     {
                         var shippingCost = default(decimal);
@@ -79,7 +80,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                                 ShoppingCartInfoProvider.SetShoppingCartInfo(Cart);
                             }
                         }
-                        OrderDTO ordersDTO = ShoppingCartHelper.CreateOrdersDTO(Cart, Cart.ShoppingCartUserID, OrderType.prebuy, shippingCost);
+                        OrderDTO ordersDTO = ShoppingCartHelper.CreateOrdersDTO(Cart, OrderType.prebuy, shippingCost);
                         var response = ShoppingCartHelper.ProcessOrder(Cart, Cart.ShoppingCartUserID, OrderType.prebuy, ordersDTO, shippingCost);
                         if (response != null && response.Success)
                         {
@@ -118,7 +119,7 @@ namespace Kadena.Old_App_Code.Kadena.CustomScheduledTasks
                     failedOrderData.Add("failedorderurl", URLHelper.AddHTTPToUrl($"{SiteContext.CurrentSite.DomainName}{failedOrdersUrl}?campid={openCampaignID}"));
                     failedOrderData.Add("failedordercount", listofFailedOrders.Count);
                     failedOrderData.Add("failedorders", listofFailedOrders);
-                    ProductEmailNotifications.SendEmailNotification(failedOrderTemplateSettingKey, user.Email, listofFailedOrders, "failedOrders",failedOrderData);
+                    ProductEmailNotifications.SendEmailNotification(failedOrderTemplateSettingKey, user.Email, listofFailedOrders, "failedOrders", failedOrderData);
                     UpdatetFailedOrders(openCampaignID, true);
                 }
                 return ResHelper.GetString("KDA.OrderSchedular.TaskSuccessfulMessage");

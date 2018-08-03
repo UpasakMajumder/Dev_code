@@ -7786,11 +7786,26 @@
             <param name="count">Hit count</param>
             <param name="value">Hit value</param>
         </member>
+        <member name="M:CMS.WebAnalytics.HitLogProvider.GetFileNameInstanceIdentifier(System.String)">
+            <summary>
+            Gets <paramref name="instanceIdentifier"/> converted to a representation which can be used in a file name.
+            </summary>
+        </member>
         <member name="M:CMS.WebAnalytics.HitLogProvider.IsDomainAllowed(System.String)">
             <summary>
             Returns true if web analytics is allowed for specified domain.
             </summary>
             <param name="domain">Domain name</param>
+        </member>
+        <member name="P:CMS.WebAnalytics.HitLogProvider.FileNameInstanceIdentifier">
+            <summary>
+            Gets file name instance identifier inferred from <see cref="P:CMS.Base.SystemContext.InstanceName"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.HitLogProvider.InvalidCharacters">
+            <summary>
+            Gets invalid characters for file name.
+            </summary>
         </member>
         <member name="P:CMS.WebAnalytics.HitLogProvider.UseMemoryStorage">
             <summary>

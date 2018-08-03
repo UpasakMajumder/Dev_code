@@ -36,10 +36,7 @@ namespace Kadena.WebAPI.Controllers
             DateTime? dateFrom = null, DateTime? dateTo = null, string sort = null, int page = 1)
         {
             CheckAccess(KnownPageTypes.OrdersReport);
-
-            var orders = await orderService
-                .GetOrders(page, new OrderFilter { FromDate = dateFrom, ToDate = dateTo, OrderByExpression = sort });
-            var ordersTableView = orderService.ConvertOrdersToView(orders);
+            var ordersTableView = await orderService.ConvertOrdersToView(page, new OrderFilter { FromDate = dateFrom, ToDate = dateTo, OrderByExpression = sort });
             var resultDto = mapper.Map<TableViewDto>(ordersTableView);
             return ResponseJson(resultDto);
         }

@@ -1227,6 +1227,7 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
             ffi.System = true;
             ffi.Visible = false;
             ffi.Size = 0;
+            ffi.Precision = DataTypeManager.GetDataType(TypeEnum.Field, FieldDataType.DateTime).DefaultPrecision;
             ffi.AllowEmpty = true;
 
             fi.AddFormItem(ffi);
@@ -1271,6 +1272,7 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
             ffi.System = true;
             ffi.Visible = false;
             ffi.Size = 0;
+            ffi.Precision = DataTypeManager.GetDataType(TypeEnum.Field, FieldDataType.DateTime).DefaultPrecision;
             ffi.AllowEmpty = true;
 
             fi.AddFormItem(ffi);

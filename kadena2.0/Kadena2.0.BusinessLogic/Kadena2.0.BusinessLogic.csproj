@@ -34,17 +34,35 @@
       <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.IdentityModel">
       <HintPath>..\Lib\Microsoft.IdentityModel.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NPOI, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.3.0\lib\net40\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.3.0\lib\net40\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.3.0\lib\net40\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.3.0\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.IdentityModel.Services" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -56,14 +74,21 @@
   <ItemGroup>
     <Compile Include="Contracts\Approval\IApprovalService.cs" />
     <Compile Include="Contracts\Approval\IApproverService.cs" />
+    <Compile Include="Contracts\IConvert.cs" />
     <Compile Include="Contracts\IDialogService.cs" />
     <Compile Include="Contracts\IIBTFService.cs" />
     <Compile Include="Contracts\IIdentityService.cs" />
     <Compile Include="Contracts\IImageService.cs" />
+    <Compile Include="Contracts\ILocalizationService.cs" />
     <Compile Include="Contracts\IModuleAccessService.cs" />
+    <Compile Include="Contracts\IDistributorShoppingCartService.cs" />
+    <Compile Include="Contracts\IUpdateInventoryDataService.cs" />
     <Compile Include="Contracts\IUserService.cs" />
     <Compile Include="Contracts\IMailService.cs" />
     <Compile Include="Contracts\Orders\IDeliveryEstimationDataService.cs" />
+    <Compile Include="Contracts\Orders\IOrderHistoryService.cs" />
+    <Compile Include="Contracts\Orders\IOrderItemCheckerService.cs" />
+    <Compile Include="Contracts\Orders\IOrderManualUpdateService.cs" />
     <Compile Include="Contracts\Orders\IOrderReportService.cs" />
     <Compile Include="Contracts\Orders\IOrderResubmissionService.cs" />
     <Compile Include="Contracts\SSO\ISaml2RecipientValidator.cs" />
@@ -113,12 +138,14 @@
     <Compile Include="Factories\IOrderResultPageUrlFactory.cs" />
     <Compile Include="Factories\OrderReportFactory.cs" />
     <Compile Include="Factories\OrderResultPageUrlFactory.cs" />
+    <Compile Include="Mapping\OrderHistoryProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Approval\ApprovalService.cs" />
     <Compile Include="Services\Approval\ApprovalServiceException.cs" />
     <Compile Include="Services\Approval\ApproverService.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\IdentityService.cs" />
+    <Compile Include="Services\LocalizationService.cs" />
     <Compile Include="Services\MailService.cs" />
     <Compile Include="Services\ImageService.cs" />
     <Compile Include="Services\ModuleAccessService.cs" />
@@ -126,9 +153,13 @@
     <Compile Include="Services\IBTFService.cs" />
     <Compile Include="Services\Orders\DeliveryEstimationDataService.cs" />
     <Compile Include="Services\Orders\GetOrderDataService.cs" />
+    <Compile Include="Services\Orders\OrderHistoryService.cs" />
+    <Compile Include="Services\Orders\OrderItemCheckerService.cs" />
+    <Compile Include="Services\Orders\OrderManualUpdateService.cs" />
     <Compile Include="Services\Orders\OrderReportService.cs" />
     <Compile Include="Services\Orders\OrderResubmissionService.cs" />
     <Compile Include="Services\Orders\SendSubmitOrder.cs" />
+    <Compile Include="Services\DistributorShoppingCartService.cs" />
     <Compile Include="Services\SSO\KadenaSaml2SecurityTokenHandler.cs" />
     <Compile Include="Services\SSO\Saml2RecipientValidator.cs" />
     <Compile Include="Services\SSO\Saml2HandlerService.cs" />
@@ -167,8 +198,10 @@
     <Compile Include="Services\OrderPayment\PurchaseOrder.cs" />
     <Compile Include="Services\TaxEstimationService.cs" />
     <Compile Include="Services\TemplateService.cs" />
+    <Compile Include="Services\UpdateInventoryDataService.cs" />
     <Compile Include="Services\UserBudgetService.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\XlsxConvert.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kadena.AmazonFileSystemProvider\Kadena.AmazonFileSystemProvider.csproj">

@@ -11,7 +11,7 @@ export default class Collapse {
     const expandedCssClass: string = 'isOpen';
     const toggler: ?HTMLElement = this.container.querySelector('.js-toggle');
 
-    const targetSelector: ?string = this.container.dataset.target;
+    const targetSelector: string = this.container.dataset.target;
     const target: ?HTMLElement = document.querySelector(targetSelector);
 
     if (!toggler) {

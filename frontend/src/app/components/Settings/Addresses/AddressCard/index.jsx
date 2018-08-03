@@ -80,6 +80,7 @@ const AddressCard = (props) => {
         phone={address.phone}
         email={address.email}
         customerName={address.customerName}
+        company={address.company}
       />
 
       <div className="address-card__btn-block">

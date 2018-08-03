@@ -16,6 +16,7 @@
   border: 3px solid $brand-grey;
   display: flex;
   min-height: $min-height;
+  position: relative;
 
   p {
     margin: 0;
@@ -24,6 +25,14 @@
   & > * {
     &:not(:last-child) {
       @include rem(padding-right, $padding-block);
+    }
+  }
+
+  &--groupped {
+    border: none;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $brand-grey;
     }
   }
 
@@ -39,14 +48,22 @@
     }
   }
 
+  &__flag {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+  }
+
   &__content {
     @extend %flex--default--between;
+    margin-left: 10px;
     flex-direction: column;
     width: 100%;
   }
 
   &__options {
     display: flex;
+    flex-shrink: 0;
     margin-left: auto;
 
     & > * {

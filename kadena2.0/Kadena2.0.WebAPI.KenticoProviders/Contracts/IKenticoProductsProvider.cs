@@ -14,16 +14,15 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         Product GetProductByNodeId(int nodeId);
         Product GetProductBySkuId(int skuId);
         string GetProductStatus(int skuid);        
-        int GetAllocatedProductQuantityForUser(int productID, int userID);
+        int GetAllocatedProductQuantityForUser(int skuId, int userID);
+        Dictionary<int, int> GetAllocatedProductQuantityForUser(int userID, List<int> campaignProductIds = null);
         void UpdateAllocatedProductQuantityForUser(int productID, int userID, int quantity);
         List<CampaignsProduct> GetCampaignsProductSKUIDs(int campaignID);
-        bool IsProductHasAllocation(int productID);
         OptionCategory GetOptionCategory(string codeName);        
-        int GetCampaignProductIDBySKUID(int skuid);
-        bool ProductHasValidSKUNumber(int skuid);
         CampaignsProduct GetCampaignProduct(int skuid);
         string GetProductImagePath(int productPageId);
         IEnumerable<ProductCategory> GetProductCategories(int skuid);
         ProductPricingInfo GetDefaultVariantPricing(int documentId, string uomLocalized);
+        Product[] GetProductsByDocumentIds(int[] documentIds);
     }
 }

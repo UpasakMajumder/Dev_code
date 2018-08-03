@@ -17,11 +17,12 @@ class NewAddressDialog extends Component {
 
     const defaultCountry = fields.find(field => field.id === 'country').values.find(country => country.isDefault);
 
-    this.state = {
+    this.defaultState = {
       saveAddress: true,
       invalids: [],
       address: {
         customerName: '',
+        company: '',
         address1: '',
         address2: '',
         city: '',
@@ -33,7 +34,14 @@ class NewAddressDialog extends Component {
       },
       fields: this.getNewStateFields(fields, defaultCountry && defaultCountry.id)
     };
+
+    this.state = { ...this.defaultState };
   }
+
+  handleClose = () => {
+    this.setState({ ...this.defaultState });
+    this.props.closeDialog();
+  };
 
   submit = async () => {
     const { address } = this.state;
@@ -57,7 +65,7 @@ class NewAddressDialog extends Component {
     if (invalids.length) return;
     await this.props.saveAddress({ id: -1, ...address, temporary: !this.state.saveAddress }, true);
     this.props.addNewAddress(); // get totals
-    this.props.closeDialog();
+    this.handleClose();
   };
 
   getValidationError = (field) => {
@@ -70,7 +78,7 @@ class NewAddressDialog extends Component {
   };
 
   render () {
-    const { closeDialog, ui, userNotification } = this.props;
+    const { ui, userNotification } = this.props;
 
     const footer = (
       <div className="flex--center--between">
@@ -86,7 +94,7 @@ class NewAddressDialog extends Component {
 
         <div className="btn-group btn-group--right">
           <button
-            onClick={closeDialog}
+            onClick={this.handleClose}
             type="button"
             className="btn-action btn-action--secondary"
           >
@@ -149,16 +157,18 @@ class NewAddressDialog extends Component {
 
     return (
       <Dialog
-        closeDialog={closeDialog}
+        closeDialog={this.handleClose}
         hasCloseBtn={true}
         title={ui.title}
         body={body}
         footer={footer}
+        open={this.props.open}
       />
     );
   }
 
   static propTypes = {
+    open: PropTypes.bool.isRequired,
     saveAddress: PropTypes.func.isRequired,
     addNewAddress: PropTypes.func.isRequired,
     closeDialog: PropTypes.func.isRequired,

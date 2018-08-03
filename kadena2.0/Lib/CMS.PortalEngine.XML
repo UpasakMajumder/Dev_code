@@ -1238,6 +1238,11 @@
             Instance for variants' zone
             </summary>
         </member>
+        <member name="P:CMS.PortalEngine.WebPartLoadVariantsArgs.DocumentID">
+            <summary>
+            Gets the document ID if the instance holds a widget
+            </summary>
+        </member>
         <member name="T:CMS.PortalEngine.MoveWebPartsArgs">
             <summary>
             Argument class for events raised after web part movement.
@@ -7964,12 +7969,13 @@
             </summary>
             <param name="variantId">Variant ID</param>
         </member>
-        <member name="M:CMS.PortalEngine.WebPartInstance.LoadVariants(System.Boolean,CMS.PortalEngine.VariantModeEnum)">
+        <member name="M:CMS.PortalEngine.WebPartInstance.LoadVariants(System.Boolean,CMS.PortalEngine.VariantModeEnum,System.Int32)">
             <summary>
             Loads all the MVT/Content personalization variants for this web part instance.
             </summary>
             <param name="forceLoad">Indicates if already loaded variants should be reloaded</param>
             <param name="variantMode">Specifies which variants should be loaded (MVT/ContentPersonalization/None - means both MVT+CP variants should try to load)</param>
+            <param name="documentId">Document ID if the instance holds a widget</param>
         </member>
         <member name="M:CMS.PortalEngine.WebPartInstance.ResolvePropertyMacros(System.String)">
             <summary>

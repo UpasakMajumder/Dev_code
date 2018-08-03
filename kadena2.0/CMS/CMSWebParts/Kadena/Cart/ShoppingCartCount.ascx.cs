@@ -1,14 +1,10 @@
-﻿using CMS.DataEngine;
-using CMS.DocumentEngine.Types.KDA;
-using CMS.Ecommerce.Web.UI;
+﻿using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
-using Kadena.Old_App_Code.Kadena.Constants;
-using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Container.Default;
 using System;
-using System.Linq;
+using Kadena.Models.Product;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -76,19 +72,16 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                var campaign = DIContainer.Resolve<IKenticoCampaignsProvider>();
-                OpenCampaignID= campaign.GetOpenCampaignID();
-                int userID = CurrentUser.UserID;
+                var campaignProvider = DIContainer.Resolve<IKenticoCampaignsProvider>();
+                OpenCampaignID = campaignProvider.GetOpenCampaignID();
                 linkCheckoutPage.HRef = URL;
                 lblCartName.Text = CartDisplayName;
-                var query = new DataQuery(SQLQueries.getShoppingCartCount);
-                QueryDataParameters queryParams = new QueryDataParameters();
-                queryParams.Add("@ShoppingCartUserID", userID);
-                queryParams.Add("@ShoppingCartInventoryType", ShoppingCartInventoryType);
-                queryParams.Add("@ShoppingCartCampaignID", OpenCampaignID);
-                var countData = ConnectionHelper.ExecuteScalar(query.QueryText, queryParams, QueryTypeEnum.SQLQuery, true);
-                var count = ValidationHelper.GetInteger(countData, default(int));
-                lblCount.Text = count == 0 ? "" : $"{count}";
+
+                var shoppingCartProvider = DIContainer.Resolve<IShoppingCartProvider>();
+                var count = shoppingCartProvider.GetDistributorCartCount(CurrentUser.UserID, OpenCampaignID, (CampaignProductType)ShoppingCartInventoryType);
+                lblCount.Text = count == 0 
+                    ? "" 
+                    : $"{count}";
             }
             catch (Exception ex)
             {

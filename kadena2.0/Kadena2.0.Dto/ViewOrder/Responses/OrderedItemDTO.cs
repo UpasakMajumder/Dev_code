@@ -29,5 +29,8 @@ namespace Kadena.Dto.ViewOrder.Responses
         public ButtonDto Preview { get; set; }
         public ButtonDto EmailProof { get; set; }
         public IEnumerable<ItemOptionDto> Options { get; set; }
+        public int LineNumber { get; set; }
+        public bool Removed { get; set; }
+        public string RemoveLabel { get; set; }
     }
 }
