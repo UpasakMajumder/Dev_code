@@ -16,7 +16,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         string GetCampaignFiscalYear(int campaignID);
 
-        TreeNode GetCampaign(int campaignID);
+        CampaignData GetCampaign(int campaignID);
 
         CampaignData GetOpenCampaign();
     }

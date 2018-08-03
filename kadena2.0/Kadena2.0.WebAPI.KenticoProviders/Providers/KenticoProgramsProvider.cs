@@ -38,16 +38,12 @@ namespace Kadena.WebAPI.KenticoProviders
         public List<int> GetProgramIDsByCampaign(int campaignID)
         {
             List<int> programIDs = new List<int>();
-            TreeNode campaign = campaignsProvider.GetCampaign(campaignID);
-            if (campaign != null)
+            var programNodes = new TreeProvider(MembershipContext.AuthenticatedUser).SelectNodes(PageTypeClassName)
+                                .Where("CampaignID", QueryOperator.Equals, campaignID)
+                                .OnCurrentSite();
+            if (programNodes != null && programNodes.HasResults() && programNodes.TypedResult.Items.Count > 0)
             {
-                var programNodes = new TreeProvider(MembershipContext.AuthenticatedUser).SelectNodes(PageTypeClassName)
-                                    .Where("CampaignID", QueryOperator.Equals, campaignID)
-                                    .OnCurrentSite();
-                if (programNodes != null && programNodes.HasResults() && programNodes.TypedResult.Items.Count > 0)
-                {
-                    programIDs = programNodes.TypedResult.Items.ToList().Select(x => x.GetIntegerValue("ProgramID", default(int))).ToList();
-                }
+                programIDs = programNodes.TypedResult.Items.ToList().Select(x => x.GetIntegerValue("ProgramID", default(int))).ToList();
             }
             return programIDs;
         }
