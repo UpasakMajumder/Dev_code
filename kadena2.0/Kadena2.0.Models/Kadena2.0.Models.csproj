@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Address\AddressData.cs" />
     <Compile Include="Address\AddressType.cs" />
+    <Compile Include="Address\StateGroup.cs" />
     <Compile Include="AddToCart\DistributorCart.cs" />
     <Compile Include="AddToCart\DistributorCartItem.cs" />
     <Compile Include="Address\BillingAddress.cs" />
