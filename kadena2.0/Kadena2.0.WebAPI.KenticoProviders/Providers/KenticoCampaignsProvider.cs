@@ -83,6 +83,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             return false;
         }
+
         public int GetOpenCampaignID()
         {
             var openCampaign = DocumentHelper.GetDocuments(PageTypeClassName)
@@ -95,25 +96,11 @@ namespace Kadena.WebAPI.KenticoProviders
                 ? openCampaign.GetIntegerValue("CampaignID", default(int))
                 : default(int);
         }
+
         public string GetCampaignFiscalYear(int campaignID)
         {
             var campaign = DocumentHelper.GetDocuments(PageTypeClassName).OnSite(SiteContext.CurrentSiteID).WhereEquals("CampaignID", campaignID).FirstOrDefault();
             return campaign != null ? campaign.GetValue("FiscalYear", string.Empty) : null;
-        }
-
-        public CampaignData GetOpenCampaign()
-        {
-            var tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-            var document = tree
-                .SelectNodes(PageTypeClassName)
-                .OnCurrentSite()
-                .Culture(LocalizationContext.CurrentCulture.CultureCode)
-                .WhereTrue("OpenCampaign")
-                .WhereFalse("CloseCampaign")
-                .TopN(1)
-                .FirstObject;
-
-            return mapper.Map<CampaignData>(document);
         }
     }
 }
