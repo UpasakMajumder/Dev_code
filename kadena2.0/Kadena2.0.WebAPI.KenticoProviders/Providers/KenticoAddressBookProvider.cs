@@ -4,8 +4,8 @@ using CMS.Ecommerce;
 using Kadena.Models;
 using Kadena.Models.Address;
 using Kadena.Models.ShoppingCarts;
+using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,7 +106,7 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 myAddressList = GetAddressesList(customer.Id)?.Select(x =>
                 {
-                    x.DistributorShoppingCartID = shoppingCartProvider.GetDistributorCartID(x.AddressID, (ShoppingCartTypes)inventoryType, campaignID);
+                    x.DistributorShoppingCartID = shoppingCartProvider.GetDistributorCartID(x.AddressID, (CampaignProductType)inventoryType, campaignID);
                     return x;
                 }).ToList();
             }

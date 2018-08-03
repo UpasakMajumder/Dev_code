@@ -1,6 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Campaign_Web_Form_CampaignProductsFilter" CodeBehind="~/CMSWebParts/Kadena/Campaign Web Form/CampaignProductsFilter.ascx.cs" %>
 
-<div class="custom__block">
+<div class="custom__block twe-search">
     <div class="custom__select">
         <asp:DropDownList ID="ddlPrograms" runat="server" OnSelectedIndexChanged="ddlPrograms_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
         <asp:DropDownList ID="ddlProductcategory" runat="server" OnSelectedIndexChanged="ddlProductcategory_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
