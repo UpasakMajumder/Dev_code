@@ -34,6 +34,12 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     private Lazy<Dictionary<int, Brand>> Brands
         => new Lazy<Dictionary<int, Brand>>(() => BrandsProvider.GetBrands().ToDictionary(b => b.ItemID, b => b));
 
+    private int FilterSelectedProgramId => ValidationHelper.GetInteger(ddlPrograms.SelectedValue, 0);
+    private int FilterSelectedProductType => ValidationHelper.GetInteger(ddlProductTypes.SelectedValue, 0);
+    private int FilterSelectedBrandId => ValidationHelper.GetInteger(ddlBrands.SelectedValue, 0);
+    private string FilterPosNumber => posNumber.Text;
+    private bool FilterOnlyAllocated => chkOnlyAllocatedToMe.Checked;
+
     #region "Properties"
 
     /// <summary>
@@ -252,6 +258,9 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
         }
         else
         {
+            chkOnlyAllocatedToMe.Visible = TypeOfProduct == (int)CampaignProductType.GeneralInventory;
+            chkOnlyAllocatedToMe.InputAttributes.Add("class", "input__checkbox"); // if specified in markup asp generates extra span around
+
             catalogControls.Visible = true;
             lblNoProducts.Visible = false;
             ddlBrands.Visible = ShowBrandFilter;
@@ -443,7 +452,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     /// <summary>
     /// Filtering products based on filters
     /// </summary>
-    public void SetFilter(int programID = default(int), int categoryID = default(int), int brandID = default(int), string posNum = null)
+    public void ReloadProductsOnFilterChange()
     {
         try
         {
@@ -452,67 +461,31 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             rptCatalogProducts.DataBind();
             lblNoProducts.Visible = false;
             noProductSelected.Visible = false;
-            if (TypeOfProduct == (int)CampaignProductType.PreBuy && OpenCampaign != null)
+
+            var products = GetProducts();
+            if (FilterSelectedBrandId != 0 && !DataHelper.DataSourceIsEmpty(products))
             {
-                var products = GetProducts();
-                if (brandID != default(int) && !DataHelper.DataSourceIsEmpty(products))
-                {
-                    products = products.Where(x => x.BrandID == brandID).ToList();
-                }
-                if (categoryID != default(int) && !DataHelper.DataSourceIsEmpty(products))
-                {
-                    products = products.Where(x => x.CategoryID == categoryID).ToList();
-                }
-                BindingProductsToRepeater(products, posNum);
+                products = products.Where(x => x.BrandID == FilterSelectedBrandId).ToList();
             }
-            if (TypeOfProduct == (int)CampaignProductType.GeneralInventory)
+            if (FilterSelectedProductType != 0 && !DataHelper.DataSourceIsEmpty(products))
             {
-                var products = GetProducts();
-                if (brandID != default(int) && !DataHelper.DataSourceIsEmpty(products))
-                {
-                    products = products.Where(x => x.BrandID == brandID).ToList();
-                }
-                if (categoryID != default(int) && !DataHelper.DataSourceIsEmpty(products))
-                {
-                    products = products.Where(x => x.CategoryID == categoryID).ToList();
-                }
-                BindingProductsToRepeater(products, posNum);
+                products = products.Where(x => x.CategoryID == FilterSelectedProductType).ToList();
             }
+            if (FilterOnlyAllocated)
+            {
+                var allocated = productsProvider
+                    .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
+                    .Where(apq => apq.Value > 0)
+                    .Select(apq => apq.Key)
+                    .ToHashSet();
+                products = products.Where(p => allocated.Contains(p.CampaignsProductID)).ToList();
+            }
+            BindingProductsToRepeater(products, FilterPosNumber);
         }
         catch (Exception ex)
         {
             EventLogProvider.LogException("Setting where condition to filter", ex.Message, ex);
         }
-    }
-
-    /// <summary>
-    /// event for Product type drop down change
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void ddlProductTypes_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        SetFilter(ValidationHelper.GetInteger(ddlPrograms.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlProductTypes.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlBrands.SelectedValue, default(int)), ValidationHelper.GetString(posNumber.Text, null));
-    }
-
-    /// <summary>
-    /// event for Brands drop down change
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void ddlBrands_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        SetFilter(ValidationHelper.GetInteger(ddlPrograms.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlProductTypes.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlBrands.SelectedValue, default(int)), ValidationHelper.GetString(posNumber.Text, null));
-    }
-
-    /// <summary>
-    /// event for programs drop down change
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void ddlPrograms_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        SetFilter(ValidationHelper.GetInteger(ddlPrograms.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlProductTypes.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlBrands.SelectedValue, default(int)), ValidationHelper.GetString(posNumber.Text, null));
     }
 
     /// <summary>
@@ -798,7 +771,7 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
                                             })
                                       .OrderBy(p => p.ProductName)
                                       .ToList();
-                    if (!DataHelper.DataSourceIsEmpty(catalogList) && posNum != null)
+                    if (!DataHelper.DataSourceIsEmpty(catalogList) && !string.IsNullOrEmpty(posNum))
                     {
                         catalogList = catalogList.Where(x => x.SKUNumber.Contains(posNum)).ToList();
                     }
@@ -848,16 +821,6 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             EventLogProvider.LogException("GetBrandName", ex.Message, ex);
             return string.Empty;
         }
-    }
-
-    /// <summary>
-    /// Filtering data by POS number
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void posNumber_TextChanged(object sender, EventArgs e)
-    {
-        SetFilter(ValidationHelper.GetInteger(ddlPrograms.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlProductTypes.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlBrands.SelectedValue, default(int)), ValidationHelper.GetString(posNumber.Text, null));
     }
 
     /// <summary>
@@ -1257,5 +1220,10 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
             });
         }
         DownloadExcel(exportList, fileName);
+    }
+
+    protected void OnFilterChanged(object sender, EventArgs e)
+    {
+        ReloadProductsOnFilterChange();
     }
 }
