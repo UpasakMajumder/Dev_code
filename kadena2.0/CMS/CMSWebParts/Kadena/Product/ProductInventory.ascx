@@ -39,10 +39,8 @@
                     <div class="custom__blockin">
                         <h4><%= POSNumberText %> : <%# Eval("SKUProductCustomerReferenceNumber")%></h4>
                         <h3><%#Eval("SKUName") %></h3>
-                        <h3><cms:LocalizedLiteral runat ="server" ResourceString="Kadena.Product.QuantityAvailable"/> <%#Eval("SKUAvailableItems") %></h3>
-                        <asp:PlaceHolder runat="server" Visible='<%# ProductType == (int)Kadena.Models.Product.CampaignProductType.GeneralInventory %>'>
-                            <h3><cms:LocalizedLiteral runat ="server" ResourceString="Kadena.Product.QuantityAllocated"/>&nbsp;<%#Eval("SKUAllocatedQuantity") %></h3>
-                        </asp:PlaceHolder>
+                        <h3><cms:LocalizedLiteral runat ="server" ResourceString="Kadena.Product.QuantityAvailable"/> <%#Eval("SKUAvailableItems") %></h3>                        
+                        <h3><asp:PlaceHolder runat="server" Visible='<%# ProductType == (int)Kadena.Models.Product.CampaignProductType.GeneralInventory && EvalInteger("SKUAllocatedQuantity") > 0 %>'><cms:LocalizedLiteral runat ="server" ResourceString="Kadena.Product.QuantityAllocated"/>&nbsp;<%#Eval("SKUAllocatedQuantity") %></asp:PlaceHolder>&nbsp;</h3>
                         <span><%# ProductType == (int)Kadena.Models.Product.CampaignProductType.GeneralInventory ? $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("SKUPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" : $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("EstimatedPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" %></span>
                         <b>
                             <asp:Label runat="server" Visible='<%# ProductType == (int)Kadena.Models.Product.CampaignProductType.PreBuy %>'>
