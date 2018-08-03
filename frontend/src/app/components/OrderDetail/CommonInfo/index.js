@@ -87,7 +87,6 @@ CommonInfo.propTypes = {
       value: PropTypes.string.isRequired
     }).isRequired
   }),
-  orderHistoryLabel: PropTypes.string,
   showOrderHistoryModal: PropTypes.func.isRequired
 };
 

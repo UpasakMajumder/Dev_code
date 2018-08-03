@@ -15,9 +15,13 @@ using System.Data;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Kadena.Models.Shipping;
+using CMS.Membership;
+using ProductTypes = Kadena.Models.Product.CampaignProductType;
 
 public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWebPart
 {
+    private readonly IKenticoProductsProvider productsProvider;
+
     #region "Properties"
 
     /// <summary>
@@ -37,7 +41,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <summary>
     /// get the open campaign
     /// </summary>
-    public CMS.DocumentEngine.Types.KDA.Campaign OpenCampaign
+    public Campaign OpenCampaign
     {
         get
         {
@@ -163,6 +167,11 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     }
     #endregion "Properties"
 
+    public CMSWebParts_Kadena_Product_ProductInventory()
+    {
+        productsProvider = DIContainer.Resolve<IKenticoProductsProvider>();
+    }
+
     #region "Methods"
 
     protected void Page_Load(object sender, EventArgs e)
@@ -229,7 +238,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="categoryID"></param>
     /// <param name="searchText"></param>
     /// <returns></returns>
-    private List<CampaignsProduct> GetProductsDetails(int categoryID, int brandID, string searchText)
+    private List<CampaignsProduct> GetProductsDetails(int categoryID, int brandID, string searchText, List<int> excludeIds)
     {
         var query = CampaignsProductProvider.GetCampaignsProducts()
             .OnCurrentSite()
@@ -237,10 +246,15 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         try
         {
             var programIds = GetProgramIDs();
-            if (ProductType == (int)ProductsType.GeneralInventory || ProductType == (int)ProductsType.PreBuy)
+            if (ProductType == (int)ProductTypes.GeneralInventory || ProductType == (int)ProductTypes.PreBuy)
             {
                 ddlCategory.Visible = true;
                 ddlBrand.Visible = true;
+            }
+
+            if (excludeIds?.Any() ?? false)
+            {
+                query = query.WhereNotIn(nameof(CampaignsProduct.CampaignsProductID), excludeIds);
             }
 
             if (DataHelper.DataSourceIsEmpty(programIds))
@@ -327,7 +341,19 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             divNoRecords.Visible = false;
             rptProductLists.DataSource = null;
             rptProductLists.DataBind();
-            List<CampaignsProduct> productsDetails = GetProductsDetails(categoryID, brandID, searchText);
+
+            List<int> notAllowedProducts = null;
+            if (ProductType == (int)ProductTypes.GeneralInventory)
+            {
+                notAllowedProducts = productsProvider
+                    .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
+                    .Where(i => i.Value == 0)
+                    .Select(i => i.Key)
+                    .ToList();
+            }
+
+            var productsDetails = GetProductsDetails(categoryID, brandID, searchText, notAllowedProducts);
+
             if (!DataHelper.DataSourceIsEmpty(productsDetails))
             {
                 var productAndSKUDetails = productsDetails
@@ -354,7 +380,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 rptProductLists.UniPagerControl = unipager;
                 unipager.PagedControl = rptProductLists;
             }
-            else if (OpenCampaign == null && ProductType == (int)ProductsType.PreBuy)
+            else if (OpenCampaign == null && ProductType == (int)ProductTypes.PreBuy)
             {
                 orderControls.Visible = false;
                 divNoRecords.Visible = false;
@@ -381,7 +407,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         try
         {
-            if (OpenCampaign != null && ProductType == (int)ProductsType.PreBuy)
+            if (OpenCampaign != null && ProductType == (int)ProductTypes.PreBuy)
             {
                 return ProgramProvider.GetPrograms()
                     .WhereEquals("CampaignID", OpenCampaign.CampaignID)
@@ -514,10 +540,4 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         SetFilter();
     }
-}
-
-public enum ProductsType
-{
-    GeneralInventory = 1,
-    PreBuy
 }

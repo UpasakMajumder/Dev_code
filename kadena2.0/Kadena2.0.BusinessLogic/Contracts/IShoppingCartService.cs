@@ -19,6 +19,6 @@ namespace Kadena.BusinessLogic.Contracts
         CartItems RemoveItem(int id);
         CartItemsPreview ItemsPreview();
         Task<AddToCartResult> AddToCart(NewCartItem item);
-        List<int> GetLoggedInUserCartData(ShoppingCartTypes cartType, int userID, int campaignID = 0);
+        List<int> GetLoggedInUserCartData(CampaignProductType cartType, int userID, int campaignID = 0);
     }
 }
