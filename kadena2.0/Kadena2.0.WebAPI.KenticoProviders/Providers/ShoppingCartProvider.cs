@@ -205,7 +205,9 @@ namespace Kadena.WebAPI.KenticoProviders
             DateTime? nullableDeliveryDate = null;
 
             if (deliveryDate != DateTime.MinValue)
+            {
                 nullableDeliveryDate = deliveryDate;
+            }
 
             return nullableDeliveryDate;
         }

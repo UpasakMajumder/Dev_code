@@ -59,10 +59,16 @@ namespace Kadena.BusinessLogic.Services.Orders
         private void ProcessDeliveryDate(SubmitOrderRequest request)
         {
             if (!resource.GetSiteSettingsKey<bool>(Settings.KDA_CartRequestDateEnabled))
+            {
                 return;
+            }
+                
 
             if (request.DeliveryDate.HasValue && request.DeliveryDate.Value <= DateTime.Now)
+            {
                 throw new ArgumentOutOfRangeException("deliveryDate", "Requested delivery date is in past.");
+            }
+                
 
             shoppingCart.SetRequestedDeliveryDate(request.DeliveryDate);
         }
