@@ -38,9 +38,12 @@
       }
 
       svg {
-        @include rem(right, 8px);
-        @include rem(bottom, 10px);
+        top: 0;
+        right: 0;
         position: absolute;
+        height: 41px;
+        width: 41px;
+        padding: 10px;
       }
     }
 

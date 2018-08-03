@@ -528,6 +528,14 @@ const totals = {
   ]
 };
 
+const deliveryDate = {
+  title: 'Requested Delivery Date',
+  messages: {
+    invalid: 'Invalid date',
+    upcoming: 'Cannot select a previous date from date of order submission'
+  }
+};
+
 const redirectURL = '/order-submitted.html';
 
 module.exports = {
@@ -541,5 +549,6 @@ module.exports = {
   wrapper,
   deliveryMethods,
   totals,
-  redirectURL
+  redirectURL,
+  deliveryDate
 };

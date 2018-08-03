@@ -9,7 +9,8 @@ let {
   wrapper,
   deliveryMethods,
   totals,
-  redirectURL
+  redirectURL,
+  deliveryDate
  } = require('../ws/checkout');
 
 module.exports.ui = (req, res) => {
@@ -21,7 +22,8 @@ module.exports.ui = (req, res) => {
     paymentMethods,
     submit,
     emailConfirmation,
-    validationMessage
+    validationMessage,
+    deliveryDate
   };
   res.json(response);
 };
