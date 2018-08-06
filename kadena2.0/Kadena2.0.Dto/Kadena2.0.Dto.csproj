@@ -62,6 +62,8 @@
     <Compile Include="Checkout\Responses\ChangeDeliveryAddressResponseDto.cs" />
     <Compile Include="Checkout\Responses\ChangeItemQuantityResponseDto.cs" />
     <Compile Include="Checkout\ItemOptionDto.cs" />
+    <Compile Include="Checkout\Responses\DeliveryDateDTO.cs" />
+    <Compile Include="Checkout\Responses\DeliveryDateMessagesDTO.cs" />
     <Compile Include="CreditCard\3DSi\Requests\SaveTokenDataRequestDto.cs" />
     <Compile Include="Checkout\StoredCardDto.cs" />
     <Compile Include="CreditCard\MicroserviceResponses\UserStoredCardDto.cs" />
