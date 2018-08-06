@@ -307,13 +307,13 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     {
         var query = CampaignsProductProvider.GetCampaignsProducts().OnCurrentSite();
         var programs = GetProgramIDs();
-        if (programs == null)
+        if (programs != null && TypeOfProduct == (int)CampaignProductType.PreBuy)
         {
-            query = query.WhereEqualsOrNull(nameof(KenticoCampaignProduct.ProgramID), 0);
+            query = query.WhereIn(nameof(KenticoCampaignProduct.ProgramID), programs);
         }
         else
         {
-            query = query.WhereIn(nameof(KenticoCampaignProduct.ProgramID), programs);
+            query = query.WhereEqualsOrNull(nameof(KenticoCampaignProduct.ProgramID), 0);
         }
 
         if (TypeOfProduct == (int)CampaignProductType.GeneralInventory)
