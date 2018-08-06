@@ -526,9 +526,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                 var productProvider = DIContainer.Resolve<IKenticoProductsProvider>();
                 cart.CartItems.ForEach(cartItem =>
                 {
-                    var campProduct = CampaignsProductProvider.GetCampaignsProducts().WhereEquals("NodeSKUID", cartItem?.SKUID).Columns("CampaignsProductID,EstimatedPrice").FirstOrDefault();
-                    if (campProduct != null)
-                        productProvider.UpdateAllocatedProductQuantityForUser(campProduct.GetIntegerValue("CampaignsProductID", 0), userID, cartItem.CartItemUnits);
+                    productProvider.UpdateAllocatedProductQuantityForUser(cartItem.SKUID, userID, cartItem.CartItemUnits);
                 });
             }
             catch (Exception ex)
