@@ -242,7 +242,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="categoryID"></param>
     /// <param name="searchText"></param>
     /// <returns></returns>
-    private List<KenticoCampaignProduct> GetProductsDetails(int categoryID, int brandID, string searchText, List<int> excludeIds, List<int> includeIds)
+    private List<KenticoCampaignProduct> GetProductsDetails(int categoryID, int brandID, string searchText, List<int> excludeIds, List<int> includeIds = null)
     {
         var query = CampaignsProductProvider.GetCampaignsProducts()
             .OnCurrentSite()
@@ -261,7 +261,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 query = query.WhereNotIn(nameof(KenticoCampaignProduct.CampaignsProductID), excludeIds);
             }
 
-            if (includeIds?.Any() ?? false)
+            if (includeIds != null)
             {
                 query = query.WhereIn(nameof(KenticoCampaignProduct.CampaignsProductID), includeIds);
             }
@@ -350,71 +350,71 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
             divNoRecords.Visible = false;
             rptProductLists.DataSource = null;
             rptProductLists.DataBind();
-
-            List<int> notAllowedProducts = null;
-            if (ProductType == (int)CampaignProductType.GeneralInventory && !showOnlyAllocatedToMe)
-            {
-                notAllowedProducts = productsProvider
-                    .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
-                    .Where(i => i.Value == 0)
-                    .Select(i => i.Key)
-                    .ToList();
-            }
-
-            var includeAllocationInfo = ProductType == (int)CampaignProductType.GeneralInventory;
-            var allocatedToMe = productsProvider
-                    .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
-                    .Where(apq => apq.Value > 0)
-                    .ToDictionary(apq => apq.Key, apq => apq.Value);
-
-            List<int> allocatedToMeIds = null;
-            if (includeAllocationInfo && showOnlyAllocatedToMe)
-            {
-                allocatedToMeIds = allocatedToMe.Keys.ToList();
-            }
-
-            var productsDetails = GetProductsDetails(categoryID, brandID, searchText, notAllowedProducts, allocatedToMeIds);
-
-            if (!DataHelper.DataSourceIsEmpty(productsDetails))
-            {
-                var productAndSKUDetails = productsDetails
-                    .Select((cp) => new
-                    {
-                        cp.ProgramID,
-                        cp.CategoryID,
-                        QtyPerPack = cp.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
-                        cp.EstimatedPrice,
-                        cp.Product.SKUNumber,
-                        cp.Product.SKUProductCustomerReferenceNumber,
-                        SKUName = cp.Product.Name,
-                        SKUPrice = cp.GetDoubleValue(nameof(SKUInfo.SKUPrice), 0.0d),
-                        SKUEnabled = cp.GetBooleanValue(nameof(SKUInfo.SKUEnabled), false),
-                        cp.ProductImage,
-                        SKUAvailableItems = cp.GetIntegerValue(nameof(SKUInfo.SKUAvailableItems), 0),
-                        SKUAllocatedQuantity = includeAllocationInfo 
-                            ? (allocatedToMe.TryGetValue(cp.CampaignsProductID, out var quantity) ? quantity : 0)
-                            : 0,
-                        SKUID = cp.Product.ID,
-                        SKUDescription = cp.Product.Description
-                    })
-                    .OrderBy(p => p.SKUName)
-                    .ToList();
-                rptProductLists.DataSource = productAndSKUDetails;
-                rptProductLists.DataBind();
-                rptProductLists.UniPagerControl = unipager;
-                unipager.PagedControl = rptProductLists;
-            }
-            else if (OpenCampaign == null && ProductType == (int)CampaignProductType.PreBuy)
+            if (OpenCampaign == null && ProductType == (int)CampaignProductType.PreBuy)
             {
                 orderControls.Visible = false;
-                divNoRecords.Visible = false;
                 divNoCampaign.Visible = true;
-                rptProductLists.DataSource = null;
-                rptProductLists.DataBind();
             }
             else
             {
-                divNoRecords.Visible = true;
+                List<int> notAllowedProducts = null;
+                if (ProductType == (int)CampaignProductType.GeneralInventory)
+                {
+                    notAllowedProducts = productsProvider
+                        .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
+                        .Where(i => i.Value == 0)
+                        .Select(i => i.Key)
+                        .ToList();
+                }
+
+                var includeAllocationInfo = ProductType == (int)CampaignProductType.GeneralInventory;
+                var allocatedToMe = productsProvider
+                        .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
+                        .Where(apq => apq.Value > 0)
+                        .ToDictionary(apq => apq.Key, apq => apq.Value);
+
+                List<int> allocatedToMeIds = null;
+                if (includeAllocationInfo && showOnlyAllocatedToMe)
+                {
+                    allocatedToMeIds = allocatedToMe.Keys.ToList();
+                }
+
+                var productsDetails = GetProductsDetails(categoryID, brandID, searchText, notAllowedProducts, allocatedToMeIds);
+
+
+                if (!DataHelper.DataSourceIsEmpty(productsDetails))
+                {
+                    var productAndSKUDetails = productsDetails
+                        .Select((cp) => new
+                        {
+                            cp.ProgramID,
+                            cp.CategoryID,
+                            QtyPerPack = cp.GetIntegerValue("SKUNumberOfItemsInPackage", 1),
+                            cp.EstimatedPrice,
+                            cp.Product.SKUNumber,
+                            cp.Product.SKUProductCustomerReferenceNumber,
+                            SKUName = cp.Product.Name,
+                            SKUPrice = cp.GetDoubleValue(nameof(SKUInfo.SKUPrice), 0.0d),
+                            SKUEnabled = cp.GetBooleanValue(nameof(SKUInfo.SKUEnabled), false),
+                            cp.ProductImage,
+                            SKUAvailableItems = cp.GetIntegerValue(nameof(SKUInfo.SKUAvailableItems), 0),
+                            SKUAllocatedQuantity = includeAllocationInfo
+                                ? (allocatedToMe.TryGetValue(cp.CampaignsProductID, out var quantity) ? quantity : 0)
+                                : 0,
+                            SKUID = cp.Product.ID,
+                            SKUDescription = cp.Product.Description
+                        })
+                        .OrderBy(p => p.SKUName)
+                        .ToList();
+                    rptProductLists.DataSource = productAndSKUDetails;
+                    rptProductLists.DataBind();
+                    rptProductLists.UniPagerControl = unipager;
+                    unipager.PagedControl = rptProductLists;
+                }
+                else
+                {
+                    divNoRecords.Visible = true;
+                }
             }
         }
         catch (Exception ex)
@@ -511,8 +511,8 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     private void SetFilter()
     {
         BindData(
-            ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), 
-            ValidationHelper.GetString(txtSearch.Text, string.Empty), 
+            ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)),
+            ValidationHelper.GetString(txtSearch.Text, string.Empty),
             ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)),
             chkOnlyAllocatedToMe.Checked
         );
