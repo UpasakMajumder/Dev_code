@@ -306,9 +306,10 @@ public partial class CMSWebParts_Kadena_Catalog_CreateCatalog : CMSAbstractWebPa
     private List<KenticoCampaignProduct> GetProducts()
     {
         var query = CampaignsProductProvider.GetCampaignsProducts().OnCurrentSite();
-        var programs = GetProgramIDs();
-        if (programs != null && TypeOfProduct == (int)CampaignProductType.PreBuy)
+        
+        if (TypeOfProduct == (int)CampaignProductType.PreBuy)
         {
+            var programs = GetProgramIDs();
             query = query.WhereIn(nameof(KenticoCampaignProduct.ProgramID), programs);
         }
         else
