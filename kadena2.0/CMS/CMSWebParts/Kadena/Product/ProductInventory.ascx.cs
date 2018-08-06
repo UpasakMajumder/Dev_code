@@ -398,6 +398,9 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                             SKUEnabled = cp.GetBooleanValue(nameof(SKUInfo.SKUEnabled), false),
                             cp.ProductImage,
                             SKUAvailableItems = cp.GetIntegerValue(nameof(SKUInfo.SKUAvailableItems), 0),
+                            SKUAllocatedQuantity = includeAllocationInfo
+                                ? (allocatedToMe.TryGetValue(cp.CampaignsProductID, out var quantity) ? quantity : 0)
+                                : 0,
                             SKUID = cp.Product.ID,
                             SKUDescription = cp.Product.Description
                         })
