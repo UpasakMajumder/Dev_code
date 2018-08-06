@@ -1,4 +1,6 @@
-﻿namespace Kadena.Models.Program
+﻿using System;
+
+namespace Kadena.Models.Program
 {
     public class CampaignProgram
     {
@@ -7,5 +9,6 @@
         public int CampaignID { get; set; }
         public int BrandID { get; set; }
         public bool GlobalAdminNotified { get; set; }
+        public DateTime DeliveryDateToDistributors { get; set; }
     }
 }

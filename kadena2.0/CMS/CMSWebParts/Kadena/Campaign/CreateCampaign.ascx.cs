@@ -1,19 +1,13 @@
 using System;
 using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-
 using CMS.PortalEngine.Web.UI;
 using CMS.Helpers;
 using CMS.DocumentEngine;
 using CMS.Membership;
 using CMS.EventLog;
-using CMS.DataEngine;
 using CMS.PortalEngine;
 using CMS.DocumentEngine.Types.KDA;
-using CMS.SiteProvider;
 using Kadena.Old_App_Code.Kadena.Constants;
 using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
@@ -57,14 +51,14 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
             rfvUserNameRequired.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.NameRequired");
             rvDescription.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.DesMaxLength");
             rfvStartDate.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.StartDateRequired");
-            compareWithStartdate.ErrorMessage= ResHelper.GetString("Kadena.CampaignForm.EndDateRangeMessage");
+            compareWithStartdate.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.EndDateRangeMessage");
             compareDate.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.StartDaterangeMessage");
             rfvEndDate.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.EndDateRequired");
             rvName.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.NameMaxLength");
             rqFiscalYear.ErrorMessage = ResHelper.GetString("Kadena.CampaignForm.FiscalYearErrorMessage");
             ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
             ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
-            folderpath = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey(Settings.KDA_CampaignFolderPath);  
+            folderpath = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey(Settings.KDA_CampaignFolderPath);
             if (Request.QueryString["ID"] != null)
             {
                 btnSave.Click += btnSave_Edit;
@@ -153,7 +147,11 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
         {
             if (!string.IsNullOrEmpty(campaignName))
             {
-                var editPage = DIContainer.Resolve<IKenticoCampaignsProvider>().GetCampaign(campaignId);
+                var editPage = CampaignProvider
+                    .GetCampaigns()
+                    .WhereEquals("CampaignID", campaignId)
+                    .OnCurrentSite()
+                    .FirstObject;
                 if (editPage != null)
                 {
                     editPage.DocumentName = campaignName;
@@ -188,14 +186,18 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
     {
         try
         {
-            var editPage = DIContainer.Resolve<IKenticoCampaignsProvider>().GetCampaign(_campaignId);
+            var editPage = CampaignProvider
+                    .GetCampaigns()
+                    .WhereEquals("CampaignID", campaignId)
+                    .OnCurrentSite()
+                    .FirstObject;
             string gAdminRoleName = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey(Settings.KDA_GlobalAminRoleName);
             if (editPage != null)
             {
                 Name.Text = editPage.GetValue("Name").ToString();
                 Description.Text = editPage.GetValue("Description").ToString();
                 var startDate = editPage.GetValue<DateTime>("StartDate", default(DateTime));
-                txtStartDate.Text = (startDate != default(DateTime))? startDate.ToShortDateString():string.Empty;
+                txtStartDate.Text = (startDate != default(DateTime)) ? startDate.ToShortDateString() : string.Empty;
                 var endDate = editPage.GetValue<DateTime>("EndDate", default(DateTime));
                 txtEndDate.Text = (endDate != default(DateTime)) ? endDate.ToShortDateString() : string.Empty;
                 ddlFiscalYear.SelectedValue = editPage.GetValue("FiscalYear", string.Empty);
@@ -265,7 +267,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
     {
         try
         {
-            var fiscalYears = CustomTableItemProvider.GetItems<FiscalYearManagementItem>().Where(x=>x.FiscalYearEndDate > DateTime.Now.Date).ToList();
+            var fiscalYears = CustomTableItemProvider.GetItems<FiscalYearManagementItem>().Where(x => x.FiscalYearEndDate > DateTime.Now.Date).ToList();
             if (!DataHelper.DataSourceIsEmpty(fiscalYears))
             {
                 ddlFiscalYear.DataSource = fiscalYears;
