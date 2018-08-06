@@ -242,7 +242,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="categoryID"></param>
     /// <param name="searchText"></param>
     /// <returns></returns>
-    private List<KenticoCampaignProduct> GetProductsDetails(int categoryID, int brandID, string searchText, List<int> excludeIds, List<int> includeIds)
+    private List<KenticoCampaignProduct> GetProductsDetails(int categoryID, int brandID, string searchText, List<int> excludeIds, List<int> includeIds = null)
     {
         var query = CampaignsProductProvider.GetCampaignsProducts()
             .OnCurrentSite()
@@ -261,7 +261,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                 query = query.WhereNotIn(nameof(KenticoCampaignProduct.CampaignsProductID), excludeIds);
             }
 
-            if (includeIds?.Any() ?? false)
+            if (includeIds != null)
             {
                 query = query.WhereIn(nameof(KenticoCampaignProduct.CampaignsProductID), includeIds);
             }
