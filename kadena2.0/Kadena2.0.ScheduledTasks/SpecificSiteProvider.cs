@@ -31,6 +31,11 @@ namespace Kadena.ScheduledTasks
             throw new NotImplementedException();
         }
 
+        public string GetFormattedPrice(decimal price)
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetFullUrl()
         {
             throw new NotImplementedException();

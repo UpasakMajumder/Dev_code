@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Kadena.Container.Default.Converters;
 using Kadena.Dto.AddToCart;
 using Kadena.Dto.Approval.Responses;
 using Kadena.Dto.Brands;
@@ -195,8 +196,11 @@ namespace Kadena.Container.Default
             CreateMap<NotificationEmail, NotificationEmailDto>();
             CreateMap<NotificationEmailTooltip, NotificationEmailTooltipDto>();
             CreateMap<CheckoutPageDeliveryTotals, CheckoutPageDeliveryTotalsDTO>();
+            CreateMap<DeliveryDate, DeliveryDateDTO>();
+            CreateMap<DeliveryDateMessages, DeliveryDateMessagesDTO>();
             CreateMap<SubmitButton, SubmitButtonDTO>();
             CreateMap<SubmitRequestDto, SubmitOrderRequest>();
+            CreateMap<string, DateTime?>().ConvertUsing<StringToNullableDateTimeConverter>();
             CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
             CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
             CreateMap<DeliveryAddress, Dto.Settings.AddressDto>()

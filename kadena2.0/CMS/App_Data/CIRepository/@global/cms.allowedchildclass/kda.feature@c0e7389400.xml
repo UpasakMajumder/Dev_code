@@ -27,6 +27,20 @@
         <ObjectType>cms.documenttype</ObjectType>
       </ParentClassID>
     </Binding>
+    <Binding id="cms.documenttype_KDA.DashboardModule">
+      <ParentClassID>
+        <CodeName>KDA.DashboardModule</CodeName>
+        <GUID>d704ca6b-5dae-4943-be2a-c3b24006379e</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
+    <Binding id="cms.documenttype_KDA.Feature">
+      <ParentClassID>
+        <CodeName>KDA.Feature</CodeName>
+        <GUID>cfc9f56f-68ed-4426-a66f-a399c68c8de5</GUID>
+        <ObjectType>cms.documenttype</ObjectType>
+      </ParentClassID>
+    </Binding>
     <Binding id="cms.documenttype_KDA.HomeModule">
       <ParentClassID>
         <CodeName>KDA.HomeModule</CodeName>

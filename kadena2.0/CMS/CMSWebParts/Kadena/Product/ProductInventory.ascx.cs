@@ -16,7 +16,8 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using Kadena.Models.Shipping;
 using CMS.Membership;
-using ProductTypes = Kadena.Models.Product.CampaignProductType;
+using Kadena.Models.Product;
+using KenticoCampaignProduct = CMS.DocumentEngine.Types.KDA.CampaignsProduct;
 
 public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWebPart
 {
@@ -205,6 +206,9 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         }
         else
         {
+            chkOnlyAllocatedToMe.Visible = ProductType == (int)CampaignProductType.GeneralInventory;
+            chkOnlyAllocatedToMe.InputAttributes.Add("class", "input__checkbox"); // if specified in markup asp generates extra span around
+
             BindUnipagerTransformations();
             divNoRecords.Visible = false;
             txtSearch.Attributes.Add("placeholder", PosSearchPlaceholder);
@@ -238,7 +242,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// <param name="categoryID"></param>
     /// <param name="searchText"></param>
     /// <returns></returns>
-    private List<CampaignsProduct> GetProductsDetails(int categoryID, int brandID, string searchText, List<int> excludeIds)
+    private List<KenticoCampaignProduct> GetProductsDetails(int categoryID, int brandID, string searchText, List<int> excludeIds, List<int> includeIds)
     {
         var query = CampaignsProductProvider.GetCampaignsProducts()
             .OnCurrentSite()
@@ -246,7 +250,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         try
         {
             var programIds = GetProgramIDs();
-            if (ProductType == (int)ProductTypes.GeneralInventory || ProductType == (int)ProductTypes.PreBuy)
+            if (ProductType == (int)CampaignProductType.GeneralInventory || ProductType == (int)CampaignProductType.PreBuy)
             {
                 ddlCategory.Visible = true;
                 ddlBrand.Visible = true;
@@ -254,24 +258,29 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
 
             if (excludeIds?.Any() ?? false)
             {
-                query = query.WhereNotIn(nameof(CampaignsProduct.CampaignsProductID), excludeIds);
+                query = query.WhereNotIn(nameof(KenticoCampaignProduct.CampaignsProductID), excludeIds);
+            }
+
+            if (includeIds?.Any() ?? false)
+            {
+                query = query.WhereIn(nameof(KenticoCampaignProduct.CampaignsProductID), includeIds);
             }
 
             if (DataHelper.DataSourceIsEmpty(programIds))
             {
-                query = query.WhereEqualsOrNull(nameof(CampaignsProduct.ProgramID), 0);
+                query = query.WhereEqualsOrNull(nameof(KenticoCampaignProduct.ProgramID), 0);
             }
             else
             {
-                query = query.WhereIn(nameof(CampaignsProduct.ProgramID), programIds.ToList());
+                query = query.WhereIn(nameof(KenticoCampaignProduct.ProgramID), programIds.ToList());
             }
             if (categoryID > 0)
             {
-                query = query.WhereEquals(nameof(CampaignsProduct.CategoryID), categoryID);
+                query = query.WhereEquals(nameof(KenticoCampaignProduct.CategoryID), categoryID);
             }
             if (brandID > 0)
             {
-                query = query.WhereEquals(nameof(CampaignsProduct.BrandID), brandID);
+                query = query.WhereEquals(nameof(KenticoCampaignProduct.BrandID), brandID);
             }
 
             if (!string.IsNullOrWhiteSpace(searchText))
@@ -292,7 +301,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                     .ToList();
                 if (brandIds.Any())
                 {
-                    where = where.Or().WhereIn(nameof(CampaignsProduct.BrandID), brandIds);
+                    where = where.Or().WhereIn(nameof(KenticoCampaignProduct.BrandID), brandIds);
                 }
 
                 query = query.Where(where);
@@ -334,25 +343,22 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     /// Bind the Products data to repeater
     /// </summary>
     /// <param name="categoryID"></param>
-    private void BindData(int categoryID = 0, string searchText = null, int brandID = 0)
+    private void BindData(int categoryID = 0, string searchText = null, int brandID = 0, bool showOnlyAllocatedToMe = false)
     {
         try
         {
             divNoRecords.Visible = false;
             rptProductLists.DataSource = null;
             rptProductLists.DataBind();
-            if (OpenCampaign == null && ProductType == (int)ProductTypes.PreBuy)
+            if (OpenCampaign == null && ProductType == (int)CampaignProductType.PreBuy)
             {
                 orderControls.Visible = false;
-                divNoRecords.Visible = false;
                 divNoCampaign.Visible = true;
-                rptProductLists.DataSource = null;
-                rptProductLists.DataBind();
             }
             else
             {
                 List<int> notAllowedProducts = null;
-                if (ProductType == (int)ProductTypes.GeneralInventory)
+                if (ProductType == (int)CampaignProductType.GeneralInventory)
                 {
                     notAllowedProducts = productsProvider
                         .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
@@ -361,7 +367,20 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
                         .ToList();
                 }
 
-                var productsDetails = GetProductsDetails(categoryID, brandID, searchText, notAllowedProducts);
+                var includeAllocationInfo = ProductType == (int)CampaignProductType.GeneralInventory;
+                var allocatedToMe = productsProvider
+                        .GetAllocatedProductQuantityForUser(MembershipContext.AuthenticatedUser.UserID)
+                        .Where(apq => apq.Value > 0)
+                        .ToDictionary(apq => apq.Key, apq => apq.Value);
+
+                List<int> allocatedToMeIds = null;
+                if (includeAllocationInfo && showOnlyAllocatedToMe)
+                {
+                    allocatedToMeIds = allocatedToMe.Keys.ToList();
+                }
+
+                var productsDetails = GetProductsDetails(categoryID, brandID, searchText, notAllowedProducts, allocatedToMeIds);
+
 
                 if (!DataHelper.DataSourceIsEmpty(productsDetails))
                 {
@@ -409,7 +428,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
     {
         try
         {
-            if (OpenCampaign != null && ProductType == (int)ProductTypes.PreBuy)
+            if (OpenCampaign != null && ProductType == (int)CampaignProductType.PreBuy)
             {
                 return ProgramProvider.GetPrograms()
                     .WhereEquals("CampaignID", OpenCampaign.CampaignID)
@@ -488,52 +507,22 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
 
     private void SetFilter()
     {
-        BindData(ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)), ValidationHelper.GetString(txtSearch.Text, string.Empty), ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)));
-    }
-
-    /// <summary>
-    /// Filter products by By selected program
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void ddlProgram_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        SetFilter();
-    }
-
-    /// <summary>
-    /// Filter products by selected category
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void ddlCategory_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        SetFilter();
-    }
-
-    /// <summary>
-    /// Filter products by brand
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void ddlBrand_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        SetFilter();
-    }
-
-    /// <summary>
-    /// Filter products by POS Number
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void txtSearch_TextChanged(object sender, EventArgs e)
-    {
-        SetFilter();
+        BindData(
+            ValidationHelper.GetInteger(ddlCategory.SelectedValue, default(int)),
+            ValidationHelper.GetString(txtSearch.Text, string.Empty),
+            ValidationHelper.GetInteger(ddlBrand.SelectedValue, default(int)),
+            chkOnlyAllocatedToMe.Checked
+        );
     }
 
     public string GetDemandCount(int SKUID)
     {
         return string.Format("{0:n0}", DIContainer.Resolve<IShoppingCartProvider>().GetPreBuyDemandCount(SKUID));
+    }
+
+    protected void OnFilterChanged(object sender, EventArgs e)
+    {
+        SetFilter();
     }
 
     #endregion "Methods"

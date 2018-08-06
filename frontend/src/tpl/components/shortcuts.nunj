@@ -1,0 +1,8 @@
+<div class="row shortcuts">
+  {% for i in range(1, 9) -%}
+  <a href="#" class="shortcuts__block col-3">
+    <img class="shortcuts__img" src="https://satyr.io/300x150/{{ i }}" alt="shortctut-{{i}}">
+    <h5 class="shortcuts__title">Hello</h5>
+  </a>
+  {% endfor %}
+</div>

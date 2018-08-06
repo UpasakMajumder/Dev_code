@@ -52,6 +52,58 @@ ORDER BY ItemOrder
           <SortItems>False</SortItems>
         </settings>
       </field>
+      <category name="Header">
+        <properties>
+          <visible>True</visible>
+        </properties>
+      </category>
+      <field allowempty="true" column="DashboardModuleHeaderText" columnsize="200" columntype="text" guid="0f77e791-e54d-440e-9333-87db7aeb6423" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Header Text</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="DashboardModuleSubHeaderText" columnsize="500" columntype="text" guid="c51759c6-db84-4993-b3e3-b469d86bb00b" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Subheader Text</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="DashboardModuleHeaderImage" columnsize="400" columntype="text" guid="c06f0fff-1c00-40cc-a2fc-c77d9118193b" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Header Image</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>MediaSelectionControl</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="DashboardModuleHeaderRightText" columntype="longtext" guid="6b3ce23d-7b71-4d66-99db-5c35fc00e081" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Header Right Text</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>HtmlAreaControl</controlname>
+          <Dialogs_Content_Hide>False</Dialogs_Content_Hide>
+          <HeightUnitType>PX</HeightUnitType>
+          <MediaDialogConfiguration>True</MediaDialogConfiguration>
+          <ShowAddStampButton>False</ShowAddStampButton>
+          <WidthUnitType>PX</WidthUnitType>
+        </settings>
+      </field>
     </form>
   </ClassFormDefinition>
   <ClassGUID>d704ca6b-5dae-4943-be2a-c3b24006379e</ClassGUID>

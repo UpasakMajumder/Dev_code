@@ -55,6 +55,9 @@
     <Reference Include="NPOI.OpenXmlFormats, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.3.0\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
+    <Reference Include="NReco.PdfGenerator, Version=1.1.15.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
+      <HintPath>..\packages\NReco.PdfGenerator.1.1.15\lib\net20\NReco.PdfGenerator.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
@@ -74,6 +77,8 @@
   <ItemGroup>
     <Compile Include="Contracts\Approval\IApprovalService.cs" />
     <Compile Include="Contracts\Approval\IApproverService.cs" />
+    <Compile Include="Contracts\IByteConverter.cs" />
+    <Compile Include="Contracts\IPreBuyCatalogService.cs" />
     <Compile Include="Contracts\IConvert.cs" />
     <Compile Include="Contracts\IDialogService.cs" />
     <Compile Include="Contracts\IIBTFService.cs" />
@@ -160,6 +165,8 @@
     <Compile Include="Services\Orders\OrderResubmissionService.cs" />
     <Compile Include="Services\Orders\SendSubmitOrder.cs" />
     <Compile Include="Services\DistributorShoppingCartService.cs" />
+    <Compile Include="Services\PdfByteConverter.cs" />
+    <Compile Include="Services\PdfPreBuyCatalogService.cs" />
     <Compile Include="Services\SSO\KadenaSaml2SecurityTokenHandler.cs" />
     <Compile Include="Services\SSO\Saml2RecipientValidator.cs" />
     <Compile Include="Services\SSO\Saml2HandlerService.cs" />
