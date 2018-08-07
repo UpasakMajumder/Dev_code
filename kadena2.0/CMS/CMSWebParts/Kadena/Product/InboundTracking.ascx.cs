@@ -21,9 +21,37 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Kadena.Models.SiteSettings;
+using Kadena.Models.TableSorting;
 
 public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWebPart
 {
+    private OrderBy OrderBy => TableSortingHelper.ExtractOrderByFromUrl(CMSHttpContext.Current.Request.RawUrl);
+
+    private class InboundTrackingGridItem
+    {
+        public int SKUID { get; set; }
+        public string SKUNumber { get; set; }
+        public string SKUName { get; set; }
+        public string ProductCustomerReferenceNumber { get; set; }
+        public int QtyOrdered { get; set; }
+        public int DemandGoal { get; set; }
+        public int QtyReceived { get; set; }
+        public int QtyProduced { get; set; }
+        public int Overage { get; set; }
+        public string Vendor { get; set; }
+        public string ExpArrivalToCenveo { get; set; }
+        public string DeliveryToDistBy { get; set; }
+        public string ShippedToDist { get; set; }
+        public string CenveoComments { get; set; }
+        public string TweComments { get; set; }
+        public double ActualPrice { get; set; }
+        public bool Status { get; set; }
+        public bool IsClosed { get; set; }
+        public string ItemSpec { get; set; }
+        public string CustomItemSpecs { get; set; }
+        public double EstimatedPrice { get; set; }
+    }
+
     #region Properties
 
     /// <summary>
@@ -667,7 +695,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                                  join inbound in inboundDetails
                                  on product.SKUID equals inbound.SKUID into alldata
                                  from newData in alldata.DefaultIfEmpty()
-                                 select new
+                                 select new InboundTrackingGridItem
                                  {
                                      SKUID = product.SKUID,
                                      SKUNumber = product.SKUNumber,
@@ -691,7 +719,9 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                                      CustomItemSpecs = product.CustomItemSpecs ?? string.Empty,
                                      EstimatedPrice = product?.EstimatedPrice ?? default(double)
                                  };
-                allDetails = allDetails.ToList();
+
+                allDetails = ApplyOrderBy(allDetails);
+
                 var closeButtonStatus = allDetails.Select(x => x.IsClosed).FirstOrDefault();
                 if (!DataHelper.DataSourceIsEmpty(allDetails))
                 {
@@ -729,6 +759,28 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         {
             EventLogProvider.LogException("Get Products", "GetProducts()", ex, CurrentSite.SiteID, ex.Message);
         }
+    }
+
+    private IEnumerable<InboundTrackingGridItem> ApplyOrderBy(IEnumerable<InboundTrackingGridItem> allDetails)
+    {
+        var orderBy = OrderBy;
+
+        if (orderBy.IsEmpty)
+        {
+            return allDetails;
+        }
+
+        var property = typeof(InboundTrackingGridItem).GetProperty(orderBy.Column);
+        if (property == null)
+        {
+            return allDetails;
+        }
+
+        Func<InboundTrackingGridItem, object> keySelector = (itg) => property.GetValue(itg, null);
+        
+        return orderBy.Direction == TableSortingHelper.DirectionDescending
+            ? allDetails.OrderByDescending(keySelector)
+            : allDetails.OrderBy(keySelector);
     }
 
     /// <summary>

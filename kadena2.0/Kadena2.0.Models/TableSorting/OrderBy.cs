@@ -10,5 +10,7 @@
             Column = column;
             Direction = direction;
         }
+
+        public bool IsEmpty => string.IsNullOrWhiteSpace(Column) || string.IsNullOrWhiteSpace(Direction);
     }
 }
