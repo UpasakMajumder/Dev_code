@@ -6,6 +6,7 @@ using AutoMapper;
 using Kadena.BusinessLogic.Contracts.SSO;
 using Kadena.Models;
 using Kadena.Models.Membership;
+using System.Data.SqlClient;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -137,7 +138,15 @@ namespace Kadena.BusinessLogic.Services
             if (existingAddresses.Length == 0)
             {
                 newAddress.CustomerId = customerId;
-                settingsService.SaveShippingAddress(newAddress);
+                try
+                {
+                    settingsService.SaveShippingAddress(newAddress);
+                }
+                catch (SqlException exc)
+                {
+                    logger.LogException(this.GetType().Name, exc);
+                    return null;
+                }
             }
             return newAddress;
         }
