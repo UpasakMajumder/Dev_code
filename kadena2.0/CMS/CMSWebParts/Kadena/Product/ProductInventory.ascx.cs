@@ -206,7 +206,7 @@ public partial class CMSWebParts_Kadena_Product_ProductInventory : CMSAbstractWe
         }
         else
         {
-            chkOnlyAllocatedToMe.Visible = ProductType == (int)CampaignProductType.GeneralInventory;
+            chkOnlyAllocatedToMeWrapper.Visible = ProductType == (int)CampaignProductType.GeneralInventory;
             chkOnlyAllocatedToMe.InputAttributes.Add("class", "input__checkbox"); // if specified in markup asp generates extra span around
 
             BindUnipagerTransformations();
