@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customtableitem.kda.erpsystems>
+  <CodeName>sap</CodeName>
+  <DisplayName>SAP</DisplayName>
+  <ItemCreatedBy>
+    <CodeName>d.lahuta@actum.cz</CodeName>
+    <GUID>c4df5660-af15-4190-af92-32864143a56a</GUID>
+    <ObjectType>cms.user</ObjectType>
+  </ItemCreatedBy>
+  <ItemGUID>6f17df89-8324-443e-bf7c-ef4b5f61e752</ItemGUID>
+  <ItemModifiedBy>
+    <CodeName>d.lahuta@actum.cz</CodeName>
+    <GUID>c4df5660-af15-4190-af92-32864143a56a</GUID>
+    <ObjectType>cms.user</ObjectType>
+  </ItemModifiedBy>
+  <ItemOrder>2</ItemOrder>
+</customtableitem.kda.erpsystems>

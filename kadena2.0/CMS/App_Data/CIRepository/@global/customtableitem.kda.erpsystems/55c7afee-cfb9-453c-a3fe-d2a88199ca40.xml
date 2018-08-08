@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customtableitem.kda.erpsystems>
+  <CodeName>printstream</CodeName>
+  <DisplayName>PrintStream</DisplayName>
+  <ItemCreatedBy>
+    <CodeName>d.lahuta@actum.cz</CodeName>
+    <GUID>c4df5660-af15-4190-af92-32864143a56a</GUID>
+    <ObjectType>cms.user</ObjectType>
+  </ItemCreatedBy>
+  <ItemGUID>55c7afee-cfb9-453c-a3fe-d2a88199ca40</ItemGUID>
+  <ItemModifiedBy>
+    <CodeName>d.lahuta@actum.cz</CodeName>
+    <GUID>c4df5660-af15-4190-af92-32864143a56a</GUID>
+    <ObjectType>cms.user</ObjectType>
+  </ItemModifiedBy>
+  <ItemOrder>3</ItemOrder>
+</customtableitem.kda.erpsystems>

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.ERPSystems</CodeName>
+    <GUID>b106f339-bb62-46ef-a4c6-faa011e1d4e4</GUID>
+    <ObjectType>cms.customtable</ObjectType>
+  </ClassID>
+  <PermissionDescription>{$permissiondescription.customtable.create$}</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>{$permissionnames.create$}</PermissionDisplayName>
+  <PermissionGUID>355995d5-a803-49cb-8b22-90bebb9281b6</PermissionGUID>
+  <PermissionName>Create</PermissionName>
+  <PermissionOrder>3</PermissionOrder>
+</cms.classpermission>

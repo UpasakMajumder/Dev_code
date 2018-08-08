@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customtableitem.kda.erpsystems>
+  <CodeName>ejt</CodeName>
+  <DisplayName>Email job ticket</DisplayName>
+  <ItemCreatedBy>
+    <CodeName>d.lahuta@actum.cz</CodeName>
+    <GUID>c4df5660-af15-4190-af92-32864143a56a</GUID>
+    <ObjectType>cms.user</ObjectType>
+  </ItemCreatedBy>
+  <ItemGUID>81e798ad-6e07-47df-a055-21cb70004126</ItemGUID>
+  <ItemModifiedBy>
+    <CodeName>d.lahuta@actum.cz</CodeName>
+    <GUID>c4df5660-af15-4190-af92-32864143a56a</GUID>
+    <ObjectType>cms.user</ObjectType>
+  </ItemModifiedBy>
+  <ItemOrder>1</ItemOrder>
+</customtableitem.kda.erpsystems>
