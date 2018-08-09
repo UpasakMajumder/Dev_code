@@ -922,7 +922,6 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                 if (user == null || (user != null && user.UserID <= 0))
                 {
                     CreateNewUser(user);
-                    Response.Redirect("~/" + CurrentDocument.DocumentUrlPath);
                 }
                 else
                 {
@@ -936,8 +935,11 @@ public partial class CMSWebParts_Kadena_Membership_Users_UsersList : CMSAbstract
                             UserInfoProvider.AddUserToRole(user.UserName, NewUserRole, CurrentSiteName);
                         }
                     }
-                    formElem.SaveData("~/" + CurrentDocument.DocumentUrlPath);
+                    formElem.SaveData(null);
                 }
+
+                CacheHelper.TouchKey("kda.usersmodule|all");
+                Response.Redirect("~/" + CurrentDocument.DocumentUrlPath);
             }
             else
             {
