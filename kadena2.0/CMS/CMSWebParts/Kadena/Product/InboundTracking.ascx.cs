@@ -689,9 +689,17 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             if (!DataHelper.DataSourceIsEmpty(skuDetails) && !DataHelper.DataSourceIsEmpty(productsDetails))
             {
                 var productAndSKUDetails = productsDetails
-                                  .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, (x, y) => new { x.ProgramID, x.CategoryID, x.CustomItemSpecs, x.ItemSpecs, y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUID,x.EstimatedPrice, x.Product.ProductCustomerReferenceNumber }).ToList();
-                var inboundDetails = CustomTableItemProvider.GetItems<InboundTrackingItem>().WhereIn("SKUID", skuDetails.Select(x => x.SKUID).ToList()).ToList();
-                var allDetails = from product in productAndSKUDetails
+                                  .Join(skuDetails, x => x.NodeSKUID, y => y.SKUID, 
+                                  (x, y) => new
+                                  {
+                                      x.ProgramID, x.CategoryID, x.CustomItemSpecs, x.ItemSpecs,
+                                      y.SKUNumber, y.SKUName, y.SKUPrice, y.SKUEnabled, y.SKUID,
+                                      x.EstimatedPrice, x.Product.ProductCustomerReferenceNumber
+                                  })
+                                  .ToList();
+                var inboundDetails = CustomTableItemProvider.GetItems<InboundTrackingItem>()
+                    .WhereIn("SKUID", skuDetails.Select(x => x.SKUID).ToList()).ToList();
+                var data = from product in productAndSKUDetails
                                  join inbound in inboundDetails
                                  on product.SKUID equals inbound.SKUID into alldata
                                  from newData in alldata.DefaultIfEmpty()
@@ -720,7 +728,9 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                                      EstimatedPrice = product?.EstimatedPrice ?? default(double)
                                  };
 
-                allDetails = ApplyOrderBy(allDetails);
+                data = ApplyOrderBy(data);
+
+                var allDetails = data.ToList();
 
                 var closeButtonStatus = allDetails.Select(x => x.IsClosed).FirstOrDefault();
                 if (!DataHelper.DataSourceIsEmpty(allDetails))
@@ -770,7 +780,9 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             return allDetails;
         }
 
-        var property = typeof(InboundTrackingGridItem).GetProperty(orderBy.Column);
+        var property = typeof(InboundTrackingGridItem)
+            .GetProperties()
+            .FirstOrDefault(p => string.Compare(p.Name, orderBy.Column, ignoreCase: true) == 0);
         if (property == null)
         {
             return allDetails;
