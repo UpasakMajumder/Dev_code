@@ -3,14 +3,14 @@
   <CodeName>sap</CodeName>
   <DisplayName>SAP</DisplayName>
   <ItemCreatedBy>
-    <CodeName>d.lahuta@actum.cz</CodeName>
-    <GUID>c4df5660-af15-4190-af92-32864143a56a</GUID>
+    <CodeName>administrator</CodeName>
+    <GUID>6415b8ce-8072-4bcd-8e48-9d7178b826b7</GUID>
     <ObjectType>cms.user</ObjectType>
   </ItemCreatedBy>
-  <ItemGUID>6f17df89-8324-443e-bf7c-ef4b5f61e752</ItemGUID>
+  <ItemGUID>cd19b5f7-6cc0-456e-b89a-10c1355376b6</ItemGUID>
   <ItemModifiedBy>
-    <CodeName>d.lahuta@actum.cz</CodeName>
-    <GUID>c4df5660-af15-4190-af92-32864143a56a</GUID>
+    <CodeName>administrator</CodeName>
+    <GUID>6415b8ce-8072-4bcd-8e48-9d7178b826b7</GUID>
     <ObjectType>cms.user</ObjectType>
   </ItemModifiedBy>
   <ItemOrder>2</ItemOrder>

@@ -157,13 +157,13 @@ namespace Kadena.CMSFormControls.Kadena
             _value.CustomerErpId = inputCustomerERPID.Text;
             _value.ToSync = true;
         }
-    }
 
-    public class ErpSelectorValue
-    {
-        public string MicroserviceId { get; set; }
-        public string TargetErpCodename { get; set; }
-        public string CustomerErpId { get; set; }
-        public bool ToSync { get; set; }
+        private class ErpSelectorValue
+        {
+            public string MicroserviceId { get; set; }
+            public string TargetErpCodename { get; set; }
+            public string CustomerErpId { get; set; }
+            public bool ToSync { get; set; }
+        }
     }
 }
