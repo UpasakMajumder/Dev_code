@@ -21,14 +21,17 @@
 <div class="content-header"> 
   {^WebPartZone|(id)zoneHeader^}
 </div>
-<div class="homepage-header row mb-4">
-  {^WebPartZone|(id)zoneHeaderContent^} 
-</div>
 <div class="content-block">
   <div class="dashboard">
+    <div class="homepage-header row mb-4">
+      {^WebPartZone|(id)zoneHeaderContent^} 
+    </div>
+    <div class="row shortcuts">
+      {^WebPartZone|(id)zoneShortcutButtons^}  
+    </div>
+    
     {^WebPartZone|(id)zoneNotificationWidget^}  
-    {^WebPartZone|(id)zoneMetrics^} 
-    {^WebPartZone|(id)zoneShortcutButtons^}    
+    {^WebPartZone|(id)zoneMetrics^}       
     {^WebPartZone|(id)zoneRecentOrders^}      
     {^WebPartZone|(id)zoneNewProductsPre^}  
     {^WebPartZone|(id)zoneNewProducts^}  
@@ -505,12 +508,8 @@ config.localization.products = {
           <property name="containercustomcontent"></property>
           <property name="containerhideonsubpages">False</property>
           <property name="containertitle"></property>
-          <property name="contentafter">
-            <![CDATA[</div>]]>
-          </property>
-          <property name="contentbefore">
-            <![CDATA[<div class="row shortcuts">]]>
-          </property>
+          <property name="contentafter"></property>
+          <property name="contentbefore"></property>
           <property name="controlid">rptAdminFeatures</property>
           <property name="culturecode"></property>
           <property name="customtimezone"></property>
