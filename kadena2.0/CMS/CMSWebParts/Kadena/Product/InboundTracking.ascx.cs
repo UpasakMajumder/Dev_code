@@ -27,6 +27,9 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
 {
     private OrderBy OrderBy => TableSortingHelper.ExtractOrderByFromUrl(CMSHttpContext.Current.Request.RawUrl);
 
+    private int SelectedCampaignId => ValidationHelper.GetInteger(Request.QueryString["campaignId"], 0);
+    private int SelectedProgramId => ValidationHelper.GetInteger(Request.QueryString["programId"], 0);
+
     private class InboundTrackingGridItem
     {
         public int SKUID { get; set; }
@@ -540,31 +543,32 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     /// </summary>
     protected void SetupControl()
     {
-        if (!this.StopProcessing)
+        if (StopProcessing)
         {
-            string gAdminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
-            if (!string.IsNullOrEmpty(gAdminRoleName) && !string.IsNullOrWhiteSpace(gAdminRoleName))
-            {
-                if (CurrentUser.IsInRole(gAdminRoleName, CurrentSiteName))
-                {
-                    if (!IsPostBack)
-                    {
-                        divSelectCampaign.Visible = true;
-                        BindCampaigns();
-                        string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
-                        ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
-                        BindLabels();
-                    }
-                }
-                else
-                {
-                    Response.Redirect(NoAccessPage);
-                }
-            }
-            else
-            {
-                Response.Redirect(NoAccessPage);
-            }
+            return;
+        }
+
+        var gAdminRoleName = SettingsKeyInfoProvider.GetValue(CurrentSite.SiteName + ".KDA_GlobalAminRoleName");
+        if (string.IsNullOrWhiteSpace(gAdminRoleName) || !CurrentUser.IsInRole(gAdminRoleName, CurrentSiteName))
+        {
+            Response.Redirect(NoAccessPage);
+        }
+
+        BindCampaigns();
+        BindPrograms(SelectedCampaignId);
+        BindLabels();
+
+        var campaignSelected = SelectedCampaignId > 0;
+        divSelectCampaign.Visible = !campaignSelected;
+        ddlProgram.Enabled = campaignSelected;
+        inBoundGrid.Visible = campaignSelected;
+        btnClose.Enabled = campaignSelected;
+        btnRefresh.Enabled = campaignSelected;
+        btnExport.Enabled = campaignSelected;
+
+        if (campaignSelected)
+        {
+            BindProducts();
         }
     }
 
@@ -628,7 +632,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             }
             else
             {
-                programIds = GetProgramIDs(ValidationHelper.GetInteger(ddlCampaign.SelectedValue, default(int)), ValidationHelper.GetInteger(ddlProgram.SelectedValue, default(int)));
+                programIds = GetProgramIDs(ValidationHelper.GetInteger(ddlCampaign.SelectedValue, default(int)));
             }
             if (!DataHelper.DataSourceIsEmpty(programIds))
             {
@@ -680,7 +684,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     /// <summary>
     /// Get Products
     /// </summary>
-    public void GetProducts()
+    public void BindProducts()
     {
         try
         {
@@ -799,7 +803,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     /// Get the Program Ids in Open Campaign
     /// </summary>
     /// <returns></returns>
-    public List<int> GetProgramIDs(int campaignID = default(int), int programID = default(int))
+    public List<int> GetProgramIDs(int campaignID = default(int))
     {
         List<int> programIds = new List<int>();
         try
@@ -852,17 +856,25 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         try
         {
-            var camapaigns = CampaignProvider.GetCampaigns().Columns("CampaignID,Name")
-                                .Where(new WhereCondition().WhereEquals("CloseCampaign", true))
-                                .WhereEquals("NodeSiteID", CurrentSite.SiteID).OrderBy(x => x.Name).ToList();
-            if (!DataHelper.DataSourceIsEmpty(camapaigns))
+            var campaigns = CampaignProvider.GetCampaigns()
+                .Columns("CampaignID,Name")
+                .Where(new WhereCondition().WhereEquals("CloseCampaign", true))
+                .WhereEquals("NodeSiteID", CurrentSite.SiteID)
+                .OrderBy(x => x.Name)
+                .ToList();
+            if (!DataHelper.DataSourceIsEmpty(campaigns))
             {
-                ddlCampaign.DataSource = camapaigns;
+                ddlCampaign.DataSource = campaigns;
                 ddlCampaign.DataTextField = "Name";
                 ddlCampaign.DataValueField = "CampaignID";
                 ddlCampaign.DataBind();
                 string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectCampaignText"), string.Empty);
                 ddlCampaign.Items.Insert(0, new ListItem(selectText, "0"));
+
+                if (campaigns.Any(c => c.CampaignID == SelectedCampaignId))
+                {
+                    ddlCampaign.SelectedValue = SelectedCampaignId.ToString();
+                }
             }
         }
         catch (Exception ex)
@@ -879,7 +891,9 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     {
         try
         {
-            if (campaignID != default(int))
+            ddlProgram.Items.Clear();
+
+            if (campaignID > 0)
             {
                 List<Program> programs = ProgramProvider.GetPrograms()
                                    .WhereEquals("CampaignID", campaignID)
@@ -891,22 +905,16 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                     ddlProgram.DataTextField = "ProgramName";
                     ddlProgram.DataValueField = "ProgramID";
                     ddlProgram.DataBind();
-                    string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
-                    ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
-                }
-                else
-                {
-                    ddlProgram.Items.Clear();
-                    string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
-                    ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
+
+                    if (programs.Any(c => c.ProgramID == SelectedProgramId))
+                    {
+                        ddlProgram.SelectedValue = SelectedProgramId.ToString();
+                    }
                 }
             }
-            else
-            {
-                ddlProgram.Items.Clear();
-                string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
-                ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
-            }
+
+            string selectText = ValidationHelper.GetString(ResHelper.GetString("Kadena.CampaignProduct.SelectProgramText"), string.Empty);
+            ddlProgram.Items.Insert(0, new ListItem(selectText, "0"));
         }
         catch (Exception ex)
         {
@@ -922,7 +930,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     protected void inboundProducts_RowEditing(object sender, GridViewEditEventArgs e)
     {
         gdvInboundProducts.EditIndex = e.NewEditIndex;
-        GetProducts();
+        BindProducts();
     }
 
     /// <summary>
@@ -965,7 +973,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             }
             UpdateSkuTable(ValidationHelper.GetInteger(skuid, default(int)), ValidationHelper.GetDouble(((TextBox)gdvInboundProducts.Rows[e.RowIndex].FindControl("txtActualPrice")).Text, default(double)), ValidationHelper.GetInteger(((DropDownList)gdvInboundProducts.Rows[e.RowIndex].FindControl("ddlStatus")).SelectedValue, default(int)));
             gdvInboundProducts.EditIndex = -1;
-            GetProducts();
+            BindProducts();
         }
         catch (Exception ex)
         {
@@ -1005,51 +1013,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     protected void gdvInboundProducts_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
     {
         gdvInboundProducts.EditIndex = -1;
-        GetProducts();
-    }
-
-    /// <summary>
-    /// Bind the Products by CampaignID
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void ddlCampaign_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        try
-        {
-            if (ddlCampaign.SelectedIndex != 0)
-            {
-                inBoundGrid.Visible = true;
-                ddlProgram.Enabled = true;
-                divSelectCampaign.Visible = false;
-                BindPrograms(ValidationHelper.GetInteger(ddlCampaign.SelectedValue, default(int)));
-                GetProducts();
-            }
-            else
-            {
-                ddlProgram.Enabled = false;
-                divNodatafound.Visible = false;
-                divSelectCampaign.Visible = true;
-                inBoundGrid.Visible = false;
-                btnClose.Enabled = false;
-                btnRefresh.Enabled = false;
-                btnExport.Enabled = false;
-            }
-        }
-        catch (Exception ex)
-        {
-            EventLogProvider.LogException("Campaign selection change event", "ddlCampaign_SelectedIndexChanged()", ex, CurrentSite.SiteID, ex.Message);
-        }
-    }
-
-    /// <summary>
-    /// Bind Products by ProgramID
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void ddlProgram_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        GetProducts();
+        BindProducts();
     }
 
     /// <summary>
@@ -1074,7 +1038,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
             gdvInboundProducts.Columns[gdvInboundProducts.Columns.Count - 1].Visible = false;
             gdvInboundProducts.AllowPaging = false;
             gdvInboundProducts.EditIndex = -1;
-            GetProducts();
+            BindProducts();
             for (int i = 0; i < gdvInboundProducts.Rows.Count; i++)
             {
                 var control = (Label)gdvInboundProducts.Rows[i].FindControl("lblItemSpecs");
@@ -1108,7 +1072,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
     protected void gdvInboundProducts_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         gdvInboundProducts.PageIndex = e.NewPageIndex;
-        GetProducts();
+        BindProducts();
     }
 
     /// <summary>
@@ -1162,7 +1126,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
                 DIContainer.Resolve<IIBTFService>().UpdateRemainingBudget(campaignID);
                 ProductEmailNotifications.GetCampaignOrders(campaignID, emailNotificationTemplate);
                 btnClose.Enabled = false;
-                GetProducts();
+                BindProducts();
                 Response.Cookies["status"].Value = QueryStringStatus.Updated;
                 Response.Cookies["status"].HttpOnly = false;
             }

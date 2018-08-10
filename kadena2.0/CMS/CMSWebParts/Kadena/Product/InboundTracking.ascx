@@ -2,8 +2,8 @@
 
 <div class="custom__block">
     <div class="custom__select">
-        <asp:DropDownList ID="ddlCampaign" runat="server" OnSelectedIndexChanged="ddlCampaign_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
-        <asp:DropDownList ID="ddlProgram" runat="server" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+        <asp:DropDownList ID="ddlCampaign" ClientIDMode="Static" runat="server" />
+        <asp:DropDownList ID="ddlProgram" ClientIDMode="Static" runat="server" />
     </div>
     <div class="custom__btns">
         <asp:Button ID="btnRefresh" CssClass="btn-action login__login-button btn--no-shadow" runat="server" Enabled="false" OnClick="btnRefresh_Click" />
@@ -182,3 +182,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    $cmsj(document).ready(function () {
+        $cmsj("#ddlCampaign").change(function (e) {
+            var selectedCampaignId = e.target.value;
+            if (selectedCampaignId) {
+                updateQueryStringParam('campaignId', selectedCampaignId);
+            }
+        });
+        $cmsj("#ddlProgram").change(function (e) {
+            var selectedProgramId = e.target.value;
+            if (selectedProgramId) {
+                updateQueryStringParam('programId', selectedProgramId);
+            } else {
+                updateQueryStringParam('programId', '');
+            }
+        });
+    });
+</script>
