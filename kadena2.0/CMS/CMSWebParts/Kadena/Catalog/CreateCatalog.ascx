@@ -9,12 +9,14 @@
     <div class="search__block" id="searchDiv" runat="server">
         <asp:TextBox ID="posNumber" CssClass="input__text" runat="server" AutoPostBack="true" OnTextChanged="OnFilterChanged"></asp:TextBox>
     </div>
-    <div class="custom__check">
-        <div class="input__wrapper">
-            <asp:CheckBox runat="server" ID="chkOnlyAllocatedToMe" Checked="false" OnCheckedChanged="OnFilterChanged" AutoPostBack="true" />
-            <cms:LocalizedLabel runat="server" AssociatedControlID="chkOnlyAllocatedToMe" ID="LocalizedLabel1" CssClass="input__label input__label--checkbox" ResourceString="KDA.CustomCatalog.OnlyAllocatedToMe"></cms:LocalizedLabel>
+    <asp:PlaceHolder runat="server" ID="chkOnlyAllocatedToMeWrapper">
+        <div class="custom__check">
+            <div class="input__wrapper">
+                <asp:CheckBox runat="server" ID="chkOnlyAllocatedToMe" Checked="false" OnCheckedChanged="OnFilterChanged" AutoPostBack="true" />
+                <cms:LocalizedLabel runat="server" AssociatedControlID="chkOnlyAllocatedToMe" ID="LocalizedLabel1" CssClass="input__label input__label--checkbox" ResourceString="KDA.CustomCatalog.OnlyAllocatedToMe"></cms:LocalizedLabel>
+            </div>
         </div>
-    </div>
+    </asp:PlaceHolder>
     <div class="custom__check">
         <div class="input__wrapper">
             <input type="checkbox" class=" input__checkbox selectAllChk " id="allCheck-<%# Eval("NodeSKUID") %>" value="true">
