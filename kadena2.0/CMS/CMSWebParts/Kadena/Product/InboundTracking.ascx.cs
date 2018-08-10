@@ -509,30 +509,36 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         SetupControl();
     }
 
+    protected string GetTableSortingColumnURL(string column) =>
+        TableSortingHelper.GetColumnURL(column, CMSHttpContext.Current.Request.RawUrl);
+
+    protected string GetTableSortingColumnDirection(string column) =>
+        TableSortingHelper.GetColumnDirection(column, CMSHttpContext.Current.Request.RawUrl);
+
     /// <summary>
     /// Bind Resource strings
     /// </summary>
     public void BindLabels()
     {
-        gdvInboundProducts.Columns[0].HeaderText = SKUNumberHeaderText;
-        gdvInboundProducts.Columns[1].HeaderText = SKUNameheaderText;
-        gdvInboundProducts.Columns[2].HeaderText = CustomerReferenceNumberHeaderText;
-        gdvInboundProducts.Columns[3].HeaderText = ItemSpecHeaderText;
-        gdvInboundProducts.Columns[4].HeaderText = QtyOrderedHeaderText;
-        gdvInboundProducts.Columns[5].HeaderText = DemandHeaderText;
-        gdvInboundProducts.Columns[6].HeaderText = QtyReceivedHeaderText;
-        gdvInboundProducts.Columns[7].HeaderText = QtyProdusedHeaderText;
-        gdvInboundProducts.Columns[8].HeaderText = OverageHeaderText;
-        gdvInboundProducts.Columns[9].HeaderText = VendorHeaderText;
-        gdvInboundProducts.Columns[10].HeaderText = ExpArraivalToCenveoHeaderText;
-        gdvInboundProducts.Columns[11].HeaderText = DeliveryToDistByHeaderText;
-        gdvInboundProducts.Columns[12].HeaderText = ShippedToDistHeaderText;
-        gdvInboundProducts.Columns[13].HeaderText = CenveoCommentsHeaderText;
-        gdvInboundProducts.Columns[14].HeaderText = TWECommentsHeaderText;
-        gdvInboundProducts.Columns[15].HeaderText = ActualPriceHeaderText;
-        gdvInboundProducts.Columns[16].HeaderText = EstimatedPriceHeaderText;
-        gdvInboundProducts.Columns[17].HeaderText = StatusHeaderText;
-        gdvInboundProducts.Columns[18].HeaderText = ActionsText;
+        //gdvInboundProducts.Columns[0].HeaderText = SKUNumberHeaderText;
+        //gdvInboundProducts.Columns[1].HeaderText = SKUNameheaderText;
+        //gdvInboundProducts.Columns[2].HeaderText = CustomerReferenceNumberHeaderText;
+        //gdvInboundProducts.Columns[3].HeaderText = ItemSpecHeaderText;
+        //gdvInboundProducts.Columns[4].HeaderText = QtyOrderedHeaderText;
+        //gdvInboundProducts.Columns[5].HeaderText = DemandHeaderText;
+        //gdvInboundProducts.Columns[6].HeaderText = QtyReceivedHeaderText;
+        //gdvInboundProducts.Columns[7].HeaderText = QtyProdusedHeaderText;
+        //gdvInboundProducts.Columns[8].HeaderText = OverageHeaderText;
+        //gdvInboundProducts.Columns[9].HeaderText = VendorHeaderText;
+        //gdvInboundProducts.Columns[10].HeaderText = ExpArraivalToCenveoHeaderText;
+        //gdvInboundProducts.Columns[11].HeaderText = DeliveryToDistByHeaderText;
+        //gdvInboundProducts.Columns[12].HeaderText = ShippedToDistHeaderText;
+        //gdvInboundProducts.Columns[13].HeaderText = CenveoCommentsHeaderText;
+        //gdvInboundProducts.Columns[14].HeaderText = TWECommentsHeaderText;
+        //gdvInboundProducts.Columns[15].HeaderText = ActualPriceHeaderText;
+        //gdvInboundProducts.Columns[16].HeaderText = EstimatedPriceHeaderText;
+        //gdvInboundProducts.Columns[17].HeaderText = StatusHeaderText;
+        //gdvInboundProducts.Columns[18].HeaderText = ActionsText;
         btnExport.Text = ExportButtonText;
         btnRefresh.Text = RefreshButtonText;
         btnClose.Text = ResHelper.GetString("Kadena.Inbound.CloseButtonText");
