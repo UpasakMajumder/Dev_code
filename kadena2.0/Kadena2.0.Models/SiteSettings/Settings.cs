@@ -161,6 +161,15 @@ namespace Kadena.Models.SiteSettings
         /// 
         /// </summary>
         [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Cart Management")]
+        [DefaultValueAttribute(@"False")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IlJlcXVlc3QgZGF0ZSBlbmFibGVkIiwiS2V5TmFtZSI6IktEQV9DYXJ0UmVxdWVzdERhdGVFbmFibGVkIiwiS2V5VHlwZSI6ImJvb2xlYW4iLCJLZXlEZWZhdWx0VmFsdWUiOiJGYWxzZSIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJDYXJ0IE1hbmFnZW1lbnQifX0=")]
+        public const string KDA_CartRequestDateEnabled = "KDA_CartRequestDateEnabled";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
         [GroupAttribute("Category Management")]
         [DefaultValueAttribute(null)]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkNhdGVnb3JpZXMgTW9kdWxlIEVuYWJsZWQiLCJLZXlOYW1lIjoiS0RBX0NhdGVnb3JpZXNNb2R1bGVFbmFibGVkIiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6bnVsbCwiS2V5RGVzY3JpcHRpb24iOiIiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOiJSYWRpb0J1dHRvbnNDb250cm9sIiwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6IjxzZXR0aW5ncz48T3B0aW9ucz5lbmFibGVkO0VuYWJsZWRcclxuZGlzYWJsZWQ7RGlzYWJsZWRcclxuaGlkZGVuO0hpZGRlbjwvT3B0aW9ucz48UmVwZWF0RGlyZWN0aW9uPmhvcml6b250YWw8L1JlcGVhdERpcmVjdGlvbj48UmVwZWF0TGF5b3V0PkZsb3c8L1JlcGVhdExheW91dD48U29ydEl0ZW1zPkZhbHNlPC9Tb3J0SXRlbXM+PC9zZXR0aW5ncz4iLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJDYXRlZ29yeSBNYW5hZ2VtZW50In19")]

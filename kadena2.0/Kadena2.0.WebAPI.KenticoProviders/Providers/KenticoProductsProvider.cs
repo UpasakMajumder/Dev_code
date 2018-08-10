@@ -21,11 +21,13 @@ namespace Kadena.WebAPI.KenticoProviders
     public class KenticoProductsProvider : IKenticoProductsProvider
     {
         private readonly IMapper mapper;
+        private readonly IKenticoProgramsProvider programsProvider;
         private const string CustomTableName = "KDA.UserAllocatedProducts";
 
-        public KenticoProductsProvider(IMapper mapper)
+        public KenticoProductsProvider(IMapper mapper, IKenticoProgramsProvider programsProvider)
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.programsProvider = programsProvider ?? throw new ArgumentNullException(nameof(programsProvider));
         }
 
         public List<ProductCategoryLink> GetCategories(string path)
@@ -218,37 +220,38 @@ namespace Kadena.WebAPI.KenticoProviders
             return -1;
         }
 
-        public void UpdateAllocatedProductQuantityForUser(int productID, int userID, int quantity)
+        public void UpdateAllocatedProductQuantityForUser(int skuId, int userID, int quantity)
         {
-            DataClassInfo customTable = DataClassInfoProvider.GetDataClassInfo(CustomTableName);
-            if (customTable != null)
+            var productId = GetCampaignProductIDBySKUID(skuId);
+
+            if (productId > 0)
             {
-                var customTableData = CustomTableItemProvider.GetItems(CustomTableName)
-                                                                    .WhereEquals("ProductID", productID).WhereEquals("UserID", userID).FirstOrDefault();
-                if (customTableData != null)
+                DataClassInfo customTable = DataClassInfoProvider.GetDataClassInfo(CustomTableName);
+                if (customTable != null)
                 {
-                    customTableData.SetValue("Quantity", customTableData.GetIntegerValue("Quantity", 0) - quantity);
-                    customTableData.Update();
+                    var customTableData = CustomTableItemProvider
+                        .GetItems(CustomTableName)
+                        .WhereEquals("ProductID", productId)
+                        .WhereEquals("UserID", userID)
+                        .FirstOrDefault();
+                    if (customTableData != null)
+                    {
+                        customTableData.SetValue("Quantity", customTableData.GetIntegerValue("Quantity", 0) - quantity);
+                        customTableData.Update();
+                    }
                 }
+
             }
         }
-        public List<CampaignsProduct> GetCampaignsProductSKUIDs(int campaignID)
+
+        public List<CampaignsProduct> GetCampaignsProductSKUIDs(List<int> programIds)
         {
-            List<int> programIDs = new KenticoProgramsProvider().GetProgramIDsByCampaign(campaignID);
             var productNodes = new TreeProvider(MembershipContext.AuthenticatedUser).SelectNodes("KDA.CampaignsProduct")
-                                    .WhereIn("ProgramID", programIDs)
+                                    .WhereIn("ProgramID", programIds)
                                     .OnCurrentSite();
             if (productNodes != null && productNodes.HasResults() && productNodes.TypedResult.Items.Count > 0)
             {
-                return productNodes.TypedResult.Items.ToList().Select(x =>
-                {
-                    return new CampaignsProduct()
-                    {
-                        SKUID = x.NodeSKUID,
-                        ProductName = x.DocumentName,
-                        EstimatedPrice = x.GetValue<decimal>("EstimatedPrice", 0)
-                    };
-                }).ToList();
+                return productNodes.TypedResult.Items.ToList().Select(x => mapper.Map<CampaignsProduct>(x)).ToList();
             }
             else
             {
@@ -293,20 +296,12 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var document = DocumentHelper.GetDocument(new NodeSelectionParameters { Where = "NodeSKUID = " + skuid, SiteName = SiteContext.CurrentSiteName, CultureCode = LocalizationContext.PreferredCultureCode, CombineWithDefaultCulture = false }, new TreeProvider(MembershipContext.AuthenticatedUser));
             SKUInfo sku = SKUInfoProvider.GetSKUInfo(skuid);
+            var campaignId = programsProvider.GetProgram(document.GetIntegerValue("ProgramID", default(int)))?.CampaignID ?? 0;
             if (sku != null && document != null)
             {
-                return new CampaignsProduct()
-                {
-                    SKUID = skuid,
-                    SKUNumber = sku.SKUNumber,
-                    ProductName = sku.SKUName,
-                    ActualPrice = ValidationHelper.GetDecimal(sku.SKUPrice, default(decimal)),
-                    EstimatedPrice = document.GetValue("EstimatedPrice", default(decimal)),
-                    POSNumber = sku.GetStringValue("SKUProductCustomerReferenceNumber", string.Empty),
-                    ProgramID = document.GetIntegerValue("ProgramID", default(int)),
-                    CampaignID = new KenticoProgramsProvider().GetProgram(document.GetIntegerValue("ProgramID", default(int)))?.CampaignID ?? 0,
-                    DocumentId = document.DocumentID
-                };
+                var product = mapper.Map<CampaignsProduct>(document);
+                product.CampaignID = campaignId;
+                return product;
             }
             else
             {

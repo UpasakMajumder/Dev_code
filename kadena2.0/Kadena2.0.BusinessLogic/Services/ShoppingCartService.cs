@@ -100,6 +100,7 @@ namespace Kadena.BusinessLogic.Services
                 Products = GetCartItems(),
                 DeliveryAddresses = GetDeliveryAddresses(),
                 PaymentMethods = checkoutfactory.CreatePaymentMethods(paymentMethods),
+                DeliveryDate = checkoutfactory.CreateDeliveryDateInput(),
                 Submit = checkoutfactory.CreateSubmitButton(),
                 ValidationMessage = resources.GetResourceString("Kadena.Checkout.ValidationError"),
                 EmailConfirmation = checkoutfactory.CreateNotificationEmail(emailConfirmationEnabled)

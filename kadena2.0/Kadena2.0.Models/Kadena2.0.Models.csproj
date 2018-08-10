@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Address\AddressData.cs" />
     <Compile Include="Address\AddressType.cs" />
+    <Compile Include="Address\StateGroup.cs" />
     <Compile Include="AddToCart\DistributorCart.cs" />
     <Compile Include="AddToCart\DistributorCartItem.cs" />
     <Compile Include="Address\BillingAddress.cs" />
@@ -59,6 +60,8 @@
     <Compile Include="CampaignData\OrderType.cs" />
     <Compile Include="Checkout\CartItemEntity.cs" />
     <Compile Include="Checkout\ChiliProcess.cs" />
+    <Compile Include="Checkout\DeliveryDate.cs" />
+    <Compile Include="Checkout\DeliveryDateMessages.cs" />
     <Compile Include="Common\Environment.cs" />
     <Compile Include="CreditCard\SaveCardData.cs" />
     <Compile Include="CreditCard\StoredCard.cs" />

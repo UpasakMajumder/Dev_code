@@ -8,11 +8,15 @@ using CMS.Localization;
 using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.Models;
+using Kadena.Models.Address;
+using Kadena.Models.Brand;
 using Kadena.Models.BusinessUnit;
+using Kadena.Models.CampaignData;
 using Kadena.Models.Checkout;
 using Kadena.Models.CreditCard;
 using Kadena.Models.Membership;
 using Kadena.Models.Product;
+using Kadena.Models.Program;
 using Kadena.Models.Site;
 using Kadena.WebAPI.KenticoProviders;
 using System;
@@ -350,6 +354,14 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.SiteID, opt => opt.MapFrom(src => src.GetIntegerValue("SiteID", 0)))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.GetBooleanValue("Status", false)));
 
+            CreateMap<CustomTableItem, Brand>()
+                .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.GetValue("BrandName", string.Empty)))
+                .ForMember(dest => dest.BrandCode, opt => opt.MapFrom(src => src.GetValue("BrandCode", 0)));
+
+            CreateMap<CustomTableItem, StateGroup>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ItemID))
+                .ForMember(dest => dest.States, opt => opt.MapFrom(src => src.GetValue("States", string.Empty).Replace(",", ", ")));
+
             CreateMap<TreeNode, Product>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.DocumentID))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.DocumentName))
@@ -369,6 +381,43 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Use3d, opt => opt.MapFrom(src => src.GetBooleanValue("ProductChili3dEnabled", false)))
                 .ForMember(dest => dest.NodeId, opt => opt.MapFrom(src => src.NodeID))
                 .ForAllOtherMembers(m => m.Ignore());
+
+            CreateMap<TreeNode, CampaignData>()
+                .ForMember(dest => dest.CampaignID, opt => opt.MapFrom(src => src.GetValue("CampaignID", 0)))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.GetValue("Name", string.Empty)))
+                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.GetValue("StartDate", DateTime.MinValue)))
+                .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.GetValue("EndDate", DateTime.MinValue)))
+                .ForMember(dest => dest.CloseCampaign, opt => opt.MapFrom(src => src.GetValue("CloseCampaign", false)))
+                .ForMember(dest => dest.FiscalYear, opt => opt.MapFrom(src => src.GetValue("FiscalYear", string.Empty)))
+                .ForMember(dest => dest.IBTFFinalized, opt => opt.MapFrom(src => src.GetValue("IBTFFinalized", false)))
+                .ForMember(dest => dest.OpenCampaign, opt => opt.MapFrom(src => src.GetValue("OpenCampaign", false)))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.GetValue("Status", false)));
+
+            CreateMap<TreeNode, CampaignProgram>()
+                .ForMember(dest => dest.ProgramID, opt => opt.MapFrom(src => src.GetValue("ProgramID", 0)))
+                .ForMember(dest => dest.ProgramName, opt => opt.MapFrom(src => src.DocumentName))
+                .ForMember(dest => dest.BrandID, opt => opt.MapFrom(src => src.GetValue("BrandID", 0)))
+                .ForMember(dest => dest.CampaignID, opt => opt.MapFrom(src => src.GetValue("CampaignID", 0)))
+                .ForMember(dest => dest.GlobalAdminNotified, opt => opt.MapFrom(src => src.GetValue("GlobalAdminNotified", false)))
+                .ForMember(dest => dest.DeliveryDateToDistributors, opt => opt.MapFrom(src => src.GetValue("DeliveryDateToDistributors", DateTime.MinValue)));
+
+            CreateMap<TreeNode, CampaignsProduct>()
+                .ForMember(dest => dest.SKUID, opt => opt.MapFrom(src => src.NodeSKUID))
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.GetValue("SKUName", string.Empty)))
+                .ForMember(dest => dest.SKUNumber, opt => opt.MapFrom(src => src.GetValue("SKUNumber", string.Empty)))
+                .ForMember(dest => dest.ActualPrice, opt => opt.MapFrom(src => src.GetValue("SKUPrice", decimal.Zero)))
+                .ForMember(dest => dest.EstimatedPrice, opt => opt.MapFrom(src => src.GetValue("EstimatedPrice", decimal.Zero)))
+                .ForMember(dest => dest.POSNumber, opt => opt.MapFrom(src => src.GetValue("SKUProductCustomerReferenceNumber", string.Empty)))
+                .ForMember(dest => dest.ProgramID, opt => opt.MapFrom(src => src.GetValue("ProgramID", 0)))
+                .ForMember(dest => dest.DocumentId, opt => opt.MapFrom(src => src.DocumentID))
+                .ForMember(dest => dest.CampaignID, opt => opt.Ignore())
+                .ForMember(dest => dest.BrandId, opt => opt.MapFrom(src => src.GetValue("BrandID", 0)))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.GetValue("SKUDescription", string.Empty)))
+                .ForMember(dest => dest.ShortDescription, opt => opt.MapFrom(src => src.GetValue("SKUShortDescription", string.Empty)))
+                .ForMember(dest => dest.StateId, opt => opt.MapFrom(src => src.GetValue("State", 0)))
+                .ForMember(dest => dest.NumberOfItemsInPackage, opt => opt.MapFrom(src => src.GetValue("SKUNumberOfItemsInPackage", 1)))
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.GetValue("ProductImage", string.Empty)))
+                .ForMember(dest => dest.ValidTo, opt => opt.MapFrom(src => src.GetValue("SKUValidUntil", DateTime.MinValue)));
 
 
             CreateMap<CustomTableItem, Kadena.Models.Common.Environment>()

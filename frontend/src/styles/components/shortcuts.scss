@@ -1,0 +1,22 @@
+.shortcuts {
+  &__block {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  &__img {
+    width: 100%;
+    height: auto;
+  }
+
+  &__title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: 0;
+    padding: 10px 0;
+    color: white;
+  }
+}

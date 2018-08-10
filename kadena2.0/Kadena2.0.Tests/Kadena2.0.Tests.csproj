@@ -416,6 +416,10 @@
     <Reference Include="Moq.AutoMock, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.AutoMock.0.4.0.0\lib\net40\Moq.AutoMock.dll</HintPath>
     </Reference>
+    <Reference Include="NReco.PdfGenerator, Version=1.1.15.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CMS\Bin\NReco.PdfGenerator.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=3.2.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -480,6 +484,7 @@
     <Compile Include="BusinessLogic\OrderItemCheckerServiceTests.cs" />
     <Compile Include="BusinessLogic\LocalizationServiceTests.cs" />
     <Compile Include="BusinessLogic\FileServiceTests.cs" />
+    <Compile Include="BusinessLogic\PdfPreBuyCatalogServiceTests.cs" />
     <Compile Include="BusinessLogic\TieredPricingTests.cs" />
     <Compile Include="BusinessLogic\DynamicPricingTests.cs" />
     <Compile Include="BusinessLogic\ImageServiceTests.cs" />
@@ -527,6 +532,7 @@
     <Compile Include="Models\Shipping\TrackingInfoTests.cs" />
     <Compile Include="Models\Site\KenticoSiteTests.cs" />
     <Compile Include="BusinessLogic\Approval\OrderManualUpdateServiceTests.cs" />
+    <Compile Include="BusinessLogic\PdfByteConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScheduledTasks\DeleteExpiredMailingListsTaskTests.cs" />
     <Compile Include="UserHierarchyTest.cs" />
@@ -612,9 +618,7 @@
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.8.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BusinessLogic\Orders\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Kentico.Libraries.Dependencies.10.0.16\build\net45\Kentico.Libraries.Dependencies.targets" Condition="Exists('..\packages\Kentico.Libraries.Dependencies.10.0.16\build\net45\Kentico.Libraries.Dependencies.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

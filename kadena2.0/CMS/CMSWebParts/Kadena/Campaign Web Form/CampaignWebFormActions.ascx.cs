@@ -16,6 +16,9 @@ using Kadena.Container.Default;
 using System;
 using System.Linq;
 using System.Web.UI.WebControls;
+using Kadena.BusinessLogic.Contracts;
+using System.IO;
+using Kadena.Models.Common;
 
 public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions : CMSAbstractWebPart
 {
@@ -680,4 +683,36 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
         }
     }
     #endregion "Methods"
+
+    protected void btnDownload_Click(object sender, EventArgs e)
+    {
+        var btn = sender as LinkButton;
+        if (btn != null)
+        {
+            var campaignId = ValidationHelper.GetInteger(btn.CommandArgument, 0);
+            var fileName = ValidationHelper.GetString(ResHelper.GetString("KDA.CatalogGI.PrebuyFileName"), string.Empty) + ".pdf";
+            var service = DIContainer.Resolve<IPreBuyCatalogService>();
+            try
+            {
+                var pdfBytes = service.Generate(campaignId);
+                if (pdfBytes != null)
+                {
+                    using (var ms = new MemoryStream(pdfBytes))
+                    {
+                        Response.Clear();
+                        Response.ContentType = ContentTypes.Pdf;
+                        Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
+                        Response.Buffer = true;
+                        ms.WriteTo(Response.OutputStream);
+                        Response.End();
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                EventLogProvider.LogException(this.GetType().Name, "GENERATEFILE", exc);
+                return;
+            }
+        }
+    }
 }

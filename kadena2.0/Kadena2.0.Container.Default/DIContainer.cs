@@ -31,6 +31,7 @@ using Kadena.BusinessLogic.Services.SSO;
 using System.IdentityModel.Tokens;
 using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.BusinessLogic.Services.Approval;
+using NReco.PdfGenerator;
 using Kadena.AmazonFileSystemProvider;
 
 namespace Kadena.Container.Default
@@ -49,7 +50,8 @@ namespace Kadena.Container.Default
                 .RegisterKadenaSettings()
                 .RegisterMicroservices()
                 .RegisterFactories()
-                .RegisterInfrastructure();
+                .RegisterInfrastructure()
+                .RegisterThirdParty();
         }
 
         public static T Resolve<T>()
@@ -120,6 +122,8 @@ namespace Kadena.Container.Default
             container.Register<IOrderItemCheckerService, OrderItemCheckerService>();
             container.Register<IConvert, XlsxConvert>();
             container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
+            container.Register<IByteConverter, PdfByteConverter>();
+            container.Register<IPreBuyCatalogService, PdfPreBuyCatalogService>();
             return container;
         }
 
@@ -215,6 +219,11 @@ namespace Kadena.Container.Default
             container.Register<ICache>(Reuse.Singleton, Made.Of(() => new InMemoryCache()));
             return container;
         }
-    }
 
+        public static IContainer RegisterThirdParty(this IContainer container)
+        {
+            container.Register<HtmlToPdfConverter>();
+            return container;
+        }
+    }
 }

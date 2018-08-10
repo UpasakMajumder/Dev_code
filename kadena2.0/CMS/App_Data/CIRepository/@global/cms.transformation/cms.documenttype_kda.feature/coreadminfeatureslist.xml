@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.transformation>
+  <TransformationClassID>
+    <CodeName>KDA.Feature</CodeName>
+    <GUID>cfc9f56f-68ed-4426-a66f-a399c68c8de5</GUID>
+    <ObjectType>cms.documenttype</ObjectType>
+  </TransformationClassID>
+  <TransformationCode>
+<![CDATA[
+<a href='{%TargetURL%}' class="shortcuts__block col-3">
+  <img class="shortcuts__img" src="{%DisplayImage%}" alt="{%FeatureName%}">
+  <h5 class="shortcuts__title">{%FeatureName%}</h5>
+</a>
+]]>
+  </TransformationCode>
+  <TransformationCSS />
+  <TransformationGUID>aab6d957-faae-4f40-90a6-9b478bcb7fab</TransformationGUID>
+  <TransformationIsHierarchical>False</TransformationIsHierarchical>
+  <TransformationName>coreAdminFeaturesList</TransformationName>
+  <TransformationType>text</TransformationType>
+</cms.transformation>

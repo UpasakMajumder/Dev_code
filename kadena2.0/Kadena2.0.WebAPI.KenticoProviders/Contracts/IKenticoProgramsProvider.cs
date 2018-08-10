@@ -10,5 +10,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         List<int> GetProgramIDsByCampaign(int campaignID);
 
         CampaignProgram GetProgram(int programID);
+
+        IEnumerable<CampaignProgram> GetProgramsForCampaign(int campaignId);
     }
 }

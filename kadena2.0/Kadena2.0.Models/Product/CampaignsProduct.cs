@@ -1,4 +1,6 @@
-﻿namespace Kadena.Models.Product
+﻿using System;
+
+namespace Kadena.Models.Product
 {
     public class CampaignsProduct
     {
@@ -11,5 +13,12 @@
         public int CampaignID { get; set; }
         public string POSNumber { get; set; }
         public int DocumentId { get; set; }
+        public int BrandId { get; set; }
+        public string Description { get; set; }
+        public string ShortDescription { get; set; }
+        public int StateId { get; set; }
+        public int NumberOfItemsInPackage { get; set; }
+        public string ImageUrl { get; set; }
+        public DateTime ValidTo { get; set; }
     }
 }

@@ -64,4 +64,13 @@ public partial class CMSWebParts_Kadena_Campaign_Web_Form_CampaignWebFormActions
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.LinkButton lnkCloseCampaign;
+    
+    /// <summary>
+    /// btnDownload control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Base.Web.UI.LocalizedLinkButton btnDownload;
 }
