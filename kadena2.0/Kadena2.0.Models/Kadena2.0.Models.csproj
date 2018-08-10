@@ -65,6 +65,7 @@
     <Compile Include="CreditCard\SaveCardData.cs" />
     <Compile Include="CreditCard\StoredCard.cs" />
     <Compile Include="CustomCatalog\PrebuyProduct.cs" />
+    <Compile Include="ErpSystem\ErpSystem.cs" />
     <Compile Include="FyBudget\FyBudget.cs" />
     <Compile Include="IBTF\IBTF.cs" />
     <Compile Include="IBTF\IBTFAdjustment.cs" />
@@ -142,6 +143,9 @@
     <Compile Include="Checkout\SubmitButton.cs" />
     <Compile Include="Checkout\Total.cs" />
     <Compile Include="Checkout\Totals.cs" />
+    <Compile Include="Routing\Request\DeleteRouting.cs" />
+    <Compile Include="Routing\Request\SetRouting.cs" />
+    <Compile Include="Routing\Routing.cs" />
     <Compile Include="Shipping\ShippingOption.cs" />
     <Compile Include="Shipping\TrackingInfo.cs" />
     <Compile Include="ShoppingCarts\ShoppingCart.cs" />

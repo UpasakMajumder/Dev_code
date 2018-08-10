@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.customtable>
+  <ClassCodeGenerationSettings>
+    <Data>
+      <NameSpace>KDA_ERPSystems</NameSpace>
+    </Data>
+  </ClassCodeGenerationSettings>
+  <ClassDisplayName>ERP systems</ClassDisplayName>
+  <ClassFormDefinition>
+    <form version="2">
+      <field column="ItemID" columntype="integer" guid="77f3c6da-057c-46c1-97bc-c06cfd12bbbf" isPK="true" publicfield="false">
+        <properties>
+          <fieldcaption>ItemID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="DisplayName" columnsize="200" columntype="text" guid="4de978e6-04ee-479e-b404-3d2017d9c0db" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Display name</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field column="CodeName" columnsize="200" columntype="text" guid="9558024c-fb74-4bc4-85e1-488637f62cfc" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Code name</fieldcaption>
+        </properties>
+        <settings>
+          <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
+          <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
+          <AutoCompleteShowOnlyCurrentWordInCompletionListItem>False</AutoCompleteShowOnlyCurrentWordInCompletionListItem>
+          <controlname>TextBoxControl</controlname>
+          <FilterMode>False</FilterMode>
+          <Trim>False</Trim>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemCreatedBy" columntype="integer" guid="9ff3ec4e-d673-4220-a074-e9d18be0240a" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Created by</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemCreatedWhen" columnprecision="7" columntype="datetime" guid="2194360a-d92a-4c51-99c4-d8f3351cc810" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Created when</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemModifiedBy" columntype="integer" guid="766e1a8d-038e-4dc7-a6dd-d54fbd2114fb" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Modified by</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemModifiedWhen" columnprecision="7" columntype="datetime" guid="5b4f95a0-e041-4dd8-b08c-745c98e20462" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Modified when</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field allowempty="true" column="ItemOrder" columntype="integer" guid="3fda734c-d054-44c4-934a-692839544778" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>Order</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+      <field column="ItemGUID" columntype="guid" guid="c526f001-9753-456c-825f-dbb1a174d351" publicfield="false" system="true">
+        <properties>
+          <fieldcaption>GUID</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>labelcontrol</controlname>
+        </settings>
+      </field>
+    </form>
+  </ClassFormDefinition>
+  <ClassGUID>b106f339-bb62-46ef-a4c6-faa011e1d4e4</ClassGUID>
+  <ClassIsContentOnly>False</ClassIsContentOnly>
+  <ClassIsCoupledClass>True</ClassIsCoupledClass>
+  <ClassIsCustomTable>True</ClassIsCustomTable>
+  <ClassIsDocumentType>False</ClassIsDocumentType>
+  <ClassIsForm>False</ClassIsForm>
+  <ClassIsMenuItemType>False</ClassIsMenuItemType>
+  <ClassIsProduct>False</ClassIsProduct>
+  <ClassName>KDA.ERPSystems</ClassName>
+  <ClassNodeNameSource />
+  <ClassSearchContentColumn>DocumentContent</ClassSearchContentColumn>
+  <ClassSearchCreationDateColumn>DocumentCreatedWhen</ClassSearchCreationDateColumn>
+  <ClassSearchEnabled>True</ClassSearchEnabled>
+  <ClassSearchSettings>
+    <search>
+      <item content="False" id="32fcadaa-8f1e-42a7-9dc3-c7a9bae431b5" name="ItemGUID" searchable="False" tokenized="False" />
+      <item content="False" id="58acca00-4ce4-48f7-8d83-7e48c3d11f92" name="ItemModifiedWhen" searchable="True" tokenized="False" />
+      <item content="False" id="5d6e18ea-37af-4394-bb20-82227137b4fd" name="ItemCreatedBy" searchable="True" tokenized="False" />
+      <item content="False" id="a11dadb7-78b3-4b53-94b6-a838d1555958" name="ItemID" searchable="True" tokenized="False" />
+      <item content="False" id="d105e7a7-a27c-4e98-ad8b-81a1bab4bd68" name="ItemCreatedWhen" searchable="True" tokenized="False" />
+      <item content="False" id="d54d7132-9eda-46fc-98b3-8689bfa845ad" name="ItemOrder" searchable="True" tokenized="False" />
+      <item content="False" id="df621394-9eec-48bb-a9d5-fcee120ef89b" name="ItemModifiedBy" searchable="True" tokenized="False" />
+      <item content="True" id="f92ff036-341b-4e95-8995-deeea1aabafa" name="DisplayName" searchable="False" tokenized="True" />
+      <item content="True" id="faab73f9-363b-4eb6-b0ac-028dd5ed03df" name="CodeName" searchable="False" tokenized="True" />
+    </search>
+  </ClassSearchSettings>
+  <ClassSearchTitleColumn>DocumentName</ClassSearchTitleColumn>
+  <ClassShowAsSystemTable>False</ClassShowAsSystemTable>
+  <ClassShowTemplateSelection>False</ClassShowTemplateSelection>
+  <ClassTableName>KDA_ERPSystems_KDA_ERPSystems</ClassTableName>
+  <ClassUsePublishFromTo>False</ClassUsePublishFromTo>
+  <ClassUsesVersioning>False</ClassUsesVersioning>
+</cms.customtable>

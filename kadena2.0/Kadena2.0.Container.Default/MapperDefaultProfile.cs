@@ -64,6 +64,10 @@ using Kadena.Models.TemplatedProduct;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kadena.Dto.Routing;
+using Kadena.Dto.Routing.MicroserviceRequests;
+using Kadena.Models.Routing;
+using Kadena.Models.Routing.Request;
 
 namespace Kadena.Container.Default
 {
@@ -71,6 +75,9 @@ namespace Kadena.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<RoutingDto, Routing>();
+            CreateMap<DeleteRouting, DeleteRoutingRequestDto>();
+            CreateMap<SetRouting, SetRoutingRequestDto>();
             CreateMap<ShoppingCart, OrderManualUpdateRequestDto>()
                 .ForMember(dest => dest.TotalShipping, opt => opt.Ignore())
                 .ForMember(dest => dest.OrderId, opt => opt.Ignore());
