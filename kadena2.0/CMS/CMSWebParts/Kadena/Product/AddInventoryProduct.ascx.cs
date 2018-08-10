@@ -318,7 +318,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         else
                         {
                             customitem.Delete();
-                            lstUsers.RemoveAt(index);
                         }
                     }
                 }
