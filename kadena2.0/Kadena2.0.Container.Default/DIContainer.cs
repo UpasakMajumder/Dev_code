@@ -114,6 +114,7 @@ namespace Kadena.Container.Default
             container.Register<IApprovalService, ApprovalService>();
             container.Register<IDialogService, DialogService>();
             container.Register<IDeliveryEstimationDataService, DeliveryEstimationDataService>();
+            container.Register<IErpSystemsService, ErpSystemsService>();
             container.Register<IOrderManualUpdateService, OrderManualUpdateService>();
             container.Register<IDistributorShoppingCartService, DistributorShoppingCartService>();
             container.Register<IOrderItemCheckerService, OrderItemCheckerService>();

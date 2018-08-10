@@ -49,7 +49,6 @@ using Kadena.Models.CustomerData;
 using Kadena.Models.Login;
 using Kadena.Models.Membership;
 using Kadena.Models.OrderDetail;
-using Kadena.Models.OrderHistory;
 using Kadena.Models.Orders;
 using Kadena.Models.Orders.Failed;
 using Kadena.Models.Product;
@@ -68,6 +67,8 @@ using Kadena.Dto.Routing;
 using Kadena.Dto.Routing.MicroserviceRequests;
 using Kadena.Models.Routing;
 using Kadena.Models.Routing.Request;
+using Kadena.Models.ErpSystem;
+using Kadena.Dto.ErpSystem;
 
 namespace Kadena.Container.Default
 {
@@ -98,6 +99,8 @@ namespace Kadena.Container.Default
                     src.ShippingDate,
                     src.TrackingInfos
                 }));
+            CreateMap<ErpSystem, ErpSystemDto>();
+            CreateMap<ErpSystem[], ErpSystemDto[]>();
             CreateMap<RecentOrderDto, OrderReportViewItem>()
                 .ForMember(dest => dest.Site, opt => opt.MapFrom(src => src.SiteName))
                 .ForMember(dest => dest.Number, opt => opt.MapFrom(src => src.Id))
@@ -244,7 +247,7 @@ namespace Kadena.Container.Default
             CreateMap<DeliveryAddress, IdDto>();
             CreateMap<PageButton, PageButtonDto>();
             CreateMap<AddressList, AddressListDto>();
-            CreateMap<Models.Settings.DialogButton, DialogButtonDto>();
+            CreateMap<DialogButton, DialogButtonDto>();
             CreateMap<DialogType, DialogTypeDto>();
             CreateMap<DialogField, DialogFieldDto>();
             CreateMap<Models.Settings.AddressDialog, Dto.Settings.AddressDialogDto>();
