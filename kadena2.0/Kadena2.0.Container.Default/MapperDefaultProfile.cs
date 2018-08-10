@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Kadena.Container.Default.Converters;
 using Kadena.Dto.AddToCart;
 using Kadena.Dto.Approval.Responses;
 using Kadena.Dto.Brands;
@@ -63,6 +64,10 @@ using Kadena.Models.TemplatedProduct;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kadena.Dto.Routing;
+using Kadena.Dto.Routing.MicroserviceRequests;
+using Kadena.Models.Routing;
+using Kadena.Models.Routing.Request;
 
 namespace Kadena.Container.Default
 {
@@ -70,6 +75,9 @@ namespace Kadena.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<RoutingDto, Routing>();
+            CreateMap<DeleteRouting, DeleteRoutingRequestDto>();
+            CreateMap<SetRouting, SetRoutingRequestDto>();
             CreateMap<ShoppingCart, OrderManualUpdateRequestDto>()
                 .ForMember(dest => dest.TotalShipping, opt => opt.Ignore())
                 .ForMember(dest => dest.OrderId, opt => opt.Ignore());
@@ -195,8 +203,11 @@ namespace Kadena.Container.Default
             CreateMap<NotificationEmail, NotificationEmailDto>();
             CreateMap<NotificationEmailTooltip, NotificationEmailTooltipDto>();
             CreateMap<CheckoutPageDeliveryTotals, CheckoutPageDeliveryTotalsDTO>();
+            CreateMap<DeliveryDate, DeliveryDateDTO>();
+            CreateMap<DeliveryDateMessages, DeliveryDateMessagesDTO>();
             CreateMap<SubmitButton, SubmitButtonDTO>();
             CreateMap<SubmitRequestDto, SubmitOrderRequest>();
+            CreateMap<string, DateTime?>().ConvertUsing<StringToNullableDateTimeConverter>();
             CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
             CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
             CreateMap<DeliveryAddress, Dto.Settings.AddressDto>()

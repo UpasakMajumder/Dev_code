@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
 {
@@ -12,5 +13,7 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Carrier Code is a mandatory field")]
         public string CarrierCode { get; set; }
+
+        public DateTime? RequestedDeliveryDate { get; set; }
     }
 }

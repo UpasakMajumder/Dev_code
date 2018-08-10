@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Kadena.Models.SubmitOrder
 {
@@ -8,5 +9,6 @@ namespace Kadena.Models.SubmitOrder
         public PaymentMethod PaymentMethod { get; set; }
         public bool AgreeWithTandC { get; set; }
         public IEnumerable<string> EmailConfirmation { get; set; }
+        public DateTime? DeliveryDate { get; set; }
     }
 }

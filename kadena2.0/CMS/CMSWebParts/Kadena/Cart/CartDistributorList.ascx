@@ -10,7 +10,7 @@
         </div>
         <div class="dialog__content">
             <span id="ProductName"></span><br />
-            <span id="AvailableStock" data-text='<%=ResHelper.GetString("Kadena.AddToCart.StockAvilable")%>'></span>
+            <asp:PlaceHolder runat="server"><span id="AvailableStock" data-text='<%= ResHelper.GetString("Kadena.AddToCart.StockAvilable") %>'></span></asp:PlaceHolder>
             <cms:CMSRepeater runat="server" ID="rptCartDistributorList" TransformationName="KDA.Transformations.CartDistributorList">
                 <HeaderTemplate>
                     <table class="table">

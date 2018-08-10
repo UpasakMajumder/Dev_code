@@ -1,0 +1,18 @@
+<div class="homepage-header row mb-3">
+  <div class="homepage-header__banner banner col-8">
+    <div class="banner__headers">
+      <h2>Welcome to Kadena</h2>
+      <h4>Sub header</h4>
+    </div>
+    <div class="banner__image">
+      <img src="https://satyr.io/755x276" alt="welcome to kadena">
+    </div>
+    <div class="banner__dates">
+      <p>Hi</p>
+      <p>How are you?</p>
+    </div>
+  </div>
+  <div class="homepage-header__notification col-4">
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident ab dolores laudantium fugiat. Inventore modi temporibus vero, accusantium repellendus cupiditate laborum. Odio illo quae nobis distinctio, maxime cupiditate aperiam fugiat perferendis atque, a saepe minus reprehenderit voluptate porro vel possimus neque omnis. Laborum perspiciatis, repellat exercitationem ea quibusdam eaque fugiat quisquam. Explicabo quisquam ullam ad inventore ipsam fuga culpa. Officia earum libero nobis quo eum sequi recusandae? Voluptate, debitis at. Minima, laudantium voluptatem, harum magni aliquam sequi porro corporis quae odit voluptates culpa asperiores ea vitae doloribus autem facere deleniti minus temporibus illum quis eligendi. Modi quam eos mollitia dolore.</p>
+  </div>
+</div>

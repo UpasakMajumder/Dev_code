@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<customtableitem.kda.erpsystems>
+  <CodeName>printstream</CodeName>
+  <DisplayName>PrintStream</DisplayName>
+  <ItemCreatedBy>
+    <CodeName>administrator</CodeName>
+    <GUID>6415b8ce-8072-4bcd-8e48-9d7178b826b7</GUID>
+    <ObjectType>cms.user</ObjectType>
+  </ItemCreatedBy>
+  <ItemGUID>7f58927f-0004-42d4-8d9b-e1849f0abd85</ItemGUID>
+  <ItemModifiedBy>
+    <CodeName>administrator</CodeName>
+    <GUID>6415b8ce-8072-4bcd-8e48-9d7178b826b7</GUID>
+    <ObjectType>cms.user</ObjectType>
+  </ItemModifiedBy>
+  <ItemOrder>3</ItemOrder>
+</customtableitem.kda.erpsystems>

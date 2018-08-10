@@ -1,11 +1,15 @@
-﻿using CMS.DataEngine;
+﻿using AutoMapper;
+using CMS.CustomTables;
+using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Helpers;
+using CMS.Localization;
 using CMS.Membership;
 using CMS.SiteProvider;
 using Kadena.Models.CampaignData;
 using Kadena.Models.RecentOrders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,6 +19,12 @@ namespace Kadena.WebAPI.KenticoProviders
     {
         private readonly string PageTypeClassName = "KDA.Campaign";
         private readonly string orderTypePreBuy = "prebuy";
+        private readonly IMapper mapper;
+
+        public KenticoCampaignsProvider(IMapper mapper)
+        {
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
 
         public void DeleteCampaign(int campaignID)
         {
@@ -28,13 +38,13 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public TreeNode GetCampaign(int campaignID)
+        public CampaignData GetCampaign(int campaignID)
         {
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
             TreeNode campaign = tree.SelectNodes(PageTypeClassName)
                                     .Where("CampaignID", QueryOperator.Equals, campaignID)
                                     .OnCurrentSite();
-            return campaign;
+            return mapper.Map<CampaignData>(campaign);
         }
 
         public OrderCampaginHead GetCampaigns(string orderType)
@@ -73,6 +83,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             return false;
         }
+
         public int GetOpenCampaignID()
         {
             var openCampaign = DocumentHelper.GetDocuments(PageTypeClassName)
@@ -81,10 +92,11 @@ namespace Kadena.WebAPI.KenticoProviders
                 .WhereEquals("OpenCampaign", true)
                 .Where(new WhereCondition().WhereEquals("CloseCampaign", false).Or().WhereEquals("CloseCampaign", null))
                 .FirstOrDefault();
-            return openCampaign != null 
-                ? openCampaign.GetIntegerValue("CampaignID", default(int)) 
+            return openCampaign != null
+                ? openCampaign.GetIntegerValue("CampaignID", default(int))
                 : default(int);
         }
+
         public string GetCampaignFiscalYear(int campaignID)
         {
             var campaign = DocumentHelper.GetDocuments(PageTypeClassName).OnSite(SiteContext.CurrentSiteID).WhereEquals("CampaignID", campaignID).FirstOrDefault();
