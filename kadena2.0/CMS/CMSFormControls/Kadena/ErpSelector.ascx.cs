@@ -18,14 +18,14 @@ namespace Kadena.CMSFormControls.Kadena
     public partial class ErpSelector: FormEngineUserControl
     {
         private ErpSelectorValue _value = new ErpSelectorValue();
-        private IKenticoErpSystemsProvider _erpSystemsProvider;
+        private IErpSystemsService _erpSystemsService;
         private IKenticoResourceService _resources;
         private IRoutingService _routingService;
         private IKenticoLogger _logger;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            _erpSystemsProvider = DIContainer.Resolve<IKenticoErpSystemsProvider>();
+            _erpSystemsService = DIContainer.Resolve<IErpSystemsService>();
             _resources = DIContainer.Resolve<IKenticoResourceService>();
             _routingService = DIContainer.Resolve<IRoutingService>();
             _logger = DIContainer.Resolve<IKenticoLogger>();
@@ -41,7 +41,7 @@ namespace Kadena.CMSFormControls.Kadena
                 new ListItem(_resources.GetResourceString("Kadena.FormControls.ERPMapping.NotSpecified"), "")
             };
 
-            _erpSystemsProvider.GetErpSystems().ForEach(erpSystem =>
+            _erpSystemsService.GetAll().ForEach(erpSystem =>
             {
                 data.Add(new ListItem(erpSystem.DisplayName, erpSystem.CodeName));
             });
