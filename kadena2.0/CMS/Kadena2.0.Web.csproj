@@ -729,6 +729,13 @@
     <Compile Include="CMSFormControls\Kadena\BusinessUnitControl.ascx.designer.cs">
       <DependentUpon>BusinessUnitControl.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSFormControls\Kadena\ErpSelector.ascx.cs">
+      <DependentUpon>ErpSelector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSFormControls\Kadena\ErpSelector.ascx.designer.cs">
+      <DependentUpon>ErpSelector.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSFormControls\Kadena\TieredPricingSelector.ascx.cs">
       <DependentUpon>TieredPricingSelector.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1399,6 +1406,7 @@
   <ItemGroup>
     <Content Include="BrandWebservice.asmx" />
     <Content Include="CMSFormControls\Kadena\BusinessUnitControl.ascx" />
+    <Content Include="CMSFormControls\Kadena\ErpSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\TieredPricingSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\MediaMultiSelector.ascx" />

@@ -88,6 +88,7 @@
     <Compile Include="Contracts\ILocalizationService.cs" />
     <Compile Include="Contracts\IModuleAccessService.cs" />
     <Compile Include="Contracts\IDistributorShoppingCartService.cs" />
+    <Compile Include="Contracts\IRoutingService.cs" />
     <Compile Include="Contracts\IUpdateInventoryDataService.cs" />
     <Compile Include="Contracts\IUserService.cs" />
     <Compile Include="Contracts\IMailService.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="Services\DistributorShoppingCartService.cs" />
     <Compile Include="Services\PdfByteConverter.cs" />
     <Compile Include="Services\PdfPreBuyCatalogService.cs" />
+    <Compile Include="Services\RoutingService.cs" />
     <Compile Include="Services\PathService.cs" />
     <Compile Include="Services\SSO\KadenaSaml2SecurityTokenHandler.cs" />
     <Compile Include="Services\SSO\Saml2RecipientValidator.cs" />

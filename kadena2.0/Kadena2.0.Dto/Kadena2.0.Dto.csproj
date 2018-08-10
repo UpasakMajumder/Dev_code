@@ -160,6 +160,9 @@
     <Compile Include="Checkout\RequestResultDto.cs" />
     <Compile Include="Product\Responses\GetProductsDto.cs" />
     <Compile Include="RecentOrders\OrderCampaginHeadDto.cs" />
+    <Compile Include="Routing\MicroserviceRequests\DeleteRoutingRequestDto.cs" />
+    <Compile Include="Routing\MicroserviceRequests\SetRoutingRequestDto.cs" />
+    <Compile Include="Routing\RoutingDto.cs" />
     <Compile Include="Search\Responses\AutocompletePagesDTO.cs" />
     <Compile Include="Search\Responses\AutocompletePageDTO.cs" />
     <Compile Include="Search\Responses\AutocompleteProductsDTO.cs" />

@@ -124,6 +124,7 @@
     <Compile Include="Contracts\IKenticoCustomerProvider.cs" />
     <Compile Include="Contracts\IKenticoCustomItemProvider.cs" />
     <Compile Include="Contracts\IKenticoFileProvider.cs" />
+    <Compile Include="Contracts\IKenticoErpSystemsProvider.cs" />
     <Compile Include="Contracts\IKenticoIBTFProvider.cs" />
     <Compile Include="Contracts\IKenticoMediaProvider.cs" />
     <Compile Include="Contracts\IKenticoModuleMappingProvider.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Contracts\ISubmissionIdProvider.cs" />
     <Compile Include="KenticoModelMappingsProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\KenticoErpSystemsProvider.cs" />
     <Compile Include="Providers\OrderCartItemsProvider.cs" />
     <Compile Include="Providers\TieredPriceRangeProvider.cs" />
     <Compile Include="Providers\DynamicPriceRangeProvider.cs" />

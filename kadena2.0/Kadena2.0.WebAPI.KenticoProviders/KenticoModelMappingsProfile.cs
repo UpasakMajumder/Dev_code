@@ -14,6 +14,7 @@ using Kadena.Models.BusinessUnit;
 using Kadena.Models.CampaignData;
 using Kadena.Models.Checkout;
 using Kadena.Models.CreditCard;
+using Kadena.Models.ErpSystem;
 using Kadena.Models.Membership;
 using Kadena.Models.Product;
 using Kadena.Models.Program;
@@ -353,6 +354,12 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.BusinessUnitNumber, opt => opt.MapFrom(src => src.GetValue<long>("BusinessUnitNumber", 0)))
                 .ForMember(dest => dest.SiteID, opt => opt.MapFrom(src => src.GetIntegerValue("SiteID", 0)))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.GetBooleanValue("Status", false)));
+
+            CreateMap<CustomTableItem, ErpSystem>()
+                .ForMember(dest => dest.DisplayName,
+                    opt => opt.MapFrom(src => src.GetStringValue("DisplayName", string.Empty)))
+                .ForMember(dest => dest.CodeName,
+                    opt => opt.MapFrom(src => src.GetStringValue("CodeName", string.Empty)));
 
             CreateMap<CustomTableItem, Brand>()
                 .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.GetValue("BrandName", string.Empty)))
