@@ -11,10 +11,61 @@
 <table class="table show__table-right" id="reptable">
   <tbody>
     <tr>
-      <th>{$Kadena.POSFrom.BrandText$}</th>
-      <th>{$Kadena.POSFrom.YearText$}</th>
-      <th>{$Kadena.POSFrom.POSNumber$}</th>
-      <th>{$Kadena.POSFrom.CategoryText$}</th>
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("BrandName") |(user)administrator|(hash)49cabc097637dcd3f1a5045c39c711a73bf60f29ab5de60d82e56a96446b2310%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("BrandName") |(user)administrator|(hash)517d57002e8c1c9398b038cfe03606aaed00e96e14da1a46b5dc10730a84093f%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$Kadena.POSFrom.BrandText$}</span>
+          </a>        
+        </th>
+				
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("Year") |(user)administrator|(hash)e86cee80547cffc6d77cd5ed747b519500dbbd54c2b8a4695388c0557f0ed944%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("Year") |(user)administrator|(hash)7bfb222db6be50bb90de681ae1b584a707b65d50af8f002ca43be0e813366c6e%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$Kadena.POSFrom.YearText$}</span>
+          </a>        
+        </th>
+
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("POSNumber") |(user)administrator|(hash)aca980944bf230dc7e3cc04812f3892a26166f8ff384ea269fc474c7b654335a%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("POSNumber") |(user)administrator|(hash)b92ca7a1598105383724ae0884faa1c3892a789d068b9f78669099c253e2580a%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$Kadena.POSFrom.POSNumber$}</span>
+          </a>        
+        </th>
+
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("POSCategoryName") |(user)administrator|(hash)6ce51f45f0b9e7c500a420c719748c192c4542e4d035cf50ad08145036f98ef9%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("POSCategoryName") |(user)administrator|(hash)aaa7de284cee07495bcbe5a41a053c66cd56eb7bb12103f336454f7f2e2de34c%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$Kadena.POSFrom.CategoryText$}</span>
+          </a>        
+        </th>
       <th>
         <div class="text-center">{$KDA.Common.Actions$}</div>
       </th>
