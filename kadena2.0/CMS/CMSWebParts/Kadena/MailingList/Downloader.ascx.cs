@@ -2,8 +2,8 @@
 using Kadena.Container.Default;
 using System;
 using Kadena2.MicroserviceClients.Contracts;
-using Kadena.Old_App_Code.Kadena.MailingList;
 using Kadena.Helpers;
+using Kadena.Dto.MailingList.MicroserviceResponses;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
 {
@@ -17,7 +17,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 var containerId = new Guid(Request.QueryString["containerId"]);
                 var mailingClient = DIContainer.Resolve<IMailingListClient>();
                 var mailingList = mailingClient.GetMailingList(containerId).Result;
-                if (mailingList.Success && mailingList.Payload.State.Equals(MailingListState.AddressesVerified))
+                if (mailingList.Success && mailingList.Payload.State.Equals(ContainerState.AddressesVerified))
                 {
                     hlnkDownload.NavigateUrl = UrlHelper.GetMailingListExportUrl(containerId).OriginalString;
                     hlnkDownload.Attributes.Add("download", mailingList.Payload.Name);
