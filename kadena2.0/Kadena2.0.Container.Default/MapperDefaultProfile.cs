@@ -298,7 +298,8 @@ namespace Kadena.Container.Default
             CreateMap<Dto.Order.OrderItemDto, CheckoutCartItem>()
                 .ProjectUsing(s => new CheckoutCartItem { SKUName = s.Name, Quantity = s.Quantity });
             CreateMap<RecentOrderDto, Order>()
-                .ForMember(dest => dest.ViewBtn, opt => opt.Ignore());
+                .ForMember(dest => dest.ViewBtn, opt => opt.Ignore())
+                .ForMember(dest => dest.ClientName, opt => opt.Ignore());
             CreateMap<OrderListDto, OrderList>();
             CreateMap<CheckoutCartItem, Dto.RecentOrders.OrderItemDto>()
                 .ProjectUsing(s => new Dto.RecentOrders.OrderItemDto { Name = s.SKUName, Quantity = s.Quantity.ToString() });
