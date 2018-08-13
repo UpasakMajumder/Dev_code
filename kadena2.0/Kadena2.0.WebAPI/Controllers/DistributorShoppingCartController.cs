@@ -8,7 +8,7 @@ using Kadena.Dto.AddToCart;
 using Kadena.Models.AddToCart;
 using Kadena.Dto.CustomerData;
 using Kadena.Models.CustomerData;
-using Kadena.Models.ShoppingCarts;
+using Kadena.Models.Product;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -30,7 +30,7 @@ namespace Kadena.WebAPI.Controllers
         [CustomerAuthorizationFilter]
         public IHttpActionResult GetCartDistributorData(int skuID, int inventoryType)
         {
-            var distributorData = service.GetCartDistributorData(skuID, (ShoppingCartTypes)inventoryType);
+            var distributorData = service.GetCartDistributorData(skuID, (CampaignProductType)inventoryType);
             var result = mapper.Map<DistributorCartDto>(distributorData);
             return ResponseJson(result);
         }

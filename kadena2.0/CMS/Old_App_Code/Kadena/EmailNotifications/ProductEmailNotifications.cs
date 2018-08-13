@@ -116,6 +116,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                                     .Columns("SKUProductCustomerReferenceNumber", nameof(SKUInfo.SKUEnabled), nameof(SKUInfo.SKUNumber));
                                 return new
                                 {
+                                    ord.Id,
                                     ord.TotalCost,
                                     ord.ShippingDate,
                                     CampaignId = ord.Campaign.ID,
@@ -143,7 +144,8 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                                     { "name", x.User.FirstName },
                                     { "totalprice", o.TotalCost },
                                     { "shippingdate", o.ShippingDate },
-                                    { "campaignid", o.CampaignId }
+                                    { "campaignid", o.CampaignId },
+                                    { "orderNumber", o.Id }
                                 };
                                 SendEmailNotification(templateName, x.User.Email, o.Items, "orderitems", orderDetails);
                             });
@@ -182,7 +184,8 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                     { "name", user.FirstName },
                     { "totalprice", ordersDTO.Totals.Price },
                     { "totalshipping", ordersDTO.Totals.Shipping },
-                    { "campaignid", ordersDTO.Totals.Shipping }
+                    { "campaignid", ordersDTO.Totals.Shipping },
+                    { "orderNumber", ordersDTO.OrderID }
                 };
                 SendEmailNotification(orderTemplateSettingKey, user.Email, cartItems, "orderitems", orderDetails);
             }

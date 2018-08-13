@@ -1,7 +1,6 @@
 ﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
-using Kadena.Models.Brand;
 using System.Collections.Generic;
 using Kadena.Models.IBTF;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
@@ -15,30 +14,17 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoIBTFProvider kenticoIBTF;
         private readonly IKenticoProductsProvider kenticoProductsProvider;
         private readonly IKenticoCampaignsProvider kenticoCampaignsProvider;
+        private readonly IKenticoProgramsProvider programsProvider;
         private readonly IKenticoUserBudgetProvider kenticoUserBudgetProvider;
 
-        public IBTFService(IKenticoIBTFProvider kenticoIBTF, IKenticoProductsProvider kenticoProductsProvider, IKenticoCampaignsProvider kenticoCampaignsProvider, IKenticoUserBudgetProvider kenticoUserBudgetProvider)
+        public IBTFService(IKenticoIBTFProvider kenticoIBTF, IKenticoProductsProvider kenticoProductsProvider, IKenticoCampaignsProvider kenticoCampaignsProvider, 
+            IKenticoUserBudgetProvider kenticoUserBudgetProvider, IKenticoProgramsProvider programsProvider)
         {
-            if (kenticoIBTF == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoIBTF));
-            }
-            if (kenticoProductsProvider == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoProductsProvider));
-            }
-            if (kenticoCampaignsProvider == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoCampaignsProvider));
-            }
-            if (kenticoUserBudgetProvider == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoUserBudgetProvider));
-            }
-            this.kenticoIBTF = kenticoIBTF;
-            this.kenticoProductsProvider = kenticoProductsProvider;
-            this.kenticoCampaignsProvider = kenticoCampaignsProvider;
-            this.kenticoUserBudgetProvider = kenticoUserBudgetProvider;
+            this.kenticoIBTF = kenticoIBTF ?? throw new ArgumentNullException(nameof(kenticoIBTF));
+            this.kenticoProductsProvider = kenticoProductsProvider ?? throw new ArgumentNullException(nameof(kenticoProductsProvider));
+            this.kenticoCampaignsProvider = kenticoCampaignsProvider ?? throw new ArgumentNullException(nameof(kenticoCampaignsProvider));
+            this.kenticoUserBudgetProvider = kenticoUserBudgetProvider ?? throw new ArgumentNullException(nameof(kenticoUserBudgetProvider));
+            this.programsProvider = programsProvider ?? throw new ArgumentNullException(nameof(programsProvider));
         }
 
         public void InsertIBTFAdjustmentRecord(OrderDTO order)
@@ -58,7 +44,8 @@ namespace Kadena.BusinessLogic.Services
 
         public void UpdateRemainingBudget(int campaignID)
         {
-            List<CampaignsProduct> products = kenticoProductsProvider.GetCampaignsProductSKUIDs(campaignID);
+            var programs = programsProvider.GetProgramIDsByCampaign(campaignID);
+            List<CampaignsProduct> products = kenticoProductsProvider.GetCampaignsProductSKUIDs(programs);
             List<int> SKUIDs = products.Select(x => x.SKUID).ToList();
             List<IBTF> IBTFRecords = kenticoIBTF.GetIBTFRecords().Where(x => SKUIDs.Contains(x.SKUID))?.ToList();
             List<IBTFAdjustment> IBTFAdjustmentRecords = kenticoIBTF.GetIBTFAdjustmentRecords().Where(x => SKUIDs.Contains(x.SKUID) && x.CampaignID.Equals(campaignID))?.ToList();

@@ -21,7 +21,7 @@ public partial class CMSModules_System_ObjectTypeDetails : GlobalAdminPage
         var typeInfo = ObjectTypeManager.GetTypeInfo(objectType);
         if (typeInfo == null)
         {
-            ShowError(String.Format(ResHelper.GetString("administration.system.objecttypegraph.notfound"), objectType));
+            ShowError(String.Format(ResHelper.GetString("administration.system.objecttypegraph.notfound"), HTMLHelper.HTMLEncode(objectType)));
             return;
         }
 

@@ -26,9 +26,9 @@ class Actions extends Component {
 
   static propTypes = {
     actions: PropTypes.shape({
-      accept: { ...actionPropTypes },
-      reject: { ...actionPropTypes }
-    }).isRequired,
+      accept: PropTypes.shape({ ...actionPropTypes }),
+      reject: PropTypes.shape({ ...actionPropTypes })
+    }),
     editOrders: PropTypes.shape({
       button: PropTypes.string.isRequired,
       proceedUrl: PropTypes.string.isRequired
@@ -37,7 +37,8 @@ class Actions extends Component {
     changeStatus: PropTypes.func.isRequired,
     showEditModal: PropTypes.func.isRequired,
     acceptEnabled: PropTypes.bool.isRequired,
-    editEnabled: PropTypes.bool.isRequired
+    editEnabled: PropTypes.bool.isRequired,
+    clearHistory: PropTypes.func.isRequired
   };
 
   handleShowReject = () => this.setState({ showReject: true });
@@ -64,15 +65,14 @@ class Actions extends Component {
       } else {
         this.handleProceed();
         toastr.success(payload.title, payload.text);
-        this.props.changeStatus({
-          status: payload.newStatus,
-          note: this.state.rejectionNote
-        });
+        this.props.changeStatus(payload.newStatus, this.state.rejectionNote);
         this.handleChangeRejectionNote('');
+        this.props.clearHistory();
       }
-    } catch (e) {
+    } catch (error) {
       window.store.dispatch({
-        type: FAILURE
+        type: FAILURE,
+        error
       });
     } finally {
       this.setState({ isLoading: false });

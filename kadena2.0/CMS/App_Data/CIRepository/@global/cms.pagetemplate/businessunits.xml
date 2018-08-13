@@ -272,9 +272,47 @@
 <div class="table__responsive">
 <table id="reptable" class="table show__table-buttom">
   <tr>    
-    <th>{$KDA.BusinessUnitsList.BusinessUnitNumber$}</th>
-    <th>{$KDA.BusinessUnitsList.BusinessUnitName$}</th>
-    <th>{$KDA.Common.Status$}</th>
+<th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("BusinessUnitNumber") |(user)administrator|(hash)6099a253e8069ce77280f400c6ac78892c1e91311777b3da05f89b88b44310fd%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("BusinessUnitNumber") |(user)administrator|(hash)b771d4de6a98573cd4dba927864d83e07ded08d0c69f26f3faf823a958dcf8dc%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.BusinessUnitsList.BusinessUnitNumber$}</span>
+          </a>        
+        </th>
+				
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("BusinessUnitName") |(user)administrator|(hash)3de42d2f30cea9623a516332968e0744028331f5d8b0c89cf30e2aae080bdc14%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("BusinessUnitName") |(user)administrator|(hash)06c58265af2ab6bdfe7dcbb2e5660a2f9421384af50487fd44e14b831c205738%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.BusinessUnitsList.BusinessUnitName$}</span>
+          </a>        
+        </th>
+
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("Status") |(user)administrator|(hash)d37e0a6dca32d003ebc14c50051dc79bf4d9af5281c7d4e13063a39cca5fdd4d%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("Status") |(user)administrator|(hash)f465b6ee8439887d7b1672a2807bbf95cb2e7983797f86f94b01c24c565b3e45%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.Common.Status$}</span>
+          </a>        
+        </th>
     <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
   </tr>
 ]]>
@@ -292,7 +330,9 @@
           <property name="hideonsubpages">False</property>
           <property name="instanceguid">0a19a7e4-2277-4825-8037-87e5dd6378c3</property>
           <property name="itemseparator"></property>
-          <property name="orderby">BusinessUnitName asc</property>
+          <property name="orderby">
+            <![CDATA[{% KadenaNamespace.TableSortingOrderBy("BusinessUnitNumber,BusinessUnitName,Status") |(user)administrator|(hash)833cbb61d0adc6a3a5e169e9636389f6c621febb9d3fbf5c23d738048d61e243%}]]>
+          </property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>

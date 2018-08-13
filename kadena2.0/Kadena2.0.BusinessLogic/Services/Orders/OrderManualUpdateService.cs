@@ -128,7 +128,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new Exception("Couldn't match all given line numbers in original order");
             }
 
-            if(IsCreditCardPayment(orderDetail.PaymentInfo.PaymentMethod) && updatedItemsData.Any(i => i.UpdatedItem.Quantity > i.OriginalItem.Quantity))
+            if (IsCreditCardPayment(orderDetail.PaymentInfo.PaymentMethod) && updatedItemsData.Any(i => i.UpdatedItem.Quantity > i.OriginalItem.Quantity))
             {
                 throw new Exception("Can't increase item quantity, if payment method is credit card.");
             }
@@ -142,10 +142,11 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 var skuLines = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.LineNumber);
                 var skuNewQty = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.Quantity);
+                var skuAdjustedQuantities = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.Quantity - v.OriginalItem.Quantity);
 
                 // create distributor cart items
                 var distributorCartItems = distributorShoppingCartService
-                    .CreateCart(skuNewQty, orderDetail.Customer.KenticoUserID, orderDetail.campaign.DistributorID)
+                    .CreateCart(skuAdjustedQuantities, orderDetail.Customer.KenticoUserID, orderDetail.campaign.DistributorID)
                     .ToList();
                 // create fake cart with new data
                 // distributor set to 0 so cart won't be visible for active users
@@ -157,7 +158,11 @@ namespace Kadena.BusinessLogic.Services.Orders
                 {
                     distributorCartItems.ForEach(c =>
                     {
-                        c.Items.ForEach(i => i.ShoppingCartID = cartId);
+                        c.Items.ForEach(i =>
+                        {
+                            i.ShoppingCartID = cartId;
+                            i.Quantity = skuNewQty[c.SKUID];
+                        });
                         distributorShoppingCartService.UpdateDistributorCarts(c, orderDetail.Customer.KenticoUserID);
                     }
                     );
@@ -214,6 +219,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
                 // adjust available quantity
                 AdjustAvailableItems(updatedItemsData);
+                AdjustAllocatedItems(updatedItemsData, orderDetail.Customer.KenticoUserID);
 
                 // Adjust budget
                 budgetProvider.AdjustUserRemainingBudget(
@@ -348,6 +354,16 @@ namespace Kadena.BusinessLogic.Services.Orders
                 var freedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
                 // Not using Set... because when waiting for result of OrderUpdate, quantity can change
                 skuProvider.UpdateAvailableQuantity(data.OriginalItem.SkuId, freedQuantity);
+            });
+        }
+
+        void AdjustAllocatedItems(IEnumerable<UpdatedItemCheckData> updateData, int userId)
+        {
+            updateData.ToList().ForEach(data =>
+            {
+                var adjustedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
+                // Not using Set... because when waiting for result of OrderUpdate, quantity can change
+                productsProvider.UpdateAllocatedProductQuantityForUser(data.OriginalItem.SkuId, userId, adjustedQuantity);
             });
         }
 

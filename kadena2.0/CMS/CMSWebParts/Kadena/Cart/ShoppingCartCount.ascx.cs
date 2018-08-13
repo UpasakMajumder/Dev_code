@@ -1,15 +1,10 @@
-﻿using CMS.DataEngine;
-using CMS.DocumentEngine.Types.KDA;
-using CMS.Ecommerce.Web.UI;
+﻿using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
-using Kadena.Old_App_Code.Kadena.Constants;
-using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Container.Default;
 using System;
-using System.Linq;
-using Kadena.Models.ShoppingCarts;
+using Kadena.Models.Product;
 
 namespace Kadena.CMSWebParts.Kadena.Cart
 {
@@ -83,7 +78,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                 lblCartName.Text = CartDisplayName;
 
                 var shoppingCartProvider = DIContainer.Resolve<IShoppingCartProvider>();
-                var count = shoppingCartProvider.GetDistributorCartCount(CurrentUser.UserID, OpenCampaignID, (ShoppingCartTypes)ShoppingCartInventoryType);
+                var count = shoppingCartProvider.GetDistributorCartCount(CurrentUser.UserID, OpenCampaignID, (CampaignProductType)ShoppingCartInventoryType);
                 lblCount.Text = count == 0 
                     ? "" 
                     : $"{count}";

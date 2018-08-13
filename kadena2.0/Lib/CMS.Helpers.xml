@@ -13861,11 +13861,6 @@
             </summary>
             <remarks>According to RFC 5321 e-mail address should be no more than 254 characters long</remarks>
         </member>
-        <member name="F:CMS.Helpers.ValidationHelper.mReservedFileNames">
-            <summary>
-            Reserved file names which should not be used
-            </summary>
-        </member>
         <member name="F:CMS.Helpers.ValidationHelper.mColorSet">
             <summary>
             Contains set of string colors in LowerCSafe format.
@@ -13979,6 +13974,11 @@
         <member name="F:CMS.Helpers.ValidationHelper.mConversionFunctions">
             <summary>
             Dictionary of conversion functions for standard system data types
+            </summary>
+        </member>
+        <member name="F:CMS.Helpers.ValidationHelper.RESERVED_FILE_SYSTEM_NAMES">
+            <summary>
+            File names which cannot be used on Windows (regardless of extension).
             </summary>
         </member>
         <member name="M:CMS.Helpers.ValidationHelper.GetDefaultHashStringSalt">
@@ -14160,6 +14160,14 @@
             Returns true if the folder name is restricted.
             </summary>
             <param name="name">Folder name to check</param>
+        </member>
+        <member name="M:CMS.Helpers.ValidationHelper.FindReservedFileSystemNamePrefix(System.String)">
+            <summary>
+            Searches for occurrence of one of <see cref="F:CMS.Helpers.ValidationHelper.RESERVED_FILE_SYSTEM_NAMES"/> as a prefix in <paramref name="name"/>, delimited by a '.' (dot) character.
+            If such prefix is found, its value is returned (without the delimiter).
+            </summary>
+            <param name="name">Name which to search for reserved prefixes.</param>
+            <returns>Reserved prefix found in <paramref name="name"/>, or null if no matching prefix is found.</returns>
         </member>
         <member name="M:CMS.Helpers.ValidationHelper.IsEmail(System.Object,System.Boolean)">
             <summary>

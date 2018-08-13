@@ -86,11 +86,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
                 btnAllocateProduct.Click += AllocateProduct_Click;
                 btnCancel.Click += BtnCancel_Cancel;
-                if (!IsPostBack)
-                {
-                    string currentDate = DateTime.Today.ToShortDateString();
-                    compareDate.ValueToCompare = currentDate;
-                }
             }
         }
         /// <summary>
@@ -113,7 +108,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
             revActualPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
             folderpath = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductFolderPath", CurrentSiteName);
             libraryFolderName = SettingsKeyInfoProvider.GetValue("KDA_InventoryProductImageFolderName", CurrentSiteName);
-            compareDate.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ExpiryDaterangeMessage");
             rfvPosCategory.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ProductCategoryErrorMessage");
         }
         #endregion WebpartSetupMethods
@@ -324,7 +318,6 @@ namespace Kadena.CMSWebParts.Kadena.Product
                         else
                         {
                             customitem.Delete();
-                            lstUsers.RemoveAt(index);
                         }
                     }
                 }

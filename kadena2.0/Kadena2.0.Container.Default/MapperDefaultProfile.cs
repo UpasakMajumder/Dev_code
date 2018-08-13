@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Kadena.Container.Default.Converters;
 using Kadena.Dto.AddToCart;
 using Kadena.Dto.Approval.Responses;
 using Kadena.Dto.Brands;
@@ -62,6 +63,12 @@ using Kadena.Models.TemplatedProduct;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kadena.Dto.Routing;
+using Kadena.Dto.Routing.MicroserviceRequests;
+using Kadena.Models.Routing;
+using Kadena.Models.Routing.Request;
+using Kadena.Models.ErpSystem;
+using Kadena.Dto.ErpSystem;
 
 namespace Kadena.Container.Default
 {
@@ -69,6 +76,9 @@ namespace Kadena.Container.Default
     {
         public MapperDefaultProfile()
         {
+            CreateMap<RoutingDto, Routing>();
+            CreateMap<DeleteRouting, DeleteRoutingRequestDto>();
+            CreateMap<SetRouting, SetRoutingRequestDto>();
             CreateMap<ShoppingCart, OrderManualUpdateRequestDto>()
                 .ForMember(dest => dest.TotalShipping, opt => opt.Ignore())
                 .ForMember(dest => dest.OrderId, opt => opt.Ignore());
@@ -89,6 +99,8 @@ namespace Kadena.Container.Default
                     src.ShippingDate,
                     src.TrackingInfos
                 }));
+            CreateMap<ErpSystem, ErpSystemDto>();
+            CreateMap<ErpSystem[], ErpSystemDto[]>();
             CreateMap<RecentOrderDto, OrderReportViewItem>()
                 .ForMember(dest => dest.Site, opt => opt.MapFrom(src => src.SiteName))
                 .ForMember(dest => dest.Number, opt => opt.MapFrom(src => src.Id))
@@ -116,8 +128,10 @@ namespace Kadena.Container.Default
             CreateMap<Dto.ViewOrder.MicroserviceResponses.TrackingInfoDto, TrackingInfo>();
             CreateMap<TrackingInfo, TrackingInfoDto>();
 
+            CreateMap<OrderedItem, OrderedItem>();
             CreateMap<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO, OrderedItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.SkuId))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
                 .ForMember(dest => dest.Image, opt => opt.Ignore())
                 .ForMember(dest => dest.DownloadPdfURL, opt => opt.Ignore())
                 .ForMember(dest => dest.TemplatePrefix, opt => opt.Ignore())
@@ -198,8 +212,11 @@ namespace Kadena.Container.Default
             CreateMap<NotificationEmail, NotificationEmailDto>();
             CreateMap<NotificationEmailTooltip, NotificationEmailTooltipDto>();
             CreateMap<CheckoutPageDeliveryTotals, CheckoutPageDeliveryTotalsDTO>();
+            CreateMap<DeliveryDate, DeliveryDateDTO>();
+            CreateMap<DeliveryDateMessages, DeliveryDateMessagesDTO>();
             CreateMap<SubmitButton, SubmitButtonDTO>();
             CreateMap<SubmitRequestDto, SubmitOrderRequest>();
+            CreateMap<string, DateTime?>().ConvertUsing<StringToNullableDateTimeConverter>();
             CreateMap<SubmitOrderResult, SubmitOrderResponseDto>();
             CreateMap<PaymentMethodDto, Models.SubmitOrder.PaymentMethod>();
             CreateMap<DeliveryAddress, Dto.Settings.AddressDto>()
@@ -236,7 +253,7 @@ namespace Kadena.Container.Default
             CreateMap<DeliveryAddress, IdDto>();
             CreateMap<PageButton, PageButtonDto>();
             CreateMap<AddressList, AddressListDto>();
-            CreateMap<Models.Settings.DialogButton, DialogButtonDto>();
+            CreateMap<DialogButton, DialogButtonDto>();
             CreateMap<DialogType, DialogTypeDto>();
             CreateMap<DialogField, DialogFieldDto>();
             CreateMap<Models.Settings.AddressDialog, Dto.Settings.AddressDialogDto>();
@@ -245,9 +262,14 @@ namespace Kadena.Container.Default
             CreateMap<SettingsAddresses, SettingsAddressesDto>();
             CreateMap<OrderedItem, OrderedItemDTO>();
             CreateMap<OrderedItems, OrderedItemsDTO>();
+            CreateMap<OrderedItemsSection, OrderedItemsSectionDTO>();
+            CreateMap<OrderedItemsGroup, OrderedItemsGroupDTO>();
+            CreateMap<OrderedItemsGroupTracking, OrderedItemsGroupTrackingDTO>();
+            CreateMap<OrderedItemsGroupShippingDate, OrderedItemsGroupShippingDateDTO>();
             CreateMap<OrderDetail, OrderDetailDTO>();
             CreateMap<CommonInfo, CommonInfoDTO>();
             CreateMap<OrderStatusInfo, OrderStatusInfoDTO>();
+            CreateMap<Link, LinkDto>();
             CreateMap<OrderInfo, OrderInfoDTO>();
             CreateMap<OrderActions, OrderActionsDTO>();
             CreateMap<DialogButton<Dialog>, DialogButtonDTO<DialogDTO>>();
@@ -290,13 +312,13 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.DeliveryDate, opt => opt.MapFrom(src => src.ShippingDate.GetValueOrDefault()));
             CreateMap<OrderBody, OrderBodyDto>();
 
-
             CreateMap<TableView, TableViewDto>();
             CreateMap<TableRow, TableRowDto>()
                 .AfterMap((src, dest, ctx) => dest.Items[10] = ctx.Mapper.Map<TrackingFieldDto>(dest.Items[10]));
             CreateMap<Pagination, PaginationDto>();
             CreateMap<IEnumerable<TrackingInfo>, TrackingFieldDto>()
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src));
+            CreateMap<TitledMessage, TitledMessageDto>();
 
             CreateMap<NewAddressButton, NewAddressButtonDTO>();
             CreateMap<DeliveryAddressesBounds, DeliveryAddressesBoundsDTO>();

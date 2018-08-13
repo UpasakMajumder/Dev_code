@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms.classpermission>
+  <ClassID>
+    <CodeName>KDA.ERPSystems</CodeName>
+    <GUID>b106f339-bb62-46ef-a4c6-faa011e1d4e4</GUID>
+    <ObjectType>cms.customtable</ObjectType>
+  </ClassID>
+  <PermissionDescription>{$permissiondescription.customtable.delete$}</PermissionDescription>
+  <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
+  <PermissionDisplayName>{$general.delete$}</PermissionDisplayName>
+  <PermissionGUID>9b373456-7e3f-4525-a88b-985897ab871b</PermissionGUID>
+  <PermissionName>Delete</PermissionName>
+  <PermissionOrder>4</PermissionOrder>
+</cms.classpermission>

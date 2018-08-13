@@ -5,15 +5,18 @@ import SVG from 'app.dump/SVG';
 /* helpers */
 import timeFormat from 'app.helpers/time';
 
-const CommonInfo = ({ ui, dateTimeNAString }) => {
+const CommonInfo = ({
+  ui,
+  dateTimeNAString,
+  showOrderHistoryModal
+}) => {
   const { status, orderDate, shippingDate, totalCost } = ui;
 
   const tiles = [
     {
       title: status.title,
       value: status.value,
-      icon: 'flag',
-      note: status.note
+      icon: 'flag'
     },
     {
       title: orderDate.title,
@@ -32,10 +35,16 @@ const CommonInfo = ({ ui, dateTimeNAString }) => {
     }
   ];
 
-  const tileList = tiles.map((tile) => {
-    const { value, icon, title, note } = tile;
+  const getViewHistoryButton = (icon) => {
+    if (icon !== 'flag') return null;
+    const { orderHistory } = status;
+    if (!orderHistory) return null;
 
-    const noteElement = note ? <p className={`tile-bar__note ${icon === 'flag' ? 'tile-bar__note--red' : ''}`}>{note}</p> : null;
+    return <button onClick={() => showOrderHistoryModal(orderHistory.url)} type="button" className="mt-2 btn--off link">{orderHistory.label}</button>;
+  };
+
+  const tileList = tiles.map((tile) => {
+    const { value, icon, title } = tile;
 
     return (
       <div key={icon} className="tile-bar__item">
@@ -43,7 +52,7 @@ const CommonInfo = ({ ui, dateTimeNAString }) => {
         <div>
           <p className="tile-bar__title">{title}</p>
           <p className="tile-bar__description">{value}</p>
-          {noteElement}
+          {getViewHistoryButton(tile.icon)}
         </div>
       </div>
     );
@@ -63,8 +72,7 @@ CommonInfo.propTypes = {
   ui: PropTypes.shape({
     status: PropTypes.shape({
       title: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-      note: PropTypes.string
+      value: PropTypes.string.isRequired
     }).isRequired,
     orderDate: PropTypes.shape({
       title: PropTypes.string.isRequired,
@@ -78,7 +86,8 @@ CommonInfo.propTypes = {
       title: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired
     }).isRequired
-  })
+  }),
+  showOrderHistoryModal: PropTypes.func.isRequired
 };
 
 export default CommonInfo;

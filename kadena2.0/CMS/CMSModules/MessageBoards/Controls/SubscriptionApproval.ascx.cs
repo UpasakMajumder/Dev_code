@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Web.UI;
 
 using CMS.Activities;
@@ -211,7 +212,7 @@ public partial class CMSModules_MessageBoards_Controls_SubscriptionApproval : CM
         {
             try
             {
-                datetime = DateTime.ParseExact(requestTime, SecurityHelper.EMAIL_CONFIRMATION_DATETIME_FORMAT, null);
+                datetime = DateTime.ParseExact(requestTime, SecurityHelper.EMAIL_CONFIRMATION_DATETIME_FORMAT, CultureInfo.InvariantCulture);
             }
             catch
             {

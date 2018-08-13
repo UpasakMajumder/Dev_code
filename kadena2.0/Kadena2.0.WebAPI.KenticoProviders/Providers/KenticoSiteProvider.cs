@@ -86,5 +86,10 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             return URLHelper.GetAbsoluteUrl(url);
         }
+
+        public string GetFormattedPrice(decimal price)
+        {
+            return CurrencyInfoProvider.GetFormattedPrice(ValidationHelper.GetDouble(price, default(double)), SiteContext.CurrentSiteID, true);
+        }
     }
 }

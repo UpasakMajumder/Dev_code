@@ -14,7 +14,7 @@ class EditModal extends Component {
     proceedUrl: PropTypes.string.isRequired,
     // func
     closeModal: PropTypes.func.isRequired,
-    editOrders: PropTypes.func.isRequired,
+    clearHistory: PropTypes.func.isRequired,
     // ui
     title: PropTypes.string.isRequired,
     description: PropTypes.string,
@@ -159,6 +159,7 @@ class EditModal extends Component {
             ordersPrice: payload ? payload.ordersPrice : []
           });
           this.props.closeModal();
+          this.props.clearHistory();
           window.store.dispatch({
             type: SUCCESS,
             alert: this.props.successMessage

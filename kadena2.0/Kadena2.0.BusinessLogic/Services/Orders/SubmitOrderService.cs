@@ -1,4 +1,5 @@
 ﻿using Kadena.BusinessLogic.Contracts;
+using Kadena.Models.SiteSettings;
 using Kadena.Models.SubmitOrder;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.BusinessLogic.Contracts.OrderPayment;
@@ -15,20 +16,24 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly ISavedCreditCard3dsi savedcreditCard3dsi;
         private readonly ICreditCard3dsiDemo creditCard3dsiDemo;
         private readonly IPurchaseOrder purchaseOrder;
+        private readonly IKenticoResourceService resource;
 
-        public SubmitOrderService(IShoppingCartProvider shoppingCart, ICreditCard3dsi creditCard3dsi, ISavedCreditCard3dsi savedcreditCard3dsi, ICreditCard3dsiDemo creditCard3dsiDemo, IPurchaseOrder purchaseOrder)
+        public SubmitOrderService(IKenticoResourceService resource, IShoppingCartProvider shoppingCart, ICreditCard3dsi creditCard3dsi, ISavedCreditCard3dsi savedcreditCard3dsi, ICreditCard3dsiDemo creditCard3dsiDemo, IPurchaseOrder purchaseOrder)
         {
             this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
             this.creditCard3dsi = creditCard3dsi ?? throw new ArgumentNullException(nameof(creditCard3dsi));
             this.savedcreditCard3dsi = savedcreditCard3dsi ?? throw new ArgumentNullException(nameof(savedcreditCard3dsi));
             this.creditCard3dsiDemo = creditCard3dsiDemo ?? throw new ArgumentNullException(nameof(creditCard3dsiDemo));
             this.purchaseOrder = purchaseOrder ?? throw new ArgumentNullException(nameof(purchaseOrder));
+            this.resource = resource ?? throw new ArgumentNullException(nameof(resource));
         }
 
         public async Task<SubmitOrderResult> SubmitOrder(SubmitOrderRequest request)
         {
             var paymentMethods = shoppingCart.GetPaymentMethods();
             var selectedPayment = paymentMethods.FirstOrDefault(p => p.Id == (request.PaymentMethod?.Id ?? -1));
+
+            ProcessDeliveryDate(request);
 
             switch (selectedPayment?.ClassName ?? string.Empty)
             {
@@ -49,6 +54,23 @@ namespace Kadena.BusinessLogic.Services.Orders
                 default:
                     throw new ArgumentOutOfRangeException("payment", "Unknown payment method");
             }
+        }
+
+        private void ProcessDeliveryDate(SubmitOrderRequest request)
+        {
+            if (!resource.GetSiteSettingsKey<bool>(Settings.KDA_CartRequestDateEnabled))
+            {
+                return;
+            }
+                
+
+            if (request.DeliveryDate.HasValue && request.DeliveryDate.Value <= DateTime.Now)
+            {
+                throw new ArgumentOutOfRangeException("deliveryDate", "Requested delivery date is in past.");
+            }
+                
+
+            shoppingCart.SetRequestedDeliveryDate(request.DeliveryDate);
         }
 
         private async Task<SubmitOrderResult> PayByCard(SubmitOrderRequest request)

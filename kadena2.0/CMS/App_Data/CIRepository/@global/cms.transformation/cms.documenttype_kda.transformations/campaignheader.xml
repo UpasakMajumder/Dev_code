@@ -11,10 +11,61 @@
 <table id="reptable"  class="table show__table-bottom">
   <tbody>
     <tr>
-      <th>{% GetResourceString("Kadena.Campaignlst.NameHearder")|(user)administrator|(hash)041d3d49bdc97bc6f5e3b97f706dc46a758e60a0d2ee4b49cb2a833edb99ee8c%}</th>
-      <th>{% GetResourceString("Kadena.Campaignlst.DesText")|(user)administrator|(hash)c6aedeb02a50e79c161593fead15ee84666eab36be33f2b58dcdba72d7687955%}</th>
-      <th>{% GetResourceString("Kadena.Campaignlst.CreatedDateText")|(user)administrator|(hash)ca2c634a393387e3744406d15514c6fc4ac229fa603651aabd9bfa9a1d8d8b23%}</th>
-      <th>{% GetResourceString("Kadena.Campaignlst.ModifiedDateText")|(user)administrator|(hash)2c584929f1d244d8015e8e3b6e5cf9c31acbebd3f8bf897da8a5b1fb0f316794%}</th>
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("Name") |(user)administrator|(hash)71096f67be22a74b352fb75e239dec4641fd53d048af34ad6683f09309f51ae6%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("Name") |(user)administrator|(hash)915f05dce01322ddb375b9490082244f17c2b5bfd8762737d5fdae3b7eef6cb4%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$Kadena.Campaignlst.NameHearder$}</span>
+          </a>        
+        </th>
+				
+        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("Description") |(user)administrator|(hash)6f612d422347fa9fdb00f35ca3e4dd038c85468f48a5344ea1e4621db50aa0d9%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("Description") |(user)administrator|(hash)01d5a249e2a321116d7f974c94f93e6b795964133de6edb2e2facf4db3dbfe60%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$Kadena.Campaignlst.DesText$}</span>
+          </a>        
+        </th>
+
+        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("StartDate") |(user)administrator|(hash)be19012e890b37bd303417a9fe2fa9f4feee529d79e8ee3c415f20a75b254165%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("StartDate") |(user)administrator|(hash)d938d8d6d91aa8076ce76dcf1a1b8a02fb80eefbd1cfc5ea34ee2b0590e2d0eb%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$Kadena.Campaignlst.CreatedDateText$}</span>
+          </a>        
+        </th>
+
+        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("EndDate") |(user)administrator|(hash)3fb67e01a3f62a0f4fa5fa9d5c218dd1aef4914cf8ef4be657a7aefe1ac5d4ea%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("EndDate") |(user)administrator|(hash)250792c67d8e67d05af0653ab038edae07054dbdf0e99f3a91049fec3a71a2ee%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$Kadena.Campaignlst.ModifiedDateText$}</span>
+          </a>        
+        </th>		
       <th><div class="text-center">{% GetResourceString("Kadena.Campaignlst.ActionText")|(user)administrator|(hash)260bf5830ac6f8adf408e57b9e8302d662d2231cf6678b0aa6fd1c67332ede46%}</div></th>
     </tr>
 ]]>

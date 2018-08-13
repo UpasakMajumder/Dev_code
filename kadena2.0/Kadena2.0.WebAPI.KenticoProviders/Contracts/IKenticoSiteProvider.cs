@@ -14,5 +14,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetCurrentSiteDomain();
         string GetFullUrl();
         string GetAbsoluteUrl(string url);
+        string GetFormattedPrice(decimal price);
     }
 }

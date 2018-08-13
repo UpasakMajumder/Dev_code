@@ -55,11 +55,17 @@
     <Reference Include="NPOI.OpenXmlFormats, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.3.0\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
+    <Reference Include="NReco.PdfGenerator, Version=1.1.15.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
+      <HintPath>..\packages\NReco.PdfGenerator.1.1.15\lib\net20\NReco.PdfGenerator.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.IdentityModel.Services" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -71,6 +77,9 @@
   <ItemGroup>
     <Compile Include="Contracts\Approval\IApprovalService.cs" />
     <Compile Include="Contracts\Approval\IApproverService.cs" />
+    <Compile Include="Contracts\IByteConverter.cs" />
+    <Compile Include="Contracts\IErpSystemsService.cs" />
+    <Compile Include="Contracts\IPreBuyCatalogService.cs" />
     <Compile Include="Contracts\IConvert.cs" />
     <Compile Include="Contracts\IDialogService.cs" />
     <Compile Include="Contracts\IIBTFService.cs" />
@@ -79,10 +88,12 @@
     <Compile Include="Contracts\ILocalizationService.cs" />
     <Compile Include="Contracts\IModuleAccessService.cs" />
     <Compile Include="Contracts\IDistributorShoppingCartService.cs" />
+    <Compile Include="Contracts\IRoutingService.cs" />
     <Compile Include="Contracts\IUpdateInventoryDataService.cs" />
     <Compile Include="Contracts\IUserService.cs" />
     <Compile Include="Contracts\IMailService.cs" />
     <Compile Include="Contracts\Orders\IDeliveryEstimationDataService.cs" />
+    <Compile Include="Contracts\Orders\IOrderHistoryService.cs" />
     <Compile Include="Contracts\Orders\IOrderItemCheckerService.cs" />
     <Compile Include="Contracts\Orders\IOrderManualUpdateService.cs" />
     <Compile Include="Contracts\Orders\IOrderReportService.cs" />
@@ -134,11 +145,13 @@
     <Compile Include="Factories\IOrderResultPageUrlFactory.cs" />
     <Compile Include="Factories\OrderReportFactory.cs" />
     <Compile Include="Factories\OrderResultPageUrlFactory.cs" />
+    <Compile Include="Mapping\OrderHistoryProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Approval\ApprovalService.cs" />
     <Compile Include="Services\Approval\ApprovalServiceException.cs" />
     <Compile Include="Services\Approval\ApproverService.cs" />
     <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\ErpSystemsService.cs" />
     <Compile Include="Services\IdentityService.cs" />
     <Compile Include="Services\LocalizationService.cs" />
     <Compile Include="Services\MailService.cs" />
@@ -148,12 +161,16 @@
     <Compile Include="Services\IBTFService.cs" />
     <Compile Include="Services\Orders\DeliveryEstimationDataService.cs" />
     <Compile Include="Services\Orders\GetOrderDataService.cs" />
+    <Compile Include="Services\Orders\OrderHistoryService.cs" />
     <Compile Include="Services\Orders\OrderItemCheckerService.cs" />
     <Compile Include="Services\Orders\OrderManualUpdateService.cs" />
     <Compile Include="Services\Orders\OrderReportService.cs" />
     <Compile Include="Services\Orders\OrderResubmissionService.cs" />
     <Compile Include="Services\Orders\SendSubmitOrder.cs" />
     <Compile Include="Services\DistributorShoppingCartService.cs" />
+    <Compile Include="Services\PdfByteConverter.cs" />
+    <Compile Include="Services\PdfPreBuyCatalogService.cs" />
+    <Compile Include="Services\RoutingService.cs" />
     <Compile Include="Services\SSO\KadenaSaml2SecurityTokenHandler.cs" />
     <Compile Include="Services\SSO\Saml2RecipientValidator.cs" />
     <Compile Include="Services\SSO\Saml2HandlerService.cs" />

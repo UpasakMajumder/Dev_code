@@ -187,6 +187,18 @@
           <Trim>False</Trim>
         </settings>
       </field>
+      <field allowempty="true" column="ShoppingCartRequestedDeliveryDate" columnprecision="7" columntype="datetime" guid="63300bba-2c41-4510-94f7-e259f3b3934e" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Requested Delivery Date</fieldcaption>
+        </properties>
+        <settings>
+          <CheckRange>True</CheckRange>
+          <controlname>CalendarControl</controlname>
+          <DisplayNow>True</DisplayNow>
+          <EditTime>True</EditTime>
+          <TimeZoneType>inherit</TimeZoneType>
+        </settings>
+      </field>
       <field allowempty="true" column="BusinessUnitIDForDistributor" columntype="longinteger" guid="bd106e6a-dd57-493c-b9a6-34f37ab18f81" publicfield="false" visible="true">
         <properties>
           <fieldcaption>Business UnitID For Distributor</fieldcaption>

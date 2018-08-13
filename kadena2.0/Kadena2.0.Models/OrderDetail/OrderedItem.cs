@@ -8,6 +8,7 @@ namespace Kadena.Models.OrderDetail
     public class OrderedItem
     {
         public int Id { get; set; }
+        public string Type { get; set; }
         public string Image { get; set; }
         public string DownloadPdfURL { get; set; }
         public string TemplatePrefix { get; set; }

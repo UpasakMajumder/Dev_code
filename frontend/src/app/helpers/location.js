@@ -6,13 +6,14 @@ import { DOMAIN } from 'app.consts';
 
 export const getSecondLevelDomain = () => {
   const { domain } = document;
+  if (!domain) return null;
   const array = domain.split('.');
   const index = array.indexOf(DOMAIN);
   if (index === -1) return false;
   return [array[index - 1], array[index]].join('.');
 };
 
-export const getSearchObj = (): { tab?: string} => {
+export const getSearchObj = (): { orderID?: string } => {
   const search: ?string = window.location.search;
   if (search) return query(search);
   return {};

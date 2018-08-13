@@ -87,26 +87,19 @@ public partial class CMSModules_SocialMarketing_Pages_FacebookPageAccessTokenDia
 
         try
         {
-            string accessToken = wc.DownloadString(request);
+            string accessTokenJson = wc.DownloadString(request);
             DateTime expiration = new DateTime();
             bool expirationSet = false;
 
             // Get values from response
-            string[] pairs = accessToken.Split('&');
+            var oAuthAccessToken = FacebookHelper.ParseOAuthAccessToken(accessTokenJson);
 
-            foreach (var pair in pairs)
+            string accessToken = oAuthAccessToken.AccessToken;
+
+            if (oAuthAccessToken.ExpiresIn > 0)
             {
-                string[] keyValue = pair.Split('=');
-
-                if (keyValue[0].CompareTo("access_token") == 0)
-                {
-                    accessToken = keyValue[1];
-                }
-                else if (keyValue[0].CompareTo("expires") == 0)
-                {
-                    expiration = DateTime.UtcNow + TimeSpan.FromSeconds(Convert.ToInt32(keyValue[1]));
-                    expirationSet = true;
-                }
+                expiration = DateTime.UtcNow + TimeSpan.FromSeconds(Convert.ToInt32(oAuthAccessToken.ExpiresIn));
+                expirationSet = true;
             }
 
             // Get page access token - posting will be done under page identity

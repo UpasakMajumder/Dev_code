@@ -10,5 +10,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         List<Brand> GetBrands();
 
         List<Brand> GetAddressBrands(int addressID);
+
+        IEnumerable<Brand> GetBrands(List<int> brandIds);
     }
 }

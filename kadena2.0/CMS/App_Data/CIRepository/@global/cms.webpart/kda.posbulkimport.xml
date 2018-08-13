@@ -13,7 +13,7 @@
   </WebPartDefaultValues>
   <WebPartDescription />
   <WebPartDisplayName>_POS Bulk Import</WebPartDisplayName>
-  <WebPartFileName>~/CMSWebParts/Kadena/POS/POSBulkImport.ascx</WebPartFileName>
+  <WebPartFileName>Kadena/POS/POSBulkImport.ascx</WebPartFileName>
   <WebPartGUID>e4734dac-57bc-4086-bf50-02eb48cb9c62</WebPartGUID>
   <WebPartLoadGeneration>0</WebPartLoadGeneration>
   <WebPartName>KDA.POSBulkImport</WebPartName>

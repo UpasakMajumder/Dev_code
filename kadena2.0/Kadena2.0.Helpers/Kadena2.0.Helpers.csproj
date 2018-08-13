@@ -42,6 +42,7 @@
     <Compile Include="Data\DatasetHelpers.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="Routes\File.cs" />
+    <Compile Include="Routes\Routes.ErpSystems.cs" />
     <Compile Include="Routes\Routes.OrderReport.cs" />
     <Compile Include="Routes\User.cs" />
     <Compile Include="UrlHelper.cs" />

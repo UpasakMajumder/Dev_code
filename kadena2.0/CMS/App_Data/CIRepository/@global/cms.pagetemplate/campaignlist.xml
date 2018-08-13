@@ -336,7 +336,9 @@
           <property name="instanceguid">3d6c5c08-9b04-45be-b6d3-379ec950da58</property>
           <property name="loadpagesindividually">True</property>
           <property name="maxrelativelevel">-1</property>
-          <property name="orderby">DocumentCreatedWhen desc</property>
+          <property name="orderby">
+            <![CDATA[{% KadenaNamespace.TableSortingOrderBy("Name,Description,StartDate,EndDate") |(user)administrator|(hash)56ab3bf2f0359d9d379778ef1090a768a566e581c22b4a68cc450a3deb6bf94d%}]]>
+          </property>
           <property name="path">/%</property>
           <property name="selectonlypublished">True</property>
           <property name="selecttopn"></property>

@@ -10,5 +10,6 @@ namespace Kadena.Dto.SubmitOrder.Requests
         public PaymentMethodDto PaymentMethod { get; set; }
         public bool AgreeWithTandC { get; set; }
         public IEnumerable<string> EmailConfirmation { get; set; }
+        public string DeliveryDate { get; set; }
     }
 }

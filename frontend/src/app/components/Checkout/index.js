@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
+import moment from 'moment';
 /* globals */
 import { CHECKOUT, NOTIFICATION } from 'app.globals';
 /* helpers */
@@ -24,7 +25,6 @@ import {
   changePaymentMethod
 } from 'app.ac/checkout';
 import { changeProducts } from 'app.ac/cartPreview';
-import toggleEmailProof from 'app.ac/emailProof';
 import { addAddress as saveAddress } from 'app.ac/settingsAddresses';
 /* local components */
 import DeliveryAddress from './DeliveryAddress';
@@ -34,6 +34,7 @@ import Products from './Products';
 import Total from './Total';
 import EmailConfirmation from './EmailConfirmation';
 import EmailProof from '../EmailProof';
+import DeliveryDate from './DeliveryDate';
 
 class Checkout extends Component {
   constructor() {
@@ -50,9 +51,72 @@ class Checkout extends Component {
       },
       agreeWithTandC: !CHECKOUT.tAndC.exists,
       initChecked: true,
-      scrolled: false
+      scrolled: false,
+      deliveryDate: {
+        value: null,
+        error: null
+      },
+      emailProof: {
+        show: false,
+        url: ''
+      }
     };
   }
+
+  changeDeliveryDate = (date) => {
+    this.setState({
+      deliveryDate: {
+        value: date,
+        error: null
+      }
+    });
+  };
+
+  toggleEmailProof = (url) => {
+    this.setState((prevState) => {
+      return {
+        emailProof: {
+          show: !prevState.emailProof.show,
+          url
+        }
+      };
+    });
+  };
+
+  blurDeliveryDate = (e) => {
+    if (e.target.value === '') return;
+
+    const date = moment(e.target.value);
+    if (this.state.deliveryDate.value !== null) {
+      this.setState({
+        deliveryDate: {
+          ...this.state.deliveryDate,
+          error: ''
+        }
+      });
+    } else if (!date.isValid()) {
+      this.setState({
+        deliveryDate: {
+          value: null,
+          error: this.props.checkout.ui.deliveryDate.messages.invalid
+        }
+      });
+    } else if (date <= moment()) {
+      this.setState({
+        deliveryDate: {
+          value: null,
+          error: this.props.checkout.ui.deliveryDate.messages.upcoming
+        }
+      });
+    } else {
+      this.setState({
+        deliveryDate: {
+          value: date,
+          error: null
+        }
+      });
+    }
+  };
 
   changeInput = (id, value) => {
     this.setState({
@@ -62,6 +126,7 @@ class Checkout extends Component {
       }
     });
   };
+
 
   removeInput = (id) => {
     const items = this.state.items.filter(item => item.id !== id);
@@ -102,13 +167,15 @@ class Checkout extends Component {
     };
   }
 
-  static fireNotification(fields) {
+  fireNotification = (fields) => {
     fields.forEach((field, index) => {
       const { checkoutValidation } = NOTIFICATION;
 
       if (checkoutValidation) {
         if (checkoutValidation[field]) {
           toastr.error(checkoutValidation[field].title, checkoutValidation[field].text);
+        } else if (field === 'deliveryDate') {
+          toastr.error(checkoutValidation.invoice.title, this.props.checkout.ui.deliveryDate.messages.invalid);
         }
       }
     });
@@ -138,20 +205,33 @@ class Checkout extends Component {
     if (itemFromProps.items.length && checkedPM.card === undefined) invalidFields.push('paymentMethod'); // new card has id = ''
   }
 
+  checkDeliveryDate = (invalidFields) => {
+    const { error } = this.state.deliveryDate;
+    if (error) {
+      invalidFields.push('deliveryDate');
+    }
+  };
+
   placeOrder = (checkedData) => {
     const { sendData, checkout } = this.props;
     const invalidFields = Object.keys(checkedData).filter(key => checkedData[key] === 0);
 
     this.checkPaymentMethod(checkedData, invalidFields);
+    this.checkDeliveryDate(invalidFields);
 
     const newEmailConfirmation = Checkout.orginizeEmailConfirmation(checkedData.emailConfirmation);
 
     if (newEmailConfirmation.invalid) invalidFields.push('emailConfirmation');
 
     if (invalidFields.length) {
-      Checkout.fireNotification(invalidFields);
+      this.fireNotification(invalidFields);
     } else {
-      const data = { ...checkedData, emailConfirmation: newEmailConfirmation.list };
+      const data = {
+        ...checkedData,
+        emailConfirmation: newEmailConfirmation.list,
+        deliveryDate: this.state.deliveryDate.value && this.state.deliveryDate.value.locale('en').format('MMM DD, YYYY H:mm:ss Z')
+      };
+
       if (checkedData.deliveryAddress === 'non-deliverable') data.deliveryAddress = 0;
       if (checkedData.deliveryMethod === 'non-deliverable') data.deliveryMethod = 0;
       if (checkedData.deliveryAddress === -1) {
@@ -309,7 +389,8 @@ class Checkout extends Component {
         paymentMethods,
         totals,
         validationMessage,
-        emailConfirmation
+        emailConfirmation,
+        deliveryDate
       } = ui;
 
       // cart is empty
@@ -374,7 +455,9 @@ class Checkout extends Component {
       content = (
         <div>
           <EmailProof
-            open={this.props.emailProof.show}
+            open={this.state.emailProof.show}
+            toggleEmailProof={this.toggleEmailProof}
+            emailProofUrl={this.state.emailProof.url}
           />
           {welcomeMessage}
           <div className="shopping-cart__block">
@@ -383,13 +466,20 @@ class Checkout extends Component {
               disableInteractivity={!totals}
               changeProductQuantity={changeProductQuantity}
               ui={products}
-              toggleEmailProof={this.props.toggleEmailProof}
+              toggleEmailProof={this.toggleEmailProof}
             />
           </div>
 
           {deliveryAddressComponent}
           {emailConfirmationContent}
           {this.getDeliveryMethodComponent()}
+
+          <DeliveryDate
+            ui={deliveryDate}
+            deliveryDate={this.state.deliveryDate}
+            changeDeliveryDate={this.changeDeliveryDate}
+            blurDeliveryDate={this.blurDeliveryDate}
+          />
 
           <div className="shopping-cart__block">
             <PaymentMethod
@@ -428,12 +518,12 @@ class Checkout extends Component {
 }
 
 export default connect((state) => {
-  const { checkout, emailProof } = state;
+  const { checkout } = state;
 
   const { redirectURL } = checkout.sendData;
   if (redirectURL) location.assign(redirectURL);
 
-  return { checkout, emailProof };
+  return { checkout };
 }, {
   getUI,
   initCheckedShoppingData,
@@ -445,6 +535,5 @@ export default connect((state) => {
   saveAddress,
   changeDeliveryAddress,
   changeDeliveryMethod,
-  changePaymentMethod,
-  toggleEmailProof
+  changePaymentMethod
 })(Checkout);

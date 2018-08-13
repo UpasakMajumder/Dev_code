@@ -123,7 +123,7 @@
   }
 
   &__footer {
-    @extend %flex--center--between;
+    @extend %flex--start--between;
     flex-wrap: wrap;
 
     & > * {
@@ -136,14 +136,8 @@
   }
 
   &__proceed {
-    @extend %flex--center--default;
+    @extend %flex--start--default;
     margin-left: auto;
-
-    .input__error {
-      position: absolute;
-      left: 0;
-      top: 100%;
-    }
   }
 
   &__proceed-input {
