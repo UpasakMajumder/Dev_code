@@ -184,7 +184,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             };
             if (CanSeeAllOrders())
             {
-                headings.Insert(headings.Count - 2, _kenticoResources.GetResourceString("Kadena.OrdersList.ShippingDate"));
+                headings.Insert(headings.Count - 2, _kenticoResources.GetResourceString("Kadena.OrdersList.Customer"));
             }
             return new OrderHead
             {
