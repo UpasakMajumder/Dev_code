@@ -16,17 +16,8 @@ namespace Kadena.WebAPI.Controllers
 
         public SiteDataController(ISiteDataService service, IMapper mapper)
         {
-            if (service == null)
-            {
-                throw new ArgumentNullException(nameof(service));
-            }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-
-            _service = service;
-            _mapper = mapper;
+            _service = service ?? throw new ArgumentNullException(nameof(service));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         
