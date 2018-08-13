@@ -1,14 +1,22 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Kadena_Catalog_CreateCatalog" CodeBehind="~/CMSWebParts/Kadena/Catalog/CreateCatalog.ascx.cs" %>
 <div class="custom__block" runat="server" id="catalogControls">
     <div class="custom__select clearfix">
-        <asp:DropDownList ID="ddlPrograms" runat="server" OnSelectedIndexChanged="ddlPrograms_SelectedIndexChanged" AutoPostBack="true" style="max-width:200px;"></asp:DropDownList>
-        <asp:DropDownList ID="ddlBrands" runat="server" OnSelectedIndexChanged="ddlBrands_SelectedIndexChanged" AutoPostBack="true" style="max-width:200px;"></asp:DropDownList>
-        <asp:DropDownList ID="ddlProductTypes" runat="server" OnSelectedIndexChanged="ddlProductTypes_SelectedIndexChanged" AutoPostBack="true" style="max-width:200px;"></asp:DropDownList>
+        <asp:DropDownList ID="ddlPrograms" runat="server" OnSelectedIndexChanged="OnFilterChanged" AutoPostBack="true" style="max-width:200px;"></asp:DropDownList>
+        <asp:DropDownList ID="ddlBrands" runat="server" OnSelectedIndexChanged="OnFilterChanged" AutoPostBack="true" style="max-width:200px;"></asp:DropDownList>
+        <asp:DropDownList ID="ddlProductTypes" runat="server" OnSelectedIndexChanged="OnFilterChanged" AutoPostBack="true" style="max-width:200px;"></asp:DropDownList>
         <label id="errorLabel"></label>
     </div>
     <div class="search__block" id="searchDiv" runat="server">
-        <asp:TextBox ID="posNumber" CssClass="input__text" runat="server" AutoPostBack="true" OnTextChanged="posNumber_TextChanged"></asp:TextBox>
+        <asp:TextBox ID="posNumber" CssClass="input__text" runat="server" AutoPostBack="true" OnTextChanged="OnFilterChanged"></asp:TextBox>
     </div>
+    <asp:PlaceHolder runat="server" ID="chkOnlyAllocatedToMeWrapper">
+        <div class="custom__check">
+            <div class="input__wrapper">
+                <asp:CheckBox runat="server" ID="chkOnlyAllocatedToMe" Checked="false" OnCheckedChanged="OnFilterChanged" AutoPostBack="true" />
+                <cms:LocalizedLabel runat="server" AssociatedControlID="chkOnlyAllocatedToMe" ID="LocalizedLabel1" CssClass="input__label input__label--checkbox" ResourceString="KDA.CustomCatalog.OnlyAllocatedToMe"></cms:LocalizedLabel>
+            </div>
+        </div>
+    </asp:PlaceHolder>
     <div class="custom__check">
         <div class="input__wrapper">
             <input type="checkbox" class=" input__checkbox selectAllChk " id="allCheck-<%# Eval("NodeSKUID") %>" value="true">

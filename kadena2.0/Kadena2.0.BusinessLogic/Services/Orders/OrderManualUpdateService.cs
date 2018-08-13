@@ -128,7 +128,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new Exception("Couldn't match all given line numbers in original order");
             }
 
-            if(IsCreditCardPayment(orderDetail.PaymentInfo.PaymentMethod) && updatedItemsData.Any(i => i.UpdatedItem.Quantity > i.OriginalItem.Quantity))
+            if (IsCreditCardPayment(orderDetail.PaymentInfo.PaymentMethod) && updatedItemsData.Any(i => i.UpdatedItem.Quantity > i.OriginalItem.Quantity))
             {
                 throw new Exception("Can't increase item quantity, if payment method is credit card.");
             }
@@ -219,6 +219,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
                 // adjust available quantity
                 AdjustAvailableItems(updatedItemsData);
+                AdjustAllocatedItems(updatedItemsData, orderDetail.Customer.KenticoUserID);
 
                 // Adjust budget
                 budgetProvider.AdjustUserRemainingBudget(
@@ -353,6 +354,16 @@ namespace Kadena.BusinessLogic.Services.Orders
                 var freedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
                 // Not using Set... because when waiting for result of OrderUpdate, quantity can change
                 skuProvider.UpdateAvailableQuantity(data.OriginalItem.SkuId, freedQuantity);
+            });
+        }
+
+        void AdjustAllocatedItems(IEnumerable<UpdatedItemCheckData> updateData, int userId)
+        {
+            updateData.ToList().ForEach(data =>
+            {
+                var adjustedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
+                // Not using Set... because when waiting for result of OrderUpdate, quantity can change
+                productsProvider.UpdateAllocatedProductQuantityForUser(data.OriginalItem.SkuId, userId, adjustedQuantity);
             });
         }
 
