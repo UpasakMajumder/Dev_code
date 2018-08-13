@@ -3,6 +3,8 @@ using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
 using Xunit;
 using Kadena.Models.Membership;
+using AutoMapper;
+using System.Threading.Tasks;
 
 namespace Kadena.Tests.MicroserviceClients
 {
@@ -10,15 +12,15 @@ namespace Kadena.Tests.MicroserviceClients
     {
         [Theory]
         [ClassData(typeof(UserManagerClientTests))]
-        public void UserManagerClient(IMicroProperties properties)
+        public void UserManagerClient(IMicroProperties properties, IMapper mapper)
         {
-            Assert.Throws<ArgumentNullException>(() => new UserManagerClient(properties));
+            Assert.Throws<ArgumentNullException>(() => new UserManagerClient(properties, mapper));
         }
 
         [Fact]
-        public void Create()
+        public async Task Create()
         {
-            var exception = Record.Exception(() => Sut.Create(new User()));
+            var exception = await Record.ExceptionAsync(() => Sut.Create(null));
 
             Assert.Null(exception);
         }

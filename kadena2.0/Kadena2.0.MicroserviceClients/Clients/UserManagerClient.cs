@@ -1,25 +1,32 @@
-﻿using Kadena.Models.Membership;
+﻿using AutoMapper;
+using Kadena.Dto.General;
+using Kadena.Dto.Membership;
+using Kadena.Models.Membership;
 using Kadena.Models.SiteSettings;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
 using System;
+using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
     public class UserManagerClient : SignedClientBase, IUserManagerClient
     {
-        private readonly IMicroProperties properties;
+        private readonly IMapper mapper;
 
-        public UserManagerClient(IMicroProperties properties)
+        public UserManagerClient(IMicroProperties properties, IMapper mapper)
         {
-            this.properties = properties ?? throw new ArgumentNullException(nameof(properties));
+            _properties = properties ?? throw new ArgumentNullException(nameof(properties));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _serviceVersionSettingKey = Settings.KDA_UserManagerVersion;
         }
 
-        public bool Create(User user)
+        public async Task<BaseResponseDto<object>> Create(User user)
         {
-            throw new NotImplementedException();
+            var url = $"{BaseUrl}/user";
+            var body = mapper.Map<CreateUserDto>(user);
+            return await Post<object>(url, body).ConfigureAwait(false);
         }
     }
 }

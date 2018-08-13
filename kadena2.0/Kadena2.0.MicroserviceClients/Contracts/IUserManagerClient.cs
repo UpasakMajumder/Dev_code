@@ -1,9 +1,11 @@
-﻿using Kadena.Models.Membership;
+﻿using Kadena.Dto.General;
+using Kadena.Models.Membership;
+using System.Threading.Tasks;
 
 namespace Kadena2.MicroserviceClients.Contracts
 {
     public interface IUserManagerClient
     {
-        bool Create(User user);
+        Task<BaseResponseDto<object>> Create(User user);
     }
 }
