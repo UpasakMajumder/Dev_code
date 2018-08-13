@@ -9,8 +9,6 @@ export default class Spotfire {
     const parameters = '';
     const reloadAnalysisInstance = false;
 
-    // $FlowIgnore
-
     this.customisation = new window.spotfire.webPlayer.Customization();
 
     const app = new window.spotfire.webPlayer.Application(
@@ -74,7 +72,7 @@ export default class Spotfire {
     });
   }
 
-  initCustomization(showPageNavigation) {
+  initCustomization(showPageNavigation: boolean) {
     this.customisation.showClose = false;
     this.customisation.showUndoRedo = true;
     this.customisation.showToolBar = false;

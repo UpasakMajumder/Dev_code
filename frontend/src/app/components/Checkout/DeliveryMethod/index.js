@@ -59,7 +59,7 @@ class DeliveryMethod extends Component {
     const descriptionElement = description ? <p className="cart-fill__info">{description}</p> : null;
 
     return (
-      <div id="delivery-method">
+      <div id="delivery-method" className="shopping-cart__block">
         <h2>{title}</h2>
         <div className="cart-fill__block">
           {descriptionElement}

@@ -9,7 +9,8 @@
 {% block content %}
   <div class="dashboard">
 
-    {% include "components/notification.nunj" %}
+    {% include "components/homepage-header.nunj" %}
+    {% include "components/shortcuts.nunj" %}
 
     <div class="js-tabs" data-tab=".js-tab-example" data-tab-active="active" data-tab-active-default=".js-tab-content-1">
       <ul class="css-tabs__list">

@@ -77,12 +77,12 @@ const Proceed = ({
 
   const quantityTextComponent = quantityText
       ? (
-        <p className="text--danger mt-2">{quantityText}</p>
+        <p className="text--danger">{quantityText}</p>
       ) : null;
 
   if (addToCart) {
     return (
-      <div>
+      <div className="ml-auto">
         <div className="product-view__proceed">
           {getInput()}
           <Button

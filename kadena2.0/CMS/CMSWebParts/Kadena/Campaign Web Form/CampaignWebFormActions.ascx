@@ -7,3 +7,4 @@
 <asp:LinkButton class="js-tooltip" data-tooltip-placement="bottom" title='<%#UpdateProductsToolTipText %>' ID="lnkUpdateProducts" runat="server" OnClick="lnkUpdateProducts_Click" Visible="false" Enabled="false" CommandArgument='<%# CampaignID %>'></asp:LinkButton>
 <asp:LinkButton class="js-tooltip" data-tooltip-placement="bottom" title='<%#OpenCampaignToolTipText %>' ID="lnkOpenCampaign" runat="server" OnClick="lnkOpenCampaign_Click" Visible="false" Enabled="false" CommandArgument='<%# CampaignID %>'></asp:LinkButton>
 <asp:LinkButton class="js-tooltip" data-tooltip-placement="bottom" title='<%#CloseCampaignToolTipText %>' ID="lnkCloseCampaign" runat="server" OnClick="lnkCloseCampaign_Click" Visible="false" Enabled="false" CommandArgument='<%# CampaignID %>'></asp:LinkButton>
+<cms:LocalizedLinkButton ResourceString="Kadena.Catalog.Download" CssClass="js-tooltip" ID="btnDownload" runat="server" CommandArgument="<%# CampaignID %>" OnClick="btnDownload_Click" />

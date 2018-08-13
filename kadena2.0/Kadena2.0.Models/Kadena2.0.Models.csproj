@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Address\AddressData.cs" />
     <Compile Include="Address\AddressType.cs" />
+    <Compile Include="Address\StateGroup.cs" />
     <Compile Include="AddToCart\DistributorCart.cs" />
     <Compile Include="AddToCart\DistributorCartItem.cs" />
     <Compile Include="Address\BillingAddress.cs" />
@@ -59,9 +60,12 @@
     <Compile Include="CampaignData\OrderType.cs" />
     <Compile Include="Checkout\CartItemEntity.cs" />
     <Compile Include="Checkout\ChiliProcess.cs" />
+    <Compile Include="Checkout\DeliveryDate.cs" />
+    <Compile Include="Checkout\DeliveryDateMessages.cs" />
     <Compile Include="CreditCard\SaveCardData.cs" />
     <Compile Include="CreditCard\StoredCard.cs" />
     <Compile Include="CustomCatalog\PrebuyProduct.cs" />
+    <Compile Include="ErpSystem\ErpSystem.cs" />
     <Compile Include="FyBudget\FyBudget.cs" />
     <Compile Include="IBTF\IBTF.cs" />
     <Compile Include="IBTF\IBTFAdjustment.cs" />
@@ -73,8 +77,17 @@
     <Compile Include="OrderDetail\EditOrderDialog.cs" />
     <Compile Include="OrderDetail\EditOrderDialogButtons.cs" />
     <Compile Include="OrderDetail\OrderActions.cs" />
+    <Compile Include="OrderDetail\OrderedItems.cs" />
+    <Compile Include="OrderDetail\OrderedItemsGroup.cs" />
+    <Compile Include="OrderDetail\OrderedItemsGroupShippingDate.cs" />
+    <Compile Include="OrderDetail\OrderedItemsGroupTracking.cs" />
     <Compile Include="OrderDetail\OrderInfo.cs" />
     <Compile Include="OrderDetail\OrderStatusInfo.cs" />
+    <Compile Include="OrderHistory\ItemChange.cs" />
+    <Compile Include="OrderHistory\ItemChanges.cs" />
+    <Compile Include="OrderHistory\OrderChange.cs" />
+    <Compile Include="OrderHistory\OrderChanges.cs" />
+    <Compile Include="OrderHistory\OrderHistory.cs" />
     <Compile Include="Orders\Failed\FailedOrder.cs" />
     <Compile Include="Orders\ItemUpdateResult.cs" />
     <Compile Include="Orders\OrderFilter.cs" />
@@ -130,11 +143,14 @@
     <Compile Include="Checkout\SubmitButton.cs" />
     <Compile Include="Checkout\Total.cs" />
     <Compile Include="Checkout\Totals.cs" />
+    <Compile Include="Routing\Request\DeleteRouting.cs" />
+    <Compile Include="Routing\Request\SetRouting.cs" />
+    <Compile Include="Routing\Routing.cs" />
     <Compile Include="Shipping\ShippingOption.cs" />
     <Compile Include="Shipping\TrackingInfo.cs" />
     <Compile Include="ShoppingCarts\ShoppingCart.cs" />
     <Compile Include="ShoppingCarts\ShoppingCartItem.cs" />
-    <Compile Include="ShoppingCarts\ShoppingCartTypes.cs" />
+    <Compile Include="Product\CampaignProductType.cs" />
     <Compile Include="SiteSettings\Permissions\PermissionModules.cs" />
     <Compile Include="SiteSettings\Permissions\ModulePermissions.cs" />
     <Compile Include="SiteSettings\Settings.General.cs" />
@@ -143,6 +159,7 @@
     <Compile Include="SiteSettings\Settings.TWE.cs" />
     <Compile Include="Site\Culture.cs" />
     <Compile Include="Site\DocumentLocalization.cs" />
+    <Compile Include="Site\KenticoSiteWithDeliveryOptions.cs" />
     <Compile Include="Site\ModuleMapping.cs" />
     <Compile Include="SubmitOrder\MailingList.cs" />
     <Compile Include="SubmitOrder\OrderCartItem.cs" />
@@ -196,12 +213,13 @@
     <Compile Include="_Common\Dialog.cs" />
     <Compile Include="_Common\DialogButton.cs" />
     <Compile Include="_Common\FileResult.cs" />
+    <Compile Include="_Common\Link.cs" />
     <Compile Include="_Common\MailTemplate.cs" />
     <Compile Include="RecentOrders\Order.cs" />
     <Compile Include="OrderDetail\CommonInfo.cs" />
     <Compile Include="OrderDetail\OrderDetail.cs" />
     <Compile Include="OrderDetail\OrderedItem.cs" />
-    <Compile Include="OrderDetail\OrderedItems.cs" />
+    <Compile Include="OrderDetail\OrderedItemsSection.cs" />
     <Compile Include="OrderDetail\PaymentInfo.cs" />
     <Compile Include="OrderDetail\PricingInfo.cs" />
     <Compile Include="OrderDetail\PricingInfoItem.cs" />
@@ -252,6 +270,7 @@
     <Compile Include="_Common\TableView.cs" />
     <Compile Include="Membership\User.cs" />
     <Compile Include="UserBudget\UserBudgetItem.cs" />
+    <Compile Include="_Common\TitledMessage.cs" />
     <Compile Include="_Common\ValidationFieldResult.cs" />
   </ItemGroup>
   <ItemGroup>

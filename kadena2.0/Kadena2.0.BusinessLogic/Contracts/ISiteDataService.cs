@@ -4,7 +4,7 @@ namespace Kadena.BusinessLogic.Contracts
 {
     public interface ISiteDataService
     {
-        KenticoSite GetKenticoSite(int? siteId, string siteName);
+        KenticoSiteWithDeliveryOptions GetKenticoSite(int? siteId, string siteName);
         ArtworkFtpSettings GetArtworkFtpSettings(int siteId);
     }
 }

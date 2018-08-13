@@ -1,0 +1,46 @@
+.banner {
+  position: relative;
+
+  &__headers {
+    position: absolute;
+    left: 0;
+    top: 0;
+    text-transform: uppercase;
+    padding: 10px 30px;
+
+    h2,
+    h4 {
+      color: white;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      border-bottom: 1px solid white;
+    }
+  }
+
+  &__image {
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &__dates {
+    position: absolute;
+    left: 15px;
+    right: 15px;
+    bottom: 0;
+    background: rgba(0, 0, 0, .5);
+    color: white;
+    padding: 20px 15px;
+
+    & > * {
+      margin: 0;
+
+      &:not(:last-child) {
+        margin-bottom: 5px;
+      }
+    }
+  }
+}

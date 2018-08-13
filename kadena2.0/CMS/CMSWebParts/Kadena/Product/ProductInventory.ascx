@@ -3,42 +3,55 @@
 <div class="custom__section">
     <div class="custom__block clearfix" runat="server" visible="true" id="orderControls">
         <div class="custom__select">
-            <asp:DropDownList runat="server" ID="ddlBrand" Visible="false" OnSelectedIndexChanged="ddlBrand_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
-            <asp:DropDownList ID="ddlProgram" runat="server" Visible="false" OnSelectedIndexChanged="ddlProgram_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
-            <asp:DropDownList ID="ddlCategory" runat="server" Visible="false" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+            <asp:DropDownList runat="server" ID="ddlBrand" Visible="false" OnSelectedIndexChanged="OnFilterChanged" AutoPostBack="true"></asp:DropDownList>
+            <asp:DropDownList ID="ddlProgram" runat="server" Visible="false" OnSelectedIndexChanged="OnFilterChanged" AutoPostBack="true"></asp:DropDownList>
+            <asp:DropDownList ID="ddlCategory" runat="server" Visible="false" OnSelectedIndexChanged="OnFilterChanged" AutoPostBack="true"></asp:DropDownList>
         </div>
         <div class="search__block search__recent search__recent--icon">
-            <asp:TextBox ID="txtSearch" runat="server" OnTextChanged="txtSearch_TextChanged" AutoPostBack="true" class="input__text"></asp:TextBox>
+            <asp:TextBox ID="txtSearch" runat="server" OnTextChanged="OnFilterChanged" AutoPostBack="true" class="input__text"></asp:TextBox>
             <button class="search__submit btn--off" type="submit">
                 <svg class="icon icon-dollar">
                     <use xlink:href="/gfx/svg/sprites/icons.svg#search"></use>
                 </svg>
             </button>
         </div>
+        <asp:PlaceHolder runat="server" ID="chkOnlyAllocatedToMeWrapper">
+            <div class="custom__check">
+                <div class="input__wrapper">
+                    <asp:CheckBox runat="server" ID="chkOnlyAllocatedToMe" Checked="false" OnCheckedChanged="OnFilterChanged" AutoPostBack="true" />
+                    <cms:LocalizedLabel runat="server" AssociatedControlID="chkOnlyAllocatedToMe" ID="LocalizedLabel1" CssClass="input__label input__label--checkbox" ResourceString="KDA.InventoryOrder.OnlyAllocatedToMe"></cms:LocalizedLabel>
+                </div>
+            </div>
+        </asp:PlaceHolder>
     </div>
     <div class="custom__content row">
         <cms:BasicRepeater runat="server" ID="rptProductLists">
             <ItemTemplate>
-                <div class="cus__content--block col-sm-3">
+                <div class="cus__content--block col-sm-3" id="imagediv">
                     <div class="img__block">
-                        <input type="checkbox" id='zoomCheck_<%#Eval("SKUID") %>'>
+                        <input type="checkbox" id='zoomCheck_<%#Eval("SKUID") %>' />
                         <label for='zoomCheck_<%#Eval("SKUID") %>'>
                             <img src='<%#Eval<string>("ProductImage")==string.Empty?CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage"):Eval<string>("ProductImage")%>' />
+                        </label>
                     </div>
+                    <div class="zoom__in"><a href="javascript:void(0);" onclick='ShowZoomEffect("<%# Eval<string>("ProductImage")%>")'>
+                        <svg class="icon">
+                            <use xlink:href="/gfx/svg/sprites/icons.svg#search" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
+                        </svg></a></div>
                     <div class="custom__blockin">
                         <h4><%= POSNumberText %> : <%# Eval("SKUProductCustomerReferenceNumber")%></h4>
                         <h3><%#Eval("SKUName") %></h3>
-                        <h3><cms:LocalizedLiteral runat ="server" ResourceString="Kadena.Product.QuantityAvailable"/> <%#Eval("SKUAvailableItems") %></h3>
-                        <span><%# ProductType == (int)ProductsType.GeneralInventory? $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("SKUPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" : $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("EstimatedPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" %></span>
+                        <h3><cms:LocalizedLiteral runat ="server" ResourceString="Kadena.Product.QuantityAvailable"/> <%#Eval("SKUAvailableItems") %></h3>                        
+                        <h3><asp:PlaceHolder runat="server" Visible='<%# ProductType == (int)Kadena.Models.Product.CampaignProductType.GeneralInventory && EvalInteger("SKUAllocatedQuantity") > 0 %>'><cms:LocalizedLiteral runat ="server" ResourceString="Kadena.Product.QuantityAllocated"/>&nbsp;<%#Eval("SKUAllocatedQuantity") %></asp:PlaceHolder>&nbsp;</h3>
+                        <span><%# ProductType == (int)Kadena.Models.Product.CampaignProductType.GeneralInventory ? $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("SKUPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" : $"{CMS.Ecommerce.CurrencyInfoProvider.GetFormattedPrice(EvalDouble("EstimatedPrice"), CurrentSite.SiteID,true)} pack of {Eval("QtyPerPack")}" %></span>
                         <b>
-                            <asp:Label runat="server" Visible='<%# ProductType == (int)ProductsType.PreBuy %>'>
+                            <asp:Label runat="server" Visible='<%# ProductType == (int)Kadena.Models.Product.CampaignProductType.PreBuy %>'>
                             <cms:LocalizedLiteral runat="server" ResourceString="Kadena.PreBuyOrder.CurrentDemand"></cms:LocalizedLiteral>&nbsp;<%# GetDemandCount(Eval<int>("SKUID")) %>
-                        </asp:Label>
+                            </asp:Label>
                         </b>
-                        <a class="js-addToCart-Modal" href="javascript:void(0);" style='<%=((ProductType == (int)ProductsType.PreBuy && !EnableAddToCart)?"display:none;":"")%>' data-skuid='<%#Eval<int>("SKUID")%>' data-productname='<%#Eval("SKUName")%>'><%#AddToCartLinkText%></a>
-                        <asp:Label runat="server" Visible='<%#(ProductType == (int)ProductsType.PreBuy ? !EnableAddToCart : false)%>'><%#AddToCartLinkText%></asp:Label>
+                        <a class="js-addToCart-Modal" href="javascript:void(0);" style='<%=((ProductType == (int)Kadena.Models.Product.CampaignProductType.PreBuy && !EnableAddToCart)?"display:none;": "")%>' data-skuid='<%#Eval<int>("SKUID")%>' data-productname='<%#Eval("SKUName")%>'><%#AddToCartLinkText%></a>
+                        <asp:Label runat="server" Visible='<%#(ProductType == (int)Kadena.Models.Product.CampaignProductType.PreBuy ? !EnableAddToCart : false)%>'><%#AddToCartLinkText%></asp:Label>
                     </div>
-                    <p><%#Eval("SKUDescription") %></p>
                 </div>
             </ItemTemplate>
         </cms:BasicRepeater>
@@ -60,6 +73,26 @@
     <div id="divNoCampaign" runat="server" visible="false">
         <div class=" mt-2">
             <div data-reactroot="" class="alert--info alert--full alert--smaller isOpen"><span><%=NoCampaignOpen %></span></div>
+        </div>
+    </div>
+</div>
+<%--Zoom EffectPopup--%>
+<div class="dialog" id="ImageZoomPopup">
+    <div class="dialog__shadow"></div>
+    <div class="dialog__block">
+        <div class="dialog__header">
+            <span><%# CMS.Helpers.ResHelper.GetString("Kadena.ProductStateInfo.StateGroupPopupHeading") %></span>
+            <a onclick="$('#ImageZoomPopup').toggleClass('active');" class="btn__close js-btnClose"><i class="fa fa-close"></i></a>
+        </div>
+        <div class="dialog__content">
+            <div class="modal__body business__assigned-user">
+                <div class="zoom__block">
+                    <img id="ZoomImage" src='<%#CMS.DataEngine.SettingsKeyInfoProvider.GetValue($@"{CurrentSiteName}.KDA_ProductsPlaceHolderImage")%>' /></div>
+            </div>
+        </div>
+        <div class="dialog__footer">
+            <div class="btn-group btn-group--right">
+            </div>
         </div>
     </div>
 </div>

@@ -12,5 +12,6 @@ namespace Kadena.Dto.ViewOrder.MicroserviceResponses
         public AddressDTO AddressTo { get; set; }
         public string AddressFrom { get; set; }
         public DateTime? ShippingDate { get; set; }
+        public DateTime? RequestedDeliveryDate { get; set; }
     }
 }

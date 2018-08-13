@@ -31,6 +31,7 @@ using Kadena.BusinessLogic.Services.SSO;
 using System.IdentityModel.Tokens;
 using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.BusinessLogic.Services.Approval;
+using NReco.PdfGenerator;
 
 namespace Kadena.Container.Default
 {
@@ -48,7 +49,8 @@ namespace Kadena.Container.Default
                 .RegisterKadenaSettings()
                 .RegisterMicroservices()
                 .RegisterFactories()
-                .RegisterInfrastructure();
+                .RegisterInfrastructure()
+                .RegisterThirdParty();
         }
 
         public static T Resolve<T>()
@@ -66,6 +68,7 @@ namespace Kadena.Container.Default
             container.Register<ITaxEstimationService, TaxEstimationService>();
             container.Register<ISubmitOrderService, SubmitOrderService>();
             container.Register<IOrderDetailService, OrderDetailService>();
+            container.Register<IOrderHistoryService, OrderHistoryService>();
             container.Register<IOrderReportService, OrderReportService>();
             container.Register<IOrderResubmissionService, OrderResubmissionService>();
             container.Register<IKListService, KListService>();
@@ -81,6 +84,7 @@ namespace Kadena.Container.Default
             container.Register<IAddressBookService, AddressBookService>();
             container.Register<IModuleAccessService, ModuleAccessService>();
             container.Register<IBrandsService, BrandsService>();
+            container.Register<IRoutingService, RoutingService>();
             container.Register<IProgramsService, ProgramsService>();
             container.Register<ILoginService, LoginService>();
             container.Register<IFileService, FileService>();
@@ -110,11 +114,14 @@ namespace Kadena.Container.Default
             container.Register<IApprovalService, ApprovalService>();
             container.Register<IDialogService, DialogService>();
             container.Register<IDeliveryEstimationDataService, DeliveryEstimationDataService>();
+            container.Register<IErpSystemsService, ErpSystemsService>();
             container.Register<IOrderManualUpdateService, OrderManualUpdateService>();
             container.Register<IDistributorShoppingCartService, DistributorShoppingCartService>();
             container.Register<IOrderItemCheckerService, OrderItemCheckerService>();
             container.Register<IConvert, XlsxConvert>();
             container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
+            container.Register<IByteConverter, PdfByteConverter>();
+            container.Register<IPreBuyCatalogService, PdfPreBuyCatalogService>();
             return container;
         }
 
@@ -129,6 +136,7 @@ namespace Kadena.Container.Default
             container.Register<IKenticoProductsProvider, KenticoProductsProvider>();
             container.Register<IKenticoDocumentProvider, KenticoDocumentProvider>();
             container.Register<IKenticoBusinessUnitsProvider, KenticoBusinessUnitsProvider>();
+            container.Register<IKenticoErpSystemsProvider, KenticoErpSystemsProvider>();
             container.Register<IKenticoCampaignsProvider, KenticoCampaignsProvider>();
             container.Register<IKenticoPOSProvider, KenticoPOSProvider>();
             container.Register<IKenticoProductCategoryProvider, KenticoProductCategoryProvider>();
@@ -188,6 +196,7 @@ namespace Kadena.Container.Default
             container.Register<IStatisticsClient, StatisticsClient>();
             container.Register<IExportClient, ExportClient>();
             container.Register<INotificationClient, NotificationClient>();
+            container.Register<IRoutingServiceClient, RoutingServiceClient>();
             container.Register<IApprovalServiceClient, ApprovalServiceClient>();
             container.Register<IOrderManualUpdateClient, OrderManualUpdateClient>();
             return container;
@@ -209,6 +218,11 @@ namespace Kadena.Container.Default
             container.Register<ICache>(Reuse.Singleton, Made.Of(() => new InMemoryCache()));
             return container;
         }
-    }
 
+        public static IContainer RegisterThirdParty(this IContainer container)
+        {
+            container.Register<HtmlToPdfConverter>();
+            return container;
+        }
+    }
 }

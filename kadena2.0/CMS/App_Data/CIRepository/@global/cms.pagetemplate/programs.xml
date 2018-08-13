@@ -87,11 +87,75 @@
 <table id="reptable" class="table show__table-buttom">
   <tbody>
     <tr>
-      <th>{$KDA.ProgramsList.ProgramName$}</th>
-      <th>{$KDA.ProgramsList.BrandName$}</th>
-      <th>{$KDA.ProgramsList.CampaignName$}</th>
-      <th>{$KDA.ProgramsList.Description$}</th>
-      <th>{$KDA.ProgramsList.Status$}</th>
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("ProgramName") |(user)administrator|(hash)afe9d4c0ded1250aaeaa7020c669e0cc8e604a4031b8119b3f1577485edf0e4a%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("ProgramName") |(user)administrator|(hash)4f0d7df0bdbca82d8e25e9de1c84eb2d9bb22a521d9028e8f2c5c3e52adc376f%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.ProgramsList.ProgramName$}</span>
+          </a>        
+        </th>
+				
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("BrandName") |(user)administrator|(hash)49cabc097637dcd3f1a5045c39c711a73bf60f29ab5de60d82e56a96446b2310%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("BrandName") |(user)administrator|(hash)517d57002e8c1c9398b038cfe03606aaed00e96e14da1a46b5dc10730a84093f%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.ProgramsList.BrandName$}</span>
+          </a>        
+        </th>
+
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("CampaignName") |(user)administrator|(hash)b3dcb9dcf04a77f67dea8de58c3e192d63cd27a7c39554dc0d40be90edcd58e3%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("CampaignName") |(user)administrator|(hash)71c578eef4113ac907e6e66e70c3c7ac3405c96b285716e38d4d237db94ed2e0%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.ProgramsList.CampaignName$}</span>
+          </a>        
+        </th>
+
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("ProgramDescription") |(user)administrator|(hash)e573fa7906820c7671e2f50587ac15b769c59278c51f3192883837faaa33d446%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("ProgramDescription") |(user)administrator|(hash)d4e54a0b8d7f19b152a3f77928299f135335760284842a69ca46b629fc228d11%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.ProgramsList.Description$}</span>
+          </a>        
+        </th>
+
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("Status") |(user)administrator|(hash)d37e0a6dca32d003ebc14c50051dc79bf4d9af5281c7d4e13063a39cca5fdd4d%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("Status") |(user)administrator|(hash)f465b6ee8439887d7b1672a2807bbf95cb2e7983797f86f94b01c24c565b3e45%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.ProgramsList.Status$}</span>
+          </a>        
+        </th>	
         {% if (MembershipContext.AuthenticatedUser.IsInRole("TWEGlobalAdmin",false)) { %}
       <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
       {%} |(user)administrator|(hash)363d79cd4a5847835dea5fe8b34897c159109318a8da0fefca5992c8811ce703%}
@@ -111,7 +175,9 @@
           <property name="instanceguid">2effb0ed-4ea4-4669-b6cf-e63f18c65879</property>
           <property name="itemseparator"></property>
           <property name="loadpagesindividually">False</property>
-          <property name="orderby"></property>
+          <property name="orderby">
+            <![CDATA[{% KadenaNamespace.TableSortingOrderBy("ProgramName,ProgramDescription,Status,CampaignName,BrandName") |(user)administrator|(hash)dc6b879793395bcba08d9d95fc7d384618d51634780a155f6bac56a04edda7a5%}]]>
+          </property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>

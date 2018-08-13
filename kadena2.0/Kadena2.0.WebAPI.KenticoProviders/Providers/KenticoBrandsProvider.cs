@@ -1,6 +1,8 @@
-﻿using CMS.CustomTables;
+﻿using AutoMapper;
+using CMS.CustomTables;
 using Kadena.Models.Brand;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,6 +12,12 @@ namespace Kadena.WebAPI.KenticoProviders
     {
         private readonly string BrandTable = "KDA.Brand";
         private readonly string AddressBrandTable = "KDA.AddressBrands";
+        private readonly IMapper mapper;
+
+        public KenticoBrandsProvider(IMapper mapper)
+        {
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
 
         public void DeleteBrand(int brandID)
         {
@@ -20,10 +28,11 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public List<Brand> GetBrands() => CustomTableItemProvider.GetItems(BrandTable)
-            .Columns("ItemID,BrandCode,BrandName")
-            .Select(CreateBrand)
-            .ToList();
+        public List<Brand> GetBrands() =>
+            mapper.Map<List<Brand>>(CustomTableItemProvider
+                                    .GetItems(BrandTable)
+                                    .Columns("ItemID,BrandCode,BrandName")
+                                    .ToList());
 
         private Brand CreateBrand(CustomTableItem brandItem)
         {
@@ -51,13 +60,17 @@ namespace Kadena.WebAPI.KenticoProviders
                        .Select(ab => ab.GetIntegerValue("BrandID", default(int)))
                        .ToList();
 
-            var brandsList = addressBrandsList
-                .Select(b => CustomTableItemProvider.GetItem(b, BrandTable))
-                .Select(CreateBrand)
-                .Where(b => b != null)
-                .ToList();
+            return this.GetBrands(addressBrandsList).ToList();
+        }
 
-            return brandsList;
+        public IEnumerable<Brand> GetBrands(List<int> brandIds)
+        {
+            var brands = CustomTableItemProvider
+                .GetItems(BrandTable)
+                .Columns("ItemID, BrandCode, BrandName")
+                .WhereIn("ItemID", brandIds)
+                .ToList();
+            return mapper.Map<IEnumerable<Brand>>(brands);
         }
     }
 }

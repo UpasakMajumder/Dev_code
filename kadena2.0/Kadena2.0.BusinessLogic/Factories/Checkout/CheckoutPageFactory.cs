@@ -139,6 +139,20 @@ namespace Kadena.BusinessLogic.Factories.Checkout
             };
         }
 
+        public DeliveryDate CreateDeliveryDateInput()
+        {
+            return resources.GetSiteSettingsKey<bool>(Settings.KDA_CartRequestDateEnabled) ?
+                new DeliveryDate
+                {
+                    Title = resources.GetResourceString("Kadena.Checkout.DeliveryDate.Title"),
+                    Messages = new DeliveryDateMessages
+                    {
+                        Invalid = resources.GetResourceString("Kadena.Checkout.DeliveryDate.Messages.Invalid"),
+                        Upcoming = resources.GetResourceString("Kadena.Checkout.DeliveryDate.Upcoming")
+                    }
+                } : null;
+        }
+
         public NotificationEmail CreateNotificationEmail(bool emailConfirmationEnabled)
         {
             int maxitems = 0;

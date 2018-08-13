@@ -137,7 +137,15 @@ namespace Kadena.BusinessLogic.Services
             if (existingAddresses.Length == 0)
             {
                 newAddress.CustomerId = customerId;
-                settingsService.SaveShippingAddress(newAddress);
+                try
+                {
+                    settingsService.SaveShippingAddress(newAddress);
+                }
+                catch (Exception exc)
+                {
+                    logger.LogException(this.GetType().Name, exc);
+                    return null;
+                }
             }
             return newAddress;
         }
