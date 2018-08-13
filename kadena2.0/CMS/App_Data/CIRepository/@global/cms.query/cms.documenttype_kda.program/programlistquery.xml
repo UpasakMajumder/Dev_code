@@ -13,7 +13,15 @@
   <QueryName>programListQuery</QueryName>
   <QueryRequiresTransaction>False</QueryRequiresTransaction>
   <QueryText>
-    <![CDATA[Select p.ProgramID,p.ProgramName,p.ProgramDescription,p.Status,p.DeliveryDateToDistributors,c.Name as CampaignName,b.BrandName as BrandName from KDA_Program p inner join KDA_Campaign c on p.CampaignID=c.CampaignID inner join KDA_Brand b on p.BrandID=b.ItemID where ##where##]]>
+<![CDATA[
+Select p.ProgramID,p.ProgramName,p.ProgramDescription,p.Status,p.DeliveryDateToDistributors
+,c.Name as CampaignName,b.BrandName as BrandName 
+from KDA_Program p 
+inner join KDA_Campaign c on p.CampaignID=c.CampaignID 
+inner join KDA_Brand b on p.BrandID=b.ItemID 
+where ##where##
+order by ##ORDERBY##
+]]>
   </QueryText>
   <QueryTypeID>0</QueryTypeID>
 </cms.query>

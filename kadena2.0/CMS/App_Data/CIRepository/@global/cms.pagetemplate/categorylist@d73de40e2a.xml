@@ -148,7 +148,9 @@
           <property name="instanceguid">2ccb2ecf-7ee3-4b4b-87b4-2770b0a74aae</property>
           <property name="loadpagesindividually">True</property>
           <property name="maxrelativelevel">-1</property>
-          <property name="orderby"></property>
+          <property name="orderby">
+            <![CDATA[{% KadenaNamespace.TableSortingOrderBy("ProductCategoryTitle,ProductCategoryDescription,Status") |(user)administrator|(hash)2d69116c9a7c45dec3805b2dcdf3ad61ec1c20f0a3aea0dafd73f7312fe50a11%}]]>
+          </property>
           <property name="path">/%</property>
           <property name="selectonlypublished">True</property>
           <property name="selecttopn"></property>

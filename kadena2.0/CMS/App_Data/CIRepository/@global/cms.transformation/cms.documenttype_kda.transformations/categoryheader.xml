@@ -11,9 +11,47 @@
 <table id="reptable" class="table show__table-buttom">
   <tbody>
     <tr>
-      <th>{$Kadena.CategoryList.CategoryTitle$}</th>
-      <th>{$Kadena.CategoryList.Description$}</th>
-      <th>{$Kadena.CategoryList.Status$}</th>
+<th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("ProductCategoryTitle") |(user)administrator|(hash)4ab9a66660d69898d53627bcee97686793ea10e5554f86bebab8ca073f71ef2a%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("ProductCategoryTitle") |(user)administrator|(hash)02a8dee7916a6216fe870292934ed85f5ff771b5425683f10bc0e13ad838e4ec%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$Kadena.CategoryList.CategoryTitle$}</span>
+          </a>        
+        </th>
+				
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("ProductCategoryDescription") |(user)administrator|(hash)2616bd919091af0b8cfe9302d06534a7b94f61f3656b6787d9838a28a510932b%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("ProductCategoryDescription") |(user)administrator|(hash)b5cfa3007523b6e5a74c32696e4fb365d7e9777a31c5f57be180d0399d409197%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$Kadena.CategoryList.Description$}</span>
+          </a>        
+        </th>
+
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("Status") |(user)administrator|(hash)d37e0a6dca32d003ebc14c50051dc79bf4d9af5281c7d4e13063a39cca5fdd4d%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("Status") |(user)administrator|(hash)f465b6ee8439887d7b1672a2807bbf95cb2e7983797f86f94b01c24c565b3e45%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$Kadena.CategoryList.Status$}</span>
+          </a>        
+        </th>
         {% if (MembershipContext.AuthenticatedUser.IsInRole("TWEGlobalAdmin",false)) { %}
       <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
       {%} |(user)administrator|(hash)363d79cd4a5847835dea5fe8b34897c159109318a8da0fefca5992c8811ce703%}
