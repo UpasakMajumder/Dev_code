@@ -309,7 +309,8 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.OrderNumber, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.OrderDate, opt => opt.MapFrom(src => src.CreateDate))
                 .ForMember(dest => dest.OrderStatus, opt => opt.MapFrom(src => src.Status))
-                .ForMember(dest => dest.DeliveryDate, opt => opt.MapFrom(src => src.ShippingDate.GetValueOrDefault()));
+                .ForMember(dest => dest.DeliveryDate, opt => opt.MapFrom(src => src.ShippingDate.GetValueOrDefault()))
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.ClientName));
             CreateMap<OrderBody, OrderBodyDto>();
 
             CreateMap<TableView, TableViewDto>();
