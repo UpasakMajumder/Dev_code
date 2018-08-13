@@ -371,12 +371,12 @@ namespace Kadena.BusinessLogic.Services
 
             item.SKUUnits = quantity;
 
-            var price = productsService.GetPriceByCustomModel(item.ProductPageID, item.SKUUnits);
+            //var price = productsService.GetPriceByCustomModel(item.ProductPageID, item.SKUUnits);
 
-            if (price > decimal.MinusOne)
-            {
-                item.CartItemPrice = price;
-            }
+            //if (price > decimal.MinusOne)
+            //{
+            //    item.CartItemPrice = price;
+            //}
 
             shoppingCartItems.SetCartItemQuantity(item, quantity);
 
@@ -497,11 +497,11 @@ namespace Kadena.BusinessLogic.Services
                 cartItem.SKUUnits = totalQuantity;
             }
 
-            var price = productsService.GetPriceByCustomModel(newItem.DocumentId, cartItem.SKUUnits);
-            if (price != decimal.MinusOne)
-            {
-                cartItem.CartItemPrice = price;
-            }
+            //var price = productsService.GetPriceByCustomModel(newItem.DocumentId, cartItem.SKUUnits);
+            //if (price != decimal.MinusOne)
+            //{
+            //    cartItem.CartItemPrice = price;
+            //}
 
             if (!string.IsNullOrEmpty(newItem.CustomProductName))
             {

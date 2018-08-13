@@ -74,8 +74,8 @@ namespace Kadena.WebAPI.KenticoProviders
                 Image = productProvider.GetProductImagePath(i.GetIntegerValue("ProductPageID", 0)),
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
-                TotalPrice = showPrices ? (decimal)i.UnitPrice * i.CartItemUnits : 0.0m,
-                PriceText = showPrices ? string.Format("{0:#,0.00}", i.UnitPrice * i.CartItemUnits) : string.Empty,
+                TotalPrice = showPrices ? (decimal)i.TotalPrice : 0.0m,
+                PriceText = showPrices ? string.Format("{0:#,0.00}", i.TotalPrice) : string.Empty,
                 PricePrefix = showPrices ? resources.GetResourceString("Kadena.Checkout.ItemPricePrefix") : string.Empty,
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 MailingListName = i.GetValue("MailingListName", string.Empty),
@@ -200,13 +200,14 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(option);
             }
+            ECommerceContext.CurrentShoppingCart.InvalidateCalculations();
         }
 
         private void UpdateCartItem(ShoppingCartItemInfo cartItemInfo, CartItemEntity item)
         {
             cartItemInfo.CartItemText = item.CartItemText;
             cartItemInfo.CartItemUnits = item.SKUUnits;
-            cartItemInfo.CartItemPrice = item.CartItemPrice.HasValue ? (double)item.CartItemPrice.Value : double.NaN;
+            //cartItemInfo.CartItemPrice = item.CartItemPrice.HasValue ? (double)item.CartItemPrice.Value : double.NaN;
             cartItemInfo.SetValue("ProductType", item.ProductType);
             cartItemInfo.SetValue("ProductPageID", item.ProductPageID);
             cartItemInfo.SetValue("ProductProductionTime", item.ProductProductionTime);
@@ -290,7 +291,7 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItemInfo.SetValue("SKUUnits", quantity - newItem.Quantity );
 
             cartItemInfo.CartItemText = cartItemInfo.SKU.SKUName;
-            cartItemInfo.CartItemPrice = cartItemInfo.SKU.SKUPrice;
+            //cartItemInfo.CartItemPrice = cartItemInfo.SKU.SKUPrice;
             cartItemInfo.SetValue("ProductType", productDocument.GetStringValue("ProductType", string.Empty));
             cartItemInfo.SetValue("ProductPageID", productDocument.DocumentID);
             cartItemInfo.SetValue("ProductProductionTime", productDocument.GetStringValue("ProductProductionTime", string.Empty));
