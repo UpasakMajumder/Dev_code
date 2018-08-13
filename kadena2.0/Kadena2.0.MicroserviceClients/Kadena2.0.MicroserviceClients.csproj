@@ -109,6 +109,7 @@
     <Compile Include="FileModule.cs" />
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Helpers\AwsSignerHelper.cs" />
+    <Compile Include="Infrastructure\Mapping\MicroserviceProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
