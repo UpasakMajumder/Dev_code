@@ -1,11 +1,16 @@
-﻿using CMS;
+﻿using AutoMapper;
+using CMS;
 using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
 using CMS.DataEngine;
 using CMS.Membership;
 using CMS.SiteProvider;
+using Kadena.Container.Default;
+using Kadena2.MicroserviceClients.Contracts;
 using System;
 using System.Linq;
+using Kadena.Models.Membership;
+using CMS.EventLog;
 
 [assembly: RegisterModule(typeof(Kadena.Old_App_Code.EventHandlers.UsersEventHandler))]
 
@@ -19,8 +24,36 @@ namespace Kadena.Old_App_Code.EventHandlers
         protected override void OnInit()
         {
             base.OnInit();
+            UserInfo.TYPEINFO.Events.Insert.After += Insert_After;
             UserInfo.TYPEINFO.Events.Delete.After += Delete_After;
             UserInfo.TYPEINFO.Events.Update.After += KDAUser_Update_After;
+        }
+
+        private void Insert_After(object sender, ObjectEventArgs e)
+        {
+            if (e.Object is UserInfo user)
+            {
+                var mapper = DIContainer.Resolve<IMapper>();
+                var managerClient = DIContainer.Resolve<IUserManagerClient>();
+                var createUser = mapper.Map<User>(user);
+                if (string.IsNullOrWhiteSpace(createUser.FullName))
+                {
+                    var names = user.FullName.Split(' ');
+                    if (names.Length > 0)
+                    {
+                        createUser.FirstName = names[0];
+                        if (names.Length > 1)
+                        {
+                            createUser.LastName = names[1];
+                        }
+                    }
+                }
+                var createResult = managerClient.Create(createUser).Result;
+                if (!createResult.Success)
+                {
+                    EventLogProvider.LogEvent(EventType.ERROR, this.GetType().Name, "CREATEOBJ", createResult.ErrorMessages);
+                }
+            }
         }
 
         private void Delete_After(object sender, ObjectEventArgs e)
