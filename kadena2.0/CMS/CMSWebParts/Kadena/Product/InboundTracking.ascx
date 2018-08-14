@@ -439,14 +439,15 @@
 </div>
 
 <script>
-    $cmsj(document).ready(function () {
-        $cmsj("#ddlCampaign").change(function (e) {
+
+    (function () {
+        document.getElementById('ddlCampaign').addEventListener('change', function (e) {
             var selectedCampaignId = e.target.value;
             if (selectedCampaignId) {
                 updateQueryStringParam('campaignId', selectedCampaignId);
             }
         });
-        $cmsj("#ddlProgram").change(function (e) {
+        document.getElementById('ddlProgram').addEventListener('change', function (e) {
             var selectedProgramId = e.target.value;
             if (selectedProgramId) {
                 updateQueryStringParam('programId', selectedProgramId);
@@ -454,5 +455,5 @@
                 updateQueryStringParam('programId', '');
             }
         });
-    });
+    })();
 </script>
