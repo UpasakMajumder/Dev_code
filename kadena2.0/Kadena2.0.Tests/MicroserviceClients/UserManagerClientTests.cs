@@ -12,9 +12,9 @@ namespace Kadena.Tests.MicroserviceClients
     {
         [Theory]
         [ClassData(typeof(UserManagerClientTests))]
-        public void UserManagerClient(IMicroProperties properties, IMapper mapper)
+        public void UserManagerClient(IMicroProperties properties)
         {
-            Assert.Throws<ArgumentNullException>(() => new UserManagerClient(properties, mapper));
+            Assert.Throws<ArgumentNullException>(() => new UserManagerClient(properties));
         }
 
         [Fact]

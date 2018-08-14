@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using Kadena.Models.Membership;
 using CMS.EventLog;
+using Kadena.Dto.Membership;
 
 [assembly: RegisterModule(typeof(Kadena.Old_App_Code.EventHandlers.UsersEventHandler))]
 
@@ -48,7 +49,8 @@ namespace Kadena.Old_App_Code.EventHandlers
                         }
                     }
                 }
-                var createResult = managerClient.Create(createUser).Result;
+                var createUserRequest = mapper.Map<CreateUserDto>(createUser);
+                var createResult = managerClient.Create(createUserRequest).Result;
                 if (!createResult.Success)
                 {
                     EventLogProvider.LogEvent(EventType.ERROR, this.GetType().Name, "CREATEOBJ", createResult.ErrorMessages);
