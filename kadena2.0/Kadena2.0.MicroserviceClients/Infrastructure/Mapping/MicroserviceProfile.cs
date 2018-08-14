@@ -9,7 +9,7 @@ namespace Kadena2.MicroserviceClients.Infrastructure.Mapping
         public MicroserviceProfile()
         {
             CreateMap<User, CreateUserDto>()
-                .ForMember(dest => dest.Password, opt => opt.Ignore());
+                .ForMember(dest => dest.Password, opt => opt.UseValue(string.Empty));
         }
     }
 }
