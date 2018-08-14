@@ -62,6 +62,7 @@ apiRouter.get('/order/recent/ui', Orders.recent.ui);
 apiRouter.get('/order/recent/requiring-approval', Orders.recent.requiringApproval);
 apiRouter.get('/order/recent/page/:page', Orders.recent.page);
 apiRouter.get('/order/reports/rows', Orders.reports.rows);
+apiRouter.post('/order/report/manage', Orders.reports.manage)
 apiRouter.get('/order/detail', Orders.detail.ui);
 apiRouter.get('/order/detail/submitted', Orders.detail.uiSubmitted);
 apiRouter.get('/order/detail/history', Orders.detail.history);

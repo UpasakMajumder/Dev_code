@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import uuid from 'uuid';
 /* helpers */
 import timeFormat from 'app.helpers/time';
 
@@ -12,31 +13,45 @@ const Order = ({
   items,
   headings
 }) => {
-  const orders = items.map((item, index) => {
-    let value = item;
-    if (headings[index].isDate) value = timeFormat(value);
-    if (typeof value === 'object') {
-      if (value.type === 'tracking') {
-        const content = value.items.map((item, i) => {
-          const prefix = i === 0 ? ' ' : ', ';
-          if (item.url) {
-            return <span key={i}>{prefix}<a target="_blank" href={item.url} className="link">{item.id}</a></span>;
-          }
+  const orders = [];
+  for (let index = 0; index < Object.keys(items).length; index += 1) {
+    const header = headings[index];
 
-          return <span key={i}>{prefix}{item.id}</span>;
-        });
+    if (header) {
+      const item = items[header.id];
 
-        return <td key={index}>{content}</td>;
+      if (item.type === 'tracking') {
+        let content = <span>{item.value}</span>;
+
+        if (Array.isArray(item.value)) {
+          content = item.value.map((value, index) => {
+            const prefix = index === item.value.length - 1 ? '' : ', ';
+            return <span key={uuid()}>{value}{prefix}</span>;
+          });
+        }
+
+        orders.push(<td key={uuid()}>{content}</td>);
+      } else if (item.type === 'date') {
+        orders.push(<td key={uuid()}>{timeFormat(item.value)}</td>);
+      } else if (Array.isArray(item.value)) {
+        let content = <span>{item.value}</span>;
+
+        if (Array.isArray(item.value)) {
+          content = item.value.map((value, index) => {
+            const prefix = index === item.value.length - 1 ? '' : ', ';
+            return <span key={uuid()}>{value}{prefix}</span>;
+          });
+        }
+
+        orders.push(<td key={uuid()}>{content}</td>);
+      } else {
+        orders.push(<td key={uuid()}>{item.value}</td>);
       }
     }
-
-    return <td key={index}>{value}</td>;
-  });
+  }
 
   return (
-    <tr
-      onClick={e => redirectUser(e, url)}
-    >
+    <tr onClick={e => redirectUser(e, url)}>
       {orders}
     </tr>
   );
@@ -44,10 +59,8 @@ const Order = ({
 
 Order.PropTypes = {
   url: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  headings: PropTypes.arrayOf(PropTypes.shape({
-    isDate: PropTypes.bool
-  }).isRequired).isRequired
+  items: PropTypes.object.isRequired,
+  headings: PropTypes.array.isRequired
 };
 
 export default Order;
