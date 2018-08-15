@@ -324,7 +324,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public async Task<OrderHeadBlock> GetCampaignHeaders(string orderType, int campaignID)
         {
-            var filter = CreateFilterForRecentOrders(1);
+            var filter = CreateFilterForRecentOrders(pageNumber: 1);
             filter.CampaignId = campaignID;
             filter.OrderType = orderType;
             return await GetCampaignHeaders(filter);
@@ -335,16 +335,22 @@ namespace Kadena.BusinessLogic.Services.Orders
             var orderList = await GetOrders(filter, afterFilter);
 
             var pages = CalculateNumberOfPages(orderList.TotalCount);
+            var headers = new List<string>
+            {
+                _kenticoResources.GetResourceString("Kadena.OrdersList.OrderNumber"),
+                _kenticoResources.GetResourceString("Kadena.OrdersList.OrderDate"),
+                _kenticoResources.GetResourceString("Kadena.OrdersList.Distributor"),
+                _kenticoResources.GetResourceString("Kadena.OrdersList.OrderStatus"),
+                _kenticoResources.GetResourceString("Kadena.OrdersList.ShippingDate"),
+                string.Empty
+            };
+            if (CanSeeAllOrders())
+            {
+                headers.Insert(headers.Count - 1, _kenticoResources.GetResourceString("Kadena.OrdersList.Customer"));
+            }
             return new OrderHeadBlock
             {
-                headers = new List<string> {
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderNumber"),
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderDate"),
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.Distributor"),
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderStatus"),
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.ShippingDate"),
-                    string.Empty
-                },
+                headers = headers,
                 PageInfo = new Pagination
                 {
                     RowsCount = orderList.TotalCount,
@@ -405,6 +411,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     new OrderTableCell() { value = GetDistributorName(o.campaign.DistributorID), type = "longtext" },
                     new OrderTableCell() { value = o.Status, type = "hover-hide" },
                     new OrderTableCell() { value = o.ShippingDate.ToString(), type = "hover-hide" },
+                    new OrderTableCell() { value = o.ClientName, type = "hover-hide" },
                     new OrderTableCell() { value = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), type = "link", url = $"{OrderDetailUrl}?orderID={o.Id}" }
                 };
         }
