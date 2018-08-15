@@ -53,11 +53,11 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public ProductLinkWithDescription GetProductLinkBySkuid(int skuid)
+        public ProductLink GetProductLinkBySkuid(int skuid)
         {
             var p = GetDocBySkuid(skuid);
 
-            return new ProductLinkWithDescription
+            return new ProductLink
             {
                 Id = p.DocumentID,
                 Title = p.DocumentName,
@@ -69,8 +69,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 {
                     Exists = !p.GetBooleanValue("ProductThumbnailBorderDisabled", false),
                 },
-                ParentPath = (p.Parent == null ? null : p.Parent.NodeAliasPath),
-                Description = p.DocumentPageDescription
+                ParentPath = p.Parent?.NodeAliasPath
             };
         }
 

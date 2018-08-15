@@ -13,6 +13,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         EmailTemplateInfo GetEmailTemplate(string templateName,int siteId);
 
         void SendRegistrationEmails(User user);
-        void SendNewProductNotification(IEnumerable<Customer> customers, Sku sku, ProductLinkWithDescription product, Price price);
+        void SendNewProductNotification(IEnumerable<Customer> customers, Sku sku, ProductLink product, Price price);
     }
 }

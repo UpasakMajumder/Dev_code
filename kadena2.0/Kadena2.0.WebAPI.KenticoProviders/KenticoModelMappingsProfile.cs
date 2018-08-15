@@ -272,16 +272,23 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.SkuId, opt => opt.MapFrom(src => src.SKUID))
                 .ForMember(dest => dest.NeedsShipping, opt => opt.MapFrom(src => src.SKUNeedsShipping))
                 .ForMember(dest => dest.SellOnlyIfAvailable, opt => opt.MapFrom(src => src.SKUSellOnlyAvailable))
-                .ForMember(dest => dest.AvailableItems, opt => opt.MapFrom(src => (int?)src.GetValue("SKUAvailableItems")))
+                .ForMember(dest => dest.AvailableItems,
+                    opt => opt.MapFrom(src => (int?) src.GetValue("SKUAvailableItems")))
                 .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.SKUWeight))
-                .ForMember(dest => dest.HiResPdfDownloadEnabled, opt => opt.MapFrom(src => src.GetBooleanValue("SKUHiResPdfDownloadEnabled", false)))
-                .ForMember(dest => dest.ApprovalRequired, opt => opt.MapFrom(src => src.GetBooleanValue("SKUApprovalRequired", false)))
+                .ForMember(dest => dest.HiResPdfDownloadEnabled,
+                    opt => opt.MapFrom(src => src.GetBooleanValue("SKUHiResPdfDownloadEnabled", false)))
+                .ForMember(dest => dest.ApprovalRequired,
+                    opt => opt.MapFrom(src => src.GetBooleanValue("SKUApprovalRequired", false)))
                 .ForMember(dest => dest.MinItemsInOrder, opt => opt.MapFrom(src => src.SKUMinItemsInOrder))
                 .ForMember(dest => dest.MaxItemsInOrder, opt => opt.MapFrom(src => src.SKUMaxItemsInOrder))
-                .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.GetStringValue("SKUUnitOfMeasure", UnitOfMeasure.DefaultUnit)))
+                .ForMember(dest => dest.UnitOfMeasure,
+                    opt => opt.MapFrom(src => src.GetStringValue("SKUUnitOfMeasure", UnitOfMeasure.DefaultUnit)))
                 .ForMember(dest => dest.SKUNumber, opt => opt.MapFrom(src => src.SKUNumber))
-                .ForMember(dest => dest.SendPriceToERP, opt => opt.MapFrom(src => !src.GetBooleanValue("SKUDontSendPriceToERP", false)))
-                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => (decimal)src.SKUPrice));
+                .ForMember(dest => dest.SendPriceToERP,
+                    opt => opt.MapFrom(src => !src.GetBooleanValue("SKUDontSendPriceToERP", false)))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => (decimal) src.SKUPrice))
+                .ForMember(dest => dest.ManufacturerID, opt => opt.MapFrom(src => src.SKUManufacturerID))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.SKUDescription));
 
             CreateMap<User, UserInfo>()
                 .ForMember(dest => dest.UserSecurityStamp, opt => opt.Ignore())

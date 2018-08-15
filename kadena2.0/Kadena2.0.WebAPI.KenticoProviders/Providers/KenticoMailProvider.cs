@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CMS.EmailEngine;
 using CMS.Helpers;
@@ -72,10 +73,13 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
             }
         }
 
-        public void SendNewProductNotification(IEnumerable<Customer> customers, Sku sku, ProductLinkWithDescription product, Price price)
+        public void SendNewProductNotification(IEnumerable<Customer> customers, Sku sku, ProductLink product, Price price)
         {
             try
             {
+                if (!customers.Any())
+                    return;
+
                 var currentSite = _siteProvider.GetKenticoSite();
 
                 var emailTemplateCodeName =
@@ -86,7 +90,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 var macroData = new Dictionary<string, object>
                 {
                     { "productName", product.Title },
-                    { "description", product.Description },
+                    { "description", sku.Description},
                     { "price", price.Value },
                     { "thumbnail", product.ImageUrl },
                 };
@@ -94,20 +98,30 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 var resolver = MacroResolver.GetInstance();
                 resolver.SetNamedSourceData(macroData);
 
+                var recipients = new StringBuilder();
+                var last = customers.LastOrDefault();
+                foreach (var customer in customers)
+                {
+                    recipients.Append(customer.Email);
+
+                    if (customer.Id != last.Id)
+                    {
+                        recipients.Append(";");
+                    }
+                }
+
                 var email = new EmailMessage
                 {
                     From = resolver.ResolveMacros(emailTemplate.TemplateFrom),
+                    Recipients = recipients.ToString(),
                     EmailFormat = EmailFormatEnum.Default,
                     ReplyTo = resolver.ResolveMacros(emailTemplate.TemplateReplyTo),
                     Subject = resolver.ResolveMacros(emailTemplate.TemplateSubject),
-                    Body = resolver.ResolveMacros(emailTemplate.TemplateText)
+                    Body = resolver.ResolveMacros(emailTemplate.TemplateText),
+                    PlainTextBody = resolver.ResolveMacros(emailTemplate.TemplatePlainText)
                 };
 
-                foreach (var customer in customers)
-                {
-                    email.Recipients = customer.Email;
-                    EmailSender.SendEmail(currentSite.Name, email, true);
-                }
+                EmailSender.SendEmail(currentSite.Name, email);
             }
             catch (Exception e)
             {
