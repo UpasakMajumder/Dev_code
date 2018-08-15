@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Kadena2.MicroserviceClients.Infrastructure.Mapping;
 using Kadena2.WebAPI.KenticoProviders;
 
 namespace Kadena.Container.Default
@@ -17,7 +18,8 @@ namespace Kadena.Container.Default
                 cfg.AddProfiles(
                     typeof(KenticoModelMappingsProfile),
                     typeof(MapperDefaultProfile),
-                    typeof(SystemDtoProfile)
+                    typeof(SystemDtoProfile),
+                    typeof(MicroserviceProfile)
                 );
                 cfg.AddProfiles("Kadena2.0.BusinessLogic");
 
