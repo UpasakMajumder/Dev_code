@@ -298,7 +298,8 @@ namespace Kadena.Container.Default
             CreateMap<Dto.Order.OrderItemDto, CheckoutCartItem>()
                 .ProjectUsing(s => new CheckoutCartItem { SKUName = s.Name, Quantity = s.Quantity });
             CreateMap<RecentOrderDto, Order>()
-                .ForMember(dest => dest.ViewBtn, opt => opt.Ignore());
+                .ForMember(dest => dest.ViewBtn, opt => opt.Ignore())
+                .ForMember(dest => dest.ClientName, opt => opt.Ignore());
             CreateMap<OrderListDto, OrderList>();
             CreateMap<CheckoutCartItem, Dto.RecentOrders.OrderItemDto>()
                 .ProjectUsing(s => new Dto.RecentOrders.OrderItemDto { Name = s.SKUName, Quantity = s.Quantity.ToString() });
@@ -309,7 +310,8 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.OrderNumber, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.OrderDate, opt => opt.MapFrom(src => src.CreateDate))
                 .ForMember(dest => dest.OrderStatus, opt => opt.MapFrom(src => src.Status))
-                .ForMember(dest => dest.DeliveryDate, opt => opt.MapFrom(src => src.ShippingDate.GetValueOrDefault()));
+                .ForMember(dest => dest.DeliveryDate, opt => opt.MapFrom(src => src.ShippingDate.GetValueOrDefault()))
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.ClientName));
             CreateMap<OrderBody, OrderBodyDto>();
 
             CreateMap<TableView, TableViewDto>();
