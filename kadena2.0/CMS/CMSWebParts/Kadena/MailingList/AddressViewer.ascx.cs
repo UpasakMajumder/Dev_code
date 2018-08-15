@@ -133,11 +133,13 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     City = a.City,
                     State = a.State,
                     PostalCode = a.Zip,
-                    ErrorMessage = a.ErrorMessage
+                    ErrorMessage = ConvertErrorCodeToMessage(a.ErrorMessage)
                 })
                 : null
             };
         }
+
+        private string ConvertErrorCodeToMessage(string errorCode) => ResHelper.GetString("Kadena.MailingList.Errors." + errorCode);
 
         private object CreateSuccessList(IEnumerable<MailingAddressDto> addresses)
         {
