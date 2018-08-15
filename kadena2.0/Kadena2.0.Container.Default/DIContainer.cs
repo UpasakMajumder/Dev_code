@@ -200,6 +200,7 @@ namespace Kadena.Container.Default
             container.Register<IRoutingServiceClient, RoutingServiceClient>();
             container.Register<IApprovalServiceClient, ApprovalServiceClient>();
             container.Register<IOrderManualUpdateClient, OrderManualUpdateClient>();
+            container.Register<IUserManagerClient, UserManagerClient>();
             return container;
         }
 
