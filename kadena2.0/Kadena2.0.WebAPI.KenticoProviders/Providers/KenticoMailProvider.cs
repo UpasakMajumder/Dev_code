@@ -1,26 +1,30 @@
-﻿using CMS.EmailEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using CMS.EmailEngine;
 using CMS.Helpers;
 using CMS.Localization;
+using CMS.MacroEngine;
 using CMS.Membership;
 using Kadena.Models;
 using Kadena.Models.Membership;
+using Kadena.Models.Product;
+using Kadena.Models.SiteSettings;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using System;
-using System.Text;
 
-namespace Kadena.WebAPI.KenticoProviders
+namespace Kadena.WebAPI.KenticoProviders.Providers
 {
     public class KenticoMailProvider : IKenticoMailProvider
     {
-        private readonly IKenticoResourceService resourceService;
-        private readonly IKenticoLogger logger;
-        private readonly IKenticoSiteProvider siteProvider;
+        private readonly IKenticoResourceService _resourceService;
+        private readonly IKenticoLogger _logger;
+        private readonly IKenticoSiteProvider _siteProvider;
 
         public KenticoMailProvider(IKenticoResourceService resourceService, IKenticoLogger logger, IKenticoSiteProvider siteProvider)
         {
-            this.resourceService = resourceService ?? throw new ArgumentNullException(nameof(resourceService));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.siteProvider = siteProvider ?? throw new ArgumentNullException(nameof(siteProvider));
+            _resourceService = resourceService ?? throw new ArgumentNullException(nameof(resourceService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _siteProvider = siteProvider ?? throw new ArgumentNullException(nameof(siteProvider));
         }
 
         public MailTemplate GetMailTemplate(int siteId, string templateName, string cultureCode = null)
@@ -54,17 +58,60 @@ namespace Kadena.WebAPI.KenticoProviders
             if (ui != null)
             {
                 var resolver = MembershipResolvers.GetRegistrationResolver(ui);
-                var siteName = siteProvider.GetKenticoSite()?.Name;
+                var siteName = _siteProvider.GetKenticoSite()?.Name;
 
                 var template = EmailTemplateProvider.GetEmailTemplate("Membership.Registration", siteName);
-                var subject = EmailHelper.GetSubject(template, resourceService.GetResourceString("RegistrationForm.RegistrationSubject"));
+                var subject = EmailHelper.GetSubject(template, _resourceService.GetResourceString("RegistrationForm.RegistrationSubject"));
                 var recipients = ui.Email;
                 SendMessage(resolver, siteName, template, subject, recipients);
 
                 template = EmailTemplateProvider.GetEmailTemplate("Registration.New", siteName);
-                subject = resourceService.GetResourceString("RegistrationForm.EmailSubject");
-                recipients = resourceService.GetSiteSettingsKey("CMSAdminEmailAddress");
+                subject = _resourceService.GetResourceString("RegistrationForm.EmailSubject");
+                recipients = _resourceService.GetSiteSettingsKey("CMSAdminEmailAddress");
                 SendMessage(resolver, siteName, template, subject, recipients);
+            }
+        }
+
+        public void SendNewProductNotification(IEnumerable<Customer> customers, Sku sku, ProductLinkWithDescription product, Price price)
+        {
+            try
+            {
+                var currentSite = _siteProvider.GetKenticoSite();
+
+                var emailTemplateCodeName =
+                    _resourceService.GetSiteSettingsKey(Settings.KDA_NewProductEmailNotificationTemplate);
+
+                var emailTemplate = EmailTemplateProvider.GetEmailTemplate(emailTemplateCodeName, currentSite.Id);
+
+                var macroData = new Dictionary<string, object>
+                {
+                    { "productName", product.Title },
+                    { "description", product.Description },
+                    { "price", price.Value },
+                    { "thumbnail", product.ImageUrl },
+                };
+
+                var resolver = MacroResolver.GetInstance();
+                resolver.SetNamedSourceData(macroData);
+
+                var email = new EmailMessage
+                {
+                    From = resolver.ResolveMacros(emailTemplate.TemplateFrom),
+                    EmailFormat = EmailFormatEnum.Default,
+                    ReplyTo = resolver.ResolveMacros(emailTemplate.TemplateReplyTo),
+                    Subject = resolver.ResolveMacros(emailTemplate.TemplateSubject),
+                    Body = resolver.ResolveMacros(emailTemplate.TemplateText)
+                };
+
+                foreach (var customer in customers)
+                {
+                    email.Recipients = customer.Email;
+                    EmailSender.SendEmail(currentSite.Name, email, true);
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogException(GetType().Name, e);
             }
         }
 
@@ -72,7 +119,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             if (template != null)
             {
-                var fromAddress = resourceService.GetSiteSettingsKey("CMSNoreplyEmailAddress");
+                var fromAddress = _resourceService.GetSiteSettingsKey("CMSNoreplyEmailAddress");
                 var message = new EmailMessage
                 {
                     EmailFormat = EmailFormatEnum.Default,
@@ -87,7 +134,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 }
                 catch (Exception ex)
                 {
-                    logger.LogException(this.GetType().Name, ex);
+                    _logger.LogException(GetType().Name, ex);
                 }
             }
         }

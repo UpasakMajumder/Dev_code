@@ -1,6 +1,8 @@
-﻿using CMS.EmailEngine;
+﻿using System.Collections.Generic;
+using CMS.EmailEngine;
 using Kadena.Models;
 using Kadena.Models.Membership;
+using Kadena.Models.Product;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -11,5 +13,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         EmailTemplateInfo GetEmailTemplate(string templateName,int siteId);
 
         void SendRegistrationEmails(User user);
+        void SendNewProductNotification(IEnumerable<Customer> customers, Sku sku, ProductLinkWithDescription product, Price price);
     }
 }

@@ -122,6 +122,7 @@ namespace Kadena.Container.Default
             container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
             container.Register<IByteConverter, PdfByteConverter>();
             container.Register<IPreBuyCatalogService, PdfPreBuyCatalogService>();
+            container.Register<INewProductNotificationService, NewProductNotificationService>();
             return container;
         }
 
