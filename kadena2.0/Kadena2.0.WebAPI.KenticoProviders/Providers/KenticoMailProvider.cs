@@ -98,22 +98,9 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 var resolver = MacroResolver.GetInstance();
                 resolver.SetNamedSourceData(macroData);
 
-                var recipients = new StringBuilder();
-                var last = customers.LastOrDefault();
-                foreach (var customer in customers)
-                {
-                    recipients.Append(customer.Email);
-
-                    if (customer.Id != last.Id)
-                    {
-                        recipients.Append(";");
-                    }
-                }
-
                 var email = new EmailMessage
                 {
                     From = resolver.ResolveMacros(emailTemplate.TemplateFrom),
-                    Recipients = recipients.ToString(),
                     EmailFormat = EmailFormatEnum.Default,
                     ReplyTo = resolver.ResolveMacros(emailTemplate.TemplateReplyTo),
                     Subject = resolver.ResolveMacros(emailTemplate.TemplateSubject),
@@ -121,7 +108,12 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                     PlainTextBody = resolver.ResolveMacros(emailTemplate.TemplatePlainText)
                 };
 
-                EmailSender.SendEmail(currentSite.Name, email);
+
+                foreach (var customer in customers)
+                {
+                    email.Recipients = customer.Email;
+                    EmailSender.SendEmail(currentSite.Name, email);
+                }
             }
             catch (Exception e)
             {

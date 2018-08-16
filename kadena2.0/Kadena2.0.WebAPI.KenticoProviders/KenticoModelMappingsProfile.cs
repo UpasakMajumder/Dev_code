@@ -22,6 +22,7 @@ using Kadena.Models.Site;
 using Kadena.WebAPI.KenticoProviders;
 using System;
 using System.Data;
+using Kadena.WebAPI.KenticoProviders.AutoMapperResolvers;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -290,6 +291,20 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.ManufacturerID, opt => opt.MapFrom(src => src.SKUManufacturerID))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.SKUDescription));
 
+
+            CreateMap<TreeNode, ProductLink>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.DocumentID))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(source => source.DocumentName))
+                .ForMember(dest => dest.Url, opt => opt.MapFrom(source => source.DocumentUrlPath))
+                .ForMember(dest => dest.Order, opt => opt.MapFrom(source => source.NodeOrder))
+                .ForMember(dest => dest.ImageUrl,
+                    opt => opt.MapFrom(source =>
+                        URLHelper.ResolveUrl(source.GetValue("ProductImage", string.Empty), false)))
+                .ForMember(dest => dest.IsFavourite, opt => opt.UseValue(false))
+                .ForMember(dest => dest.Border,
+                    opt => opt.MapFrom(source =>
+                        new Border {Exists = !source.GetBooleanValue("ProductThumbnailBorderDisabled", false),}))
+                .ForMember(dest => dest.ParentPath, opt => opt.ResolveUsing(new ParentAliasPathResolver()));
             CreateMap<User, UserInfo>()
                 .ForMember(dest => dest.UserSecurityStamp, opt => opt.Ignore())
                 .ForMember(dest => dest.UserTokenID, opt => opt.Ignore())
