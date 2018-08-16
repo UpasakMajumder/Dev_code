@@ -32,16 +32,24 @@ const Order = ({
 
         orders.push(<td key={uuid()}>{content}</td>);
       } else if (item.type === 'date') {
-        orders.push(<td key={uuid()}>{timeFormat(item.value)}</td>);
-      } else if (Array.isArray(item.value)) {
-        let content = <span>{item.value}</span>;
-
         if (Array.isArray(item.value)) {
-          content = item.value.map((value, index) => {
-            const prefix = index === item.value.length - 1 ? '' : ', ';
-            return <span key={uuid()}>{value}{prefix}</span>;
+          const content = item.value.map((value, index) => {
+            if (index === item.value.length - 1) {
+              return <span key={uuid()}>{timeFormat(value)}</span>;
+            }
+
+            return <p key={uuid()}>{timeFormat(value)}</p>;
           });
+
+          orders.push(<td key={uuid()}>{content}</td>);
+        } else {
+          orders.push(<td key={uuid()}>{timeFormat(item.value)}</td>);
         }
+      } else if (Array.isArray(item.value)) {
+        const content = item.value.map((value, index) => {
+          const prefix = index === item.value.length - 1 ? '' : ', ';
+          return <span key={uuid()}>{value}{prefix}</span>;
+        });
 
         orders.push(<td key={uuid()}>{content}</td>);
       } else {

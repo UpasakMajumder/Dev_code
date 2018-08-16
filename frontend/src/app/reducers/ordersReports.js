@@ -30,13 +30,38 @@ const getNewRows = (stateRows, payloadRows) => {
 
   payloadRows.forEach((row, index) => {
     const keys = Object.keys(row);
-    keys.forEach((key) => {
-      if (newRows[index].items[key]) {
-        newRows[index].items[key].value = row[key];
-      } else {
-        newRows[index].items[key] = { value: row[key] };
-      }
-    });
+    // if isNew
+
+    if (row.new) {
+      // take previous index
+      const previousIndex = index - 1;
+      // copy url
+      const { url } = newRows[previousIndex];
+      const newRow = {
+        url,
+        items: JSON.parse(JSON.stringify(newRows[previousIndex].items))
+      };
+
+      keys.forEach((key) => {
+        if (key !== 'new') {
+          if (newRow.items[key]) {
+            newRow.items[key].value = row[key];
+          } else {
+            newRow.items[key] = { value: row[key] };
+          }
+        }
+      });
+
+      newRows.splice(index, 0, newRow);
+    } else {
+      keys.forEach((key) => {
+        if (newRows[index].items[key]) {
+          newRows[index].items[key].value = row[key];
+        } else {
+          newRows[index].items[key] = { value: row[key] };
+        }
+      });
+    }
   });
 
   return newRows;

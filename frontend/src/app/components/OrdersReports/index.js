@@ -161,7 +161,7 @@ class OrdersReports extends Component {
         for (let i = rowIndex + 1; i < rows.length; i += 1) {
           if (rows[i].items.orderNumber.value === orderNumber.value) {
             Object.keys(rows[i].items).forEach((key) => {
-              if (grouppedRow.items[key].value !== rows[i].items[key].value) {
+              if (grouppedRow.items[key].value.toString() !== rows[i].items[key].value.toString()) {
                 if (Array.isArray(grouppedRow.items[key].value)) {
                   grouppedRow.items[key].value.push(rows[i].items[key].value);
                 } else {

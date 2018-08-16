@@ -74,16 +74,38 @@ class ManageOrdersModal extends Component {
 
     newFields[rowNumber] = {
       ...this.state.fields[rowNumber],
-      [headerId]: value
+      [headerId]: typeof value === 'string' ? value : value.format()
     };
 
     this.setState({ fields: newFields });
   };
 
+  addRow = (currentRowIndex) => {
+    const newRowIndex = currentRowIndex + 1;
+    const fields = JSON.parse(JSON.stringify(this.state.fields));
+    const row = JSON.parse(JSON.stringify(fields[currentRowIndex]));
+    window.stateField = this.state.fields[currentRowIndex];
+    window.field = fields[currentRowIndex];
+    // remove editable properties
+    this.props.ui.headers.forEach((header) => {
+      if (
+        header.edit ||
+        header.type === 'select' ||
+        header.type === 'number' ||
+        header.type === 'date'
+      ) {
+        row[header.id] = '';
+      }
+    });
+    row.new = true;
+    fields.splice(newRowIndex, 0, row);
+    this.setState({ fields });
+  }
+
   getRows = () => {
     if (!this.props.rows.length) return null;
 
-    return Object.keys(this.state.fields).map((rowNumber) => {
+    return Object.keys(this.state.fields).map((rowNumber, rowIndex) => {
       const items = this.props.ui.headers.map((header, headerIndex) => {
         const item = this.state.fields[rowNumber][header.id];
         if (Array.isArray(item)) {
@@ -92,7 +114,7 @@ class ManageOrdersModal extends Component {
           return (
             <td key={`${rowNumber}-${header.id}`}>
               <Datepicker
-                selected={moment(item)}
+                selected={item ? moment(item) : null} // when creating new row, the date is null, mament warns it. null bcz of item could be empty string
                 dateFormat={dateFormat}
                 onChange={date => this.changeField(rowNumber, header.id, date)}
                 readOnly
@@ -136,7 +158,7 @@ class ManageOrdersModal extends Component {
               <Button
                 text="Add"
                 type="action"
-                onClick={() => console.log('add')}
+                onClick={() => this.addRow(rowIndex)}
               />
             </td>
           );
