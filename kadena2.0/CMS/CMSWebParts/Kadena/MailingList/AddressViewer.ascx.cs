@@ -61,8 +61,6 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                 var badAddresses = addresses.Where(a => a.ErrorMessage != null);
                 var goodAddresses = addresses.Where(a => a.ErrorMessage == null);
 
-                PopulateErrors(badAddresses);
-
                 var config = new
                 {
                     ErrorList = CreateErrorList(badAddresses),
@@ -72,34 +70,6 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
                 Page.ClientScript.RegisterClientScriptBlock(this.GetType(),
                     "ui", $"<script>config.localization.modifyMailingList = {JsonConvert.SerializeObject(config, CamelCaseSerializer)}</script>");
-            }
-        }
-
-        private void PopulateErrors(IEnumerable<MailingAddressDto> badAddresses)
-        {
-            var errorsDictionary = CustomTableItemProvider
-                .GetItems("KDA.AddressErrors")
-                .ToDictionary(i => i["ErrorCode"].ToString(), i => i["ErrorDescription"].ToString());
-            var missingCodes = new HashSet<string>();
-            foreach (var address in badAddresses)
-            {
-                string errorDescription;
-                if (errorsDictionary.TryGetValue(address.ErrorMessage, out errorDescription))
-                {
-                    address.ErrorMessage = errorDescription;
-                }
-                else
-                {
-                    if (!missingCodes.Contains(address.ErrorMessage))
-                    {
-                        missingCodes.Add(address.ErrorMessage);
-                    }
-                }
-            }
-            if (missingCodes.Any())
-            {
-                var exc = new KeyNotFoundException($"The error description is not found for following key(s): {string.Join(", ", missingCodes)}");
-                EventLogProvider.LogWarning("Mailing Addresses Load", "WARNING", exc, CurrentSite.SiteID, string.Empty);
             }
         }
 
@@ -133,11 +103,13 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                     City = a.City,
                     State = a.State,
                     PostalCode = a.Zip,
-                    ErrorMessage = a.ErrorMessage
+                    ErrorMessage = ConvertErrorCodeToMessage(a.ErrorMessage)
                 })
                 : null
             };
         }
+
+        private string ConvertErrorCodeToMessage(string errorCode) => ResHelper.GetString("Kadena.MailingList.Errors." + errorCode);
 
         private object CreateSuccessList(IEnumerable<MailingAddressDto> addresses)
         {
