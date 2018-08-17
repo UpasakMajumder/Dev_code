@@ -30,6 +30,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IKenticoLogger _logger;
         private readonly IKenticoAddressBookProvider _kenticoAddressBook;
         private readonly IKenticoDocumentProvider _documents;
+        private readonly IKenticoCustomerProvider _customers;
 
         private string _orderDetailUrl = string.Empty;
         public string OrderDetailUrl
@@ -49,6 +50,8 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public bool EnablePaging { get; set; }
 
+        private Dictionary<int, string> _customerDictionary = new Dictionary<int, string>();
+
         public OrderListService(IMapper mapper,
                                 IOrderViewClient orderClient,
                                 IKenticoCustomerProvider kenticoCustomers,
@@ -58,6 +61,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                                 IKenticoDocumentProvider documents,
                                 IKenticoPermissionsProvider permissions,
                                 IKenticoLogger logger,
+                                IKenticoCustomerProvider customers,
                                 IKenticoAddressBookProvider kenticoAddressBook)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -70,6 +74,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _kenticoAddressBook = kenticoAddressBook ?? throw new ArgumentNullException(nameof(kenticoAddressBook));
             _documents = documents ?? throw new ArgumentNullException(nameof(documents));
+            _customers = customers ?? throw new ArgumentNullException(nameof(customers));
         }
 
         public async Task<OrderHead> GetOrdersToApprove()
@@ -155,16 +160,22 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             var orderList = await GetOrders(filter, afterFilter);
             var pages = CalculateNumberOfPages(orderList.TotalCount);
+            var headings = new List<string>
+            {
+                _kenticoResources.GetResourceString("Kadena.OrdersList.OrderNumber"),
+                _kenticoResources.GetResourceString("Kadena.OrdersList.OrderDate"),
+                _kenticoResources.GetResourceString("Kadena.OrdersList.OrderedItems"),
+                _kenticoResources.GetResourceString("Kadena.OrdersList.OrderStatus"),
+                _kenticoResources.GetResourceString("Kadena.OrdersList.ShippingDate"),
+                string.Empty
+            };
+            if (CanSeeAllOrders())
+            {
+                headings.Insert(headings.Count - 1, _kenticoResources.GetResourceString("Kadena.OrdersList.Customer"));
+            }
             return new OrderHead
             {
-                Headings = new List<string> {
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderNumber"),
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderDate"),
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderedItems"),
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderStatus"),
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.ShippingDate"),
-                    string.Empty
-                },
+                Headings = headings,
                 PageInfo = new Pagination
                 {
                     RowsCount = orderList.TotalCount,
@@ -206,6 +217,9 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
         }
 
+        private bool CanSeeAllOrders() 
+            => _permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.SeeAllOrders);
+
         private OrderListFilter CreateFilterForRecentOrders(int pageNumber)
         {
             var filter = new OrderListFilter
@@ -214,10 +228,9 @@ namespace Kadena.BusinessLogic.Services.Orders
                 ItemsPerPage = _kenticoResources.GetSiteSettingsKey<int>(PageCapacityKey)
             };
 
-            var siteName = _site.GetKenticoSite().Name;
-            if (_permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.SeeAllOrders, siteName))
+            if (CanSeeAllOrders())
             {
-                filter.SiteName = siteName;
+                filter.SiteName = _site.GetKenticoSite().Name;
             }
             else
             {
@@ -251,7 +264,41 @@ namespace Kadena.BusinessLogic.Services.Orders
             var orderList = _mapper.Map<OrderList>(orders);
             RemoveRemovedLineItems(orderList);
             MapOrdersStatusToGeneric(orderList?.Orders);
+            AddCustomerData(orderList?.Orders);
             return orderList;
+        }
+
+        private void AddCustomerData(IEnumerable<Order> orders)
+        {
+            if (!CanSeeAllOrders())
+            {
+                return;
+            }
+
+            foreach (var item in orders)
+            {
+                item.ClientName = GetCustomerName(item.ClientId);
+            }
+        }
+
+        private string GetCustomerName(int customerId)
+        {
+            if (!_customerDictionary.TryGetValue(customerId, out var customerName))
+            {
+                var customer = _customers.GetCustomer(customerId);
+                if (customer != null)
+                {
+                    customerName = $"{customer.FirstName} {customer.LastName}".Trim();
+                }
+                else
+                {
+                    customerName = "";
+                }
+
+                _customerDictionary[customerId] = customerName;
+            }
+
+            return customerName;
         }
 
         private void RemoveRemovedLineItems(OrderList orderList)
@@ -264,7 +311,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public async Task<OrderHeadBlock> GetCampaignHeaders(string orderType, int campaignID)
         {
-            var filter = CreateFilterForRecentOrders(1);
+            var filter = CreateFilterForRecentOrders(pageNumber: 1);
             filter.CampaignId = campaignID;
             filter.OrderType = orderType;
             return await GetCampaignHeaders(filter);
@@ -275,16 +322,22 @@ namespace Kadena.BusinessLogic.Services.Orders
             var orderList = await GetOrders(filter, afterFilter);
 
             var pages = CalculateNumberOfPages(orderList.TotalCount);
+            var headers = new List<string>
+            {
+                _kenticoResources.GetResourceString("Kadena.OrdersList.OrderNumber"),
+                _kenticoResources.GetResourceString("Kadena.OrdersList.OrderDate"),
+                _kenticoResources.GetResourceString("Kadena.OrdersList.Distributor"),
+                _kenticoResources.GetResourceString("Kadena.OrdersList.OrderStatus"),
+                _kenticoResources.GetResourceString("Kadena.OrdersList.ShippingDate"),
+                string.Empty
+            };
+            if (CanSeeAllOrders())
+            {
+                headers.Insert(headers.Count - 1, _kenticoResources.GetResourceString("Kadena.OrdersList.Customer"));
+            }
             return new OrderHeadBlock
             {
-                headers = new List<string> {
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderNumber"),
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderDate"),
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.Distributor"),
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.OrderStatus"),
-                    _kenticoResources.GetResourceString("Kadena.OrdersList.ShippingDate"),
-                    string.Empty
-                },
+                headers = headers,
                 PageInfo = new Pagination
                 {
                     RowsCount = orderList.TotalCount,
@@ -345,6 +398,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     new OrderTableCell() { value = GetDistributorName(o.campaign.DistributorID), type = "longtext" },
                     new OrderTableCell() { value = o.Status, type = "hover-hide" },
                     new OrderTableCell() { value = o.ShippingDate.ToString(), type = "hover-hide" },
+                    new OrderTableCell() { value = o.ClientName, type = "hover-hide" },
                     new OrderTableCell() { value = _kenticoResources.GetResourceString("Kadena.OrdersList.View"), type = "link", url = $"{OrderDetailUrl}?orderID={o.Id}" }
                 };
         }

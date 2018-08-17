@@ -1,4 +1,6 @@
-﻿namespace Kadena.Dto.Site.Responses
+﻿using System.Collections.Generic;
+
+namespace Kadena.Dto.Site.Responses
 {
     public class SiteDataResponseDto
     {
@@ -8,5 +10,6 @@
         public string ErpCustomerId { get; set; }
         public string OrderManagerEmail { get; set; }
         public string SiteDomain { get; set; }
+        public DeliveryOptionDto[] DeliveryOptions { get; set; }
     }
 }

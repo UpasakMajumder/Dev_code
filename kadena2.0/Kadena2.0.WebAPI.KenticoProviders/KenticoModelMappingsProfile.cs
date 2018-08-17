@@ -284,7 +284,6 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => (decimal)src.SKUPrice));
 
             CreateMap<User, UserInfo>()
-                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
                 .ForMember(dest => dest.UserSecurityStamp, opt => opt.Ignore())
                 .ForMember(dest => dest.UserTokenID, opt => opt.Ignore())
                 .ForMember(dest => dest.UserTokenIteration, opt => opt.Ignore())

@@ -3,6 +3,7 @@ using Kadena.BusinessLogic.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using Kadena2.WebAPI.KenticoProviders.Contracts.KadenaSettings;
+using AutoMapper;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -10,20 +11,15 @@ namespace Kadena.BusinessLogic.Services
     {
         private readonly IKenticoSiteProvider _site;
         private readonly IKadenaSettings _settings;
+        private readonly IShoppingCartProvider _shoppingCartProvider;
+        private readonly IMapper _mapper;
 
-        public SiteDataService(IKenticoSiteProvider site, IKadenaSettings settings)
+        public SiteDataService(IKenticoSiteProvider site, IKadenaSettings settings, IShoppingCartProvider shoppingCartProvider, IMapper mapper)
         {
-            if (site == null)
-            {
-                throw new ArgumentNullException(nameof(site));
-            }
-            if (settings == null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            _site = site;
-            _settings = settings;
+            _site = site ?? throw new ArgumentNullException(nameof(site));
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            _shoppingCartProvider = shoppingCartProvider ?? throw new ArgumentNullException(nameof(shoppingCartProvider));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }  
 
         public ArtworkFtpSettings GetArtworkFtpSettings(int siteId)
@@ -53,7 +49,7 @@ namespace Kadena.BusinessLogic.Services
             return result;
         }
 
-        public KenticoSite GetKenticoSite(int? siteId, string siteName)
+        public KenticoSiteWithDeliveryOptions GetKenticoSite(int? siteId, string siteName)
         {
             KenticoSite site = null;
 
@@ -67,7 +63,14 @@ namespace Kadena.BusinessLogic.Services
                 site = _site.GetKenticoSite(siteName);
             }
 
-            return site;
+            var result = _mapper.Map<KenticoSiteWithDeliveryOptions>(site);
+
+            if(site != null)
+            {
+                result.DeliveryOptions = _shoppingCartProvider.GetShippingOptions();
+            }
+
+            return result;
         }
     }
 }

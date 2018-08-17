@@ -75,6 +75,7 @@
     <Compile Include="Clients\StatisticsClient.cs" />
     <Compile Include="Clients\TemplatedClient.cs" />
     <Compile Include="Clients\TaxEstimationServiceClient.cs" />
+    <Compile Include="Clients\UserManagerClient.cs" />
     <Compile Include="Contracts\Base\IMicroProperties.cs" />
     <Compile Include="Contracts\Base\ISuppliantDomainClient.cs" />
     <Compile Include="Contracts\IApprovalServiceClient.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Contracts\IStatisticsClient.cs" />
     <Compile Include="Contracts\ITemplatedClient.cs" />
     <Compile Include="Contracts\ITaxEstimationService.cs" />
+    <Compile Include="Contracts\IUserManagerClient.cs" />
     <Compile Include="FileSystem.cs" />
     <Compile Include="FileType.cs" />
     <Compile Include="Helpers\Utils.cs" />

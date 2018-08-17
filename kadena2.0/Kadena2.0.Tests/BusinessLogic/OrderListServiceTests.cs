@@ -47,6 +47,36 @@ namespace Kadena.Tests.BusinessLogic
         }
 
         [Fact]
+        public async Task GetHeaders_ShouldAddClientHeader_WhenUserCanSeeAllOrders()
+        {
+            Setup<IOrderViewClient, Task<BaseResponseDto<OrderListDto>>>(
+                ovc => ovc.GetOrders(It.IsAny<OrderListFilter>()),
+                Task.FromResult(new BaseResponseDto<OrderListDto>
+                {
+                    Success = true,
+                    Payload = new OrderListDto { Orders = new RecentOrderDto[0] }
+                }));
+
+            Setup<IKenticoPermissionsProvider, bool>(
+                perm => perm.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.SeeAllOrders),
+                true);
+
+            Setup<IMapper, OrderList>(
+                s => s.Map<OrderList>(It.IsNotNull<OrderListDto>()),
+                new OrderList
+                {
+                    Orders = new Order[0]
+                });
+            
+            Setup<IKenticoSiteProvider, KenticoSite>(ksp => ksp.GetKenticoSite(), new KenticoSite());
+
+            var result = await Sut.GetHeaders();
+            const int headingCountWithoutUser = 6;
+
+            Assert.Equal(headingCountWithoutUser + 1, result.Headings.Count);
+        }
+
+        [Fact]
         public async Task GetHeaders_ShouldExcludeRemovedLineItems()
         {
             Setup<IOrderViewClient, Task<BaseResponseDto<OrderListDto>>>(

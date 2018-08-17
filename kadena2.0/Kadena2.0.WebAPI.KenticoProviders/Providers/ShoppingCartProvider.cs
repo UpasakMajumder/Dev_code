@@ -133,6 +133,8 @@ namespace Kadena.WebAPI.KenticoProviders
             var result = mapper.Map<DeliveryOption[]>(services);
             foreach (var item in result)
             {
+                var carrier = CarrierInfoProvider.GetCarrierInfo(item.CarrierId);
+                item.CarrierCode = carrier.CarrierName;
                 item.Title = resources.ResolveMacroString(item.Title);
             }
 

@@ -71,8 +71,10 @@
     <Compile Include="CreditCard\Responses\CreditCardPaymentDoneDto.cs" />
     <Compile Include="CustomerData\ApproverDto.cs" />
     <Compile Include="CustomerData\UserBudgetDto.cs" />
+    <Compile Include="ErpSystem\ErpSystemDto.cs" />
     <Compile Include="Logon\Requests\RegistrationDto.cs" />
     <Compile Include="Logon\Requests\SamlAuthenticationDto.cs" />
+    <Compile Include="Membership\CreateUserDto.cs" />
     <Compile Include="MailingList\MicroserviceResponses\ContainerState.cs" />
     <Compile Include="Notification\MicroserviceRequests\SendCustomNotificationRequestDto.cs" />
     <Compile Include="OrderManualUpdate\MicroserviceRequests\ItemUpdateDto.cs" />
@@ -194,6 +196,7 @@
     <Compile Include="Shipping\TrackingInfoDto.cs" />
     <Compile Include="Site\Responses\ArtworkFtpResponseDto.cs" />
     <Compile Include="Site\Requests\SiteDataRequestDto.cs" />
+    <Compile Include="Site\Responses\DeliveryOptionDto.cs" />
     <Compile Include="Site\Responses\FtpCredentialsDto.cs" />
     <Compile Include="Site\Responses\SiteDataResponseDto.cs" />
     <Compile Include="SSO\AddressDto.cs" />

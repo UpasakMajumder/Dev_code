@@ -29,7 +29,7 @@ namespace Kadena.Models.TableSorting
         {
             var parameters = UrlHelper.ParseQueryStringFromUrl(url.ToLower());
 
-            var orderByColumn = parameters.Get(OrderByParameterName);
+            var orderByColumn = parameters.Get(OrderByParameterName) ?? string.Empty;
             var orderByDirection = parameters.Get(OrderByDirectionParameterName);
 
             if (orderByDirection != DirectionAscending && orderByDirection != DirectionDescending)
