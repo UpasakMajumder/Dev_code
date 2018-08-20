@@ -63,7 +63,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var pages = GetDocuments(path, "KDA.Product", PathTypeEnum.Children);
 
-            return pages.Select(p => mapper.Map<ProductLink>(p)).ToList();
+            return mapper.Map<List<ProductLink>>(pages.ToList());
         }
 
         private DocumentQuery GetDocuments(string path, string className, PathTypeEnum pathType)
