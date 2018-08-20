@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import timeFormat from 'app.helpers/time';
 
 function Order(props) {
-  const { orderNumber, orderDate, items, orderStatus, shippingDate, viewBtn } = props;
+  const { orderNumber, orderDate, items, orderStatus, shippingDate, viewBtn, user } = props;
   const { url, text } = viewBtn;
 
   const getItemsTd = () => {
@@ -35,6 +35,7 @@ function Order(props) {
       {getItemsTd()}
       <td className="show-table__will-hide">{orderStatus}</td>
       <td className="show-table__will-hide">{timeFormat(shippingDate)}</td>
+      <td className="show-table__will-hide">{user}</td>
       <td className="show-table__will-appear">
         <a href={url} className="btn-action">{text}</a>
       </td>
@@ -48,7 +49,8 @@ Order.PropTypes = {
   items: PropTypes.arrayOf(PropTypes.string),
   orderStatus: PropTypes.string.isRequired,
   shippingDate: PropTypes.string.isRequired,
-  viewBtn: PropTypes.objectOf(PropTypes.string)
+  viewBtn: PropTypes.objectOf(PropTypes.string),
+  user: PropTypes.string
 };
 
 export default Order;

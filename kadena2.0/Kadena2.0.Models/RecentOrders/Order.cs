@@ -20,5 +20,7 @@ namespace Kadena.Models
         public Button ViewBtn { get; set; }
 
         public Campaign campaign { get; set; }
+        public int ClientId { get; set; }
+        public string ClientName { get; set; }
     }
 }

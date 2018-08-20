@@ -61,6 +61,7 @@
     <Compile Include="Clients\CreditCardManagerClient.cs" />
     <Compile Include="Clients\ExportClient.cs" />
     <Compile Include="Clients\FileClient.cs" />
+    <Compile Include="Clients\RoutingServiceClient.cs" />
     <Compile Include="Clients\OrderResubmitClient.cs" />
     <Compile Include="Clients\NotificationClient.cs" />
     <Compile Include="Clients\OrderManualUpdateClient.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Clients\StatisticsClient.cs" />
     <Compile Include="Clients\TemplatedClient.cs" />
     <Compile Include="Clients\TaxEstimationServiceClient.cs" />
+    <Compile Include="Clients\UserManagerClient.cs" />
     <Compile Include="Contracts\Base\IMicroProperties.cs" />
     <Compile Include="Contracts\Base\ISuppliantDomainClient.cs" />
     <Compile Include="Contracts\IAddressValidationClient.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Contracts\IOrderManualUpdateClient.cs" />
     <Compile Include="Contracts\IOrderResubmitClient.cs" />
     <Compile Include="Contracts\IPaymentServiceClient.cs" />
+    <Compile Include="Contracts\IRoutingServiceClient.cs" />
     <Compile Include="Contracts\IUserDataServiceClient.cs" />
     <Compile Include="Contracts\IFileClient.cs" />
     <Compile Include="Contracts\IMailingListClient.cs" />
@@ -98,6 +101,7 @@
     <Compile Include="Contracts\IStatisticsClient.cs" />
     <Compile Include="Contracts\ITemplatedClient.cs" />
     <Compile Include="Contracts\ITaxEstimationService.cs" />
+    <Compile Include="Contracts\IUserManagerClient.cs" />
     <Compile Include="FileFolder.cs" />
     <Compile Include="FileModule.cs" />
     <Compile Include="Helpers\Utils.cs" />

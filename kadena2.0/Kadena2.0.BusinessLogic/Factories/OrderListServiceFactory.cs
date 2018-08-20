@@ -20,6 +20,7 @@ namespace Kadena.BusinessLogic.Factories
         private readonly IKenticoPermissionsProvider _permissions;
         private readonly IKenticoDocumentProvider _documents;
         private readonly IKenticoLogger _logger;
+        private readonly IKenticoCustomerProvider _customers;
         private readonly IKenticoAddressBookProvider _kenticoAddressBook;
 
         public OrderListServiceFactory(IMapper mapper,
@@ -30,7 +31,8 @@ namespace Kadena.BusinessLogic.Factories
                                        IKenticoOrderProvider order, 
                                        IKenticoPermissionsProvider permissions,
                                        IKenticoDocumentProvider documents, 
-                                       IKenticoLogger logger, 
+                                       IKenticoLogger logger,
+                                       IKenticoCustomerProvider customers,
                                        IKenticoAddressBookProvider kenticoAddressBook)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -42,12 +44,13 @@ namespace Kadena.BusinessLogic.Factories
             _permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             _documents = documents ?? throw new ArgumentNullException(nameof(documents));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _customers = customers ?? throw new ArgumentNullException(nameof(customers));
             _kenticoAddressBook = kenticoAddressBook ?? throw new ArgumentNullException(nameof(kenticoAddressBook));
         }
 
         public IOrderListService GetDashboard()
         {
-            return new OrderListService(_mapper, _orderClient, _kenticoCustomer, _kenticoResources, _site, _order, _documents, _permissions, _logger, _kenticoAddressBook)
+            return new OrderListService(_mapper, _orderClient, _kenticoCustomer, _kenticoResources, _site, _order, _documents, _permissions, _logger, _customers, _kenticoAddressBook)
             {
                 PageCapacityKey = Settings.KDA_DashboardOrdersPageCapacity
             };
@@ -55,7 +58,7 @@ namespace Kadena.BusinessLogic.Factories
 
         public IOrderListService GetRecentOrders()
         {
-            return new OrderListService(_mapper, _orderClient, _kenticoCustomer, _kenticoResources, _site, _order, _documents, _permissions, _logger, _kenticoAddressBook)
+            return new OrderListService(_mapper, _orderClient, _kenticoCustomer, _kenticoResources, _site, _order, _documents, _permissions, _logger, _customers, _kenticoAddressBook)
             {
                 PageCapacityKey = Settings.KDA_RecentOrdersPageCapacity,
                 EnablePaging = true

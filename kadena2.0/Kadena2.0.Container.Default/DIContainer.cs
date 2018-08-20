@@ -84,6 +84,7 @@ namespace Kadena.Container.Default
             container.Register<IAddressBookService, AddressBookService>();
             container.Register<IModuleAccessService, ModuleAccessService>();
             container.Register<IBrandsService, BrandsService>();
+            container.Register<IRoutingService, RoutingService>();
             container.Register<IProgramsService, ProgramsService>();
             container.Register<ILoginService, LoginService>();
             container.Register<IFileService, FileService>();
@@ -113,6 +114,7 @@ namespace Kadena.Container.Default
             container.Register<IApprovalService, ApprovalService>();
             container.Register<IDialogService, DialogService>();
             container.Register<IDeliveryEstimationDataService, DeliveryEstimationDataService>();
+            container.Register<IErpSystemsService, ErpSystemsService>();
             container.Register<IOrderManualUpdateService, OrderManualUpdateService>();
             container.Register<IDistributorShoppingCartService, DistributorShoppingCartService>();
             container.Register<IOrderItemCheckerService, OrderItemCheckerService>();
@@ -120,6 +122,7 @@ namespace Kadena.Container.Default
             container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
             container.Register<IByteConverter, PdfByteConverter>();
             container.Register<IPreBuyCatalogService, PdfPreBuyCatalogService>();
+            container.Register<INewProductNotificationService, NewProductNotificationService>();
             return container;
         }
 
@@ -134,6 +137,7 @@ namespace Kadena.Container.Default
             container.Register<IKenticoProductsProvider, KenticoProductsProvider>();
             container.Register<IKenticoDocumentProvider, KenticoDocumentProvider>();
             container.Register<IKenticoBusinessUnitsProvider, KenticoBusinessUnitsProvider>();
+            container.Register<IKenticoErpSystemsProvider, KenticoErpSystemsProvider>();
             container.Register<IKenticoCampaignsProvider, KenticoCampaignsProvider>();
             container.Register<IKenticoPOSProvider, KenticoPOSProvider>();
             container.Register<IKenticoProductCategoryProvider, KenticoProductCategoryProvider>();
@@ -193,8 +197,10 @@ namespace Kadena.Container.Default
             container.Register<IStatisticsClient, StatisticsClient>();
             container.Register<IExportClient, ExportClient>();
             container.Register<INotificationClient, NotificationClient>();
+            container.Register<IRoutingServiceClient, RoutingServiceClient>();
             container.Register<IApprovalServiceClient, ApprovalServiceClient>();
             container.Register<IOrderManualUpdateClient, OrderManualUpdateClient>();
+            container.Register<IUserManagerClient, UserManagerClient>();
             return container;
         }
 

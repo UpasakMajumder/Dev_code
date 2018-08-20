@@ -66,5 +66,15 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
                 .Select(c => _mapper.Map<Customer>(c));
 
         }
+
+        public IEnumerable<Customer> GetCustomersByManufacturerID(int manufacturerID)
+        {
+            var customers = CustomerInfoProvider.GetCustomers()
+                .WhereEquals("CustomerManufacturerID", manufacturerID)
+                .ToArray();
+            return customers
+                .Select(c => _mapper.Map<Customer>(c));
+
+        }
     }
 }

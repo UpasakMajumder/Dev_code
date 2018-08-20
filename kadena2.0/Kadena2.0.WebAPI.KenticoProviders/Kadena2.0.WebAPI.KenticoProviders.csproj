@@ -117,11 +117,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoMapperResolvers\ParentAliasPathResolver.cs" />
     <Compile Include="Classes\ProductClass.cs" />
     <Compile Include="Classes\ProductClassWrapper.cs" />
     <Compile Include="Contracts\IDynamicPriceRangeProvider.cs" />
     <Compile Include="Contracts\IFailedOrderStatusProvider.cs" />
     <Compile Include="Contracts\IKenticoCustomerProvider.cs" />
+    <Compile Include="Contracts\IKenticoErpSystemsProvider.cs" />
     <Compile Include="Contracts\IKenticoIBTFProvider.cs" />
     <Compile Include="Contracts\IKenticoMediaProvider.cs" />
     <Compile Include="Contracts\IKenticoModuleMappingProvider.cs" />
@@ -159,6 +161,7 @@
     <Compile Include="Contracts\ISubmissionIdProvider.cs" />
     <Compile Include="KenticoModelMappingsProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\KenticoErpSystemsProvider.cs" />
     <Compile Include="Providers\OrderCartItemsProvider.cs" />
     <Compile Include="Providers\TieredPriceRangeProvider.cs" />
     <Compile Include="Providers\DynamicPriceRangeProvider.cs" />

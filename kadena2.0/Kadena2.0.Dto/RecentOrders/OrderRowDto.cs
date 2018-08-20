@@ -15,5 +15,6 @@ namespace Kadena.Dto.RecentOrders
         public DateTime? ShippingDate { get; set; }
         public ButtonDto ViewBtn { get; set; }
         public CampaignDTO campaign { get; set; }
+        public string User { get; set; }
     }
 }

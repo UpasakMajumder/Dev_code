@@ -78,6 +78,8 @@
     <Compile Include="Contracts\Approval\IApprovalService.cs" />
     <Compile Include="Contracts\Approval\IApproverService.cs" />
     <Compile Include="Contracts\IByteConverter.cs" />
+    <Compile Include="Contracts\IErpSystemsService.cs" />
+    <Compile Include="Contracts\INewProductNotificationService.cs" />
     <Compile Include="Contracts\IPreBuyCatalogService.cs" />
     <Compile Include="Contracts\IConvert.cs" />
     <Compile Include="Contracts\IDialogService.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Contracts\ILocalizationService.cs" />
     <Compile Include="Contracts\IModuleAccessService.cs" />
     <Compile Include="Contracts\IDistributorShoppingCartService.cs" />
+    <Compile Include="Contracts\IRoutingService.cs" />
     <Compile Include="Contracts\IUpdateInventoryDataService.cs" />
     <Compile Include="Contracts\IUserService.cs" />
     <Compile Include="Contracts\IMailService.cs" />
@@ -149,11 +152,13 @@
     <Compile Include="Services\Approval\ApprovalServiceException.cs" />
     <Compile Include="Services\Approval\ApproverService.cs" />
     <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\ErpSystemsService.cs" />
     <Compile Include="Services\IdentityService.cs" />
     <Compile Include="Services\LocalizationService.cs" />
     <Compile Include="Services\MailService.cs" />
     <Compile Include="Services\ImageService.cs" />
     <Compile Include="Services\ModuleAccessService.cs" />
+    <Compile Include="Services\NewProductNotificationService.cs" />
     <Compile Include="Services\OrderPayment\SavedCreditCard3dsi.cs" />
     <Compile Include="Services\IBTFService.cs" />
     <Compile Include="Services\Orders\DeliveryEstimationDataService.cs" />
@@ -167,6 +172,7 @@
     <Compile Include="Services\DistributorShoppingCartService.cs" />
     <Compile Include="Services\PdfByteConverter.cs" />
     <Compile Include="Services\PdfPreBuyCatalogService.cs" />
+    <Compile Include="Services\RoutingService.cs" />
     <Compile Include="Services\SSO\KadenaSaml2SecurityTokenHandler.cs" />
     <Compile Include="Services\SSO\Saml2RecipientValidator.cs" />
     <Compile Include="Services\SSO\Saml2HandlerService.cs" />

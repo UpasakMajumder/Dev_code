@@ -64,13 +64,14 @@
           <TextFormat ismacro="true">{% UserName %}</TextFormat>
         </settings>
       </field>
-      <category dummy="true" name="com.customeredit.companydeatils" order="7">
+      <field column="CustomerManufacturerID" guid="eb57fe61-fe3b-415f-a27f-c185099ffe70" order="7" />
+      <category dummy="true" name="com.customeredit.companydeatils" order="8">
         <properties>
           <caption>{$com.customeredit.companydeatils$}</caption>
           <visible>True</visible>
         </properties>
       </category>
-      <field column="CustomerCompany" guid="0b263893-c00f-44f7-a36d-ca0449ac9f0a" visible="true" order="8">
+      <field column="CustomerCompany" guid="0b263893-c00f-44f7-a36d-ca0449ac9f0a" visible="true" order="9">
         <settings>
           <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
           <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
@@ -82,7 +83,7 @@
           <fieldcaption>{$Customers_Edit.CustomerCompanyLabel$}</fieldcaption>
         </properties>
       </field>
-      <field column="CustomerOrganizationID" guid="e7df891f-ea59-4add-876b-69d4a619ac12" visible="true" order="9">
+      <field column="CustomerOrganizationID" guid="e7df891f-ea59-4add-876b-69d4a619ac12" visible="true" order="10">
         <settings>
           <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
           <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
@@ -94,7 +95,7 @@
           <fieldcaption>{$Customers_Edit.lblOrganizationID$}</fieldcaption>
         </properties>
       </field>
-      <field column="CustomerTaxRegistrationID" guid="873dce9d-ee95-4793-a1ed-963a3feeee42" visible="true" order="10">
+      <field column="CustomerTaxRegistrationID" guid="873dce9d-ee95-4793-a1ed-963a3feeee42" visible="true" order="11">
         <settings>
           <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
           <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
@@ -106,13 +107,13 @@
           <fieldcaption>{$Customers_Edit.lblTaxRegistrationID$}</fieldcaption>
         </properties>
       </field>
-      <category dummy="true" name="com.customeredit.contacts" order="11">
+      <category dummy="true" name="com.customeredit.contacts" order="12">
         <properties>
           <caption>{$com.customeredit.contacts$}</caption>
           <visible>False</visible>
         </properties>
       </category>
-      <field column="CustomerFax" guid="044422b8-46d8-4222-b0f7-9466783c2274" order="12">
+      <field column="CustomerFax" guid="044422b8-46d8-4222-b0f7-9466783c2274" order="13">
         <settings>
           <AutoCompleteEnableCaching>False</AutoCompleteEnableCaching>
           <AutoCompleteFirstRowSelected>False</AutoCompleteFirstRowSelected>
@@ -124,14 +125,14 @@
           <fieldcaption>{$customers_edit.CustomerFax$}</fieldcaption>
         </properties>
       </field>
-      <field column="CustomerUserID" guid="54062fca-65ff-4995-9b7a-404ca2e04f58" order="13" />
-      <field column="CustomerCountryID" guid="80182aa0-ae56-432a-8f66-51ea1ec857ac" order="14" />
-      <field column="CustomerStateID" guid="e2feb737-5110-40db-b535-12079051379e" order="15" />
-      <field column="CustomerGUID" guid="56206b17-fdf9-4953-9136-6e91e18d6d4d" order="16" />
+      <field column="CustomerUserID" guid="54062fca-65ff-4995-9b7a-404ca2e04f58" order="14" />
+      <field column="CustomerCountryID" guid="80182aa0-ae56-432a-8f66-51ea1ec857ac" order="15" />
+      <field column="CustomerStateID" guid="e2feb737-5110-40db-b535-12079051379e" order="16" />
+      <field column="CustomerGUID" guid="56206b17-fdf9-4953-9136-6e91e18d6d4d" order="17" />
       <field column="CustomerSiteID" guid="b986d250-cc3e-404f-86f2-987f25770524" />
-      <field column="CustomerCreated" guid="54fa9014-05b8-4a7f-9936-94a13458b6c0" order="18" />
-      <field column="CustomerLastModified" guid="87a1a570-2285-457b-9508-d541995a7769" order="19" />
-      <field column="CustomerDefaultShippingAddresID" guid="bd98bb1f-b8d8-4c75-8588-f09c1cb8411b" order="20" />
+      <field column="CustomerCreated" guid="54fa9014-05b8-4a7f-9936-94a13458b6c0" order="19" />
+      <field column="CustomerLastModified" guid="87a1a570-2285-457b-9508-d541995a7769" order="20" />
+      <field column="CustomerDefaultShippingAddresID" guid="bd98bb1f-b8d8-4c75-8588-f09c1cb8411b" order="21" />
     </form>
   </FormDefinition>
   <FormDisplayName>General properties</FormDisplayName>

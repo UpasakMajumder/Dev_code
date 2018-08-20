@@ -100,10 +100,61 @@
 <div class="table__responsive">
 <table id="reptable" class="table show__table-buttom">
   <tr>    
-    <th>{$KDA.BrandsList.BrandName$}</th>
-    <th>{$KDA.BrandsList.BrandCode$}</th>
-    <th>{$KDA.BrandsList.Description$}</th>
-    <th>{$KDA.BrandsList.Status$}</th>
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("BrandName") |(user)administrator|(hash)49cabc097637dcd3f1a5045c39c711a73bf60f29ab5de60d82e56a96446b2310%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("BrandName") |(user)administrator|(hash)517d57002e8c1c9398b038cfe03606aaed00e96e14da1a46b5dc10730a84093f%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.BrandsList.BrandName$}</span>
+          </a>        
+        </th>
+				
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("BrandCode") |(user)administrator|(hash)03105b7cf65d11cc990e79ae0106040c0f12591e0a644163e6d1069b4c3db304%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("BrandCode") |(user)administrator|(hash)48711027d2640978dbc15cc2ad7699614e49118a45151a5896b75c96354f9337%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.BrandsList.BrandCode$}</span>
+          </a>        
+        </th>
+
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("BrandDescription") |(user)administrator|(hash)cae4e774d38d9286c39301366e316a487a5fe6347ed82e94d916d3f600e75716%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("BrandDescription") |(user)administrator|(hash)bb2f9a2b306d2924d27e3f3846335023d1a61ee20d4f15524c6f6af2c0ebda05%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.BrandsList.Description$}</span>
+          </a>        
+        </th>
+
+	        <th>
+          <a href="{% KadenaNamespace.TableSortingColumnURL("Status") |(user)administrator|(hash)d37e0a6dca32d003ebc14c50051dc79bf4d9af5281c7d4e13063a39cca5fdd4d%}" class="link--no-blue">
+            <div class="icons-sort icons-sort--{% KadenaNamespace.TableSortingColumnDirection("Status") |(user)administrator|(hash)f465b6ee8439887d7b1672a2807bbf95cb2e7983797f86f94b01c24c565b3e45%}">
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+              <svg class="icon icon-sort">
+                <use xlink:href="/gfx/svg/sprites/icons.svg#arrowTop" />
+              </svg>
+            </div>
+            <span>{$KDA.BrandsList.Status$}</span>
+          </a>        
+        </th>
     {% if (MembershipContext.AuthenticatedUser.IsInRole("TWEGlobalAdmin",false)) { %}
     <th><div class="text-center">{$KDA.Common.Actions$}</div></th>
     {%}|(user)administrator|(hash)24402d27a8b2da116e613774dc74e06d38c0e0d7e7235a7e7d6e3b7f0b544385%}
@@ -123,7 +174,9 @@
           <property name="hideonsubpages">False</property>
           <property name="instanceguid">4e2ba60b-8659-421d-b9e7-a7501e188e1e</property>
           <property name="itemseparator"></property>
-          <property name="orderby">BrandName asc</property>
+          <property name="orderby">
+            <![CDATA[{% KadenaNamespace.TableSortingOrderBy("BrandName,BrandCode,BrandDescription,Status") |(user)administrator|(hash)26147aac2d268c9a9b8cc1564b90781d75b9ca25f66d521ab396330704ee07dd%}]]>
+          </property>
           <property name="outputconverttablestodivs">none</property>
           <property name="outputfixattributes">True</property>
           <property name="outputfixhtml5">True</property>

@@ -100,6 +100,7 @@ module.exports.recent = {
         "ordered",
         "order status",
         "delivery date",
+        "user",
         ""
       ],
       pageInfo: null,
@@ -120,7 +121,8 @@ module.exports.recent = {
           "viewBtn": {
             "text": "View",
             "url": "~/recent-orders/order-detail?orderID=0010-00162-17-00004"
-          }
+          },
+          user: "Andrei"
         },
         {
           "orderNumber": "0001-00091-17-00002",

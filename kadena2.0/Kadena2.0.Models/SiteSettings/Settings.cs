@@ -8,10 +8,46 @@ namespace Kadena.Models.SiteSettings
         /// 
         /// </summary>
         [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("New product email notification")]
+        [DefaultValueAttribute(@"False")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6Ik5vdGlmaWNhdGlvbiBlbmFibGVkIiwiS2V5TmFtZSI6IktEQV9OZXdQcm9kdWN0RW1haWxOb3RpZmljYXRpb25FbmFibGVkIiwiS2V5VHlwZSI6ImJvb2xlYW4iLCJLZXlEZWZhdWx0VmFsdWUiOiJGYWxzZSIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJOZXcgcHJvZHVjdCBlbWFpbCBub3RpZmljYXRpb24ifX0=")]
+        public const string KDA_NewProductEmailNotificationEnabled = "KDA_NewProductEmailNotificationEnabled";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("New product email notification")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6Ik5vdGlmaWNhdGlvbiBlbWFpbCB0ZW1wbGF0ZSIsIktleU5hbWUiOiJLREFfTmV3UHJvZHVjdEVtYWlsTm90aWZpY2F0aW9uVGVtcGxhdGUiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjpudWxsLCJLZXlEZXNjcmlwdGlvbiI6IiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6IkVtYWlsX3RlbXBsYXRlX3NlbGVjdG9yIiwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6IjxzZXR0aW5ncz48U2hvd0VkaXRCdXR0b24+VHJ1ZTwvU2hvd0VkaXRCdXR0b24+PFNob3dOZXdCdXR0b24+VHJ1ZTwvU2hvd05ld0J1dHRvbj48VGVtcGxhdGVUeXBlPmdlbmVyYWw8L1RlbXBsYXRlVHlwZT48L3NldHRpbmdzPiIsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiS2FkZW5hIiwiTmFtZSI6IkthZGVuYSIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkNNUy5TZXR0aW5ncyJ9LCJEaXNwbGF5TmFtZSI6Ik5ldyBwcm9kdWN0IGVtYWlsIG5vdGlmaWNhdGlvbiJ9fQ==")]
+        public const string KDA_NewProductEmailNotificationTemplate = "KDA_NewProductEmailNotificationTemplate";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("ERP mapping")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkVSUCIsIktleU5hbWUiOiJLYWRlbmFfRXJwTWFwcGluZyIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjoia2FkZW5hLkVycFNlbGVjdG9yIiwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiRVJQIG1hcHBpbmcifX0=")]
+        public const string Kadena_ErpMapping = "Kadena_ErpMapping";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
         [GroupAttribute("Address Management")]
         [DefaultValueAttribute(null)]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkFkZHJlc3NlcyBNb2R1bGUgRW5hYmxlZCIsIktleU5hbWUiOiJLREFfQWRkcmVzc2VzTW9kdWxlRW5hYmxlZCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjoiUmFkaW9CdXR0b25zQ29udHJvbCIsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOiI8c2V0dGluZ3M+PE9wdGlvbnM+ZW5hYmxlZDtFbmFibGVkXHJcbmRpc2FibGVkO0Rpc2FibGVkXHJcbmhpZGRlbjtIaWRkZW48L09wdGlvbnM+PFJlcGVhdERpcmVjdGlvbj5ob3Jpem9udGFsPC9SZXBlYXREaXJlY3Rpb24+PFJlcGVhdExheW91dD5GbG93PC9SZXBlYXRMYXlvdXQ+PFNvcnRJdGVtcz5GYWxzZTwvU29ydEl0ZW1zPjwvc2V0dGluZ3M+IiwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiQWRkcmVzcyBNYW5hZ2VtZW50In19")]
         public const string KDA_AddressesModuleEnabled = "KDA_AddressesModuleEnabled";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Microservices settings")]
+        [DefaultValueAttribute(@"1")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9Sb3V0aW5nU2VydmljZVZlcnNpb246IiwiS2V5TmFtZSI6IktEQV9Sb3V0aW5nU2VydmljZVZlcnNpb24iLCJLZXlUeXBlIjoiaW50IiwiS2V5RGVmYXVsdFZhbHVlIjoiMSIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJNaWNyb3NlcnZpY2VzIHNldHRpbmdzIn19")]
+        public const string KDA_RoutingServiceVersion = "KDA_RoutingServiceVersion";
 
         /// <summary>
         /// 

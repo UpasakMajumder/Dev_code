@@ -500,6 +500,7 @@
     <Compile Include="Infrastructure\Mapping\ProfileTest.cs" />
     <Compile Include="MicroserviceClients\StatisticsClientTests.cs" />
     <Compile Include="BusinessLogic\PdfLowresServiceTests.cs" />
+    <Compile Include="MicroserviceClients\UserManagerClientTests.cs" />
     <Compile Include="Models\OrderFilterTests.cs" />
     <Compile Include="Models\PaymentMethodTest.cs" />
     <Compile Include="BusinessLogic\DateTimeFormatterTest.cs" />

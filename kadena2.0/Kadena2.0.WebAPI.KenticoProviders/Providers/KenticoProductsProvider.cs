@@ -53,25 +53,17 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
+        public ProductLink GetProductLinkBySkuid(int skuid)
+        {
+            var p = GetDocBySkuid(skuid);
+            return mapper.Map<ProductLink>(p);
+        }
+
         public List<ProductLink> GetProducts(string path)
         {
             var pages = GetDocuments(path, "KDA.Product", PathTypeEnum.Children);
 
-            return pages.Select(p => new ProductLink
-            {
-                Id = p.DocumentID,
-                Title = p.DocumentName,
-                Url = p.DocumentUrlPath,
-                Order = p.NodeOrder,
-                ImageUrl = URLHelper.ResolveUrl(p.GetValue("ProductImage", string.Empty), false),
-                IsFavourite = false,
-                Border = new Border
-                {
-                    Exists = !p.GetBooleanValue("ProductThumbnailBorderDisabled", false),
-                },
-                ParentPath = (p.Parent == null ? null : p.Parent.NodeAliasPath)
-            }
-            ).ToList();
+            return pages.Select(p => mapper.Map<ProductLink>(p)).ToList();
         }
 
         private DocumentQuery GetDocuments(string path, string className, PathTypeEnum pathType)
