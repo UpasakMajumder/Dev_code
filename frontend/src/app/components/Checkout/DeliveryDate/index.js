@@ -14,7 +14,7 @@ const DeliveryDate = ({
   return (
     <div className="shopping-cart__block">
       <h2>{ui.title}</h2>
-      <div className="flex--start--start">
+      <div className="flex--start--start mb-5">
         <Datepicker
           selected={deliveryDate.value}
           startDate={moment()}

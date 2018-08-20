@@ -31,13 +31,18 @@
           <AllowCreate>True</AllowCreate>
         </settings>
       </field>
-      <field column="SKUManufacturerID" guid="808244ef-6595-42f2-90a0-9bf0717645e1" visible="" />
+      <field column="SKUManufacturerID" guid="808244ef-6595-42f2-90a0-9bf0717645e1" reftype="Required">
+        <settings>
+          <ReflectGlobalProductsUse>False</ReflectGlobalProductsUse>
+          <ShowAllSites />
+        </settings>
+      </field>
       <field column="SKUSupplierID" guid="57cc81c5-1f0c-45d4-9741-e37d7f35db34" visibility="" visible="">
         <settings>
           <AllowCreate>True</AllowCreate>
         </settings>
       </field>
-      <field column="SKUImagePath" guid="6174e45a-ca37-4946-a8b9-a53bd4fb76d2" reftype="Required" visible="">
+      <field column="SKUImagePath" guid="6174e45a-ca37-4946-a8b9-a53bd4fb76d2" visible="">
         <settings>
           <controlname>MediaSelectionControl</controlname>
         </settings>
@@ -45,6 +50,13 @@
       <field column="SKUShortDescription" guid="0e18113d-59b6-4fba-9c46-796465b2251e" visible="" />
       <field column="SKUDescription" guid="b13a8a29-f8a9-49ed-8cb4-4db417e174ab" />
       <field column="SKUProductType" guid="33da4205-7ff2-46f9-ae88-3f28ae663ff8" visibility="" />
+      <category name="com.sku.analyticscategory" order="18" />
+      <field column="SKUConversionValue" guid="870a3279-5120-4bc6-817c-318360a7fbb3" visible="" order="19">
+        <properties>
+          <fieldcaption>Conversion value</fieldcaption>
+        </properties>
+      </field>
+      <category name="com.sku.variantcategory" order="20" />
       <field column="SKUCustomData" guid="29e8c9c5-d3c7-4846-a18f-057d5cd0a352" />
       <field column="SKUCreated" guid="046115eb-09d5-4c9f-b4ae-e5da3761b436" />
       <field column="SKULastModified" guid="87e7a912-8806-4971-9912-af8711f71707" />
@@ -142,6 +154,12 @@
           <fieldcaption>Package depth</fieldcaption>
         </properties>
       </field>
+      <field column="SKUConversionName" guid="0132fdb3-0cfc-4966-99ce-a7d8cfd4bf9a" visible="" order="46">
+        <properties>
+          <fieldcaption>Conversion name</fieldcaption>
+        </properties>
+      </field>
+      <field column="SKUParentSKUID" guid="cfda202f-ccbf-47b8-9b24-d6feae3a470c" order="47" />
       <field column="SKUTrackInventory" guid="b008a40a-2651-4341-8779-872030271467" visible="" />
       <field column="SKUSellOnlyAvailable" guid="ca3ef874-bccc-401d-ae31-f5b40c99f900" visible="">
         <properties>
@@ -169,23 +187,12 @@
           <fieldcaption>Max items in one order</fieldcaption>
         </properties>
       </field>
-      <field column="SKUConversionName" guid="0132fdb3-0cfc-4966-99ce-a7d8cfd4bf9a" visible="">
-        <properties>
-          <fieldcaption>Conversion name</fieldcaption>
-        </properties>
-      </field>
-      <field column="SKUConversionValue" guid="870a3279-5120-4bc6-817c-318360a7fbb3" visible="">
-        <properties>
-          <fieldcaption>Conversion value</fieldcaption>
-        </properties>
-      </field>
-      <field column="SKUParentSKUID" guid="cfda202f-ccbf-47b8-9b24-d6feae3a470c" />
       <field column="SKUCustomerReferenceNumber" guid="acc7ffb4-eb2e-40bb-a6e1-b454bad2b597" order="56" />
-      <field column="SKUDontSendPriceToERP" visible="false" />
-      <field column="SKUUnitOfMeasure" visible="false" />
-      <field column="SKUHiResPdfDownloadEnabled" visible="false" />
-      <field column="SKUApprovalRequired" visible="false" />
-      <field column="SKUNumberOfItemsInPackage" visible="false" />
+      <field column="SKUDontSendPriceToERP" guid="31844ee0-afd5-4800-ba3a-748cea0aa8aa" visible="" order="57" />
+      <field column="SKUUnitOfMeasure" guid="79380af2-d662-438c-9ba2-22d7a62e6b7b" visible="" order="58" />
+      <field column="SKUHiResPdfDownloadEnabled" guid="8ad34b07-1b2e-47f3-929b-c590f0813b1c" visible="" order="59" />
+      <field column="SKUApprovalRequired" guid="e8895743-9873-453a-919e-5391220cb16c" visible="" order="60" />
+      <field column="SKUNumberOfItemsInPackage" guid="3afd1d0c-970b-43c5-9b73-94041a17ad9e" visible="" order="61" />
     </form>
   </FormDefinition>
   <FormDisplayName>Product - General properties</FormDisplayName>
