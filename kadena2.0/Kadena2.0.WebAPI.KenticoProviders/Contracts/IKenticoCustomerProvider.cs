@@ -16,5 +16,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         int CreateCustomer(Customer customer);
         void UpdateCustomer(Customer customer);
         IEnumerable<Customer> GetCustomersByApprover(int approverUserId);
+        IEnumerable<Customer> GetCustomersByManufacturerID(int manufacturerID);
     }
 }
