@@ -20,7 +20,7 @@ const Order = ({
     if (header) {
       const item = items[header.id];
 
-      if (item.type === 'tracking') {
+      if (header.type === 'tracking') {
         let content = <span>{item.value}</span>;
 
         if (Array.isArray(item.value)) {
@@ -31,7 +31,7 @@ const Order = ({
         }
 
         orders.push(<td key={uuid()}>{content}</td>);
-      } else if (item.type === 'date') {
+      } else if (header.type === 'date') {
         if (Array.isArray(item.value)) {
           const content = item.value.map((value, index) => {
             if (index === item.value.length - 1) {

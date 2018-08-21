@@ -66,7 +66,6 @@ module.exports.reports = {
               value: '1'
             },
             3: {
-              type: 'date',
               value: '2017-08-04T09:12:08.108892Z'
             },
             4: {
@@ -88,11 +87,9 @@ module.exports.reports = {
               value: '8'
             },
             10: {
-              type: 'date',
               value: '2017-08-10T09:12:08.108892Z'
             },
             11: {
-              type: 'tracking',
               value: 2,
               url: '#'
             }
@@ -108,7 +105,6 @@ module.exports.reports = {
               value: '2'
             },
             3: {
-              type: 'date',
               value: '2017-08-04T09:12:08.108892Z'
             },
             4: {
@@ -130,11 +126,9 @@ module.exports.reports = {
               value: '8'
             },
             10: {
-              type: 'date',
               value: '2017-08-10T09:12:08.108892Z'
             },
             11: {
-              type: 'tracking',
               value: 1
             }
           }
@@ -149,7 +143,6 @@ module.exports.reports = {
               value: '2'
             },
             3: {
-              type: 'date',
               value: '2017-08-04T09:12:08.108892Z'
             },
             4: {
@@ -171,11 +164,9 @@ module.exports.reports = {
               value: '8'
             },
             10: {
-              type: 'date',
               value: '2017-08-10T09:12:08.108892Z'
             },
             11: {
-              type: 'tracking',
               value: 86567
             }
           }
@@ -190,7 +181,6 @@ module.exports.reports = {
               value: '3'
             },
             3: {
-              type: 'date',
               value: '2017-08-04T09:12:08.108892Z'
             },
             4: {
@@ -212,11 +202,9 @@ module.exports.reports = {
               value: '8'
             },
             10: {
-              type: 'date',
               value: '2017-08-10T09:12:08.108892Z'
             },
             11: {
-              type: 'tracking',
               value: 2
             }
           }
@@ -231,7 +219,6 @@ module.exports.reports = {
               value: '4'
             },
             3: {
-              type: 'date',
               value: '2017-08-04T09:12:08.108892Z'
             },
             4: {
@@ -253,11 +240,9 @@ module.exports.reports = {
               value: '8'
             },
             10: {
-              type: 'date',
               value: '2017-08-10T09:12:08.108892Z'
             },
             11: {
-              type: 'tracking',
               value: 5,
               url: '#'
             },
@@ -276,7 +261,6 @@ module.exports.reports = {
               value: '4'
             },
             3: {
-              type: 'date',
               value: '2017-08-04T09:12:08.108892Z'
             },
             4: {
@@ -298,11 +282,9 @@ module.exports.reports = {
               value: '8'
             },
             10: {
-              type: 'date',
               value: '2017-08-10T09:12:08.108892Z'
             },
             11: {
-              type: 'tracking',
               value: 88
             }
           }
