@@ -10,18 +10,18 @@ namespace Kadena2.WebAPI.KenticoProviders.Classes
 
         public double ProductSKUWeight
         {
-            get { return productNode.GetDoubleValue("ProductSKUWeight", 0); }
-            set { productNode.SetValue("ProductSKUWeight", value); }
+            get => productNode.GetDoubleValue("ProductSKUWeight", 0);
+            set => productNode.SetValue("ProductSKUWeight", value);
         }
         public bool ProductSKUNeedsShipping
         {
-            get { return productNode.GetBooleanValue("ProductSKUNeedsShipping", false); }
-            set { productNode.SetValue("ProductSKUNeedsShipping", value); }
+            get => productNode.GetBooleanValue("ProductSKUNeedsShipping", false);
+            set => productNode.SetValue("ProductSKUNeedsShipping", value);
         }
         public int NodeSKUID
         {
-            get { return productNode.GetIntegerValue("NodeSKUID", 0); }
-            set { productNode.SetValue("NodeSKUID", value); }
+            get => productNode.GetIntegerValue("NodeSKUID", 0);
+            set => productNode.SetValue("NodeSKUID", value);
         }
 
         public TreeNode TreeNode => productNode;
@@ -42,7 +42,7 @@ namespace Kadena2.WebAPI.KenticoProviders.Classes
             {
                 NodeSKUID = NodeSKUID,
                 SKUNeedsShipping = ProductSKUNeedsShipping,
-                SKUWeight = ProductSKUWeight
+                SKUWeight = ProductSKUWeight,
             };
         }
     }

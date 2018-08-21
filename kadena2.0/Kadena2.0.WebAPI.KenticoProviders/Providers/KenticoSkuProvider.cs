@@ -12,23 +12,23 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
 {
     public class KenticoSkuProvider : IKenticoSkuProvider
     {
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
 
         public KenticoSkuProvider(IMapper mapper)
         {
-            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public Sku GetSKU(int skuId)
         {
             var skuInfo = SKUInfoProvider.GetSKUInfo(skuId);
-            return mapper.Map<Sku>(skuInfo);
+            return _mapper.Map<Sku>(skuInfo);
         }
 
         public Sku[] GetSKUsByIds(int[] skuIds)
         {
             var skuInfos = SKUInfoProvider.GetSKUs().WhereIn("SKUID", skuIds).ToArray();
-            return mapper.Map<Sku[]>(skuInfos);
+            return _mapper.Map<Sku[]>(skuInfos);
         }
 
         public void UpdateSkuMandatoryFields(Sku sku)
@@ -48,7 +48,7 @@ namespace Kadena.WebAPI.KenticoProviders.Providers
         {
             var attributeSet = new ProductAttributeSet(optionIds);
             var variant = VariantHelper.GetProductVariant(skuId, attributeSet);
-            return mapper.Map<Sku>(variant);
+            return _mapper.Map<Sku>(variant);
         }
 
         public int GetSkuAvailableQty(int skuid)

@@ -123,6 +123,7 @@ namespace Kadena.Container.Default
             container.Register<IUpdateInventoryDataService, UpdateInventoryDataService>();
             container.Register<IByteConverter, PdfByteConverter>();
             container.Register<IPreBuyCatalogService, PdfPreBuyCatalogService>();
+            container.Register<INewProductNotificationService, NewProductNotificationService>();
             return container;
         }
 
@@ -200,6 +201,7 @@ namespace Kadena.Container.Default
             container.Register<IRoutingServiceClient, RoutingServiceClient>();
             container.Register<IApprovalServiceClient, ApprovalServiceClient>();
             container.Register<IOrderManualUpdateClient, OrderManualUpdateClient>();
+            container.Register<IUserManagerClient, UserManagerClient>();
             return container;
         }
 

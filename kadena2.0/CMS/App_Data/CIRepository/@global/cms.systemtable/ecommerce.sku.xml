@@ -147,10 +147,10 @@
           <AddAllItemsRecord>False</AddAllItemsRecord>
           <AddNoneRecord>True</AddNoneRecord>
           <AllowCreate>True</AllowCreate>
-          <controlname>manufacturerselector</controlname>
+          <controlname>ManufacturerSelector</controlname>
           <DisplayOnlyEnabled>True</DisplayOnlyEnabled>
           <EnsureSelectedItem>True</EnsureSelectedItem>
-          <ShowAllSites>False</ShowAllSites>
+          <ReflectGlobalProductsUse>False</ReflectGlobalProductsUse>
           <UseManufacturerNameForSelection>False</UseManufacturerNameForSelection>
         </settings>
       </field>
