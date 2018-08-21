@@ -117,6 +117,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoMapperResolvers\ParentAliasPathResolver.cs" />
     <Compile Include="Classes\ProductClass.cs" />
     <Compile Include="Classes\ProductClassWrapper.cs" />
     <Compile Include="Contracts\IDynamicPriceRangeProvider.cs" />

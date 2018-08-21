@@ -111,6 +111,21 @@
           <SortItems>False</SortItems>
         </settings>
       </field>
+      <field allowempty="true" column="CustomerManufacturerID" columntype="integer" guid="eb57fe61-fe3b-415f-a27f-c185099ffe70" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Manufacturer</fieldcaption>
+        </properties>
+        <settings>
+          <AddAllItemsRecord>False</AddAllItemsRecord>
+          <AddNoneRecord>True</AddNoneRecord>
+          <AllowCreate>True</AllowCreate>
+          <controlname>ManufacturerSelector</controlname>
+          <DisplayOnlyEnabled>True</DisplayOnlyEnabled>
+          <EnsureSelectedItem>True</EnsureSelectedItem>
+          <ReflectGlobalProductsUse>False</ReflectGlobalProductsUse>
+          <UseManufacturerNameForSelection>False</UseManufacturerNameForSelection>
+        </settings>
+      </field>
       <field allowempty="true" column="CustomerCountryID" columntype="integer" guid="80182aa0-ae56-432a-8f66-51ea1ec857ac" publicfield="false" system="true">
         <properties>
           <fieldcaption>CustomerCountryID</fieldcaption>
