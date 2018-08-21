@@ -27,21 +27,23 @@ namespace Kadena.BusinessLogic.Factories
 
     public class OrderReportFactory : IOrderReportFactory
     {
-        private readonly IKenticoOrderProvider kenticoOrderProvider;
-        private readonly IKenticoCustomerProvider kenticoCustomerProvider;
-        private readonly IDateTimeFormatter dateTimeFormatter;
-        private readonly IKenticoResourceService kenticoResources;
-        private readonly IKenticoDocumentProvider kenticoDocumentProvider;
-        private readonly IMapper mapper;
+        private readonly IKenticoOrderProvider _kenticoOrderProvider;
+        private readonly IKenticoCustomerProvider _kenticoCustomerProvider;
+        private readonly IDateTimeFormatter _dateTimeFormatter;
+        private readonly IKenticoResourceService _kenticoResources;
+        private readonly IKenticoDocumentProvider _kenticoDocumentProvider;
+        private readonly IOrderReportFactoryHeaders _orderReportFactoryHeaders;
+        private readonly IMapper _mapper;
         private string _orderDetailUrl = string.Empty;
+
         public string OrderDetailUrl
         {
             get
             {
                 if (string.IsNullOrWhiteSpace(_orderDetailUrl))
                 {
-                    var defaultUrl = kenticoResources.GetSiteSettingsKey(Settings.KDA_OrderDetailUrl);
-                    _orderDetailUrl = kenticoDocumentProvider.GetDocumentUrl(defaultUrl);
+                    var defaultUrl = _kenticoResources.GetSiteSettingsKey(Settings.KDA_OrderDetailUrl);
+                    _orderDetailUrl = _kenticoDocumentProvider.GetDocumentUrl(defaultUrl);
                 }
                 return _orderDetailUrl;
             }
@@ -52,14 +54,16 @@ namespace Kadena.BusinessLogic.Factories
             IDateTimeFormatter dateTimeFormatter,
             IKenticoResourceService kenticoResources,
             IKenticoDocumentProvider kenticoDocumentProvider,
+            IOrderReportFactoryHeaders orderReportFactoryHeaders,
             IMapper mapper)
         {
-            this.kenticoOrderProvider = kenticoOrderProvider ?? throw new ArgumentNullException(nameof(kenticoOrderProvider));
-            this.kenticoCustomerProvider = kenticoCustomerProvider ?? throw new ArgumentNullException(nameof(kenticoCustomerProvider));
-            this.dateTimeFormatter = dateTimeFormatter ?? throw new ArgumentNullException(nameof(dateTimeFormatter));
-            this.kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
-            this.kenticoDocumentProvider = kenticoDocumentProvider ?? throw new ArgumentNullException(nameof(kenticoDocumentProvider));
-            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _kenticoOrderProvider = kenticoOrderProvider ?? throw new ArgumentNullException(nameof(kenticoOrderProvider));
+            _kenticoCustomerProvider = kenticoCustomerProvider ?? throw new ArgumentNullException(nameof(kenticoCustomerProvider));
+            _dateTimeFormatter = dateTimeFormatter ?? throw new ArgumentNullException(nameof(dateTimeFormatter));
+            _kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
+            _kenticoDocumentProvider = kenticoDocumentProvider ?? throw new ArgumentNullException(nameof(kenticoDocumentProvider));
+            _orderReportFactoryHeaders = orderReportFactoryHeaders ?? throw new ArgumentNullException(nameof(orderReportFactoryHeaders));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public IEnumerable<OrderReportViewItem> CreateReportView(IEnumerable<RecentOrderDto> recentOrder) =>
@@ -67,11 +71,11 @@ namespace Kadena.BusinessLogic.Factories
                 .SelectMany(r => r.Items
                     .Select(i =>
                     {
-                        var res = mapper.Map<OrderReportViewItem>(i) ?? new OrderReportViewItem();
-                        mapper.Map(r, res);
+                        var res = _mapper.Map<OrderReportViewItem>(i) ?? new OrderReportViewItem();
+                        _mapper.Map(r, res);
                         res.Url = FormatDetailUrl(r);
                         res.OrderingDate = FormatDate(r.CreateDate);
-                        res.User = FormatCustomer(kenticoCustomerProvider.GetCustomer(r.ClientId));
+                        res.User = FormatCustomer(_kenticoCustomerProvider.GetCustomer(r.ClientId));
                         res.Status = FormatOrderStatus(r.Status);
                         res.ShippingDate = FormatDate(i.ShippingDate);
                         res.Price = FormatPrice(i.UnitPrice * i.Quantity);
@@ -83,21 +87,8 @@ namespace Kadena.BusinessLogic.Factories
         public TableView CreateTableView(IEnumerable<OrderReportViewItem> reportDto) =>
             new TableView
             {
-                Rows = mapper.Map<TableRow[]>(reportDto.Where(r => r.Quantity > 0)),
-                Headers = new[]
-                {
-                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.Site"),
-                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.Number"),
-                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.OrderDate"),
-                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.User"),
-                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.Name"),
-                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.SKU"),
-                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.Quantity"),
-                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.Price"),
-                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.Status"),
-                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.ShippingDate"),
-                    kenticoResources.GetResourceString("Kadena.OrdersReport.Table.TrackingNumber")
-                }
+                Rows = _mapper.Map<TableRow[]>(reportDto.Where(r => r.Quantity > 0)),
+                Headers = _orderReportFactoryHeaders.GetDisplayNameHeaders()
             };
 
         private string FormatCustomer(Customer customer)
@@ -119,11 +110,11 @@ namespace Kadena.BusinessLogic.Factories
             $"{OrderDetailUrl}?orderID={order.Id}";
 
         private string FormatOrderStatus(string status) =>
-            kenticoOrderProvider.MapOrderStatus(status);
+            _kenticoOrderProvider.MapOrderStatus(status);
 
         private string FormatDate(DateTime? date) =>
             date.HasValue
-                ? dateTimeFormatter.Format(date.Value)
+                ? _dateTimeFormatter.Format(date.Value)
                 : string.Empty;
 
         private decimal FormatPrice(decimal price) =>

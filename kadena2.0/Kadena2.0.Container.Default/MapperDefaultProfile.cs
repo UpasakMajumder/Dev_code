@@ -316,7 +316,8 @@ namespace Kadena.Container.Default
 
             CreateMap<TableView, TableViewDto>();
             CreateMap<TableRow, TableRowDto>()
-                .AfterMap((src, dest, ctx) => dest.Items[10] = ctx.Mapper.Map<TrackingFieldDto>(dest.Items[10]));
+                .ConvertUsing(new TableRowToDtoConverter());
+            CreateMap<TableRow[], TableRowDto[]>();
             CreateMap<Pagination, PaginationDto>();
             CreateMap<IEnumerable<TrackingInfo>, TrackingFieldDto>()
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src));

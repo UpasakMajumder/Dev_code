@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\StringToNullableDateTimeConverter.cs" />
+    <Compile Include="Converters\TableRowToDtoConverter.cs" />
     <Compile Include="DIContainer.cs" />
     <Compile Include="MapperBuilder.cs" />
     <Compile Include="MapperDefaultProfile.cs" />

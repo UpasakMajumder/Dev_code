@@ -23,10 +23,11 @@ namespace Kadena.Tests.BusinessLogic
             IDateTimeFormatter dateTimeFormatter,
             IKenticoResourceService kenticoResources,
             IKenticoDocumentProvider kenticoDocumentProvider,
+            IOrderReportFactoryHeaders orderReportFactoryHeaders,
             IMapper mapper)
         {
             Assert.Throws<ArgumentNullException>(() => new OrderReportFactory(kenticoOrderProvider, kenticoCustomerProvider, dateTimeFormatter,
-                kenticoResources, kenticoDocumentProvider, mapper));
+                kenticoResources, kenticoDocumentProvider, orderReportFactoryHeaders, mapper));
         }
 
         [Fact]

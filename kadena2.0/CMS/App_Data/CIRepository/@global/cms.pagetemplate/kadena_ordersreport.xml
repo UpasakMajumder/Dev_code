@@ -155,7 +155,7 @@ config.localization.ordersReports = {
             isDate: false
         },
         {
-            id: 'Number',
+            id: 'orderNumber',
             label: '{$ Kadena.OrdersReport.Table.Number $}',
             sort: false,
             isDate: false
@@ -229,7 +229,84 @@ config.localization.ordersReports = {
             url: '/api/order/report/export'
         },
         noOrdersMessage: '{$ Kadena.OrdersReport.Table.NoOrdersFound $}',
-        getRowsUrl: '/api/order/report'
+        getRowsUrl: '/api/order/report',
+        manageOrders: {
+            togglerText: '{$ Kadena.OrdersReport.Manage.ToggleText $}',
+            popupTitle: '{$ Kadena.OrdersReport.Manage.PopupTitle $}',
+            popupButtons: {
+              cancel: '{$ Kadena.OrdersReport.Manage.CancelButton $}',
+              save: '{$ Kadena.OrdersReport.Manage.SaveButton $}'
+            },
+            submitUrl: '/api/order/report/manage',
+            headers: [
+              {
+                  id: 'Site',
+                  label: '{$ Kadena.OrdersReport.Table.Site $}',
+                  sort: false,
+                  isDate: false
+              },
+              {
+                  id: 'orderNumber',
+                  label: '{$ Kadena.OrdersReport.Table.Number $}',
+                  sort: false,
+                  isDate: false
+              },				
+              {
+                  id: 'CreateDate',
+                  label: '{$ Kadena.OrdersReport.Table.OrderDate $}',
+                  sort: true,
+                  isDate: true
+              },
+              {
+                  id: 'User',
+                  label: '{$ Kadena.OrdersReport.Table.User $}',
+                  sort: false,
+                  isDate: false
+              },				
+              {
+                  id: 'Name',
+                  label: '{$ Kadena.OrdersReport.Table.Name $}',
+                  sort: false,
+                  isDate: false
+              },				
+              {
+                  id: 'SKU',
+                  label: '{$ Kadena.OrdersReport.Table.SKU $}',
+                  sort: false,
+                  isDate: false
+              },				
+              {
+                  id: 'Quantity',
+                  label: '{$ Kadena.OrdersReport.Table.Quantity $}',
+                  sort: false,
+                  isDate: false
+              },
+              {
+                  id: 'Price',
+                  label: '{$ Kadena.OrdersReport.Table.Price $}',
+                  sort: false,
+                  isDate: false
+              },
+              {
+                  id: 'Status',
+                  label: '{$ Kadena.OrdersReport.Table.Status $}',
+                  sort: false,
+                  isDate: false
+              },
+              {
+                  id: 'ShippingDate',
+                  label: '{$ Kadena.OrdersReport.Table.ShippingDate $}',
+                  sort: false,
+                  isDate: true
+              },				
+              {
+                  id: 'TrackingNumber',
+                  label: '{$ Kadena.OrdersReport.Table.TrackingNumber $}',
+                  sort: false,
+                  isDate: false
+              }	
+            ]
+        }
     }
   };
 ]]>
