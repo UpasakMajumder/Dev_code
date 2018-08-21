@@ -25,7 +25,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<EstimateDeliveryPricePayloadDto[]>> EstimateShippingCost(EstimateDeliveryPriceRequestDto[] requestBody)
         {
-            var url = $"{BaseUrl}/shippingcost";
+            var url = $"{BaseUrl}/api/v{Version}/shippingcost";
             return await Post<EstimateDeliveryPricePayloadDto[]>(url, requestBody).ConfigureAwait(false);
         }
     }

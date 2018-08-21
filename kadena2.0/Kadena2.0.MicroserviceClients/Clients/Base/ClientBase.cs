@@ -40,9 +40,15 @@ namespace Kadena2.MicroserviceClients.Clients.Base
         {
             get
             {
-                var url = _properties.GetServiceUrl(_baseServiceUrlSettingKey);
-                var version = _properties.GetServiceUrl(_serviceVersionSettingKey);
-                return $"{url}/api/v{version}";
+                return _properties.GetServiceUrl(_baseServiceUrlSettingKey);
+            }
+        }
+
+        public string Version
+        {
+            get
+            {
+                return _properties.GetServiceUrl(_serviceVersionSettingKey);
             }
         }
 
