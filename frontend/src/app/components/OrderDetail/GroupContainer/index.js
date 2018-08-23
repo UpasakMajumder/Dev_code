@@ -15,14 +15,16 @@ type Tracking = {
   id: string
 }
 
-type ShippingDate = {
+type Shipping = {
   prefix: string,
-  date: string
+  value: string
 }
 
 type Items = {
   tracking?: Tracking,
-  shippingDate?: ShippingDate,
+  shippingDate?: Shipping,
+  shippingCarrier?: Shipping,
+  shippingMethod?: Shipping,
   orders: any
 }
 
@@ -35,11 +37,17 @@ type Props = {
 const GroupContainer = ({ title, items, toggleEmailProof }: Props) => {
   if (!items.length) return null;
   const groups = items.map((item) => {
-    const { tracking, shippingDate, orders } = item;
+    const {
+      tracking,
+      orders,
+      shippingDate,
+      shippingCarrier,
+      shippingMethod
+    } = item;
 
     const tracker = tracking
       ? (
-        <div className="cart-product__tracking mb-3">
+        <div className="cart-product__tracking mb-2 mr-2">
           <SVG name="location"/>
           {tracking.prefix}: { tracking.url
             ? <a href={tracking.url} className="link" target="_blank">{tracking.id}</a>
@@ -48,11 +56,27 @@ const GroupContainer = ({ title, items, toggleEmailProof }: Props) => {
         </div>
       ) : null;
 
-    const shipping = shippingDate
+    const shippingDateEl = shippingDate
       ? (
-        <div className="cart-product__tracking mb-3">
+        <div className="cart-product__tracking mb-2 mr-2">
           <SVG name="courier"/>
-          {shippingDate.prefix}: <strong>{timeFormat(shippingDate.date)}</strong>
+          {shippingDate.prefix}: <strong>{timeFormat(shippingDate.value)}</strong>
+        </div>
+      ) : null;
+
+    const shippingCarrierEl = shippingCarrier
+      ? (
+        <div className="cart-product__tracking mb-2 mr-2">
+          <SVG name="courier"/>
+          {shippingCarrier.prefix}: <SVG className="cart-product__carrier" name={shippingCarrier.value} />
+        </div>
+      ) : null;
+
+    const shippingMethodEl = shippingMethod
+      ? (
+        <div className="cart-product__tracking mb-2 mr-2">
+          <SVG name="courier"/>
+          {shippingMethod.prefix}: {shippingMethod.value}
         </div>
       ) : null;
 
@@ -69,8 +93,19 @@ const GroupContainer = ({ title, items, toggleEmailProof }: Props) => {
 
     return (
       <div key={uuid()}>
-        <div>{tracker}</div>
-        <div>{shipping}</div>
+        <table>
+          <tbody>
+            <tr>
+              <th>{tracker}</th>
+              <th>{shippingMethodEl}</th>
+            </tr>
+            <tr>
+              <th>{shippingDateEl}</th>
+              <th>{shippingCarrierEl}</th>
+            </tr>
+          </tbody>
+        </table>
+
         <div>{orderItems}</div>
       </div>
     );
@@ -96,7 +131,15 @@ GroupContainer.propTypes = {
     }),
     shippingDate: PropTypes.shape({
       prefix: PropTypes.string.isRequired,
-      date: PropTypes.string.isRequired
+      value: PropTypes.string.isRequired
+    }),
+    shippingCarrier: PropTypes.shape({
+      prefix: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired
+    }),
+    shippingMethod: PropTypes.shape({
+      prefix: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired
     }),
     orders: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
   })).isRequired,

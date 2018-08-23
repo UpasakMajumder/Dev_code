@@ -36,6 +36,14 @@
     }
   }
 
+  &__carrier {
+    $size: 55px;
+    height: $size !important;
+    width: $size !important;
+    vertical-align: middle;
+    margin-left: 10px;
+  }
+
   &__img {
     align-self: center;
     width: 150px;

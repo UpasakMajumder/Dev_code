@@ -698,7 +698,7 @@ const orderDetailPayload = {
   },
   "shippingInfo": {
     "title": "Shipping",
-    "deliveryMethod": "fedex-delivery",
+    "deliveryMethod": ["fedex-delivery", "ups-delivery", "usps-delivery"],
     "message": "All items will be mailed according to the selected mailing list",
     "address": {
       "customerName": "Andrei Fidelman",
@@ -1013,7 +1013,15 @@ module.exports.detail =  {
               },
               shippingDate: {
                 prefix: "Ship Date",
-                date: "2017-08-07T09:12:08.108892Z"
+                value: "2017-08-07T09:12:08.108892Z"
+              },
+              shippingCarrier: {
+                prefix: "Ship Carrier",
+                value: "fedex-delivery"
+              },
+              shippingMethod: {
+                prefix: "Ship Method",
+                value: "Fedex Overnight"
               },
               orders: [
                 {
@@ -1104,7 +1112,15 @@ module.exports.detail =  {
               },
               shippingDate: {
                 prefix: "Ship Date",
-                date: "N/A"
+                value: "N/A"
+              },
+              shippingCarrier: {
+                prefix: "Ship Carrier",
+                value: "ups-delivery"
+              },
+              shippingMethod: {
+                prefix: "Ship Method",
+                value: "Ground"
               },
               orders: [
                 {

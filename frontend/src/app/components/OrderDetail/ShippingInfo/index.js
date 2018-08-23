@@ -18,11 +18,13 @@ const ShippingInfo = ({ ui }) => {
     ? <USAddress {...address} />
     : <p>{message}</p>;
 
+  const deliveryMethods = deliveryMethod.map(item => <li key={item} className="mr-2"><SVG name={item} /></li>);
+
   return (
-    <div className="order-block order-block--tile ">
+    <div className="order-block order-block--tile">
       <h2 className="order-block__header">{title}</h2>
       <div className="order-block__detail">
-        <SVG name={deliveryMethod} />
+        <ul className="m-0 flex--center--start list--unstyled">{deliveryMethods}</ul>
         <div className="order-block__detail-address">{addressEl}</div>
         {trackingLink}
       </div>
@@ -33,7 +35,7 @@ const ShippingInfo = ({ ui }) => {
 ShippingInfo.propTypes = {
   ui: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    deliveryMethod: PropTypes.string.isRequired,
+    deliveryMethod: PropTypes.arrayOf(PropTypes.string).isRequired,
     address: PropTypes.shape({
       customerName: PropTypes.string.isRequired,
       company: PropTypes.string,
