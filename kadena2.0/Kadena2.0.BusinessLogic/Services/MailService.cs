@@ -1,4 +1,5 @@
-﻿using Kadena.BusinessLogic.Contracts;
+﻿using System;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.Dto.Notification.MicroserviceRequests;
 using Kadena.Models.TemplatedProduct;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -9,13 +10,13 @@ namespace Kadena.BusinessLogic.Services
 {
     public class MailService : IMailService
     {
-        private readonly INotificationClient notificationClient;
-        private readonly IKenticoLogger log;
+        private readonly INotificationClient _notificationClient;
+        private readonly IKenticoLogger _log;
 
         public MailService(INotificationClient notificationClient, IKenticoLogger log)
         {
-            this.notificationClient = notificationClient ?? throw new System.ArgumentNullException(nameof(notificationClient));
-            this.log = log ?? throw new System.ArgumentNullException(nameof(log));
+            _notificationClient = notificationClient ?? throw new ArgumentNullException(nameof(notificationClient));
+            _log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
         public async Task SendProofMail(EmailProofRequest request)
@@ -30,11 +31,11 @@ namespace Kadena.BusinessLogic.Services
                 Html = html
             };
 
-            var sendResult = await notificationClient.SendCustomNotification(microserviceRequest).ConfigureAwait(false);
+            var sendResult = await _notificationClient.SendCustomNotification(microserviceRequest).ConfigureAwait(false);
 
             if (!sendResult.Success)
             {
-                log.LogError("SendEmailProof", $"Calling Notification microservice failed. {sendResult.ErrorMessages}");
+                _log.LogError("SendEmailProof", $"Calling Notification microservice failed. {sendResult.ErrorMessages}");
             }
 
         }

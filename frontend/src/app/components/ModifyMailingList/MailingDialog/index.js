@@ -88,7 +88,7 @@ class MailingDialog extends Component {
       return (
         <tr key={errorItem.id}>
           <td>
-            <Tooler text={errorItem.errorMessage} type="error" />
+            {errorItem.errorMessage}
           </td>
           <td>
             <TextInput onChange={(e) => { this.handleChange(index, 'fullName', e.target.value); }}

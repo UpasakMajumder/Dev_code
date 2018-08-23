@@ -8,6 +8,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
     public interface IKenticoProductsProvider
     {
         List<ProductLink> GetProducts(string path);
+        ProductLink GetProductLinkBySkuid(int skuid);
         List<ProductCategoryLink> GetCategories(string path);
         ProductCategoryLink GetCategory(string path);        
         string GetSkuImageUrl(int skuid);

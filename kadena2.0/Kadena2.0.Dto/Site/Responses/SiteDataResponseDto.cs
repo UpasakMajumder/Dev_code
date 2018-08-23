@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Kadena.Dto.Site.Responses
+﻿namespace Kadena.Dto.Site.Responses
 {
     public class SiteDataResponseDto
     {

@@ -19,7 +19,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<OrderStatisticDto>> GetOrderStatistics()
         {
-            var url = $"{BaseUrl}/statistics/orders?customerName={_properties.GetCustomerName()}";
+            var url = $"{BaseUrl}/api/v{Version}/statistics/orders?customerName={_properties.GetCustomerName()}";
             return await Get<OrderStatisticDto>(url).ConfigureAwait(false);
         }
     }

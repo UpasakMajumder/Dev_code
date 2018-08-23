@@ -21,19 +21,19 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<IEnumerable<RoutingDto>>> GetRoutings(string orderId = null, string siteId = null)
         {
-            var url = $"{BaseUrl}/routing/erp?orderId={orderId}&siteId={siteId}";
+            var url = $"{BaseUrl}/api/v{Version}/routing/erp?orderId={orderId}&siteId={siteId}";
             return await Get<IEnumerable<RoutingDto>>(url).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<RoutingDto>> SetRouting(SetRoutingRequestDto requestBody)
         {
-            var url = $"{BaseUrl}/routing/erp";
+            var url = $"{BaseUrl}/api/v{Version}/routing/erp";
             return await Post<RoutingDto>(url, requestBody).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<object>> DeleteRouting(DeleteRoutingRequestDto requestBody)
         {
-            var url = $"{BaseUrl}/routing/erp";
+            var url = $"{BaseUrl}/api/v{Version}/routing/erp";
             return await Delete<object>(url, requestBody).ConfigureAwait(false);
         }
     }

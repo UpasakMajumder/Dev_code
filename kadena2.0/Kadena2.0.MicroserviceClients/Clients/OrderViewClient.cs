@@ -25,7 +25,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>> GetOrderByOrderId(string orderId)
         {
-            var url = $"{BaseUrl}{_serviceEndpoint}/{orderId}";
+            var url = $"{BaseUrl}/api/v{Version}{_serviceEndpoint}/{orderId}";
             return await Get<GetOrderByOrderIdResponseDTO>(url).ConfigureAwait(false);
         }
 
@@ -49,7 +49,7 @@ namespace Kadena2.MicroserviceClients.Clients
                 filter.Status != null ? $"currentStatus={filter.Status}" : string.Empty
             }.Where(p => p != string.Empty));
 
-            var parameterizedUrl = $"{BaseUrl}{_serviceEndpoint}?{args}";
+            var parameterizedUrl = $"{BaseUrl}/api/v{Version}{_serviceEndpoint}?{args}";
 
             return await Get<OrderListDto>(parameterizedUrl).ConfigureAwait(false);
         }

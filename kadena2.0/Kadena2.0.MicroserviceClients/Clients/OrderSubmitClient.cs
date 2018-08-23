@@ -19,7 +19,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<string>> SubmitOrder(OrderDTO orderData)
         {
-            var url = $"{BaseUrl}/order";
+            var url = $"{BaseUrl}/api/v{Version}/order";
             return await Post<string>(url, orderData).ConfigureAwait(false);
         }
     }
