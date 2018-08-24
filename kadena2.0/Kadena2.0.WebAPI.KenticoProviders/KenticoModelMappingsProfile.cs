@@ -23,6 +23,7 @@ using Kadena.WebAPI.KenticoProviders;
 using System;
 using System.Data;
 using Kadena.WebAPI.KenticoProviders.AutoMapperResolvers;
+using Kadena.Models.ShoppingCarts;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -447,6 +448,15 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.GetValue("ProductImage", string.Empty)))
                 .ForMember(dest => dest.ValidTo, opt => opt.MapFrom(src => src.GetValue("SKUValidUntil", DateTime.MinValue)));
 
+
+            CreateMap<ShoppingCartItemInfo, ShoppingCartItem>()
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.CartItemUnits));
+
+            CreateMap<ShoppingCartInfo, ShoppingCart>()
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.CartItems))
+                .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.TotalItemsPrice))
+                .ForMember(dest => dest.TotalTax, opt => opt.Ignore())
+                .ForMember(dest => dest.PricedItemsTax, opt => opt.Ignore());
         }
     }
 }

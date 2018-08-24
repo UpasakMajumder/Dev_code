@@ -539,26 +539,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public ShoppingCart GetShoppingCart(int cartId, string orderType)
         {
             var cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartId);
-            if (cart == null)
-            {
-                return null;
-            }
-
-            return new ShoppingCart
-            {
-                Items = cart.CartItems
-                    .Select(i => new ShoppingCartItem
-                    {
-                        SkuId = i.SKUID,
-                        Quantity = i.CartItemUnits,
-                        UnitPrice = ValidationHelper.GetDecimal(i.UnitPrice, default(decimal)),
-                        TotalPrice = ValidationHelper.GetDecimal(i.TotalPrice, default(decimal))
-                    })
-                    .ToList(),
-                PricedItemsTax = 0,
-                TotalTax = 0,
-                TotalPrice = OrderType.generalInventory.Equals(orderType) ? decimal.Zero : ValidationHelper.GetDecimal(cart.TotalItemsPrice, default(decimal))
-            };
+            return mapper.Map<ShoppingCart>(cart);
         }
 
         public void DeleteShoppingCart(int cartId)
