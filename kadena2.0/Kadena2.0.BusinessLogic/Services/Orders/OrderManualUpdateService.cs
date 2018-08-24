@@ -179,7 +179,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                         });
 
                     // get updated data from cart
-                    var cart = shoppingCartProvider.GetShoppingCart(cartId, orderDetail.Type);
+                    var cart = shoppingCartProvider.GetShoppingCart(cartId);
                     requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart);
                     requestDto.OrderId = request.OrderId;
                     requestDto.Items = cart.Items

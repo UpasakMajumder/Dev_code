@@ -52,7 +52,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var shoppingCart = shoppingCartProvider.GetShoppingCart(cart.ShoppingCartID, orderType);
+                var shoppingCart = shoppingCartProvider.GetShoppingCart(cart.ShoppingCartID);
                 Cart = cart;
                 var billingAddress = GetBillingAddress();
                 var taxAddress = mapper.Map<DeliveryAddress>(billingAddress);

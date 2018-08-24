@@ -536,7 +536,7 @@ namespace Kadena.WebAPI.KenticoProviders
             return (decimal)cart.CartItems.Sum(x => (x.CartItemUnits * x.UnitWeight));
         }
 
-        public ShoppingCart GetShoppingCart(int cartId, string orderType)
+        public ShoppingCart GetShoppingCart(int cartId)
         {
             var cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartId);
             return mapper.Map<ShoppingCart>(cart);
