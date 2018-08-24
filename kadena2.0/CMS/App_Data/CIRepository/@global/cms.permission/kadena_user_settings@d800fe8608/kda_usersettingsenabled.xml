@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <cms.permission>
   <PermissionDisplayInMatrix>True</PermissionDisplayInMatrix>
-  <PermissionDisplayName>Modify shipping address</PermissionDisplayName>
+  <PermissionDisplayName>Enabled</PermissionDisplayName>
   <PermissionEditableByGlobalAdmin>False</PermissionEditableByGlobalAdmin>
-  <PermissionGUID>04451b05-3a6e-4ce5-8526-4913be704cb1</PermissionGUID>
-  <PermissionName>KDA_ModifyShippingAddress</PermissionName>
-  <PermissionOrder>2</PermissionOrder>
+  <PermissionGUID>c81cb318-8d51-4924-af75-85bc20ced9de</PermissionGUID>
+  <PermissionName>KDA_UserSettingsEnabled</PermissionName>
+  <PermissionOrder>1</PermissionOrder>
   <ResourceID>
     <CodeName>Kadena_User_Settings</CodeName>
     <GUID>644c332d-f109-4e46-8394-8ff26db42877</GUID>
