@@ -4,7 +4,7 @@
   <PermissionDisplayName>Enabled</PermissionDisplayName>
   <PermissionEditableByGlobalAdmin>False</PermissionEditableByGlobalAdmin>
   <PermissionGUID>c81cb318-8d51-4924-af75-85bc20ced9de</PermissionGUID>
-  <PermissionName>KDA_UserSettingsEnabled</PermissionName>
+  <PermissionName>KDA_Enabled</PermissionName>
   <PermissionOrder>1</PermissionOrder>
   <ResourceID>
     <CodeName>Kadena_User_Settings</CodeName>
