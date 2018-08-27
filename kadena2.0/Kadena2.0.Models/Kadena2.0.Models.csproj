@@ -151,6 +151,7 @@
     <Compile Include="ShoppingCarts\ShoppingCart.cs" />
     <Compile Include="ShoppingCarts\ShoppingCartItem.cs" />
     <Compile Include="Product\CampaignProductType.cs" />
+    <Compile Include="SiteSettings\ErpMapping\ErpSelectorValue.cs" />
     <Compile Include="SiteSettings\Permissions\PermissionModules.cs" />
     <Compile Include="SiteSettings\Permissions\ModulePermissions.cs" />
     <Compile Include="SiteSettings\Settings.General.cs" />

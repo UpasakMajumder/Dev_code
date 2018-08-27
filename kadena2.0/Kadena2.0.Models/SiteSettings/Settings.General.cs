@@ -104,15 +104,6 @@ namespace Kadena.Models.SiteSettings
         public const string KDA_EmptyCart_ProductsUrl = "KDA_EmptyCart_ProductsUrl";
 
         /// <summary>
-        /// 
-        /// </summary>
-        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
-        [GroupAttribute("General Site Settings")]
-        [DefaultValueAttribute(@"15794")]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkVSUCBDdXN0b21lciBJZCIsIktleU5hbWUiOiJLREFfRXJwQ3VzdG9tZXJJZCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOiIxNTc5NCIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJHZW5lcmFsIFNpdGUgU2V0dGluZ3MifX0=")]
-        public const string KDA_ErpCustomerId = "KDA_ErpCustomerId";
-
-        /// <summary>
         /// KDA FileServiceUrl
         /// </summary>
         [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]

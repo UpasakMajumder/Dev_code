@@ -7,6 +7,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string GetResourceString(string name, string cultureCode);
         string GetResourceString(string name);
         string GetPerSiteResourceString(string name, string site = "");
+        string GetCustomerErpId();
         string GetSiteSettingsKey(string key);
         T GetSiteSettingsKey<T>(string key) where T : IConvertible;
 
