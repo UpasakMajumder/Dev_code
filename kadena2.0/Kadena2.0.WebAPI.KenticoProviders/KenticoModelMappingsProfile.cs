@@ -461,6 +461,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.CampaignId, opt => opt.MapFrom(src => src.GetValue("ShoppingCartCampaignID", 0)))
                 .ForMember(dest => dest.ProgramId, opt => opt.MapFrom(src => src.GetValue("ShoppingCartProgramID", 0)))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.GetValue("ShoppingCartInventoryType", 0)))
+                .ForMember(dest => dest.ShippingOptionId, opt => opt.MapFrom(src => src.ShoppingCartShippingOptionID))
                 .ForMember(dest => dest.TotalTax, opt => opt.Ignore())
                 .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.ShoppingCartCustomerID))
                 .ForMember(dest => dest.PricedItemsTax, opt => opt.Ignore());

@@ -17,6 +17,8 @@ namespace Kadena.Models.ShoppingCarts
 
         public int ProgramId { get; set; }
 
+        public int ShippingOptionId { get; set; }
+
         public CampaignProductType Type { get; set; }
 
         public decimal TotalTax { get; set; }

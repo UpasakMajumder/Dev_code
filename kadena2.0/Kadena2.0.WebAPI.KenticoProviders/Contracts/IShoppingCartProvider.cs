@@ -39,6 +39,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         DeliveryOption GetShippingOption(int id);
 
+        DeliveryOption GetShippingOption(string name);
+
         int GetShoppingCartId(int userId, int siteId);
 
         void RemoveCurrentItemsFromStock(int shoppingCartId = 0);

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Kadena.Models.AddToCart;
 using Kadena.Models.CustomerData;
 using Kadena.Models.ShoppingCarts;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -185,6 +186,9 @@ namespace Kadena.BusinessLogic.Services
         private void CreateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int userId,
             CampaignProductType inventoryType = CampaignProductType.GeneralInventory)
         {
+            var shippingOptionName = resources.GetSiteSettingsKey(Settings.KDA_DefaultShipppingOption);
+            var shippingOption = shoppingCart.GetShippingOption(shippingOptionName);
+
             var cart = new ShoppingCart
             {
                 CampaignId = product.CampaignID,
@@ -192,7 +196,8 @@ namespace Kadena.BusinessLogic.Services
                 CustomerId = distributorCartItem.DistributorID,
                 UserId = userId,
                 Type = inventoryType,
-                ProgramId = product.ProgramID
+                ProgramId = product.ProgramID,
+                ShippingOptionId = shippingOption.Id
             };
 
             int cartID = shoppingCart.SaveCart(cart);

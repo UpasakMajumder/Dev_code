@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Kadena.Models.AddToCart;
 using Kadena.Models.ShoppingCarts;
-using Kadena.Models.SiteSettings;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -523,7 +522,6 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public int SaveCart(ShoppingCart cart)
         {
-            var shippingOption = ShippingOptionInfoProvider.GetShippingOptionInfo(resources.GetSiteSettingsKey(Settings.KDA_DefaultShipppingOption), SiteContext.CurrentSiteName);
             var customerAddress = AddressInfoProvider.GetAddressInfo(cart.DistributorId);
             var cartInfo = new ShoppingCartInfo()
             {
@@ -532,7 +530,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 ShoppingCartCurrencyID = CurrencyInfoProvider.GetMainCurrency(SiteContext.CurrentSiteID).CurrencyID,
                 User = UserInfoProvider.GetUserInfo(cart.UserId),
                 ShoppingCartShippingAddress = customerAddress,
-                ShoppingCartShippingOptionID = shippingOption?.ShippingOptionID ?? 0
+                ShoppingCartShippingOptionID = cart.ShippingOptionId
             };
             cartInfo.SetValue("ShoppingCartCampaignID", cart.CampaignId);
             cartInfo.SetValue("ShoppingCartProgramID", cart.ProgramId);
@@ -540,6 +538,14 @@ namespace Kadena.WebAPI.KenticoProviders
             cartInfo.SetValue("ShoppingCartInventoryType", (int)cart.Type);
             ShoppingCartInfoProvider.SetShoppingCartInfo(cartInfo);
             return cartInfo.ShoppingCartID;
+        }
+
+        public DeliveryOption GetShippingOption(string name)
+        {
+            var option = mapper.Map<DeliveryOption>(ShippingOptionInfoProvider.GetShippingOptionInfo(name, SiteContext.CurrentSiteName));
+            var carrier = CarrierInfoProvider.GetCarrierInfo(option.CarrierId);
+            option.CarrierCode = carrier.CarrierName;
+            return option;
         }
     }
 }
