@@ -64,7 +64,6 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     BillingAddress = billingAddress,
                     ShippingAddressSource = DIContainer.Resolve<IGetOrderDataService>().GetSourceAddressForDeliveryEstimation(),
                     ShippingAddressDestination = billingAddress,
-                    ShippingAddress = billingAddress,
                     ShippingOption = ShippingOption(),
                     Customer = GetCustomer(),
                     Site = GetSite(),
