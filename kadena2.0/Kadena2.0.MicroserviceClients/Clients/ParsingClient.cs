@@ -19,7 +19,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<IEnumerable<string>>> GetHeaders(string fileId)
         {
-            var url = $"{BaseUrl}/parser/headers";
+            var url = $"{BaseUrl}/api/v{Version}/parser/headers";
             var body = new
             {
                 fileId

@@ -18,7 +18,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<string>> ExportMailingList(Guid containerId)
         {
-            var url = $"{BaseUrl}/export/mailinglist?containerId={containerId}&siteName={_properties.GetCustomerName()}&reportType=processedMails&outputType=csv";
+            var url = $"{BaseUrl}/api/v{Version}/export/mailinglist?containerId={containerId}&siteName={_properties.GetCustomerName()}&reportType=processedMails&outputType=csv";
             return await Get<string>(url).ConfigureAwait(false);
         }
     }
