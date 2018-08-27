@@ -17,6 +17,7 @@ namespace Kadena.BusinessLogic.Services
         {
             return new []
             {
+                _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.LineNumber"),
                 _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.Site"),
                 _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.Number"),
                 _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.OrderDate"),
@@ -27,7 +28,9 @@ namespace Kadena.BusinessLogic.Services
                 _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.Price"),
                 _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.Status"),
                 _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.ShippingDate"),
-                _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.TrackingNumber")
+                _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.TrackingNumber"),
+                _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.ShippedQuantity"),
+                _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.ShippingMethod")
             };
         }
 
@@ -35,6 +38,7 @@ namespace Kadena.BusinessLogic.Services
         {
             return new[]
             {
+                "LineNumber",
                 "Site",
                 "orderNumber",
                 "CreateDate",
@@ -45,7 +49,9 @@ namespace Kadena.BusinessLogic.Services
                 "Price",
                 "Status",
                 "ShippingDate",
-                "TrackingNumber"
+                "TrackingNumber",
+                "ShippedQuantity",
+                "ShippingMethod"
             };
         }
     }

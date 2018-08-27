@@ -87,6 +87,7 @@ namespace Kadena.Container.Default
 
             CreateMap<OrderReportViewItem, TableRow>()
                 .ForMember(dest => dest.Items, opt => opt.ResolveUsing(src => new object[] {
+                    src.LineNumber,
                     src.Site,
                     src.Number,
                     src.OrderingDate,
@@ -317,10 +318,10 @@ namespace Kadena.Container.Default
             CreateMap<TableView, TableViewDto>();
             CreateMap<TableRow, TableRowDto>()
                 .ConvertUsing(new TableRowToDtoConverter());
-            CreateMap<TableRow[], TableRowDto[]>();
             CreateMap<Pagination, PaginationDto>();
             CreateMap<IEnumerable<TrackingInfo>, TrackingFieldDto>()
-                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src));
+                .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src));
+            CreateMap<OrderReportViewItem, OrderReportViewItem>();
             CreateMap<TitledMessage, TitledMessageDto>();
 
             CreateMap<NewAddressButton, NewAddressButtonDTO>();

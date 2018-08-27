@@ -149,7 +149,7 @@
 config.localization.ordersReports = {
     headings: [
         {
-            id: 'Site',
+            id: 'site',
             label: '{$ Kadena.OrdersReport.Table.Site $}',
             sort: false,
             isDate: false
@@ -161,58 +161,59 @@ config.localization.ordersReports = {
             isDate: false
         },				
         {
-            id: 'CreateDate',
+            id: 'createDate',
             label: '{$ Kadena.OrdersReport.Table.OrderDate $}',
             sort: true,
             isDate: true
         },
         {
-            id: 'User',
+            id: 'user',
             label: '{$ Kadena.OrdersReport.Table.User $}',
             sort: false,
             isDate: false
         },				
         {
-            id: 'Name',
+            id: 'name',
             label: '{$ Kadena.OrdersReport.Table.Name $}',
             sort: false,
             isDate: false
         },				
         {
-            id: 'SKU',
+            id: 'sku',
             label: '{$ Kadena.OrdersReport.Table.SKU $}',
             sort: false,
             isDate: false
         },				
         {
-            id: 'Quantity',
+            id: 'quantity',
             label: '{$ Kadena.OrdersReport.Table.Quantity $}',
             sort: false,
             isDate: false
         },
         {
-            id: 'Price',
+            id: 'price',
             label: '{$ Kadena.OrdersReport.Table.Price $}',
             sort: false,
             isDate: false
         },
         {
-            id: 'Status',
+            id: 'status',
             label: '{$ Kadena.OrdersReport.Table.Status $}',
             sort: false,
             isDate: false
         },
         {
-            id: 'ShippingDate',
+            id: 'shippingDate',
             label: '{$ Kadena.OrdersReport.Table.ShippingDate $}',
             sort: false,
             isDate: true
         },				
         {
-            id: 'TrackingNumber',
+            id: 'trackingNumber',
             label: '{$ Kadena.OrdersReport.Table.TrackingNumber $}',
             sort: false,
-            isDate: false
+            isDate: false,
+            type: 'number'
         }				
     ],
     pageInfo: {
@@ -237,74 +238,58 @@ config.localization.ordersReports = {
               cancel: '{$ Kadena.OrdersReport.Manage.CancelButton $}',
               save: '{$ Kadena.OrdersReport.Manage.SaveButton $}'
             },
-            submitUrl: '/api/order/report/manage',
+            submitUrl: '/api/ordershippingupdate',
             headers: [
               {
-                  id: 'Site',
-                  label: '{$ Kadena.OrdersReport.Table.Site $}',
-                  sort: false,
-                  isDate: false
+                id: 'lineNumber',
+                label: '{$ Kadena.OrdersReport.Table.LineNumber $}',
+                sort: false,
+                isDate: false,
+                type: 'number',
+                edit: false
               },
               {
                   id: 'orderNumber',
                   label: '{$ Kadena.OrdersReport.Table.Number $}',
                   sort: false,
                   isDate: false
-              },				
-              {
-                  id: 'CreateDate',
-                  label: '{$ Kadena.OrdersReport.Table.OrderDate $}',
-                  sort: true,
-                  isDate: true
               },
               {
-                  id: 'User',
-                  label: '{$ Kadena.OrdersReport.Table.User $}',
-                  sort: false,
-                  isDate: false
-              },				
-              {
-                  id: 'Name',
-                  label: '{$ Kadena.OrdersReport.Table.Name $}',
-                  sort: false,
-                  isDate: false
-              },				
-              {
-                  id: 'SKU',
+                  id: 'sku',
                   label: '{$ Kadena.OrdersReport.Table.SKU $}',
                   sort: false,
                   isDate: false
-              },				
-              {
-                  id: 'Quantity',
-                  label: '{$ Kadena.OrdersReport.Table.Quantity $}',
-                  sort: false,
-                  isDate: false
               },
               {
-                  id: 'Price',
-                  label: '{$ Kadena.OrdersReport.Table.Price $}',
-                  sort: false,
-                  isDate: false
-              },
-              {
-                  id: 'Status',
-                  label: '{$ Kadena.OrdersReport.Table.Status $}',
-                  sort: false,
-                  isDate: false
-              },
-              {
-                  id: 'ShippingDate',
+                  id: 'shippingDate',
                   label: '{$ Kadena.OrdersReport.Table.ShippingDate $}',
                   sort: false,
-                  isDate: true
-              },				
+                  isDate: true,
+                  type: 'date'
+              },
               {
-                  id: 'TrackingNumber',
+                  id: 'trackingNumber',
                   label: '{$ Kadena.OrdersReport.Table.TrackingNumber $}',
                   sort: false,
-                  isDate: false
-              }	
+                  isDate: false,
+                  edit: true
+              },
+              {
+                id: 'shippingMethod',
+                label: '{$ Kadena.OrdersReport.Table.ShippingMethod $}',
+                type: 'select',
+                values: [
+                    {% foreach(x in SiteObjects.ShippingOptions.Where("ShippingOptionEnabled=1")){ println("{ id: '"+Util.JSEscape(x.GetValue("ShippingOptionName"))+"', name: '"+Util.JSEscape(x.GetValue("ShippingOptionDisplayName"))+"' },") |(user)administrator|(hash)af4ed07f27e06425dbbc63a48c3bcf8fe7418f8b0ea883c040af93a130a73946%}
+                ]
+              },
+              {
+                  id: 'shippedQuantity',
+                  label: '{$ Kadena.OrdersReport.Table.ShippedQuantity $}',
+                  sort: false,
+                  isDate: false,
+                  edit: true,
+                  type: 'number'
+              }
             ]
         }
     }

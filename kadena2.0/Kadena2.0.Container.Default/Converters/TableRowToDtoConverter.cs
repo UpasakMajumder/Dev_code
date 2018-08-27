@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using AutoMapper;
 using Kadena.Dto.Common;
 using Kadena.Models.Common;
 using Kadena.BusinessLogic.Contracts;
-using Kadena.Dto.OrderReport;
+using Kadena.Models.Shipping;
 
 namespace Kadena.Container.Default.Converters
 {
@@ -25,10 +26,31 @@ namespace Kadena.Container.Default.Converters
             {
                 var dictionaryKey = headers[i];
 
-                if (i == 10)
+                if (i == 11)
                 {
-                    var value = context.Mapper.Map<TrackingFieldDto>(source.Items[10]);
-                    itemsDictionary.Add(dictionaryKey, value);
+                    var trackingInfos = source.Items[i] as IEnumerable<TrackingInfo>;
+                    var trackingInfo = trackingInfos?.FirstOrDefault();
+
+                    var trackingValue = new
+                    {
+                        Type = "tracking",
+                        Value = trackingInfo?.Id ?? string.Empty,
+                        trackingInfo?.Url
+                    };
+                    itemsDictionary.Add(dictionaryKey, trackingValue);
+
+                    var shippedValue = new
+                    {
+                        Value = trackingInfo?.QuantityShipped ?? 0
+                    };
+                    itemsDictionary.Add(headers[i + 1], shippedValue);
+
+                    var methodValue = new
+                    {
+                        Value = trackingInfo?.ShippingMethod.ShippingService ?? string.Empty
+                    };
+                    itemsDictionary.Add(headers[i + 2], methodValue);
+                    break;
                 }
 
                 var dictionaryValue = new

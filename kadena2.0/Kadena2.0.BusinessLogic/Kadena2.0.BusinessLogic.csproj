@@ -79,6 +79,7 @@
     <Compile Include="Contracts\Approval\IApproverService.cs" />
     <Compile Include="Contracts\IByteConverter.cs" />
     <Compile Include="Contracts\IErpSystemsService.cs" />
+    <Compile Include="Contracts\INewProductNotificationService.cs" />
     <Compile Include="Contracts\IOrderReportFactoryHeaders.cs" />
     <Compile Include="Contracts\IPreBuyCatalogService.cs" />
     <Compile Include="Contracts\IConvert.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Services\MailService.cs" />
     <Compile Include="Services\ImageService.cs" />
     <Compile Include="Services\ModuleAccessService.cs" />
+    <Compile Include="Services\NewProductNotificationService.cs" />
     <Compile Include="Services\OrderPayment\SavedCreditCard3dsi.cs" />
     <Compile Include="Services\IBTFService.cs" />
     <Compile Include="Services\OrderReportFactoryHeaders.cs" />

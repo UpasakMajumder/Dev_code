@@ -83,6 +83,11 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.taxEstimationService = taxEstimationService ?? throw new ArgumentNullException(nameof(taxEstimationService));
         }
 
+        public async Task<(bool, string)> UpdateOrdersShippings(UpdateShippingRow[] request)
+        {
+            return (true, null);
+        }
+
         public async Task<OrderUpdateResult> UpdateOrder(OrderUpdate request)
         {
             CheckRequestData(request);

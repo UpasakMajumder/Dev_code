@@ -33,5 +33,20 @@ namespace Kadena.WebAPI.Controllers
             var resultDto = mapper.Map<OrderUpdateResultDto>(result);
             return ResponseJson(resultDto);
         }
+
+        [HttpPost]
+        [Route(Routes.Order.OrderShippingUpdate)]
+        public async Task<IHttpActionResult> UpdateOrdersShippings(object[] items)
+        {
+            var request = mapper.Map<UpdateShippingRow[]>(items);
+            var result = await updateService.UpdateOrdersShippings(request);
+
+            if (result.Item1)
+            {
+                return SuccessJson();
+            }
+
+            return ErrorJson(result.Item2);
+        }
     }
 }

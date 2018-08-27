@@ -10,6 +10,8 @@ using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TableRow = Kadena.Models.Common.TableRow;
+using Kadena.Models.Shipping;
 
 namespace Kadena.BusinessLogic.Factories
 {
@@ -84,12 +86,34 @@ namespace Kadena.BusinessLogic.Factories
                 );
 
 
-        public TableView CreateTableView(IEnumerable<OrderReportViewItem> reportDto) =>
-            new TableView
+        public TableView CreateTableView(IEnumerable<OrderReportViewItem> reportDto)
+        {
+            var orderReportViewItems = reportDto as OrderReportViewItem[] ?? reportDto.ToArray();
+
+            var resultItems = new List<TableRow>();
+            foreach (var orderReportViewItem in orderReportViewItems.Where(r => r.Quantity > 0))
             {
-                Rows = _mapper.Map<TableRow[]>(reportDto.Where(r => r.Quantity > 0)),
+                if (orderReportViewItem.TrackingInfos.Any())
+                {
+                    var itemClone = _mapper.Map<OrderReportViewItem>(orderReportViewItem);
+                    foreach (var trackingInfo in orderReportViewItem.TrackingInfos)
+                    {
+                        itemClone.TrackingInfos = new[] { trackingInfo };
+                        resultItems.Add(_mapper.Map<TableRow>(itemClone));
+                    }
+                }
+                else
+                {
+                    resultItems.Add(_mapper.Map<TableRow>(orderReportViewItem));
+                }
+            }
+
+            return new TableView
+            {
+                Rows = resultItems.ToArray(),
                 Headers = _orderReportFactoryHeaders.GetDisplayNameHeaders()
             };
+        }
 
         private string FormatCustomer(Customer customer)
         {

@@ -78,6 +78,11 @@
     <Compile Include="Notification\MicroserviceRequests\SendCustomNotificationRequestDto.cs" />
     <Compile Include="OrderManualUpdate\MicroserviceRequests\ItemUpdateDto.cs" />
     <Compile Include="OrderManualUpdate\MicroserviceRequests\OrderManualUpdateRequestDto.cs" />
+    <Compile Include="OrderManualUpdate\MicroserviceRequests\UpdateShipping\UpdateShippingsOrderDto.cs" />
+    <Compile Include="OrderManualUpdate\MicroserviceRequests\UpdateShipping\UpdateShippingsOrderItemDto.cs" />
+    <Compile Include="OrderManualUpdate\MicroserviceRequests\UpdateShipping\UpdateShippingsOrderItemShippingDto.cs" />
+    <Compile Include="OrderManualUpdate\MicroserviceRequests\UpdateShipping\UpdateShippingsOrderItemShippingMethod.cs" />
+    <Compile Include="OrderManualUpdate\MicroserviceRequests\UpdateShipping\UpdateShippingsRequestDto.cs" />
     <Compile Include="OrderManualUpdate\Requests\OrderItemUpdateDto.cs" />
     <Compile Include="OrderManualUpdate\Requests\OrderUpdateDto.cs" />
     <Compile Include="OrderManualUpdate\Responses\ItemUpdateResultDto.cs" />
