@@ -197,7 +197,8 @@ namespace Kadena.BusinessLogic.Services
                 UserId = userId,
                 Type = inventoryType,
                 ProgramId = product.ProgramID,
-                ShippingOptionId = shippingOption.Id
+                ShippingOptionId = shippingOption.Id,
+                AddressId = distributorCartItem.DistributorID
             };
 
             int cartID = shoppingCart.SaveCart(cart);

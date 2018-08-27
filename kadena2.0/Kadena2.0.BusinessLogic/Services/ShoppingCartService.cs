@@ -13,7 +13,6 @@ using Kadena2.MicroserviceClients.Contracts;
 using System.Collections.Generic;
 using Kadena.Models.SiteSettings;
 using Kadena.BusinessLogic.Contracts.Orders;
-using Kadena.Models.ShoppingCarts;
 
 namespace Kadena.BusinessLogic.Services
 {

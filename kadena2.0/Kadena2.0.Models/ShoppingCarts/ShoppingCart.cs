@@ -7,6 +7,8 @@ namespace Kadena.Models.ShoppingCarts
     {
         public List<ShoppingCartItem> Items { get; set; }
 
+        public int AddressId { get; set; }
+
         public int DistributorId { get; set; }
 
         public int UserId { get; set; }

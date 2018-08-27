@@ -522,7 +522,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public int SaveCart(ShoppingCart cart)
         {
-            var customerAddress = AddressInfoProvider.GetAddressInfo(cart.DistributorId);
+            var customerAddress = AddressInfoProvider.GetAddressInfo(cart.AddressId);
             var cartInfo = new ShoppingCartInfo()
             {
                 ShoppingCartSiteID = SiteContext.CurrentSiteID,
