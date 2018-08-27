@@ -75,8 +75,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         int GetItemQuantity(int SKUID, int shoppingCartID);
 
-        int CreateDistributorCart(int distributorId, int campaignId, int programId, int userID, CampaignProductType cartType = CampaignProductType.GeneralInventory);
-
         void UpdateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, CampaignProductType cartType = CampaignProductType.GeneralInventory);
 
         void AddDistributorCartItem(int cartID, DistributorCartItem distributorCartItem, CampaignsProduct product, CampaignProductType cartType = CampaignProductType.GeneralInventory);
@@ -90,5 +88,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void DeleteShoppingCart(int cartId);
 
         ShoppingCart GetShoppingCart(int cartId);
+
+        int SaveCart(ShoppingCart cart);
     }
 }

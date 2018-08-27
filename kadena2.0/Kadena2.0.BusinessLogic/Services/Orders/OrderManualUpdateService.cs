@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.BusinessLogic.Contracts.Orders;
@@ -10,6 +10,7 @@ using Kadena.Models.CampaignData;
 using Kadena.Models.OrderDetail;
 using Kadena.Models.Orders;
 using Kadena.Models.Product;
+using Kadena.Models.ShoppingCarts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
@@ -150,9 +151,13 @@ namespace Kadena.BusinessLogic.Services.Orders
                     .ToList();
                 // create fake cart with new data
                 // distributor set to 0 so cart won't be visible for active users
-                var cartId = shoppingCartProvider.CreateDistributorCart(0,
-                    orderDetail.campaign.ID, orderDetail.campaign.ProgramID,
-                    orderDetail.Customer.KenticoUserID);
+                var cart = new ShoppingCart
+                {
+                    CampaignId = orderDetail.campaign.ID,
+                    ProgramId = orderDetail.campaign.ProgramID,
+                    UserId = orderDetail.Customer.KenticoUserID
+                };
+                var cartId = shoppingCartProvider.SaveCart(cart);
                 // update fake cart
                 try
                 {
@@ -179,7 +184,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                         });
 
                     // get updated data from cart
-                    var cart = shoppingCartProvider.GetShoppingCart(cartId);
+                    cart = shoppingCartProvider.GetShoppingCart(cartId);
                     requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart);
                     requestDto.OrderId = request.OrderId;
                     requestDto.Items = cart.Items

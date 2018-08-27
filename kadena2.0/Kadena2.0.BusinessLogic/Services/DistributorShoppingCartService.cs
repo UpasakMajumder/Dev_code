@@ -7,6 +7,7 @@ using Kadena.Models.Product;
 using System.Collections.Generic;
 using Kadena.Models.AddToCart;
 using Kadena.Models.CustomerData;
+using Kadena.Models.ShoppingCarts;
 
 namespace Kadena.BusinessLogic.Services
 {
@@ -184,9 +185,17 @@ namespace Kadena.BusinessLogic.Services
         private void CreateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int userId,
             CampaignProductType inventoryType = CampaignProductType.GeneralInventory)
         {
-            int cartID = shoppingCart.CreateDistributorCart(distributorCartItem.DistributorID,
-                product.CampaignID, product.ProgramID,
-                userId, inventoryType);
+            var cart = new ShoppingCart
+            {
+                CampaignId = product.CampaignID,
+                DistributorId = distributorCartItem.DistributorID,
+                CustomerId = distributorCartItem.DistributorID,
+                UserId = userId,
+                Type = inventoryType,
+                ProgramId = product.ProgramID
+            };
+
+            int cartID = shoppingCart.SaveCart(cart);
             shoppingCart.AddDistributorCartItem(cartID, distributorCartItem, product, inventoryType);
         }
 
