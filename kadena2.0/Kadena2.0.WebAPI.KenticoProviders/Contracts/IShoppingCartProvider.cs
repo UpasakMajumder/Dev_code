@@ -57,8 +57,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         List<int> GetUserIDsWithShoppingCart(int campaignID, int productType);
 
-        void UpdateBusinessUnit(ShoppingCartInfo cart, long businessUnitID);
-
         bool IsCartContainsInvalidProduct(int shoppingCartId = 0);
 
         List<int> GetCampaingShoppingCartIDs(int campaignID);

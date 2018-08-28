@@ -546,7 +546,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                var cartBusinessUnit = DIContainer.Resolve<IShoppingCartProvider>();
                 if (BusinessUnits != null && BusinessUnits.Count > 0)
                 {
                     ddlBusinessUnits.DataSource = BusinessUnits;
@@ -555,7 +554,8 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     ddlBusinessUnits.DataBind();
                     if (string.IsNullOrEmpty(Cart.GetStringValue("BusinessUnitIDForDistributor", null)))
                     {
-                        cartBusinessUnit.UpdateBusinessUnit(Cart, BusinessUnits.FirstOrDefault().BusinessUnitNumber);
+                        Cart.SetValue("BusinessUnitIDForDistributor", BusinessUnits.FirstOrDefault().BusinessUnitNumber);
+                        Cart.Update();
                     }
                 }
             }
