@@ -212,7 +212,7 @@ class ManageOrdersModal extends Component {
       return {
         ...field,
         lineNumber: dataRow.items.lineNumber && dataRow.items.lineNumber.value,
-        trackingInforld: field.new ? '' : dataRow.items.trackingInfold && dataRow.items.trackingInfold.value
+        trackingInfoId: field.new ? '' : dataRow.items.trackingInfoId && dataRow.items.trackingInfoId.value
       };
     });
   };
