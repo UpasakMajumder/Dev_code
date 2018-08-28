@@ -65,6 +65,12 @@ module.exports.reports = {
             orderNumber: {
               value: '1'
             },
+            lineNumber: {
+              value: '11'
+            },
+            trackingInfold: {
+              value: '111'
+            },
             3: {
               value: '2017-08-04T09:12:08.108892Z'
             },
@@ -104,6 +110,12 @@ module.exports.reports = {
             orderNumber: {
               value: '2'
             },
+            lineNumber: {
+              value: '22'
+            },
+            trackingInfold: {
+              value: '222'
+            },
             3: {
               value: '2017-08-04T09:12:08.108892Z'
             },
@@ -141,6 +153,12 @@ module.exports.reports = {
             },
             orderNumber: {
               value: '2'
+            },
+            lineNumber: {
+              value: '22'
+            },
+            trackingInfold: {
+              value: '222'
             },
             3: {
               value: '2017-08-04T09:12:08.108892Z'
@@ -180,6 +198,12 @@ module.exports.reports = {
             orderNumber: {
               value: '3'
             },
+            lineNumber: {
+              value: '33'
+            },
+            trackingInfold: {
+              value: '333'
+            },
             3: {
               value: '2017-08-04T09:12:08.108892Z'
             },
@@ -217,6 +241,12 @@ module.exports.reports = {
             },
             orderNumber: {
               value: '4'
+            },
+            lineNumber: {
+              value: '44'
+            },
+            trackingInfold: {
+              value: '4444'
             },
             3: {
               value: '2017-08-04T09:12:08.108892Z'
@@ -259,6 +289,12 @@ module.exports.reports = {
             },
             orderNumber: {
               value: '4'
+            },
+            lineNumber: {
+              value: '44'
+            },
+            trackingInfold: {
+              value: '444'
             },
             3: {
               value: '2017-08-04T09:12:08.108892Z'
