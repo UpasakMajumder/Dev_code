@@ -471,30 +471,24 @@ namespace Kadena.BusinessLogic.Services
 
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.InventoryProduct))
             {
-                orderChecker.EnsureInventoryAmount(sku, newItem.Quantity, cartItem.SKUUnits);
+                orderChecker.EnsureInventoryAmount(sku, addedAmount, cartItem.SKUUnits);
             }
 
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.MailingProduct))
             {
                 await SetMailingList(cartItem, newItem.ContainerId, addedAmount);
             }
+            else
+            {
+                // do this before calculating dynamic price
+                if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))
+                {
+                    cartItem.SKUUnits = addedAmount;
+                }
+                orderChecker.CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID), addedAmount);
+            }
 
             shoppingCartItems.SetArtwork(cartItem, newItem.DocumentId);
-
-            // do this before calculating dynamic price
-            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))
-            {
-                orderChecker.CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID),
-                                    newItem.Quantity);
-                cartItem.SKUUnits = newItem.Quantity;
-            }
-            else if (!ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.MailingProduct))
-            {
-                var totalQuantity = cartItem.SKUUnits + newItem.Quantity;
-                orderChecker.CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID),
-                                    totalQuantity);
-                cartItem.SKUUnits = totalQuantity;
-            }
 
             var price = productsService.GetPriceByCustomModel(newItem.DocumentId, cartItem.SKUUnits);
             if (price != decimal.MinusOne)
@@ -528,12 +522,8 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
-
-            if (mailingList != null)
-            {
-                cartItem.MailingListName = mailingList.Name;
-                cartItem.MailingListGuid = Guid.Parse(mailingList.Id);
-            }
+            cartItem.MailingListName = mailingList.Name;
+            cartItem.MailingListGuid = Guid.Parse(mailingList.Id);
 
             cartItem.SKUUnits = addedAmount;
         }
