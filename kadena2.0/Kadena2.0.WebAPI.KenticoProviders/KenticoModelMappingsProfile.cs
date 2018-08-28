@@ -198,6 +198,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.GetValue("ProductType", string.Empty)))
                 .ForMember(dest => dest.CartItemPrice, opt => opt.MapFrom(src => (decimal)src.GetDoubleValue("CartItemPrice", 0.0d)))
                 .ForMember(dest => dest.SKUUnits, opt => opt.MapFrom(src => src.GetIntegerValue("SKUUnits", 0)))
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.CartItemUnits))
                 .ForMember(dest => dest.SendPriceToErp, opt => opt.MapFrom(src => src.GetBooleanValue("SendPriceToErp", true)))
                 .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit)));
 
@@ -447,10 +448,6 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.NumberOfItemsInPackage, opt => opt.MapFrom(src => src.GetValue("SKUNumberOfItemsInPackage", 1)))
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.GetValue("ProductImage", string.Empty)))
                 .ForMember(dest => dest.ValidTo, opt => opt.MapFrom(src => src.GetValue("SKUValidUntil", DateTime.MinValue)));
-
-
-            CreateMap<ShoppingCartItemInfo, ShoppingCartItem>()
-                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.CartItemUnits));
 
             CreateMap<ShoppingCartInfo, ShoppingCart>()
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.CartItems))

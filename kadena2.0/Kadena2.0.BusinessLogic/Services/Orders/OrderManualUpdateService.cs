@@ -191,7 +191,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                         .Select(i =>
                         {
                             var item = mapper.Map<ItemUpdateDto>(i);
-                            item.LineNumber = skuLines[i.SkuId];
+                            item.LineNumber = skuLines[i.SKUID];
                             return item;
                         })
                         .Concat(deletedItems)

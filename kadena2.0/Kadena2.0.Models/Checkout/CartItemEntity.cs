@@ -9,6 +9,9 @@ namespace Kadena.Models.Checkout
         public int ShoppingCartID { get; set; }
         public int SKUID { get; set; }
         public int SKUUnits { get; set; }
+        public int Quantity { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal TotalPrice { get; set; }
         public decimal? CartItemPrice { get; set; }
         public string CartItemText { get; set; }
         public string ProductType { get; set; }

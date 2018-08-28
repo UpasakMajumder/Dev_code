@@ -1,11 +1,12 @@
-﻿using Kadena.Models.Product;
+﻿using Kadena.Models.Checkout;
+using Kadena.Models.Product;
 using System.Collections.Generic;
 
 namespace Kadena.Models.ShoppingCarts
 {
     public class ShoppingCart
     {
-        public List<ShoppingCartItem> Items { get; set; }
+        public List<CartItemEntity> Items { get; set; }
 
         public int AddressId { get; set; }
 
