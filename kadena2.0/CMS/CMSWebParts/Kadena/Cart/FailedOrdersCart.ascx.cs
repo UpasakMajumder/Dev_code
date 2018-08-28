@@ -25,7 +25,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
 {
     public partial class FailedOrdersCart : CMSCheckoutWebPart
     {
-        private IShoppingCartProvider _shoppingCart;
         private IKenticoBusinessUnitsProvider _businessUnit;
         #region "Private Properties"
 
@@ -247,7 +246,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                _shoppingCart = DIContainer.Resolve<IShoppingCartProvider>();
                 _businessUnit = DIContainer.Resolve<IKenticoBusinessUnitsProvider>();
                 if (AuthenticationHelper.IsAuthenticated())
                 {
@@ -327,7 +325,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                Cart = _shoppingCart.GetShoppingCartByID(CartID);
+                Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
                 GetItems();
                 BindBusinessUnit();
                 ValidCart = true;

@@ -376,10 +376,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             return isValid;
         }
-        public ShoppingCartInfo GetShoppingCartByID(int cartID)
-        {
-            return ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
-        }
+
         public void UpdateBusinessUnit(ShoppingCartInfo cart, long businessUnitID)
         {
             cart.SetValue("BusinessUnitIDForDistributor", businessUnitID);
