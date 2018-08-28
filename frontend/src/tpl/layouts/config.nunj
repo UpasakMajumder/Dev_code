@@ -252,7 +252,8 @@
           {
             id: '3',
             label: "Order date",
-            sort: true
+            sort: true,
+            type: "date"
           },
           {
             id: '4',
@@ -281,11 +282,12 @@
           {
             id: '10',
             label: "Shipping date",
-            isDate: true
+            type: 'date'
           },
           {
             id: '11',
-            label: "Tracking number"
+            label: "Tracking number",
+            type: 'tracking',
           }
         ],
         pageInfo: {

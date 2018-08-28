@@ -65,8 +65,13 @@ module.exports.reports = {
             orderNumber: {
               value: '1'
             },
+            lineNumber: {
+              value: '11'
+            },
+            trackingInfoId: {
+              value: '111'
+            },
             3: {
-              type: 'date',
               value: '2017-08-04T09:12:08.108892Z'
             },
             4: {
@@ -88,11 +93,9 @@ module.exports.reports = {
               value: '8'
             },
             10: {
-              type: 'date',
               value: '2017-08-10T09:12:08.108892Z'
             },
             11: {
-              type: 'tracking',
               value: 2,
               url: '#'
             }
@@ -107,8 +110,13 @@ module.exports.reports = {
             orderNumber: {
               value: '2'
             },
+            lineNumber: {
+              value: '22'
+            },
+            trackingInfoId: {
+              value: '222'
+            },
             3: {
-              type: 'date',
               value: '2017-08-04T09:12:08.108892Z'
             },
             4: {
@@ -130,11 +138,9 @@ module.exports.reports = {
               value: '8'
             },
             10: {
-              type: 'date',
               value: '2017-08-10T09:12:08.108892Z'
             },
             11: {
-              type: 'tracking',
               value: 1
             }
           }
@@ -148,8 +154,13 @@ module.exports.reports = {
             orderNumber: {
               value: '2'
             },
+            lineNumber: {
+              value: '22'
+            },
+            trackingInfoId: {
+              value: '222'
+            },
             3: {
-              type: 'date',
               value: '2017-08-04T09:12:08.108892Z'
             },
             4: {
@@ -171,11 +182,9 @@ module.exports.reports = {
               value: '8'
             },
             10: {
-              type: 'date',
               value: '2017-08-10T09:12:08.108892Z'
             },
             11: {
-              type: 'tracking',
               value: 86567
             }
           }
@@ -189,8 +198,13 @@ module.exports.reports = {
             orderNumber: {
               value: '3'
             },
+            lineNumber: {
+              value: '33'
+            },
+            trackingInfoId: {
+              value: '333'
+            },
             3: {
-              type: 'date',
               value: '2017-08-04T09:12:08.108892Z'
             },
             4: {
@@ -212,11 +226,9 @@ module.exports.reports = {
               value: '8'
             },
             10: {
-              type: 'date',
               value: '2017-08-10T09:12:08.108892Z'
             },
             11: {
-              type: 'tracking',
               value: 2
             }
           }
@@ -230,8 +242,13 @@ module.exports.reports = {
             orderNumber: {
               value: '4'
             },
+            lineNumber: {
+              value: '44'
+            },
+            trackingInfoId: {
+              value: '4444'
+            },
             3: {
-              type: 'date',
               value: '2017-08-04T09:12:08.108892Z'
             },
             4: {
@@ -253,11 +270,9 @@ module.exports.reports = {
               value: '8'
             },
             10: {
-              type: 'date',
               value: '2017-08-10T09:12:08.108892Z'
             },
             11: {
-              type: 'tracking',
               value: 5,
               url: '#'
             },
@@ -275,8 +290,13 @@ module.exports.reports = {
             orderNumber: {
               value: '4'
             },
+            lineNumber: {
+              value: '44'
+            },
+            trackingInfoId: {
+              value: '444'
+            },
             3: {
-              type: 'date',
               value: '2017-08-04T09:12:08.108892Z'
             },
             4: {
@@ -298,11 +318,9 @@ module.exports.reports = {
               value: '8'
             },
             10: {
-              type: 'date',
               value: '2017-08-10T09:12:08.108892Z'
             },
             11: {
-              type: 'tracking',
               value: 88
             }
           }

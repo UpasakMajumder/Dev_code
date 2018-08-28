@@ -6,6 +6,7 @@ import axios from 'axios';
 /* components */
 import Dialog from 'app.dump/Dialog';
 import Button from 'app.dump/Button';
+import SVG from 'app.dump/SVG';
 import TextInput from 'app.dump/Form/TextInput';
 import Select from 'app.dump/Form/Select';
 import Datepicker from 'app.dump/Form/Datepicker';
@@ -155,11 +156,14 @@ class ManageOrdersModal extends Component {
         } else if (headerIndex === this.props.ui.headers.length - 1) {
           return (
             <td key={uuid()}>
-              <Button
-                text="Add"
-                type="action"
+              <button
                 onClick={() => this.addRow(rowIndex)}
-              />
+                type="button"
+                className="plus-btn"
+                style={{ width: 30, height: 30 }}
+              >
+                <SVG name="plus" />
+              </button>
             </td>
           );
         }
@@ -200,11 +204,24 @@ class ManageOrdersModal extends Component {
     </div>
   );
 
+  getFields = () => {
+    return this.state.fields.map((field, index) => {
+      const dataRows = this.props.rows.filter(row => row.items.orderNumber.value === field.orderNumber);
+      const dataRow = dataRows.length ? dataRows[0] : { items: {} };
+
+      return {
+        ...field,
+        lineNumber: dataRow.items.lineNumber && dataRow.items.lineNumber.value,
+        trackingInfoId: field.new ? '' : dataRow.items.trackingInfoId && dataRow.items.trackingInfoId.value
+      };
+    });
+  };
+
   submit = () => {
     this.setState({ isLoading: true });
 
     axios
-      .post(this.props.ui.submitUrl, this.state.fields)
+      .post(this.props.ui.submitUrl, this.getFields())
       .then((response) => {
         this.setState({ isLoading: false });
         const { success, payload, errorMessage } = response.data;
