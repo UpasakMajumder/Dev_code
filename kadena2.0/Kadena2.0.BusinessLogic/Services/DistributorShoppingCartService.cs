@@ -187,7 +187,7 @@ namespace Kadena.BusinessLogic.Services
         }
 
         private void CreateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, int userId,
-            CampaignProductType inventoryType = CampaignProductType.GeneralInventory)
+            CampaignProductType inventoryType)
         {
             var shippingOptionName = resources.GetSiteSettingsKey(Settings.KDA_DefaultShipppingOption);
             var shippingOption = shoppingCart.GetShippingOption(shippingOptionName);

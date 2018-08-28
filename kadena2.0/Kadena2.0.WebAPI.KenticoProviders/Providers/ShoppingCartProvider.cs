@@ -451,7 +451,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public void AddDistributorCartItem(int cartID, DistributorCartItem distributorCartItem, CampaignsProduct product, CampaignProductType cartType = CampaignProductType.GeneralInventory)
+        public void AddDistributorCartItem(int cartID, DistributorCartItem distributorCartItem, CampaignsProduct product, CampaignProductType cartType)
         {
             var cart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartID);
             if (cart != null)
@@ -459,7 +459,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 ShoppingCartItemParameters parameters = new ShoppingCartItemParameters(product.SKUID, distributorCartItem.Quantity);
                 parameters.CustomParameters.Add("CartItemCustomerID", distributorCartItem.DistributorID);
                 ShoppingCartItemInfo cartItem = cart.SetShoppingCartItem(parameters);
-                cartItem.SetValue("CartItemPrice", (cartType == CampaignProductType.GeneralInventory ? product.ActualPrice : product.EstimatedPrice));
+                cartItem.SetValue("CartItemPrice", (cartType == CampaignProductType.PreBuy ? product.EstimatedPrice : product.ActualPrice));
                 cartItem.SetValue("CartItemDistributorID", distributorCartItem.DistributorID);
                 cartItem.SetValue("CartItemCampaignID", product.CampaignID);
                 cartItem.SetValue("CartItemProgramID", product.ProgramID);
