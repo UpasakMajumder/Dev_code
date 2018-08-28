@@ -165,20 +165,23 @@ namespace Kadena.BusinessLogic.Services
             }
             CampaignsProduct product = productsProvider.GetCampaignProduct(cartDistributorData.SKUID) ?? throw new Exception("Invalid product");
 
-            cartDistributorData.Items
-                .Where(i => i.ShoppingCartID.Equals(default(int)) && i.Quantity > 0)
-                ?.ToList()
-                .ForEach(x => CreateDistributorCart(x, product, userId, cartDistributorData.CartType));
-
-            cartDistributorData.Items
-                .Where(i => i.ShoppingCartID > 0 && i.Quantity > 0)
-                ?.ToList()
-                .ForEach(x => shoppingCart.UpdateDistributorCart(x, product, cartDistributorData.CartType));
-
-            cartDistributorData.Items
-                .Where(i => i.ShoppingCartID > 0 && i.Quantity == 0)
-                ?.ToList()
-                .ForEach(x => shoppingCart.DeleteDistributorCartItem(x.ShoppingCartID, cartDistributorData.SKUID));
+            cartDistributorData
+                .Items
+                .ForEach(x =>
+                {
+                    if (x.ShoppingCartID.Equals(default(int)) && x.Quantity > 0)
+                    {
+                        CreateDistributorCart(x, product, userId, cartDistributorData.CartType);
+                    }
+                    if (x.ShoppingCartID > 0 && x.Quantity > 0)
+                    {
+                        shoppingCart.UpdateDistributorCart(x, product, cartDistributorData.CartType);
+                    }
+                    if (x.ShoppingCartID > 0 && x.Quantity == 0)
+                    {
+                        shoppingCart.DeleteDistributorCartItem(x.ShoppingCartID, cartDistributorData.SKUID);
+                    }
+                });
 
             return shoppingCart.GetDistributorCartCount(userId, product.CampaignID, cartDistributorData.CartType);
         }
