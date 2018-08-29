@@ -291,6 +291,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                     opt => opt.MapFrom(src => !src.GetBooleanValue("SKUDontSendPriceToERP", false)))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => (decimal)src.SKUPrice))
                 .ForMember(dest => dest.ManufacturerID, opt => opt.MapFrom(src => src.SKUManufacturerID))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SKUName))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.SKUDescription));
 
 

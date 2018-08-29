@@ -489,7 +489,7 @@ namespace Kadena.BusinessLogic.Services
                 {
                     cartItem.SKUUnits = addedAmount;
                 }
-                orderChecker.CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID), cartItem.SKUUnits);
+                orderChecker.CheckMinMaxQuantity(sku, cartItem.SKUUnits);
             }
 
             shoppingCartItems.SetArtwork(cartItem, product.Id);
