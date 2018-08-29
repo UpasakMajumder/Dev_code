@@ -6,6 +6,8 @@
         public string OrderNumber { get; set; }
         public int QuantityShipped { get; set; }
         public string ShippingDate { get; set; }
-        public string ShippingService { get; set; }
+        public string ShippingMethod { get; set; }
+        public string TrackingInfoId { get; set; }
+        public string TrackingNumber { get; set; }
     }
 }

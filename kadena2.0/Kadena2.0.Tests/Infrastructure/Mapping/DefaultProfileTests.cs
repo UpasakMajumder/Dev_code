@@ -47,18 +47,19 @@ namespace Kadena.Tests.Infrastructure.Mapping
             Assert.Single(actualResult);
             var actualRow = actualResult[0];
             Assert.Equal(reportView.Url, actualRow.Url);
-            Assert.Equal(11, actualRow.Items.Length);
-            Assert.Equal(reportView.Site, actualRow.Items[0]);
-            Assert.Equal(reportView.Number, actualRow.Items[1]);
-            Assert.Equal(reportView.OrderingDate, actualRow.Items[2]);
-            Assert.Equal(reportView.User, actualRow.Items[3]);
-            Assert.Equal(reportView.Name, actualRow.Items[4]);
-            Assert.Equal(reportView.SKU ?? string.Empty, actualRow.Items[5]);
-            Assert.Equal(reportView.Quantity, actualRow.Items[6]);
-            Assert.Equal(reportView.Price, actualRow.Items[7]);
-            Assert.Equal(reportView.Status, actualRow.Items[8]);
-            Assert.Equal(reportView.ShippingDate, actualRow.Items[9]);
-            Assert.Equal(reportView.TrackingInfos, actualRow.Items[10]);
+            Assert.Equal(12, actualRow.Items.Length);
+            Assert.Equal(reportView.LineNumber, actualRow.Items[0]);
+            Assert.Equal(reportView.Site, actualRow.Items[1]);
+            Assert.Equal(reportView.Number, actualRow.Items[2]);
+            Assert.Equal(reportView.OrderingDate, actualRow.Items[3]);
+            Assert.Equal(reportView.User, actualRow.Items[4]);
+            Assert.Equal(reportView.Name, actualRow.Items[5]);
+            Assert.Equal(reportView.SKU ?? string.Empty, actualRow.Items[6]);
+            Assert.Equal(reportView.Quantity, actualRow.Items[7]);
+            Assert.Equal(reportView.Price, actualRow.Items[8]);
+            Assert.Equal(reportView.Status, actualRow.Items[9]);
+            Assert.Equal(reportView.ShippingDate, actualRow.Items[10]);
+            Assert.Equal(reportView.TrackingInfos, actualRow.Items[11]);
         }
 
         [Fact]

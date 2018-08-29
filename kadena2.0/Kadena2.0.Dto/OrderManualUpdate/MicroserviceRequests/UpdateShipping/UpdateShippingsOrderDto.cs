@@ -3,6 +3,6 @@
     public class UpdateShippingsOrderDto
     {
         public string OrderId { get; set; }
-        public UpdateShippingsOrderItemDto[] ItemShippingUpdates { get; set; }
+        public UpdateShippingsOrderItemDto[] Items { get; set; }
     }
 }

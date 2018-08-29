@@ -10,6 +10,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kadena.Models.Shipping;
 using Xunit;
 
 namespace Kadena.Tests.BusinessLogic
@@ -37,7 +38,8 @@ namespace Kadena.Tests.BusinessLogic
                 {
                     new OrderReportViewItem
                     {
-                        Quantity = 1
+                        Quantity = 1,
+                        TrackingInfos = new TrackingInfo[]{}
                     }
                 };
             Use(MapperBuilder.MapperInstance);
@@ -45,7 +47,6 @@ namespace Kadena.Tests.BusinessLogic
             var actualView = Sut.CreateTableView(report);
 
             Assert.NotEmpty(actualView.Rows);
-            Assert.Equal(11, actualView.Headers.Length);
         }
 
         [Fact]

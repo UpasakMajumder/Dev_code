@@ -43,7 +43,7 @@ namespace Kadena.WebAPI.Controllers
 
             if (result.Item1)
             {
-                return SuccessJson();
+                return this.ResponseJson(new {Message = result.Item2});
             }
 
             return ErrorJson(result.Item2);

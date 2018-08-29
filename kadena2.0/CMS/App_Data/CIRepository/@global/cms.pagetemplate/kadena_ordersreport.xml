@@ -238,16 +238,8 @@ config.localization.ordersReports = {
               cancel: '{$ Kadena.OrdersReport.Manage.CancelButton $}',
               save: '{$ Kadena.OrdersReport.Manage.SaveButton $}'
             },
-            submitUrl: '/api/ordershippingupdate',
+            submitUrl: '/api/ordersshippingsupdate',
             headers: [
-              {
-                id: 'lineNumber',
-                label: '{$ Kadena.OrdersReport.Table.LineNumber $}',
-                sort: false,
-                isDate: false,
-                type: 'number',
-                edit: false
-              },
               {
                   id: 'orderNumber',
                   label: '{$ Kadena.OrdersReport.Table.Number $}',
@@ -279,7 +271,7 @@ config.localization.ordersReports = {
                 label: '{$ Kadena.OrdersReport.Table.ShippingMethod $}',
                 type: 'select',
                 values: [
-                    {% foreach(x in SiteObjects.ShippingOptions.Where("ShippingOptionEnabled=1")){ println("{ id: '"+Util.JSEscape(x.GetValue("ShippingOptionName"))+"', name: '"+Util.JSEscape(x.GetValue("ShippingOptionDisplayName"))+"' },") |(user)administrator|(hash)af4ed07f27e06425dbbc63a48c3bcf8fe7418f8b0ea883c040af93a130a73946%}
+                    {% foreach(x in SiteObjects.ShippingOptions.Where("ShippingOptionEnabled=1")){ println("{ id: '"+Util.JSEscape(x.GetValue("ShippingOptionCarrierServiceName"))+"', name: '"+Util.JSEscape(x.GetValue("ShippingOptionDisplayName"))+"' },") |(user)david.lahuta@actum.cz|(hash)42faefb73b856d638e6d01ddaee21350c7594d926949cde728b4525d909f0937%}
                 ]
               },
               {
@@ -289,6 +281,10 @@ config.localization.ordersReports = {
                   isDate: false,
                   edit: true,
                   type: 'number'
+              },
+              {
+                id: 'actions',
+                label: '{$ Kadena.OrdersReport.Table.Actions $}'
               }
             ]
         }

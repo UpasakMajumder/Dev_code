@@ -15,6 +15,7 @@ namespace Kadena.BusinessLogic.Services
 
         public string[] GetDisplayNameHeaders()
         {
+            // do not change order in this array
             return new []
             {
                 _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.LineNumber"),
@@ -30,28 +31,31 @@ namespace Kadena.BusinessLogic.Services
                 _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.ShippingDate"),
                 _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.TrackingNumber"),
                 _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.ShippedQuantity"),
-                _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.ShippingMethod")
+                _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.ShippingMethod"),
+                _kenticoResourceService.GetResourceString("Kadena.OrdersReport.Table.TrackingInfoId")
             };
         }
 
         public string[] GetCodeNameHeaders()
         {
+            // do not change order in this array
             return new[]
             {
-                "LineNumber",
-                "Site",
+                "lineNumber",
+                "site",
                 "orderNumber",
-                "CreateDate",
-                "User",
-                "Name",
-                "SKU",
-                "Quantity",
-                "Price",
-                "Status",
-                "ShippingDate",
-                "TrackingNumber",
-                "ShippedQuantity",
-                "ShippingMethod"
+                "createDate",
+                "user",
+                "name",
+                "sku",
+                "quantity",
+                "price",
+                "status",
+                "shippingDate",
+                "trackingNumber",
+                "shippedQuantity",
+                "shippingMethod",
+                "trackingInfoId"
             };
         }
     }

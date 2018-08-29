@@ -17,6 +17,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Kadena.Dto.OrderManualUpdate.MicroserviceRequests.UpdateShipping;
+using Newtonsoft.Json;
 
 namespace Kadena.BusinessLogic.Services.Orders
 {
@@ -85,7 +87,52 @@ namespace Kadena.BusinessLogic.Services.Orders
 
         public async Task<(bool, string)> UpdateOrdersShippings(UpdateShippingRow[] request)
         {
-            return (true, null);
+            var updateRequest = new UpdateShippingsRequestDto();
+            var shippingUpdates = new List<UpdateShippingsOrderDto>();
+
+            var shippingOptions = shoppingCartProvider.GetShippingOptions();
+
+            foreach (var updateShippingRow in request)
+            {
+                var shippingProvider = shippingOptions
+                    .FirstOrDefault(x => x.Service == updateShippingRow.ShippingMethod)
+                    ?.CarrierCode;
+                shippingUpdates.Add(new UpdateShippingsOrderDto
+                {
+                    OrderId = updateShippingRow.OrderNumber,
+                    Items = new[]
+                    {
+                        new UpdateShippingsOrderItemDto
+                        {
+                            LineNumber = updateShippingRow.LineNumber,
+                            Shippings = new []
+                            {
+                                new UpdateShippingsOrderItemShippingDto
+                                {
+                                    ItemId = updateShippingRow.TrackingInfoId,
+                                    QuantityShipped = updateShippingRow.QuantityShipped,
+                                    ShippingDate = updateShippingRow.ShippingDate,
+                                    TrackingNumber = updateShippingRow.TrackingNumber,
+                                    ShippingMethod = new UpdateShippingsOrderItemShippingMethod
+                                    {
+                                        Provider = shippingProvider,
+                                        ShippingService = updateShippingRow.ShippingMethod
+                                    }
+                                }
+                            }
+                        } 
+                    }
+                });    
+            }
+
+            updateRequest.ShippingUpdates = shippingUpdates.ToArray();
+
+            var response = await updateService.UpdateOrdersShippings(updateRequest);
+            if (response.Success)
+                return (true, resources.GetResourceString("Kadena.OrderReport.Manage.SubmitSuccess"));
+
+            log.LogError(nameof(UpdateOrdersShippings), $"{response.ErrorMessages} - {JsonConvert.SerializeObject(response.Error)}");
+            return (false, response.ErrorMessages);
         }
 
         public async Task<OrderUpdateResult> UpdateOrder(OrderUpdate request)
