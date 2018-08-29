@@ -139,7 +139,7 @@ namespace Kadena.Tests.BusinessLogic
             var originalCartItemEntity = new CartItemEntity
             {
                 ProductType = ProductTypes.StaticProduct,
-                SKUUnits = 3,
+                Quantity = 3,
                 SKUID = 123,
                 CartItemID = cartItemId
             };
@@ -147,7 +147,7 @@ namespace Kadena.Tests.BusinessLogic
             Setup<IKenticoProductsProvider, Product>(s => s.GetProductByNodeId(newCartItem.NodeId), product);
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(product, newCartItem.Quantity, newCartItem.Options, newCartItem.TemplateId), originalCartItemEntity);
             Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku { });
-            Setup<IProductsService, decimal>(p => p.GetPriceByCustomModel(product.Id, originalCartItemEntity.SKUUnits), dynamicPrice);
+            Setup<IProductsService, decimal>(p => p.GetPriceByCustomModel(product.Id, originalCartItemEntity.Quantity), dynamicPrice);
 
             // Act
             var result = await Sut.AddToCart(newCartItem);
@@ -173,7 +173,7 @@ namespace Kadena.Tests.BusinessLogic
             {
                 CartItemText = Name,
                 ProductType = ProductTypes.StaticProduct,
-                SKUUnits = 3,
+                Quantity = 3,
                 SKUID = 123
             };
             Setup<IKenticoProductsProvider, Product>(s => s.GetProductByDocumentId(newCartItem.DocumentId), product);
@@ -190,7 +190,7 @@ namespace Kadena.Tests.BusinessLogic
             Verify<IShoppingCartItemsProvider>(ip => ip.SetArtwork(It.IsAny<CartItemEntity>(), product.Id), Times.Once);
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
                     e => e.CartItemText == originalCartItemEntity.CartItemText &&
-                    e.SKUUnits == originalCartItemEntity.SKUUnits)
+                    e.Quantity == originalCartItemEntity.Quantity)
                 ), Times.Once);
         }
 
@@ -209,7 +209,7 @@ namespace Kadena.Tests.BusinessLogic
             {
                 CartItemText = Name,
                 ProductType = ProductTypes.TemplatedProduct,
-                SKUUnits = 10,
+                Quantity = 10,
                 SKUID = 123
             };
 
@@ -229,7 +229,7 @@ namespace Kadena.Tests.BusinessLogic
             Verify<IShoppingCartItemsProvider>(ip => ip.SetArtwork(It.IsAny<CartItemEntity>(), product.Id), Times.Once);
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
                     e => e.CartItemText == CustomName &&
-                         e.SKUUnits == 5)
+                         e.Quantity == 5)
                 ), Times.Once);
         }
 
@@ -247,7 +247,7 @@ namespace Kadena.Tests.BusinessLogic
                 CartItemText = Name,
                 ProductType = ProductTypes.InventoryProduct,
                 SKUID = 6654,
-                SKUUnits = 3
+                Quantity = 3
             };
 
             Setup<IKenticoProductsProvider, Product>(s => s.GetProductByDocumentId(newCartItem.DocumentId), product);
@@ -266,7 +266,7 @@ namespace Kadena.Tests.BusinessLogic
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
                     e => e.CartItemText == originalCartItemEntity.CartItemText &&
                          e.SKUID == originalCartItemEntity.SKUID &&
-                         e.SKUUnits == originalCartItemEntity.SKUUnits)
+                         e.Quantity == originalCartItemEntity.Quantity)
                 ), Times.Once);
         }
 
@@ -284,7 +284,7 @@ namespace Kadena.Tests.BusinessLogic
             {
                 CartItemText = Name,
                 ProductType = ProductTypes.InventoryProduct,
-                SKUUnits = 3
+                Quantity = 3
             };
 
             Setup<IKenticoProductsProvider, Product>(s => s.GetProductByDocumentId(newCartItem.DocumentId), product);
@@ -317,7 +317,7 @@ namespace Kadena.Tests.BusinessLogic
             {
                 CartItemText = Name,
                 ProductType = ProductTypes.MailingProduct,
-                SKUUnits = 3,
+                Quantity = 3,
                 SKUID = 123
             };
 
@@ -337,7 +337,7 @@ namespace Kadena.Tests.BusinessLogic
             Verify<IShoppingCartItemsProvider>(ip => ip.SetArtwork(It.IsAny<CartItemEntity>(), product.Id), Times.Once);
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
                     e => e.CartItemText == Name &&
-                         e.SKUUnits == quantity)
+                         e.Quantity == quantity)
                 ), Times.Once);
         }
 
@@ -462,7 +462,7 @@ namespace Kadena.Tests.BusinessLogic
             {
                 CartItemText = Name,
                 ProductType = ProductTypes.InventoryProduct,
-                SKUUnits = 3
+                Quantity = 3
             };
 
             Setup<IKenticoProductsProvider, Product>(s => s.GetProductByDocumentId(newCartItem.DocumentId), product);

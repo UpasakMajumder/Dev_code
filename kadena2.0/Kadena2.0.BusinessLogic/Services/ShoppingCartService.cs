@@ -372,9 +372,9 @@ namespace Kadena.BusinessLogic.Services
 
             orderChecker.CheckMinMaxQuantity(itemSku, quantity);
 
-            item.SKUUnits = quantity;
+            item.Quantity = quantity;
 
-            var price = productsService.GetPriceByCustomModel(item.ProductPageID, item.SKUUnits);
+            var price = productsService.GetPriceByCustomModel(item.ProductPageID, item.Quantity);
 
             if (price > decimal.MinusOne)
             {
@@ -480,7 +480,7 @@ namespace Kadena.BusinessLogic.Services
 
             if (product.HasProductTypeFlag(ProductTypes.InventoryProduct))
             {
-                orderChecker.EnsureInventoryAmount(sku, addedAmount, cartItem.SKUUnits);
+                orderChecker.EnsureInventoryAmount(sku, addedAmount, cartItem.Quantity);
             }
 
             if (product.HasProductTypeFlag(ProductTypes.MailingProduct))
@@ -492,14 +492,14 @@ namespace Kadena.BusinessLogic.Services
                 // do this before calculating dynamic price
                 if (product.HasProductTypeFlag(ProductTypes.TemplatedProduct))
                 {
-                    cartItem.SKUUnits = addedAmount;
+                    cartItem.Quantity = addedAmount;
                 }
-                orderChecker.CheckMinMaxQuantity(sku, cartItem.SKUUnits);
+                orderChecker.CheckMinMaxQuantity(sku, cartItem.Quantity);
             }
 
             shoppingCartItems.SetArtwork(cartItem, product.Id);
 
-            var price = productsService.GetPriceByCustomModel(product.Id, cartItem.SKUUnits);
+            var price = productsService.GetPriceByCustomModel(product.Id, cartItem.Quantity);
             if (price != decimal.MinusOne)
             {
                 cartItem.CartItemPrice = price;
@@ -531,7 +531,7 @@ namespace Kadena.BusinessLogic.Services
             cartItem.MailingListName = mailingList.Name;
             cartItem.MailingListGuid = Guid.Parse(mailingList.Id);
 
-            cartItem.SKUUnits = addedAmount;
+            cartItem.Quantity = addedAmount;
         }
 
         public List<int> GetLoggedInUserCartData(CampaignProductType cartType, int userID, int campaignID = 0)

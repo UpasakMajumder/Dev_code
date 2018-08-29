@@ -479,7 +479,6 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.CartItemID, opt => opt.Ignore())
                 .ForMember(dest => dest.CartItemGUID, opt => opt.Ignore())
                 .ForMember(dest => dest.ShoppingCartID, opt => opt.Ignore())
-                .ForMember(dest => dest.SKUUnits, opt => opt.Ignore())
                 .ForMember(dest => dest.Quantity, opt => opt.Ignore())
                 .ForMember(dest => dest.UnitPrice, opt => opt.Ignore())
                 .ForMember(dest => dest.TotalPrice, opt => opt.Ignore())

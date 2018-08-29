@@ -197,7 +197,6 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.ProductShipTime, opt => opt.MapFrom(src => src.GetValue("ProductShipTime", string.Empty)))
                 .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.GetValue("ProductType", string.Empty)))
                 .ForMember(dest => dest.CartItemPrice, opt => opt.MapFrom(src => (decimal)src.GetDoubleValue("CartItemPrice", 0.0d)))
-                .ForMember(dest => dest.SKUUnits, opt => opt.MapFrom(src => src.GetIntegerValue("SKUUnits", 0)))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.CartItemUnits))
                 .ForMember(dest => dest.SendPriceToErp, opt => opt.MapFrom(src => src.GetBooleanValue("SendPriceToErp", true)))
                 .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit)));
@@ -205,7 +204,7 @@ namespace Kadena2.WebAPI.KenticoProviders
             CreateMap<CartItemEntity, ShoppingCartItemInfo>()
                 .ForMember(dest => dest.CartItemParentGUID, opt => opt.Ignore())
                 .ForMember(dest => dest.CartItemBundleGUID, opt => opt.Ignore())
-                .ForMember(dest => dest.CartItemUnits, opt => opt.Ignore())
+                .ForMember(dest => dest.CartItemUnits, opt => opt.MapFrom(src => src.Quantity))
                 .ForMember(dest => dest.CartItemIsPrivate, opt => opt.Ignore())
                 .ForMember(dest => dest.CartItemValidTo, opt => opt.Ignore())
                 .ForMember(dest => dest.CartItemAutoAddedUnits, opt => opt.Ignore())
@@ -243,7 +242,6 @@ namespace Kadena2.WebAPI.KenticoProviders
                     dest.SetValue("ProductShipTime", src.ProductShipTime);
                     dest.SetValue("ProductType", src.ProductType);
                     dest.SetValue("CartItemPrice", src.CartItemPrice);
-                    dest.SetValue("SKUUnits", src.SKUUnits);
                     dest.SetValue("SendPriceToErp", src.SendPriceToErp);
                     dest.SetValue("UnitOfMeasure", src.UnitOfMeasure);
                 });

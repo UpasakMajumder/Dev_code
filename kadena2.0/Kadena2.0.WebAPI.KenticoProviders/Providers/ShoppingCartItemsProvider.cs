@@ -205,7 +205,7 @@ namespace Kadena.WebAPI.KenticoProviders
         private void UpdateCartItem(ShoppingCartItemInfo cartItemInfo, CartItemEntity item)
         {
             cartItemInfo.CartItemText = item.CartItemText;
-            cartItemInfo.CartItemUnits = item.SKUUnits;
+            cartItemInfo.CartItemUnits = item.Quantity;
             cartItemInfo.CartItemPrice = item.CartItemPrice.HasValue ? (double)item.CartItemPrice.Value : double.NaN;
             cartItemInfo.SetValue("ProductType", item.ProductType);
             cartItemInfo.SetValue("ProductPageID", item.ProductPageID);
