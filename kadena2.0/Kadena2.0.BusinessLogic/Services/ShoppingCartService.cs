@@ -453,8 +453,6 @@ namespace Kadena.BusinessLogic.Services
             return preview;
         }
 
-
-
         public async Task<AddToCartResult> AddToCart(NewCartItem newItem)
         {
             var addedAmount = newItem.Quantity;

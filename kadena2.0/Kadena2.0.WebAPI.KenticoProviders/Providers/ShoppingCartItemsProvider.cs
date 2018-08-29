@@ -227,9 +227,12 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public CartItemEntity GetOrCreateCartItem(int skuId, int quantity, Dictionary<string, int> options, Guid templateId)
         {
-            var attributes = options.Values.Distinct();
-
-            var variantSkuInfo = VariantHelper.GetProductVariant(skuId, new ProductAttributeSet(attributes));
+            SKUInfo variantSkuInfo = null;
+            if (options != null)
+            {
+                var attributes = options.Values.Distinct();
+                variantSkuInfo = VariantHelper.GetProductVariant(skuId, new ProductAttributeSet(attributes));
+            }
 
             ShoppingCartItemParameters parameters;
 
