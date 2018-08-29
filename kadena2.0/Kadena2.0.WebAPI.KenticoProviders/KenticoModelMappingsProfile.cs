@@ -196,12 +196,13 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.ProductProductionTime, opt => opt.MapFrom(src => src.GetValue("ProductProductionTime", string.Empty)))
                 .ForMember(dest => dest.ProductShipTime, opt => opt.MapFrom(src => src.GetValue("ProductShipTime", string.Empty)))
                 .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.GetValue("ProductType", string.Empty)))
-                .ForMember(dest => dest.CartItemPrice, opt => opt.MapFrom(src => (decimal)src.GetDoubleValue("CartItemPrice", 0.0d)))
+                .ForMember(dest => dest.CartItemPrice, opt => opt.MapFrom(src => double.IsNaN(src.CartItemPrice) ? null : (decimal?)src.CartItemPrice))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.CartItemUnits))
                 .ForMember(dest => dest.SendPriceToErp, opt => opt.MapFrom(src => src.GetBooleanValue("SendPriceToErp", true)))
                 .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit)));
 
             CreateMap<CartItemEntity, ShoppingCartItemInfo>()
+                .ForMember(dest => dest.CartItemPrice, opt => opt.MapFrom(src => src.CartItemPrice.HasValue ? (double)src.CartItemPrice : double.NaN))
                 .ForMember(dest => dest.CartItemParentGUID, opt => opt.Ignore())
                 .ForMember(dest => dest.CartItemBundleGUID, opt => opt.Ignore())
                 .ForMember(dest => dest.CartItemUnits, opt => opt.MapFrom(src => src.Quantity))
