@@ -16,6 +16,7 @@ namespace Kadena.Models.Product
         public Guid ProductMasterTemplateID { get; set; }
         public Guid ProductChiliWorkgroupID { get; set; }
         public Guid TemplateLowResSettingId { get; set; }
+        public Guid TemplateHiResSettingId { get; set; }
         public double Weight { get; set; }
         public bool HiResPdfDownloadEnabled { get; set; }
         public int SkuId { get; set; }
@@ -34,5 +35,7 @@ namespace Kadena.Models.Product
         public string PricingModel { get; set; }
         public string TieredPricingJson { get; set; }
         public string DynamicPricingJson { get; set; }
+        public bool SendPriceToERP { get; set; }
+        public string UnitOfMeasure { get; set; }
     }
 }

@@ -459,38 +459,42 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
-
+            Product product = null;
             if (newItem.NodeId > 0)
             {
-                newItem.DocumentId = productsProvider.GetProductByNodeId(newItem.NodeId).Id;
+                product = productsProvider.GetProductByNodeId(newItem.NodeId);
+            }
+            else
+            {
+                product = productsProvider.GetProductByDocumentId(newItem.DocumentId);
             }
 
-            var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);
+            var cartItem = shoppingCartItems.GetOrCreateCartItem(product, addedAmount, newItem.Options, newItem.TemplateId);
 
             var sku = skus.GetSKU(cartItem.SKUID) ?? throw new ArgumentException($"Unable to find SKU {cartItem.SKUID}");
 
-            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.InventoryProduct))
+            if (product.HasProductTypeFlag(ProductTypes.InventoryProduct))
             {
                 orderChecker.EnsureInventoryAmount(sku, addedAmount, cartItem.SKUUnits);
             }
 
-            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.MailingProduct))
+            if (product.HasProductTypeFlag(ProductTypes.MailingProduct))
             {
                 await SetMailingList(cartItem, newItem.ContainerId, addedAmount);
             }
             else
             {
                 // do this before calculating dynamic price
-                if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))
+                if (product.HasProductTypeFlag(ProductTypes.TemplatedProduct))
                 {
                     cartItem.SKUUnits = addedAmount;
                 }
-                orderChecker.CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID), addedAmount);
+                orderChecker.CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID), cartItem.SKUUnits);
             }
 
-            shoppingCartItems.SetArtwork(cartItem, newItem.DocumentId);
+            shoppingCartItems.SetArtwork(cartItem, product.Id);
 
-            var price = productsService.GetPriceByCustomModel(newItem.DocumentId, cartItem.SKUUnits);
+            var price = productsService.GetPriceByCustomModel(product.Id, cartItem.SKUUnits);
             if (price != decimal.MinusOne)
             {
                 cartItem.CartItemPrice = price;
