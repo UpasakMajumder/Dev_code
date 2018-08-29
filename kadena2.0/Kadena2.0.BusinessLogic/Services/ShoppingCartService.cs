@@ -473,7 +473,7 @@ namespace Kadena.BusinessLogic.Services
                 product = productsProvider.GetProductByDocumentId(newItem.DocumentId);
             }
 
-            var cartItem = shoppingCartItems.GetOrCreateCartItem(product, addedAmount, newItem.Options, newItem.TemplateId);
+            var cartItem = shoppingCartItems.GetOrCreateCartItem(product.SkuId, addedAmount, newItem.Options, newItem.TemplateId);
             mapper.Map(product, cartItem);
             cartItem.ChilliEditorTemplateID = newItem.TemplateId;
             var sku = skus.GetSKU(cartItem.SKUID) ?? throw new ArgumentException($"Unable to find SKU {cartItem.SKUID}");

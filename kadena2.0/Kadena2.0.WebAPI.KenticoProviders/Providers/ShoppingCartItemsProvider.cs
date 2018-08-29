@@ -225,11 +225,11 @@ namespace Kadena.WebAPI.KenticoProviders
             }
         }
 
-        public CartItemEntity GetOrCreateCartItem(Product product, int quantity, Dictionary<string, int> options, Guid templateId)
+        public CartItemEntity GetOrCreateCartItem(int skuId, int quantity, Dictionary<string, int> options, Guid templateId)
         {
             var attributes = options.Values.Distinct();
 
-            var variantSkuInfo = VariantHelper.GetProductVariant(product.SkuId, new ProductAttributeSet(attributes));
+            var variantSkuInfo = VariantHelper.GetProductVariant(skuId, new ProductAttributeSet(attributes));
 
             ShoppingCartItemParameters parameters;
 
@@ -239,7 +239,7 @@ namespace Kadena.WebAPI.KenticoProviders
             }
             else
             {
-                parameters = new ShoppingCartItemParameters(product.SkuId, quantity);
+                parameters = new ShoppingCartItemParameters(skuId, quantity);
             }
 
             if (Guid.Empty != templateId)
