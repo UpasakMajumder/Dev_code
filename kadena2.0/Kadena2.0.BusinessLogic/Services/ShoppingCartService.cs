@@ -13,12 +13,14 @@ using Kadena2.MicroserviceClients.Contracts;
 using System.Collections.Generic;
 using Kadena.Models.SiteSettings;
 using Kadena.BusinessLogic.Contracts.Orders;
+using AutoMapper;
 
 namespace Kadena.BusinessLogic.Services
 {
     public class ShoppingCartService : IShoppingCartService
     {
         const string tempAddressName = "TemporaryAddress";
+        private readonly IMapper mapper;
         private readonly IKenticoSiteProvider kenticoSite;
         private readonly IKenticoLocalizationProvider localization;
         private readonly IKenticoPermissionsProvider permissions;
@@ -59,7 +61,8 @@ namespace Kadena.BusinessLogic.Services
                                    IImageService imageService,
                                    IKenticoSkuProvider skus,
                                    IOrderItemCheckerService orderChecker,
-                                   ISettingsService settingsService)
+                                   ISettingsService settingsService,
+                                   IMapper mapper)
         {
             this.kenticoSite = kenticoSite ?? throw new ArgumentNullException(nameof(kenticoSite));
             this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
@@ -81,6 +84,7 @@ namespace Kadena.BusinessLogic.Services
             this.skus = skus ?? throw new ArgumentNullException(nameof(skus));
             this.orderChecker = orderChecker ?? throw new ArgumentNullException(nameof(orderChecker));
             this.settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<CheckoutPage> GetCheckoutPage()
@@ -470,7 +474,8 @@ namespace Kadena.BusinessLogic.Services
             }
 
             var cartItem = shoppingCartItems.GetOrCreateCartItem(product, addedAmount, newItem.Options, newItem.TemplateId);
-
+            mapper.Map(product, cartItem);
+            cartItem.ChilliEditorTemplateID = newItem.TemplateId;
             var sku = skus.GetSKU(cartItem.SKUID) ?? throw new ArgumentException($"Unable to find SKU {cartItem.SKUID}");
 
             if (product.HasProductTypeFlag(ProductTypes.InventoryProduct))
@@ -500,10 +505,7 @@ namespace Kadena.BusinessLogic.Services
                 cartItem.CartItemPrice = price;
             }
 
-            if (!string.IsNullOrEmpty(newItem.CustomProductName))
-            {
-                cartItem.CartItemText = newItem.CustomProductName;
-            }
+            cartItem.CartItemText = string.IsNullOrEmpty(newItem.CustomProductName) ? sku.Name : newItem.CustomProductName;
 
             shoppingCartItems.SaveCartItem(cartItem);
 

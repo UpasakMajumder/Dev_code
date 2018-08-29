@@ -252,7 +252,7 @@ namespace Kadena.WebAPI.KenticoProviders
             var variantSkuInfo = VariantHelper.GetProductVariant(product.SkuId, new ProductAttributeSet(attributes));
 
             ShoppingCartItemParameters parameters;
-            
+
             if (variantSkuInfo != null && variantSkuInfo.SKUEnabled)
             {
                 parameters = new ShoppingCartItemParameters(variantSkuInfo.SKUID, quantity);
@@ -275,22 +275,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var cart = ECommerceContext.CurrentShoppingCart;
             ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
-            var cartItemInfo = cart.SetShoppingCartItem(parameters);
-            
-            cartItemInfo.CartItemText = cartItemInfo.SKU.SKUName;
-            cartItemInfo.CartItemPrice = cartItemInfo.SKU.SKUPrice;
-            cartItemInfo.SetValue("ProductType", product.ProductType);
-            cartItemInfo.SetValue("ProductPageID", product.Id);
-            cartItemInfo.SetValue("ProductProductionTime", product.ProductionTime);
-            cartItemInfo.SetValue("ProductShipTime", product.ShipTime);
-            cartItemInfo.SetValue("ChilliEditorTemplateID", templateId);
-            cartItemInfo.SetValue("ChiliTemplateID", product.ProductMasterTemplateID);
-            cartItemInfo.SetValue("ProductChiliPdfGeneratorSettingsId", product.TemplateHiResSettingId);
-            cartItemInfo.SetValue("ProductChiliWorkspaceId", product.ProductChiliWorkgroupID);
-            cartItemInfo.SetValue("SendPriceToErp", product.SendPriceToERP);
-            cartItemInfo.SetValue("UnitOfMeasure", product.UnitOfMeasure);
-
-            return mapper.Map<CartItemEntity>(cartItemInfo);
+            return mapper.Map<CartItemEntity>(cart.SetShoppingCartItem(parameters));
         }
 
         private SKUInfo EnsureTemplateOptionSKU()

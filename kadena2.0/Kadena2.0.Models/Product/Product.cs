@@ -21,13 +21,6 @@ namespace Kadena.Models.Product
         public bool HiResPdfDownloadEnabled { get; set; }
         public int SkuId { get; set; }
         public string SkuNumber { get; set; }
-        public bool HasProductTypeFlag(string productType)
-        {
-            return ProductTypes.IsOfType(ProductType, productType);
-        }
-
-        public bool IsTemplateLowResSettingMissing => HasProductTypeFlag(ProductTypes.TemplatedProduct) && TemplateLowResSettingId == Guid.Empty;
-
         public string ProductionTime { get; set; }
         public string ShipTime { get; set; }
         public string ShippingCost { get; set; }
@@ -37,5 +30,12 @@ namespace Kadena.Models.Product
         public string DynamicPricingJson { get; set; }
         public bool SendPriceToERP { get; set; }
         public string UnitOfMeasure { get; set; }
+
+        public bool HasProductTypeFlag(string productType)
+        {
+            return ProductTypes.IsOfType(ProductType, productType);
+        }
+
+        public bool IsTemplateLowResSettingMissing => HasProductTypeFlag(ProductTypes.TemplatedProduct) && TemplateLowResSettingId == Guid.Empty;
     }
 }

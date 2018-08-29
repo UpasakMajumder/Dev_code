@@ -1,4 +1,5 @@
-﻿using Kadena.BusinessLogic.Contracts;
+﻿using AutoMapper;
+using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.BusinessLogic.Services;
@@ -322,7 +323,7 @@ namespace Kadena.Tests.BusinessLogic
 
             Setup<IKenticoProductsProvider, Product>(s => s.GetProductByDocumentId(newCartItem.DocumentId), product);
             Setup<IKenticoProductsProvider, Product>(s => s.GetProductByNodeId(newCartItem.NodeId), product);
-            Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku { });
+            Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku { Name = Name });
             Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(product, newCartItem.Quantity, newCartItem.Options, newCartItem.TemplateId), originalCartItemEntity);
             Setup<IKListService, Task<MailingList>>(m => m.GetMailingList(containerId)
                 , Task.FromResult(new MailingList { AddressCount = quantity, Id = containerId.ToString() }));
@@ -497,11 +498,12 @@ namespace Kadena.Tests.BusinessLogic
                                    IImageService imageService,
                                    IKenticoSkuProvider skus,
                                    IOrderItemCheckerService orderChecker,
-                                   ISettingsService settingsService)
+                                   ISettingsService settingsService,
+                                   IMapper mapper)
         {
             Assert.Throws<ArgumentNullException>(() => new ShoppingCartService(kenticoSite, localization, permissions, kenticoUsers,
                 kenticoCustomer, addresses, resources, productsProvider, taxCalculator, mailingService, userDataClient, shoppingCart, shoppingCartItems,
-                checkoutfactory, log, productsService, imageService, skus, orderChecker, settingsService));
+                checkoutfactory, log, productsService, imageService, skus, orderChecker, settingsService, mapper));
         }
 
         [Fact(DisplayName = "ShoppingCartService.SaveTemporaryAddress() | Null address")]

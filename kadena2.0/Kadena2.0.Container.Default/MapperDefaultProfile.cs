@@ -474,7 +474,27 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.State));
             CreateMap<OrderUpdateResult, OrderUpdateResultDto>();
             CreateMap<ItemUpdateResult, ItemUpdateResultDto>();
-            //CreateMap<UpdatedItemCheckData, ItemUpdateDto>()
+
+            CreateMap<Product, CartItemEntity>()
+                .ForMember(dest => dest.CartItemID, opt => opt.Ignore())
+                .ForMember(dest => dest.CartItemGUID, opt => opt.Ignore())
+                .ForMember(dest => dest.ShoppingCartID, opt => opt.Ignore())
+                .ForMember(dest => dest.SKUUnits, opt => opt.Ignore())
+                .ForMember(dest => dest.Quantity, opt => opt.Ignore())
+                .ForMember(dest => dest.UnitPrice, opt => opt.Ignore())
+                .ForMember(dest => dest.TotalPrice, opt => opt.Ignore())
+                .ForMember(dest => dest.CartItemPrice, opt => opt.Ignore())
+                .ForMember(dest => dest.CartItemText, opt => opt.Ignore())
+                .ForMember(dest => dest.ChiliTemplateID, opt => opt.MapFrom(src => src.ProductMasterTemplateID))
+                .ForMember(dest => dest.ArtworkLocation, opt => opt.Ignore())
+                .ForMember(dest => dest.ProductPageID, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.ChilliEditorTemplateID, opt => opt.Ignore())
+                .ForMember(dest => dest.MailingListGuid, opt => opt.Ignore())
+                .ForMember(dest => dest.MailingListName, opt => opt.Ignore())
+                .ForMember(dest => dest.ProductChiliWorkspaceId, opt => opt.MapFrom(src=>src.ProductChiliWorkgroupID))
+                .ForMember(dest => dest.ProductChiliPdfGeneratorSettingsId, opt => opt.MapFrom(src=>src.TemplateHiResSettingId))
+                .ForMember(dest => dest.ProductShipTime, opt => opt.MapFrom(src=>src.ShipTime))
+                .ForMember(dest => dest.ProductProductionTime, opt => opt.MapFrom(src=>src.ProductionTime));
         }
     }
 }
