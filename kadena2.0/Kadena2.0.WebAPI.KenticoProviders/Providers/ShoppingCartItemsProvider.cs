@@ -257,8 +257,9 @@ namespace Kadena.WebAPI.KenticoProviders
             }
 
             var cart = ECommerceContext.CurrentShoppingCart;
-            ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
-            return mapper.Map<CartItemEntity>(cart.SetShoppingCartItem(parameters));
+            var cartItem = cart.SetShoppingCartItem(parameters);
+            cart.InvalidateCalculations();
+            return mapper.Map<CartItemEntity>(cartItem);
         }
 
         private SKUInfo EnsureTemplateOptionSKU()
