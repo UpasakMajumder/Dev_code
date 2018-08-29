@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.Helpers;
@@ -179,7 +179,7 @@ namespace Kadena.WebAPI.KenticoProviders
         public void SetCartItemQuantity(CartItemEntity cartItemEntity, int quantity)
         {
             var cartItemInfo = ECommerceContext.CurrentShoppingCart.CartItems.Where(i => i.CartItemID == cartItemEntity.CartItemID).FirstOrDefault();
-            UpdateCartItem(cartItemInfo, cartItemEntity);
+            mapper.Map(cartItemEntity, cartItemInfo);
 
             var cart = ECommerceContext.CurrentShoppingCart;
 
@@ -192,7 +192,7 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             var cartItemInfo = ECommerceContext.CurrentShoppingCart.GetShoppingCartItem(item.CartItemGUID);
 
-            UpdateCartItem(cartItemInfo, item);
+            mapper.Map(item, cartItemInfo);
 
             ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(cartItemInfo);
 
@@ -200,26 +200,6 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(option);
             }
-        }
-
-        private void UpdateCartItem(ShoppingCartItemInfo cartItemInfo, CartItemEntity item)
-        {
-            cartItemInfo.CartItemText = item.CartItemText;
-            cartItemInfo.CartItemUnits = item.Quantity;
-            cartItemInfo.CartItemPrice = item.CartItemPrice.HasValue ? (double)item.CartItemPrice.Value : double.NaN;
-            cartItemInfo.SetValue("ProductType", item.ProductType);
-            cartItemInfo.SetValue("ProductPageID", item.ProductPageID);
-            cartItemInfo.SetValue("ProductProductionTime", item.ProductProductionTime);
-            cartItemInfo.SetValue("ProductShipTime", item.ProductShipTime);
-            cartItemInfo.SetValue("ChilliEditorTemplateID", item.ChilliEditorTemplateID);
-            cartItemInfo.SetValue("ChiliTemplateID", item.ChiliTemplateID);
-            cartItemInfo.SetValue("ProductChiliPdfGeneratorSettingsId", item.ProductChiliPdfGeneratorSettingsId);
-            cartItemInfo.SetValue("ProductChiliWorkspaceId", item.ProductChiliWorkspaceId);
-            cartItemInfo.SetValue("ArtworkLocation", item.ArtworkLocation);
-            cartItemInfo.SetValue("SendPriceToErp", item.SendPriceToErp);
-            cartItemInfo.SetValue("UnitOfMeasure", item.UnitOfMeasure);
-            cartItemInfo.SetValue("MailingListName", item.MailingListName);
-            cartItemInfo.SetValue("MailingListGuid", item.MailingListGuid);
         }
 
         public void SetArtwork(CartItemEntity cartItem, int documentId)
