@@ -205,34 +205,43 @@ class ManageOrdersModal extends Component {
   );
 
   getFields = () => {
-    return this.state.fields.map((field, index) => {
-      const dataRows = this.props.rows.filter(row => row.items.orderNumber.value === field.orderNumber);
-      const dataRow = dataRows.length ? dataRows[0] : { items: {} };
+    return this.state.fields
+      .filter(field => field.new)
+      .map((field, index) => {
+        const dataRows = this.props.rows.filter(row => row.items.orderNumber.value === field.orderNumber);
+        const dataRow = dataRows.length ? dataRows[0] : { items: {} };
 
-      return {
-        ...field,
-        lineNumber: dataRow.items.lineNumber && dataRow.items.lineNumber.value,
-        trackingInfoId: field.new ? '' : dataRow.items.trackingInfoId && dataRow.items.trackingInfoId.value
-      };
-    });
+        return {
+          ...field,
+          lineNumber: dataRow.items.lineNumber && dataRow.items.lineNumber.value,
+          trackingInfoId: dataRow.items.trackingInfoId && dataRow.items.trackingInfoId.value
+        };
+      });
   };
 
   submit = () => {
+    const body = this.getFields();
+
+    if (!body.length) {
+      this.props.closeModal();
+      return;
+    }
+
     this.setState({ isLoading: true });
 
     axios
-      .post(this.props.ui.submitUrl, this.getFields())
+      .post(this.props.ui.submitUrl, body)
       .then((response) => {
         this.setState({ isLoading: false });
         const { success, payload, errorMessage } = response.data;
 
         if (success) {
-          this.props.manage(this.state.fields);
+          window.location.reload('');
+          // this.props.manage(this.state.fields);
           window.store.dispatch({
             type: SUCCESS,
             alert: payload.message
           });
-          this.props.closeModal();
         } else {
           window.store.dispatch({
             type: FAILURE,
