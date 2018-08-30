@@ -256,15 +256,19 @@
                                             <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.QuantityText") %></th>
                                         </tr>
                             </HeaderTemplate>
+
                             <ItemTemplate>
                                 <tr>
                                     <td>
-                                        <asp:CheckBox ID="chkAllocate" runat="server" Checked='<%# Eval("Selected") %>' /></td>
+                                        <asp:CheckBox ID="chkAllocate" runat="server" Checked='<%# Eval("Selected") %>' />
+                                    </td>
                                     <td>
                                         <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("UserName") %>' />
-                                        <asp:Label ID="lblUserid" runat="server" Style="display: none" Text='<%# Eval("UserID") %>' /></td>
+                                        <asp:Label ID="lblUserid" runat="server" Style="display: none" Text='<%# Eval("UserID") %>' />
+                                    </td>
                                     <td>
-                                        <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("EmailID") %>' /></td>
+                                        <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("EmailID") %>' />
+                                    </td>
                                     <td>
                                         <asp:TextBox ID="txtAllQuantity" runat="server" Text='<%# Eval("Quantity") %>'></asp:TextBox>
                                         <asp:RegularExpressionValidator ID="revAllQuantity" runat="server"
