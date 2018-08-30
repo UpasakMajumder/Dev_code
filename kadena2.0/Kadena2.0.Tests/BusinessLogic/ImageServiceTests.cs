@@ -46,6 +46,7 @@ namespace Kadena.Tests.BusinessLogic
             Setup<IKenticoMediaProvider, string>(s => s.GetMediaLibrariesLocation(), mediaLibrariesLink);
             Setup<IKenticoMediaProvider, string>(s => s.GetThumbnailPath(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), thumbnailLink);
             Setup<IKenticoMediaProvider, string, string>(s => s.GetMediaLibraryPath(It.IsAny<string>()), (s) => $"{mediaLibrariesLink}/{s}");
+            Setup<IKenticoFileProvider, string>(s => s.GetFileUrl(It.IsAny<string>()), expectedResult);
 
             var actualResult = Sut.GetThumbnailLink(originalImageLink);
 
@@ -67,6 +68,7 @@ namespace Kadena.Tests.BusinessLogic
             Setup<IKenticoMediaProvider, string>(s => s.GetMediaLibrariesLocation(), mediaLibrariesLink);
             Setup<IKenticoMediaProvider, string>(s => s.GetThumbnailPath(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), thumbnailLink);
             Setup<IKenticoMediaProvider, string, string>(s => s.GetMediaLibraryPath(It.IsAny<string>()), (s) => $"{mediaLibrariesLink}/{s}");
+            Setup<IKenticoFileProvider, string>(s => s.GetFileUrl(It.IsAny<string>()), expectedResult);
 
             var actualResult = Sut.GetThumbnailLink(originalImageLink);
 
@@ -118,6 +120,7 @@ namespace Kadena.Tests.BusinessLogic
             Setup<IKenticoMediaProvider, string>(s => s.GetMediaLibrariesLocation(), mediaLibrariesLink);
             Setup<IKenticoMediaProvider, string>(s => s.GetThumbnailPath(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), thumbnailLink);
             Setup<IKenticoMediaProvider, string, string>(s => s.GetMediaLibraryPath(It.IsAny<string>()), (s) => $"{mediaLibrariesLink}/{s}");
+            Setup<IKenticoFileProvider, string>(s => s.GetFileUrl(It.IsAny<string>()), expectedResult);
 
             var actualResult = Sut.GetThumbnailLink(originalImageLink);
 

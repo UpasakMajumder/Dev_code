@@ -93,5 +93,23 @@ namespace Kadena.Models.SiteSettings
         [DefaultValueAttribute(@"1")]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQV9BcHByb3ZhbFNlcnZpY2VWZXJzaW9uIiwiS2V5TmFtZSI6IktEQV9BcHByb3ZhbFNlcnZpY2VWZXJzaW9uIiwiS2V5VHlwZSI6ImludCIsIktleURlZmF1bHRWYWx1ZSI6IjEiLCJLZXlEZXNjcmlwdGlvbiI6IiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiTWljcm9zZXJ2aWNlcyBzZXR0aW5ncyJ9fQ==")]
         public const string KDA_ApprovalServiceVersion = "KDA_ApprovalServiceVersion";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Microservices settings")]
+        [DefaultValueAttribute(@"1")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IlBhcnNpbmcgc2VydmljZSB2ZXJzaW9uIiwiS2V5TmFtZSI6IktEQV9QYXJzaW5nU2VydmljZVZlcnNpb24iLCJLZXlUeXBlIjoiaW50IiwiS2V5RGVmYXVsdFZhbHVlIjoiMSIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6Ik1pY3Jvc2VydmljZXMiLCJOYW1lIjoiS0RBTWljcm9zZXJ2aWNlc1NldHRpbmdDYXRlZ29yeSIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkthZGVuYSJ9LCJEaXNwbGF5TmFtZSI6IlZlcnNpb25zIn19")]
+        public const string KDA_ParsingServiceVersion = "KDA_ParsingServiceVersion";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("Microservices settings")]
+        [DefaultValueAttribute(@"1")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkV4cG9ydCBzZXJ2aWNlIHZlcnNpb24iLCJLZXlOYW1lIjoiS0RBX0V4cG9ydFNlcnZpY2VWZXJzaW9uIiwiS2V5VHlwZSI6ImludCIsIktleURlZmF1bHRWYWx1ZSI6IjEiLCJLZXlEZXNjcmlwdGlvbiI6IiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJNaWNyb3NlcnZpY2VzIiwiTmFtZSI6IktEQU1pY3Jvc2VydmljZXNTZXR0aW5nQ2F0ZWdvcnkiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJLYWRlbmEifSwiRGlzcGxheU5hbWUiOiJWZXJzaW9ucyJ9fQ==")]
+        public const string KDA_ExportServiceVersion = "KDA_ExportServiceVersion";
     }
 }

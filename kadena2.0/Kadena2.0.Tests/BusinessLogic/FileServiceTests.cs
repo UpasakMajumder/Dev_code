@@ -1,18 +1,21 @@
 ﻿using Kadena.BusinessLogic.Services;
-using System;
 using Xunit;
+using System;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena.AmazonFileSystemProvider;
 
 namespace Kadena.Tests.BusinessLogic
 {
     public class FileServiceTests : KadenaUnitTest<FileService>
     {
-        [Theory]
+        [Theory(DisplayName = "FileService()")]
         [ClassData(typeof(FileServiceTests))]
-        public void FileService(IFileClient fileClient, IKenticoResourceService resources, IKenticoLogger logger)
+        public void FileService(IFileClient fileClient, IKenticoLogger logger, IS3PathService pathService)
         {
-            Assert.Throws<ArgumentNullException>(() => new FileService(fileClient, resources, logger));
+            Assert.Throws<ArgumentNullException>(() => new FileService(fileClient, logger, pathService));
         }
+
+        
     }
 }

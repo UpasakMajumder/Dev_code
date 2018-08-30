@@ -1319,6 +1319,7 @@
     <Compile Include="Old_App_Code\CMSModules\Kadena\UserHierarchyInfoProvider.Custom.cs" />
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroMethods.cs" />
     <Compile Include="Old_App_Code\CMSModules\Macros\Kadena\KadenaMacroNamespace.cs" />
+    <Compile Include="Old_App_Code\CMSModules\S3StorageProviderModule.cs" />
     <Compile Include="Old_App_Code\EventHandlers\ProductEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\SettingsKeyEventHandler.cs" />
     <Compile Include="Old_App_Code\EventHandlers\UsersEventHandler.cs" />
@@ -1379,7 +1380,6 @@
     <Compile Include="Old_App_Code\Kadena\Imports\StatusMessages.cs" />
     <Compile Include="Old_App_Code\Kadena\Imports\ValidatorHelper.cs" />
     <Compile Include="Old_App_Code\Kadena\InBoundTrackingForm\InBoundFormHelper.cs" />
-    <Compile Include="Old_App_Code\Kadena\MailingList\MailingListState.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\Campaign.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignProvider.generated.cs" />
     <Compile Include="Old_App_Code\Kadena\Pages\KDA\CampaignsProduct.generated.cs" />
