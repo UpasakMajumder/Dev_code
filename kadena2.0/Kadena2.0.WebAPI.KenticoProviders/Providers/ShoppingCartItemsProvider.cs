@@ -24,17 +24,15 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly IKenticoResourceService resources;
         private readonly IKenticoDocumentProvider documents;
         private readonly IMapper mapper;
-        private readonly IDynamicPriceRangeProvider dynamicPrices;
         private readonly IKenticoProductsProvider productProvider;
         private readonly IKenticoSiteProvider site;
         private readonly IKenticoUnitOfMeasureProvider units;
 
-        public ShoppingCartItemsProvider(IKenticoResourceService resources, IKenticoDocumentProvider documents, IMapper mapper, IDynamicPriceRangeProvider dynamicPrices, IKenticoProductsProvider productProvider, IKenticoSiteProvider site, IKenticoUnitOfMeasureProvider units)
+        public ShoppingCartItemsProvider(IKenticoResourceService resources, IKenticoDocumentProvider documents, IMapper mapper, IKenticoProductsProvider productProvider, IKenticoSiteProvider site, IKenticoUnitOfMeasureProvider units)
         {
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            this.dynamicPrices = dynamicPrices ?? throw new ArgumentNullException(nameof(dynamicPrices));
             this.productProvider = productProvider ?? throw new ArgumentNullException(nameof(productProvider));
             this.site = site ?? throw new ArgumentNullException(nameof(site));
             this.units = units ?? throw new ArgumentNullException(nameof(units));
