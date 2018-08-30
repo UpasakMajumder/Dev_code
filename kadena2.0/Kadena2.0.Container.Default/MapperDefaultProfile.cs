@@ -102,7 +102,7 @@ namespace Kadena.Container.Default
                     src.Quantity,
                     src.Price,
                     src.Status,
-                    src.ShippingDate,
+                    src.TrackingInfos?.FirstOrDefault()?.ShippingDate ?? string.Empty,
                     src.TrackingInfos
                 }));
             CreateMap<ErpSystem, ErpSystemDto>();

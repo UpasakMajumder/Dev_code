@@ -238,6 +238,7 @@ config.localization.ordersReports = {
               cancel: '{$ Kadena.OrdersReport.Manage.CancelButton $}',
               save: '{$ Kadena.OrdersReport.Manage.SaveButton $}'
             },
+            validationMessage: '{$ Kadena.OrderReport.Manage.ValidationError $}',
             submitUrl: '/api/ordersshippingsupdate',
             headers: [
               {

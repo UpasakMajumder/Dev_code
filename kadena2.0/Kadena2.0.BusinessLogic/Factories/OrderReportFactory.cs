@@ -98,6 +98,10 @@ namespace Kadena.BusinessLogic.Factories
                     var itemClone = _mapper.Map<OrderReportViewItem>(orderReportViewItem);
                     foreach (var trackingInfo in orderReportViewItem.TrackingInfos)
                     {
+                        if (DateTime.TryParse(trackingInfo.ShippingDate, out var shippingDate))
+                        {
+                            trackingInfo.ShippingDate = FormatDate(shippingDate);
+                        }
                         itemClone.TrackingInfos = new[] { trackingInfo };
                         resultItems.Add(_mapper.Map<TableRow>(itemClone));
                     }

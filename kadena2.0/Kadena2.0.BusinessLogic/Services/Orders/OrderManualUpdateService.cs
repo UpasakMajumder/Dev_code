@@ -92,37 +92,42 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var shippingOptions = shoppingCartProvider.GetShippingOptions();
 
-            foreach (var updateShippingRow in request)
+            foreach (var orderGroup in request.GroupBy(x => x.OrderNumber))
             {
-                var shippingProvider = shippingOptions
-                    .FirstOrDefault(x => x.Service == updateShippingRow.ShippingMethod)
-                    ?.CarrierCode;
-                shippingUpdates.Add(new UpdateShippingsOrderDto
+                var updateShippingOrder = new UpdateShippingsOrderDto
                 {
-                    OrderId = updateShippingRow.OrderNumber,
-                    Items = new[]
+                    OrderId = orderGroup.Key,
+                    Items = new List<UpdateShippingsOrderItemDto>()
+                };
+
+                foreach (var updateShippingRow in orderGroup)
+                {
+                    var shippingProvider = shippingOptions
+                        .FirstOrDefault(x => x.Service == updateShippingRow.ShippingMethod)
+                        ?.CarrierCode;
+
+                    updateShippingOrder.Items.Add(new UpdateShippingsOrderItemDto
                     {
-                        new UpdateShippingsOrderItemDto
-                        {
-                            LineNumber = updateShippingRow.LineNumber,
-                            Shippings = new []
-                            {
-                                new UpdateShippingsOrderItemShippingDto
+                        LineNumber = updateShippingRow.LineNumber,
+                        Shippings = new[]
                                 {
-                                    ItemId = updateShippingRow.TrackingInfoId,
-                                    QuantityShipped = updateShippingRow.QuantityShipped,
-                                    ShippingDate = updateShippingRow.ShippingDate,
-                                    TrackingNumber = updateShippingRow.TrackingNumber,
-                                    ShippingMethod = new UpdateShippingsOrderItemShippingMethod
+                                    new UpdateShippingsOrderItemShippingDto
                                     {
-                                        Provider = shippingProvider,
-                                        ShippingService = updateShippingRow.ShippingMethod
+                                        ItemId = updateShippingRow.TrackingInfoId,
+                                        QuantityShipped = updateShippingRow.QuantityShipped,
+                                        ShippingDate = updateShippingRow.ShippingDate,
+                                        TrackingNumber = updateShippingRow.TrackingNumber,
+                                        ShippingMethod = new UpdateShippingsOrderItemShippingMethod
+                                        {
+                                            Provider = shippingProvider,
+                                            ShippingService = updateShippingRow.ShippingMethod.Replace("#", "")
+                                        }
                                     }
                                 }
-                            }
-                        } 
-                    }
-                });    
+                    });
+                }
+
+                shippingUpdates.Add(updateShippingOrder);
             }
 
             updateRequest.ShippingUpdates = shippingUpdates.ToArray();
