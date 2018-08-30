@@ -312,6 +312,7 @@
               cancel: 'Cancel',
               save: 'Save'
             },
+            validationMessage: 'The field are incorrect 🐞',
             submitUrl: PATH + 'order/report/manage',
             headers: [
               {

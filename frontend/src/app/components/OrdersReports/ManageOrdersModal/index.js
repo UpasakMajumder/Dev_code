@@ -29,7 +29,8 @@ class ManageOrdersModal extends Component {
         id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
         label: PropTypes.string.isRequired
       }).isRequired).isRequired,
-      submitUrl: PropTypes.string.isRequired
+      submitUrl: PropTypes.string.isRequired,
+      validationMessage: PropTypes.string.isRequired
     }).isRequired,
     rows: PropTypes.arrayOf(PropTypes.object).isRequired,
     manage: PropTypes.func.isRequired
@@ -205,34 +206,93 @@ class ManageOrdersModal extends Component {
   );
 
   getFields = () => {
-    return this.state.fields.map((field, index) => {
-      const dataRows = this.props.rows.filter(row => row.items.orderNumber.value === field.orderNumber);
-      const dataRow = dataRows.length ? dataRows[0] : { items: {} };
+    // get old fields
+    const oldFields = this.state.fields.filter(field => !field.new);
+    const addedFields = this.state.fields
+      .filter(field => field.new)
+      .map((field) => {
+        const parent = this.props.rows.filter(row => row.items.orderNumber.value === field.orderNumber);
+        return { ...field, lineNumber: parent[0].items.lineNumber.value, trackingInfoId: '' };
+      });
 
-      return {
-        ...field,
-        lineNumber: dataRow.items.lineNumber && dataRow.items.lineNumber.value,
-        trackingInfoId: field.new ? '' : dataRow.items.trackingInfoId && dataRow.items.trackingInfoId.value
-      };
+
+    const changedFields = oldFields
+      .map((field, index) => ({ ...field, lineNumber: this.props.rows[index].items.lineNumber.value, trackingInfoId: this.props.rows[index].items.trackingInfoId.value }))
+      .filter((field, index) => {
+        const original = this.props.rows[index].items;
+        let changed = false;
+        Object.keys(field).forEach((key) => {
+          const originalValue = original[key] === undefined ? '' : original[key].value;
+          if (field[key] !== originalValue) changed = true;
+        });
+
+        return changed;
+      });
+
+    return [...changedFields, ...addedFields];
+  };
+
+  isValid = (body) => {
+    let valid = true;
+
+    body.forEach((field) => {
+      const keys = Object.keys(field);
+      keys.forEach((key) => {
+        const headers = this.props.ui.headers.filter(header => header.id === key);
+        if (headers.length) {
+          const header = headers[0];
+          if (header.type === 'date') {
+            if (isNaN(Date.parse(field[key]))) {
+              valid = false;
+            }
+          } else if (header.type === 'number') {
+            if (field[key] < 1) {
+              valid = false;
+            }
+          } else if (field[key] === '') {
+            if (header.type || header.edit) {
+              valid = false;
+            }
+          }
+        }
+      });
     });
+
+
+    return valid;
   };
 
   submit = () => {
+    const body = this.getFields();
+
+    if (!this.isValid(body)) {
+      window.store.dispatch({
+        type: FAILURE,
+        alert: this.props.ui.validationMessage
+      });
+      return;
+    }
+
+    if (!body.length) {
+      this.props.closeModal();
+      return;
+    }
+
     this.setState({ isLoading: true });
 
     axios
-      .post(this.props.ui.submitUrl, this.getFields())
+      .post(this.props.ui.submitUrl, body)
       .then((response) => {
         this.setState({ isLoading: false });
         const { success, payload, errorMessage } = response.data;
 
         if (success) {
-          this.props.manage(this.state.fields);
+          window.location.reload('');
+          // this.props.manage(this.state.fields);
           window.store.dispatch({
             type: SUCCESS,
             alert: payload.message
           });
-          this.props.closeModal();
         } else {
           window.store.dispatch({
             type: FAILURE,
