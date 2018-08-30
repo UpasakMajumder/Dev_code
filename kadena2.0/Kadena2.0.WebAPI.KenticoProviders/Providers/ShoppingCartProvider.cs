@@ -538,5 +538,31 @@ namespace Kadena.WebAPI.KenticoProviders
             option.CarrierCode = carrier.CarrierName;
             return option;
         }
+
+        public ShoppingCart Evaluate(ShoppingCart cart)
+        {
+            var customerAddress = AddressInfoProvider.GetAddressInfo(cart.AddressId);
+            var cartInfo = new ShoppingCartInfo()
+            {
+                ShoppingCartSiteID = SiteContext.CurrentSiteID,
+                ShoppingCartCustomerID = cart.CustomerId,
+                ShoppingCartCurrencyID = CurrencyInfoProvider.GetMainCurrency(SiteContext.CurrentSiteID).CurrencyID,
+                User = UserInfoProvider.GetUserInfo(cart.UserId),
+                ShoppingCartShippingAddress = customerAddress,
+                ShoppingCartShippingOptionID = cart.ShippingOptionId
+            };
+            cartInfo.SetValue("ShoppingCartCampaignID", cart.CampaignId);
+            cartInfo.SetValue("ShoppingCartProgramID", cart.ProgramId);
+            cartInfo.SetValue("ShoppingCartDistributorID", cart.DistributorId);
+            cartInfo.SetValue("ShoppingCartInventoryType", (int)cart.Type);
+            foreach (var i in cart.Items)
+            {
+                var parameters = new ShoppingCartItemParameters(i.SKUID, i.Quantity);
+
+                var cartItem = cartInfo.SetShoppingCartItem(parameters);
+            }
+            cartInfo.InvalidateCalculations();
+            return mapper.Map<ShoppingCart>(cartInfo);
+        }
     }
 }

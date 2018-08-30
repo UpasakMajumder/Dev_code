@@ -88,5 +88,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         ShoppingCart GetShoppingCart(int cartId);
 
         int SaveCart(ShoppingCart cart);
+        ShoppingCart Evaluate(ShoppingCart cart);
     }
 }
