@@ -102,8 +102,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new InvalidOperationException("Editing of order isn't supported for Pre-buy orders.");
             }
 
-
-
             var itemsWithoutDocument = orderDetail.Items.Where(i => i.DocumentId == 0).Select(i => i.Name);
 
             if (itemsWithoutDocument.Any())
@@ -141,14 +139,33 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             if (orderDetail.Type == OrderType.generalInventory)
             {
+                var newItems = request.Items
+                .Join(orderDetail.Items,
+                    chi => chi.LineNumber,
+                    oi => oi.LineNumber,
+                    (chi, oi) => new
+                    {
+                        oi.LineNumber,
+                        oi.DocumentId,
+                        AdjustedQuantity = chi.Quantity - oi.Quantity,
+                        NewQuantity = chi.Quantity,
+                        oi.TemplateId,
+                        oi.SkuId
+                    })
+                .ToList();
+
                 var skuLines = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.LineNumber);
                 var skuNewQty = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.Quantity);
                 var skuAdjustedQuantities = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.Quantity - v.OriginalItem.Quantity);
 
                 // create distributor cart items
-                var distributorCartItems = distributorShoppingCartService
-                    .CreateCart(skuAdjustedQuantities, orderDetail.Customer.KenticoUserID, orderDetail.campaign.DistributorID)
-                    .ToList();
+                foreach (var i in newItems)
+                {
+                    if (i.AdjustedQuantity > 0)
+                    {
+                        distributorShoppingCartService.ValidateItem(i.SkuId, i.AdjustedQuantity, orderDetail.Customer.KenticoUserID);
+                    }
+                }
                 // create fake cart with new data
                 // distributor set to 0 so cart won't be visible for active users
                 var cart = new ShoppingCart
@@ -157,6 +174,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     ProgramId = orderDetail.campaign.ProgramID,
                     UserId = orderDetail.Customer.KenticoUserID
                 };
+
                 var cartId = shoppingCartProvider.SaveCart(cart);
                 // update fake cart
                 try

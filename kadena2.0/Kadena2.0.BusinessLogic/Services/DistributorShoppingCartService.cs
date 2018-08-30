@@ -102,33 +102,19 @@ namespace Kadena.BusinessLogic.Services
                 : -1;
         }
 
-        // items - order item relation (skuid -> quantity), 
-        // userid - creator of order, addressid - distributors address id
-        public IEnumerable<DistributorCart> CreateCart(Dictionary<int, int> items, int userId, int addressId)
+        public void ValidateItem(int skuId, int quantity, int userId)
         {
             var inventoryType = CampaignProductType.GeneralInventory;
-            return items.Select(i =>
+            int availableQty = GetInventoryAvailableQuantity(skuId, inventoryType);
+            if (availableQty > -1 && availableQty < quantity)
             {
-                int availableQty = GetInventoryAvailableQuantity(i.Key, inventoryType);
-                if (availableQty > -1 && availableQty < i.Value)
-                {
-                    throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));
-                }
-                int allocatedQty = GetAllocatedQuantity(i.Key, inventoryType, userId);
-                if (allocatedQty > -1 && allocatedQty < i.Value)
-                {
-                    throw new Exception(resources.GetResourceString("KDA.Cart.Update.ProductNotAllocatedMessage"));
-                }
-                return new DistributorCart
-                {
-                    CartType = inventoryType,
-                    SKUID = i.Key,
-                    Items = new List<DistributorCartItem>
-                    {
-                        CreateDistributorCartItem(0, addressId, i.Value)
-                    }
-                };
-            });
+                throw new Exception(resources.GetResourceString("Kadena.AddToCart.NoStockAvailableError"));
+            }
+            int allocatedQty = GetAllocatedQuantity(skuId, inventoryType, userId);
+            if (allocatedQty > -1 && allocatedQty < quantity)
+            {
+                throw new Exception(resources.GetResourceString("KDA.Cart.Update.ProductNotAllocatedMessage"));
+            }
         }
 
         private List<DistributorCartItem> GetDistributorCartItems(int skuID, int userId, CampaignProductType cartType = CampaignProductType.GeneralInventory)
