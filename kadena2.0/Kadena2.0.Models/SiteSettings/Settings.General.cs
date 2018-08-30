@@ -194,15 +194,6 @@ namespace Kadena.Models.SiteSettings
         public const string KDA_NewProductRequest_Enabled = "KDA_NewProductRequest_Enabled";
 
         /// <summary>
-        /// KDA ParsingServiceUrl
-        /// </summary>
-        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
-        [GroupAttribute("General Site Settings")]
-        [DefaultValueAttribute(@"https://7e67w2v6q8.execute-api.us-east-1.amazonaws.com/Qa")]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQSBQYXJzaW5nU2VydmljZVVybCIsIktleU5hbWUiOiJLREFfUGFyc2luZ1NlcnZpY2VVcmwiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjoiaHR0cHM6Ly83ZTY3dzJ2NnE4LmV4ZWN1dGUtYXBpLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tL1FhIiwiS2V5RGVzY3JpcHRpb24iOiJLREEgUGFyc2luZ1NlcnZpY2VVcmwiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiS2FkZW5hIiwiTmFtZSI6IkthZGVuYSIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkNNUy5TZXR0aW5ncyJ9LCJEaXNwbGF5TmFtZSI6IkdlbmVyYWwgU2l0ZSBTZXR0aW5ncyJ9fQ==")]
-        public const string KDA_ParsingServiceUrl = "KDA_ParsingServiceUrl";
-
-        /// <summary>
         /// KDA_ProductRequestPageUrl
         /// </summary>
         [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
