@@ -337,7 +337,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// <returns></returns>
         private static SiteDTO GetSite()
         {
-            var settingKeyValue = DIContainer.Resolve<IKenticoResourceService>().GetSiteSettingsKey(Settings.KDA_ErpCustomerId);
+            var settingKeyValue = DIContainer.Resolve<IKenticoResourceService>().GetCustomerErpId();
             return new SiteDTO
             {
                 KenticoSiteID = SiteContext.CurrentSiteID,
