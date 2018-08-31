@@ -142,7 +142,9 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         private void BindAllocationTable()
         {
-            RepSelectedUser.DataSource = Allocations;
+            RepSelectedUser.DataSource = Allocations
+                .OrderBy(a => a.UserName)
+                .ToList();
             RepSelectedUser.DataBind();
         }
 
@@ -178,10 +180,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             var productId = ProductId;
             
             // clean old allocations
-            var where = new WhereCondition()
-                .WhereEquals("ProductID", productId)
-                .ToString();
-            CustomTableItemProvider.DeleteItems(AllocationsTableName, where);
+            CustomTableItemProvider.DeleteItems(AllocationsTableName, $"ProductID={productId}");
 
             // set new allocations
             AddProductAllocations(productId, Allocations);
