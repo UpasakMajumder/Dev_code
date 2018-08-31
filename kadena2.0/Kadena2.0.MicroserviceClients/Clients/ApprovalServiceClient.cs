@@ -19,7 +19,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<string>> Approval(ApprovalRequestDto approval)
         {
-            var url = $"{BaseUrl}/approval";
+            var url = $"{BaseUrl}/api/v{Version}/approval";
             return await Patch<string>(url, approval).ConfigureAwait(false);
         }
     }

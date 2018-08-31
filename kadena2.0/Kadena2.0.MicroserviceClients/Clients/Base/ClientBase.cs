@@ -40,9 +40,15 @@ namespace Kadena2.MicroserviceClients.Clients.Base
         {
             get
             {
-                var url = _properties.GetServiceUrl(_baseServiceUrlSettingKey);
-                var version = _properties.GetServiceUrl(_serviceVersionSettingKey);
-                return $"{url}/api/v{version}";
+                return _properties.GetServiceUrl(_baseServiceUrlSettingKey);
+            }
+        }
+
+        public string Version
+        {
+            get
+            {
+                return _properties.GetServiceUrl(_serviceVersionSettingKey);
             }
         }
 
@@ -87,7 +93,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             }
         }
 
-        protected virtual HttpRequestMessage CreateRequest(HttpMethod method, string url, object body = null)
+        private HttpRequestMessage CreateRequest(HttpMethod method, string url, object body = null)
         {
             var request = new HttpRequestMessage(method, url);
             AddSuppliantDomain(request);
@@ -99,7 +105,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return request;
         }
 
-        protected virtual async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
+        private async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
         {
             BaseResponseDto<TResult> result = null;
             BaseErrorDto innerError = null;

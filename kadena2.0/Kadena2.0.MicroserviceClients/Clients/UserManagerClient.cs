@@ -19,7 +19,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<object>> Create(CreateUserDto user)
         {
-            var url = $"{BaseUrl}/user";
+            var url = $"{BaseUrl}/user/v{Version}";
             return await Post<object>(url, user).ConfigureAwait(false);
         }
     }

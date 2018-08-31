@@ -40,6 +40,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoSkuProvider skus;
         private readonly IOrderItemCheckerService orderChecker;
         private readonly ISettingsService settingsService;
+        private readonly IArtworkService artworkService;
 
         public ShoppingCartService(IKenticoSiteProvider kenticoSite,
                                    IKenticoLocalizationProvider localization,
@@ -59,6 +60,7 @@ namespace Kadena.BusinessLogic.Services
                                    IProductsService productsService,
                                    IImageService imageService,
                                    IKenticoSkuProvider skus,
+                                   IArtworkService artworkService,
                                    IOrderItemCheckerService orderChecker,
                                    ISettingsService settingsService)
         {
@@ -82,6 +84,7 @@ namespace Kadena.BusinessLogic.Services
             this.skus = skus ?? throw new ArgumentNullException(nameof(skus));
             this.orderChecker = orderChecker ?? throw new ArgumentNullException(nameof(orderChecker));
             this.settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
+            this.artworkService = artworkService ?? throw new ArgumentNullException(nameof(artworkService));
         }
 
         public async Task<CheckoutPage> GetCheckoutPage()
@@ -480,7 +483,7 @@ namespace Kadena.BusinessLogic.Services
                 await SetMailingList(cartItem, newItem.ContainerId, addedAmount);
             }
 
-            shoppingCartItems.SetArtwork(cartItem, newItem.DocumentId);
+            cartItem.ArtworkLocation = artworkService.GetLocation(newItem.DocumentId);
 
             // do this before calculating dynamic price
             if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))

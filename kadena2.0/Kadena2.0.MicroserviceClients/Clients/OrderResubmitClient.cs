@@ -21,7 +21,7 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<ResubmitOrderResponseDto>> Resubmit(ResubmitOrderRequestDto requestDto)
         {
-            var url = $"{BaseUrl}{_serviceEndpoint}";
+            var url = $"{BaseUrl}/api/v{Version}{_serviceEndpoint}";
             return await Post<ResubmitOrderResponseDto>(url, requestDto).ConfigureAwait(false);
         }
     }

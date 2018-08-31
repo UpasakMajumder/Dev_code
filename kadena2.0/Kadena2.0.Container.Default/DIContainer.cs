@@ -32,6 +32,7 @@ using System.IdentityModel.Tokens;
 using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.BusinessLogic.Services.Approval;
 using NReco.PdfGenerator;
+using Kadena.AmazonFileSystemProvider;
 
 namespace Kadena.Container.Default
 {
@@ -114,6 +115,9 @@ namespace Kadena.Container.Default
             container.Register<IApproverService, ApproverService>();
             container.Register<IApprovalService, ApprovalService>();
             container.Register<IDialogService, DialogService>();
+            container.Register<IS3PathService, S3PathService>();
+            container.Register<IS3PathService, PathService>(setup: Setup.Decorator);
+            container.Register<IArtworkService, ArtworkService>();
             container.Register<IDeliveryEstimationDataService, DeliveryEstimationDataService>();
             container.Register<IErpSystemsService, ErpSystemsService>();
             container.Register<IOrderManualUpdateService, OrderManualUpdateService>();
@@ -166,6 +170,8 @@ namespace Kadena.Container.Default
             container.Register<ITieredPriceRangeProvider, TieredPriceRangeProvider>();
             container.Register<IOrderCartItemsProvider, OrderCartItemsProvider>();
             container.Register<IKenticoSkuProvider, KenticoSkuProvider>();
+            container.Register<IKenticoFileProvider, KenticoFileProvider>();
+            container.Register<IKenticoCustomItemProvider, KenticoCustomItemProvider>();
             return container;
         }
 
@@ -183,7 +189,6 @@ namespace Kadena.Container.Default
             container.Register<IOrderViewClient, OrderViewClient>();
             container.Register<ITaxEstimationServiceClient, TaxEstimationServiceClient>();
             container.Register<ITemplatedClient, TemplatedClient>();
-            container.Register<IAddressValidationClient, AddressValidationClient>();
             container.Register<ISuppliantDomainClient, SuppliantDomain>();
             container.Register<IFileClient, FileClient>();
             container.Register<IOrderResubmitClient, OrderResubmitClient>();
