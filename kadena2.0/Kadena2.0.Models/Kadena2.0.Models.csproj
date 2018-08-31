@@ -98,6 +98,7 @@
     <Compile Include="Orders\OrderStatus.cs" />
     <Compile Include="Orders\OrderUpdate.cs" />
     <Compile Include="Orders\OrderUpdateResult.cs" />
+    <Compile Include="Orders\UpdateOrdersShippingsResult.cs" />
     <Compile Include="Orders\UpdateShippingRow.cs" />
     <Compile Include="ProductOptions\ProductCategory.cs" />
     <Compile Include="ProductOptions\ProductOption.cs" />
@@ -214,7 +215,7 @@
     <Compile Include="Site\KenticoSite.cs" />
     <Compile Include="Mailing\MailingAddress.cs" />
     <Compile Include="Mailing\MailingList.cs" />
-	<Compile Include="_Common\Link.cs" />
+    <Compile Include="_Common\Link.cs" />
     <Compile Include="Common\FileResult.cs" />
     <Compile Include="Common\MailTemplate.cs" />
     <Compile Include="RecentOrders\Order.cs" />
@@ -272,7 +273,7 @@
     <Compile Include="Common\TableView.cs" />
     <Compile Include="Membership\User.cs" />
     <Compile Include="UserBudget\UserBudgetItem.cs" />
-	<Compile Include="_Common\TitledMessage.cs" />
+    <Compile Include="_Common\TitledMessage.cs" />
     <Compile Include="Common\ValidationFieldResult.cs" />
     <Compile Include="Common\Dialog.cs" />
     <Compile Include="Common\DialogButton.cs" />

@@ -85,7 +85,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.taxEstimationService = taxEstimationService ?? throw new ArgumentNullException(nameof(taxEstimationService));
         }
 
-        public async Task<(bool, string)> UpdateOrdersShippings(UpdateShippingRow[] request)
+        public async Task<UpdateOrdersShippingsResult> UpdateOrdersShippings(UpdateShippingRow[] request)
         {
             var updateRequest = new UpdateShippingsRequestDto();
             var shippingUpdates = new List<UpdateShippingsOrderDto>();
@@ -134,10 +134,18 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var response = await updateService.UpdateOrdersShippings(updateRequest);
             if (response.Success)
-                return (true, resources.GetResourceString("Kadena.OrderReport.Manage.SubmitSuccess"));
+                return new UpdateOrdersShippingsResult
+                {
+                    Success = true,
+                    Message = resources.GetResourceString("Kadena.OrderReport.Manage.SubmitSuccess")
+                };
 
             log.LogError(nameof(UpdateOrdersShippings), $"{response.ErrorMessages} - {JsonConvert.SerializeObject(response.Error)}");
-            return (false, response.ErrorMessages);
+            return new UpdateOrdersShippingsResult
+            {
+                Success = false,
+                Message = response.ErrorMessages
+            };
         }
 
         public async Task<OrderUpdateResult> UpdateOrder(OrderUpdate request)

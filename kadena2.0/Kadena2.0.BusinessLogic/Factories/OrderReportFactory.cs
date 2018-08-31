@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TableRow = Kadena.Models.Common.TableRow;
-using Kadena.Models.Shipping;
 
 namespace Kadena.BusinessLogic.Factories
 {
@@ -22,7 +21,7 @@ namespace Kadena.BusinessLogic.Factories
         /// </summary>
         /// <param name="reportDto"></param>
         /// <returns></returns>
-        TableView CreateTableView(IEnumerable<OrderReportViewItem> reportDto);
+        TableView CreateTableView(ICollection<OrderReportViewItem> reportDto);
 
         IEnumerable<OrderReportViewItem> CreateReportView(IEnumerable<RecentOrderDto> recentOrder);
     }
@@ -86,12 +85,10 @@ namespace Kadena.BusinessLogic.Factories
                 );
 
 
-        public TableView CreateTableView(IEnumerable<OrderReportViewItem> reportDto)
+        public TableView CreateTableView(ICollection<OrderReportViewItem> reportDto)
         {
-            var orderReportViewItems = reportDto as OrderReportViewItem[] ?? reportDto.ToArray();
-
             var resultItems = new List<TableRow>();
-            foreach (var orderReportViewItem in orderReportViewItems.Where(r => r.Quantity > 0))
+            foreach (var orderReportViewItem in reportDto.Where(r => r.Quantity > 0))
             {
                 if (orderReportViewItem.TrackingInfos.Any())
                 {

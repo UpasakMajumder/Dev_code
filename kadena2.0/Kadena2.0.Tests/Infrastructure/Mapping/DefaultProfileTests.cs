@@ -22,12 +22,23 @@ namespace Kadena.Tests.Infrastructure.Mapping
                     OrderingDate = "ordDate",
                     Price = 10,
                     Quantity = 2,
-                    ShippingDate = "shiDate",
+                    ShippingDate = "shippingDate",
                     Site = "site",
                     SKU = "sku",
                     Status = "status",
                     TrackingInfos = new[] {
-                        new TrackingInfo()
+                        new TrackingInfo
+                        {
+                            Id ="id",
+                            ItemId = "item-id",
+                            QuantityShipped = 10,
+                            ShippingDate = "time",
+                            ShippingMethod = new TrackingInfoShippingMethod
+                            {
+                                Provider = "provider",
+                                ShippingService = "service"
+                            }
+                        }
                     },
                     Url = "url",
                     User = "user"
@@ -58,7 +69,6 @@ namespace Kadena.Tests.Infrastructure.Mapping
             Assert.Equal(reportView.Quantity, actualRow.Items[7]);
             Assert.Equal(reportView.Price, actualRow.Items[8]);
             Assert.Equal(reportView.Status, actualRow.Items[9]);
-            Assert.Equal(reportView.ShippingDate, actualRow.Items[10]);
             Assert.Equal(reportView.TrackingInfos, actualRow.Items[11]);
         }
 
