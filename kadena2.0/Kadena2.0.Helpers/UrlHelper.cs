@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kadena.Helpers.Routes;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -111,6 +112,11 @@ namespace Kadena.Helpers
             }
 
             return string.Empty;
+        }
+
+        public static Uri GetMailingListExportUrl(Guid containerId)
+        {
+            return new Uri($"/{Klist.Export.Replace("{containerId}", containerId.ToString())}", UriKind.Relative);
         }
     }
 }
