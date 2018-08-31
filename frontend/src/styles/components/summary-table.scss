@@ -39,7 +39,6 @@
   &__info {
     @include rem(padding-right, 10px);
     position: relative;
-    z-index: 1;
     white-space: nowrap;
   }
 }

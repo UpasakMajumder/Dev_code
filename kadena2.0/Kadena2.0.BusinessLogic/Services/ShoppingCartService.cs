@@ -41,6 +41,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoSkuProvider skus;
         private readonly IOrderItemCheckerService orderChecker;
         private readonly ISettingsService settingsService;
+        private readonly IArtworkService artworkService;
 
         public ShoppingCartService(IKenticoSiteProvider kenticoSite,
                                    IKenticoLocalizationProvider localization,
@@ -60,6 +61,7 @@ namespace Kadena.BusinessLogic.Services
                                    IProductsService productsService,
                                    IImageService imageService,
                                    IKenticoSkuProvider skus,
+                                   IArtworkService artworkService,
                                    IOrderItemCheckerService orderChecker,
                                    ISettingsService settingsService,
                                    IMapper mapper)
@@ -84,6 +86,7 @@ namespace Kadena.BusinessLogic.Services
             this.skus = skus ?? throw new ArgumentNullException(nameof(skus));
             this.orderChecker = orderChecker ?? throw new ArgumentNullException(nameof(orderChecker));
             this.settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
+            this.artworkService = artworkService ?? throw new ArgumentNullException(nameof(artworkService));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -495,7 +498,7 @@ namespace Kadena.BusinessLogic.Services
                 orderChecker.CheckMinMaxQuantity(sku, cartItem.Quantity);
             }
 
-            shoppingCartItems.SetArtwork(cartItem, product.Id);
+            cartItem.ArtworkLocation = artworkService.GetLocation(newItem.DocumentId);
 
             var price = productsService.GetPriceByCustomModel(product.Id, cartItem.Quantity);
             if (price != decimal.MinusOne)

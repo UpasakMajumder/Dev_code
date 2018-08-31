@@ -466,6 +466,11 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.TotalTax, opt => opt.Ignore())
                 .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.ShoppingCartCustomerID))
                 .ForMember(dest => dest.PricedItemsTax, opt => opt.Ignore());
+
+            CreateMap<CustomTableItem, Kadena.Models.Common.Environment>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ItemID))
+                .ForMember(dest => dest.AmazonS3Folder, opt => opt.MapFrom(src => src.GetStringValue("AmazonS3Folder", string.Empty)))
+                .ForMember(dest => dest.AmazonS3ExcludedPaths, opt => opt.MapFrom(src => src.GetStringValue("AmazonS3ExcludedPaths", string.Empty)));
         }
     }
 }

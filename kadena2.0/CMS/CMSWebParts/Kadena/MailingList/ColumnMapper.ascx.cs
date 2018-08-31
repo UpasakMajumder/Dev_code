@@ -132,12 +132,6 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
                         {
                             throw new InvalidOperationException(uploadResult.ErrorMessages);
                         }
-                        var validationClient = DIContainer.Resolve<IAddressValidationClient>();
-                        var validationResult = validationClient.Validate(_containerId).Result;
-                        if (!validationResult.Success)
-                        {
-                            throw new InvalidOperationException(validationResult.ErrorMessages);
-                        }
                         Response.Redirect(ProcessListPageUrl);
                     }
                     catch (Exception ex)

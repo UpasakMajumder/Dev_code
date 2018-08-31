@@ -9,25 +9,35 @@ using System.Collections.Generic;
 using AutoMapper;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Models.SiteSettings;
+using Kadena2.MicroserviceClients;
+using System.IO;
+using Kadena.AmazonFileSystemProvider;
 
 namespace Kadena.BusinessLogic.Services
 {
     public class KListService : IKListService
     {
         private readonly IMailingListClient _mailingClient;
-        private readonly IAddressValidationClient _validationClient;
         private readonly IKenticoSiteProvider _site;
         private readonly IKenticoResourceService _resourceService;
         private readonly IMapper _mapper;
+        private readonly IKenticoFileProvider fileProvider;
+        private readonly IS3PathService pathService;
+        private readonly IExportClient exportClient;
+        private readonly IKenticoLogger _logger;
 
-        public KListService(IMailingListClient client, IKenticoSiteProvider site, IAddressValidationClient validationClient, IMapper mapper,
-            IKenticoResourceService resourceService)
+        public KListService(IMailingListClient client, IKenticoSiteProvider site, IMapper mapper,
+            IKenticoResourceService resourceService, IKenticoFileProvider fileProvider, IExportClient exportClient,
+            IS3PathService pathService, IKenticoLogger logger)
         {
             _mailingClient = client ?? throw new ArgumentNullException(nameof(client));
             _site = site ?? throw new ArgumentNullException(nameof(site));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _validationClient = validationClient ?? throw new ArgumentNullException(nameof(validationClient));
             _resourceService = resourceService ?? throw new ArgumentNullException(nameof(resourceService));
+            this.fileProvider = fileProvider ?? throw new ArgumentNullException(nameof(fileProvider));
+            this.exportClient = exportClient ?? throw new ArgumentNullException(nameof(exportClient));
+            this.pathService = pathService ?? throw new ArgumentNullException(nameof(pathService));
+            this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<string> DeleteExpiredMailingLists()
@@ -62,25 +72,36 @@ namespace Kadena.BusinessLogic.Services
             var changes = _mapper.Map<MailingAddressDto[]>(addresses);
 
             var updateResult = await _mailingClient.UpdateAddresses(containerId, changes);
-            if (updateResult.Success)
-            {
-                var validateResult = await _validationClient.Validate(containerId);
-                return validateResult.Success;
-            }
-            else
-            {
-                return updateResult.Success;
-            }
+            return updateResult.Success;
         }
 
         public async Task<bool> UseOnlyCorrectAddresses(Guid containerId)
         {
             var addresses = await _mailingClient.GetAddresses(containerId);
-            await _mailingClient.RemoveAddresses(containerId,
+            var removeResult = await _mailingClient.RemoveAddresses(containerId,
                 addresses.Payload.Where(a => a.ErrorMessage != null).Select(a => a.Id));
-            var validateResult = await _validationClient.Validate(containerId);
 
-            return validateResult.Success;
+            return removeResult.Success;
+        }
+
+        public string CreateMailingList(string fileName, Stream fileStream)
+        {
+            var system = FileSystem.Mailing;
+            var path = Path.Combine(system.SystemFolder, fileName);
+            fileProvider.CreateFile(path, fileStream);
+            return pathService.GetObjectKeyFromPath(path, true);
+        }
+
+        public async Task<Uri> GetContainerFileUrl(Guid containerId)
+        {
+            var site = _site.GetCurrentSiteCodeName();
+            var exportResult = await exportClient.ExportMailingList(containerId);
+            if (!exportResult.Success)
+            {
+                _logger.LogError(GetType().Name, exportResult.ErrorMessages);
+                return null;
+            }
+            return new Uri(exportResult.Payload, UriKind.RelativeOrAbsolute);
         }
     }
 }

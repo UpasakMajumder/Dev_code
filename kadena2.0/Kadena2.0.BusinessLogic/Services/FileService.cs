@@ -10,19 +10,19 @@ namespace Kadena.BusinessLogic.Services
     public class FileService : IFileService
     {
         private readonly IFileClient _fileClient;
-        private readonly IKenticoResourceService _resources;
         private readonly IKenticoLogger _logger;
+        private readonly IS3PathService pathService;
 
-        public FileService(IFileClient fileClient, IKenticoResourceService resources, IKenticoLogger logger)
+        public FileService(IFileClient fileClient, IKenticoLogger logger, IS3PathService pathService)
         {
             _fileClient = fileClient ?? throw new ArgumentNullException(nameof(fileClient));
-            _resources = resources ?? throw new ArgumentNullException(nameof(resources));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.pathService = pathService ?? throw new ArgumentNullException(nameof(pathService));
         }
-        
+
         public async Task<string> GetUrlFromS3(string key)
         {
-            var linkResult = await _fileClient.GetShortliveSecureLink(PathHelper.EnsureFullKey(key));
+            var linkResult = await _fileClient.GetShortliveSecureLink(pathService.GetObjectKeyFromPath(key, true));
 
             if (!linkResult.Success || string.IsNullOrEmpty(linkResult.Payload))
             {

@@ -12,7 +12,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void RemoveCartItem(int id);
         void SetCartItemQuantity(CartItemEntity cartItemEntity, int quantity);
         void SaveCartItem(CartItemEntity item);
-        void SetArtwork(CartItemEntity cartItem, int documentId);
         CartItemEntity GetOrCreateCartItem(int skuId, int quantity, Dictionary<string, int> productAttributes, Guid templateId);
         CartItemEntity GetCartItemEntity(int cartItemId);
     }
