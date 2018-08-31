@@ -197,13 +197,14 @@
                             <ItemTemplate>
                                 <tr>
                                     <td>
-                                        <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("UserID") %>' Style="display: none" />
                                         <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("UserName") %>' />
                                     </td>
                                     <td>
-                                        <asp:Label ID="Label1" runat="server" Text='<%# Eval("EmailID") %>' /></td>
+                                        <asp:Label ID="Label1" runat="server" Text='<%# Eval("EmailID") %>' />
+                                    </td>
                                     <td>
-                                        <asp:Label ID="Label2" runat="server" Text='<%# Eval("Quantity") %>' /></td>
+                                        <asp:Label ID="Label2" runat="server" Text='<%# Eval("Quantity") %>' />
+                                    </td>
                                 </tr>
                             </ItemTemplate>
                             <FooterTemplate>
@@ -281,8 +282,6 @@
                             <FooterTemplate>
                                 </tbody>
                                  </table>
-                         
-                           
                             </FooterTemplate>
                         </asp:Repeater>
                         <asp:Repeater ID="rptPager" runat="server">
@@ -307,7 +306,7 @@
         </div>
     </div>
 </div>
-<%--State dropdown GroupInfoPopup--%>
+
 <div class="dialog" id="StateGroupInfoPopup">
     <div class="dialog__shadow"></div>
     <div class="dialog__block">
