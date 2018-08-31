@@ -124,6 +124,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     UserID = ValidationHelper.GetInteger(((Label)row.FindControl("lblUserid")).Text, 0),
                     Quantity = ValidationHelper.GetInteger(((TextBox)row.FindControl("txtAllQuantity")).Text, 0),
                     EmailID = ValidationHelper.GetString(((Label)row.FindControl("lblEmail")).Text, string.Empty),
+                    UserName = ValidationHelper.GetString(((Label)row.FindControl("lblUserName")).Text, string.Empty),
                 });
             }
 
