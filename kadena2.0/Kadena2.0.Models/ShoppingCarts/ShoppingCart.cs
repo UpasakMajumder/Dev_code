@@ -1,4 +1,4 @@
-﻿using Kadena.Models.Checkout;
+using Kadena.Models.Checkout;
 using Kadena.Models.Product;
 using System.Collections.Generic;
 
@@ -29,5 +29,7 @@ namespace Kadena.Models.ShoppingCarts
         public decimal TotalPrice { get; set; }
 
         public decimal PricedItemsTax { get; set; }
+
+        public decimal TotalItemsWeight { get; set; }
     }
 }

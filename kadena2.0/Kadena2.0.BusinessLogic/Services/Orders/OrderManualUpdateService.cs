@@ -7,6 +7,7 @@ using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.Models;
 using Kadena.Models.CampaignData;
+using Kadena.Models.Checkout;
 using Kadena.Models.OrderDetail;
 using Kadena.Models.Orders;
 using Kadena.Models.Product;
@@ -139,7 +140,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             if (orderDetail.Type == OrderType.generalInventory)
             {
-                var newItems = request.Items
+                var updateItems = request.Items
                 .Join(orderDetail.Items,
                     chi => chi.LineNumber,
                     oi => oi.LineNumber,
@@ -155,11 +156,9 @@ namespace Kadena.BusinessLogic.Services.Orders
                 .ToList();
 
                 var skuLines = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.LineNumber);
-                var skuNewQty = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.Quantity);
-                var skuAdjustedQuantities = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.Quantity - v.OriginalItem.Quantity);
 
-                // create distributor cart items
-                foreach (var i in newItems)
+                // validate modification
+                foreach (var i in updateItems)
                 {
                     if (i.AdjustedQuantity > 0)
                     {
@@ -167,42 +166,25 @@ namespace Kadena.BusinessLogic.Services.Orders
                     }
                 }
                 // create fake cart with new data
-                // distributor set to 0 so cart won't be visible for active users
                 var cart = new ShoppingCart
                 {
                     CampaignId = orderDetail.campaign.ID,
                     ProgramId = orderDetail.campaign.ProgramID,
-                    UserId = orderDetail.Customer.KenticoUserID
+                    UserId = orderDetail.Customer.KenticoUserID,
+                    ShippingOptionId = orderDetail.ShippingInfo.ShippingOptionId,
+                    AddressId = orderDetail.ShippingInfo.AddressTo.KenticoAddressID ?? 0,
+                    Items = updateItems
+                       .Select(i => new CartItemEntity
+                       {
+                           SKUID = i.SkuId,
+                           Quantity = i.NewQuantity
+                       })
+                       .ToList()
                 };
-
-                var cartId = shoppingCartProvider.SaveCart(cart);
-                // update fake cart
+                cart = shoppingCartProvider.Evaluate(cart);
                 try
                 {
-                    distributorCartItems.ForEach(c =>
-                    {
-                        c.Items.ForEach(i =>
-                        {
-                            i.ShoppingCartID = cartId;
-                            i.Quantity = skuNewQty[c.SKUID];
-                        });
-                        distributorShoppingCartService.UpdateDistributorCarts(c, orderDetail.Customer.KenticoUserID);
-                    }
-                    );
-
-                    // deleted items will not be shopping cart, need to add them manually
-                    var deletedItems = updatedItemsData
-                        .Where(u => u.UpdatedItem.Quantity == 0)
-                        .Select(u => new ItemUpdateDto
-                        {
-                            LineNumber = u.UpdatedItem.LineNumber,
-                            Quantity = 0,
-                            TotalPrice = 0,
-                            UnitPrice = 0
-                        });
-
                     // get updated data from cart
-                    cart = shoppingCartProvider.GetShoppingCart(cartId);
                     requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart);
                     requestDto.OrderId = request.OrderId;
                     requestDto.Items = cart.Items
@@ -212,12 +194,16 @@ namespace Kadena.BusinessLogic.Services.Orders
                             item.LineNumber = skuLines[i.SKUID];
                             return item;
                         })
-                        .Concat(deletedItems)
+                        .Concat(updateItems
+                            .Where(i => i.NewQuantity < 1)
+                            .Select(i => new ItemUpdateDto
+                                {
+                                    LineNumber = i.LineNumber
+                                }))
                         .ToList();
 
-                    var weight = shoppingCartProvider.GetCartWeight(cartId);
                     var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
-                        weight, targetAddress);
+                        cart.TotalItemsWeight, targetAddress);
                     requestDto.TotalShipping = shippingCost;
 
                     var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
@@ -226,11 +212,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                 catch (Exception exc)
                 {
                     log.LogException(this.GetType().Name, exc);
-                }
-                finally
-                {
-                    // remove fake cart
-                    shoppingCartProvider.DeleteShoppingCart(cartId);
                 }
 
                 // send to microservice
