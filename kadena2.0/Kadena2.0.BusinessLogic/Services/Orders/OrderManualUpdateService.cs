@@ -138,6 +138,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
 
             var requestDto = new OrderManualUpdateRequestDto();
+            var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
 
             if (orderDetail.Type == OrderType.generalInventory)
             {
@@ -150,7 +151,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                     }
                 }
                 // create fake cart with new data
-                var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
                 var cart = new ShoppingCart
                 {
                     CampaignId = orderDetail.campaign.ID,
@@ -271,7 +271,10 @@ namespace Kadena.BusinessLogic.Services.Orders
                 };
                 var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
                 targetAddress.Country = orderDetail.ShippingInfo.AddressTo.isoCountryCode;
-                await DoEstimations(requestDto, updatedItemsData, orderDetail, skus, targetAddress);
+                DoEstimations(requestDto, updatedItemsData, orderDetail, skus, targetAddress);
+
+                requestDto.TotalTax = await taxEstimationService.EstimateTax(taxAddress, requestDto.TotalPrice, requestDto.TotalShipping);
+
                 var updateResult = await updateService.UpdateOrder(requestDto);
                 if (!updateResult.Success)
                 {
@@ -369,7 +372,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     });
         }
 
-        async Task DoEstimations(OrderManualUpdateRequestDto request, IEnumerable<UpdatedItemCheckData> updateData, GetOrderByOrderIdResponseDTO orderDetail, Sku[] skus,
+        void DoEstimations(OrderManualUpdateRequestDto request, IEnumerable<UpdatedItemCheckData> updateData, GetOrderByOrderIdResponseDTO orderDetail, Sku[] skus,
             AddressDto targetAddress)
         {
             request.TotalPrice = 0.0m;
@@ -413,8 +416,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 log.LogInfo("Approval", "Info", $"NOT going to call estimation microservice");
             }
-            var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
-            request.TotalTax = await taxEstimationService.EstimateTax(taxAddress, request.TotalPrice, request.TotalShipping);
         }
 
         private bool IsCreditCardPayment(string paymentMethod)
