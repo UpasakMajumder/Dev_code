@@ -83,7 +83,15 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.TotalShipping, opt => opt.MapFrom(src => src.ShippingPrice))
                 .ForMember(dest => dest.OrderId, opt => opt.Ignore());
             CreateMap<CartItemEntity, ItemUpdateDto>()
-               .ForMember(dest => dest.LineNumber, opt => opt.Ignore());
+               .ForMember(dest => dest.LineNumber, opt => opt.ResolveUsing((src, dest, val, ctx)=>
+               {
+                   if (ctx.Items.TryGetValue(src.SKUID.ToString(), out object value))
+                   {
+                       return value;
+                   }
+                   return 0;
+               }
+               ));
 
             CreateMap<OrderReportViewItem, TableRow>()
                 .ForMember(dest => dest.Items, opt => opt.ResolveUsing(src => new object[] {

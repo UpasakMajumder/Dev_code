@@ -155,8 +155,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                     })
                 .ToList();
 
-                var skuLines = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.LineNumber);
-
                 // validate modification
                 foreach (var i in updateItems)
                 {
@@ -186,15 +184,10 @@ namespace Kadena.BusinessLogic.Services.Orders
                 try
                 {
                     // get updated data from cart
-                    requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart);
+                    requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart, opt => updateItems
+                        .ForEach(i => opt.Items.Add(i.SkuId.ToString(), i.LineNumber)));
                     requestDto.OrderId = request.OrderId;
-                    requestDto.Items = cart.Items
-                        .Select(i =>
-                        {
-                            var item = mapper.Map<ItemUpdateDto>(i);
-                            item.LineNumber = skuLines[i.SKUID];
-                            return item;
-                        })
+                    requestDto.Items
                         .Concat(updateItems
                             .Where(i => i.NewQuantity < 1)
                             .Select(i => new ItemUpdateDto
