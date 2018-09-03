@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.Globalization;
@@ -513,7 +513,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public int SaveCart(ShoppingCart cart)
         {
-            var customerAddress = AddressInfoProvider.GetAddressInfo(cart.AddressId);
+            var customerAddress = AddressInfoProvider.GetAddressInfo(cart.Address.Id);
             var cartInfo = new ShoppingCartInfo()
             {
                 ShoppingCartSiteID = SiteContext.CurrentSiteID,
@@ -541,7 +541,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public ShoppingCart Evaluate(ShoppingCart cart)
         {
-            var customerAddress = AddressInfoProvider.GetAddressInfo(cart.AddressId);
+            var customerAddress = mapper.Map<AddressInfo>(cart.Address);
             var cartInfo = new ShoppingCartInfo()
             {
                 ShoppingCartSiteID = SiteContext.CurrentSiteID,

@@ -455,7 +455,7 @@ namespace Kadena2.WebAPI.KenticoProviders
             CreateMap<ShoppingCartInfo, ShoppingCart>()
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.CartItems))
                 .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.TotalItemsPrice))
-                .ForMember(dest => dest.AddressId, opt => opt.MapFrom(src => src.ShoppingCartShippingAddress.AddressID))
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.ShoppingCartShippingAddress))
                 .ForMember(dest => dest.DistributorId, opt => opt.MapFrom(src => src.GetValue("ShoppingCartDistributorID", 0)))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.ShoppingCartUserID))
                 .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.ShoppingCartCustomerID))

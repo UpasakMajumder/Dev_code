@@ -166,13 +166,14 @@ namespace Kadena.BusinessLogic.Services.Orders
                     }
                 }
                 // create fake cart with new data
+                var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
                 var cart = new ShoppingCart
                 {
                     CampaignId = orderDetail.campaign.ID,
                     ProgramId = orderDetail.campaign.ProgramID,
                     UserId = orderDetail.Customer.KenticoUserID,
                     ShippingOptionId = orderDetail.ShippingInfo.ShippingOptionId,
-                    AddressId = orderDetail.ShippingInfo.AddressTo.KenticoAddressID ?? 0,
+                    Address = taxAddress,
                     Items = updateItems
                        .Select(i => new CartItemEntity
                        {
@@ -197,16 +198,15 @@ namespace Kadena.BusinessLogic.Services.Orders
                         .Concat(updateItems
                             .Where(i => i.NewQuantity < 1)
                             .Select(i => new ItemUpdateDto
-                                {
-                                    LineNumber = i.LineNumber
-                                }))
+                            {
+                                LineNumber = i.LineNumber
+                            }))
                         .ToList();
 
                     var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
                         cart.TotalItemsWeight, targetAddress);
                     requestDto.TotalShipping = shippingCost;
 
-                    var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
                     requestDto.TotalTax = await taxEstimationService.EstimateTax(taxAddress, requestDto.TotalPrice, requestDto.TotalShipping);
                 }
                 catch (Exception exc)
