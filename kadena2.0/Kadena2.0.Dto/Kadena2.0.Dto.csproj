@@ -75,6 +75,7 @@
     <Compile Include="Logon\Requests\RegistrationDto.cs" />
     <Compile Include="Logon\Requests\SamlAuthenticationDto.cs" />
     <Compile Include="Membership\CreateUserDto.cs" />
+    <Compile Include="MailingList\MicroserviceResponses\ContainerState.cs" />
     <Compile Include="Notification\MicroserviceRequests\SendCustomNotificationRequestDto.cs" />
     <Compile Include="OrderManualUpdate\MicroserviceRequests\ItemUpdateDto.cs" />
     <Compile Include="OrderManualUpdate\MicroserviceRequests\OrderManualUpdateRequestDto.cs" />

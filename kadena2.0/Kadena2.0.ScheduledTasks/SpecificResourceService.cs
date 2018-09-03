@@ -50,6 +50,11 @@ namespace Kadena.ScheduledTasks
             return GetSettingsKey<string>(key, site.Id);
         }
 
+        public string GetCustomerErpId()
+        {
+            return kenticoResourceService.GetCustomerErpId();
+        }
+
         public T GetSiteSettingsKey<T>(string key) where T : IConvertible
         {
             return GetSettingsKey<T>(key, site.Id);

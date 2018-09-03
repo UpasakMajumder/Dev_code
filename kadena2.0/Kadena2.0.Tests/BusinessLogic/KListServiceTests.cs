@@ -13,6 +13,7 @@ using Kadena.Container.Default;
 using AutoMapper;
 using Moq;
 using Kadena.Models.SiteSettings;
+using Kadena.AmazonFileSystemProvider;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -24,10 +25,12 @@ namespace Kadena.Tests.BusinessLogic
 
         [Theory(DisplayName = "KListService()")]
         [ClassData(typeof(KListServiceTests))]
-        public void DialogService(IMailingListClient client, IKenticoSiteProvider site, IAddressValidationClient validationClient, IMapper mapper,
-            IKenticoResourceService resourceService)
+        public void DialogService(IMailingListClient client, IKenticoSiteProvider site, IMapper mapper,
+            IKenticoResourceService resourceService, IKenticoFileProvider fileProvider, IExportClient exportClient,
+            IS3PathService pathService, IKenticoLogger logger)
         {
-            Assert.Throws<ArgumentNullException>(() => new KListService(client, site, validationClient, mapper, resourceService));
+            Assert.Throws<ArgumentNullException>(() => new KListService(client, site, mapper, resourceService, fileProvider, exportClient,
+                pathService, logger));
         }
         
         #region Delete expired lists
@@ -153,25 +156,6 @@ namespace Kadena.Tests.BusinessLogic
             };
         }
 
-        private BaseResponseDto<string> ValidateSuccess()
-        {
-            return new BaseResponseDto<string>
-            {
-                Success = true,
-                Payload = string.Empty
-            };
-        }
-
-        private BaseResponseDto<string> ValidateFailed()
-        {
-            return new BaseResponseDto<string>
-            {
-                Success = false,
-                Payload = string.Empty,
-                ErrorMessages = "Some error."
-            };
-        }
-
         private BaseResponseDto<IEnumerable<string>> UpdateSuccess()
         {
             return new BaseResponseDto<IEnumerable<string>>
@@ -195,24 +179,12 @@ namespace Kadena.Tests.BusinessLogic
         public async Task UseOnlyCorrectTestSuccess()
         {
             Setup<IMailingListClient, Task<BaseResponseDto<IEnumerable<MailingAddressDto>>>>(c => c.GetAddresses(_containerId), Task.FromResult(GetAddresses()));
-            Setup<IAddressValidationClient, Task<BaseResponseDto<string>>>(c => c.Validate(_containerId), Task.FromResult(ValidateSuccess()));
+            Setup<IMailingListClient, Task<BaseResponseDto<object>>>(c => c.RemoveAddresses(_containerId, It.IsAny<IEnumerable<Guid>>()), Task.FromResult(new BaseResponseDto<object> { Success = true }));
             SetupBase();
 
             var actualResult = await Sut.UseOnlyCorrectAddresses(_containerId);
 
             Assert.True(actualResult);
-        }
-
-        [Fact(DisplayName = "KListService.UseOnlyCorrectAddresses() | Address validation ailed")]
-        public async Task UseOnlyCorrectTestValidationFailed()
-        {
-            Setup<IMailingListClient, Task<BaseResponseDto<IEnumerable<MailingAddressDto>>>>(c => c.GetAddresses(_containerId), Task.FromResult(GetAddresses()));
-            Setup<IAddressValidationClient, Task<BaseResponseDto<string>>>(c => c.Validate(_containerId), Task.FromResult(ValidateFailed()));
-            SetupBase();
-
-            var actualResult = await Sut.UseOnlyCorrectAddresses(_containerId);
-
-            Assert.False(actualResult);
         }
 
         [Fact(DisplayName = "KListService.UseOnlyCorrectAddresses() | Zero addresses in container")]
@@ -231,24 +203,11 @@ namespace Kadena.Tests.BusinessLogic
         public async Task UpdateTestSuccess()
         {
             Setup<IMailingListClient, Task<BaseResponseDto<IEnumerable<string>>>>(c => c.UpdateAddresses(_containerId, null), Task.FromResult(UpdateSuccess()));
-            Setup<IAddressValidationClient, Task<BaseResponseDto<string>>>(c => c.Validate(_containerId), Task.FromResult(ValidateSuccess()));
             SetupBase();
 
             var actualResult = await Sut.UpdateAddresses(_containerId, null);
 
             Assert.True(actualResult);
-        }
-
-        [Fact(DisplayName = "KListService.UpdateAddresses() | Address validation failed")]
-        public async Task UpdateTestValidationFailed()
-        {
-            Setup<IMailingListClient, Task<BaseResponseDto<IEnumerable<string>>>>(c => c.UpdateAddresses(_containerId, null), Task.FromResult(UpdateSuccess()));
-            Setup<IAddressValidationClient, Task<BaseResponseDto<string>>>(c => c.Validate(_containerId), Task.FromResult(ValidateFailed()));
-            SetupBase();
-
-            var actualResult = await Sut.UpdateAddresses(_containerId, null);
-
-            Assert.False(actualResult);
         }
 
         [Fact(DisplayName = "KListService.UpdateAddresses() | Update failed")]
@@ -270,6 +229,50 @@ namespace Kadena.Tests.BusinessLogic
             Task action() => Sut.UpdateAddresses(_containerId, null);
 
             await Assert.ThrowsAsync<NullReferenceException>(action);
+        }
+
+        [Fact(DisplayName = "FileService.CreateMailingList()")]
+        public void CreateMailing()
+        {
+            var exc = Record.Exception(() => Sut.CreateMailingList("", null));
+
+            Assert.Null(exc);
+        }
+
+        [Theory(DisplayName = "FileService.GetContainerFileUrl() | Success")]
+        [InlineData("https://example.com")]
+        [InlineData("/relativeurl")]
+        [InlineData("")]
+        public async Task GetContainerFileUrl_Success(string url)
+        {
+            Setup<IExportClient, Task<BaseResponseDto<string>>>(s => s.ExportMailingList(It.IsAny<Guid>()),
+                Task.FromResult(new BaseResponseDto<string> { Success = true, Payload = url }));
+
+            var actualResult = await Sut.GetContainerFileUrl(Guid.Empty);
+
+            Assert.NotNull(actualResult);
+        }
+
+        [Fact(DisplayName = "FileService.GetContainerFileUrl() | Success null value")]
+        public async Task GetContainerFileUrl_SuccessNullValue()
+        {
+            Setup<IExportClient, Task<BaseResponseDto<string>>>(s => s.ExportMailingList(It.IsAny<Guid>()),
+                Task.FromResult(new BaseResponseDto<string> { Success = true, Payload = null }));
+
+            Task action() => Sut.GetContainerFileUrl(Guid.Empty);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(action);
+        }
+
+        [Fact(DisplayName = "FileService.GetContainerFileUrl() | Failed")]
+        public async Task GetContainerFileUrl_Failed()
+        {
+            Setup<IExportClient, Task<BaseResponseDto<string>>>(s => s.ExportMailingList(It.IsAny<Guid>()),
+                Task.FromResult(new BaseResponseDto<string> { Success = false }));
+
+            var actualResult = await Sut.GetContainerFileUrl(Guid.Empty);
+
+            Assert.Null(actualResult);
         }
     }
 }

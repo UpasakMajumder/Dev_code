@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Kadena.WebAPI.Infrastructure.Filters;
+using Kadena.Helpers.Routes;
 
 namespace Kadena.WebAPI.Controllers
 {
@@ -18,21 +19,12 @@ namespace Kadena.WebAPI.Controllers
 
         public KListController(IKListService service, IMapper mapper)
         {
-            if (service == null)
-            {
-                throw new ArgumentNullException(nameof(service));
-            }
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-
-            _service = service;
-            _mapper = mapper;
+            _service = service ?? throw new ArgumentNullException(nameof(service));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpPost]
-        [Route("klist/useonlycorrect/{containerId}")]
+        [Route(Klist.UseOnlyCorrect)]
         public async Task<IHttpActionResult> UseOnlyCorrect(Guid containerId)
         {
             var result = await _service.UseOnlyCorrectAddresses(containerId);
@@ -47,7 +39,7 @@ namespace Kadena.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("klist/update/{containerId}")]
+        [Route(Klist.Update)]
         public async Task<IHttpActionResult> Update([FromUri] Guid containerId, [FromBody] UpdateAddressDto[] addresses)
         {
             var changes = _mapper.Map<MailingAddress[]>(addresses);
@@ -60,6 +52,18 @@ namespace Kadena.WebAPI.Controllers
             {
                 return ErrorJson("Failed request.");
             }
+        }
+
+        [HttpGet]
+        [Route(Klist.Export)]
+        public async Task<IHttpActionResult> Export([FromUri] Guid containerId)
+        {
+            var uri = await _service.GetContainerFileUrl(containerId);
+            if (uri == null)
+            {
+                return NotFound();
+            }
+            return Redirect(uri);
         }
     }
 }
