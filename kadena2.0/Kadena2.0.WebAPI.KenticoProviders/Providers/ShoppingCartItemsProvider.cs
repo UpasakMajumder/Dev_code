@@ -25,7 +25,7 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly IKenticoSiteProvider site;
         private readonly IKenticoUnitOfMeasureProvider units;
 
-        public ShoppingCartItemsProvider(IKenticoResourceService resources, IKenticoDocumentProvider documents, IMapper mapper, 
+        public ShoppingCartItemsProvider(IKenticoResourceService resources, IKenticoDocumentProvider documents, IMapper mapper,
             IKenticoProductsProvider productProvider, IKenticoSiteProvider site, IKenticoUnitOfMeasureProvider units)
         {
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
@@ -199,7 +199,7 @@ namespace Kadena.WebAPI.KenticoProviders
             ECommerceContext.CurrentShoppingCart.InvalidateCalculations();
         }
 
-                public CartItemEntity GetOrCreateCartItem(int skuId, int quantity, Dictionary<string, int> options, Guid templateId)
+        public CartItemEntity GetOrCreateCartItem(int skuId, int quantity, Dictionary<string, int> options, Guid templateId)
         {
             SKUInfo variantSkuInfo = null;
             if (options != null)

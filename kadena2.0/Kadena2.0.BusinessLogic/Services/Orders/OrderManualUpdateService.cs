@@ -112,32 +112,7 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             approvers.CheckIsCustomersEditor(orderDetail.ClientId);
 
-
-            var updatedItemsData = request.Items.Join(orderDetail.Items,
-                                                       chi => chi.LineNumber,
-                                                       oi => oi.LineNumber,
-                                                       (chi, oi) => new UpdatedItemCheckData
-                                                       {
-                                                           OriginalItem = oi,
-                                                           UpdatedItem = chi
-                                                       }
-                                                       ).ToList();
-
-            if (updatedItemsData.Count() != request.Items.Count())
-            {
-                throw new Exception("Couldn't match all given line numbers in original order");
-            }
-
-            if (IsCreditCardPayment(orderDetail.PaymentInfo.PaymentMethod) && updatedItemsData.Any(i => i.UpdatedItem.Quantity > i.OriginalItem.Quantity))
-            {
-                throw new Exception("Can't increase item quantity, if payment method is credit card.");
-            }
-
-            var requestDto = new OrderManualUpdateRequestDto();
-
-            if (orderDetail.Type == OrderType.generalInventory)
-            {
-                var updateItems = request.Items
+            var updateItems = request.Items
                 .Join(orderDetail.Items,
                     chi => chi.LineNumber,
                     oi => oi.LineNumber,
@@ -152,6 +127,20 @@ namespace Kadena.BusinessLogic.Services.Orders
                     })
                 .ToList();
 
+            if (updateItems.Count() != request.Items.Count())
+            {
+                throw new Exception("Couldn't match all given line numbers in original order");
+            }
+
+            if (IsCreditCardPayment(orderDetail.PaymentInfo.PaymentMethod) && updateItems.Any(i => i.AdjustedQuantity > 0))
+            {
+                throw new Exception("Can't increase item quantity, if payment method is credit card.");
+            }
+
+            var requestDto = new OrderManualUpdateRequestDto();
+
+            if (orderDetail.Type == OrderType.generalInventory)
+            {
                 // validate modification
                 foreach (var i in updateItems)
                 {
@@ -223,6 +212,26 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
             else
             {
+                var updatedItemsData = request.Items.Join(orderDetail.Items,
+                                                      chi => chi.LineNumber,
+                                                      oi => oi.LineNumber,
+                                                      (chi, oi) => new UpdatedItemCheckData
+                                                      {
+                                                          OriginalItem = oi,
+                                                          UpdatedItem = chi
+                                                      }
+                                                      ).ToList();
+
+                if (updatedItemsData.Count() != request.Items.Count())
+                {
+                    throw new Exception("Couldn't match all given line numbers in original order");
+                }
+
+                if (IsCreditCardPayment(orderDetail.PaymentInfo.PaymentMethod) && updatedItemsData.Any(i => i.UpdatedItem.Quantity > i.OriginalItem.Quantity))
+                {
+                    throw new Exception("Can't increase item quantity, if payment method is credit card.");
+                }
+
                 var documentIds = orderDetail.Items.Select(i => i.DocumentId).Distinct().ToArray();
                 var skuIds = orderDetail.Items.Select(i => i.SkuId).Distinct().ToArray();
                 var products = productsProvider.GetProductsByDocumentIds(documentIds);
