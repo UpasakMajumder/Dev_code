@@ -62,7 +62,6 @@
     <Compile Include="Checkout\ChiliProcess.cs" />
     <Compile Include="Checkout\DeliveryDate.cs" />
     <Compile Include="Checkout\DeliveryDateMessages.cs" />
-    <Compile Include="Common\Environment.cs" />
     <Compile Include="CreditCard\SaveCardData.cs" />
     <Compile Include="CreditCard\StoredCard.cs" />
     <Compile Include="CustomCatalog\PrebuyProduct.cs" />
@@ -152,7 +151,6 @@
     <Compile Include="ShoppingCarts\ShoppingCart.cs" />
     <Compile Include="ShoppingCarts\ShoppingCartItem.cs" />
     <Compile Include="Product\CampaignProductType.cs" />
-    <Compile Include="SiteSettings\ErpMapping\ErpSelectorValue.cs" />
     <Compile Include="SiteSettings\Permissions\PermissionModules.cs" />
     <Compile Include="SiteSettings\Permissions\ModulePermissions.cs" />
     <Compile Include="SiteSettings\Settings.General.cs" />
@@ -170,12 +168,12 @@
     <Compile Include="TableSorting\TableSortingHelper.cs" />
     <Compile Include="TemplatedProduct\EmailProofRequest.cs" />
     <Compile Include="SubmitOrder\Weight.cs" />
-    <Compile Include="Common\ContentTypes.cs" />
-    <Compile Include="Common\Country.cs" />
+    <Compile Include="_Common\ContentTypes.cs" />
+    <Compile Include="_Common\Country.cs" />
     <Compile Include="CreditCard\SaveTokenData.cs" />
     <Compile Include="CreditCard\Submission.cs" />
-    <Compile Include="Common\Currency.cs" />
-    <Compile Include="Common\Customer.cs" />
+    <Compile Include="_Common\Currency.cs" />
+    <Compile Include="_Common\Customer.cs" />
     <Compile Include="CustomerData\CustomerAddress.cs" />
     <Compile Include="CustomerData\CustomerData.cs" />
     <Compile Include="CustomerData\Distributor.cs" />
@@ -212,9 +210,11 @@
     <Compile Include="Site\KenticoSite.cs" />
     <Compile Include="Mailing\MailingAddress.cs" />
     <Compile Include="Mailing\MailingList.cs" />
-	<Compile Include="_Common\Link.cs" />
-    <Compile Include="Common\FileResult.cs" />
-    <Compile Include="Common\MailTemplate.cs" />
+    <Compile Include="_Common\Dialog.cs" />
+    <Compile Include="_Common\DialogButton.cs" />
+    <Compile Include="_Common\FileResult.cs" />
+    <Compile Include="_Common\Link.cs" />
+    <Compile Include="_Common\MailTemplate.cs" />
     <Compile Include="RecentOrders\Order.cs" />
     <Compile Include="OrderDetail\CommonInfo.cs" />
     <Compile Include="OrderDetail\OrderDetail.cs" />
@@ -234,7 +234,7 @@
     <Compile Include="Product\RequestResult.cs" />
     <Compile Include="Product\ProductTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Common\Button.cs" />
+    <Compile Include="_Common\Button.cs" />
     <Compile Include="RecentOrders\OrderBody.cs" />
     <Compile Include="RecentOrders\OrderHead.cs" />
     <Compile Include="Search\AutocompletePage.cs" />
@@ -255,10 +255,10 @@
     <Compile Include="Settings\PageButton.cs" />
     <Compile Include="Settings\SettingsAddresses.cs" />
     <Compile Include="Site\LanguageSelectorItem.cs" />
-    <Compile Include="Common\OperationResult.cs" />
-    <Compile Include="Common\PagedData.cs" />
-    <Compile Include="Common\Pagination.cs" />
-    <Compile Include="Common\State.cs" />
+    <Compile Include="_Common\OperationResult.cs" />
+    <Compile Include="_Common\PagedData.cs" />
+    <Compile Include="_Common\Pagination.cs" />
+    <Compile Include="_Common\State.cs" />
     <Compile Include="SubmitOrder\PaymentMethod.cs" />
     <Compile Include="SubmitOrder\SubmitOrderRequest.cs" />
     <Compile Include="SubmitOrder\SubmitOrderResult.cs" />
@@ -266,14 +266,12 @@
     <Compile Include="TemplatedProduct\ProductTemplates.cs" />
     <Compile Include="TemplatedProduct\ProductTemplatesHeader.cs" />
     <Compile Include="TemplatedProduct\SortingType.cs" />
-    <Compile Include="Common\TableRow.cs" />
-    <Compile Include="Common\TableView.cs" />
+    <Compile Include="_Common\TableRow.cs" />
+    <Compile Include="_Common\TableView.cs" />
     <Compile Include="Membership\User.cs" />
     <Compile Include="UserBudget\UserBudgetItem.cs" />
-	<Compile Include="_Common\TitledMessage.cs" />
-    <Compile Include="Common\ValidationFieldResult.cs" />
-    <Compile Include="Common\Dialog.cs" />
-    <Compile Include="Common\DialogButton.cs" />
+    <Compile Include="_Common\TitledMessage.cs" />
+    <Compile Include="_Common\ValidationFieldResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

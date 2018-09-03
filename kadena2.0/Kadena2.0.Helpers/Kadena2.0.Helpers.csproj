@@ -44,7 +44,6 @@
     <Compile Include="Routes\File.cs" />
     <Compile Include="Routes\Routes.ErpSystems.cs" />
     <Compile Include="Routes\Routes.OrderReport.cs" />
-    <Compile Include="Routes\Klist.cs" />
     <Compile Include="Routes\User.cs" />
     <Compile Include="UrlHelper.cs" />
     <Compile Include="MailValidator.cs" />

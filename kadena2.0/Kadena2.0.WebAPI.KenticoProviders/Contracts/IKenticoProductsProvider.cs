@@ -1,6 +1,5 @@
 ﻿using Kadena.Models.Product;
 using Kadena.Models.ProductOptions;
-using System;
 using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
@@ -26,7 +25,5 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         IEnumerable<ProductCategory> GetProductCategories(int skuid);
         ProductPricingInfo GetDefaultVariantPricing(int documentId, string uomLocalized);
         Product[] GetProductsByDocumentIds(int[] documentIds);
-
-        Uri GetProductArtworkUri(int productPageId);
     }
 }

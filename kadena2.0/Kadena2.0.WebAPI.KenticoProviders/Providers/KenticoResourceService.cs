@@ -7,9 +7,6 @@ using CMS.MacroEngine;
 using System;
 using CMS.Membership;
 using CMS.Ecommerce;
-using Kadena.Models.SiteSettings;
-using Kadena.Models.SiteSettings.ErpMapping;
-using Newtonsoft.Json;
 
 namespace Kadena.WebAPI.KenticoProviders
 {
@@ -45,12 +42,6 @@ namespace Kadena.WebAPI.KenticoProviders
             return ResHelper.GetString(name, LocalizationContext.CurrentCulture.CultureCode);
         }
 
-        public string GetCustomerErpId()
-        {
-            var json = GetSiteSettingsKey(Settings.Kadena_ErpMapping);
-            var value = JsonConvert.DeserializeObject<ErpSelectorValue>(json);
-            return value?.CustomerErpId;
-        }
         public string GetSiteSettingsKey(string key)
         {
             return GetSettingsKey<string>(key, SiteContext.CurrentSiteID);

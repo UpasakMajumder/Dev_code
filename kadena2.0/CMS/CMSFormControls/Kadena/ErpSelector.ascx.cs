@@ -10,7 +10,6 @@ using CMS.Helpers;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.Container.Default;
 using Kadena.Models.Routing.Request;
-using Kadena.Models.SiteSettings.ErpMapping;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Newtonsoft.Json;
 
@@ -157,6 +156,14 @@ namespace Kadena.CMSFormControls.Kadena
             _value.TargetErpCodename = drpERP.SelectedItem.Value;
             _value.CustomerErpId = inputCustomerERPID.Text;
             _value.ToSync = true;
+        }
+
+        private class ErpSelectorValue
+        {
+            public string MicroserviceId { get; set; }
+            public string TargetErpCodename { get; set; }
+            public string CustomerErpId { get; set; }
+            public bool ToSync { get; set; }
         }
     }
 }

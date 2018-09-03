@@ -46,7 +46,24 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
         }
 
-        public string PageCapacityKey { get; set; }
+        private int _pageCapacity;
+        private string _pageCapacityKey;
+
+        private int PageCapacity => _pageCapacity;
+        public string PageCapacityKey
+        {
+            get
+            {
+                return _pageCapacityKey;
+            }
+
+            set
+            {
+                _pageCapacityKey = value;
+                var settingValue = _kenticoResources?.GetSiteSettingsKey(_pageCapacityKey);
+                _pageCapacity = int.TryParse(settingValue, out var setting) ? setting : 5;
+            }
+        }
 
         public bool EnablePaging { get; set; }
 
@@ -135,13 +152,9 @@ namespace Kadena.BusinessLogic.Services.Orders
             return filter;
         }
 
-        private int CalculateNumberOfPages(int numberOfOrders)
-        {
-            var pageCapacity = _kenticoResources.GetSiteSettingsKey<int>(PageCapacityKey);
-            return EnablePaging && pageCapacity > 0
-                ? numberOfOrders / pageCapacity + (numberOfOrders % pageCapacity > 0 ? 1 : 0)
-                : 0;
-        }
+        private int CalculateNumberOfPages(int numberOfOrders) => EnablePaging && PageCapacity > 0
+            ? numberOfOrders / PageCapacity + (numberOfOrders % PageCapacity > 0 ? 1 : 0)
+            : 0;
 
         private Button BuildOrderDetailButton(Order order) => new Button
         {
@@ -225,7 +238,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             var filter = new OrderListFilter
             {
                 PageNumber = pageNumber,
-                ItemsPerPage = _kenticoResources.GetSiteSettingsKey<int>(PageCapacityKey)
+                ItemsPerPage = PageCapacity
             };
 
             if (CanSeeAllOrders())
@@ -341,7 +354,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 PageInfo = new Pagination
                 {
                     RowsCount = orderList.TotalCount,
-                    RowsOnPage = _kenticoResources.GetSiteSettingsKey<int>(PageCapacityKey),
+                    RowsOnPage = PageCapacity,
                     PagesCount = pages
                 },
                 NoOrdersMessage = _kenticoResources.GetResourceString("Kadena.OrdersList.NoOrderItems"),

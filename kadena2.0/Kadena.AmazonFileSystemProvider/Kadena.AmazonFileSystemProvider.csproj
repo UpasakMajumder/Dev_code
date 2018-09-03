@@ -75,12 +75,10 @@
     <Compile Include="File.cs" />
     <Compile Include="FileInfo.cs" />
     <Compile Include="FileStream.cs" />
-    <Compile Include="IS3PathService.cs" />
     <Compile Include="IS3ObjectInfo.cs" />
     <Compile Include="IS3ObjectInfoProvider.cs" />
     <Compile Include="ObjectTypeEnum.cs" />
     <Compile Include="PathHelper.cs" />
-    <Compile Include="S3PathService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="S3MultiPartUploader.cs" />
     <Compile Include="S3ObjectFactory.cs" />

@@ -83,7 +83,6 @@
     <Compile Include="Contracts\IPreBuyCatalogService.cs" />
     <Compile Include="Contracts\IConvert.cs" />
     <Compile Include="Contracts\IDialogService.cs" />
-    <Compile Include="Contracts\IArtworkService.cs" />
     <Compile Include="Contracts\IIBTFService.cs" />
     <Compile Include="Contracts\IIdentityService.cs" />
     <Compile Include="Contracts\IImageService.cs" />
@@ -153,7 +152,6 @@
     <Compile Include="Services\Approval\ApprovalServiceException.cs" />
     <Compile Include="Services\Approval\ApproverService.cs" />
     <Compile Include="Services\DialogService.cs" />
-    <Compile Include="Services\ArtworkService.cs" />
     <Compile Include="Services\ErpSystemsService.cs" />
     <Compile Include="Services\IdentityService.cs" />
     <Compile Include="Services\LocalizationService.cs" />
@@ -175,7 +173,6 @@
     <Compile Include="Services\PdfByteConverter.cs" />
     <Compile Include="Services\PdfPreBuyCatalogService.cs" />
     <Compile Include="Services\RoutingService.cs" />
-    <Compile Include="Services\PathService.cs" />
     <Compile Include="Services\SSO\KadenaSaml2SecurityTokenHandler.cs" />
     <Compile Include="Services\SSO\Saml2RecipientValidator.cs" />
     <Compile Include="Services\SSO\Saml2HandlerService.cs" />
