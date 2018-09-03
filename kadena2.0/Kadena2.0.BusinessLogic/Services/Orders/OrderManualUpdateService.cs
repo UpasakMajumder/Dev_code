@@ -232,8 +232,8 @@ namespace Kadena.BusinessLogic.Services.Orders
                     throw new Exception("Can't increase item quantity, if payment method is credit card.");
                 }
 
-                var documentIds = orderDetail.Items.Select(i => i.DocumentId).Distinct().ToArray();
-                var skuIds = orderDetail.Items.Select(i => i.SkuId).Distinct().ToArray();
+                var documentIds = updateItems.Select(i => i.DocumentId).Distinct().ToArray();
+                var skuIds = updateItems.Select(i => i.SkuId).Distinct().ToArray();
                 var products = productsProvider.GetProductsByDocumentIds(documentIds);
                 var skus = skuProvider.GetSKUsByIds(skuIds);
 
@@ -249,7 +249,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     u.Product = product;
                 });
 
-                updatedItemsData.ForEach(d => d.ManuallyUpdatedItem = CreateChangedItem(d));
+                updatedItemsData.ForEach(d => d.ManuallyUpdatedItem = CreateChangedItem(d.Product, d.Sku, d.OriginalItem.LineNumber, d.UpdatedItem.Quantity, d.UpdatedItem.Quantity - d.OriginalItem.Quantity));
 
                 var changedItems = updatedItemsData.Select(d => d.ManuallyUpdatedItem).ToList();
 
@@ -418,33 +418,31 @@ namespace Kadena.BusinessLogic.Services.Orders
             return deliveryData.GetShippingCost(provider, shippingService, shippableWeight, targetAddress);
         }
 
-        ItemUpdateDto CreateChangedItem(UpdatedItemCheckData data)
+        ItemUpdateDto CreateChangedItem(Product product, Sku sku, int lineNumber, int newQuantity, int adjustedQuantity)
         {
-            if (ProductTypes.IsOfType(data.Product.ProductType, ProductTypes.MailingProduct))
+            if (ProductTypes.IsOfType(product.ProductType, ProductTypes.MailingProduct))
             {
                 throw new Exception("Cannot change quantity of Mailing product item");
             }
 
-            orderChecker.CheckMinMaxQuantity(data.Sku, data.UpdatedItem.Quantity);
+            orderChecker.CheckMinMaxQuantity(sku, newQuantity);
 
-            var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
-
-            if (ProductTypes.IsOfType(data.Product.ProductType, ProductTypes.InventoryProduct))
+            if (ProductTypes.IsOfType(product.ProductType, ProductTypes.InventoryProduct))
             {
-                orderChecker.EnsureInventoryAmount(data.Sku, addedQuantity, data.UpdatedItem.Quantity);
+                orderChecker.EnsureInventoryAmount(sku, adjustedQuantity, newQuantity);
             }
 
-            var unitPrice = products.GetPriceByCustomModel(data.OriginalItem.DocumentId, data.UpdatedItem.Quantity);
+            var unitPrice = products.GetPriceByCustomModel(product.Id, newQuantity);
             if (unitPrice == decimal.MinusOne)
             {
-                unitPrice = data.Sku.Price;
+                unitPrice = sku.Price;
             }
 
             return new ItemUpdateDto
             {
-                LineNumber = data.OriginalItem.LineNumber,
-                Quantity = data.UpdatedItem.Quantity,
-                TotalPrice = Math.Round(unitPrice * data.UpdatedItem.Quantity, 2),
+                LineNumber = lineNumber,
+                Quantity = newQuantity,
+                TotalPrice = Math.Round(unitPrice * newQuantity, 2),
                 UnitPrice = unitPrice
             };
         }
