@@ -31,5 +31,7 @@ namespace Kadena.Models.ShoppingCarts
         public decimal PricedItemsTax { get; set; }
 
         public decimal TotalItemsWeight { get; set; }
+
+        public decimal ShippingPrice { get; set; }
     }
 }

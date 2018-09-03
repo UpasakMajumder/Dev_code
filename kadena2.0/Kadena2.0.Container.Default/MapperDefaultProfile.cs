@@ -80,7 +80,7 @@ namespace Kadena.Container.Default
             CreateMap<DeleteRouting, DeleteRoutingRequestDto>();
             CreateMap<SetRouting, SetRoutingRequestDto>();
             CreateMap<ShoppingCart, OrderManualUpdateRequestDto>()
-                .ForMember(dest => dest.TotalShipping, opt => opt.Ignore())
+                .ForMember(dest => dest.TotalShipping, opt => opt.MapFrom(src => src.ShippingPrice))
                 .ForMember(dest => dest.OrderId, opt => opt.Ignore());
             CreateMap<CartItemEntity, ItemUpdateDto>()
                .ForMember(dest => dest.LineNumber, opt => opt.Ignore());
