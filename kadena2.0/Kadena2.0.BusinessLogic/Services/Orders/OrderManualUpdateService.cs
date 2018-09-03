@@ -133,9 +133,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new Exception("Can't increase item quantity, if payment method is credit card.");
             }
 
-            var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
-            targetAddress.Country = orderDetail.ShippingInfo.AddressTo.isoCountryCode;
-
             var requestDto = new OrderManualUpdateRequestDto();
 
             if (orderDetail.Type == OrderType.generalInventory)
@@ -211,8 +208,12 @@ namespace Kadena.BusinessLogic.Services.Orders
                 }
 
                 // adjust available quantity
-                AdjustAvailableItems(updatedItemsData);
-                AdjustAllocatedItems(updatedItemsData, orderDetail.Customer.KenticoUserID);
+                updateItems
+                    .ForEach(i =>
+                    {
+                        skuProvider.UpdateAvailableQuantity(i.SkuId, -i.AdjustedQuantity);
+                        productsProvider.UpdateAllocatedProductQuantityForUser(i.SkuId, orderDetail.Customer.KenticoUserID, i.AdjustedQuantity);
+                    });
 
                 // Adjust budget
                 budgetProvider.AdjustUserRemainingBudget(
@@ -248,7 +249,8 @@ namespace Kadena.BusinessLogic.Services.Orders
                     OrderId = request.OrderId,
                     Items = changedItems,
                 };
-
+                var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
+                targetAddress.Country = orderDetail.ShippingInfo.AddressTo.isoCountryCode;
                 await DoEstimations(requestDto, updatedItemsData, orderDetail, skus, targetAddress);
                 var updateResult = await updateService.UpdateOrder(requestDto);
                 if (!updateResult.Success)
@@ -337,27 +339,14 @@ namespace Kadena.BusinessLogic.Services.Orders
                 .Where(u => ProductTypes.IsOfType(u.Product.ProductType, ProductTypes.InventoryProduct))
                 .ToList();
 
-            AdjustAvailableItems(inventoryProductsData);
-        }
-
-        void AdjustAvailableItems(IEnumerable<UpdatedItemCheckData> updateData)
-        {
-            updateData.ToList().ForEach(data =>
-            {
-                var freedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
-                // Not using Set... because when waiting for result of OrderUpdate, quantity can change
-                skuProvider.UpdateAvailableQuantity(data.OriginalItem.SkuId, freedQuantity);
-            });
-        }
-
-        void AdjustAllocatedItems(IEnumerable<UpdatedItemCheckData> updateData, int userId)
-        {
-            updateData.ToList().ForEach(data =>
-            {
-                var adjustedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
-                // Not using Set... because when waiting for result of OrderUpdate, quantity can change
-                productsProvider.UpdateAllocatedProductQuantityForUser(data.OriginalItem.SkuId, userId, adjustedQuantity);
-            });
+            inventoryProductsData
+                .ToList()
+                .ForEach(data =>
+                    {
+                        var freedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
+                        // Not using Set... because when waiting for result of OrderUpdate, quantity can change
+                        skuProvider.UpdateAvailableQuantity(data.OriginalItem.SkuId, freedQuantity);
+                    });
         }
 
         async Task DoEstimations(OrderManualUpdateRequestDto request, IEnumerable<UpdatedItemCheckData> updateData, GetOrderByOrderIdResponseDTO orderDetail, Sku[] skus,
