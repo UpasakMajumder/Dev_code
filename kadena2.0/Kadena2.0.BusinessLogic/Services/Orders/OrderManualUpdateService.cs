@@ -249,7 +249,23 @@ namespace Kadena.BusinessLogic.Services.Orders
                     u.Product = product;
                 });
 
-                updatedItemsData.ForEach(d => d.ManuallyUpdatedItem = CreateChangedItem(d.Product, d.Sku, d.OriginalItem.LineNumber, d.UpdatedItem.Quantity, d.UpdatedItem.Quantity - d.OriginalItem.Quantity));
+                updatedItemsData.ForEach(d =>
+                {
+                    ValidateItem(d.Product, d.Sku, d.UpdatedItem.Quantity, d.UpdatedItem.Quantity - d.OriginalItem.Quantity);
+                    var unitPrice = this.products.GetPriceByCustomModel(d.Product.Id, d.UpdatedItem.Quantity);
+                    if (unitPrice == decimal.MinusOne)
+                    {
+                        unitPrice = d.Sku.Price;
+                    }
+
+                    d.ManuallyUpdatedItem = new ItemUpdateDto
+                    {
+                        LineNumber = d.OriginalItem.LineNumber,
+                        Quantity = d.UpdatedItem.Quantity,
+                        TotalPrice = Math.Round(unitPrice * d.UpdatedItem.Quantity, 2),
+                        UnitPrice = unitPrice
+                    };
+                });
 
                 var changedItems = updatedItemsData.Select(d => d.ManuallyUpdatedItem).ToList();
 
@@ -418,7 +434,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             return deliveryData.GetShippingCost(provider, shippingService, shippableWeight, targetAddress);
         }
 
-        ItemUpdateDto CreateChangedItem(Product product, Sku sku, int lineNumber, int newQuantity, int adjustedQuantity)
+        void ValidateItem(Product product, Sku sku, int newQuantity, int adjustedQuantity)
         {
             if (ProductTypes.IsOfType(product.ProductType, ProductTypes.MailingProduct))
             {
@@ -431,20 +447,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             {
                 orderChecker.EnsureInventoryAmount(sku, adjustedQuantity, newQuantity);
             }
-
-            var unitPrice = products.GetPriceByCustomModel(product.Id, newQuantity);
-            if (unitPrice == decimal.MinusOne)
-            {
-                unitPrice = sku.Price;
-            }
-
-            return new ItemUpdateDto
-            {
-                LineNumber = lineNumber,
-                Quantity = newQuantity,
-                TotalPrice = Math.Round(unitPrice * newQuantity, 2),
-                UnitPrice = unitPrice
-            };
         }
     }
 }
