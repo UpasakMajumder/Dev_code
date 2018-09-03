@@ -447,6 +447,11 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.GetValue("ProductImage", string.Empty)))
                 .ForMember(dest => dest.ValidTo, opt => opt.MapFrom(src => src.GetValue("SKUValidUntil", DateTime.MinValue)));
 
+
+            CreateMap<CustomTableItem, Kadena.Models.Common.Environment>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ItemID))
+                .ForMember(dest => dest.AmazonS3Folder, opt => opt.MapFrom(src => src.GetStringValue("AmazonS3Folder", string.Empty)))
+                .ForMember(dest => dest.AmazonS3ExcludedPaths, opt => opt.MapFrom(src => src.GetStringValue("AmazonS3ExcludedPaths", string.Empty)));
         }
     }
 }

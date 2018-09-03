@@ -13,6 +13,7 @@ using AutoMapper;
 using CMS.DataEngine;
 using CMS.CustomTables;
 using Kadena.Models.SiteSettings;
+using CMS.IO;
 using Kadena.Models.ProductOptions;
 
 namespace Kadena.WebAPI.KenticoProviders
@@ -298,6 +299,25 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 return null;
             }
+        }
+
+        public Uri GetProductArtworkUri(int productPageId)
+        {
+            var productDocument = DocumentHelper.GetDocument(productPageId, new TreeProvider(MembershipContext.AuthenticatedUser)) as SKUTreeNode;
+
+            var guid = productDocument.GetStringValue("ProductArtwork", string.Empty);
+
+            if (string.IsNullOrWhiteSpace(guid))
+            {
+                return null;
+            }
+            var attachmentPath = AttachmentURLProvider.GetFilePhysicalURL(SiteContext.CurrentSiteName, guid);
+            if (!Path.HasExtension(attachmentPath))
+            {
+                var attachment = DocumentHelper.GetAttachment(new Guid(guid), SiteContext.CurrentSiteName);
+                attachmentPath = $"{attachmentPath}{attachment.AttachmentExtension}";
+            }
+            return new Uri(URLHelper.GetAbsoluteUrl(attachmentPath), UriKind.Absolute);
         }
 
         public IEnumerable<ProductCategory> GetProductCategories(int skuid)

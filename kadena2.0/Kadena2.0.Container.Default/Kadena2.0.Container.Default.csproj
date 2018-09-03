@@ -64,6 +64,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kadena.AmazonFileSystemProvider\Kadena.AmazonFileSystemProvider.csproj">
+      <Project>{91c29a0f-7655-405e-abb0-990877d6fcfa}</Project>
+      <Name>Kadena.AmazonFileSystemProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kadena2.0.BusinessLogic\Kadena2.0.BusinessLogic.csproj">
       <Project>{d3ab43e6-7a41-4212-bf22-507cc2b2e3ac}</Project>
       <Name>Kadena2.0.BusinessLogic</Name>

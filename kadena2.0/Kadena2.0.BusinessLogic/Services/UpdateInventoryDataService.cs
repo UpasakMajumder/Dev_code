@@ -28,7 +28,7 @@ namespace Kadena.BusinessLogic.Services
 
         public async Task<string> UpdateInventoryData()
         {
-            var customerErpId = kenticoResources.GetSiteSettingsKey<string>(Settings.KDA_ErpCustomerId);
+            var customerErpId = kenticoResources.GetCustomerErpId();
             var products = await microserviceInventory.GetInventoryItems(customerErpId).ConfigureAwait(false);
 
             if (!products.Success)

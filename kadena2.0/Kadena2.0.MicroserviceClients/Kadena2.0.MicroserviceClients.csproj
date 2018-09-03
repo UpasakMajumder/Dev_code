@@ -52,7 +52,6 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Clients\AddressValidationClient.cs" />
     <Compile Include="Clients\ApprovalServiceClient.cs" />
     <Compile Include="Clients\Base\ClientBase.cs" />
     <Compile Include="Clients\Base\SignedClientBase.cs" />
@@ -79,7 +78,6 @@
     <Compile Include="Clients\UserManagerClient.cs" />
     <Compile Include="Contracts\Base\IMicroProperties.cs" />
     <Compile Include="Contracts\Base\ISuppliantDomainClient.cs" />
-    <Compile Include="Contracts\IAddressValidationClient.cs" />
     <Compile Include="Contracts\IApprovalServiceClient.cs" />
     <Compile Include="Contracts\IBidClient.cs" />
     <Compile Include="Contracts\ICloudEventConfiguratorClient.cs" />
@@ -102,8 +100,8 @@
     <Compile Include="Contracts\ITemplatedClient.cs" />
     <Compile Include="Contracts\ITaxEstimationService.cs" />
     <Compile Include="Contracts\IUserManagerClient.cs" />
-    <Compile Include="FileFolder.cs" />
-    <Compile Include="FileModule.cs" />
+    <Compile Include="FileSystem.cs" />
+    <Compile Include="FileType.cs" />
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Helpers\AwsSignerHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
