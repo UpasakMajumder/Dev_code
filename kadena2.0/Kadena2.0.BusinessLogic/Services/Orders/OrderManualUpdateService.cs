@@ -237,25 +237,22 @@ namespace Kadena.BusinessLogic.Services.Orders
                 var products = productsProvider.GetProductsByDocumentIds(documentIds);
                 var skus = skuProvider.GetSKUsByIds(skuIds);
 
-                updatedItemsData.ForEach(u =>
-                {
-                    var sku = skus.FirstOrDefault(s => s.SkuId == u.OriginalItem.SkuId)
-                              ?? throw new Exception($"Unable to find SKU {u.OriginalItem.SkuId} of item {u.OriginalItem.Name}");
-
-                    var product = products.FirstOrDefault(p => p.Id == u.OriginalItem.DocumentId)
-                                  ?? throw new Exception($"Unable to find product {u.OriginalItem.DocumentId} of item {u.OriginalItem.Name}");
-
-                    u.Sku = sku;
-                    u.Product = product;
-                });
-
                 updatedItemsData.ForEach(d =>
                 {
-                    ValidateItem(d.Product, d.Sku, d.UpdatedItem.Quantity, d.UpdatedItem.Quantity - d.OriginalItem.Quantity);
+                    var sku = skus.FirstOrDefault(s => s.SkuId == d.OriginalItem.SkuId)
+                              ?? throw new Exception($"Unable to find SKU {d.OriginalItem.SkuId} of item {d.OriginalItem.Name}");
+
+                    var product = products.FirstOrDefault(p => p.Id == d.OriginalItem.DocumentId)
+                                  ?? throw new Exception($"Unable to find product {d.OriginalItem.DocumentId} of item {d.OriginalItem.Name}");
+
+                    d.Sku = sku;
+                    d.Product = product;
+
+                    ValidateItem(product, sku, d.UpdatedItem.Quantity, d.UpdatedItem.Quantity - d.OriginalItem.Quantity);
                     var unitPrice = this.products.GetPriceByCustomModel(d.Product.Id, d.UpdatedItem.Quantity);
                     if (unitPrice == decimal.MinusOne)
                     {
-                        unitPrice = d.Sku.Price;
+                        unitPrice = sku.Price;
                     }
 
                     d.ManuallyUpdatedItem = new ItemUpdateDto
@@ -267,12 +264,10 @@ namespace Kadena.BusinessLogic.Services.Orders
                     };
                 });
 
-                var changedItems = updatedItemsData.Select(d => d.ManuallyUpdatedItem).ToList();
-
                 requestDto = new OrderManualUpdateRequestDto
                 {
                     OrderId = request.OrderId,
-                    Items = changedItems,
+                    Items = updatedItemsData.Select(d => d.ManuallyUpdatedItem).ToList()
                 };
                 var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
                 targetAddress.Country = orderDetail.ShippingInfo.AddressTo.isoCountryCode;
