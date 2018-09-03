@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Kadena.Dto.General;
-using Kadena.Models.SiteSettings;
 using Kadena2.MicroserviceClients.Clients.Base;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
@@ -13,18 +12,14 @@ namespace Kadena2.MicroserviceClients.Clients
     {
         public ParsingClient(IMicroProperties properties)
         {
-            _serviceVersionSettingKey = Settings.KDA_ParsingServiceVersion;
+            _serviceUrlSettingKey = "KDA_ParsingServiceUrl";
             _properties = properties ?? throw new ArgumentNullException(nameof(properties));
         }
 
         public async Task<BaseResponseDto<IEnumerable<string>>> GetHeaders(string fileId)
         {
-            var url = $"{BaseUrl}/api/v{Version}/parser/headers";
-            var body = new
-            {
-                fileId
-            };
-            return await Post<IEnumerable<string>>(url, body).ConfigureAwait(false);
+            var url = $"{BaseUrlOld}/api/CsvParser/GetHeaders?FileId={fileId}&Module={FileModule.KList}";
+            return await Get<IEnumerable<string>>(url).ConfigureAwait(false);
         }
     }
 }

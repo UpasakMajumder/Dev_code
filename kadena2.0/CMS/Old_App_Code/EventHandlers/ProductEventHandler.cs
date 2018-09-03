@@ -34,19 +34,13 @@ namespace Kadena.Old_App_Code.EventHandlers
         public void SendNewProductNotificationEmail_EventHandler(object sender, DocumentEventArgs e)
         {
             var product = GetProductFromNode(e.Node);
-            if (product != null)
-            {
-                NewProductNotificationService.SendNotification(product.NodeSKUID);
-            }
+            NewProductNotificationService.SendNotification(product.NodeSKUID);
         }
 
         public void CopyProductSKUFieldsToSKU_EventHandler(object sender, DocumentEventArgs e)
         {
             var product = GetProductFromNode(e.Node);
-            if (product != null)
-            {
-                CopyProductSKUFieldsToSKU(product);
-            }
+            CopyProductSKUFieldsToSKU(product);
         }
 
         protected virtual ProductClass GetProductFromNode(TreeNode node)
@@ -58,7 +52,7 @@ namespace Kadena.Old_App_Code.EventHandlers
         {
             if (product == null)
             {
-                throw new ArgumentNullException(nameof(product));
+                return;
             }
 
             try

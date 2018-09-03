@@ -3,9 +3,11 @@ using CMS.Ecommerce;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.PortalEngine.Web.UI;
+using CMS.SiteProvider;
 using Kadena.Dto.MailingList.MicroserviceResponses;
 using Kadena.Models.Common;
 using Kadena.Container.Default;
+using Kadena2.MicroserviceClients;
 using Kadena2.MicroserviceClients.Clients;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.MicroserviceClients.Contracts.Base;
@@ -14,7 +16,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.UI;
-using Kadena.BusinessLogic.Contracts;
 
 namespace Kadena.CMSWebParts.Kadena.MailingList
 {
@@ -200,7 +201,7 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
 
                 var fileStream = ReadRequestFileStream();
                 var fileName = inpFileName.Value;
-                var fileId = UploadFile(fileStream, fileName);
+                var fileId = UploadFile(microProperties, fileStream, fileName);
 
                 var mailingClient = new MailingListClient(microProperties);
                 var containerId = Guid.Empty;
@@ -284,17 +285,23 @@ namespace Kadena.CMSWebParts.Kadena.MailingList
             return createResult?.Payload ?? Guid.Empty;
         }
 
-        private static string UploadFile(Stream fileStream, string fileName)
+        private static string UploadFile(IMicroProperties properties, Stream fileStream, string fileName)
         {
-            if (fileStream == null || string.IsNullOrWhiteSpace(fileName))
+            if (properties == null || fileStream == null || string.IsNullOrWhiteSpace(fileName))
             {
                 return string.Empty;
             }
 
-            var fileService = DIContainer.Resolve<IKListService>();
-            var mailingListFileKey = fileService.CreateMailingList(fileName, fileStream);
+            var fileClient = new FileClient(properties);
+            var uploadResult = fileClient.UploadToS3(SiteContext.CurrentSiteName, FileFolder.OriginalMailing, FileModule.KList,
+                fileStream, fileName).Result;
 
-            return mailingListFileKey;
+            if (!uploadResult.Success)
+            {
+                throw new InvalidOperationException(uploadResult.ErrorMessages);
+            }
+
+            return uploadResult.Payload;
         }
 
         private void RedirectToNextPage(Guid containerId, string fileId)

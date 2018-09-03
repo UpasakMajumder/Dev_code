@@ -10,7 +10,7 @@ namespace Kadena.Dto.MailingList.MicroserviceResponses
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
         public DateTime ValidTo { get; set; }
-        public ContainerState State { get; set; }
+        public object State { get; set; }
         public string MailType { get; set; }
         public string ProductType { get; set; }
         public int Version { get; set; }

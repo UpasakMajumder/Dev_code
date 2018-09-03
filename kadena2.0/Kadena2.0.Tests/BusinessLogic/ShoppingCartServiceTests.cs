@@ -1,5 +1,4 @@
-﻿using Kadena.AmazonFileSystemProvider;
-using Kadena.BusinessLogic.Contracts;
+﻿using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.BusinessLogic.Services;
@@ -176,6 +175,7 @@ namespace Kadena.Tests.BusinessLogic
             // Assert
             Assert.NotNull(result);
             VerifyNoOtherCalls<IKListService>();
+            Verify<IShoppingCartItemsProvider>(ip => ip.SetArtwork(It.IsAny<CartItemEntity>(), 1123), Times.Once);
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
                     e => e.CartItemText == Name &&
                     e.SKUUnits == 5)
@@ -210,6 +210,7 @@ namespace Kadena.Tests.BusinessLogic
             // Assert
             Assert.NotNull(result);
             VerifyNoOtherCalls<IKListService>();
+            Verify<IShoppingCartItemsProvider>(ip => ip.SetArtwork(It.IsAny<CartItemEntity>(), documentId), Times.Once);
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
                     e => e.CartItemText == CustomName &&
                          e.SKUUnits == 5)
@@ -239,6 +240,7 @@ namespace Kadena.Tests.BusinessLogic
             // Assert
             Assert.NotNull(result);
             VerifyNoOtherCalls<IKListService>();
+            Verify<IShoppingCartItemsProvider>(ip => ip.SetArtwork(It.IsAny<CartItemEntity>(), 1123), Times.Once);
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
                     e => e.CartItemText == Name &&
                          e.SKUID == 6654 &&
@@ -298,6 +300,7 @@ namespace Kadena.Tests.BusinessLogic
             // Assert
             Assert.NotNull(result);
             Verify<IKListService>(m => m.GetMailingList(containerId), Times.Once);
+            Verify<IShoppingCartItemsProvider>(ip => ip.SetArtwork(It.IsAny<CartItemEntity>(), 1123), Times.Once);
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
                     e => e.CartItemText == Name &&
                          e.SKUUnits == quantity)
@@ -341,6 +344,7 @@ namespace Kadena.Tests.BusinessLogic
             Assert.NotNull(result);
             Verify<IShoppingCartItemsProvider>(m => m.SetCartItemQuantity(It.Is<CartItemEntity>(e => e.CartItemID == 1), 100), Times.Once);
         }
+
 
         [Theory(DisplayName = "ShoppingCartService.GetCartItems()")]
         [InlineData(true, false)]
@@ -394,6 +398,7 @@ namespace Kadena.Tests.BusinessLogic
             Assert.NotNull(result.Totals);
             Assert.Null(result.Totals.Items);
         }
+
 
         [Fact(DisplayName = "ShoppingCartService.ItemsPreview()")]
         public void ItemPreview()
@@ -452,13 +457,12 @@ namespace Kadena.Tests.BusinessLogic
                                    IProductsService productsService,
                                    IImageService imageService,
                                    IKenticoSkuProvider skus,
-                                   IArtworkService artworkService,
                                    IOrderItemCheckerService orderChecker,
                                    ISettingsService settingsService)
         {
             Assert.Throws<ArgumentNullException>(() => new ShoppingCartService(kenticoSite, localization, permissions, kenticoUsers,
                 kenticoCustomer, addresses, resources, productsProvider, taxCalculator, mailingService, userDataClient, shoppingCart, shoppingCartItems,
-                checkoutfactory, log, productsService, imageService, skus, artworkService, orderChecker, settingsService));
+                checkoutfactory, log, productsService, imageService, skus, orderChecker, settingsService));
         }
 
         [Fact(DisplayName = "ShoppingCartService.SaveTemporaryAddress() | Null address")]

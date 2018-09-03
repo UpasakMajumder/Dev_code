@@ -93,7 +93,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             }
         }
 
-        private HttpRequestMessage CreateRequest(HttpMethod method, string url, object body = null)
+        protected virtual HttpRequestMessage CreateRequest(HttpMethod method, string url, object body = null)
         {
             var request = new HttpRequestMessage(method, url);
             AddSuppliantDomain(request);
@@ -105,7 +105,7 @@ namespace Kadena2.MicroserviceClients.Clients.Base
             return request;
         }
 
-        private async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
+        protected virtual async Task<BaseResponseDto<TResult>> ReadResponseJson<TResult>(HttpResponseMessage response)
         {
             BaseResponseDto<TResult> result = null;
             BaseErrorDto innerError = null;

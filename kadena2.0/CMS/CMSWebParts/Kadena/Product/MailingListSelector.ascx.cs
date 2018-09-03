@@ -6,13 +6,13 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Kadena.MicroserviceClients.Contracts;
+using Kadena.Old_App_Code.Kadena.MailingList;
 using CMS.EventLog;
+using Kadena.WebAPI.KenticoProviders;
 using Kadena.Container.Default;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena.Dto.TemplatedProduct.MicroserviceRequests;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.Helpers;
-using Kadena.Dto.MailingList.MicroserviceResponses;
 
 namespace Kadena.CMSWebParts.Kadena.Product
 {
@@ -47,7 +47,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     tr.Cells.Add(new TableCell { Text = d.AddressCount.ToString() });
                     tr.Cells.Add(new TableCell { Text = d.ErrorCount.ToString() });
                     tr.Cells.Add(new TableCell { Text = d.ValidTo.ToString("MMM dd yyyy") });
-                    tr.Cells.Add(new TableCell { Text = d.State.GetDisplayName() });
+                    tr.Cells.Add(new TableCell { Text = d.State?.ToString() ?? string.Empty });
 
                     TableCell btnCell = null;
                     if (btnCell == null && d.ValidTo <= DateTime.Now.Date)
@@ -56,8 +56,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     }
 
                     if (btnCell == null
-                        && d.State != ContainerState.AddressesVerified
-                        && d.State != ContainerState.AddressesNeedVerification)
+                        && !d.State.Equals(MailingListState.AddressesVerified)
+                        && !d.State.Equals(MailingListState.AddressesNeedToBeVerified))
                     {
                         btnCell = new TableCell { Text = GetString("Kadena.MailingList.ListInProgress") };
                     }

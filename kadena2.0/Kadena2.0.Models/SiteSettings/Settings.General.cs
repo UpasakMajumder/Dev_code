@@ -104,6 +104,15 @@ namespace Kadena.Models.SiteSettings
         public const string KDA_EmptyCart_ProductsUrl = "KDA_EmptyCart_ProductsUrl";
 
         /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("General Site Settings")]
+        [DefaultValueAttribute(@"15794")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkVSUCBDdXN0b21lciBJZCIsIktleU5hbWUiOiJLREFfRXJwQ3VzdG9tZXJJZCIsIktleVR5cGUiOiJzdHJpbmciLCJLZXlEZWZhdWx0VmFsdWUiOiIxNTc5NCIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJHZW5lcmFsIFNpdGUgU2V0dGluZ3MifX0=")]
+        public const string KDA_ErpCustomerId = "KDA_ErpCustomerId";
+
+        /// <summary>
         /// KDA FileServiceUrl
         /// </summary>
         [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
@@ -183,6 +192,15 @@ namespace Kadena.Models.SiteSettings
         [DefaultValueAttribute(@"True")]
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6Ik5ldyBwcm9kdWN0IHJlcXVlc3QgRW5hYmxlZCIsIktleU5hbWUiOiJLREFfTmV3UHJvZHVjdFJlcXVlc3RfRW5hYmxlZCIsIktleVR5cGUiOiJib29sZWFuIiwiS2V5RGVmYXVsdFZhbHVlIjoiVHJ1ZSIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJHZW5lcmFsIFNpdGUgU2V0dGluZ3MifX0=")]
         public const string KDA_NewProductRequest_Enabled = "KDA_NewProductRequest_Enabled";
+
+        /// <summary>
+        /// KDA ParsingServiceUrl
+        /// </summary>
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("General Site Settings")]
+        [DefaultValueAttribute(@"https://7e67w2v6q8.execute-api.us-east-1.amazonaws.com/Qa")]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IktEQSBQYXJzaW5nU2VydmljZVVybCIsIktleU5hbWUiOiJLREFfUGFyc2luZ1NlcnZpY2VVcmwiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjoiaHR0cHM6Ly83ZTY3dzJ2NnE4LmV4ZWN1dGUtYXBpLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tL1FhIiwiS2V5RGVzY3JpcHRpb24iOiJLREEgUGFyc2luZ1NlcnZpY2VVcmwiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOm51bGwsIktleUV4cGxhbmF0aW9uVGV4dCI6IiIsIktleUZvcm1Db250cm9sU2V0dGluZ3MiOm51bGwsIktleVZhbGlkYXRpb24iOm51bGwsIkdyb3VwIjp7IkNhdGVnb3J5Ijp7IkRpc3BsYXlOYW1lIjoiS2FkZW5hIiwiTmFtZSI6IkthZGVuYSIsIkNhdGVnb3J5UGFyZW50TmFtZSI6IkNNUy5TZXR0aW5ncyJ9LCJEaXNwbGF5TmFtZSI6IkdlbmVyYWwgU2l0ZSBTZXR0aW5ncyJ9fQ==")]
+        public const string KDA_ParsingServiceUrl = "KDA_ParsingServiceUrl";
 
         /// <summary>
         /// KDA_ProductRequestPageUrl

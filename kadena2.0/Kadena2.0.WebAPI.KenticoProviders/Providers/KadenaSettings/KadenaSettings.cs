@@ -18,7 +18,7 @@ namespace Kadena2.WebAPI.KenticoProviders.Providers.KadenaSettings
         public string DefaultCustomerCompanyName => resources.GetSiteSettingsKey("KDA_ShippingAddress_DefaultCompanyName");
         public string TermsAndConditionsPage => resources.GetSiteSettingsKey("KDA_TermsAndConditionPage");
         public string CheckoutPageUrl => resources.GetSiteSettingsKey("KDA_CheckoutPageUrl");
-        public string ErpCustomerId => resources.GetCustomerErpId();
+        public string ErpCustomerId => resources.GetSiteSettingsKey("KDA_ErpCustomerId");
         public string OrderNotificationEmail => resources.GetSiteSettingsKey("KDA_OrderNotificationEmail");
 
         public bool FTPArtworkEnabled(int siteId)

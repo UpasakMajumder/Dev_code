@@ -2,7 +2,10 @@
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
 using CMS.Helpers;
+using CMS.IO;
 using CMS.Membership;
+using CMS.SiteProvider;
+using Kadena.AmazonFileSystemProvider;
 using Kadena.Models.Checkout;
 using Kadena.Models.Product;
 using Kadena.WebAPI.KenticoProviders.Contracts;
@@ -26,8 +29,7 @@ namespace Kadena.WebAPI.KenticoProviders
         private readonly IKenticoSiteProvider site;
         private readonly IKenticoUnitOfMeasureProvider units;
 
-        public ShoppingCartItemsProvider(IKenticoResourceService resources, IKenticoDocumentProvider documents, IMapper mapper, IDynamicPriceRangeProvider dynamicPrices, 
-            IKenticoProductsProvider productProvider, IKenticoSiteProvider site, IKenticoUnitOfMeasureProvider units)
+        public ShoppingCartItemsProvider(IKenticoResourceService resources, IKenticoDocumentProvider documents, IMapper mapper, IDynamicPriceRangeProvider dynamicPrices, IKenticoProductsProvider productProvider, IKenticoSiteProvider site, IKenticoUnitOfMeasureProvider units)
         {
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
@@ -220,6 +222,29 @@ namespace Kadena.WebAPI.KenticoProviders
             cartItemInfo.SetValue("MailingListGuid", item.MailingListGuid);
         }
 
+        public void SetArtwork(CartItemEntity cartItem, int documentId)
+        {
+            var productDocument = DocumentHelper.GetDocument(documentId, new TreeProvider(MembershipContext.AuthenticatedUser)) as SKUTreeNode;
+
+            var guid = productDocument.GetStringValue("ProductArtwork", string.Empty);
+
+            if (!string.IsNullOrWhiteSpace(guid))
+            {
+                var attachmentPath = AttachmentURLProvider.GetFilePhysicalURL(SiteContext.CurrentSiteName, guid);
+                if (!Path.HasExtension(attachmentPath))
+                {
+                    var attachment = DocumentHelper.GetAttachment(new Guid(guid), SiteContext.CurrentSiteName);
+                    attachmentPath = $"{attachmentPath}{attachment.AttachmentExtension}";
+                }
+                var storageProvider = StorageHelper.GetStorageProvider(attachmentPath);
+                if (storageProvider.IsExternalStorage && storageProvider.FileProviderObject.GetType() == typeof(AmazonFileSystemProvider.File))
+                {
+                    attachmentPath = PathHelper.GetObjectKeyFromPath(attachmentPath);
+                }
+                cartItem.ArtworkLocation = attachmentPath;
+            }
+        }
+
         public CartItemEntity GetOrCreateCartItem(NewCartItem newItem)
         {
             var productDocument = DocumentHelper.GetDocument(newItem.DocumentId, new TreeProvider(MembershipContext.AuthenticatedUser)) as SKUTreeNode;
@@ -235,7 +260,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
             ShoppingCartItemParameters parameters;
 
-
+            
             if (variantSkuInfo != null && variantSkuInfo.SKUEnabled)
             {
                 parameters = new ShoppingCartItemParameters(variantSkuInfo.SKUID, newItem.Quantity);
