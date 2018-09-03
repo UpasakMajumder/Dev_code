@@ -116,15 +116,15 @@ public partial class CMSWebParts_General_javascript : CMSAbstractWebPart
     /// </summary>
     private void RegisterInlineScript()
     {
-        // Render the inline script
-        if (InlineScript.Trim() != string.Empty)
-        {
-            string inlineScript = InlineScript;
+        var inlineScript = InlineScript.Trim();
 
+        // Render the inline script
+        if (inlineScript != string.Empty)
+        {
             // Check if script tags must be generated
             if (GenerateScriptTags && (InlineScriptPageLocation.ToLowerCSafe() != "submit"))
             {
-                inlineScript = ScriptHelper.GetScript(InlineScript);
+                inlineScript = ScriptHelper.GetScript(inlineScript);
             }
 
             // Switch for script position on the page
