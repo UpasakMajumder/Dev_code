@@ -203,10 +203,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                             }))
                         .ToList();
 
-                    var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
-                        cart.TotalItemsWeight, targetAddress);
-                    requestDto.TotalShipping = shippingCost;
-
                     requestDto.TotalTax = await taxEstimationService.EstimateTax(taxAddress, requestDto.TotalPrice, requestDto.TotalShipping);
                 }
                 catch (Exception exc)
