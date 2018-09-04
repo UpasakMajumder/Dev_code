@@ -2,7 +2,6 @@ using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.BusinessLogic.Contracts.Orders;
-using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
 using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.Models;
@@ -295,7 +294,12 @@ namespace Kadena.BusinessLogic.Services.Orders
                     throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
                 }
 
-                UpdateAvailableItems(updatedItemsData);
+                // adjust available quantity
+                updateItems
+                    .ForEach(i =>
+                    {
+                        skuProvider.UpdateAvailableQuantity(i.SkuId, -i.AdjustedQuantity);
+                    });
             }
 
             return GetUpdatesForFrontend(requestDto);
