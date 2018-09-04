@@ -559,7 +559,7 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 var parameters = new ShoppingCartItemParameters(i.SKUID, i.Quantity);
                 var cartItem = cartInfo.SetShoppingCartItem(parameters);
-                if (i.CartItemPrice.HasValue)
+                if (cartItem != null && i.CartItemPrice.HasValue)
                 {
                     cartItem.CartItemPrice = (double)i.CartItemPrice.Value;
                 }
