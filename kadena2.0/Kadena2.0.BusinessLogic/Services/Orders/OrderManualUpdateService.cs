@@ -28,7 +28,6 @@ namespace Kadena.BusinessLogic.Services.Orders
         {
             public Product Product { get; set; }
             public OrderItemUpdate UpdatedItem { get; set; }
-            public Sku Sku { get; set; }
             public OrderItemDTO OriginalItem { get; set; }
             public ItemUpdateDto ManuallyUpdatedItem { get; set; }
         }
@@ -239,19 +238,13 @@ namespace Kadena.BusinessLogic.Services.Orders
                 }
 
                 var documentIds = updateItems.Select(i => i.DocumentId).Distinct().ToArray();
-                var skuIds = updateItems.Select(i => i.SkuId).Distinct().ToArray();
                 var products = productsProvider.GetProductsByDocumentIds(documentIds);
-                var skus = skuProvider.GetSKUsByIds(skuIds);
 
                 updatedItemsData.ForEach(d =>
                 {
-                    var sku = skus.FirstOrDefault(s => s.SkuId == d.OriginalItem.SkuId)
-                              ?? throw new Exception($"Unable to find SKU {d.OriginalItem.SkuId} of item {d.OriginalItem.Name}");
-
                     var product = products.FirstOrDefault(p => p.Id == d.OriginalItem.DocumentId)
-                                  ?? throw new Exception($"Unable to find product {d.OriginalItem.DocumentId} of item {d.OriginalItem.Name}");
+                        ?? throw new Exception($"Unable to find product {d.OriginalItem.DocumentId} of item {d.OriginalItem.Name}");
 
-                    d.Sku = sku;
                     d.Product = product;
 
                     ValidateItem(d.OriginalItem.DocumentId, d.UpdatedItem.Quantity, d.UpdatedItem.Quantity - d.OriginalItem.Quantity);
