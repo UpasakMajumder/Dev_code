@@ -234,7 +234,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
         try
         {
             var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
-                .Columns("ItemID,BrandName")
+                .Columns("ItemID", "BrandName")
+                .OrderBy("BrandName")
                 .WhereEquals("Status", 1)
                 .ToList();
             if (!DataHelper.DataSourceIsEmpty(brands))
