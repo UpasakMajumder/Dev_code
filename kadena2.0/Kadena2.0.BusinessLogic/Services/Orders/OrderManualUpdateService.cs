@@ -23,14 +23,6 @@ namespace Kadena.BusinessLogic.Services.Orders
 {
     public class OrderManualUpdateService : IOrderManualUpdateService
     {
-        private class UpdatedItemCheckData
-        {
-            public Product Product { get; set; }
-            public OrderItemUpdate UpdatedItem { get; set; }
-            public OrderItemDTO OriginalItem { get; set; }
-            public ItemUpdateDto ManuallyUpdatedItem { get; set; }
-        }
-
         private readonly IOrderManualUpdateClient updateService;
         private readonly IOrderViewClient orderService;
         private readonly IApproverService approvers;
@@ -216,47 +208,11 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
             else
             {
-                var updatedItemsData = request.Items.Join(orderDetail.Items,
-                                                      chi => chi.LineNumber,
-                                                      oi => oi.LineNumber,
-                                                      (chi, oi) => new UpdatedItemCheckData
-                                                      {
-                                                          OriginalItem = oi,
-                                                          UpdatedItem = chi
-                                                      }
-                                                      ).ToList();
-
-                if (updatedItemsData.Count() != request.Items.Count())
-                {
-                    throw new Exception("Couldn't match all given line numbers in original order");
-                }
-
-                if (IsCreditCardPayment(orderDetail.PaymentInfo.PaymentMethod) && updatedItemsData.Any(i => i.UpdatedItem.Quantity > i.OriginalItem.Quantity))
-                {
-                    throw new Exception("Can't increase item quantity, if payment method is credit card.");
-                }
-
-                var documentIds = updateItems.Select(i => i.DocumentId).Distinct().ToArray();
-                var products = productsProvider.GetProductsByDocumentIds(documentIds);
-
-                updatedItemsData.ForEach(d =>
-                {
-                    var product = products.FirstOrDefault(p => p.Id == d.OriginalItem.DocumentId)
-                        ?? throw new Exception($"Unable to find product {d.OriginalItem.DocumentId} of item {d.OriginalItem.Name}");
-
-                    d.Product = product;
-
-                    ValidateItem(d.OriginalItem.DocumentId, d.UpdatedItem.Quantity, d.UpdatedItem.Quantity - d.OriginalItem.Quantity);
-                    var unitPrice = GetPrice(d.OriginalItem.DocumentId, d.UpdatedItem.Quantity) ?? skuProvider.GetSkuPrice(d.OriginalItem.SkuId).Value;
-
-                    d.ManuallyUpdatedItem = new ItemUpdateDto
+                updateItems
+                    .ForEach(d =>
                     {
-                        LineNumber = d.OriginalItem.LineNumber,
-                        Quantity = d.UpdatedItem.Quantity,
-                        TotalPrice = Math.Round(unitPrice * d.UpdatedItem.Quantity, 2),
-                        UnitPrice = unitPrice
-                    };
-                });
+                        ValidateItem(d.DocumentId, d.NewQuantity, d.AdjustedQuantity);
+                    });
 
                 var cart = new ShoppingCart
                 {
