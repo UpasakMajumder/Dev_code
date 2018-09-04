@@ -3,7 +3,6 @@ using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
-using Kadena.Dto.ViewOrder.MicroserviceResponses;
 using Kadena.Models;
 using Kadena.Models.CampaignData;
 using Kadena.Models.Checkout;
@@ -15,7 +14,6 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -131,14 +129,9 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new Exception("Can't increase item quantity, if payment method is credit card.");
             }
 
-            var requestDto = new OrderManualUpdateRequestDto();
-            var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
-            taxAddress.Country = localization.GetCountries().FirstOrDefault(c => c.Code.Equals(taxAddress.Country.Code));
-            taxAddress.State = localization.GetStates().FirstOrDefault(s => s.StateCode.Equals(taxAddress.State.StateCode) && s.CountryId == taxAddress.Country.Id);
-
+            // validate modification
             if (orderDetail.Type == OrderType.generalInventory)
             {
-                // validate modification
                 foreach (var i in updateItems)
                 {
                     if (i.AdjustedQuantity > 0)
@@ -146,65 +139,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                         distributorShoppingCartService.ValidateItem(i.SkuId, i.AdjustedQuantity, orderDetail.Customer.KenticoUserID);
                     }
                 }
-                // create fake cart with new data
-                var cart = new ShoppingCart
-                {
-                    CampaignId = orderDetail.campaign.ID,
-                    ProgramId = orderDetail.campaign.ProgramID,
-                    UserId = orderDetail.Customer.KenticoUserID,
-                    ShippingOptionId = orderDetail.ShippingInfo.ShippingOptionId,
-                    Address = taxAddress,
-                    Items = updateItems
-                       .Select(i => new CartItemEntity
-                       {
-                           SKUID = i.SkuId,
-                           Quantity = i.NewQuantity
-                       })
-                       .ToList()
-                };
-                cart = shoppingCartProvider.Evaluate(cart);
-                try
-                {
-                    // get updated data from cart
-                    requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart, opt => updateItems
-                        .ForEach(i => opt.Items.Add(i.SkuId.ToString(), i.LineNumber)));
-                    requestDto.OrderId = request.OrderId;
-                    requestDto.Items
-                        .Concat(updateItems
-                            .Where(i => i.NewQuantity < 1)
-                            .Select(i => new ItemUpdateDto
-                            {
-                                LineNumber = i.LineNumber
-                            }))
-                        .ToList();
-
-                    requestDto.TotalTax = await taxEstimationService.EstimateTax(taxAddress, requestDto.TotalPrice, requestDto.TotalShipping);
-                }
-                catch (Exception exc)
-                {
-                    log.LogException(this.GetType().Name, exc);
-                }
-
-                // send to microservice
-                var updateResult = await updateService.UpdateOrder(requestDto);
-                if (!updateResult.Success)
-                {
-                    throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
-                }
-
-                // adjust available quantity
-                updateItems
-                    .ForEach(i =>
-                    {
-                        skuProvider.UpdateAvailableQuantity(i.SkuId, -i.AdjustedQuantity);
-                        productsProvider.UpdateAllocatedProductQuantityForUser(i.SkuId, orderDetail.Customer.KenticoUserID, i.AdjustedQuantity);
-                    });
-
-                // Adjust budget
-                budgetProvider.AdjustUserRemainingBudget(
-                    orderDetail.OrderDate.Year.ToString(),
-                    orderDetail.Customer.KenticoUserID,
-                    requestDto.TotalShipping - Convert.ToDecimal(orderDetail.PaymentInfo.Shipping));
             }
             else
             {
@@ -213,36 +147,69 @@ namespace Kadena.BusinessLogic.Services.Orders
                     {
                         ValidateItem(d.DocumentId, d.NewQuantity, d.AdjustedQuantity);
                     });
+            }
 
-                var cart = new ShoppingCart
-                {
-                    UserId = orderDetail.Customer.KenticoUserID,
-                    ShippingOptionId = orderDetail.ShippingInfo.ShippingOptionId,
-                    Address = taxAddress,
-                    Items = updateItems
-                       .Select(i => new CartItemEntity
-                       {
-                           SKUID = i.SkuId,
-                           Quantity = i.NewQuantity,
-                           CartItemPrice = GetPrice(i.DocumentId, i.NewQuantity)
-                       })
-                       .ToList()
-                };
-                cart = shoppingCartProvider.Evaluate(cart);
-                // get updated data from cart
-                requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart, opt => updateItems
-                    .ForEach(i => opt.Items.Add(i.SkuId.ToString(), i.LineNumber)));
-                requestDto.OrderId = request.OrderId;
+            var destinationAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
+            destinationAddress.Country = localization.GetCountries().FirstOrDefault(c => c.Code.Equals(destinationAddress.Country.Code));
+            destinationAddress.State = localization
+                .GetStates()
+                .FirstOrDefault(s => s.StateCode.Equals(destinationAddress.State.StateCode) && s.CountryId == destinationAddress.Country.Id);
 
-                requestDto.TotalTax = await taxEstimationService.EstimateTax(taxAddress, requestDto.TotalPrice, requestDto.TotalShipping);
+            // create fake cart with new data
+            var cart = new ShoppingCart
+            {
+                CampaignId = orderDetail.campaign?.ID ?? 0,
+                ProgramId = orderDetail.campaign?.ProgramID ?? 0,
+                UserId = orderDetail.Customer.KenticoUserID,
+                ShippingOptionId = orderDetail.ShippingInfo.ShippingOptionId,
+                Address = destinationAddress,
+                Items = updateItems
+                    .Select(i => new CartItemEntity
+                    {
+                        SKUID = i.SkuId,
+                        Quantity = i.NewQuantity,
+                        CartItemPrice = GetPrice(i.DocumentId, i.NewQuantity)
+                    })
+                    .ToList()
+            };
+            cart = shoppingCartProvider.Evaluate(cart);
+            // get updated data from cart
+            var requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart, opt => updateItems
+                .ForEach(i => opt.Items.Add(i.SkuId.ToString(), i.LineNumber)));
+            requestDto.OrderId = request.OrderId;
+            requestDto.Items
+                .AddRange(updateItems
+                    .Where(i => i.NewQuantity < 1)
+                    .Select(i => new ItemUpdateDto
+                    {
+                        LineNumber = i.LineNumber
+                    }));
 
-                var updateResult = await updateService.UpdateOrder(requestDto);
-                if (!updateResult.Success)
-                {
-                    throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
-                }
+            requestDto.TotalTax = await taxEstimationService.EstimateTax(destinationAddress, requestDto.TotalPrice, requestDto.TotalShipping);
 
-                // adjust available quantity
+            var updateResult = await updateService.UpdateOrder(requestDto);
+            if (!updateResult.Success)
+            {
+                throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
+            }
+
+            // adjust available quantity and budget
+            if (orderDetail.Type == OrderType.generalInventory)
+            {
+                updateItems
+                    .ForEach(i =>
+                    {
+                        skuProvider.UpdateAvailableQuantity(i.SkuId, -i.AdjustedQuantity);
+                        productsProvider.UpdateAllocatedProductQuantityForUser(i.SkuId, orderDetail.Customer.KenticoUserID, i.AdjustedQuantity);
+                    });
+
+                budgetProvider.AdjustUserRemainingBudget(
+                    orderDetail.OrderDate.Year.ToString(),
+                    orderDetail.Customer.KenticoUserID,
+                    requestDto.TotalShipping - Convert.ToDecimal(orderDetail.PaymentInfo.Shipping));
+            }
+            else
+            {
                 updateItems
                     .ForEach(i =>
                     {
