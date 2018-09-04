@@ -247,11 +247,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                     d.Product = product;
 
                     ValidateItem(d.OriginalItem.DocumentId, d.UpdatedItem.Quantity, d.UpdatedItem.Quantity - d.OriginalItem.Quantity);
-                    var unitPrice = this.products.GetPriceByCustomModel(d.OriginalItem.DocumentId, d.UpdatedItem.Quantity);
-                    if (unitPrice == decimal.MinusOne)
-                    {
-                        unitPrice = skuProvider.GetSkuPrice(d.OriginalItem.SkuId).Value;
-                    }
+                    var unitPrice = GetPrice(d.OriginalItem.DocumentId, d.UpdatedItem.Quantity) ?? skuProvider.GetSkuPrice(d.OriginalItem.SkuId).Value;
 
                     d.ManuallyUpdatedItem = new ItemUpdateDto
                     {
@@ -271,7 +267,8 @@ namespace Kadena.BusinessLogic.Services.Orders
                        .Select(i => new CartItemEntity
                        {
                            SKUID = i.SkuId,
-                           Quantity = i.NewQuantity
+                           Quantity = i.NewQuantity,
+                           CartItemPrice = GetPrice(i.DocumentId, i.NewQuantity)
                        })
                        .ToList()
                 };
@@ -298,6 +295,16 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
 
             return GetUpdatesForFrontend(requestDto);
+        }
+
+        private decimal? GetPrice(int documentId, int quantity)
+        {
+            var unitPrice = products.GetPriceByCustomModel(documentId, quantity);
+            if (unitPrice == decimal.MinusOne)
+            {
+                return null;
+            }
+            return unitPrice;
         }
 
         void CheckRequestData(OrderUpdate request)

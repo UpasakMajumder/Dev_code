@@ -433,7 +433,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 }
             }
         }
-        
+
         public void UpdateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, CampaignProductType cartType = CampaignProductType.GeneralInventory)
         {
             var cart = ShoppingCartInfoProvider.GetShoppingCartInfo(distributorCartItem.ShoppingCartID);
@@ -558,8 +558,11 @@ namespace Kadena.WebAPI.KenticoProviders
             foreach (var i in cart.Items)
             {
                 var parameters = new ShoppingCartItemParameters(i.SKUID, i.Quantity);
-
                 var cartItem = cartInfo.SetShoppingCartItem(parameters);
+                if (i.CartItemPrice.HasValue)
+                {
+                    cartItem.CartItemPrice = (double)i.CartItemPrice.Value;
+                }
             }
             cartInfo.InvalidateCalculations();
             return mapper.Map<ShoppingCart>(cartInfo);
