@@ -42,7 +42,6 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IOrderItemCheckerService orderChecker;
         private readonly IProductsService products;
         private readonly IKenticoResourceService resources;
-        private readonly IDeliveryEstimationDataService deliveryData;
         private readonly IKenticoLogger log;
         private readonly IMapper mapper;
         private readonly IKenticoUserBudgetProvider budgetProvider;
@@ -60,7 +59,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                                         IOrderItemCheckerService orderChecker,
                                         IProductsService products,
                                         IKenticoResourceService resources,
-                                        IDeliveryEstimationDataService deliveryData,
                                         IKenticoLogger log,
                                         IMapper mapper,
                                         IDistributorShoppingCartService distributorShoppingCartService,
@@ -78,7 +76,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.orderChecker = orderChecker ?? throw new ArgumentNullException(nameof(orderChecker));
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
-            this.deliveryData = deliveryData ?? throw new ArgumentNullException(nameof(deliveryData));
             this.log = log ?? throw new ArgumentNullException(nameof(log));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.distributorShoppingCartService = distributorShoppingCartService ?? throw new ArgumentNullException(nameof(distributorShoppingCartService));
@@ -396,62 +393,9 @@ namespace Kadena.BusinessLogic.Services.Orders
                     });
         }
 
-        void DoEstimations(OrderManualUpdateRequestDto request, IEnumerable<UpdatedItemCheckData> updateData, GetOrderByOrderIdResponseDTO orderDetail, Sku[] skus,
-            AddressDto targetAddress)
-        {
-            request.TotalPrice = 0.0m;
-            var shippableWeight = 0.0m;
-
-            orderDetail.Items.ForEach(i =>
-            {
-                var updatedItem = updateData.FirstOrDefault(d => d.ManuallyUpdatedItem.LineNumber == i.LineNumber);
-
-                if (updatedItem != null)
-                {
-                    request.TotalPrice += updatedItem.ManuallyUpdatedItem.TotalPrice;
-                    if (updatedItem.Sku.NeedsShipping)
-                    {
-                        shippableWeight += (decimal)updatedItem.Sku.Weight * updatedItem.ManuallyUpdatedItem.Quantity;
-                    }
-                }
-                else
-                {
-                    request.TotalPrice += (decimal)i.TotalPrice;
-                    var sku = skus.First(s => s.SkuId == i.SkuId);
-                    if (sku.NeedsShipping)
-                    {
-                        shippableWeight += (decimal)sku.Weight * i.Quantity;
-                    }
-                }
-            }
-            );
-
-            request.TotalShipping = 0.0m;
-
-            log.LogInfo("Approval", "Info", $"Provider is '{orderDetail.ShippingInfo.Provider}'");
-            log.LogInfo("Approval", "Info", $"Total shippable weight is '{shippableWeight}'");
-
-            if (!orderDetail.ShippingInfo.Provider.EndsWith("Customer") && shippableWeight > 0.0m)
-            {
-                request.TotalShipping = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
-                    shippableWeight, targetAddress);
-            }
-            else
-            {
-                log.LogInfo("Approval", "Info", $"NOT going to call estimation microservice");
-            }
-        }
-
         private bool IsCreditCardPayment(string paymentMethod)
         {
             return paymentMethod == "CreditCard" || paymentMethod == "CreditCardDemo";
-        }
-
-        private decimal GetShippinCost(string provider, string shippingService, decimal shippableWeight, AddressDto targetAddress)
-        {
-            log.LogInfo("Approval", "Info", $"Going to call estimation microservice");
-
-            return deliveryData.GetShippingCost(provider, shippingService, shippableWeight, targetAddress);
         }
 
         void ValidateItem(int documentId, int newQuantity, int adjustedQuantity)
