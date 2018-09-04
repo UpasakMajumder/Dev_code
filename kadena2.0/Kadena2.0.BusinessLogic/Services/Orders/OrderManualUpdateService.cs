@@ -252,11 +252,11 @@ namespace Kadena.BusinessLogic.Services.Orders
                     d.Sku = sku;
                     d.Product = product;
 
-                    ValidateItem(product, sku, d.UpdatedItem.Quantity, d.UpdatedItem.Quantity - d.OriginalItem.Quantity);
-                    var unitPrice = this.products.GetPriceByCustomModel(d.Product.Id, d.UpdatedItem.Quantity);
+                    ValidateItem(d.OriginalItem.DocumentId, d.UpdatedItem.Quantity, d.UpdatedItem.Quantity - d.OriginalItem.Quantity);
+                    var unitPrice = this.products.GetPriceByCustomModel(d.OriginalItem.DocumentId, d.UpdatedItem.Quantity);
                     if (unitPrice == decimal.MinusOne)
                     {
-                        unitPrice = sku.Price;
+                        unitPrice = skuProvider.GetSkuPrice(d.OriginalItem.SkuId).Value;
                     }
 
                     d.ManuallyUpdatedItem = new ItemUpdateDto
@@ -434,16 +434,22 @@ namespace Kadena.BusinessLogic.Services.Orders
             return deliveryData.GetShippingCost(provider, shippingService, shippableWeight, targetAddress);
         }
 
-        void ValidateItem(Product product, Sku sku, int newQuantity, int adjustedQuantity)
+        void ValidateItem(int documentId, int newQuantity, int adjustedQuantity)
         {
-            if (ProductTypes.IsOfType(product.ProductType, ProductTypes.MailingProduct))
+            var product = productsProvider.GetProductByDocumentId(documentId)
+                ?? throw new Exception($"Unable to find product with id '{documentId}'.");
+
+            if (product.HasProductTypeFlag(ProductTypes.MailingProduct))
             {
                 throw new Exception("Cannot change quantity of Mailing product item");
             }
 
+            var sku = skuProvider.GetSKU(product.SkuId)
+                ?? throw new Exception($"Unable to find SKU with id '{product.SkuId}'.");
+
             orderChecker.CheckMinMaxQuantity(sku, newQuantity);
 
-            if (ProductTypes.IsOfType(product.ProductType, ProductTypes.InventoryProduct))
+            if (product.HasProductTypeFlag(ProductTypes.InventoryProduct))
             {
                 orderChecker.EnsureInventoryAmount(sku, adjustedQuantity, newQuantity);
             }
