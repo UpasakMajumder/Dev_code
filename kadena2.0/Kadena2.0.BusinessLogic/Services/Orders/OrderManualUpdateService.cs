@@ -49,6 +49,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IDistributorShoppingCartService distributorShoppingCartService;
         private readonly IShoppingCartProvider shoppingCartProvider;
         private readonly ITaxEstimationService taxEstimationService;
+        private readonly IKenticoLocalizationProvider localization;
 
         public OrderManualUpdateService(IOrderManualUpdateClient updateService,
                                         IOrderViewClient orderService,
@@ -65,7 +66,8 @@ namespace Kadena.BusinessLogic.Services.Orders
                                         IDistributorShoppingCartService distributorShoppingCartService,
                                         IShoppingCartProvider shoppingCartProvider,
                                         IKenticoUserBudgetProvider budgetProvider,
-                                        ITaxEstimationService taxEstimationService)
+                                        ITaxEstimationService taxEstimationService,
+                                        IKenticoLocalizationProvider localization)
         {
             this.updateService = updateService ?? throw new ArgumentNullException(nameof(updateService));
             this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
@@ -83,6 +85,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.shoppingCartProvider = shoppingCartProvider ?? throw new ArgumentNullException(nameof(shoppingCartProvider));
             this.budgetProvider = budgetProvider ?? throw new ArgumentNullException(nameof(budgetProvider));
             this.taxEstimationService = taxEstimationService ?? throw new ArgumentNullException(nameof(taxEstimationService));
+            this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
         }
 
         public async Task<OrderUpdateResult> UpdateOrder(OrderUpdate request)
@@ -143,6 +146,8 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var requestDto = new OrderManualUpdateRequestDto();
             var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
+            taxAddress.Country = localization.GetCountries().FirstOrDefault(c => c.Code.Equals(taxAddress.Country.Code));
+            taxAddress.State = localization.GetStates().FirstOrDefault(s => s.StateCode.Equals(taxAddress.State.StateCode) && s.CountryId == taxAddress.Country.Id);
 
             if (orderDetail.Type == OrderType.generalInventory)
             {

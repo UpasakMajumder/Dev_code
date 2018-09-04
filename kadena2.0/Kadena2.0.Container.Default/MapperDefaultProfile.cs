@@ -377,11 +377,15 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.KenticoStateID.GetValueOrDefault()))
                 .ForMember(dest => dest.CountryId, opt => opt.MapFrom(src => src.KenticoCountryID))
                 .ForMember(dest => dest.StateName, opt => opt.MapFrom(src => src.StateDisplayName));
+            CreateMap<AddressDTO, Country>()
+                .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.isoCountryCode))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.KenticoCountryID))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Country));
             CreateMap<AddressDTO, DeliveryAddress>()
                 .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.AddressLine1))
                 .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.AddressLine2))
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src))
-                .ForMember(dest => dest.Country, opt => opt.Ignore())
+                .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src))
                 .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.AddressCompanyName))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.KenticoAddressID.GetValueOrDefault()))
                 .ForMember(dest => dest.Checked, opt => opt.Ignore())
