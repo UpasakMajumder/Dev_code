@@ -112,25 +112,29 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             approvers.CheckIsCustomersEditor(orderDetail.ClientId);
 
-            var updateItems = request.Items
-                .Join(orderDetail.Items,
-                    chi => chi.LineNumber,
-                    oi => oi.LineNumber,
-                    (chi, oi) => new
-                    {
-                        oi.LineNumber,
-                        oi.DocumentId,
-                        AdjustedQuantity = chi.Quantity - oi.Quantity,
-                        NewQuantity = chi.Quantity,
-                        oi.TemplateId,
-                        oi.SkuId
-                    })
-                .ToList();
-
-            if (updateItems.Count() != request.Items.Count())
+            if (request.Items.Any(i => orderDetail.Items.Select(oi => oi.LineNumber == i.LineNumber).Count() < 1))
             {
                 throw new Exception("Couldn't match all given line numbers in original order");
             }
+
+            var updateItems = orderDetail.Items
+                .GroupJoin(request.Items,
+                    oi => oi.LineNumber,
+                    ri => ri.LineNumber,
+                    (oi, ri) =>
+                    {
+                        var ui = ri.DefaultIfEmpty().First();
+                        return new
+                        {
+                            oi.LineNumber,
+                            oi.DocumentId,
+                            AdjustedQuantity = (ui?.Quantity ?? oi.Quantity) - oi.Quantity,
+                            NewQuantity = ui?.Quantity ?? oi.Quantity,
+                            oi.TemplateId,
+                            oi.SkuId
+                        };
+                    })
+                .ToList();
 
             if (IsCreditCardPayment(orderDetail.PaymentInfo.PaymentMethod) && updateItems.Any(i => i.AdjustedQuantity > 0))
             {
