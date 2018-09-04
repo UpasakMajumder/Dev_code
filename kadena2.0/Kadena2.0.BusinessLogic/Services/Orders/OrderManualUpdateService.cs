@@ -262,12 +262,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                     };
                 });
 
-                requestDto = new OrderManualUpdateRequestDto
-                {
-                    OrderId = request.OrderId,
-                    Items = updatedItemsData.Select(d => d.ManuallyUpdatedItem).ToList()
-                };
-
                 var cart = new ShoppingCart
                 {
                     UserId = orderDetail.Customer.KenticoUserID,
@@ -282,9 +276,10 @@ namespace Kadena.BusinessLogic.Services.Orders
                        .ToList()
                 };
                 cart = shoppingCartProvider.Evaluate(cart);
-
-                requestDto.TotalShipping = cart.ShippingPrice;
-                requestDto.TotalPrice = cart.TotalPrice;
+                // get updated data from cart
+                requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart, opt => updateItems
+                    .ForEach(i => opt.Items.Add(i.SkuId.ToString(), i.LineNumber)));
+                requestDto.OrderId = request.OrderId;
 
                 requestDto.TotalTax = await taxEstimationService.EstimateTax(taxAddress, requestDto.TotalPrice, requestDto.TotalShipping);
 
