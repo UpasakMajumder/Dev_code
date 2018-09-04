@@ -273,9 +273,24 @@ namespace Kadena.BusinessLogic.Services.Orders
                     OrderId = request.OrderId,
                     Items = updatedItemsData.Select(d => d.ManuallyUpdatedItem).ToList()
                 };
-                var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
-                targetAddress.Country = orderDetail.ShippingInfo.AddressTo.isoCountryCode;
-                DoEstimations(requestDto, updatedItemsData, orderDetail, skus, targetAddress);
+
+                var cart = new ShoppingCart
+                {
+                    UserId = orderDetail.Customer.KenticoUserID,
+                    ShippingOptionId = orderDetail.ShippingInfo.ShippingOptionId,
+                    Address = taxAddress,
+                    Items = updateItems
+                       .Select(i => new CartItemEntity
+                       {
+                           SKUID = i.SkuId,
+                           Quantity = i.NewQuantity
+                       })
+                       .ToList()
+                };
+                cart = shoppingCartProvider.Evaluate(cart);
+
+                requestDto.TotalShipping = cart.ShippingPrice;
+                requestDto.TotalPrice = cart.TotalPrice;
 
                 requestDto.TotalTax = await taxEstimationService.EstimateTax(taxAddress, requestDto.TotalPrice, requestDto.TotalShipping);
 
