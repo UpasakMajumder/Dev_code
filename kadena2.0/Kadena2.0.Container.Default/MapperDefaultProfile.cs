@@ -83,7 +83,7 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.TotalShipping, opt => opt.MapFrom(src => src.ShippingPrice))
                 .ForMember(dest => dest.OrderId, opt => opt.Ignore());
             CreateMap<CartItemEntity, ItemUpdateDto>()
-               .ForMember(dest => dest.LineNumber, opt => opt.ResolveUsing((src, dest, val, ctx)=>
+               .ForMember(dest => dest.LineNumber, opt => opt.ResolveUsing((src, dest, val, ctx) =>
                {
                    if (ctx.Items.TryGetValue(src.SKUID.ToString(), out object value))
                    {
@@ -498,6 +498,40 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.SendPriceToErp, opt => opt.MapFrom(src => src.SendPriceToERP))
                 .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.UnitOfMeasure))
                 .ForAllOtherMembers(opt => opt.Ignore());
+
+            CreateMap<Dto.ViewOrder.MicroserviceResponses.GetOrderByOrderIdResponseDTO, ShoppingCart>()
+                .ForMember(dest => dest.CampaignId, opt => opt.ResolveUsing(src => src.campaign?.ID ?? 0))
+                .ForMember(dest => dest.ProgramId, opt => opt.ResolveUsing(src => src.campaign?.ProgramID ?? 0))
+                .ForMember(dest => dest.DistributorId, opt => opt.ResolveUsing(src => src.campaign?.DistributorID ?? 0))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Customer.KenticoUserID))
+                .ForMember(dest => dest.CustomerId, opt => opt.Ignore())
+                .ForMember(dest => dest.TotalTax, opt => opt.MapFrom(src => src.PaymentInfo.Tax))
+                .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.PaymentInfo.Summary))
+                .ForMember(dest => dest.ShippingPrice, opt => opt.MapFrom(src => src.PaymentInfo.Shipping))
+                .ForMember(dest => dest.PricedItemsTax, opt => opt.Ignore())
+                .ForMember(dest => dest.TotalItemsWeight, opt => opt.Ignore())
+                .ForMember(dest => dest.ShippingOptionId, opt => opt.MapFrom(src => src.ShippingInfo.ShippingOptionId))
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.ShippingInfo.AddressTo));
+
+            CreateMap<Dto.ViewOrder.MicroserviceResponses.OrderItemDTO, CartItemEntity>()
+                .ForMember(dest => dest.CartItemID, opt => opt.Ignore())
+                .ForMember(dest => dest.CartItemGUID, opt => opt.Ignore())
+                .ForMember(dest => dest.ShoppingCartID, opt => opt.Ignore())
+                .ForMember(dest => dest.UnitPrice, opt => opt.Ignore())
+                .ForMember(dest => dest.CartItemPrice, opt => opt.Ignore())
+                .ForMember(dest => dest.CartItemText, opt => opt.Ignore())
+                .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.Type))
+                .ForMember(dest => dest.ChilliEditorTemplateID, opt => opt.MapFrom(src => src.TemplateId))
+                .ForMember(dest => dest.ChiliTemplateID, opt => opt.Ignore())
+                .ForMember(dest => dest.ArtworkLocation, opt => opt.MapFrom(src => src.FileKey))
+                .ForMember(dest => dest.ProductPageID, opt => opt.MapFrom(src => src.DocumentId))
+                .ForMember(dest => dest.MailingListName, opt => opt.MapFrom(src => src.MailingList))
+                .ForMember(dest => dest.MailingListGuid, opt => opt.Ignore())
+                .ForMember(dest => dest.ProductChiliWorkspaceId, opt => opt.Ignore())
+                .ForMember(dest => dest.ProductChiliPdfGeneratorSettingsId, opt => opt.Ignore())
+                .ForMember(dest => dest.ProductShipTime, opt => opt.Ignore())
+                .ForMember(dest => dest.ProductProductionTime, opt => opt.Ignore())
+                .ForMember(dest => dest.SendPriceToErp, opt => opt.Ignore());
         }
     }
 }

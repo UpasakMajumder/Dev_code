@@ -149,30 +149,24 @@ namespace Kadena.BusinessLogic.Services.Orders
                     });
             }
 
-            var destinationAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
-            destinationAddress.Country = localization.GetCountries().FirstOrDefault(c => c.Code.Equals(destinationAddress.Country.Code));
-            destinationAddress.State = localization
-                .GetStates()
-                .FirstOrDefault(s => s.StateCode.Equals(destinationAddress.State.StateCode) && s.CountryId == destinationAddress.Country.Id);
 
             // create fake cart with new data
-            var cart = new ShoppingCart
-            {
-                CampaignId = orderDetail.campaign?.ID ?? 0,
-                ProgramId = orderDetail.campaign?.ProgramID ?? 0,
-                UserId = orderDetail.Customer.KenticoUserID,
-                ShippingOptionId = orderDetail.ShippingInfo.ShippingOptionId,
-                Address = destinationAddress,
-                Items = updateItems
-                    .Select(i => new CartItemEntity
-                    {
-                        SKUID = i.SkuId,
-                        Quantity = i.NewQuantity,
-                        CartItemPrice = GetPrice(i.DocumentId, i.NewQuantity)
-                    })
-                    .ToList()
-            };
+            var cart = mapper.Map<ShoppingCart>(orderDetail);
+            cart.Address.Country = localization.GetCountries().FirstOrDefault(c => c.Code.Equals(cart.Address.Country.Code));
+            cart.Address.State = localization
+                .GetStates()
+                .FirstOrDefault(s => s.StateCode.Equals(cart.Address.State.StateCode) && s.CountryId == cart.Address.Country.Id);
+            var destinationAddress = cart.Address;
+            cart.Items = updateItems
+                .Select(i => new CartItemEntity
+                {
+                    SKUID = i.SkuId,
+                    Quantity = i.NewQuantity,
+                    CartItemPrice = GetPrice(i.DocumentId, i.NewQuantity)
+                })
+                .ToList();
             cart = shoppingCartProvider.Evaluate(cart);
+
             // get updated data from cart
             var requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart, opt => updateItems
                 .ForEach(i => opt.Items.Add(i.SkuId.ToString(), i.LineNumber)));
