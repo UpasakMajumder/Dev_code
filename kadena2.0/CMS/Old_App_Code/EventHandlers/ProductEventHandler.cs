@@ -34,6 +34,8 @@ namespace Kadena.Old_App_Code.EventHandlers
         public void SendNewProductNotificationEmail_EventHandler(object sender, DocumentEventArgs e)
         {
             var product = GetProductFromNode(e.Node);
+            if (product == null)
+                return;
             NewProductNotificationService.SendNotification(product.NodeSKUID);
         }
 
