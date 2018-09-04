@@ -374,22 +374,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             return result;
         }
 
-        void UpdateAvailableItems(IEnumerable<UpdatedItemCheckData> updateData)
-        {
-            var inventoryProductsData = updateData
-                .Where(u => ProductTypes.IsOfType(u.Product.ProductType, ProductTypes.InventoryProduct))
-                .ToList();
-
-            inventoryProductsData
-                .ToList()
-                .ForEach(data =>
-                    {
-                        var freedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
-                        // Not using Set... because when waiting for result of OrderUpdate, quantity can change
-                        skuProvider.UpdateAvailableQuantity(data.OriginalItem.SkuId, freedQuantity);
-                    });
-        }
-
         private bool IsCreditCardPayment(string paymentMethod)
         {
             return paymentMethod == "CreditCard" || paymentMethod == "CreditCardDemo";
