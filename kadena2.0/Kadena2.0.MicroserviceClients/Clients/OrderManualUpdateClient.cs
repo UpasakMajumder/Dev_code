@@ -29,7 +29,7 @@ namespace Kadena2.MicroserviceClients.Clients
         public async Task<BaseResponseDto<object>> UpdateOrdersShippings(UpdateShippingsRequestDto request)
         {
             var url = $"{BaseUrl}/order/itemsshipping";
-            return await Patch<object>(url, request);
+            return await Patch<object>(url, request).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<List<OrderHistoryUpdateDto>>> Get(string orderId)
