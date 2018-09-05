@@ -69,6 +69,7 @@ using Kadena.Models.Routing;
 using Kadena.Models.Routing.Request;
 using Kadena.Models.ErpSystem;
 using Kadena.Dto.ErpSystem;
+using Kadena.Models.CampaignData;
 
 namespace Kadena.Container.Default
 {
@@ -510,6 +511,18 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.ShippingPrice, opt => opt.MapFrom(src => src.PaymentInfo.Shipping))
                 .ForMember(dest => dest.PricedItemsTax, opt => opt.Ignore())
                 .ForMember(dest => dest.TotalItemsWeight, opt => opt.Ignore())
+                .ForMember(dest => dest.Type, opt => opt.ResolveUsing(src =>
+                {
+                    if (OrderType.generalInventory.Equals(src.Type))
+                    {
+                        return CampaignProductType.GeneralInventory;
+                    }
+                    if (OrderType.prebuy.Equals(src.Type))
+                    {
+                        return CampaignProductType.PreBuy;
+                    }
+                    return CampaignProductType.Standard;
+                }))
                 .ForMember(dest => dest.ShippingOptionId, opt => opt.MapFrom(src => src.ShippingInfo.ShippingOptionId))
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.ShippingInfo.AddressTo));
 

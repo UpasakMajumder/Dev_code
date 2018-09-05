@@ -3,7 +3,6 @@ using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
-using Kadena.Models;
 using Kadena.Models.CampaignData;
 using Kadena.Models.Checkout;
 using Kadena.Models.OrderDetail;
