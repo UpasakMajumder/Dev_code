@@ -30,7 +30,6 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IOrderItemCheckerService orderChecker;
         private readonly IProductsService products;
         private readonly IKenticoResourceService resources;
-        private readonly IKenticoLogger log;
         private readonly IMapper mapper;
         private readonly IKenticoUserBudgetProvider budgetProvider;
         private readonly IDistributorShoppingCartService distributorShoppingCartService;
@@ -47,7 +46,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                                         IOrderItemCheckerService orderChecker,
                                         IProductsService products,
                                         IKenticoResourceService resources,
-                                        IKenticoLogger log,
                                         IMapper mapper,
                                         IDistributorShoppingCartService distributorShoppingCartService,
                                         IShoppingCartProvider shoppingCartProvider,
@@ -64,7 +62,6 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.orderChecker = orderChecker ?? throw new ArgumentNullException(nameof(orderChecker));
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
-            this.log = log ?? throw new ArgumentNullException(nameof(log));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.distributorShoppingCartService = distributorShoppingCartService ?? throw new ArgumentNullException(nameof(distributorShoppingCartService));
             this.shoppingCartProvider = shoppingCartProvider ?? throw new ArgumentNullException(nameof(shoppingCartProvider));
@@ -148,7 +145,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                         ValidateItem(d.DocumentId, d.NewQuantity, d.AdjustedQuantity);
                     });
             }
-
 
             // create fake cart with new data
             var cart = mapper.Map<ShoppingCart>(orderDetail);
