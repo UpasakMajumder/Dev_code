@@ -33,7 +33,8 @@ module.exports.reports = {
     } else {
       res.json(order.reports.rows1);
     }
-  }
+  },
+  manage: (req, res) => res.json(order.reports.manage)
 };
 
 module.exports.recent = {

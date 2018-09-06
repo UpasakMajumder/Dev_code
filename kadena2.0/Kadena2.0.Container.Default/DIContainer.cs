@@ -85,6 +85,7 @@ namespace Kadena.Container.Default
             container.Register<IAddressBookService, AddressBookService>();
             container.Register<IModuleAccessService, ModuleAccessService>();
             container.Register<IBrandsService, BrandsService>();
+            container.Register<IOrderReportFactoryHeaders, OrderReportFactoryHeaders>();
             container.Register<IRoutingService, RoutingService>();
             container.Register<IProgramsService, ProgramsService>();
             container.Register<ILoginService, LoginService>();

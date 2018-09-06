@@ -246,14 +246,14 @@
             label: "Site"
           },
           {
-            id: '2',
+            id: 'orderNumber',
             label: "Order number"
           },
           {
             id: '3',
             label: "Order date",
             sort: true,
-            isDate: true
+            type: "date"
           },
           {
             id: '4',
@@ -282,11 +282,12 @@
           {
             id: '10',
             label: "Shipping date",
-            isDate: true
+            type: 'date'
           },
           {
             id: '11',
-            label: "Tracking number"
+            label: "Tracking number",
+            type: 'tracking',
           }
         ],
         pageInfo: {
@@ -303,7 +304,62 @@
             url: 'https://some/api'
           },
           noOrdersMessage: 'You have no orders',
-          getRowsUrl: PATH + 'order/reports/rows'
+          getRowsUrl: PATH + 'order/reports/rows',
+          manageOrders: {
+            togglerText: 'Manage Orders',
+            popupTitle: 'Manage Orders',
+            popupButtons: {
+              cancel: 'Cancel',
+              save: 'Save'
+            },
+            validationMessage: 'The field are incorrect 🐞',
+            submitUrl: PATH + 'order/report/manage',
+            headers: [
+              {
+                id: 'orderNumber',
+                label: "Order number"
+              },
+              {
+                id: '6',
+                label: "SKU"
+              },
+              {
+                id: '10',
+                label: "Shipping date",
+                type: "date"
+              },
+              {
+                id: '11',
+                label: "Tracking number",
+                edit: true
+              },
+              {
+                id: '15',
+                label: 'Shipping Method',
+                type: 'select',
+                values: [
+                  {
+                    id: 'ready',
+                    name: 'Ready',
+                    disabled: true
+                  },
+                  {
+                    id: 'approved',
+                    name: 'Approved'
+                  }
+                ]
+              },
+              {
+                id: '16',
+                label: 'Shipped quantity',
+                type: 'number'
+              },
+              {
+                id: '17',
+                label: 'Actions'
+              }
+            ]
+          }
         }
       },
       filteredRecentOrders: {

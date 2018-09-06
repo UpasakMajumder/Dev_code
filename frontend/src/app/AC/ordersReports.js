@@ -5,7 +5,8 @@ import {
   SUCCESS,
   FAILURE,
   ORDERS_REPORTS_GET_ROWS,
-  ORDERS_REPORTS_CHANGE_DATE
+  ORDERS_REPORTS_CHANGE_DATE,
+  ORDERS_REPORTS_MANAGE
 } from 'app.consts';
 
 export const getRows = (url, args = {}) => {
@@ -51,6 +52,15 @@ export const changeDate = (value, field) => {
     payload: {
       value,
       field
+    }
+  };
+};
+
+export const manage = (rows) => {
+  return {
+    type: ORDERS_REPORTS_MANAGE,
+    payload: {
+      rows
     }
   };
 };

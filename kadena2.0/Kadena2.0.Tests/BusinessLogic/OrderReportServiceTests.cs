@@ -50,7 +50,7 @@ namespace Kadena.Tests.BusinessLogic
             };
             Setup<IOrderViewClient, Task<BaseResponseDto<OrderListDto>>>(s => s.GetOrders(It.IsAny<OrderListFilter>()),
                 Task.FromResult(new BaseResponseDto<OrderListDto>()));
-            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<IEnumerable<OrderReportViewItem>>()), tableView);
+            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<ICollection<OrderReportViewItem>>()), tableView);
 
             var actual = await Sut.ConvertOrdersToView(1, new OrderFilter());
 
@@ -70,7 +70,7 @@ namespace Kadena.Tests.BusinessLogic
                     actualFilter = f;
                     return Task.FromResult(new BaseResponseDto<OrderListDto>());
                 });
-            Setup<IOrderReportFactory, TableView>(s => s.CreateTableView(It.IsAny<IEnumerable<OrderReportViewItem>>()), new TableView());
+            Setup<IOrderReportFactory, TableView>(s => s.CreateTableView(It.IsAny<ICollection<OrderReportViewItem>>()), new TableView());
             var page = 2;
 
             await Sut.ConvertOrdersToView(page, new OrderFilter());
@@ -268,7 +268,7 @@ namespace Kadena.Tests.BusinessLogic
             };
             SetupOrderViewClientReturning(orders);
             var actualResult = new TableView();
-            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<IEnumerable<OrderReportViewItem>>()), expected);
+            Setup<IOrderReportFactory, TableView>(orf => orf.CreateTableView(It.IsAny<ICollection<OrderReportViewItem>>()), expected);
             Setup<IConvert, TableView, byte[]>(ec => ec.GetBytes(It.IsAny<TableView>()), t =>
               {
                   actualResult = t;

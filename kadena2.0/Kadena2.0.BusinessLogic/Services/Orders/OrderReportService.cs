@@ -104,7 +104,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             var orders = await GetOrders(orderFilter);
 
             var report = orderReportFactory.CreateReportView(orders.Data);
-            var tableView = orderReportFactory.CreateTableView(report);
+            var tableView = orderReportFactory.CreateTableView(report.ToList());
 
             var fileResult = new FileResult
             {

@@ -31,17 +31,7 @@ namespace Kadena.BusinessLogic.Services
             var minimalCharCount = 16;
             var minimalColumnWidth = charWidth * minimalCharCount;
 
-            var headersCount = table.Headers?.Length ?? 0;
-            var dataMaxCellCount = 0;
-            if (table.Rows != null)
-            {
-                dataMaxCellCount = table.Rows
-                    .Select(r => r?.Items?.Length ?? 0)
-                    .Concat(new[] { 0 })
-                    .Max();
-            }
-
-            var columnCount = Math.Max(headersCount, dataMaxCellCount);
+            var columnCount = table.Headers?.Length ?? 0;
 
             for (int i = 0; i < columnCount; i++)
             {
@@ -65,25 +55,27 @@ namespace Kadena.BusinessLogic.Services
 
         private static void AddSheetDataRows(ISheet sheet, TableView table)
         {
+            var rowCellCount = table.HeaderNames.Length;
             var firstDataRowNumber = sheet.LastRowNum + 1;
             for (int rowIndex = 0; rowIndex < table.Rows.Length; rowIndex++)
             {
                 var row = sheet.CreateRow(firstDataRowNumber + rowIndex);
-                var rowCellCount = table.Rows[rowIndex].Items.Length;
                 var rowData = table.Rows[rowIndex].Items;
                 for (int cellIndex = 0; cellIndex < rowCellCount; cellIndex++)
                 {
                     var cell = row.CreateCell(cellIndex);
-                    if (rowData[cellIndex] != null)
+                    var cellName = table.HeaderNames[cellIndex];
+                    var cellData = rowData.GetType().GetProperty(cellName)?.GetValue(rowData) as TableCell;
+                    if (cellData?.Value != null)
                     {
                         // if needed it could be casted to excel supported primitive types
-                        if (rowData[cellIndex] is IEnumerable<object> enumerable)
+                        if (cellData.Value is IEnumerable<object> enumerable)
                         {
                             cell.SetCellValue(string.Join(", ", enumerable));
                         }
                         else
                         {
-                            cell.SetCellValue(rowData[cellIndex].ToString());
+                            cell.SetCellValue(cellData.Value.ToString());
                         }
                     }
                 }
