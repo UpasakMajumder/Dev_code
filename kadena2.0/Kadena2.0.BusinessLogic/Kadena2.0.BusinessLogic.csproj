@@ -171,6 +171,7 @@
     <Compile Include="Services\Orders\OrderItemCheckerService.cs" />
     <Compile Include="Services\Orders\OrderManualUpdateService.cs" />
     <Compile Include="Services\Orders\OrderReportService.cs" />
+    <Compile Include="Services\Orders\OrderReportTableRowToDtoConverter.cs" />
     <Compile Include="Services\Orders\OrderResubmissionService.cs" />
     <Compile Include="Services\Orders\SendSubmitOrder.cs" />
     <Compile Include="Services\DistributorShoppingCartService.cs" />

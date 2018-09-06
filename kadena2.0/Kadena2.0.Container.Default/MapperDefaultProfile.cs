@@ -74,6 +74,7 @@ using OrderItemDTO = Kadena.Dto.SubmitOrder.MicroserviceRequests.OrderItemDTO;
 using PaymentInfoDTO = Kadena.Dto.ViewOrder.Responses.PaymentInfoDTO;
 using ShippingInfoDTO = Kadena.Dto.ViewOrder.Responses.ShippingInfoDTO;
 using TrackingInfoDto = Kadena.Dto.Shipping.TrackingInfoDto;
+using Kadena.BusinessLogic.Services.Orders;
 
 namespace Kadena.Container.Default
 {
@@ -91,20 +92,8 @@ namespace Kadena.Container.Default
                .ForMember(dest => dest.LineNumber, opt => opt.Ignore());
 
             CreateMap<OrderReportViewItem, TableRow>()
-                .ForMember(dest => dest.Items, opt => opt.ResolveUsing(src => new object[] {
-                    src.LineNumber,
-                    src.Site,
-                    src.Number,
-                    src.OrderingDate,
-                    src.User,
-                    src.Name,
-                    src.SKU ?? string.Empty,
-                    src.Quantity,
-                    src.Price,
-                    src.Status,
-                    src.TrackingInfos?.FirstOrDefault()?.ShippingDate ?? string.Empty,
-                    src.TrackingInfos
-                }));
+                .ConvertUsing(new OrderReportTableRowToDtoConverter());
+
             CreateMap<ErpSystem, ErpSystemDto>();
             CreateMap<ErpSystem[], ErpSystemDto[]>();
             CreateMap<ShippingMethodDto, TrackingInfoShippingMethod>();
@@ -323,8 +312,7 @@ namespace Kadena.Container.Default
             CreateMap<OrderBody, OrderBodyDto>();
 
             CreateMap<TableView, TableViewDto>();
-            CreateMap<TableRow, TableRowDto>()
-                .ConvertUsing(new TableRowToDtoConverter());
+            CreateMap<TableRow, TableRowDto>();
             CreateMap<Pagination, PaginationDto>();
             CreateMap<IEnumerable<TrackingInfo>, TrackingFieldDto>()
                 .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src));

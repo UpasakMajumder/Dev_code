@@ -4,6 +4,6 @@
     {
 
         public string Url { get; set; }
-        public object[] Items { get; set; } = new object[0];
+        public object Items { get; set; } = new object();
     }
 }

@@ -63,6 +63,8 @@
     <Compile Include="Checkout\DeliveryDate.cs" />
     <Compile Include="Checkout\DeliveryDateMessages.cs" />
     <Compile Include="Common\Environment.cs" />
+    <Compile Include="Common\TableCell.cs" />
+    <Compile Include="Common\TableCellLink.cs" />
     <Compile Include="CreditCard\SaveCardData.cs" />
     <Compile Include="CreditCard\StoredCard.cs" />
     <Compile Include="CustomCatalog\PrebuyProduct.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="Orders\OrderFilter.cs" />
     <Compile Include="Orders\OrderItemUpdate.cs" />
     <Compile Include="Orders\OrderNumber.cs" />
+    <Compile Include="Orders\OrderReportTableRow.cs" />
     <Compile Include="Orders\OrderReportViewItem.cs" />
     <Compile Include="Orders\OrderStatus.cs" />
     <Compile Include="Orders\OrderUpdate.cs" />

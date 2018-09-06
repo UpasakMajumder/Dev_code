@@ -1,5 +1,6 @@
 ﻿using System;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.Models.Orders;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 
 namespace Kadena.BusinessLogic.Services
@@ -41,21 +42,21 @@ namespace Kadena.BusinessLogic.Services
             // do not change order in this array
             return new[]
             {
-                "lineNumber",
-                "site",
-                "orderNumber",
-                "createDate",
-                "user",
-                "name",
-                "sku",
-                "quantity",
-                "price",
-                "status",
-                "shippingDate",
-                "trackingNumber",
-                "shippedQuantity",
-                "shippingMethod",
-                "trackingInfoId"
+                nameof(OrderReportTableRow.lineNumber),
+                nameof(OrderReportTableRow.site),
+                nameof(OrderReportTableRow.orderNumber),
+                nameof(OrderReportTableRow.createDate),
+                nameof(OrderReportTableRow.user),
+                nameof(OrderReportTableRow.name),
+                nameof(OrderReportTableRow.sku),
+                nameof(OrderReportTableRow.quantity),
+                nameof(OrderReportTableRow.price),
+                nameof(OrderReportTableRow.status),
+                nameof(OrderReportTableRow.shippingDate),
+                nameof(OrderReportTableRow.trackingNumber),
+                nameof(OrderReportTableRow.shippedQuantity),
+                nameof(OrderReportTableRow.shippingMethod),
+                nameof(OrderReportTableRow.trackingInfoId)
             };
         }
     }

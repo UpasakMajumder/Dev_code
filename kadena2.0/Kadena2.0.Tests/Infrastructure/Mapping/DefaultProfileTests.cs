@@ -12,64 +12,81 @@ namespace Kadena.Tests.Infrastructure.Mapping
 {
     public class DefaultProfileTests : ProfileTest<MapperDefaultProfile>
     {
-        public static IEnumerable<object[]> GetReportItemViews()
+        private OrderReportViewItem GetReportItemView() => new OrderReportViewItem
         {
-            yield return new object[] {
-                new OrderReportViewItem
+            Name = "name",
+            Number = "number",
+            OrderingDate = "ordDate",
+            Price = 10,
+            Quantity = 2,
+            ShippingDate = "shippingDate",
+            Site = "site",
+            SKU = "sku",
+            Status = "status",
+            TrackingInfos = new[] {
+                new TrackingInfo
                 {
-                    Name = "name",
-                    Number = "number",
-                    OrderingDate = "ordDate",
-                    Price = 10,
-                    Quantity = 2,
-                    ShippingDate = "shippingDate",
-                    Site = "site",
-                    SKU = "sku",
-                    Status = "status",
-                    TrackingInfos = new[] {
-                        new TrackingInfo
-                        {
-                            Id ="id",
-                            ItemId = "item-id",
-                            QuantityShipped = 10,
-                            ShippingDate = "time",
-                            ShippingMethod = new TrackingInfoShippingMethod
-                            {
-                                Provider = "provider",
-                                ShippingService = "service"
-                            }
-                        }
-                    },
-                    Url = "url",
-                    User = "user"
+                    Id ="id",
+                    ItemId = "item-id",
+                    QuantityShipped = 10,
+                    ShippingDate = "time",
+                    ShippingMethod = new TrackingInfoShippingMethod
+                    {
+                        Provider = "provider",
+                        ShippingService = "service"
+                    }
                 }
-            };
-            yield return new object[] {
-                new OrderReportViewItem()
-            };
-        }
+            },
+            Url = "url",
+            User = "user"
+        };
 
-        [Theory]
-        [MemberData(nameof(GetReportItemViews))]
-        public void TableRow(OrderReportViewItem reportView)
+        [Fact]
+        public void OrderReportTableRow()
         {
+            var reportView = GetReportItemView();
             var actualResult = Sut.Map<TableRow[]>(new[] { reportView });
 
             Assert.Single(actualResult);
             var actualRow = actualResult[0];
             Assert.Equal(reportView.Url, actualRow.Url);
-            Assert.Equal(12, actualRow.Items.Length);
-            Assert.Equal(reportView.LineNumber, actualRow.Items[0]);
-            Assert.Equal(reportView.Site, actualRow.Items[1]);
-            Assert.Equal(reportView.Number, actualRow.Items[2]);
-            Assert.Equal(reportView.OrderingDate, actualRow.Items[3]);
-            Assert.Equal(reportView.User, actualRow.Items[4]);
-            Assert.Equal(reportView.Name, actualRow.Items[5]);
-            Assert.Equal(reportView.SKU ?? string.Empty, actualRow.Items[6]);
-            Assert.Equal(reportView.Quantity, actualRow.Items[7]);
-            Assert.Equal(reportView.Price, actualRow.Items[8]);
-            Assert.Equal(reportView.Status, actualRow.Items[9]);
-            Assert.Equal(reportView.TrackingInfos, actualRow.Items[11]);
+
+            var actualItems = actualRow.Items as OrderReportTableRow;
+            Assert.NotNull(actualItems);
+            Assert.Equal(reportView.LineNumber, actualItems.lineNumber.Value);
+            Assert.Equal(reportView.Site, actualItems.site.Value);
+            Assert.Equal(reportView.Number, actualItems.orderNumber.Value);
+            Assert.Equal(reportView.OrderingDate, actualItems.createDate.Value);
+            Assert.Equal(reportView.User, actualItems.user.Value);
+            Assert.Equal(reportView.Name, actualItems.name.Value);
+            Assert.Equal(reportView.SKU ?? string.Empty, actualItems.sku.Value);
+            Assert.Equal(reportView.Quantity, actualItems.quantity.Value);
+            Assert.Equal(reportView.Price, actualItems.price.Value);
+            Assert.Equal(reportView.Status, actualItems.status.Value);
+
+            var trackingInfo = reportView.TrackingInfos.First();
+            Assert.Equal(trackingInfo.ShippingDate, actualItems.shippingDate.Value);
+            Assert.Equal(trackingInfo.Id, actualItems.trackingNumber.Value);
+            Assert.Equal(trackingInfo.QuantityShipped, actualItems.shippedQuantity.Value);
+            Assert.Equal(trackingInfo.ShippingMethod.ShippingService, actualItems.shippingMethod.Value);
+            Assert.Equal(trackingInfo.ItemId, actualItems.trackingInfoId.Value);
+        }
+
+        [Fact]
+        public void OrderReportTableRow_NoTrackingInfo()
+        {
+            var reportView = GetReportItemView();
+            reportView.TrackingInfos = null;
+
+            var actualResult = Sut.Map<TableRow[]>(new[] { reportView });
+            var actualRow = actualResult[0];
+            var actualItems = actualRow.Items as OrderReportTableRow;
+
+            Assert.Equal(string.Empty, actualItems.shippingDate.Value);
+            Assert.Equal(string.Empty, actualItems.trackingNumber.Value);
+            Assert.Equal(0, actualItems.shippedQuantity.Value);
+            Assert.Equal(string.Empty, actualItems.shippingMethod.Value);
+            Assert.Equal(string.Empty, actualItems.trackingInfoId.Value);
         }
 
         [Fact]

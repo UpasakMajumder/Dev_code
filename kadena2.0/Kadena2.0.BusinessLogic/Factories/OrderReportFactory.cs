@@ -112,7 +112,8 @@ namespace Kadena.BusinessLogic.Factories
             return new TableView
             {
                 Rows = resultItems.ToArray(),
-                Headers = _orderReportFactoryHeaders.GetDisplayNameHeaders()
+                Headers = _orderReportFactoryHeaders.GetDisplayNameHeaders(),
+                HeaderNames = _orderReportFactoryHeaders.GetCodeNameHeaders()
             };
         }
 
