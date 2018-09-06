@@ -36,7 +36,7 @@ namespace Kadena.WebAPI.Controllers
 
         [HttpPost]
         [Route(Routes.Order.OrderShippingUpdate)]
-        public async Task<IHttpActionResult> UpdateOrdersShippings(object[] items)
+        public async Task<IHttpActionResult> UpdateOrdersShippings(UpdateShippingRow[] items)
         {
             var request = _mapper.Map<UpdateShippingRow[]>(items);
             var result = await _updateService.UpdateOrdersShippings(request);

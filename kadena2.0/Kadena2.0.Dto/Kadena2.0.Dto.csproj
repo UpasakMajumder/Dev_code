@@ -86,6 +86,7 @@
     <Compile Include="OrderManualUpdate\MicroserviceRequests\UpdateShipping\UpdateShippingsRequestDto.cs" />
     <Compile Include="OrderManualUpdate\Requests\OrderItemUpdateDto.cs" />
     <Compile Include="OrderManualUpdate\Requests\OrderUpdateDto.cs" />
+    <Compile Include="OrderManualUpdate\Requests\UpdateShippingRowDto.cs" />
     <Compile Include="OrderManualUpdate\Responses\ItemUpdateResultDto.cs" />
     <Compile Include="OrderManualUpdate\Responses\OrderUpdateResultDto.cs" />
     <Compile Include="Order\Failed\FailedOrderDto.cs" />

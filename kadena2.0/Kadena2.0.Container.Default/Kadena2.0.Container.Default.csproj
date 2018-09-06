@@ -52,7 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\ObjectToUpdateShippingRowConverter.cs" />
     <Compile Include="Converters\StringToNullableDateTimeConverter.cs" />
     <Compile Include="DIContainer.cs" />
     <Compile Include="MapperBuilder.cs" />

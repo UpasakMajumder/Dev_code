@@ -1,6 +1,6 @@
-﻿namespace Kadena.Models.Orders
+﻿namespace Kadena.Dto.OrderManualUpdate.Requests
 {
-    public class UpdateShippingRow
+    public class UpdateShippingRowDto
     {
         public int LineNumber { get; set; }
         public string OrderNumber { get; set; }

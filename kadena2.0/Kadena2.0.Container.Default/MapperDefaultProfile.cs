@@ -472,8 +472,7 @@ namespace Kadena.Container.Default
             CreateMap<OrderUpdateResult, OrderUpdateResultDto>();
             CreateMap<ItemUpdateResult, ItemUpdateResultDto>();
             //CreateMap<UpdatedItemCheckData, ItemUpdateDto>()
-            CreateMap<object, UpdateShippingRow>()
-                .ConvertUsing(new ObjectToUpdateShippingRowConverter());
+            CreateMap<UpdateShippingRowDto, UpdateShippingRow>();
         }
     }
 }

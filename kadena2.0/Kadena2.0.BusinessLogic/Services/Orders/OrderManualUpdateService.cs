@@ -114,7 +114,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                                     new UpdateShippingsOrderItemShippingDto
                                     {
                                         ItemId = updateShippingRow.TrackingInfoId,
-                                        QuantityShipped = updateShippingRow.QuantityShipped,
+                                        QuantityShipped = updateShippingRow.ShippedQuantity,
                                         ShippingDate = updateShippingRow.ShippingDate,
                                         TrackingNumber = updateShippingRow.TrackingNumber,
                                         ShippingMethod = new UpdateShippingsOrderItemShippingMethod
