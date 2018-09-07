@@ -1,4 +1,7 @@
 ﻿using Kadena.Models.Checkout;
+using Kadena.Models.Product;
+using System;
+using System.Collections.Generic;
 
 namespace Kadena.WebAPI.KenticoProviders.Contracts
 {
@@ -9,7 +12,7 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         void RemoveCartItem(int id);
         void SetCartItemQuantity(CartItemEntity cartItemEntity, int quantity);
         void SaveCartItem(CartItemEntity item);
-        CartItemEntity GetOrCreateCartItem(NewCartItem newItem);
+        CartItemEntity GetOrCreateCartItem(int skuId, int quantity, Dictionary<string, int> productAttributes, Guid templateId);
         CartItemEntity GetCartItemEntity(int cartItemId);
     }
 }

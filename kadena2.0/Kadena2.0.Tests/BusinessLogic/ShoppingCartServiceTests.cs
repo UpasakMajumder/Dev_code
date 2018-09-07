@@ -1,4 +1,5 @@
 ﻿using Kadena.AmazonFileSystemProvider;
+using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Factories.Checkout;
@@ -132,17 +133,22 @@ namespace Kadena.Tests.BusinessLogic
             const decimal dynamicPrice = 12.34m;
             const int cartItemId = 456;
             var newCartItem = CreateNewCartItem();
+            var product = new Product
+            {
+                ProductType = ProductTypes.StaticProduct
+            };
             var originalCartItemEntity = new CartItemEntity
             {
                 ProductType = ProductTypes.StaticProduct,
-                SKUUnits = 3,
+                Quantity = 3,
                 SKUID = 123,
                 CartItemID = cartItemId
             };
-
-            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
-            Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku {  });
-            Setup<IProductsService, decimal>(p => p.GetPriceByCustomModel(1123, 5), dynamicPrice);
+            Setup<IKenticoProductsProvider, Product>(s => s.GetProductByDocumentId(newCartItem.DocumentId), product);
+            Setup<IKenticoProductsProvider, Product>(s => s.GetProductByNodeId(newCartItem.NodeId), product);
+            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(product.SkuId, newCartItem.Quantity, newCartItem.Options, newCartItem.TemplateId), originalCartItemEntity);
+            Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku { });
+            Setup<IProductsService, decimal>(p => p.GetPriceByCustomModel(product.Id, originalCartItemEntity.Quantity), dynamicPrice);
 
             // Act
             var result = await Sut.AddToCart(newCartItem);
@@ -160,14 +166,20 @@ namespace Kadena.Tests.BusinessLogic
         {
             // Arrange 
             var newCartItem = CreateNewCartItem();
+            var product = new Product
+            {
+                ProductType = ProductTypes.StaticProduct,
+            };
             var originalCartItemEntity = new CartItemEntity
             {
                 CartItemText = Name,
                 ProductType = ProductTypes.StaticProduct,
-                SKUUnits = 3,
+                Quantity = 3,
                 SKUID = 123
             };
-            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
+            Setup<IKenticoProductsProvider, Product>(s => s.GetProductByDocumentId(newCartItem.DocumentId), product);
+            Setup<IKenticoProductsProvider, Product>(s => s.GetProductByNodeId(newCartItem.NodeId), product);
+            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(product.SkuId, newCartItem.Quantity, newCartItem.Options, newCartItem.TemplateId), originalCartItemEntity);
             Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku { });
 
             // Act
@@ -177,8 +189,8 @@ namespace Kadena.Tests.BusinessLogic
             Assert.NotNull(result);
             VerifyNoOtherCalls<IKListService>();
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
-                    e => e.CartItemText == Name &&
-                    e.SKUUnits == 5)
+                    e => e.CartItemText == originalCartItemEntity.CartItemText &&
+                    e.Quantity == originalCartItemEntity.Quantity)
                 ), Times.Once);
         }
 
@@ -188,21 +200,25 @@ namespace Kadena.Tests.BusinessLogic
             // Arrange             
             var newCartItem = CreateNewTemplatedCartItem(CustomName);
             newCartItem.Quantity = 5;
-
+            var product = new Product
+            {
+                Id = 1123,
+                ProductType = ProductTypes.TemplatedProduct,
+            };
             var originalCartItemEntity = new CartItemEntity
             {
                 CartItemText = Name,
                 ProductType = ProductTypes.TemplatedProduct,
-                SKUUnits = 10,
+                Quantity = 10,
                 SKUID = 123
             };
 
             const int nodeId = 32;
-            const int documentId = 1123;
 
-            Setup<IKenticoProductsProvider, Product>(p => p.GetProductByNodeId(nodeId), new Product { Id = documentId });
+            Setup<IKenticoProductsProvider, Product>(s => s.GetProductByDocumentId(newCartItem.DocumentId), product);
+            Setup<IKenticoProductsProvider, Product>(s => s.GetProductByNodeId(newCartItem.NodeId), product);
             Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku { });
-            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
+            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(product.SkuId, newCartItem.Quantity, newCartItem.Options, newCartItem.TemplateId), originalCartItemEntity);
 
             // Act
             var result = await Sut.AddToCart(newCartItem);
@@ -212,7 +228,7 @@ namespace Kadena.Tests.BusinessLogic
             VerifyNoOtherCalls<IKListService>();
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
                     e => e.CartItemText == CustomName &&
-                         e.SKUUnits == 5)
+                         e.Quantity == 5)
                 ), Times.Once);
         }
 
@@ -221,15 +237,21 @@ namespace Kadena.Tests.BusinessLogic
         {
             // Arrange 
             var newCartItem = CreateNewCartItem();
+            var product = new Product
+            {
+                ProductType = ProductTypes.InventoryProduct,
+            };
             var originalCartItemEntity = new CartItemEntity
             {
                 CartItemText = Name,
                 ProductType = ProductTypes.InventoryProduct,
                 SKUID = 6654,
-                SKUUnits = 3
+                Quantity = 3
             };
 
-            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
+            Setup<IKenticoProductsProvider, Product>(s => s.GetProductByDocumentId(newCartItem.DocumentId), product);
+            Setup<IKenticoProductsProvider, Product>(s => s.GetProductByNodeId(newCartItem.NodeId), product);
+            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(product.SkuId, newCartItem.Quantity, newCartItem.Options, newCartItem.TemplateId), originalCartItemEntity);
             Setup<IKenticoSkuProvider, Sku>(cp => cp.GetSKU(originalCartItemEntity.SKUID), new Sku { AvailableItems = 100 });
             Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(6654), new Sku { });
 
@@ -240,9 +262,9 @@ namespace Kadena.Tests.BusinessLogic
             Assert.NotNull(result);
             VerifyNoOtherCalls<IKListService>();
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
-                    e => e.CartItemText == Name &&
-                         e.SKUID == 6654 &&
-                         e.SKUUnits == 5)
+                    e => e.CartItemText == originalCartItemEntity.CartItemText &&
+                         e.SKUID == originalCartItemEntity.SKUID &&
+                         e.Quantity == originalCartItemEntity.Quantity)
                 ), Times.Once);
         }
 
@@ -251,15 +273,21 @@ namespace Kadena.Tests.BusinessLogic
         {
             // Arrange 
             var newCartItem = CreateNewCartItem();
+            var product = new Product
+            {
+                ProductType = ProductTypes.InventoryProduct,
+            };
 
             var originalCartItemEntity = new CartItemEntity
             {
                 CartItemText = Name,
                 ProductType = ProductTypes.InventoryProduct,
-                SKUUnits = 3
+                Quantity = 3
             };
 
-            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
+            Setup<IKenticoProductsProvider, Product>(s => s.GetProductByDocumentId(newCartItem.DocumentId), product);
+            Setup<IKenticoProductsProvider, Product>(s => s.GetProductByNodeId(newCartItem.NodeId), product);
+            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(product.SkuId, newCartItem.Quantity, newCartItem.Options, newCartItem.TemplateId), originalCartItemEntity);
             Setup<IKenticoSkuProvider, Sku>(cp => cp.GetSKU(originalCartItemEntity.SKUID), new Sku { AvailableItems = 1, SellOnlyIfAvailable = true });
             SetupThrows<IOrderItemCheckerService>(o => o.EnsureInventoryAmount(It.IsAny<Sku>(), 2, 3), new ArgumentException());
 
@@ -279,16 +307,22 @@ namespace Kadena.Tests.BusinessLogic
             var newCartItem = CreateNewCartItem();
             newCartItem.ContainerId = containerId;
             newCartItem.Quantity = quantity;
+            var product = new Product
+            {
+                ProductType = ProductTypes.MailingProduct,
+            };
             var originalCartItemEntity = new CartItemEntity
             {
                 CartItemText = Name,
                 ProductType = ProductTypes.MailingProduct,
-                SKUUnits = 3,
+                Quantity = 3,
                 SKUID = 123
             };
 
-            Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku { });
-            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
+            Setup<IKenticoProductsProvider, Product>(s => s.GetProductByDocumentId(newCartItem.DocumentId), product);
+            Setup<IKenticoProductsProvider, Product>(s => s.GetProductByNodeId(newCartItem.NodeId), product);
+            Setup<IKenticoSkuProvider, Sku>(p => p.GetSKU(123), new Sku { Name = Name });
+            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(product.SkuId, newCartItem.Quantity, newCartItem.Options, newCartItem.TemplateId), originalCartItemEntity);
             Setup<IKListService, Task<MailingList>>(m => m.GetMailingList(containerId)
                 , Task.FromResult(new MailingList { AddressCount = quantity, Id = containerId.ToString() }));
 
@@ -300,7 +334,7 @@ namespace Kadena.Tests.BusinessLogic
             Verify<IKListService>(m => m.GetMailingList(containerId), Times.Once);
             Verify<IShoppingCartItemsProvider>(i => i.SaveCartItem(It.Is<CartItemEntity>(
                     e => e.CartItemText == Name &&
-                         e.SKUUnits == quantity)
+                         e.Quantity == quantity)
                 ), Times.Once);
         }
 
@@ -415,14 +449,20 @@ namespace Kadena.Tests.BusinessLogic
         {
             // Arrange 
             var newCartItem = CreateNewCartItem();
+            var product = new Product
+            {
+                ProductType = ProductTypes.InventoryProduct
+            };
             var originalCartItemEntity = new CartItemEntity
             {
                 CartItemText = Name,
                 ProductType = ProductTypes.InventoryProduct,
-                SKUUnits = 3
+                Quantity = 3
             };
 
-            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(newCartItem), originalCartItemEntity);
+            Setup<IKenticoProductsProvider, Product>(s => s.GetProductByDocumentId(newCartItem.DocumentId), product);
+            Setup<IKenticoProductsProvider, Product>(s => s.GetProductByNodeId(newCartItem.NodeId), product);
+            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(product.SkuId, newCartItem.Quantity, newCartItem.Options, newCartItem.TemplateId), originalCartItemEntity);
             Setup<IKenticoSkuProvider, Sku>(cp => cp.GetSKU(originalCartItemEntity.SKUID), new Sku { AvailableItems = 1, SellOnlyIfAvailable = false });
 
             // Act
@@ -454,11 +494,12 @@ namespace Kadena.Tests.BusinessLogic
                                    IKenticoSkuProvider skus,
                                    IArtworkService artworkService,
                                    IOrderItemCheckerService orderChecker,
-                                   ISettingsService settingsService)
+                                   ISettingsService settingsService,
+                                   IMapper mapper)
         {
             Assert.Throws<ArgumentNullException>(() => new ShoppingCartService(kenticoSite, localization, permissions, kenticoUsers,
                 kenticoCustomer, addresses, resources, productsProvider, taxCalculator, mailingService, userDataClient, shoppingCart, shoppingCartItems,
-                checkoutfactory, log, productsService, imageService, skus, artworkService, orderChecker, settingsService));
+                checkoutfactory, log, productsService, imageService, skus, artworkService, orderChecker, settingsService, mapper));
         }
 
         [Fact(DisplayName = "ShoppingCartService.SaveTemporaryAddress() | Null address")]

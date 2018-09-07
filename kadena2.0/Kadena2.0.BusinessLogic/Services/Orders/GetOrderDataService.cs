@@ -96,7 +96,6 @@ namespace Kadena2.BusinessLogic.Services.Orders
                 BillingAddress = orderDataFactory.CreateBillingAddress(billingAddress),
                 ShippingAddressSource = GetSourceAddressForDeliveryEstimation(),
                 ShippingAddressDestination = mapper.Map<AddressDTO>(shippingAddress),
-                ShippingAddress = mapper.Map<AddressDTO>(shippingAddress),
                 Customer = orderDataFactory.CreateCustomer(customer),
                 OrderDate = DateTime.Now,
                 PaymentOption = orderDataFactory.CreatePaymentOption(paymentMethod, request),
