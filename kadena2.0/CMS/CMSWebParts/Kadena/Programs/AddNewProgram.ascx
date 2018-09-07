@@ -9,6 +9,7 @@
                     <asp:TextBox ID="txtProgramName" runat="server" CssClass="input__text"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="programNameRequired" runat="server" CssClass="EditingFormErrorLabel"  ControlToValidate="txtProgramName"></asp:RequiredFieldValidator>
                     <asp:RegularExpressionValidator  ControlToValidate="txtProgramName" ID="revProgramName" CssClass="EditingFormErrorLabel" ValidationExpression="^[\s\S]{0,50}$" runat="server" ></asp:RegularExpressionValidator>
+                    <asp:CustomValidator runat="server" ControlToValidate="txtProgramName" CssClass="EditingFormErrorLabel" OnServerValidate="ProgramNameUnique_ServerValidate" ID="ProgramNameUnique" />
                  </div>
             </div>
             <div class="mb-2">
