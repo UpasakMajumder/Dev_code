@@ -7,8 +7,9 @@ import Alert from 'app.dump/Alert';
 import Pagination from 'app.dump/Pagination';
 import Spinner from 'app.dump/Spinner';
 import SortIcon from 'app.dump/SortIcon';
+import Button from 'app.dump/Button';
 /* ac */
-import { getRows, changeDate } from 'app.ac/ordersReports';
+import { getRows, changeDate, manage } from 'app.ac/ordersReports';
 /* globals */
 import { ORDERS_REPORTS } from 'app.globals';
 /* helpers */
@@ -17,6 +18,7 @@ import { createSearchStr } from 'app.helpers/location';
 /* local components */
 import Order from './Order';
 import DateFilter from './DateFilter';
+import ManageOrdersModal from './ManageOrdersModal';
 
 class OrdersReports extends Component {
   static propTypes = {
@@ -37,10 +39,14 @@ class OrdersReports extends Component {
         }).isRequired
       }).isRequired,
       getRowsUrl: PropTypes.string.isRequired,
-      noOrdersMessage: PropTypes.string.isRequired
+      noOrdersMessage: PropTypes.string.isRequired,
+      manageOrders: PropTypes.shape({
+        togglerText: PropTypes.string.isRequired
+      }).isRequired
     }).isRequired,
     getRows: PropTypes.func.isRequired,
     changeDate: PropTypes.func.isRequired,
+    manage: PropTypes.func.isRequired,
     store: PropTypes.shape({
       rowsAreAsked: PropTypes.bool.isRequired,
       rows: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -68,6 +74,10 @@ class OrdersReports extends Component {
 
     return sortId;
   }
+
+  state = {
+    openManageOrdersPopup: false // TODO: false
+  };
 
   generateUrl = (defaultUrl, args = {}) => {
     const {
@@ -139,7 +149,35 @@ class OrdersReports extends Component {
   };
 
   getRows = () => {
-    const rowElements = this.props.store.rows.map((row, index) => <Order headings={this.props.headings} key={index} {...row}/>);
+    const { rows } = this.props.store;
+    const grouppedRows = [];
+    const checkedRows = [];
+
+    rows.forEach((row, rowIndex) => {
+      const { orderNumber } = row.items;
+      const grouppedRow = JSON.parse(JSON.stringify(row));
+
+      if (!checkedRows.includes(rowIndex)) {
+        for (let i = rowIndex + 1; i < rows.length; i += 1) {
+          if (rows[i].items.orderNumber.value === orderNumber.value) {
+            Object.keys(rows[i].items).forEach((key) => {
+              if (grouppedRow.items[key].value.toString() !== rows[i].items[key].value.toString()) {
+                if (Array.isArray(grouppedRow.items[key].value)) {
+                  grouppedRow.items[key].value.push(rows[i].items[key].value);
+                } else {
+                  grouppedRow.items[key].value = [grouppedRow.items[key].value, rows[i].items[key].value];
+                }
+              }
+            });
+            checkedRows.push(i);
+          }
+        }
+
+        grouppedRows.push(grouppedRow);
+      }
+    });
+
+    const rowElements = grouppedRows.map((row, index) => <Order headings={this.props.headings} key={index} {...row}/>);
     return rowElements;
   };
 
@@ -242,14 +280,42 @@ class OrdersReports extends Component {
     return link;
   };
 
+  openManageOrdersPopup = () => this.setState({ openManageOrdersPopup: true });
+
+  closeManageOrdersPopup = () => this.setState({ openManageOrdersPopup: false });
+
+  getManageOrdersButton = () => {
+    if (!this.props.store.rows.length && this.props.store.rowsAreAsked) {
+      return null;
+    }
+
+    return (
+      <Button
+        text={this.props.pageInfo.manageOrders.togglerText}
+        type="action"
+        btnClass="mr-2"
+        onClick={this.openManageOrdersPopup}
+      />
+    );
+  }
+
   render() {
     return (
       <div>
         <div className="flex--end--between mb-3">
           {this.getDateFilter()}
-          {this.getExportLink()}
+          <div>
+            {this.getManageOrdersButton()}
+            {this.getExportLink()}
+          </div>
         </div>
-
+        <ManageOrdersModal
+          open={this.state.openManageOrdersPopup}
+          closeModal={this.closeManageOrdersPopup}
+          ui={this.props.pageInfo.manageOrders}
+          rows={this.props.store.rows}
+          manage={this.props.manage}
+        />
         {this.getContent()}
       </div>
     );
@@ -263,5 +329,6 @@ export default connect((state) => {
   return { store: { ...ordersReports } };
 }, {
   getRows,
-  changeDate
+  changeDate,
+  manage
 })(OrdersReports);

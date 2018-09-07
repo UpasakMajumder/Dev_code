@@ -437,16 +437,16 @@
         </div>
     </div>
 </div>
-
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 <script>
-    $cmsj(document).ready(function () {
-        $cmsj("#ddlCampaign").change(function (e) {
+    $(document).ready(function () {
+        $("#ddlCampaign").change(function (e) {
             var selectedCampaignId = e.target.value;
             if (selectedCampaignId) {
                 updateQueryStringParam('campaignId', selectedCampaignId);
             }
         });
-        $cmsj("#ddlProgram").change(function (e) {
+        $("#ddlProgram").change(function (e) {
             var selectedProgramId = e.target.value;
             if (selectedProgramId) {
                 updateQueryStringParam('programId', selectedProgramId);

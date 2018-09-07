@@ -257,6 +257,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     AddressLine2 = distributorAddress.AddressLine2,
                     City = distributorAddress.AddressCity,
                     State = state.StateCode,
+                    StateDisplayName = state.StateDisplayName,
                     Zip = distributorAddress.GetStringValue("AddressZip", string.Empty),
                     KenticoCountryID = distributorAddress.AddressCountryID,
                     Country = country.CountryName,

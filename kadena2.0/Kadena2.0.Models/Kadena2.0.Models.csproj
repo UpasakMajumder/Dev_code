@@ -63,6 +63,8 @@
     <Compile Include="Checkout\DeliveryDate.cs" />
     <Compile Include="Checkout\DeliveryDateMessages.cs" />
     <Compile Include="Common\Environment.cs" />
+    <Compile Include="Common\TableCell.cs" />
+    <Compile Include="Common\TableCellLink.cs" />
     <Compile Include="CreditCard\SaveCardData.cs" />
     <Compile Include="CreditCard\StoredCard.cs" />
     <Compile Include="CustomCatalog\PrebuyProduct.cs" />
@@ -94,10 +96,13 @@
     <Compile Include="Orders\OrderFilter.cs" />
     <Compile Include="Orders\OrderItemUpdate.cs" />
     <Compile Include="Orders\OrderNumber.cs" />
+    <Compile Include="Orders\OrderReportTableRow.cs" />
     <Compile Include="Orders\OrderReportViewItem.cs" />
     <Compile Include="Orders\OrderStatus.cs" />
     <Compile Include="Orders\OrderUpdate.cs" />
     <Compile Include="Orders\OrderUpdateResult.cs" />
+    <Compile Include="Orders\UpdateOrdersShippingsResult.cs" />
+    <Compile Include="Orders\UpdateShippingRow.cs" />
     <Compile Include="ProductOptions\ProductCategory.cs" />
     <Compile Include="ProductOptions\ProductOption.cs" />
     <Compile Include="ProductOptions\ProductOptions.cs" />
@@ -149,6 +154,7 @@
     <Compile Include="Routing\Routing.cs" />
     <Compile Include="Shipping\ShippingOption.cs" />
     <Compile Include="Shipping\TrackingInfo.cs" />
+    <Compile Include="Shipping\TrackingInfoShippingMethod.cs" />
     <Compile Include="ShoppingCarts\ShoppingCart.cs" />
     <Compile Include="Product\CampaignProductType.cs" />
     <Compile Include="SiteSettings\ErpMapping\ErpSelectorValue.cs" />
@@ -211,7 +217,7 @@
     <Compile Include="Site\KenticoSite.cs" />
     <Compile Include="Mailing\MailingAddress.cs" />
     <Compile Include="Mailing\MailingList.cs" />
-	<Compile Include="_Common\Link.cs" />
+    <Compile Include="_Common\Link.cs" />
     <Compile Include="Common\FileResult.cs" />
     <Compile Include="Common\MailTemplate.cs" />
     <Compile Include="RecentOrders\Order.cs" />
@@ -269,7 +275,7 @@
     <Compile Include="Common\TableView.cs" />
     <Compile Include="Membership\User.cs" />
     <Compile Include="UserBudget\UserBudgetItem.cs" />
-	<Compile Include="_Common\TitledMessage.cs" />
+    <Compile Include="_Common\TitledMessage.cs" />
     <Compile Include="Common\ValidationFieldResult.cs" />
     <Compile Include="Common\Dialog.cs" />
     <Compile Include="Common\DialogButton.cs" />

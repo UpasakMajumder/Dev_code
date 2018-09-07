@@ -23,7 +23,7 @@ const Select = (props) => {
   const optionList = options.map((option) => {
     return typeof option === 'string'
       ? <option key={option} value={option}>{option}</option>
-      : <option key={option.id} value={option.id}>{option.name}</option>;
+      : <option disabled={option.disabled} key={option.id} value={option.id}>{option.name}</option>;
   });
 
   return (

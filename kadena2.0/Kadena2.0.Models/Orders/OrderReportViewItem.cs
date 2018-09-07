@@ -5,6 +5,7 @@ namespace Kadena.Models.Orders
 {
     public class OrderReportViewItem
     {
+        public int LineNumber { get; set; }
         public string Url { get; set; }
         public string Site { get; set; }
         public string Number { get; set; }

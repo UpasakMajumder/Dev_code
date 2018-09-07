@@ -1,4 +1,11 @@
 module.exports.reports = {
+  manage: {
+    "success": true,
+    "errorMessage": null,
+    "payload": {
+      message: 'Hooorey 🤡'
+    }
+  },
   rows1: {
     "success": true,
     "errorMessage": null,
@@ -51,34 +58,273 @@ module.exports.reports = {
       "rows": [
         {
           url: '#',
-          items: [
-            '1666666666666666666666666666666', '2666666666666666666666666666666', '2017-08-07T09:12:08.108892Z','3666666666666666666666666666666', '4666666666666666666666666666666', '5666666666666666666666666666666', '6666666666666666666666666666666', '7666666666666666666666666666666', '8666666666666666666666666666666', '2017-08-10T09:12:08.108892Z', '10666666666666666666666666666666'
-          ]
+          items: {
+            1: {
+              value: '1'
+            },
+            orderNumber: {
+              value: '1'
+            },
+            lineNumber: {
+              value: '11'
+            },
+            trackingInfoId: {
+              value: '111'
+            },
+            3: {
+              value: '2017-08-04T09:12:08.108892Z'
+            },
+            4: {
+              value: '3'
+            },
+            5: {
+              value: 'c'
+            },
+            6: {
+              value: '5'
+            },
+            7: {
+              value: '6'
+            },
+            8: {
+              value: '7'
+            },
+            9: {
+              value: '8'
+            },
+            10: {
+              value: '2017-08-10T09:12:08.108892Z'
+            },
+            11: {
+              value: 2,
+              url: '#'
+            }
+          }
         },
         {
           url: '#',
-          items: [
-            '1', '2', '2017-08-02T09:12:08.108892Z','d', '4', '5', '6', '7', '8', '2017-08-10T09:12:08.108892Z', '10'
-          ]
+          items: {
+            1: {
+              value: '2'
+            },
+            orderNumber: {
+              value: '2'
+            },
+            lineNumber: {
+              value: '22'
+            },
+            trackingInfoId: {
+              value: '222'
+            },
+            3: {
+              value: '2017-08-04T09:12:08.108892Z'
+            },
+            4: {
+              value: '3'
+            },
+            5: {
+              value: 'c'
+            },
+            6: {
+              value: '5'
+            },
+            7: {
+              value: '6'
+            },
+            8: {
+              value: '7'
+            },
+            9: {
+              value: '8'
+            },
+            10: {
+              value: '2017-08-10T09:12:08.108892Z'
+            },
+            11: {
+              value: 1
+            }
+          }
         },
         {
           url: '#',
-          items: [
-            '1', '2', '2017-08-04T09:12:08.108892Z','3', 'c', '5', '6', '7', '8', '2017-08-10T09:12:08.108892Z', { type: 'tracking', items: [{ id: '1' }, { id: '2', url: '#' }] }
-          ]
+          items: {
+            1: {
+              value: '2'
+            },
+            orderNumber: {
+              value: '2'
+            },
+            lineNumber: {
+              value: '22'
+            },
+            trackingInfoId: {
+              value: '222'
+            },
+            3: {
+              value: '2017-08-04T09:12:08.108892Z'
+            },
+            4: {
+              value: '3'
+            },
+            5: {
+              value: 'c'
+            },
+            6: {
+              value: '5'
+            },
+            7: {
+              value: '6'
+            },
+            8: {
+              value: '7'
+            },
+            9: {
+              value: '8'
+            },
+            10: {
+              value: '2017-08-10T09:12:08.108892Z'
+            },
+            11: {
+              value: 86567
+            }
+          }
         },
         {
           url: '#',
-          items: [
-            '1', 'a', '2017-08-10T09:12:08.108892Z','3', '4', '5', '2', '7', '8', '2017-08-10T09:12:08.108892Z', '10'
-          ]
+          items: {
+            1: {
+              value: '3'
+            },
+            orderNumber: {
+              value: '3'
+            },
+            lineNumber: {
+              value: '33'
+            },
+            trackingInfoId: {
+              value: '333'
+            },
+            3: {
+              value: '2017-08-04T09:12:08.108892Z'
+            },
+            4: {
+              value: '3'
+            },
+            5: {
+              value: 'c'
+            },
+            6: {
+              value: '5'
+            },
+            7: {
+              value: '6'
+            },
+            8: {
+              value: '7'
+            },
+            9: {
+              value: '8'
+            },
+            10: {
+              value: '2017-08-10T09:12:08.108892Z'
+            },
+            11: {
+              value: 2
+            }
+          }
         },
         {
           url: '#',
-          items: [
-            '1', '2', '2017-08-03T09:12:08.108892Z','3', '4', '5', '6', '7', '123', '2017-08-10T09:12:08.108892Z', '10'
-          ]
-        }
+          items: {
+            1: {
+              value: '4'
+            },
+            orderNumber: {
+              value: '4'
+            },
+            lineNumber: {
+              value: '44'
+            },
+            trackingInfoId: {
+              value: '4444'
+            },
+            3: {
+              value: '2017-08-04T09:12:08.108892Z'
+            },
+            4: {
+              value: '3'
+            },
+            5: {
+              value: 'c'
+            },
+            6: {
+              value: '5'
+            },
+            7: {
+              value: '6'
+            },
+            8: {
+              value: '7'
+            },
+            9: {
+              value: '8'
+            },
+            10: {
+              value: '2017-08-10T09:12:08.108892Z'
+            },
+            11: {
+              value: 5,
+              url: '#'
+            },
+            15: {
+              value: 'ready'
+            }
+          }
+        },
+        {
+          url: '#',
+          items: {
+            1: {
+              value: '4'
+            },
+            orderNumber: {
+              value: '4'
+            },
+            lineNumber: {
+              value: '44'
+            },
+            trackingInfoId: {
+              value: '444'
+            },
+            3: {
+              value: '2017-08-04T09:12:08.108892Z'
+            },
+            4: {
+              value: '3'
+            },
+            5: {
+              value: 'c'
+            },
+            6: {
+              value: '28'
+            },
+            7: {
+              value: '6'
+            },
+            8: {
+              value: '7'
+            },
+            9: {
+              value: '8'
+            },
+            10: {
+              value: '2017-08-10T09:12:08.108892Z'
+            },
+            11: {
+              value: 88
+            }
+          }
+        },
       ],
       "pagination": {
         "pagesCount": 2,
@@ -116,8 +362,8 @@ module.exports.recent = {
             }
           ],
           "orderStatus": "Requiring Approval",
-          "deliveryDate": "2017-08-07T09:12:08.108892Z",
-          "shippingDate": "2017-08-07T09:12:08.108892Z",
+          "deliveryDate": "2017-09-07T09:12:08.108892Z",
+          "shippingDate": "2017-09-07T09:12:08.108892Z",
           "viewBtn": {
             "text": "View",
             "url": "~/recent-orders/order-detail?orderID=0010-00162-17-00004"
