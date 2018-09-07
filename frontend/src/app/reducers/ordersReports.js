@@ -3,7 +3,8 @@ import {
   SUCCESS,
   FAILURE,
   ORDERS_REPORTS_GET_ROWS,
-  ORDERS_REPORTS_CHANGE_DATE
+  ORDERS_REPORTS_CHANGE_DATE,
+  ORDERS_REPORTS_MANAGE
 } from 'app.consts';
 
 const defaultState = {
@@ -22,6 +23,48 @@ const defaultState = {
       dateTo: null
     }
   }
+};
+
+const getNewRows = (stateRows, payloadRows) => {
+  const newRows = JSON.parse(JSON.stringify(stateRows));
+
+  payloadRows.forEach((row, index) => {
+    const keys = Object.keys(row);
+    // if isNew
+
+    if (row.new) {
+      // take previous index
+      const previousIndex = index - 1;
+      // copy url
+      const { url } = newRows[previousIndex];
+      const newRow = {
+        url,
+        items: JSON.parse(JSON.stringify(newRows[previousIndex].items))
+      };
+
+      keys.forEach((key) => {
+        if (key !== 'new') {
+          if (newRow.items[key]) {
+            newRow.items[key].value = row[key];
+          } else {
+            newRow.items[key] = { value: row[key] };
+          }
+        }
+      });
+
+      newRows.splice(index, 0, newRow);
+    } else {
+      keys.forEach((key) => {
+        if (newRows[index].items[key]) {
+          newRows[index].items[key].value = row[key];
+        } else {
+          newRows[index].items[key] = { value: row[key] };
+        }
+      });
+    }
+  });
+
+  return newRows;
 };
 
 export default (state = defaultState, action) => {
@@ -70,6 +113,12 @@ export default (state = defaultState, action) => {
     return {
       ...state,
       rowsAreAsked: true
+    };
+
+  case ORDERS_REPORTS_MANAGE:
+    return {
+      ...state,
+      rows: getNewRows(state.rows, payload.rows)
     };
 
   default:

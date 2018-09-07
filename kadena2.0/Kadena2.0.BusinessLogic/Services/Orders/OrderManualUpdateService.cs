@@ -17,6 +17,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Kadena.Dto.OrderManualUpdate.MicroserviceRequests.UpdateShipping;
+using Newtonsoft.Json;
 
 namespace Kadena.BusinessLogic.Services.Orders
 {
@@ -81,6 +83,69 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.shoppingCartProvider = shoppingCartProvider ?? throw new ArgumentNullException(nameof(shoppingCartProvider));
             this.budgetProvider = budgetProvider ?? throw new ArgumentNullException(nameof(budgetProvider));
             this.taxEstimationService = taxEstimationService ?? throw new ArgumentNullException(nameof(taxEstimationService));
+        }
+
+        public async Task<UpdateOrdersShippingsResult> UpdateOrdersShippings(UpdateShippingRow[] request)
+        {
+            var updateRequest = new UpdateShippingsRequestDto();
+            var shippingUpdates = new List<UpdateShippingsOrderDto>();
+
+            var shippingOptions = shoppingCartProvider.GetShippingOptions();
+
+            foreach (var orderGroup in request.GroupBy(x => x.OrderNumber))
+            {
+                var updateShippingOrder = new UpdateShippingsOrderDto
+                {
+                    OrderId = orderGroup.Key,
+                    Items = new List<UpdateShippingsOrderItemDto>()
+                };
+
+                foreach (var updateShippingRow in orderGroup)
+                {
+                    var shippingProvider = shippingOptions
+                        .FirstOrDefault(x => x.Service == updateShippingRow.ShippingMethod)
+                        ?.CarrierCode;
+
+                    updateShippingOrder.Items.Add(new UpdateShippingsOrderItemDto
+                    {
+                        LineNumber = updateShippingRow.LineNumber,
+                        Shippings = new[]
+                                {
+                                    new UpdateShippingsOrderItemShippingDto
+                                    {
+                                        ItemId = updateShippingRow.TrackingInfoId,
+                                        QuantityShipped = updateShippingRow.ShippedQuantity,
+                                        ShippingDate = updateShippingRow.ShippingDate,
+                                        TrackingNumber = updateShippingRow.TrackingNumber,
+                                        ShippingMethod = new UpdateShippingsOrderItemShippingMethod
+                                        {
+                                            Provider = shippingProvider,
+                                            ShippingService = updateShippingRow.ShippingMethod.Replace("#", "")
+                                        }
+                                    }
+                                }
+                    });
+                }
+
+                shippingUpdates.Add(updateShippingOrder);
+            }
+
+            updateRequest.ShippingUpdates = shippingUpdates.ToArray();
+
+            var response = await updateService.UpdateOrdersShippings(updateRequest);
+            if (response.Success)
+                return new UpdateOrdersShippingsResult
+                {
+                    Success = true,
+                    Message = resources.GetResourceString("Kadena.OrderReport.Manage.SubmitSuccess")
+                };
+
+            log.LogError(nameof(UpdateOrdersShippings), $"{response.ErrorMessages} - {JsonConvert.SerializeObject(response.Error)}");
+            return new UpdateOrdersShippingsResult
+            {
+                Success = false,
+                Message = response.ErrorMessages
+            };
         }
 
         public async Task<OrderUpdateResult> UpdateOrder(OrderUpdate request)
