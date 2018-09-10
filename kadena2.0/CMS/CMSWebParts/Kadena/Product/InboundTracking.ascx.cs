@@ -238,7 +238,7 @@ public partial class CMSWebParts_Kadena_Product_InboundTracking : CMSAbstractWeb
         btnRefresh.Enabled = campaignSelected;
         btnExport.Enabled = campaignSelected;
 
-        if (campaignSelected)
+        if (!IsPostBack && campaignSelected)
         {
             BindProducts();
         }
