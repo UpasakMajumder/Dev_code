@@ -149,70 +149,71 @@
 config.localization.ordersReports = {
     headings: [
         {
-            id: 'Site',
+            id: 'site',
             label: '{$ Kadena.OrdersReport.Table.Site $}',
             sort: false,
             isDate: false
         },
         {
-            id: 'Number',
+            id: 'orderNumber',
             label: '{$ Kadena.OrdersReport.Table.Number $}',
             sort: false,
             isDate: false
         },				
         {
-            id: 'CreateDate',
+            id: 'createDate',
             label: '{$ Kadena.OrdersReport.Table.OrderDate $}',
             sort: true,
             isDate: true
         },
         {
-            id: 'User',
+            id: 'user',
             label: '{$ Kadena.OrdersReport.Table.User $}',
             sort: false,
             isDate: false
         },				
         {
-            id: 'Name',
+            id: 'name',
             label: '{$ Kadena.OrdersReport.Table.Name $}',
             sort: false,
             isDate: false
         },				
         {
-            id: 'SKU',
+            id: 'sku',
             label: '{$ Kadena.OrdersReport.Table.SKU $}',
             sort: false,
             isDate: false
         },				
         {
-            id: 'Quantity',
+            id: 'quantity',
             label: '{$ Kadena.OrdersReport.Table.Quantity $}',
             sort: false,
             isDate: false
         },
         {
-            id: 'Price',
+            id: 'price',
             label: '{$ Kadena.OrdersReport.Table.Price $}',
             sort: false,
             isDate: false
         },
         {
-            id: 'Status',
+            id: 'status',
             label: '{$ Kadena.OrdersReport.Table.Status $}',
             sort: false,
             isDate: false
         },
         {
-            id: 'ShippingDate',
+            id: 'shippingDate',
             label: '{$ Kadena.OrdersReport.Table.ShippingDate $}',
             sort: false,
             isDate: true
         },				
         {
-            id: 'TrackingNumber',
+            id: 'trackingNumber',
             label: '{$ Kadena.OrdersReport.Table.TrackingNumber $}',
             sort: false,
-            isDate: false
+            isDate: false,
+            type: 'number'
         }				
     ],
     pageInfo: {
@@ -229,7 +230,65 @@ config.localization.ordersReports = {
             url: '/api/order/report/export'
         },
         noOrdersMessage: '{$ Kadena.OrdersReport.Table.NoOrdersFound $}',
-        getRowsUrl: '/api/order/report'
+        getRowsUrl: '/api/order/report',
+        manageOrders: {
+            togglerText: '{$ Kadena.OrdersReport.Manage.ToggleText $}',
+            popupTitle: '{$ Kadena.OrdersReport.Manage.PopupTitle $}',
+            popupButtons: {
+              cancel: '{$ Kadena.OrdersReport.Manage.CancelButton $}',
+              save: '{$ Kadena.OrdersReport.Manage.SaveButton $}'
+            },
+            validationMessage: '{$ Kadena.OrderReport.Manage.ValidationError $}',
+            submitUrl: '/api/ordersshippingsupdate',
+            headers: [
+              {
+                  id: 'orderNumber',
+                  label: '{$ Kadena.OrdersReport.Table.Number $}',
+                  sort: false,
+                  isDate: false
+              },
+              {
+                  id: 'sku',
+                  label: '{$ Kadena.OrdersReport.Table.SKU $}',
+                  sort: false,
+                  isDate: false
+              },
+              {
+                  id: 'shippingDate',
+                  label: '{$ Kadena.OrdersReport.Table.ShippingDate $}',
+                  sort: false,
+                  isDate: true,
+                  type: 'date'
+              },
+              {
+                  id: 'trackingNumber',
+                  label: '{$ Kadena.OrdersReport.Table.TrackingNumber $}',
+                  sort: false,
+                  isDate: false,
+                  edit: true
+              },
+              {
+                id: 'shippingMethod',
+                label: '{$ Kadena.OrdersReport.Table.ShippingMethod $}',
+                type: 'select',
+                values: [
+                    {% foreach(x in SiteObjects.ShippingOptions.Where("ShippingOptionEnabled=1")){ println("{ id: '"+Util.JSEscape(x.GetValue("ShippingOptionCarrierServiceName"))+"', name: '"+Util.JSEscape(x.GetValue("ShippingOptionDisplayName"))+"' },") |(user)administrator|(hash)682ab4469b6ffe55ec2acefd52a2b634ab7a17a8411b8a8cd991d9fb931b72cd%}
+                ]
+              },
+              {
+                  id: 'shippedQuantity',
+                  label: '{$ Kadena.OrdersReport.Table.ShippedQuantity $}',
+                  sort: false,
+                  isDate: false,
+                  edit: true,
+                  type: 'number'
+              },
+              {
+                id: 'actions',
+                label: '{$ Kadena.OrdersReport.Table.Actions $}'
+              }
+            ]
+        }
     }
   };
 ]]>

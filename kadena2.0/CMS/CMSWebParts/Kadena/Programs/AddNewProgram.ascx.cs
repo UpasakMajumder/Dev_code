@@ -7,7 +7,9 @@ using CMS.Helpers;
 using CMS.Membership;
 using CMS.PortalEngine.Web.UI;
 using CMS.SiteProvider;
+using Kadena.Container.Default;
 using Kadena.Old_App_Code.Kadena.Constants;
+using Kadena.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Linq;
 using System.Web.UI;
@@ -15,6 +17,11 @@ using System.Web.UI.WebControls;
 
 public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebPart
 {
+    public IKenticoProgramsProvider ProgramsProvider { get; protected set; } = DIContainer.Resolve<IKenticoProgramsProvider>();
+
+    private int ProgramId => ValidationHelper.GetInteger(Request.QueryString["id"], 0);
+    private bool IsEditingProgram => ProgramId > 0;
+
     #region "Properties"
 
     /// <summary>
@@ -186,6 +193,7 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             lblProgramDeliveryDate.InnerText = DeliveryDateToDistributors;
             btnCancelProgram.Text = CancelButtonText;
             btnUpdateProgram.Text = UpdateButtonText;
+            ProgramNameUnique.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramNameUnique");
             programNameRequired.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramNameRequired");
             revDescription.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramDescError");
             revProgramName.ErrorMessage = ResHelper.GetString("Kadena.Programs.ProgramNameRangeMessage");
@@ -193,10 +201,10 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
             GetBrandName();
             GetCampaign();
             BindStatus();
-            int programID = ValidationHelper.GetInteger(Request.QueryString["id"], 0);
-            if (programID != 0)
+
+            if (IsEditingProgram)
             {
-                Program program = ProgramProvider.GetPrograms().WhereEquals("ProgramID", programID).TopN(1).FirstOrDefault();
+                Program program = ProgramProvider.GetPrograms().WhereEquals("ProgramID", ProgramId).TopN(1).FirstOrDefault();
                 if (program != null)
                 {
                     txtProgramName.Text = program.ProgramName;
@@ -210,11 +218,10 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
                     ViewState["programNodeID"] = program.NodeID;
                 }
             }
-            else
-            {
-                btnAddProgram.Visible = true;
-                btnUpdateProgram.Visible = false;
-            }
+
+            btnAddProgram.Visible = !IsEditingProgram;
+            btnUpdateProgram.Visible = IsEditingProgram;
+
             if (!IsPostBack)
             {
                 string currentDate = DateTime.Today.ToShortDateString();
@@ -234,7 +241,8 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
         try
         {
             var brands = CustomTableItemProvider.GetItems(BrandItem.CLASS_NAME)
-                .Columns("ItemID,BrandName")
+                .Columns("ItemID", "BrandName")
+                .OrderBy("BrandName")
                 .WhereEquals("Status", 1)
                 .ToList();
             if (!DataHelper.DataSourceIsEmpty(brands))
@@ -429,5 +437,17 @@ public partial class CMSWebParts_Kadena_Programs_AddNewProgram : CMSAbstractWebP
         ddlStatus.Items.Clear();
         ddlStatus.Items.Insert(0, new ListItem(ResHelper.GetString("KDA.Common.Status.Active"), "1"));
         ddlStatus.Items.Insert(1, new ListItem(ResHelper.GetString("KDA.Common.Status.Inactive"), "0"));
+    }
+
+    protected void ProgramNameUnique_ServerValidate(object source, ServerValidateEventArgs args)
+    {
+        var newProgramName = args.Value;
+        var selectedCampaignid = ValidationHelper.GetInteger(ddlCampaign.SelectedValue, 0);
+        if (!string.IsNullOrWhiteSpace(newProgramName) && selectedCampaignid > 0)
+        {
+            var programs = ProgramsProvider.GetProgramsForCampaign(selectedCampaignid);
+            var hasDuplicateProgramName = programs.Any(p => p.ProgramName == newProgramName && p.ProgramID != ProgramId);
+            args.IsValid = !hasDuplicateProgramName;
+        }
     }
 }

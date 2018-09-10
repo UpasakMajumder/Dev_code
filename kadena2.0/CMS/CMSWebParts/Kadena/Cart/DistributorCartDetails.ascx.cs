@@ -5,9 +5,6 @@ using CMS.Ecommerce;
 using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
-using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
-using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
-using Kadena.Dto.General;
 using Kadena.Old_App_Code.Kadena.Constants;
 using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.PDFHelpers;
@@ -546,7 +543,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                var cartBusinessUnit = DIContainer.Resolve<IShoppingCartProvider>();
                 if (BusinessUnits != null && BusinessUnits.Count > 0)
                 {
                     ddlBusinessUnits.DataSource = BusinessUnits;
@@ -555,7 +551,8 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     ddlBusinessUnits.DataBind();
                     if (string.IsNullOrEmpty(Cart.GetStringValue("BusinessUnitIDForDistributor", null)))
                     {
-                        cartBusinessUnit.UpdateBusinessUnit(Cart, BusinessUnits.FirstOrDefault().BusinessUnitNumber);
+                        Cart.SetValue("BusinessUnitIDForDistributor", BusinessUnits.FirstOrDefault().BusinessUnitNumber);
+                        Cart.Update();
                     }
                 }
             }

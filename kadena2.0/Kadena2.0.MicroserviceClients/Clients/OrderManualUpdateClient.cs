@@ -8,6 +8,7 @@ using Kadena2.MicroserviceClients.Contracts;
 using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
 using Kadena.Dto.ViewOrder.MicroserviceResponses.History;
 using System.Collections.Generic;
+using Kadena.Dto.OrderManualUpdate.MicroserviceRequests.UpdateShipping;
 
 namespace Kadena2.MicroserviceClients.Clients
 {
@@ -21,13 +22,19 @@ namespace Kadena2.MicroserviceClients.Clients
 
         public async Task<BaseResponseDto<object>> UpdateOrder(OrderManualUpdateRequestDto request)
         {
-            var url = $"{BaseUrl}/order/items";
+            var url = $"{BaseUrl}/api/v{Version}/order/items";
+            return await Patch<object>(url, request).ConfigureAwait(false);
+        }
+
+        public async Task<BaseResponseDto<object>> UpdateOrdersShippings(UpdateShippingsRequestDto request)
+        {
+            var url = $"{BaseUrl}/order/itemsshipping";
             return await Patch<object>(url, request).ConfigureAwait(false);
         }
 
         public async Task<BaseResponseDto<List<OrderHistoryUpdateDto>>> Get(string orderId)
         {
-            var url = $"{BaseUrl}/order/history/{orderId}";
+            var url = $"{BaseUrl}/api/v{Version}/order/history/{orderId}";
             return await Get<List<OrderHistoryUpdateDto>>(url)
                 .ConfigureAwait(false);
         }

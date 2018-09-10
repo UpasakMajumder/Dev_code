@@ -11,10 +11,9 @@ namespace Kadena.Dto.SubmitOrder.MicroserviceRequests
         public AddressDTO BillingAddress { get; set; }
 
         public AddressDTO ShippingAddressSource { get; set; }
-        public AddressDTO ShippingAddressDestination { get; set; }
-        [Obsolete("Remove after microservices with KDA-114 will be deplyed on all environments")]
-        public AddressDTO ShippingAddress { get; set; }
 
+        public AddressDTO ShippingAddressDestination { get; set; }
+        
         public ShippingOptionDTO ShippingOption { get; set; }
 
         public TotalsDto Totals { get; set; }

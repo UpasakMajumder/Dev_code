@@ -13,13 +13,14 @@ using Kadena2.MicroserviceClients.Contracts;
 using System.Collections.Generic;
 using Kadena.Models.SiteSettings;
 using Kadena.BusinessLogic.Contracts.Orders;
-using Kadena.Models.ShoppingCarts;
+using AutoMapper;
 
 namespace Kadena.BusinessLogic.Services
 {
     public class ShoppingCartService : IShoppingCartService
     {
         const string tempAddressName = "TemporaryAddress";
+        private readonly IMapper mapper;
         private readonly IKenticoSiteProvider kenticoSite;
         private readonly IKenticoLocalizationProvider localization;
         private readonly IKenticoPermissionsProvider permissions;
@@ -40,6 +41,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoSkuProvider skus;
         private readonly IOrderItemCheckerService orderChecker;
         private readonly ISettingsService settingsService;
+        private readonly IArtworkService artworkService;
 
         public ShoppingCartService(IKenticoSiteProvider kenticoSite,
                                    IKenticoLocalizationProvider localization,
@@ -59,8 +61,10 @@ namespace Kadena.BusinessLogic.Services
                                    IProductsService productsService,
                                    IImageService imageService,
                                    IKenticoSkuProvider skus,
+                                   IArtworkService artworkService,
                                    IOrderItemCheckerService orderChecker,
-                                   ISettingsService settingsService)
+                                   ISettingsService settingsService,
+                                   IMapper mapper)
         {
             this.kenticoSite = kenticoSite ?? throw new ArgumentNullException(nameof(kenticoSite));
             this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
@@ -82,6 +86,8 @@ namespace Kadena.BusinessLogic.Services
             this.skus = skus ?? throw new ArgumentNullException(nameof(skus));
             this.orderChecker = orderChecker ?? throw new ArgumentNullException(nameof(orderChecker));
             this.settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
+            this.artworkService = artworkService ?? throw new ArgumentNullException(nameof(artworkService));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<CheckoutPage> GetCheckoutPage()
@@ -369,9 +375,9 @@ namespace Kadena.BusinessLogic.Services
 
             orderChecker.CheckMinMaxQuantity(itemSku, quantity);
 
-            item.SKUUnits = quantity;
+            item.Quantity = quantity;
 
-            var price = productsService.GetPriceByCustomModel(item.ProductPageID, item.SKUUnits);
+            var price = productsService.GetPriceByCustomModel(item.ProductPageID, item.Quantity);
 
             if (price > decimal.MinusOne)
             {
@@ -450,8 +456,6 @@ namespace Kadena.BusinessLogic.Services
             return preview;
         }
 
-
-
         public async Task<AddToCartResult> AddToCart(NewCartItem newItem)
         {
             var addedAmount = newItem.Quantity;
@@ -460,53 +464,50 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
-
+            Product product = null;
             if (newItem.NodeId > 0)
             {
-                newItem.DocumentId = productsProvider.GetProductByNodeId(newItem.NodeId).Id;
+                product = productsProvider.GetProductByNodeId(newItem.NodeId);
+                newItem.DocumentId = product.Id;
+            }
+            else
+            {
+                product = productsProvider.GetProductByDocumentId(newItem.DocumentId);
             }
 
-            var cartItem = shoppingCartItems.GetOrCreateCartItem(newItem);
-
+            var cartItem = shoppingCartItems.GetOrCreateCartItem(product.SkuId, addedAmount, newItem.Options, newItem.TemplateId);
+            mapper.Map(product, cartItem);
+            cartItem.ChilliEditorTemplateID = newItem.TemplateId;
             var sku = skus.GetSKU(cartItem.SKUID) ?? throw new ArgumentException($"Unable to find SKU {cartItem.SKUID}");
 
-            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.InventoryProduct))
+            if (product.HasProductTypeFlag(ProductTypes.InventoryProduct))
             {
-                orderChecker.EnsureInventoryAmount(sku, newItem.Quantity, cartItem.SKUUnits);
+                orderChecker.EnsureInventoryAmount(sku, addedAmount, cartItem.Quantity);
             }
 
-            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.MailingProduct))
+            if (product.HasProductTypeFlag(ProductTypes.MailingProduct))
             {
                 await SetMailingList(cartItem, newItem.ContainerId, addedAmount);
             }
-
-            shoppingCartItems.SetArtwork(cartItem, newItem.DocumentId);
-
-            // do this before calculating dynamic price
-            if (ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.TemplatedProduct))
+            else
             {
-                orderChecker.CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID),
-                                    newItem.Quantity);
-                cartItem.SKUUnits = newItem.Quantity;
-            }
-            else if (!ProductTypes.IsOfType(cartItem.ProductType, ProductTypes.MailingProduct))
-            {
-                var totalQuantity = cartItem.SKUUnits + newItem.Quantity;
-                orderChecker.CheckMinMaxQuantity(skus.GetSKU(cartItem.SKUID),
-                                    totalQuantity);
-                cartItem.SKUUnits = totalQuantity;
+                // do this before calculating dynamic price
+                if (product.HasProductTypeFlag(ProductTypes.TemplatedProduct))
+                {
+                    cartItem.Quantity = addedAmount;
+                }
+                orderChecker.CheckMinMaxQuantity(sku, cartItem.Quantity);
             }
 
-            var price = productsService.GetPriceByCustomModel(newItem.DocumentId, cartItem.SKUUnits);
+            cartItem.ArtworkLocation = artworkService.GetLocation(newItem.DocumentId);
+
+            var price = productsService.GetPriceByCustomModel(product.Id, cartItem.Quantity);
             if (price != decimal.MinusOne)
             {
                 cartItem.CartItemPrice = price;
             }
 
-            if (!string.IsNullOrEmpty(newItem.CustomProductName))
-            {
-                cartItem.CartItemText = newItem.CustomProductName;
-            }
+            cartItem.CartItemText = string.IsNullOrEmpty(newItem.CustomProductName) ? sku.Name : newItem.CustomProductName;
 
             shoppingCartItems.SaveCartItem(cartItem);
 
@@ -529,14 +530,10 @@ namespace Kadena.BusinessLogic.Services
             {
                 throw new ArgumentException(resources.GetResourceString("Kadena.Product.InsertedAmmountValueIsNotValid"));
             }
+            cartItem.MailingListName = mailingList.Name;
+            cartItem.MailingListGuid = Guid.Parse(mailingList.Id);
 
-            if (mailingList != null)
-            {
-                cartItem.MailingListName = mailingList.Name;
-                cartItem.MailingListGuid = Guid.Parse(mailingList.Id);
-            }
-
-            cartItem.SKUUnits = addedAmount;
+            cartItem.Quantity = addedAmount;
         }
 
         public List<int> GetLoggedInUserCartData(CampaignProductType cartType, int userID, int campaignID = 0)

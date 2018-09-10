@@ -137,7 +137,10 @@ public partial class CMSWebParts_Kadena_POSForm : CMSAbstractWebPart
 
     private void BindPOSCategories()
     {
-        var posCategories = CustomTableItemProvider.GetItems(POSCategoryItem.CLASS_NAME).Columns("PosCategoryName,ItemID").ToList();
+        var posCategories = CustomTableItemProvider.GetItems(POSCategoryItem.CLASS_NAME)
+            .Columns("PosCategoryName", "ItemID")
+            .OrderBy("PosCategoryName")
+            .ToList();
         if (!DataHelper.DataSourceIsEmpty(posCategories))
         {
             ddlCategory.DataSource = posCategories;

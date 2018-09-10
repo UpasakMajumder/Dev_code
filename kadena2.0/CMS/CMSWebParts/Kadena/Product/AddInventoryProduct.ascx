@@ -159,7 +159,7 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblSKUNumber" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblSKUNumber" />
                 <div class="input__inner">
-                    <cms:CMSTextBox ID="txtSKUNumber" runat="server" EnableViewState="false" CssClass="input__text" Enabled="false" ReadOnly="true"></cms:CMSTextBox>
+                    <cms:CMSTextBox ID="txtSKUNumber" runat="server" CssClass="input__text" Enabled="false"></cms:CMSTextBox>
                 </div>
             </div>
         </div>
@@ -197,13 +197,14 @@
                             <ItemTemplate>
                                 <tr>
                                     <td>
-                                        <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("UserID") %>' Style="display: none" />
                                         <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("UserName") %>' />
                                     </td>
                                     <td>
-                                        <asp:Label ID="Label1" runat="server" Text='<%# Eval("EmailID") %>' /></td>
+                                        <asp:Label ID="Label1" runat="server" Text='<%# Eval("EmailID") %>' />
+                                    </td>
                                     <td>
-                                        <asp:Label ID="Label2" runat="server" Text='<%# Eval("Quantity") %>' /></td>
+                                        <asp:Label ID="Label2" runat="server" Text='<%# Eval("Quantity") %>' />
+                                    </td>
                                 </tr>
                             </ItemTemplate>
                             <FooterTemplate>
@@ -256,15 +257,19 @@
                                             <th><%# CMS.Helpers.ResHelper.GetString("Kadena.InvProductRepeater.QuantityText") %></th>
                                         </tr>
                             </HeaderTemplate>
+
                             <ItemTemplate>
                                 <tr>
                                     <td>
-                                        <asp:CheckBox ID="chkAllocate" runat="server" Checked='<%# Eval("Selected") %>' /></td>
+                                        <asp:CheckBox ID="chkAllocate" runat="server" Checked='<%# Eval("Selected") %>' />
+                                    </td>
                                     <td>
                                         <asp:Label ID="lblUserName" runat="server" Text='<%# Eval("UserName") %>' />
-                                        <asp:Label ID="lblUserid" runat="server" Style="display: none" Text='<%# Eval("UserID") %>' /></td>
+                                        <asp:Label ID="lblUserid" runat="server" Style="display: none" Text='<%# Eval("UserID") %>' />
+                                    </td>
                                     <td>
-                                        <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("EmailID") %>' /></td>
+                                        <asp:Label ID="lblEmail" runat="server" Text='<%# Eval("EmailID") %>' />
+                                    </td>
                                     <td>
                                         <asp:TextBox ID="txtAllQuantity" runat="server" Text='<%# Eval("Quantity") %>'></asp:TextBox>
                                         <asp:RegularExpressionValidator ID="revAllQuantity" runat="server"
@@ -277,8 +282,6 @@
                             <FooterTemplate>
                                 </tbody>
                                  </table>
-                         
-                           
                             </FooterTemplate>
                         </asp:Repeater>
                         <asp:Repeater ID="rptPager" runat="server">
@@ -303,7 +306,7 @@
         </div>
     </div>
 </div>
-<%--State dropdown GroupInfoPopup--%>
+
 <div class="dialog" id="StateGroupInfoPopup">
     <div class="dialog__shadow"></div>
     <div class="dialog__block">

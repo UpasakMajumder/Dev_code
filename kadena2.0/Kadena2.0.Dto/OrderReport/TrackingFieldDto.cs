@@ -7,6 +7,6 @@ namespace Kadena.Dto.OrderReport
     {
         public string Type => "tracking";
 
-        public IEnumerable<TrackingInfoDto> Items { get; set; }
+        public IEnumerable<TrackingInfoDto> Value { get; set; }
     }
 }

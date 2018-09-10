@@ -1,5 +1,4 @@
 ﻿using Kadena.BusinessLogic.Contracts;
-using Kadena.Models.Membership;
 using Kadena.Models.ModuleAccess;
 using Kadena.Models.Site;
 using Kadena.Models.SiteSettings;
@@ -72,6 +71,22 @@ namespace Kadena.BusinessLogic.Services
                     return IsUserInTWEAdminRole();
                 case KnownPageTypes.OrdersReport:
                     return kenticoPermissionsProvider.CurrentUserHasPermission(KnownModules.Kadena_Orders, KnownPermissions.KDA_OrdersReport);
+                case KnownPageTypes.SettingsModule:
+                    return kenticoPermissionsProvider.CurrentUserHasPermission(KnownModules.Kadena_User_Settings, KnownPermissions.KDA_Enabled);
+                case KnownPageTypes.DAMModule:
+                    return kenticoPermissionsProvider.CurrentUserHasPermission(KnownModules.Kadena_KDAM, KnownPermissions.KDA_ContentEnabled);
+                case KnownPageTypes.InsightsModule:
+                    return kenticoPermissionsProvider.CurrentUserHasPermission(KnownModules.Kadena_KInsights, KnownPermissions.KDA_ContentEnabled);
+                case KnownPageTypes.MailingListModule:
+                    return kenticoPermissionsProvider.CurrentUserHasPermission(KnownModules.Kadena_KList, KnownPermissions.KDA_ContentEnabled);
+                case KnownPageTypes.ProofingModule:
+                    return kenticoPermissionsProvider.CurrentUserHasPermission(KnownModules.Kadena_KProof, KnownPermissions.KDA_ContentEnabled);
+                case KnownPageTypes.SourcingModule:
+                    return kenticoPermissionsProvider.CurrentUserHasPermission(KnownModules.Kadena_KSource, KnownPermissions.KDA_ContentEnabled);
+                case KnownPageTypes.ProductsModule:
+                    return kenticoPermissionsProvider.CurrentUserHasPermission(KnownModules.Kadena_Products, KnownPermissions.KDA_ContentEnabled);
+                case KnownPageTypes.RecentOrdersModule:
+                    return kenticoPermissionsProvider.CurrentUserHasPermission(KnownModules.Kadena_RecentOrders, KnownPermissions.KDA_ContentEnabled);
                 default:
                     return true;
             }
@@ -106,7 +121,6 @@ namespace Kadena.BusinessLogic.Services
                 {
                     return true;
                 }
-
             }
 
             return false;

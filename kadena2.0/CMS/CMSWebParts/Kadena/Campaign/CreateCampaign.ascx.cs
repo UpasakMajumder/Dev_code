@@ -12,6 +12,7 @@ using Kadena.Old_App_Code.Kadena.Constants;
 using CMS.CustomTables;
 using CMS.CustomTables.Types.KDA;
 using System.Linq;
+using CMS.Localization;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Container.Default;
 using Kadena.Models.SiteSettings;
@@ -87,7 +88,7 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
         string campaignDes = Description.Text;
         try
         {
-            if (!string.IsNullOrEmpty(campaignName))
+            if (!string.IsNullOrEmpty(campaignName) && DocumentHelper.GetDocuments<Campaign>().FirstOrDefault(x => x.Name == campaignName) == null)
             {
                 TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
                 CMS.DocumentEngine.TreeNode parentPage = tree.SelectNodes().Path(folderpath).OnCurrentSite().Culture(DocumentContext.CurrentDocument.DocumentCulture).FirstObject;
@@ -118,6 +119,10 @@ public partial class CMSWebParts_Campaign_CreateCampaign : CMSAbstractWebPart
                 {
                     lblFailureText.Visible = true;
                 }
+            }
+            else
+            {
+                lblFailureText.Visible = true;
             }
         }
         catch (Exception ex)

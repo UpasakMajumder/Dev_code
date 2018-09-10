@@ -23,6 +23,7 @@ using Kadena.WebAPI.KenticoProviders;
 using System;
 using System.Data;
 using Kadena.WebAPI.KenticoProviders.AutoMapperResolvers;
+using Kadena.Models.ShoppingCarts;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -58,6 +59,20 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.GetStringValue("CompanyName", string.Empty)))
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.AddressPhone))
                 .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.AddressCustomerID))
+                .ForMember(dest => dest.Checked, opt => opt.Ignore());
+            CreateMap<IAddress, DeliveryAddress>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.AddressID))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.AddressCity))
+                .ForMember(dest => dest.State, opt => opt.ResolveUsing(src => new State { Id = src.AddressStateID, CountryId = src.AddressCountryID }))
+                .ForMember(dest => dest.Country, opt => opt.ResolveUsing(src => new Country { Id = src.AddressCountryID }))
+                .ForMember(dest => dest.Address1, opt => opt.MapFrom(src => src.AddressLine1))
+                .ForMember(dest => dest.Address2, opt => opt.MapFrom(src => src.AddressLine2))
+                .ForMember(dest => dest.Zip, opt => opt.MapFrom(src => src.AddressZip))
+                .ForMember(dest => dest.Email, opt => opt.Ignore())
+                .ForMember(dest => dest.AddressName, opt => opt.Ignore())
+                .ForMember(dest => dest.CompanyName, opt => opt.Ignore())
+                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.AddressPhone))
+                .ForMember(dest => dest.CustomerId, opt => opt.Ignore())
                 .ForMember(dest => dest.Checked, opt => opt.Ignore());
             CreateMap<AddressInfo, State>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.AddressStateID))
@@ -195,15 +210,16 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.ProductProductionTime, opt => opt.MapFrom(src => src.GetValue("ProductProductionTime", string.Empty)))
                 .ForMember(dest => dest.ProductShipTime, opt => opt.MapFrom(src => src.GetValue("ProductShipTime", string.Empty)))
                 .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.GetValue("ProductType", string.Empty)))
-                .ForMember(dest => dest.CartItemPrice, opt => opt.MapFrom(src => (decimal)src.GetDoubleValue("CartItemPrice", 0.0d)))
-                .ForMember(dest => dest.SKUUnits, opt => opt.MapFrom(src => src.GetIntegerValue("SKUUnits", 0)))
+                .ForMember(dest => dest.CartItemPrice, opt => opt.MapFrom(src => double.IsNaN(src.CartItemPrice) ? null : (decimal?)src.CartItemPrice))
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.CartItemUnits))
                 .ForMember(dest => dest.SendPriceToErp, opt => opt.MapFrom(src => src.GetBooleanValue("SendPriceToErp", true)))
                 .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.GetStringValue("UnitOfMeasure", UnitOfMeasure.DefaultUnit)));
 
             CreateMap<CartItemEntity, ShoppingCartItemInfo>()
+                .ForMember(dest => dest.CartItemPrice, opt => opt.MapFrom(src => src.CartItemPrice.HasValue ? (double)src.CartItemPrice : double.NaN))
                 .ForMember(dest => dest.CartItemParentGUID, opt => opt.Ignore())
                 .ForMember(dest => dest.CartItemBundleGUID, opt => opt.Ignore())
-                .ForMember(dest => dest.CartItemUnits, opt => opt.Ignore())
+                .ForMember(dest => dest.CartItemUnits, opt => opt.MapFrom(src => src.Quantity))
                 .ForMember(dest => dest.CartItemIsPrivate, opt => opt.Ignore())
                 .ForMember(dest => dest.CartItemValidTo, opt => opt.Ignore())
                 .ForMember(dest => dest.CartItemAutoAddedUnits, opt => opt.Ignore())
@@ -241,7 +257,6 @@ namespace Kadena2.WebAPI.KenticoProviders
                     dest.SetValue("ProductShipTime", src.ProductShipTime);
                     dest.SetValue("ProductType", src.ProductType);
                     dest.SetValue("CartItemPrice", src.CartItemPrice);
-                    dest.SetValue("SKUUnits", src.SKUUnits);
                     dest.SetValue("SendPriceToErp", src.SendPriceToErp);
                     dest.SetValue("UnitOfMeasure", src.UnitOfMeasure);
                 });
@@ -274,7 +289,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.NeedsShipping, opt => opt.MapFrom(src => src.SKUNeedsShipping))
                 .ForMember(dest => dest.SellOnlyIfAvailable, opt => opt.MapFrom(src => src.SKUSellOnlyAvailable))
                 .ForMember(dest => dest.AvailableItems,
-                    opt => opt.MapFrom(src => (int?) src.GetValue("SKUAvailableItems")))
+                    opt => opt.MapFrom(src => (int?)src.GetValue("SKUAvailableItems")))
                 .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.SKUWeight))
                 .ForMember(dest => dest.HiResPdfDownloadEnabled,
                     opt => opt.MapFrom(src => src.GetBooleanValue("SKUHiResPdfDownloadEnabled", false)))
@@ -287,8 +302,9 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.SKUNumber, opt => opt.MapFrom(src => src.SKUNumber))
                 .ForMember(dest => dest.SendPriceToERP,
                     opt => opt.MapFrom(src => !src.GetBooleanValue("SKUDontSendPriceToERP", false)))
-                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => (decimal) src.SKUPrice))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => (decimal)src.SKUPrice))
                 .ForMember(dest => dest.ManufacturerID, opt => opt.MapFrom(src => src.SKUManufacturerID))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.SKUName))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.SKUDescription));
 
 
@@ -303,7 +319,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.IsFavourite, opt => opt.UseValue(false))
                 .ForMember(dest => dest.Border,
                     opt => opt.MapFrom(source =>
-                        new Border {Exists = !source.GetBooleanValue("ProductThumbnailBorderDisabled", false),}))
+                        new Border { Exists = !source.GetBooleanValue("ProductThumbnailBorderDisabled", false), }))
                 .ForMember(dest => dest.ParentPath, opt => opt.ResolveUsing(new ParentAliasPathResolver()));
             CreateMap<User, UserInfo>()
                 .ForMember(dest => dest.UserSecurityStamp, opt => opt.Ignore())
@@ -396,15 +412,18 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.DocumentUrl, opt => opt.MapFrom(src => src.AbsoluteURL))
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Parent == null ? string.Empty : src.Parent.DocumentName))
                 .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.GetValue("ProductType", string.Empty)))
-                .ForMember(dest => dest.ProductMasterTemplateID, opt => opt.MapFrom(src => src.GetValue<Guid>("ProductChiliTemplateID", Guid.Empty)))
-                .ForMember(dest => dest.ProductChiliWorkgroupID, opt => opt.MapFrom(src => src.GetValue<Guid>("ProductChiliWorkgroupID", Guid.Empty)))
+                .ForMember(dest => dest.ProductMasterTemplateID, opt => opt.MapFrom(src => src.GetValue("ProductChiliTemplateID", Guid.Empty)))
+                .ForMember(dest => dest.ProductChiliWorkgroupID, opt => opt.MapFrom(src => src.GetValue("ProductChiliWorkgroupID", Guid.Empty)))
                 .ForMember(dest => dest.TemplateLowResSettingId, opt => opt.MapFrom(src => src.GetValue("ProductChiliLowResSettingId", Guid.Empty)))
+                .ForMember(dest => dest.TemplateHiResSettingId, opt => opt.MapFrom(src => src.GetValue("ProductChiliPdfGeneratorSettingsId", Guid.Empty)))
                 .ForMember(dest => dest.ProductionTime, opt => opt.MapFrom(src => src.GetStringValue("ProductProductionTime", string.Empty)))
                 .ForMember(dest => dest.ShipTime, opt => opt.MapFrom(src => src.GetStringValue("ProductShipTime", string.Empty)))
                 .ForMember(dest => dest.ShippingCost, opt => opt.MapFrom(src => src.GetStringValue("ProductShippingCost", string.Empty)))
                 .ForMember(dest => dest.PricingModel, opt => opt.MapFrom(src => src.GetStringValue("ProductPricingModel", PricingModel.GetDefault())))
                 .ForMember(dest => dest.DynamicPricingJson, opt => opt.MapFrom(src => src.GetStringValue("ProductDynamicPricing", string.Empty)))
                 .ForMember(dest => dest.TieredPricingJson, opt => opt.MapFrom(src => src.GetStringValue("ProductTieredPricing", string.Empty)))
+                .ForMember(dest => dest.SendPriceToERP, opt => opt.MapFrom(src => !src.GetBooleanValue("SKUDontSendPriceToERP", false)))
+                .ForMember(dest => dest.UnitOfMeasure, opt => opt.MapFrom(src => src.GetStringValue("SKUUnitOfMeasure", UnitOfMeasure.DefaultUnit)))
                 .ForMember(dest => dest.SkuId, opt => opt.MapFrom(src => src.NodeSKUID))
                 .ForMember(dest => dest.Use3d, opt => opt.MapFrom(src => src.GetBooleanValue("ProductChili3dEnabled", false)))
                 .ForMember(dest => dest.NodeId, opt => opt.MapFrom(src => src.NodeID))
@@ -447,6 +466,26 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.GetValue("ProductImage", string.Empty)))
                 .ForMember(dest => dest.ValidTo, opt => opt.MapFrom(src => src.GetValue("SKUValidUntil", DateTime.MinValue)));
 
+            CreateMap<ShoppingCartInfo, ShoppingCart>()
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.CartItems))
+                .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.TotalItemsPrice))
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.ShoppingCartShippingAddress))
+                .ForMember(dest => dest.DistributorId, opt => opt.MapFrom(src => src.GetValue("ShoppingCartDistributorID", 0)))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.ShoppingCartUserID))
+                .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.ShoppingCartCustomerID))
+                .ForMember(dest => dest.CampaignId, opt => opt.MapFrom(src => src.GetValue("ShoppingCartCampaignID", 0)))
+                .ForMember(dest => dest.ProgramId, opt => opt.MapFrom(src => src.GetValue("ShoppingCartProgramID", 0)))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.GetValue("ShoppingCartInventoryType", 0)))
+                .ForMember(dest => dest.ShippingOptionId, opt => opt.MapFrom(src => src.ShoppingCartShippingOptionID))
+                .ForMember(dest => dest.ShippingPrice, opt => opt.MapFrom(src => src.Shipping))
+                .ForMember(dest => dest.TotalTax, opt => opt.Ignore())
+                .ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.ShoppingCartCustomerID))
+                .ForMember(dest => dest.PricedItemsTax, opt => opt.Ignore());
+
+            CreateMap<CustomTableItem, Kadena.Models.Common.Environment>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ItemID))
+                .ForMember(dest => dest.AmazonS3Folder, opt => opt.MapFrom(src => src.GetStringValue("AmazonS3Folder", string.Empty)))
+                .ForMember(dest => dest.AmazonS3ExcludedPaths, opt => opt.MapFrom(src => src.GetStringValue("AmazonS3ExcludedPaths", string.Empty)));
         }
     }
 }
