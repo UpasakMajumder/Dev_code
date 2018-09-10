@@ -240,7 +240,7 @@
         backLabel: "Previous"
       },
       ordersReports: {
-        headings: [
+        /*headings: [
           {
             id: '1',
             label: "Site"
@@ -289,6 +289,75 @@
             label: "Tracking number",
             type: 'tracking',
           }
+        ],*/
+        headings: [
+          {
+            id: 'site',
+            label: 'Site Name',
+            sort: false,
+            isDate: false
+          },
+          {
+              id: 'orderNumber',
+              label: 'Order Number',
+              sort: false,
+              isDate: false
+          },
+          {
+              id: 'createDate',
+              label: 'Order Date',
+              sort: true,
+              isDate: true
+          },
+          {
+              id: 'user',
+              label: 'User',
+              sort: false,
+              isDate: false
+          },
+          {
+              id: 'name',
+              label: 'Item Name',
+              sort: false,
+              isDate: false
+          },
+          {
+              id: 'sku',
+              label: 'SKU Number',
+              sort: false,
+              isDate: false
+          },
+          {
+              id: 'quantity',
+              label: 'Quantity',
+              sort: false,
+              isDate: false
+          },
+          {
+              id: 'price',
+              label: 'Price',
+              sort: false,
+              isDate: false
+          },
+          {
+              id: 'status',
+              label: 'Status',
+              sort: false,
+              isDate: false
+          },
+          {
+              id: 'shippingDate',
+              label: 'Shipping Date',
+              sort: false,
+              isDate: true
+          },
+          {
+              id: 'trackingNumber',
+              label: 'Tracking Number',
+              sort: false,
+              isDate: false,
+              type: 'number'
+          }
         ],
         pageInfo: {
           filter: {
@@ -314,7 +383,7 @@
             },
             validationMessage: 'The field are incorrect 🐞',
             submitUrl: PATH + 'order/report/manage',
-            headers: [
+            /*headers: [
               {
                 id: 'orderNumber',
                 label: "Order number"
@@ -341,7 +410,6 @@
                   {
                     id: 'ready',
                     name: 'Ready',
-                    disabled: true
                   },
                   {
                     id: 'approved',
@@ -357,6 +425,62 @@
               {
                 id: '17',
                 label: 'Actions'
+              }
+            ]*/
+            headers: [
+              {
+                  id: 'orderNumber',
+                  label: 'Order Number',
+                  sort: false,
+                  isDate: false
+              },
+              {
+                  id: 'sku',
+                  label: 'SKU Number',
+                  sort: false,
+                  isDate: false
+              },
+              {
+                  id: 'shippingDate',
+                  label: 'Shipping Date',
+                  sort: false,
+                  isDate: true,
+                  type: 'date'
+              },
+              {
+                  id: 'trackingNumber',
+                  label: 'Tracking Number',
+                  sort: false,
+                  isDate: false,
+                  edit: true
+              },
+              {
+                id: 'shippingMethod',
+                label: 'Kadena.OrdersReport.Table.ShippingMethod',
+                type: 'select',
+                values: [
+                  { id: 'FedEx_CUSTOMER_PRICE', name: 'FedEx customer price' },
+                  { id: 'First', name: '1st class' },
+                  { id: 'First#', name: 'First Class' },
+                  { id: '03', name: 'Ground' },
+                  { id: 'INTERNATIONAL_ECONOMY', name: 'Int\'l Economy' },
+                  { id: 'INTERNATIONAL_ECONOMY###', name: 'Int\'l Ground' },
+                  { id: '01', name: 'NextDayStd' },
+                  { id: 'UPS_CUSTOMER_PRICE', name: 'UPS customer price' },
+                  { id: 'USPS_CUSTOMER_PRICE', name: 'USPS customer price' },
+                ]
+              },
+              {
+                  id: 'shippedQuantity',
+                  label: 'Kadena.OrdersReport.Table.ShippedQuantity',
+                  sort: false,
+                  isDate: false,
+                  edit: true,
+                  type: 'number'
+              },
+              {
+                id: 'actions',
+                label: 'Kadena.OrdersReport.Table.Actions'
               }
             ]
           }

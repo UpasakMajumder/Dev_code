@@ -30,7 +30,8 @@ const Datepicker = ({
   readOnly,
   minDate,
   onBlur,
-  error
+  error,
+  isClearable
 }) => {
   const errorElement = error ? (
     [<div key="0" className="input--error" />, <span key="1" className="input__error input__error--noborder">{error}</span>]
@@ -52,6 +53,7 @@ const Datepicker = ({
         readOnly={readOnly}
         minDate={minDate}
         onBlur={onBlur}
+        isClearable={isClearable}
       />
       <SVG
         name="calendar_1"
@@ -73,7 +75,8 @@ Datepicker.defaultProps = {
   inputClass: '',
   readOnly: false,
   minDate: null,
-  error: ''
+  error: '',
+  isClearable: false
 };
 
 Datepicker.propTypes = {
@@ -90,7 +93,8 @@ Datepicker.propTypes = {
   readOnly: PropTypes.bool,
   minDate: PropTypes.object,
   onBlur: PropTypes.func,
-  error: PropTypes.string
+  error: PropTypes.string,
+  isClearable: PropTypes.bool
 };
 
 export default Datepicker;
