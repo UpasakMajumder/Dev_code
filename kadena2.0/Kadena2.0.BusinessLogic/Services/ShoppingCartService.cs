@@ -468,6 +468,7 @@ namespace Kadena.BusinessLogic.Services
             if (newItem.NodeId > 0)
             {
                 product = productsProvider.GetProductByNodeId(newItem.NodeId);
+                newItem.DocumentId = product.Id;
             }
             else
             {
