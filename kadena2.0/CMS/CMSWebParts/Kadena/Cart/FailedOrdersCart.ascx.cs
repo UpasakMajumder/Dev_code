@@ -7,11 +7,7 @@ using CMS.Ecommerce.Web.UI;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Membership;
-using Kadena.Dto.EstimateDeliveryPrice.MicroserviceResponses;
-using Kadena.Dto.General;
-using Kadena.Models.BusinessUnit;
 using Kadena.Old_App_Code.Kadena.Constants;
-using Kadena.Old_App_Code.Kadena.Enums;
 using Kadena.Old_App_Code.Kadena.Shoppingcart;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena.Container.Default;
@@ -25,7 +21,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
 {
     public partial class FailedOrdersCart : CMSCheckoutWebPart
     {
-        private IShoppingCartProvider _shoppingCart;
         private IKenticoBusinessUnitsProvider _businessUnit;
         #region "Private Properties"
 
@@ -247,7 +242,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                _shoppingCart = DIContainer.Resolve<IShoppingCartProvider>();
                 _businessUnit = DIContainer.Resolve<IKenticoBusinessUnitsProvider>();
                 if (AuthenticationHelper.IsAuthenticated())
                 {
@@ -327,7 +321,7 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                Cart = _shoppingCart.GetShoppingCartByID(CartID);
+                Cart = ShoppingCartInfoProvider.GetShoppingCartInfo(CartID);
                 GetItems();
                 BindBusinessUnit();
                 ValidCart = true;
@@ -435,7 +429,6 @@ namespace Kadena.CMSWebParts.Kadena.Cart
         {
             try
             {
-                var cartBusinessUnit = DIContainer.Resolve<IShoppingCartProvider>();
                 if (BusinessUnits != null && BusinessUnits.Count > 0)
                 {
                     ddlBusinessUnits.DataSource = BusinessUnits;
@@ -444,7 +437,8 @@ namespace Kadena.CMSWebParts.Kadena.Cart
                     ddlBusinessUnits.DataBind();
                     if (string.IsNullOrEmpty(Cart.GetStringValue("BusinessUnitIDForDistributor", null)))
                     {
-                        cartBusinessUnit.UpdateBusinessUnit(Cart, BusinessUnits.FirstOrDefault().BusinessUnitNumber);
+                        Cart.SetValue("BusinessUnitIDForDistributor", BusinessUnits.FirstOrDefault().BusinessUnitNumber);
+                        Cart.Update();
                     }
                 }
             }

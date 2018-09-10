@@ -31,6 +31,7 @@ using Kadena.Models.ShoppingCarts;
 using Kadena.BusinessLogic.Contracts;
 using AutoMapper;
 using Kadena.Models;
+using Kadena.Models.Checkout;
 
 namespace Kadena.Old_App_Code.Kadena.Shoppingcart
 {
@@ -52,7 +53,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         {
             try
             {
-                var shoppingCart = shoppingCartProvider.GetShoppingCart(cart.ShoppingCartID, orderType);
+                var shoppingCart = shoppingCartProvider.GetShoppingCart(cart.ShoppingCartID);
                 Cart = cart;
                 var billingAddress = GetBillingAddress();
                 var taxAddress = mapper.Map<DeliveryAddress>(billingAddress);
@@ -64,7 +65,6 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     BillingAddress = billingAddress,
                     ShippingAddressSource = DIContainer.Resolve<IGetOrderDataService>().GetSourceAddressForDeliveryEstimation(),
                     ShippingAddressDestination = billingAddress,
-                    ShippingAddress = billingAddress,
                     ShippingOption = ShippingOption(),
                     Customer = GetCustomer(),
                     Site = GetSite(),
@@ -373,13 +373,13 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
         /// Returns Shopping cart Items
         /// </summary>
         /// <returns></returns>
-        private static List<OrderItemDTO> GetCartItems(IEnumerable<ShoppingCartItemInfo> items, IEnumerable<ShoppingCartItem> cartItems)
+        private static List<OrderItemDTO> GetCartItems(IEnumerable<ShoppingCartItemInfo> items, IEnumerable<CartItemEntity> cartItems)
         {
             var uomProvider = DIContainer.Resolve<IKenticoUnitOfMeasureProvider>();
 
             try
             {
-                return items.GroupJoin(cartItems, i => i.SKUID, ci => ci.SkuId, (item, ci) =>
+                return items.GroupJoin(cartItems, i => i.SKUID, ci => ci.SKUID, (item, ci) =>
                     {
                         var cartItem = ci.DefaultIfEmpty().First();
                         var uom = item.SKU.GetStringValue("SKUUnitOfMeasure", string.Empty);
@@ -392,7 +392,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                         {
                             SKU = new SKUDTO
                             {
-                                KenticoSKUID = cartItem?.SkuId ?? item.SKUID,
+                                KenticoSKUID = cartItem?.SKUID ?? item.SKUID,
                                 Name = item.SKU.SKUName,
                                 SKUNumber = item.SKU.SKUNumber
                             },

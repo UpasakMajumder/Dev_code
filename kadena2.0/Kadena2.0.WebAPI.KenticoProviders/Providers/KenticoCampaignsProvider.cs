@@ -69,6 +69,8 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 placeholder = ResHelper.GetString("Kadena.RecentOrders.Filter.SelectCampaign"),
                 items = campaigns
+                    .OrderBy(c => c.name)
+                    .ToList()
             };
         }
 

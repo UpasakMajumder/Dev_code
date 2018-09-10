@@ -1,38 +1,28 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Approval;
 using Kadena.BusinessLogic.Contracts.Orders;
-using Kadena.Dto.EstimateDeliveryPrice.MicroserviceRequests;
 using Kadena.Dto.OrderManualUpdate.MicroserviceRequests;
-using Kadena.Dto.ViewOrder.MicroserviceResponses;
-using Kadena.Models;
 using Kadena.Models.CampaignData;
+using Kadena.Models.Checkout;
 using Kadena.Models.OrderDetail;
 using Kadena.Models.Orders;
 using Kadena.Models.Product;
+using Kadena.Models.ShoppingCarts;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.MicroserviceClients.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Kadena.Dto.OrderManualUpdate.MicroserviceRequests.UpdateShipping;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Kadena.BusinessLogic.Services.Orders
 {
     public class OrderManualUpdateService : IOrderManualUpdateService
     {
-        private class UpdatedItemCheckData
-        {
-            public Product Product { get; set; }
-            public OrderItemUpdate UpdatedItem { get; set; }
-            public Sku Sku { get; set; }
-            public OrderItemDTO OriginalItem { get; set; }
-            public ItemUpdateDto ManuallyUpdatedItem { get; set; }
-        }
-
         private readonly IOrderManualUpdateClient updateService;
         private readonly IOrderViewClient orderService;
         private readonly IApproverService approvers;
@@ -42,13 +32,12 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IOrderItemCheckerService orderChecker;
         private readonly IProductsService products;
         private readonly IKenticoResourceService resources;
-        private readonly IDeliveryEstimationDataService deliveryData;
-        private readonly IKenticoLogger log;
         private readonly IMapper mapper;
         private readonly IKenticoUserBudgetProvider budgetProvider;
         private readonly IDistributorShoppingCartService distributorShoppingCartService;
         private readonly IShoppingCartProvider shoppingCartProvider;
         private readonly ITaxEstimationService taxEstimationService;
+        private readonly IKenticoLocalizationProvider localization;
 
         public OrderManualUpdateService(IOrderManualUpdateClient updateService,
                                         IOrderViewClient orderService,
@@ -59,13 +48,12 @@ namespace Kadena.BusinessLogic.Services.Orders
                                         IOrderItemCheckerService orderChecker,
                                         IProductsService products,
                                         IKenticoResourceService resources,
-                                        IDeliveryEstimationDataService deliveryData,
-                                        IKenticoLogger log,
                                         IMapper mapper,
                                         IDistributorShoppingCartService distributorShoppingCartService,
                                         IShoppingCartProvider shoppingCartProvider,
                                         IKenticoUserBudgetProvider budgetProvider,
-                                        ITaxEstimationService taxEstimationService)
+                                        ITaxEstimationService taxEstimationService,
+                                        IKenticoLocalizationProvider localization)
         {
             this.updateService = updateService ?? throw new ArgumentNullException(nameof(updateService));
             this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
@@ -76,13 +64,12 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.orderChecker = orderChecker ?? throw new ArgumentNullException(nameof(orderChecker));
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
-            this.deliveryData = deliveryData ?? throw new ArgumentNullException(nameof(deliveryData));
-            this.log = log ?? throw new ArgumentNullException(nameof(log));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.distributorShoppingCartService = distributorShoppingCartService ?? throw new ArgumentNullException(nameof(distributorShoppingCartService));
             this.shoppingCartProvider = shoppingCartProvider ?? throw new ArgumentNullException(nameof(shoppingCartProvider));
             this.budgetProvider = budgetProvider ?? throw new ArgumentNullException(nameof(budgetProvider));
             this.taxEstimationService = taxEstimationService ?? throw new ArgumentNullException(nameof(taxEstimationService));
+            this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
         }
 
         public async Task<UpdateOrdersShippingsResult> UpdateOrdersShippings(UpdateShippingRow[] request)
@@ -140,7 +127,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                     Message = resources.GetResourceString("Kadena.OrderReport.Manage.SubmitSuccess")
                 };
 
-            log.LogError(nameof(UpdateOrdersShippings), $"{response.ErrorMessages} - {JsonConvert.SerializeObject(response.Error)}");
             return new UpdateOrdersShippingsResult
             {
                 Success = false,
@@ -166,8 +152,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                 throw new InvalidOperationException("Editing of order isn't supported for Pre-buy orders.");
             }
 
-
-
             var itemsWithoutDocument = orderDetail.Items.Where(i => i.DocumentId == 0).Select(i => i.Name);
 
             if (itemsWithoutDocument.Any())
@@ -177,116 +161,102 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             approvers.CheckIsCustomersEditor(orderDetail.ClientId);
 
-
-            var updatedItemsData = request.Items.Join(orderDetail.Items,
-                                                       chi => chi.LineNumber,
-                                                       oi => oi.LineNumber,
-                                                       (chi, oi) => new UpdatedItemCheckData
-                                                       {
-                                                           OriginalItem = oi,
-                                                           UpdatedItem = chi
-                                                       }
-                                                       ).ToList();
-
-            if (updatedItemsData.Count() != request.Items.Count())
+            if (request.Items.Any(i => orderDetail.Items.Select(oi => oi.LineNumber == i.LineNumber).Count() < 1))
             {
                 throw new Exception("Couldn't match all given line numbers in original order");
             }
 
-            if (IsCreditCardPayment(orderDetail.PaymentInfo.PaymentMethod) && updatedItemsData.Any(i => i.UpdatedItem.Quantity > i.OriginalItem.Quantity))
+            var updateItems = orderDetail.Items
+                .GroupJoin(request.Items,
+                    oi => oi.LineNumber,
+                    ri => ri.LineNumber,
+                    (oi, ri) =>
+                    {
+                        var ui = ri.DefaultIfEmpty().First();
+                        return new
+                        {
+                            oi.LineNumber,
+                            oi.DocumentId,
+                            AdjustedQuantity = (ui?.Quantity ?? oi.Quantity) - oi.Quantity,
+                            NewQuantity = ui?.Quantity ?? oi.Quantity,
+                            oi.TemplateId,
+                            oi.SkuId
+                        };
+                    })
+                .ToList();
+
+            if (IsCreditCardPayment(orderDetail.PaymentInfo.PaymentMethod) && updateItems.Any(i => i.AdjustedQuantity > 0))
             {
                 throw new Exception("Can't increase item quantity, if payment method is credit card.");
             }
 
-            var targetAddress = mapper.Map<AddressDto>(orderDetail.ShippingInfo.AddressTo);
-            targetAddress.Country = orderDetail.ShippingInfo.AddressTo.isoCountryCode;
-
-            var requestDto = new OrderManualUpdateRequestDto();
-
+            // validate modification
             if (orderDetail.Type == OrderType.generalInventory)
             {
-                var skuLines = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.LineNumber);
-                var skuNewQty = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.Quantity);
-                var skuAdjustedQuantities = updatedItemsData.ToDictionary(k => k.OriginalItem.SkuId, v => v.UpdatedItem.Quantity - v.OriginalItem.Quantity);
-
-                // create distributor cart items
-                var distributorCartItems = distributorShoppingCartService
-                    .CreateCart(skuAdjustedQuantities, orderDetail.Customer.KenticoUserID, orderDetail.campaign.DistributorID)
-                    .ToList();
-                // create fake cart with new data
-                // distributor set to 0 so cart won't be visible for active users
-                var cartId = shoppingCartProvider.CreateDistributorCart(0,
-                    orderDetail.campaign.ID, orderDetail.campaign.ProgramID,
-                    orderDetail.Customer.KenticoUserID);
-                // update fake cart
-                try
+                foreach (var i in updateItems)
                 {
-                    distributorCartItems.ForEach(c =>
+                    if (i.AdjustedQuantity > 0)
                     {
-                        c.Items.ForEach(i =>
-                        {
-                            i.ShoppingCartID = cartId;
-                            i.Quantity = skuNewQty[c.SKUID];
-                        });
-                        distributorShoppingCartService.UpdateDistributorCarts(c, orderDetail.Customer.KenticoUserID);
+                        distributorShoppingCartService.ValidateItem(i.SkuId, i.AdjustedQuantity, orderDetail.Customer.KenticoUserID);
                     }
-                    );
-
-                    // deleted items will not be shopping cart, need to add them manually
-                    var deletedItems = updatedItemsData
-                        .Where(u => u.UpdatedItem.Quantity == 0)
-                        .Select(u => new ItemUpdateDto
-                        {
-                            LineNumber = u.UpdatedItem.LineNumber,
-                            Quantity = 0,
-                            TotalPrice = 0,
-                            UnitPrice = 0
-                        });
-
-                    // get updated data from cart
-                    var cart = shoppingCartProvider.GetShoppingCart(cartId, orderDetail.Type);
-                    requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart);
-                    requestDto.OrderId = request.OrderId;
-                    requestDto.Items = cart.Items
-                        .Select(i =>
-                        {
-                            var item = mapper.Map<ItemUpdateDto>(i);
-                            item.LineNumber = skuLines[i.SkuId];
-                            return item;
-                        })
-                        .Concat(deletedItems)
-                        .ToList();
-
-                    var weight = shoppingCartProvider.GetCartWeight(cartId);
-                    var shippingCost = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
-                        weight, targetAddress);
-                    requestDto.TotalShipping = shippingCost;
-
-                    var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
-                    requestDto.TotalTax = await taxEstimationService.EstimateTax(taxAddress, requestDto.TotalPrice, requestDto.TotalShipping);
                 }
-                catch (Exception exc)
+            }
+            else
+            {
+                updateItems
+                    .ForEach(d =>
+                    {
+                        ValidateItem(d.DocumentId, d.NewQuantity, d.AdjustedQuantity);
+                    });
+            }
+
+            // create fake cart with new data
+            var cart = mapper.Map<ShoppingCart>(orderDetail);
+            cart.Address.Country = localization.GetCountries().FirstOrDefault(c => c.Code.Equals(cart.Address.Country.Code));
+            cart.Address.State = localization
+                .GetStates()
+                .FirstOrDefault(s => s.StateCode.Equals(cart.Address.State.StateCode) && s.CountryId == cart.Address.Country.Id);
+            var destinationAddress = cart.Address;
+            cart.Items = updateItems
+                .Select(i => new CartItemEntity
                 {
-                    log.LogException(this.GetType().Name, exc);
-                }
-                finally
-                {
-                    // remove fake cart
-                    shoppingCartProvider.DeleteShoppingCart(cartId);
-                }
+                    SKUID = i.SkuId,
+                    Quantity = i.NewQuantity,
+                    CartItemPrice = GetPrice(i.DocumentId, i.NewQuantity)
+                })
+                .ToList();
+            cart = shoppingCartProvider.Evaluate(cart);
 
-                // send to microservice
-                var updateResult = await updateService.UpdateOrder(requestDto);
-                if (!updateResult.Success)
-                {
-                    throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
-                }
+            // get updated data from cart
+            var requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart, opt => updateItems
+                .ForEach(i => opt.Items.Add(i.SkuId.ToString(), i.LineNumber)));
+            requestDto.OrderId = request.OrderId;
+            requestDto.Items
+                .AddRange(updateItems
+                    .Where(i => i.NewQuantity < 1)
+                    .Select(i => new ItemUpdateDto
+                    {
+                        LineNumber = i.LineNumber
+                    }));
 
-                // adjust available quantity
-                AdjustAvailableItems(updatedItemsData);
-                AdjustAllocatedItems(updatedItemsData, orderDetail.Customer.KenticoUserID);
+            requestDto.TotalTax = await taxEstimationService.EstimateTax(destinationAddress, requestDto.TotalPrice, requestDto.TotalShipping);
 
-                // Adjust budget
+            var updateResult = await updateService.UpdateOrder(requestDto);
+            if (!updateResult.Success)
+            {
+                throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
+            }
+
+            // adjust available quantity and budget
+            if (orderDetail.Type == OrderType.generalInventory)
+            {
+                updateItems
+                    .ForEach(i =>
+                    {
+                        skuProvider.UpdateAvailableQuantity(i.SkuId, -i.AdjustedQuantity);
+                        productsProvider.UpdateAllocatedProductQuantityForUser(i.SkuId, orderDetail.Customer.KenticoUserID, i.AdjustedQuantity);
+                    });
+
                 budgetProvider.AdjustUserRemainingBudget(
                     orderDetail.OrderDate.Year.ToString(),
                     orderDetail.Customer.KenticoUserID,
@@ -294,44 +264,24 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
             else
             {
-                var documentIds = orderDetail.Items.Select(i => i.DocumentId).Distinct().ToArray();
-                var skuIds = orderDetail.Items.Select(i => i.SkuId).Distinct().ToArray();
-                var products = productsProvider.GetProductsByDocumentIds(documentIds);
-                var skus = skuProvider.GetSKUsByIds(skuIds);
-
-                updatedItemsData.ForEach(u =>
-                {
-                    var sku = skus.FirstOrDefault(s => s.SkuId == u.OriginalItem.SkuId)
-                              ?? throw new Exception($"Unable to find SKU {u.OriginalItem.SkuId} of item {u.OriginalItem.Name}");
-
-                    var product = products.FirstOrDefault(p => p.Id == u.OriginalItem.DocumentId)
-                                  ?? throw new Exception($"Unable to find product {u.OriginalItem.DocumentId} of item {u.OriginalItem.Name}");
-
-                    u.Sku = sku;
-                    u.Product = product;
-                });
-
-                updatedItemsData.ForEach(d => d.ManuallyUpdatedItem = CreateChangedItem(d));
-
-                var changedItems = updatedItemsData.Select(d => d.ManuallyUpdatedItem).ToList();
-
-                requestDto = new OrderManualUpdateRequestDto
-                {
-                    OrderId = request.OrderId,
-                    Items = changedItems,
-                };
-
-                await DoEstimations(requestDto, updatedItemsData, orderDetail, skus, targetAddress);
-                var updateResult = await updateService.UpdateOrder(requestDto);
-                if (!updateResult.Success)
-                {
-                    throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
-                }
-
-                UpdateAvailableItems(updatedItemsData);
+                updateItems
+                    .ForEach(i =>
+                    {
+                        skuProvider.UpdateAvailableQuantity(i.SkuId, -i.AdjustedQuantity);
+                    });
             }
 
             return GetUpdatesForFrontend(requestDto);
+        }
+
+        private decimal? GetPrice(int documentId, int quantity)
+        {
+            var unitPrice = products.GetPriceByCustomModel(documentId, quantity);
+            if (unitPrice == decimal.MinusOne)
+            {
+                return null;
+            }
+            return unitPrice;
         }
 
         void CheckRequestData(OrderUpdate request)
@@ -403,124 +353,30 @@ namespace Kadena.BusinessLogic.Services.Orders
             return result;
         }
 
-        void UpdateAvailableItems(IEnumerable<UpdatedItemCheckData> updateData)
-        {
-            var inventoryProductsData = updateData
-                .Where(u => ProductTypes.IsOfType(u.Product.ProductType, ProductTypes.InventoryProduct))
-                .ToList();
-
-            AdjustAvailableItems(inventoryProductsData);
-        }
-
-        void AdjustAvailableItems(IEnumerable<UpdatedItemCheckData> updateData)
-        {
-            updateData.ToList().ForEach(data =>
-            {
-                var freedQuantity = data.OriginalItem.Quantity - data.UpdatedItem.Quantity;
-                // Not using Set... because when waiting for result of OrderUpdate, quantity can change
-                skuProvider.UpdateAvailableQuantity(data.OriginalItem.SkuId, freedQuantity);
-            });
-        }
-
-        void AdjustAllocatedItems(IEnumerable<UpdatedItemCheckData> updateData, int userId)
-        {
-            updateData.ToList().ForEach(data =>
-            {
-                var adjustedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
-                // Not using Set... because when waiting for result of OrderUpdate, quantity can change
-                productsProvider.UpdateAllocatedProductQuantityForUser(data.OriginalItem.SkuId, userId, adjustedQuantity);
-            });
-        }
-
-        async Task DoEstimations(OrderManualUpdateRequestDto request, IEnumerable<UpdatedItemCheckData> updateData, GetOrderByOrderIdResponseDTO orderDetail, Sku[] skus,
-            AddressDto targetAddress)
-        {
-            request.TotalPrice = 0.0m;
-            var shippableWeight = 0.0m;
-
-            orderDetail.Items.ForEach(i =>
-            {
-                var updatedItem = updateData.FirstOrDefault(d => d.ManuallyUpdatedItem.LineNumber == i.LineNumber);
-
-                if (updatedItem != null)
-                {
-                    request.TotalPrice += updatedItem.ManuallyUpdatedItem.TotalPrice;
-                    if (updatedItem.Sku.NeedsShipping)
-                    {
-                        shippableWeight += (decimal)updatedItem.Sku.Weight * updatedItem.ManuallyUpdatedItem.Quantity;
-                    }
-                }
-                else
-                {
-                    request.TotalPrice += (decimal)i.TotalPrice;
-                    var sku = skus.First(s => s.SkuId == i.SkuId);
-                    if (sku.NeedsShipping)
-                    {
-                        shippableWeight += (decimal)sku.Weight * i.Quantity;
-                    }
-                }
-            }
-            );
-
-            request.TotalShipping = 0.0m;
-
-            log.LogInfo("Approval", "Info", $"Provider is '{orderDetail.ShippingInfo.Provider}'");
-            log.LogInfo("Approval", "Info", $"Total shippable weight is '{shippableWeight}'");
-
-            if (!orderDetail.ShippingInfo.Provider.EndsWith("Customer") && shippableWeight > 0.0m)
-            {
-                request.TotalShipping = GetShippinCost(orderDetail.ShippingInfo.Provider, orderDetail.ShippingInfo.ShippingService,
-                    shippableWeight, targetAddress);
-            }
-            else
-            {
-                log.LogInfo("Approval", "Info", $"NOT going to call estimation microservice");
-            }
-            var taxAddress = mapper.Map<DeliveryAddress>(orderDetail.ShippingInfo.AddressTo);
-            request.TotalTax = await taxEstimationService.EstimateTax(taxAddress, request.TotalPrice, request.TotalShipping);
-        }
-
         private bool IsCreditCardPayment(string paymentMethod)
         {
             return paymentMethod == "CreditCard" || paymentMethod == "CreditCardDemo";
         }
 
-        private decimal GetShippinCost(string provider, string shippingService, decimal shippableWeight, AddressDto targetAddress)
+        void ValidateItem(int documentId, int newQuantity, int adjustedQuantity)
         {
-            log.LogInfo("Approval", "Info", $"Going to call estimation microservice");
+            var product = productsProvider.GetProductByDocumentId(documentId)
+                ?? throw new Exception($"Unable to find product with id '{documentId}'.");
 
-            return deliveryData.GetShippingCost(provider, shippingService, shippableWeight, targetAddress);
-        }
-
-        ItemUpdateDto CreateChangedItem(UpdatedItemCheckData data)
-        {
-            if (ProductTypes.IsOfType(data.Product.ProductType, ProductTypes.MailingProduct))
+            if (product.HasProductTypeFlag(ProductTypes.MailingProduct))
             {
                 throw new Exception("Cannot change quantity of Mailing product item");
             }
 
-            orderChecker.CheckMinMaxQuantity(data.Sku, data.UpdatedItem.Quantity);
+            var sku = skuProvider.GetSKU(product.SkuId)
+                ?? throw new Exception($"Unable to find SKU with id '{product.SkuId}'.");
 
-            var addedQuantity = data.UpdatedItem.Quantity - data.OriginalItem.Quantity;
+            orderChecker.CheckMinMaxQuantity(sku, newQuantity);
 
-            if (ProductTypes.IsOfType(data.Product.ProductType, ProductTypes.InventoryProduct))
+            if (product.HasProductTypeFlag(ProductTypes.InventoryProduct))
             {
-                orderChecker.EnsureInventoryAmount(data.Sku, addedQuantity, data.UpdatedItem.Quantity);
+                orderChecker.EnsureInventoryAmount(sku, adjustedQuantity, newQuantity);
             }
-
-            var unitPrice = products.GetPriceByCustomModel(data.OriginalItem.DocumentId, data.UpdatedItem.Quantity);
-            if (unitPrice == decimal.MinusOne)
-            {
-                unitPrice = data.Sku.Price;
-            }
-
-            return new ItemUpdateDto
-            {
-                LineNumber = data.OriginalItem.LineNumber,
-                Quantity = data.UpdatedItem.Quantity,
-                TotalPrice = Math.Round(unitPrice * data.UpdatedItem.Quantity, 2),
-                UnitPrice = unitPrice
-            };
         }
     }
 }

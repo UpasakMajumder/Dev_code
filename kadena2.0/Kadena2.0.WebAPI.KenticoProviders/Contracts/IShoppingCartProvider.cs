@@ -39,6 +39,8 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         DeliveryOption GetShippingOption(int id);
 
+        DeliveryOption GetShippingOption(string name);
+
         int GetShoppingCartId(int userId, int siteId);
 
         void RemoveCurrentItemsFromStock(int shoppingCartId = 0);
@@ -54,10 +56,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
         string UpdateCartQuantity(Distributor data);
 
         List<int> GetUserIDsWithShoppingCart(int campaignID, int productType);
-
-        ShoppingCartInfo GetShoppingCartByID(int cartID);
-
-        void UpdateBusinessUnit(ShoppingCartInfo cart, long businessUnitID);
 
         bool IsCartContainsInvalidProduct(int shoppingCartId = 0);
 
@@ -75,8 +73,6 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         int GetItemQuantity(int SKUID, int shoppingCartID);
 
-        int CreateDistributorCart(int distributorId, int campaignId, int programId, int userID, CampaignProductType cartType = CampaignProductType.GeneralInventory);
-
         void UpdateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, CampaignProductType cartType = CampaignProductType.GeneralInventory);
 
         void AddDistributorCartItem(int cartID, DistributorCartItem distributorCartItem, CampaignsProduct product, CampaignProductType cartType = CampaignProductType.GeneralInventory);
@@ -89,6 +85,9 @@ namespace Kadena.WebAPI.KenticoProviders.Contracts
 
         void DeleteShoppingCart(int cartId);
 
-        ShoppingCart GetShoppingCart(int cartId, string orderType);
+        ShoppingCart GetShoppingCart(int cartId);
+
+        int SaveCart(ShoppingCart cart);
+        ShoppingCart Evaluate(ShoppingCart cart);
     }
 }

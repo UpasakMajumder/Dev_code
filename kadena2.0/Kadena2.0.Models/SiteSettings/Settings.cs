@@ -815,15 +815,6 @@ namespace Kadena.Models.SiteSettings
         public const string KDA_OrdersModuleEnabled = "KDA_OrdersModuleEnabled";
 
         /// <summary>
-        /// 
-        /// </summary>
-        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
-        [GroupAttribute("Orders")]
-        [DefaultValueAttribute(@"https://9chbp44h4j.execute-api.us-east-1.amazonaws.com/Qa")]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6Ik9yZGVyIFN0YXRpc3RpY3MgU2VydmljZSIsIktleU5hbWUiOiJLREFfT3JkZXJTdGF0aXN0aWNzU2VydmljZUVuZHBvaW50IiwiS2V5VHlwZSI6InN0cmluZyIsIktleURlZmF1bHRWYWx1ZSI6Imh0dHBzOi8vOWNoYnA0NGg0ai5leGVjdXRlLWFwaS51cy1lYXN0LTEuYW1hem9uYXdzLmNvbS9RYSIsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjpudWxsLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJPcmRlcnMifX0=")]
-        public const string KDA_OrderStatisticsServiceEndpoint = "KDA_OrderStatisticsServiceEndpoint";
-
-        /// <summary>
         /// Url of order submitted page
         /// </summary>
         [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]

@@ -10,6 +10,6 @@ namespace Kadena.BusinessLogic.Contracts
         DistributorCart GetCartDistributorData(int skuID, CampaignProductType cartType = CampaignProductType.GeneralInventory);
         int UpdateDistributorCarts(DistributorCart cartDistributorData, int userId = 0);
         string UpdateCartQuantity(Distributor submitRequest);
-        IEnumerable<DistributorCart> CreateCart(Dictionary<int, int> items, int userId, int addressId);
+        void ValidateItem(int skuId, int quantity, int userId);
     }
 }
