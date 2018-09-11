@@ -55,7 +55,60 @@ module.exports.reports = {
     "success": true,
     "errorMessage": null,
     "payload": {
-      "rows": [
+      /*"rows": [
+        {
+          url: '',
+          "items": {
+            "lineNumber": {
+              "value": 1
+            },
+            "site": {
+              "value": "KDA"
+            },
+            "orderNumber": {
+              "value": "0004-00095-18-00050"
+            },
+            "createDate": {
+              "value": "Aug 30, 2018",
+              // value: '2017-08-04T09:12:08.108892Z'
+            },
+            "user": {
+              "value": ""
+            },
+            "name": {
+              "value": "Penfolds Business Card Holders (approval required)"
+            },
+            "sku": {
+              "value": "62151137"
+            },
+            "quantity": {
+              "value": 513
+            },
+            "price": {
+              "value": 513.0
+            },
+            "status": {
+              "value": "Waiting for approval"
+            },
+            "shippingDate": {
+              "value": ""
+            },
+            "trackingNumber": {
+              "type": "tracking",
+              "value": "",
+              "url": ""
+            },
+            "shippedQuantity": {
+              "value": 0
+            },
+            "shippingMethod": {
+              "value": ""
+            },
+            "trackingInfoId": {
+              "value": ""
+            }
+          }
+        },
         {
           url: '#',
           items: {
@@ -98,6 +151,9 @@ module.exports.reports = {
             11: {
               value: 2,
               url: '#'
+            },
+            15: {
+              value: 'approved'
             }
           }
         },
@@ -325,12 +381,378 @@ module.exports.reports = {
             }
           }
         },
-      ],
+      ],*/
       "pagination": {
         "pagesCount": 2,
         "rowsCount": 5,
         "rowsOnPage": 3
-      }
+      },
+      rows: [
+        {
+          "url": "/Recent-orders/Order-Detail?orderID=0004-00095-18-00050",
+          "items": {
+            "lineNumber": {
+              "value": 1
+            },
+            "site": {
+              "value": "KDA"
+            },
+            "orderNumber": {
+              "value": "0004-00095-18-00050"
+            },
+            "createDate": {
+              "value": "Aug 30, 2018"
+            },
+            "user": {
+              "value": ""
+            },
+            "name": {
+              "value": "Penfolds Business Card Holders (approval required)"
+            },
+            "sku": {
+              "value": "62151137"
+            },
+            "quantity": {
+              "value": 513
+            },
+            "price": {
+              "value": 513.0
+            },
+            "status": {
+              "value": "Waiting for approval"
+            },
+            "shippingDate": {
+              "value": ""
+            },
+            "trackingNumber": {
+              "type": "tracking",
+              "value": "",
+              "url": ""
+            },
+            "shippedQuantity": {
+              "value": 0
+            },
+            "shippingMethod": {
+              "value": ""
+            },
+            "trackingInfoId": {
+              "value": ""
+            }
+          }
+        },
+        {
+          "url": "/Recent-orders/Order-Detail?orderID=0039-00235-18-00026",
+          "items": {
+            "lineNumber": {
+              "value": 1
+            },
+            "site": {
+              "value": "KDA"
+            },
+            "orderNumber": {
+              "value": "0039-00235-18-00026"
+            },
+            "createDate": {
+              "value": "Aug 30, 2018"
+            },
+            "user": {
+              "value": ""
+            },
+            "name": {
+              "value": "Item1"
+            },
+            "sku": {
+              "value": "105582"
+            },
+            "quantity": {
+              "value": 30
+            },
+            "price": {
+              "value": 1998.0
+            },
+            "status": {
+              "value": "Partially Shipped"
+            },
+            "shippingDate": {
+              "value": ""
+            },
+            "trackingNumber": {
+              "type": "tracking",
+              "value": "12206060606060606",
+              "url": "https://tools.usps.com/go/TrackConfirmAction!input.action?tLabels=12206060606060606"
+            },
+            "shippedQuantity": {
+              "value": 23
+            },
+            "shippingMethod": {
+              "value": "First#"
+            },
+            "trackingInfoId": {
+              "value": "042f3918-59a0-403c-b7f4-bd7d1b62deea"
+            }
+          }
+        },
+        {
+          "url": "/Recent-orders/Order-Detail?orderID=0039-00235-18-00026",
+          "items": {
+            "lineNumber": {
+              "value": 2
+            },
+            "site": {
+              "value": "KDA"
+            },
+            "orderNumber": {
+              "value": "0039-00235-18-00026"
+            },
+            "createDate": {
+              "value": "Aug 30, 2018"
+            },
+            "user": {
+              "value": ""
+            },
+            "name": {
+              "value": "Postmans testing product"
+            },
+            "sku": {
+              "value": "109599"
+            },
+            "quantity": {
+              "value": 30
+            },
+            "price": {
+              "value": 1998.0
+            },
+            "status": {
+              "value": "Partially Shipped"
+            },
+            "shippingDate": {
+              "value": ""
+            },
+            "trackingNumber": {
+              "type": "tracking",
+              "value": "",
+              "url": ""
+            },
+            "shippedQuantity": {
+              "value": 0
+            },
+            "shippingMethod": {
+              "value": ""
+            },
+            "trackingInfoId": {
+              "value": ""
+            }
+          }
+        },
+        {
+          "url": "/Recent-orders/Order-Detail?orderID=1026-02161-18-00007",
+          "items": {
+            "lineNumber": {
+              "value": 1
+            },
+            "site": {
+              "value": "KDA"
+            },
+            "orderNumber": {
+              "value": "1026-02161-18-00007"
+            },
+            "createDate": {
+              "value": "Aug 30, 2018"
+            },
+            "user": {
+              "value": "David Lahuta EDITOR"
+            },
+            "name": {
+              "value": "Static product"
+            },
+            "sku": {
+              "value": "74687468"
+            },
+            "quantity": {
+              "value": 1
+            },
+            "price": {
+              "value": 2.84
+            },
+            "status": {
+              "value": "Shipped"
+            },
+            "shippingDate": {
+              "value": ""
+            },
+            "trackingNumber": {
+              "type": "tracking",
+              "value": "06060606060606",
+              "url": "https://www.fedex.com/apps/fedextrack/?ACTION=track&ascend_header=1&clienttype=dotcom&cntry_code=us&LANGUAGE=english&tracknumbers=06060606060606"
+            },
+            "shippedQuantity": {
+              "value": 21
+            },
+            "shippingMethod": {
+              "value": "TestService-Sx"
+            },
+            "trackingInfoId": {
+              "value": "042f3918-59a0-403c-b7f4-bd7d1b62deea"
+            }
+          }
+        },
+        {
+          "url": "/Recent-orders/Order-Detail?orderID=1026-02161-18-00007",
+          "items": {
+            "lineNumber": {
+              "value": 1
+            },
+            "site": {
+              "value": "KDA"
+            },
+            "orderNumber": {
+              "value": "1026-02161-18-00007"
+            },
+            "createDate": {
+              "value": "Aug 30, 2018"
+            },
+            "user": {
+              "value": "David Lahuta EDITOR"
+            },
+            "name": {
+              "value": "Static product"
+            },
+            "sku": {
+              "value": "74687468"
+            },
+            "quantity": {
+              "value": 1
+            },
+            "price": {
+              "value": 2.84
+            },
+            "status": {
+              "value": "Shipped"
+            },
+            "shippingDate": {
+              "value": ""
+            },
+            "trackingNumber": {
+              "type": "tracking",
+              "value": "666666666666",
+              "url": "666666666666"
+            },
+            "shippedQuantity": {
+              "value": 2
+            },
+            "shippingMethod": {
+              "value": "FedEx_CUSTOMER_PRICE"
+            },
+            "trackingInfoId": {
+              "value": "a14276a2-2fc2-4e5a-a378-baa1a9e90c45"
+            }
+          }
+        },
+        {
+          "url": "/Recent-orders/Order-Detail?orderID=1026-02161-18-00007",
+          "items": {
+            "lineNumber": {
+              "value": 1
+            },
+            "site": {
+              "value": "KDA"
+            },
+            "orderNumber": {
+              "value": "1026-02161-18-00007"
+            },
+            "createDate": {
+              "value": "Aug 30, 2018"
+            },
+            "user": {
+              "value": "David Lahuta EDITOR"
+            },
+            "name": {
+              "value": "Static product"
+            },
+            "sku": {
+              "value": "74687468"
+            },
+            "quantity": {
+              "value": 1
+            },
+            "price": {
+              "value": 2.84
+            },
+            "status": {
+              "value": "Shipped"
+            },
+            "shippingDate": {
+              "value": ""
+            },
+            "trackingNumber": {
+              "type": "tracking",
+              "value": "fe123456--Sx",
+              "url": "https://www.fedex.com/apps/fedextrack/?ACTION=track&ascend_header=1&clienttype=dotcom&cntry_code=us&LANGUAGE=english&tracknumbers=fe123456--Sx"
+            },
+            "shippedQuantity": {
+              "value": 21
+            },
+            "shippingMethod": {
+              "value": "TestService-Sx"
+            },
+            "trackingInfoId": {
+              "value": "6660BDE7-542A-404C-B7B4-F806A45F6A6E"
+            }
+          }
+        },
+        {
+          "url": "/Recent-orders/Order-Detail?orderID=1026-02161-18-00006",
+          "items": {
+            "lineNumber": {
+              "value": 1
+            },
+            "site": {
+              "value": "KDA"
+            },
+            "orderNumber": {
+              "value": "1026-02161-18-00006"
+            },
+            "createDate": {
+              "value": "Aug 30, 2018"
+            },
+            "user": {
+              "value": "David Lahuta EDITOR"
+            },
+            "name": {
+              "value": "Static product"
+            },
+            "sku": {
+              "value": "74687468"
+            },
+            "quantity": {
+              "value": 1
+            },
+            "price": {
+              "value": 2.84
+            },
+            "status": {
+              "value": "Shipped"
+            },
+            "shippingDate": {
+              "value": ""
+            },
+            "trackingNumber": {
+              "type": "tracking",
+              "value": "fe123456--Sx",
+              "url": "https://www.fedex.com/apps/fedextrack/?ACTION=track&ascend_header=1&clienttype=dotcom&cntry_code=us&LANGUAGE=english&tracknumbers=fe123456--Sx"
+            },
+            "shippedQuantity": {
+              "value": 21
+            },
+            "shippingMethod": {
+              "value": "TestService-Sx"
+            },
+            "trackingInfoId": {
+              "value": "6660BDE7-542A-404C-B7B4-F806A45F6A6E"
+            }
+          }
+        }
+      ]
     }
   }
 };

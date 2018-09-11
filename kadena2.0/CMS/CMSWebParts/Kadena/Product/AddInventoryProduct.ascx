@@ -159,7 +159,7 @@
             <div class="input__wrapper">
                 <cms:LocalizedLabel ID="lblSKUNumber" runat="server" EnableViewState="False" CssClass="input__label" ResourceString="Kadena.InvProductForm.lblSKUNumber" />
                 <div class="input__inner">
-                    <cms:CMSTextBox ID="txtSKUNumber" runat="server" EnableViewState="false" CssClass="input__text" Enabled="false" ReadOnly="true"></cms:CMSTextBox>
+                    <cms:CMSTextBox ID="txtSKUNumber" runat="server" CssClass="input__text" Enabled="false"></cms:CMSTextBox>
                 </div>
             </div>
         </div>

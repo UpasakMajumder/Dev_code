@@ -74,9 +74,18 @@ class ManageOrdersModal extends Component {
   changeField = (rowNumber, headerId, value) => {
     const newFields = JSON.parse(JSON.stringify(this.state.fields));
 
+    let headerIdValue;
+    if (typeof value === 'string') {
+      headerIdValue = value;
+    } else if (!value) {
+      headerIdValue = '';
+    } else {
+      headerIdValue = value.format();
+    }
+
     newFields[rowNumber] = {
       ...this.state.fields[rowNumber],
-      [headerId]: typeof value === 'string' ? value : value.format()
+      [headerId]: headerIdValue
     };
 
     this.setState({ fields: newFields });
@@ -119,7 +128,8 @@ class ManageOrdersModal extends Component {
                 selected={item ? moment(item) : null} // when creating new row, the date is null, mament warns it. null bcz of item could be empty string
                 dateFormat={dateFormat}
                 onChange={date => this.changeField(rowNumber, header.id, date)}
-                readOnly
+                // readOnly
+                // isClearable
               />
             </td>
           );
