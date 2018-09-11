@@ -157,6 +157,14 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.EmailProof, opt => opt.Ignore())
                 .ForMember(dest => dest.Removed, opt => opt.Ignore())
                 .ForMember(dest => dest.RemoveLabel, opt => opt.Ignore())
+                .ForMember(dest => dest.QuantityShipped, opt => opt.ResolveUsing(src=>
+                {
+                    if (src.TrackingInfoList != null)
+                    {
+                        return src.TrackingInfoList.Sum(t => t.QuantityShipped);
+                    }
+                    return 0;
+                }))
                 .ForMember(dest => dest.Options, opt => opt.UseValue(Enumerable.Empty<ItemOption>()));
 
             CreateMap<ApprovalResult, ApprovalResultDto>();
