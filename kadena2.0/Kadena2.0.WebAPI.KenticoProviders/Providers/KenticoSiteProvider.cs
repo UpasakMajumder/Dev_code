@@ -84,7 +84,7 @@ namespace Kadena.WebAPI.KenticoProviders
 
         public string GetAbsoluteUrl(string url)
         {
-            return URLHelper.GetAbsoluteUrl(url);
+            return URLHelper.GetAbsoluteUrl($"/{url.TrimStart('/')}");
         }
 
         public string GetFormattedPrice(decimal price)
