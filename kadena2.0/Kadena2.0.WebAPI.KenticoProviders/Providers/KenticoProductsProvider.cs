@@ -317,7 +317,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 var attachment = DocumentHelper.GetAttachment(new Guid(guid), SiteContext.CurrentSiteName);
                 attachmentPath = $"{attachmentPath}{attachment.AttachmentExtension}";
             }
-            return new Uri(URLHelper.GetAbsoluteUrl(attachmentPath), UriKind.Absolute);
+            return new Uri(URLHelper.GetAbsoluteUrl(File.GetFileUrl(attachmentPath, SiteContext.CurrentSiteName)), UriKind.Absolute);
         }
 
         public IEnumerable<ProductCategory> GetProductCategories(int skuid)
