@@ -22,6 +22,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IOrderViewClient orderViewClient;
         private readonly IConvert xlsxConvert;
         private readonly IOrderReportFactory orderReportFactory;
+        private readonly IKenticoLogger logger;
         private readonly IMapper mapper;
         public const int DefaultCountOfOrdersPerPage = 20;
         public const int FirstPageNumber = 1;
@@ -59,6 +60,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             IOrderViewClient orderViewClient,
             IConvert xlsxConvert,
             IOrderReportFactory orderReportFactory,
+            IKenticoLogger logger,
             IMapper mapper)
         {
             this.kenticoResources = kenticoResources ?? throw new ArgumentNullException(nameof(kenticoResources));
@@ -66,6 +68,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.orderViewClient = orderViewClient ?? throw new ArgumentNullException(nameof(orderViewClient));
             this.xlsxConvert = xlsxConvert ?? throw new ArgumentNullException(nameof(xlsxConvert));
             this.orderReportFactory = orderReportFactory ?? throw new ArgumentNullException(nameof(orderReportFactory));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -119,6 +122,12 @@ namespace Kadena.BusinessLogic.Services.Orders
         private async Task<PagedData<RecentOrderDto>> GetOrders(OrderListFilter orderFilter)
         {
             var ordersDto = await orderViewClient.GetOrders(orderFilter).ConfigureAwait(false);
+            if (!ordersDto.Success)
+            {
+                logger.LogError(nameof(OrderReportService), ordersDto.ErrorMessages);
+                return PagedData<RecentOrderDto>.Empty();
+            }
+
             var orders = ordersDto.Payload?.Orders ?? new List<RecentOrderDto>();
 
             if (orders.Count() > 0)
