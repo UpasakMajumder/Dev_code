@@ -233,6 +233,11 @@ namespace Kadena.WebAPI.KenticoProviders
             var cart = ECommerceContext.CurrentShoppingCart;
             ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
             var cartItem = cart.SetShoppingCartItem(parameters);
+            var checkResult = ShoppingCartItemInfoProvider.CheckShoppingCartItem(cartItem);
+            if (checkResult.InventoryUnits > -1)
+            {
+                throw new ArgumentException(checkResult.GetMessage(";"));
+            }
             cart.InvalidateCalculations();
             return mapper.Map<CartItemEntity>(cartItem);
         }

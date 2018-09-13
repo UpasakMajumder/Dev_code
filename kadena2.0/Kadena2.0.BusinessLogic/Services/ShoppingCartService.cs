@@ -480,11 +480,6 @@ namespace Kadena.BusinessLogic.Services
             cartItem.ChilliEditorTemplateID = newItem.TemplateId;
             var sku = skus.GetSKU(cartItem.SKUID) ?? throw new ArgumentException($"Unable to find SKU {cartItem.SKUID}");
 
-            if (product.HasProductTypeFlag(ProductTypes.InventoryProduct))
-            {
-                orderChecker.EnsureInventoryAmount(sku, addedAmount, cartItem.Quantity);
-            }
-
             if (product.HasProductTypeFlag(ProductTypes.MailingProduct))
             {
                 await SetMailingList(cartItem, newItem.ContainerId, addedAmount);

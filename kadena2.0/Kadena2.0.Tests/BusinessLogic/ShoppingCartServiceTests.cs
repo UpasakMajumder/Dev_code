@@ -273,23 +273,18 @@ namespace Kadena.Tests.BusinessLogic
         {
             // Arrange 
             var newCartItem = CreateNewCartItem();
-            var product = new Product
-            {
-                ProductType = ProductTypes.InventoryProduct,
-            };
+            var product = new Product();
 
             var originalCartItemEntity = new CartItemEntity
             {
                 CartItemText = Name,
-                ProductType = ProductTypes.InventoryProduct,
                 Quantity = 3
             };
 
             Setup<IKenticoProductsProvider, Product>(s => s.GetProductByDocumentId(newCartItem.DocumentId), product);
             Setup<IKenticoProductsProvider, Product>(s => s.GetProductByNodeId(newCartItem.NodeId), product);
-            Setup<IShoppingCartItemsProvider, CartItemEntity>(ip => ip.GetOrCreateCartItem(product.SkuId, newCartItem.Quantity, newCartItem.Options, newCartItem.TemplateId), originalCartItemEntity);
+            SetupThrows<IShoppingCartItemsProvider>(ip => ip.GetOrCreateCartItem(product.SkuId, newCartItem.Quantity, newCartItem.Options, newCartItem.TemplateId), new ArgumentException());
             Setup<IKenticoSkuProvider, Sku>(cp => cp.GetSKU(originalCartItemEntity.SKUID), new Sku { AvailableItems = 1, SellOnlyIfAvailable = true });
-            SetupThrows<IOrderItemCheckerService>(o => o.EnsureInventoryAmount(It.IsAny<Sku>(), 2, 3), new ArgumentException());
 
             // Act
             Task action() => Sut.AddToCart(newCartItem);
