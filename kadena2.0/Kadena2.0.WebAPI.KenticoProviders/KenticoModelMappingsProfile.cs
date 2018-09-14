@@ -427,6 +427,8 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.SkuId, opt => opt.MapFrom(src => src.NodeSKUID))
                 .ForMember(dest => dest.Use3d, opt => opt.MapFrom(src => src.GetBooleanValue("ProductChili3dEnabled", false)))
                 .ForMember(dest => dest.NodeId, opt => opt.MapFrom(src => src.NodeID))
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(source =>
+                        URLHelper.ResolveUrl(source.GetValue("ProductImage", string.Empty), false)))
                 .ForAllOtherMembers(m => m.Ignore());
 
             CreateMap<TreeNode, CampaignData>()
