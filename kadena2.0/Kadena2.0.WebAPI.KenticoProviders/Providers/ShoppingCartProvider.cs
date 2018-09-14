@@ -415,23 +415,11 @@ namespace Kadena.WebAPI.KenticoProviders
                                                 .Sum(x => x.CartItemUnits);
         }
 
-        public void RemoveCurrentItemsFromStock(int shoppingCartId = 0)
+        public void UpdateInventory(int shoppingCartId = 0)
         {
             var shoppingCart = GetShoppingCartInternal(shoppingCartId);
 
-            var items = shoppingCart.CartItems;
-
-            foreach (var i in items)
-            {
-                if (i.GetValue("ProductType", string.Empty).Contains(ProductTypes.InventoryProduct))
-                {
-                    int toRemove = i.CartItemUnits <= i.SKU.SKUAvailableItems ? i.CartItemUnits : i.SKU.SKUAvailableItems;
-                    i.SKU.SKUAvailableItems -= toRemove;
-                    i.SKU.SubmitChanges(false);
-                    i.SKU.MakeComplete(true);
-                    i.SKU.Update();
-                }
-            }
+            SKUInfoProvider.UpdateInventory(shoppingCart);
         }
 
         public void UpdateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, CampaignProductType cartType = CampaignProductType.GeneralInventory)
