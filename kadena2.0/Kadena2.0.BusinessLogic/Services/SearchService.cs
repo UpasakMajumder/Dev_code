@@ -155,7 +155,7 @@ namespace Kadena.BusinessLogic.Services
                     // fill in SKU image if teaser is empty
                     if (string.IsNullOrEmpty(resultItem.ImgUrl))
                     {
-                        resultItem.ImgUrl = product.SkuImageUrl;
+                        resultItem.ImgUrl = product.ImageUrl;
                     }
                     resultItem.Category = product.Category;
                     if (product.ProductType.Contains(ProductTypes.InventoryProduct))
