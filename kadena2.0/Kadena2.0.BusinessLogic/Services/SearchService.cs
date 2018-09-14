@@ -21,9 +21,10 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoSearchService kenticoSearch;
         private readonly IKenticoProductsProvider products;
         private readonly IKenticoDocumentProvider documents;
+        private readonly IImageService imageService;
 
         public SearchService(IMapper mapper, IKenticoResourceService resources, IKenticoSiteProvider site,
-            IKenticoSearchService kenticoSearch,  IKenticoProductsProvider products, IKenticoDocumentProvider documents)
+            IKenticoSearchService kenticoSearch,  IKenticoProductsProvider products, IKenticoDocumentProvider documents, IImageService imageService)
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
@@ -31,6 +32,7 @@ namespace Kadena.BusinessLogic.Services
             this.kenticoSearch = kenticoSearch ?? throw new ArgumentNullException(nameof(kenticoSearch));
             this.products = products ?? throw new ArgumentNullException(nameof(products));
             this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
+            this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
         }
 
         public SearchResultPage Search(string phrase, int results = 100)
@@ -130,7 +132,7 @@ namespace Kadena.BusinessLogic.Services
                     // fill in SKU image if teaser is empty
                     if (string.IsNullOrEmpty(resultItem.ImgUrl))
                     {
-                        resultItem.ImgUrl = product.ImageUrl;
+                        resultItem.ImgUrl = imageService.GetThumbnailLink(product.ImageUrl);
                     }
                     resultItem.Category = product.Category;
                     if (product.ProductType.Contains(ProductTypes.InventoryProduct))
