@@ -559,9 +559,24 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 var parameters = new ShoppingCartItemParameters(i.SKUID, i.Quantity);
                 var cartItem = cartInfo.SetShoppingCartItem(parameters);
-                if (cartItem != null && i.CartItemPrice.HasValue)
+                if (cartItem != null)
                 {
-                    cartItem.CartItemPrice = (double)i.CartItemPrice.Value;
+                    if (i.CartItemPrice.HasValue)
+                    {
+                        cartItem.CartItemPrice = (double)i.CartItemPrice.Value;
+                    }
+                    if (i.OrderItem != null)
+                    {
+                        cartItem.OrderItem = new OrderItemInfo
+                        {
+                            OrderItemUnitCount = i.OrderItem.Quantity
+                        };
+                    }
+                    var checkResult = ShoppingCartItemInfoProvider.CheckShoppingCartItem(cartItem);
+                    if (checkResult.InventoryUnits > -1)
+                    {
+                        throw new ArgumentException(checkResult.GetMessage(";"));
+                    }
                 }
             }
             cartInfo.InvalidateCalculations();
