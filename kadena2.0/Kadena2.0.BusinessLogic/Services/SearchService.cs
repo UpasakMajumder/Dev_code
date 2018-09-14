@@ -25,37 +25,12 @@ namespace Kadena.BusinessLogic.Services
         public SearchService(IMapper mapper, IKenticoResourceService resources, IKenticoSiteProvider site,
             IKenticoSearchService kenticoSearch,  IKenticoProductsProvider products, IKenticoDocumentProvider documents)
         {
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (site == null)
-            {
-                throw new ArgumentNullException(nameof(site));
-            }
-            if (kenticoSearch == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoSearch));
-            }
-            if (products == null)
-            {
-                throw new ArgumentNullException(nameof(products));
-            }
-            if (documents == null)
-            {
-                throw new ArgumentNullException(nameof(documents));
-            }
-
-            this.mapper = mapper;
-            this.resources = resources;
-            this.siteProvider = site;
-            this.kenticoSearch = kenticoSearch;
-            this.products = products;
-            this.documents = documents;
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.siteProvider = site ?? throw new ArgumentNullException(nameof(site));
+            this.kenticoSearch = kenticoSearch ?? throw new ArgumentNullException(nameof(kenticoSearch));
+            this.products = products ?? throw new ArgumentNullException(nameof(products));
+            this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
         }
 
         public SearchResultPage Search(string phrase, int results = 100)
