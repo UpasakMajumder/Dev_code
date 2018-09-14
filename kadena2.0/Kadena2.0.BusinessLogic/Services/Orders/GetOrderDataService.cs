@@ -131,7 +131,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
             };
 
             // If only mailing list items in cart, we are not picking any delivery option
-            if (!cartItems.All( i => ProductTypes.IsOfType( i.ProductType, ProductTypes.MailingProduct)))
+            if (!cartItems.All(i => ProductTypes.IsOfType(i.ProductType, ProductTypes.MailingProduct)))
             {
                 var deliveryMethod = shoppingCart.GetShippingOption(request.DeliveryMethod);
                 orderDto.ShippingOption = new ShippingOptionDTO()
@@ -156,29 +156,17 @@ namespace Kadena2.BusinessLogic.Services.Orders
 
         private OrderItemTypeDTO ConvertCartItemProductTypeToOrderItemProductType(string productType)
         {
-            var cartItemFlags = productType.Split('|');
-
-            var standardTypes = new[]
-            {
-                ProductTypes.POD, ProductTypes.StaticProduct, ProductTypes.InventoryProduct, ProductTypes.ProductWithAddOns
-            };
-
-            if (cartItemFlags.Contains(ProductTypes.MailingProduct))
+            if (ProductTypes.IsOfType(productType, ProductTypes.MailingProduct))
             {
                 return OrderItemTypeDTO.Mailing;
             }
-            else if (cartItemFlags.Contains(ProductTypes.TemplatedProduct))
+
+            if (ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct))
             {
                 return OrderItemTypeDTO.TemplatedProduct;
             }
-            else if (cartItemFlags.Any(flag => standardTypes.Contains(flag)))
-            {
-                return OrderItemTypeDTO.StandardOnStockItem;
-            }
-            else
-            {
-                throw new ArgumentException($"Missing mapping or invalid product type '{ productType }'");
-            }
+
+            return OrderItemTypeDTO.StandardOnStockItem;
         }
 
         public AddressDTO GetSourceAddressForDeliveryEstimation()
