@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.Models.Product;
 using System.Web;
 using System;
 using Kadena.Models.SiteSettings;
@@ -23,7 +22,7 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoDocumentProvider documents;
 
         public SearchService(IMapper mapper, IKenticoResourceService resources, IKenticoSiteProvider site,
-            IKenticoSearchService kenticoSearch,  IKenticoProductsProvider products, IKenticoDocumentProvider documents)
+            IKenticoSearchService kenticoSearch, IKenticoProductsProvider products, IKenticoDocumentProvider documents)
         {
             if (mapper == null)
             {
@@ -158,7 +157,7 @@ namespace Kadena.BusinessLogic.Services
                         resultItem.ImgUrl = product.SkuImageUrl;
                     }
                     resultItem.Category = product.Category;
-                    if (product.ProductType.Contains(ProductTypes.InventoryProduct))
+                    if (!string.IsNullOrWhiteSpace(product.Availability))
                     {
                         resultItem.Stock = new Stock()
                         {
