@@ -94,7 +94,7 @@
             <![CDATA[If set to true, "Request kit" button will NOT be displayed even if it is enabled on site level]]>
           </fielddescription>
           <visiblemacro ismacro="true">
-            <![CDATA[{%ProductType.Contains("KDA.StaticProduct") || ProductType.Contains("KDA.InventoryProduct") || ProductType.Contains("KDA.POD")|(user)administrator|(hash)2e7a532c5549ecdfde008a033ede3220d7aa21dc65f3cbb56a09d5d81d66649f%}]]>
+            <![CDATA[{%!ProductType.Contains("KDA.TemplatedProduct") && !ProductType.Contains("KDA.MailingProduct")|(user)administrator|(hash)7cd5b584adcb69f887df0fa1ef660953915776d7571a86c0e40a4dcac2a13873%}]]>
           </visiblemacro>
         </properties>
         <settings>
