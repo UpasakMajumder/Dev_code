@@ -281,7 +281,7 @@ namespace Kadena.Tests.BusinessLogic
 
         [Theory(DisplayName = "ProductsService.CanDisplayAddToCartButton() | Inventory type")]
         [InlineData(null, true, false)]
-        [InlineData(null, false, false)]
+        [InlineData(null, false, true)]
         [InlineData(0, true, false)]
         [InlineData(0, false, true)]
         [InlineData(1, true, true)]
