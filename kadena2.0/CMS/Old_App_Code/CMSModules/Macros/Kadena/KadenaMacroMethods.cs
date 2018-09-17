@@ -167,28 +167,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             return ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct);
         }
 
-        [MacroMethod(typeof(bool), "Validates combination of product types - inventory type variant.", 1)]
-        [MacroMethodParam(0, "productTypes", typeof(string), "Product types piped string")]
-        public static object IsInventoryProductTypeCombinationValid(EvaluationContext context, params object[] parameters)
-        {
-            if (parameters.Length != 1)
-            {
-                throw new NotSupportedException();
-            }
-            var selectedProductTypeCodeNames = ValidationHelper.GetString(parameters[0], "").Split("|".ToCharArray());
-            // Inventory product - Must be of type static
-            if (selectedProductTypeCodeNames.Contains(ProductTypes.InventoryProduct))
-            {
-                if (selectedProductTypeCodeNames.Contains(ProductTypes.POD) ||
-                    selectedProductTypeCodeNames.Contains(ProductTypes.MailingProduct) ||
-                    selectedProductTypeCodeNames.Contains(ProductTypes.TemplatedProduct))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
         [MacroMethod(typeof(bool), "Validates combination of product types - mailing type variant.", 1)]
         [MacroMethodParam(0, "productTypes", typeof(string), "Product types piped string")]
         public static object IsMailingProductTypeCombinationValid(EvaluationContext context, params object[] parameters)
