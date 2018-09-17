@@ -205,7 +205,7 @@
           <SortItems>False</SortItems>
         </settings>
       </field>
-      <field column="ProductType" columnsize="200" columntype="text" guid="b60757d6-eb24-4b23-9c54-468a794b15d2" hasdependingfields="true" publicfield="false" spellcheck="false" visible="true">
+      <field allowempty="true" column="ProductType" columnsize="200" columntype="text" guid="b60757d6-eb24-4b23-9c54-468a794b15d2" hasdependingfields="true" publicfield="false" spellcheck="false" visible="true">
         <properties>
           <fieldcaption>Product Type</fieldcaption>
         </properties>
