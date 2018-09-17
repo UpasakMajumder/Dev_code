@@ -318,7 +318,7 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
                 result += string.Format(selectedItemTemplate, originalDocument.DocumentName, originalDocument.NodeID);
             }
 
-            var wantedTypes = new[] { ProductTypes.InventoryProduct, ProductTypes.StaticProduct, "KDA.POD" };
+            var wantedTypes = new[] { ProductTypes.StaticProduct, "KDA.POD" };
 
             var allKitDocuments = tree.SelectNodes()
                 .OnCurrentSite()
