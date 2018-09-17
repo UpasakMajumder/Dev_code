@@ -202,7 +202,6 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
             if (selectedProductTypeCodeNames.Contains(ProductTypes.TemplatedProduct))
             {
                 if (selectedProductTypeCodeNames.Contains(ProductTypes.StaticProduct) ||
-                    selectedProductTypeCodeNames.Contains(ProductTypes.InventoryProduct) ||
                     selectedProductTypeCodeNames.Contains(ProductTypes.POD))
                 {
                     return false;
