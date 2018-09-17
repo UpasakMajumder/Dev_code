@@ -136,6 +136,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.PaymentOptionDisplayName))
                 .ForMember(dest => dest.ClassName, opt => opt.MapFrom(src => src.PaymentOptionName))
                 .ForMember(dest => dest.IsUnpayable, opt => opt.MapFrom(src => src.GetBooleanValue("IsUnpayable", false)))
+                .ForMember(dest => dest.ApprovalRequired, opt => opt.MapFrom(src => src.GetBooleanValue("ApprovalRequired", false)))
                 .ForMember(dest => dest.Checked, opt => opt.UseValue(false))
                 .ForMember(dest => dest.Title, opt => opt.Ignore())
                 .ForMember(dest => dest.HasInput, opt => opt.Ignore())
