@@ -1,5 +1,4 @@
-﻿using Kadena.AmazonFileSystemProvider;
-using AutoMapper;
+﻿using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
 using Kadena.BusinessLogic.Contracts.Orders;
 using Kadena.BusinessLogic.Factories.Checkout;
@@ -237,14 +236,10 @@ namespace Kadena.Tests.BusinessLogic
         {
             // Arrange 
             var newCartItem = CreateNewCartItem();
-            var product = new Product
-            {
-                ProductType = ProductTypes.InventoryProduct,
-            };
+            var product = new Product();
             var originalCartItemEntity = new CartItemEntity
             {
                 CartItemText = Name,
-                ProductType = ProductTypes.InventoryProduct,
                 SKUID = 6654,
                 Quantity = 3
             };
@@ -444,14 +439,10 @@ namespace Kadena.Tests.BusinessLogic
         {
             // Arrange 
             var newCartItem = CreateNewCartItem();
-            var product = new Product
-            {
-                ProductType = ProductTypes.InventoryProduct
-            };
+            var product = new Product();
             var originalCartItemEntity = new CartItemEntity
             {
                 CartItemText = Name,
-                ProductType = ProductTypes.InventoryProduct,
                 Quantity = 3
             };
 

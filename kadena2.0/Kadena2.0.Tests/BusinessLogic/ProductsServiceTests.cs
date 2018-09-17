@@ -289,7 +289,7 @@ namespace Kadena.Tests.BusinessLogic
         public void CanDisplayAddToCart_Inventory(int? numberOfAvailableProducts, bool sellOnlyAvailable, bool expectedResult)
         {
             // Act
-            var result = Sut.CanDisplayAddToCartButton("KDA.InventoryProduct", numberOfAvailableProducts, sellOnlyAvailable);
+            var result = Sut.CanDisplayAddToCartButton("", numberOfAvailableProducts, sellOnlyAvailable);
 
             // Assert
             Assert.Equal(expectedResult, result);
