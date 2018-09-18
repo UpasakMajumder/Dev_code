@@ -26,7 +26,7 @@
           <defaultvalue>
 <![CDATA[
 <div class="dashboard__block-heading">
-              <h2>Favorites</h2>
+              <h2>{$Kadena.Webparts.FavoriteProducts.Title$}</h2>
             </div>
 
             <div class="r-products-favorites"></div>

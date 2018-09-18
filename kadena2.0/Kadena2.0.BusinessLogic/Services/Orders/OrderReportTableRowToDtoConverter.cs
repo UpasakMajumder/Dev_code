@@ -26,7 +26,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 shippingDate = new TableCell(trackingInfo?.ShippingDate),
                 trackingNumber = new TableCellLink(trackingInfo?.Url, trackingInfo?.Id) { Type = "tracking" },
                 shippedQuantity = new TableCell(trackingInfo?.QuantityShipped ?? 0),
-                shippingMethod = new TableCell(trackingInfo?.ShippingMethod.ShippingService),
+                shippingMethod = new TableCell(trackingInfo?.ShippingMethod?.ShippingService),
                 trackingInfoId = new TableCell(trackingInfo?.ItemId),
             };
 

@@ -182,7 +182,6 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             if (sku != null)
             {
-                product.SkuImageUrl = URLHelper.GetAbsoluteUrl(sku.SKUImagePath);
                 if (sku.SKUTrackInventory != TrackInventoryTypeEnum.Disabled)
                 {
                     product.StockItems = sku.SKUAvailableItems;
