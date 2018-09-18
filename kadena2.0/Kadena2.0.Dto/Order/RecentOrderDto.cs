@@ -1,4 +1,5 @@
 ﻿using Kadena.Dto.SubmitOrder.MicroserviceRequests;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -16,6 +17,7 @@ namespace Kadena.Dto.Order
 
         public decimal TotalCost { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int ClientId { get; set; }
 
         public string SiteName { get; set; }

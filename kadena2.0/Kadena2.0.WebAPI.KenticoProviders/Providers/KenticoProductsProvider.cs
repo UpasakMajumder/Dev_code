@@ -182,7 +182,6 @@ namespace Kadena.WebAPI.KenticoProviders
         {
             if (sku != null)
             {
-                product.SkuImageUrl = URLHelper.GetAbsoluteUrl(sku.SKUImagePath);
                 product.StockItems = sku.SKUAvailableItems;
                 product.Availability = sku.SKUAvailableItems > 0 ? "available" : "out";
                 product.Weight = sku.SKUWeight;
