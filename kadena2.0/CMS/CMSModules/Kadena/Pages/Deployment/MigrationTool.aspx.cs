@@ -31,6 +31,14 @@ namespace Kadena.CMSModules.Kadena.Pages.Deployment
             base.OnLoad(e);
 
             InitAsyncLog();
+
+            var mSerializeAction = new HeaderAction
+            {
+                Text = "Migrate",
+                CommandName = "migrate",
+                ButtonStyle = ButtonStyle.Default
+            };
+            HeaderActions.AddAction(mSerializeAction);
         }
 
         private void InitAsyncLog()
