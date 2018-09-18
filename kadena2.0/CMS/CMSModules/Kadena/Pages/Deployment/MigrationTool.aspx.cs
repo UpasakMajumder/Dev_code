@@ -9,6 +9,10 @@ using System.Web.UI.WebControls;
 using CMS.Core;
 using System.Threading;
 using System.Security.Principal;
+using CMS.DocumentEngine;
+using CMS.Localization;
+using System.Linq;
+using CMS.Ecommerce;
 
 namespace Kadena.CMSModules.Kadena.Pages.Deployment
 {
@@ -39,6 +43,64 @@ namespace Kadena.CMSModules.Kadena.Pages.Deployment
                 ButtonStyle = ButtonStyle.Default
             };
             HeaderActions.AddAction(mSerializeAction);
+            HeaderActions.ActionPerformed += HeaderActions_ActionPerformed;
+        }
+
+        private void HeaderActions_ActionPerformed(object sender, CommandEventArgs e)
+        {
+            switch (e.CommandName.ToLowerCSafe())
+            {
+                case "migrate":
+                    StartMigration();
+                    break;
+            }
+        }
+
+        private void StartMigration()
+        {
+            pnlLog.Visible = true;
+            ctlAsyncLog.EnsureLog();
+            ctlAsyncLog.RunAsync(KDA3437_Migration, WindowsIdentity.GetCurrent());
+        }
+
+        private void KDA3437_Migration(object parameters)
+        {
+            var state = new SerializationOperationState
+            {
+                CancellationToken = new CancellationTokenSource(),
+                Result = false
+            };
+
+            ctlAsyncLog.ProcessData.AllowUpdateThroughPersistentMedium = false;
+            ctlAsyncLog.ProcessData.Data = state;
+
+            var className = "KDA.Product";
+            var products = DocumentHelper.GetDocuments(className)
+                            .WhereEquals("ClassName", className)
+                            .CheckPermissions()
+                            .ToList();
+
+            foreach (var p in products)
+            {
+                if (state.CancellationToken.IsCancellationRequested)
+                {
+                    return;
+                }
+                ctlAsyncLog.AddLog($"Migrating product '{p.DocumentName}' on site '{p.NodeSiteName}'.");
+                var sku = SKUInfoProvider.GetSKUInfo(p.NodeSKUID);
+                if (p.GetStringValue("ProductType", string.Empty).Contains("KDA.InventoryProduct"))
+                {
+                    sku.SKUTrackInventory = TrackInventoryTypeEnum.ByProduct;
+                }
+                else
+                {
+                    sku.SKUTrackInventory = TrackInventoryTypeEnum.Disabled;
+                }
+                sku.Update();
+            }
+
+
+            state.Result = true;
         }
 
         private void InitAsyncLog()
