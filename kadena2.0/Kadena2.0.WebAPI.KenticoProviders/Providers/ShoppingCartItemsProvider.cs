@@ -83,7 +83,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 ProductionTime = displayProductionAndShipping ? i.GetValue("ProductProductionTime", string.Empty) : null,
                 ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null,
                 Preview = new Button { Exists = false, Text = resources.GetResourceString("Kadena.Checkout.PreviewButton") },
-                RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false),
+                RequiresApproval = (i.VariantParent ?? i.SKU).GetBooleanValue("SKUApprovalRequired", false),
                 HiResPdfAllowed = i.SKU.GetBooleanValue("SKUHiResPdfDownloadEnabled", false),
                 Options = GetItemOptions(i)
             };
