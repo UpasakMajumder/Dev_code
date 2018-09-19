@@ -5,6 +5,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
 using System;
 using System.Collections.Generic;
+using Kadena.Models.SiteSettings;
 
 namespace Kadena.BusinessLogic.Services.Approval
 {
@@ -15,18 +16,21 @@ namespace Kadena.BusinessLogic.Services.Approval
         private readonly IKenticoUserProvider users;
         private readonly IKenticoSettingsProvider settingsProvider;
         private readonly IKenticoSiteProvider siteProvider;
+        private readonly IKenticoResourceService resourceService;
 
-        public ApproverService(IKenticoPermissionsProvider permissions, 
+        public ApproverService(IKenticoPermissionsProvider permissions,
                                IKenticoCustomerProvider customers,
                                IKenticoUserProvider users,
                                IKenticoSettingsProvider settingsProvider,
-                               IKenticoSiteProvider siteProvider)
+                               IKenticoSiteProvider siteProvider,
+                               IKenticoResourceService resourceService)
         {
             this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             this.customers = customers ?? throw new ArgumentNullException(nameof(customers));
             this.users = users ?? throw new ArgumentNullException(nameof(users));
             this.settingsProvider = settingsProvider ?? throw new ArgumentNullException(nameof(settingsProvider));
             this.siteProvider = siteProvider ?? throw new ArgumentNullException(nameof(siteProvider));
+            this.resourceService = resourceService ?? throw new ArgumentNullException(nameof(resourceService));
         }
 
         public IEnumerable<User> GetApprovers(int siteId)
@@ -55,7 +59,7 @@ namespace Kadena.BusinessLogic.Services.Approval
                 return false;
             }
 
-            if(!IsApprover(approverUserId))
+            if (!IsApprover(approverUserId))
             {
                 return false;
             }
@@ -68,16 +72,14 @@ namespace Kadena.BusinessLogic.Services.Approval
 
             var customersApproverUserId = customer.ApproverUserId;
 
-            if (customersApproverUserId == 0)
-            {
-                var site = siteProvider.GetKenticoSite(customer.SiteId);
-               
-                // check if there is a default approver for this site
-               //var defaultApproverId = 
-                
-            }
+            if (customersApproverUserId != 0) return customersApproverUserId == approverUserId;
+            
+            var defaultApproverId = resourceService.GetSiteSettingsKey(Settings.KDA_DefaultOrderApprover);
 
-            return customersApproverUserId == approverUserId;
+            if (string.IsNullOrEmpty(defaultApproverId)) return false;
+
+            return approverUserId.ToString() == defaultApproverId;
+
         }
 
         public void CheckIsCustomersApprover(int customerId, string customerName)

@@ -331,11 +331,11 @@ namespace Kadena.Models.SiteSettings
         /// <summary>
         /// 
         /// </summary>
-        [CategoryAttribute("E-Commerce", "ECommerceSettings", "Kadena")]
-        [GroupAttribute("General")]
+        [CategoryAttribute("Kadena", "Kadena", "CMS.Settings")]
+        [GroupAttribute("General Site Settings")]
         [DefaultValueAttribute(null)]
-        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkRlZmF1bHQgQXBwcm92ZXIiLCJLZXlOYW1lIjoiS0RBX0RlZmF1bHRBcHByb3ZlciIsIktleVR5cGUiOiJpbnQiLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjoifi9jbXNmb3JtY29udHJvbHMva2FkZW5hL29yZGVyYXBwcm92ZXJzZWxlY3Rvci5hc2N4IiwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJFLUNvbW1lcmNlIiwiTmFtZSI6IkVDb21tZXJjZVNldHRpbmdzIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiS2FkZW5hIn0sIkRpc3BsYXlOYW1lIjoiR2VuZXJhbCJ9fQ==")]
-        public const string KDA_DefaultApprover = "KDA_DefaultApprover";
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkRlZmF1bHQgT3JkZXIgQXBwcm92ZXIiLCJLZXlOYW1lIjoiS0RBX0RlZmF1bHRPcmRlckFwcHJvdmVyIiwiS2V5VHlwZSI6ImludCIsIktleURlZmF1bHRWYWx1ZSI6bnVsbCwiS2V5RGVzY3JpcHRpb24iOiIiLCJLZXlFZGl0aW5nQ29udHJvbFBhdGgiOiJ+L2Ntc2Zvcm1jb250cm9scy9rYWRlbmEvb3JkZXJhcHByb3ZlcnNlbGVjdG9yLmFzY3giLCJLZXlFeHBsYW5hdGlvblRleHQiOiIiLCJLZXlGb3JtQ29udHJvbFNldHRpbmdzIjpudWxsLCJLZXlWYWxpZGF0aW9uIjpudWxsLCJHcm91cCI6eyJDYXRlZ29yeSI6eyJEaXNwbGF5TmFtZSI6IkthZGVuYSIsIk5hbWUiOiJLYWRlbmEiLCJDYXRlZ29yeVBhcmVudE5hbWUiOiJDTVMuU2V0dGluZ3MifSwiRGlzcGxheU5hbWUiOiJHZW5lcmFsIFNpdGUgU2V0dGluZ3MifX0=")]
+        public const string KDA_DefaultOrderApprover = "KDA_DefaultOrderApprover";
 
     }
 }
