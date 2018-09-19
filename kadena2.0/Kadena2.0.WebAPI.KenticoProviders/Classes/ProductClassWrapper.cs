@@ -2,7 +2,7 @@
 
 namespace Kadena2.WebAPI.KenticoProviders.Classes
 {
-    public class ProductClassWrapper
+    public class ProductNodeWrapper
     {
         private TreeNode productNode;
 
@@ -26,12 +26,12 @@ namespace Kadena2.WebAPI.KenticoProviders.Classes
 
         public TreeNode TreeNode => productNode;
 
-        public ProductClassWrapper(TreeNode productNode)
+        public ProductNodeWrapper(TreeNode productNode)
         {
             this.productNode = productNode;
         }
 
-        public virtual ProductClass ToProduct()
+        public virtual IProductClass ToProduct()
         {
             if (productNode?.ClassName != CLASS_NAME)
             {

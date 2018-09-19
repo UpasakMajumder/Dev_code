@@ -27,8 +27,10 @@ namespace Kadena.Old_App_Code.EventHandlers
             base.OnInit();
 
             DocumentEvents.Insert.After += CopyProductSKUFieldsToSKU_EventHandler;
+            DocumentEvents.Insert.After += CopyCampaignsProductSKUFieldsToSKU_EventHandler;
             DocumentEvents.Insert.After += SendNewProductNotificationEmail_EventHandler;
             DocumentEvents.Update.After += CopyProductSKUFieldsToSKU_EventHandler;
+            DocumentEvents.Update.After += CopyCampaignsProductSKUFieldsToSKU_EventHandler;
         }
 
         public void SendNewProductNotificationEmail_EventHandler(object sender, DocumentEventArgs e)
@@ -49,12 +51,26 @@ namespace Kadena.Old_App_Code.EventHandlers
             }
         }
 
-        protected virtual ProductClass GetProductFromNode(TreeNode node)
+        public void CopyCampaignsProductSKUFieldsToSKU_EventHandler(object sender, DocumentEventArgs e)
         {
-            return new ProductClassWrapper(node).ToProduct();
+            var product = GetCampaignsProductFromNode(e.Node);
+            if (product != null)
+            {
+                CopyProductSKUFieldsToSKU(product);
+            }
         }
 
-        protected virtual void CopyProductSKUFieldsToSKU(ProductClass product)
+        protected virtual IProductClass GetProductFromNode(TreeNode node)
+        {
+            return new ProductNodeWrapper(node).ToProduct();
+        }
+
+        protected virtual IProductClass GetCampaignsProductFromNode(TreeNode node)
+        {
+            return new CampaignsProductNodeWrapper(node).ToProduct();
+        }
+
+        protected virtual void CopyProductSKUFieldsToSKU(IProductClass product)
         {
             if (product == null)
             {

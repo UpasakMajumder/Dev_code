@@ -5,6 +5,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Classes;
 using Moq;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Kadena.Tests.EventHandlers
@@ -21,15 +22,31 @@ namespace Kadena.Tests.EventHandlers
             Verify<IKenticoSkuProvider>(p => p.UpdateSkuMandatoryFields(It.IsAny<Sku>()), Times.Never);
         }
 
-        [Fact(DisplayName = "ProductEventHandlerFake.CopyProductSKUFieldsToSKU_EventHandler()")]
-        public void CopyProductSKUFieldsToSKU_ShouldCopyValues_WhenNodeIsProduct()
+        public static IEnumerable<object[]> GetProducts() => new[]
         {
-            var product = new ProductClass
+            new object []
             {
-                NodeSKUID = 1,
-                SKUNeedsShipping = true,
-                SKUWeight = 2
-            };
+                new ProductClass
+                {
+                    NodeSKUID = 1,
+                    SKUNeedsShipping = true,
+                    SKUWeight = 2
+                }
+            },
+            new object []
+            {
+                new CampaignsProductClass
+                {
+                    NodeSKUID = 3,
+                    SKUWeight = 4
+                }
+            },
+        };
+
+        [Theory(DisplayName = "ProductEventHandlerFake.CopyProductSKUFieldsToSKU_EventHandler()")]
+        [MemberData(nameof(GetProducts))]
+        public void CopyProductSKUFieldsToSKU_ShouldCopyValues_WhenNodeIsProduct(IProductClass product)
+        {
             var sut = new ProductEventHandlerFake() { Product = product };
             var skuProviderMock = new Mock<IKenticoSkuProvider>();
             sut.SkuProvider = skuProviderMock.Object;
@@ -59,9 +76,14 @@ namespace Kadena.Tests.EventHandlers
 
         private class ProductEventHandlerFake : ProductEventHandler
         {
-            public ProductClass Product { get; set; }
+            public IProductClass Product { get; set; }
 
-            protected override ProductClass GetProductFromNode(TreeNode node)
+            protected override IProductClass GetProductFromNode(TreeNode node)
+            {
+                return Product;
+            }
+
+            protected override IProductClass GetCampaignsProductFromNode(TreeNode node)
             {
                 return Product;
             }
