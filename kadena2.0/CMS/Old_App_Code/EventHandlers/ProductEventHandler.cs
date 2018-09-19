@@ -60,17 +60,17 @@ namespace Kadena.Old_App_Code.EventHandlers
             }
         }
 
-        protected virtual IProductClass GetProductFromNode(TreeNode node)
+        protected virtual ProductClass GetProductFromNode(TreeNode node)
         {
             return new ProductNodeWrapper(node).ToProduct();
         }
 
-        protected virtual IProductClass GetCampaignsProductFromNode(TreeNode node)
+        protected virtual ProductClass GetCampaignsProductFromNode(TreeNode node)
         {
             return new CampaignsProductNodeWrapper(node).ToProduct();
         }
 
-        protected virtual void CopyProductSKUFieldsToSKU(IProductClass product)
+        protected virtual void CopyProductSKUFieldsToSKU(ProductClass product)
         {
             if (product == null)
             {

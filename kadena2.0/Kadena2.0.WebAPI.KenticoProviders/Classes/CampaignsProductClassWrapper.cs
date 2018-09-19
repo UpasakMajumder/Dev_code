@@ -25,14 +25,14 @@ namespace Kadena2.WebAPI.KenticoProviders.Classes
             this.productNode = productNode;
         }
 
-        public IProductClass ToProduct()
+        public ProductClass ToProduct()
         {
             if (productNode?.ClassName != CLASS_NAME)
             {
                 return null;
             }
 
-            return new CampaignsProductClass
+            return new ProductClass
             {
                 NodeSKUID = NodeSKUID,
                 SKUWeight = ProductWeight,

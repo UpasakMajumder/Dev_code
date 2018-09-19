@@ -31,7 +31,7 @@ namespace Kadena2.WebAPI.KenticoProviders.Classes
             this.productNode = productNode;
         }
 
-        public virtual IProductClass ToProduct()
+        public virtual ProductClass ToProduct()
         {
             if (productNode?.ClassName != CLASS_NAME)
             {
