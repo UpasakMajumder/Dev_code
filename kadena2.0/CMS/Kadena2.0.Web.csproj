@@ -757,6 +757,13 @@
     <Compile Include="CMSFormControls\Kadena\MediaMultiSelector.ascx.designer.cs">
       <DependentUpon>MediaMultiSelector.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Deployment\MigrationTool.aspx.cs">
+      <DependentUpon>MigrationTool.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Deployment\MigrationTool.aspx.designer.cs">
+      <DependentUpon>MigrationTool.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Orders\FailedOrders.aspx.cs">
       <DependentUpon>FailedOrders.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1410,6 +1417,7 @@
     <Content Include="CMSFormControls\Kadena\TieredPricingSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\MediaMultiSelector.ascx" />
+    <Content Include="CMSModules\Kadena\Pages\Deployment\MigrationTool.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Orders\FailedOrders.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Payment\Create3dsiContainer.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Products\CampaignProductsMigration.aspx" />

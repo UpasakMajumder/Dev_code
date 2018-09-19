@@ -63,7 +63,7 @@ namespace Kadena.Old_App_Code.Kadena.Shoppingcart
                     Type = orderType,
                     Campaign = GetCampaign(),
                     BillingAddress = billingAddress,
-                    ShippingAddressSource = DIContainer.Resolve<IGetOrderDataService>().GetSourceAddressForDeliveryEstimation(),
+                    ShippingAddressSource = mapper.Map<AddressDTO>(estimationData.GetSourceAddress()),
                     ShippingAddressDestination = billingAddress,
                     ShippingOption = ShippingOption(),
                     Customer = GetCustomer(),
