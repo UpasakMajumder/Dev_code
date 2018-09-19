@@ -13,14 +13,20 @@ namespace Kadena.BusinessLogic.Services.Approval
         private readonly IKenticoPermissionsProvider permissions;
         private readonly IKenticoCustomerProvider customers;
         private readonly IKenticoUserProvider users;
+        private readonly IKenticoSettingsProvider settingsProvider;
+        private readonly IKenticoSiteProvider siteProvider;
 
         public ApproverService(IKenticoPermissionsProvider permissions, 
                                IKenticoCustomerProvider customers,
-                               IKenticoUserProvider users)
+                               IKenticoUserProvider users,
+                               IKenticoSettingsProvider settingsProvider,
+                               IKenticoSiteProvider siteProvider)
         {
             this.permissions = permissions ?? throw new ArgumentNullException(nameof(permissions));
             this.customers = customers ?? throw new ArgumentNullException(nameof(customers));
             this.users = users ?? throw new ArgumentNullException(nameof(users));
+            this.settingsProvider = settingsProvider ?? throw new ArgumentNullException(nameof(settingsProvider));
+            this.siteProvider = siteProvider ?? throw new ArgumentNullException(nameof(siteProvider));
         }
 
         public IEnumerable<User> GetApprovers(int siteId)
@@ -54,7 +60,22 @@ namespace Kadena.BusinessLogic.Services.Approval
                 return false;
             }
 
-            var customersApproverUserId = customers.GetCustomer(customerId)?.ApproverUserId ?? 0;
+            var customer = customers.GetCustomer(customerId);
+            if (customer == null)
+            {
+                return false;
+            }
+
+            var customersApproverUserId = customer.ApproverUserId;
+
+            if (customersApproverUserId == 0)
+            {
+                var site = siteProvider.GetKenticoSite(customer.SiteId);
+               
+                // check if there is a default approver for this site
+               //var defaultApproverId = 
+                
+            }
 
             return customersApproverUserId == approverUserId;
         }

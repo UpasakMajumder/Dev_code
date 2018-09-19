@@ -328,5 +328,14 @@ namespace Kadena.Models.SiteSettings
         [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IlNvbGQgVG8gR2VuZXJhbCBJbnZlbnRvcnkiLCJLZXlOYW1lIjoiS0RBX1NvbGRUb0dlbmVyYWxJbnZlbnRvcnkiLCJLZXlUeXBlIjoic3RyaW5nIiwiS2V5RGVmYXVsdFZhbHVlIjpudWxsLCJLZXlEZXNjcmlwdGlvbiI6IiIsIktleUVkaXRpbmdDb250cm9sUGF0aCI6bnVsbCwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJLYWRlbmEiLCJOYW1lIjoiS2FkZW5hIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiQ01TLlNldHRpbmdzIn0sIkRpc3BsYXlOYW1lIjoiR2VuZXJhbCBTaXRlIFNldHRpbmdzIn19")]
         public const string KDA_SoldToGeneralInventory = "KDA_SoldToGeneralInventory";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        [CategoryAttribute("E-Commerce", "ECommerceSettings", "Kadena")]
+        [GroupAttribute("General")]
+        [DefaultValueAttribute(null)]
+        [EncodedDefinitionAttribute("eyJLZXlEaXNwbGF5TmFtZSI6IkRlZmF1bHQgQXBwcm92ZXIiLCJLZXlOYW1lIjoiS0RBX0RlZmF1bHRBcHByb3ZlciIsIktleVR5cGUiOiJpbnQiLCJLZXlEZWZhdWx0VmFsdWUiOm51bGwsIktleURlc2NyaXB0aW9uIjoiIiwiS2V5RWRpdGluZ0NvbnRyb2xQYXRoIjoifi9jbXNmb3JtY29udHJvbHMva2FkZW5hL29yZGVyYXBwcm92ZXJzZWxlY3Rvci5hc2N4IiwiS2V5RXhwbGFuYXRpb25UZXh0IjoiIiwiS2V5Rm9ybUNvbnRyb2xTZXR0aW5ncyI6bnVsbCwiS2V5VmFsaWRhdGlvbiI6bnVsbCwiR3JvdXAiOnsiQ2F0ZWdvcnkiOnsiRGlzcGxheU5hbWUiOiJFLUNvbW1lcmNlIiwiTmFtZSI6IkVDb21tZXJjZVNldHRpbmdzIiwiQ2F0ZWdvcnlQYXJlbnROYW1lIjoiS2FkZW5hIn0sIkRpc3BsYXlOYW1lIjoiR2VuZXJhbCJ9fQ==")]
+        public const string KDA_DefaultApprover = "KDA_DefaultApprover";
+
     }
 }

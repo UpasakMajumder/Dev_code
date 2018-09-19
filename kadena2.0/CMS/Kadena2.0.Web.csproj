@@ -736,6 +736,13 @@
     <Compile Include="CMSFormControls\Kadena\ErpSelector.ascx.designer.cs">
       <DependentUpon>ErpSelector.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSFormControls\Kadena\OrderApproverSelector.ascx.cs">
+      <DependentUpon>OrderApproverSelector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSFormControls\Kadena\OrderApproverSelector.ascx.designer.cs">
+      <DependentUpon>OrderApproverSelector.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSFormControls\Kadena\TieredPricingSelector.ascx.cs">
       <DependentUpon>TieredPricingSelector.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1407,6 +1414,7 @@
     <Content Include="BrandWebservice.asmx" />
     <Content Include="CMSFormControls\Kadena\BusinessUnitControl.ascx" />
     <Content Include="CMSFormControls\Kadena\ErpSelector.ascx" />
+    <Content Include="CMSFormControls\Kadena\OrderApproverSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\TieredPricingSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\MediaMultiSelector.ascx" />
@@ -1572,11 +1580,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2904</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2904/</IISUrl>
+          <IISUrl>http://localhost:56000</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
