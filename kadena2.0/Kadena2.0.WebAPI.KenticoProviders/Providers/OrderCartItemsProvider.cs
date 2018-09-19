@@ -49,17 +49,17 @@ namespace Kadena.WebAPI.KenticoProviders
                     {
                         Unit = resources.GetMassUnit(),
                         Value = (decimal)i.TotalWeight
-                     }
+                    }
                 },
-                
+
                 Artwork = i.GetValue("ArtworkLocation", string.Empty),
                 UnitPrice = (decimal)i.UnitPrice,
                 UnitOfMeasureErpCode = units.GetUnitOfMeasure(unitOfMeasure).ErpCode,
                 ProductType = i.GetValue("ProductType", string.Empty),
                 Quantity = i.CartItemUnits,
-                TotalPrice = (decimal)Math.Round( i.UnitPrice * i.CartItemUnits, 2),
+                TotalPrice = (decimal)Math.Round(i.UnitPrice * i.CartItemUnits, 2),
                 SendPriceToErp = i.GetBooleanValue("SendPriceToErp", true),
-                RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false),
+                RequiresApproval = (i.VariantParent ?? i.SKU).GetBooleanValue("SKUApprovalRequired", false),
                 Options = GetItemOptions(i),
                 DocumentId = i.GetIntegerValue("ProductPageID", 0)
             };
