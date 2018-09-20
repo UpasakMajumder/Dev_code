@@ -65,6 +65,7 @@
 
   &__outer-note {
     @extend %flex--center--default;
+
     @include rem(padding-left, 16px);
     color: $brand-red;
     transition: all $transition-length ease-in-out;
