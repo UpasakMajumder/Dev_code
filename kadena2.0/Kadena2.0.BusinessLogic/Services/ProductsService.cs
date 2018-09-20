@@ -24,12 +24,12 @@ namespace Kadena.BusinessLogic.Services
 
         public ProductsService(IKenticoProductsProvider products,
                                IKenticoSkuProvider skus,
-                               IKenticoFavoritesProvider favorites, 
-                               IKenticoResourceService resources, 
-                               IKenticoUnitOfMeasureProvider units, 
-                               IImageService imageService, 
-                               IKenticoPermissionsProvider permissions, 
-                               IDynamicPriceRangeProvider dynamicRanges, 
+                               IKenticoFavoritesProvider favorites,
+                               IKenticoResourceService resources,
+                               IKenticoUnitOfMeasureProvider units,
+                               IImageService imageService,
+                               IKenticoPermissionsProvider permissions,
+                               IDynamicPriceRangeProvider dynamicRanges,
                                ITieredPriceRangeProvider tieredRanges)
         {
             this.products = products ?? throw new ArgumentNullException(nameof(products));
@@ -82,7 +82,7 @@ namespace Kadena.BusinessLogic.Services
                 price = tieredRanges.GetTieredPrice(quantity, product.TieredPricingJson);
             }
 
-            return price;            
+            return price;
         }
 
         public bool ProductHasValidSKUNumber(int skuid)
@@ -172,35 +172,22 @@ namespace Kadena.BusinessLogic.Services
 
         public bool CanDisplayAddToCartButton(string productType, int? numberOfAvailableProducts, bool sellOnlyIfAvailable)
         {
-            var isStatic = ProductTypes.IsOfType(productType, ProductTypes.StaticProduct);
-            var isPod = ProductTypes.IsOfType(productType, ProductTypes.POD);
-            var isWithAddons = ProductTypes.IsOfType(productType, ProductTypes.ProductWithAddOns);
             var isTemplated = ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct);
-            var isInventory = ProductTypes.IsOfType(productType, ProductTypes.InventoryProduct);
+            var isMailing = ProductTypes.IsOfType(productType, ProductTypes.MailingProduct);
 
-            if ((isStatic || isPod || isWithAddons) && !isTemplated)
+            if (isTemplated || isMailing)
+            {
+                return false;
+            }
+
+            if (sellOnlyIfAvailable)
+            {
+                return numberOfAvailableProducts.HasValue && numberOfAvailableProducts.Value > 0;
+            }
+            else
             {
                 return true;
             }
-
-            if (isInventory)
-            {
-                if (!numberOfAvailableProducts.HasValue)
-                {
-                    return false;
-                }
-
-                if (sellOnlyIfAvailable)
-                {
-                    return numberOfAvailableProducts.Value > 0;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         public string GetPackagingString(int numberOfItemsInPackage, string unitOfMeasure, string cultureCode)
@@ -300,7 +287,7 @@ namespace Kadena.BusinessLogic.Services
             var pricings = new List<ProductPricingInfo>();
             var localizedUom = TranslateUnitOfMeasure(unitOfMeasure, cultureCode);
             var currencySymbol = "$";
-            
+
             if (pricingModel == PricingModel.Dynamic)
             {
                 FillDynamicPrices(pricings, documentId, localizedUom, currencySymbol);
@@ -317,7 +304,7 @@ namespace Kadena.BusinessLogic.Services
         {
             var dynamicRanges = this.dynamicRanges.GetDynamicRanges(documentId);
 
-            if((dynamicRanges?.Count() ?? 0) == 0)
+            if ((dynamicRanges?.Count() ?? 0) == 0)
             {
                 pricings.Add(products.GetDefaultVariantPricing(documentId, localizedUom));
                 return;

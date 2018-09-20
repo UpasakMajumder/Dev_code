@@ -48,7 +48,7 @@ namespace Kadena.Tests.CreditCard
             Verify<IOrderResultPageUrlFactory>(f => f.GetCardPaymentResultPageUrl(true, newOrderId, "", ""), Times.Once);
             Verify<IOrderResultPageUrlFactory>(f => f.GetOrderResultPageUrl(It.IsAny<SubmitOrderResult>()), Times.Never);
             Verify<IShoppingCartProvider>(s => s.ClearCart(0), Times.Once);
-            Verify<IShoppingCartProvider>(s => s.RemoveCurrentItemsFromStock(0), Times.Once);
+            Verify<IShoppingCartProvider>(s => s.UpdateInventory(0), Times.Once);
         }
     }
 }

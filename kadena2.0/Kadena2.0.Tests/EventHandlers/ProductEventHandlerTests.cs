@@ -5,6 +5,7 @@ using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Classes;
 using Moq;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Kadena.Tests.EventHandlers
@@ -62,6 +63,11 @@ namespace Kadena.Tests.EventHandlers
             public ProductClass Product { get; set; }
 
             protected override ProductClass GetProductFromNode(TreeNode node)
+            {
+                return Product;
+            }
+
+            protected override ProductClass GetCampaignsProductFromNode(TreeNode node)
             {
                 return Product;
             }
