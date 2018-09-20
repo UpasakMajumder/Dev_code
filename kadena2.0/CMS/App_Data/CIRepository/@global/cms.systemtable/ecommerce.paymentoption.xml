@@ -97,6 +97,18 @@
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
+      <field allowempty="true" column="ApprovalRequired" columntype="boolean" guid="e5622842-815d-498e-b836-219044b9bf6a" publicfield="false" visible="true">
+        <properties>
+          <defaultvalue>false</defaultvalue>
+          <explanationtext>
+            <![CDATA[If true, payment will trigger order approval process]]>
+          </explanationtext>
+          <fieldcaption>Approval Required</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>CheckBoxControl</controlname>
+        </settings>
+      </field>    
       <field allowempty="true" column="IconResource" columnsize="200" columntype="text" guid="e499d7f9-61d1-447c-abfa-89fcde76a861" publicfield="false" visible="true">
         <properties>
           <fieldcaption>IconResource</fieldcaption>

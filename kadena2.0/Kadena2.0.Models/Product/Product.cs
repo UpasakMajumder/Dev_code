@@ -11,7 +11,7 @@ namespace Kadena.Models.Product
         public string Availability { get; set; }
         public int  StockItems { get; set; }
         public string DocumentUrl { get; set; }
-        public string SkuImageUrl { get; set; }
+        public string ImageUrl { get; set; }
         public string ProductType { get; set; }
         public Guid ProductMasterTemplateID { get; set; }
         public Guid ProductChiliWorkgroupID { get; set; }

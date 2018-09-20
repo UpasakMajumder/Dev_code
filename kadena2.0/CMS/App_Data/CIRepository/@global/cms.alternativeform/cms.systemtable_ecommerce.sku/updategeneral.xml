@@ -31,12 +31,7 @@
           <AllowCreate>True</AllowCreate>
         </settings>
       </field>
-      <field column="SKUManufacturerID" guid="808244ef-6595-42f2-90a0-9bf0717645e1" reftype="Required">
-        <settings>
-          <ReflectGlobalProductsUse>False</ReflectGlobalProductsUse>
-          <ShowAllSites />
-        </settings>
-      </field>
+      <field column="SKUManufacturerID" guid="808244ef-6595-42f2-90a0-9bf0717645e1" />
       <field column="SKUSupplierID" guid="57cc81c5-1f0c-45d4-9741-e37d7f35db34" visibility="" visible="">
         <settings>
           <AllowCreate>True</AllowCreate>
@@ -50,16 +45,17 @@
       <field column="SKUShortDescription" guid="0e18113d-59b6-4fba-9c46-796465b2251e" visible="" />
       <field column="SKUDescription" guid="b13a8a29-f8a9-49ed-8cb4-4db417e174ab" />
       <field column="SKUProductType" guid="33da4205-7ff2-46f9-ae88-3f28ae663ff8" visibility="" />
-      <category name="com.sku.analyticscategory" order="18" />
-      <field column="SKUConversionValue" guid="870a3279-5120-4bc6-817c-318360a7fbb3" visible="" order="19">
+      <field column="SKUApprovalRequired" guid="e8895743-9873-453a-919e-5391220cb16c" visible="true" order="18" />
+      <category name="com.sku.analyticscategory" order="19" />
+      <field column="SKUConversionValue" guid="870a3279-5120-4bc6-817c-318360a7fbb3" visible="" order="20">
         <properties>
           <fieldcaption>Conversion value</fieldcaption>
         </properties>
       </field>
-      <category name="com.sku.variantcategory" order="20" />
-      <field column="SKUCustomData" guid="29e8c9c5-d3c7-4846-a18f-057d5cd0a352" />
-      <field column="SKUCreated" guid="046115eb-09d5-4c9f-b4ae-e5da3761b436" />
-      <field column="SKULastModified" guid="87e7a912-8806-4971-9912-af8711f71707" />
+      <category name="com.sku.variantcategory" order="21" />
+      <field column="SKUCustomData" guid="29e8c9c5-d3c7-4846-a18f-057d5cd0a352" order="22" />
+      <field column="SKUCreated" guid="046115eb-09d5-4c9f-b4ae-e5da3761b436" order="23" />
+      <field column="SKULastModified" guid="87e7a912-8806-4971-9912-af8711f71707" order="24" />
       <field column="SKUMembershipGUID" guid="1bdbe0d4-4142-4aac-9eff-51709cfa8b06" visible="">
         <properties>
           <fieldcaption>Membership group</fieldcaption>
@@ -129,37 +125,39 @@
           <fieldcaption>Allow for sale</fieldcaption>
         </properties>
       </field>
-      <field column="SKUNeedsShipping" guid="0fd1ef55-4dd6-4c0e-8030-244dda90ffa3" visible="">
+      <field column="SKUNeedsShipping" guid="0fd1ef55-4dd6-4c0e-8030-244dda90ffa3" visible="" order="40">
         <properties>
           <fieldcaption>Needs shipping</fieldcaption>
         </properties>
       </field>
-      <field column="SKUWeight" guid="433ec6bf-2a24-46f7-ab64-413723f8d2d4" visible="">
+      <field column="SKUWeight" guid="433ec6bf-2a24-46f7-ab64-413723f8d2d4" visible="" order="41">
         <properties>
           <fieldcaption>Package weight</fieldcaption>
         </properties>
       </field>
-      <field column="SKUHeight" guid="960b12da-a78a-47af-b30a-dd5d4c963c7f" visible="">
+      <field column="SKUHeight" guid="960b12da-a78a-47af-b30a-dd5d4c963c7f" visible="" order="42">
         <properties>
           <fieldcaption>Package height</fieldcaption>
         </properties>
       </field>
-      <field column="SKUWidth" guid="cada95d5-f56f-47b8-8ec5-2311f6420e8f" visible="">
+      <field column="SKUWidth" guid="cada95d5-f56f-47b8-8ec5-2311f6420e8f" visible="" order="43">
         <properties>
           <fieldcaption>Package width</fieldcaption>
         </properties>
       </field>
-      <field column="SKUDepth" guid="01b371cb-8598-4409-82a5-955e5178dbfa" visible="">
+      <field column="SKUDepth" guid="01b371cb-8598-4409-82a5-955e5178dbfa" visible="" order="44">
         <properties>
           <fieldcaption>Package depth</fieldcaption>
         </properties>
       </field>
-      <field column="SKUConversionName" guid="0132fdb3-0cfc-4966-99ce-a7d8cfd4bf9a" visible="" order="46">
+      <category name="com.sku.shippingcategory" order="45" />
+      <category name="com.sku.representingcategory" order="46" />
+      <field column="SKUConversionName" guid="0132fdb3-0cfc-4966-99ce-a7d8cfd4bf9a" visible="" order="47">
         <properties>
           <fieldcaption>Conversion name</fieldcaption>
         </properties>
       </field>
-      <field column="SKUParentSKUID" guid="cfda202f-ccbf-47b8-9b24-d6feae3a470c" order="47" />
+      <field column="SKUParentSKUID" guid="cfda202f-ccbf-47b8-9b24-d6feae3a470c" order="48" />
       <field column="SKUTrackInventory" guid="b008a40a-2651-4341-8779-872030271467" visible="" />
       <field column="SKUSellOnlyAvailable" guid="ca3ef874-bccc-401d-ae31-f5b40c99f900" visible="">
         <properties>
@@ -187,11 +185,11 @@
           <fieldcaption>Max items in one order</fieldcaption>
         </properties>
       </field>
-      <field column="SKUCustomerReferenceNumber" guid="acc7ffb4-eb2e-40bb-a6e1-b454bad2b597" order="56" />
-      <field column="SKUDontSendPriceToERP" guid="31844ee0-afd5-4800-ba3a-748cea0aa8aa" visible="" order="57" />
-      <field column="SKUUnitOfMeasure" guid="79380af2-d662-438c-9ba2-22d7a62e6b7b" visible="" order="58" />
-      <field column="SKUHiResPdfDownloadEnabled" guid="8ad34b07-1b2e-47f3-929b-c590f0813b1c" visible="" order="59" />
-      <field column="SKUApprovalRequired" guid="e8895743-9873-453a-919e-5391220cb16c" visible="" order="60" />
+      <category name="com.sku.inventorycategory" order="56" />
+      <field column="SKUCustomerReferenceNumber" guid="acc7ffb4-eb2e-40bb-a6e1-b454bad2b597" order="57" />
+      <field column="SKUDontSendPriceToERP" guid="31844ee0-afd5-4800-ba3a-748cea0aa8aa" visible="" order="58" />
+      <field column="SKUUnitOfMeasure" guid="79380af2-d662-438c-9ba2-22d7a62e6b7b" visible="" order="59" />
+      <field column="SKUHiResPdfDownloadEnabled" guid="8ad34b07-1b2e-47f3-929b-c590f0813b1c" visible="" order="60" />
       <field column="SKUNumberOfItemsInPackage" guid="3afd1d0c-970b-43c5-9b73-94041a17ad9e" visible="" order="61" />
     </form>
   </FormDefinition>

@@ -15,6 +15,7 @@ namespace Kadena.Models
         public string InputPlaceholder { get; set; }
         public string ClassName { get; set; }
         public bool IsUnpayable { get; set; }
+        public bool ApprovalRequired { get; set; }
         public IList<StoredCard> Items { get; set; } = new List<StoredCard>();
         public string ShortClassName
         {

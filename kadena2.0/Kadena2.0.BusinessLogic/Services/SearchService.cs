@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Kadena.WebAPI.KenticoProviders.Contracts;
-using Kadena.Models.Product;
 using System.Web;
 using System;
 using Kadena.Models.SiteSettings;
@@ -21,41 +20,18 @@ namespace Kadena.BusinessLogic.Services
         private readonly IKenticoSearchService kenticoSearch;
         private readonly IKenticoProductsProvider products;
         private readonly IKenticoDocumentProvider documents;
+        private readonly IImageService imageService;
 
         public SearchService(IMapper mapper, IKenticoResourceService resources, IKenticoSiteProvider site,
-            IKenticoSearchService kenticoSearch,  IKenticoProductsProvider products, IKenticoDocumentProvider documents)
+            IKenticoSearchService kenticoSearch,  IKenticoProductsProvider products, IKenticoDocumentProvider documents, IImageService imageService)
         {
-            if (mapper == null)
-            {
-                throw new ArgumentNullException(nameof(mapper));
-            }
-            if (resources == null)
-            {
-                throw new ArgumentNullException(nameof(resources));
-            }
-            if (site == null)
-            {
-                throw new ArgumentNullException(nameof(site));
-            }
-            if (kenticoSearch == null)
-            {
-                throw new ArgumentNullException(nameof(kenticoSearch));
-            }
-            if (products == null)
-            {
-                throw new ArgumentNullException(nameof(products));
-            }
-            if (documents == null)
-            {
-                throw new ArgumentNullException(nameof(documents));
-            }
-
-            this.mapper = mapper;
-            this.resources = resources;
-            this.siteProvider = site;
-            this.kenticoSearch = kenticoSearch;
-            this.products = products;
-            this.documents = documents;
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            this.siteProvider = site ?? throw new ArgumentNullException(nameof(site));
+            this.kenticoSearch = kenticoSearch ?? throw new ArgumentNullException(nameof(kenticoSearch));
+            this.products = products ?? throw new ArgumentNullException(nameof(products));
+            this.documents = documents ?? throw new ArgumentNullException(nameof(documents));
+            this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
         }
 
         public SearchResultPage Search(string phrase, int results = 100)
@@ -155,10 +131,10 @@ namespace Kadena.BusinessLogic.Services
                     // fill in SKU image if teaser is empty
                     if (string.IsNullOrEmpty(resultItem.ImgUrl))
                     {
-                        resultItem.ImgUrl = product.SkuImageUrl;
+                        resultItem.ImgUrl = imageService.GetThumbnailLink(product.ImageUrl);
                     }
                     resultItem.Category = product.Category;
-                    if (product.ProductType.Contains(ProductTypes.InventoryProduct))
+                    if (!string.IsNullOrWhiteSpace(product.Availability))
                     {
                         resultItem.Stock = new Stock()
                         {

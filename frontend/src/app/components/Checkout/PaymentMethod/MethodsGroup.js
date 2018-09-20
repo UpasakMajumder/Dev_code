@@ -9,6 +9,7 @@ class MethodsGroup extends Component {
   static propTypes = {
     validationMessage: PropTypes.string.isRequired,
     changePaymentMethod: PropTypes.func.isRequired,
+    toggleDialog: PropTypes.func.isRequired,
     className: PropTypes.string.isRequired,
     checked: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
@@ -17,6 +18,7 @@ class MethodsGroup extends Component {
     inputPlaceholder: PropTypes.string,
     disabled: PropTypes.bool,
     hasInput: PropTypes.bool,
+    approvalRequired: PropTypes.bool,
     checkedObj: PropTypes.shape({
       id: PropTypes.number.isRequired,
       invoice: PropTypes.string,
@@ -38,10 +40,18 @@ class MethodsGroup extends Component {
       inputPlaceholder,
       checkedObj,
       changePaymentMethod,
+      approvalRequired,
       hasInput,
+      toggleDialog,
+      approvalRequiredText,
       items
     } = this.props;
     let { className } = this.props;
+
+    const approvalNotice = approvalRequired
+      ? (
+        <div className="select-accordion__outer-note ml-2"><span className="font-weight-bold">{approvalRequiredText}</span></div>
+      ) : null;
 
     const additionalInput = checkedObj.id === id && hasInput
       ? (
@@ -76,6 +86,7 @@ class MethodsGroup extends Component {
         <div className={className}>
           <input disabled={disabled}
                 onChange={(e) => { changePaymentMethod(id); }}
+                onClick={approvalRequired ? (e) => { toggleDialog(); } : undefined }
                 checked={id === checkedObj.id}
                 id={`pmg-${id}`}
                 name="paymentMethod"
@@ -86,6 +97,7 @@ class MethodsGroup extends Component {
             <span>{title}</span>
           </label>
           {additionalInput}
+          {approvalNotice}
         </div>
 
         <ReactCSSTransitionGroup
