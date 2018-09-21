@@ -364,8 +364,63 @@
             orderDate: {
               title: 'Time between:',
               labelNow: 'Now',
-              labelApply: 'Apply',
               show: true
+            },
+            skuNumber: {
+              title: 'SKU Number',
+              items: [
+                {
+                  id: 'sku-0',
+                  lavel: 'SKU-0'
+                },
+                {
+                  id: 'sku-1',
+                  lavel: 'SKU-1'
+                }
+              ]
+            },
+            itemName: {
+              title: 'Item Name',
+              items: [
+                {
+                  id: 'in-0',
+                  lavel: 'IN-0'
+                },
+                {
+                  id: 'in-1',
+                  lavel: 'IN-1'
+                }
+              ]
+            },
+            orderNumber: {
+              title: 'Order Number',
+              items: [
+                {
+                  id: 'on-0',
+                  lavel: 'ON-0'
+                },
+                {
+                  id: 'on-1',
+                  lavel: 'ON-1'
+                }
+              ]
+            },
+            itemStatus: {
+              title: 'Item Status',
+              items: [
+                {
+                  id: 'is-0',
+                  lavel: 'IS-0'
+                },
+                {
+                  id: 'is-1',
+                  lavel: 'IS-1'
+                }
+              ]
+            },
+            submit: {
+              reset: 'Rest filters',
+              apply: 'Apply filters'
             }
           },
           export: {
