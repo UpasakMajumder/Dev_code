@@ -1391,6 +1391,69 @@ const orderDetailPayload = {
     "date": "2017-08-07T09:12:08.108892Z",
     "datePrefix": "Payment date"
   },
+  "paymentMethod": {
+    ui: {
+      title: 'Payment Method',
+      items: [
+        {
+          "id": 1,
+          "title": "Credit card",
+          "icon": "credit-card",
+          "disabled": false,
+          "checked": false,
+          "hasInput": false,
+          "inputPlaceholder": null,
+          "items": [
+            {
+              "id": '123123123123',
+              "label": "John Gold 2355",
+              "checked": false
+            },
+            {
+              "id": '123123123123asdasdads',
+              "label": "John Travolta 1263",
+              "checked": false
+            },
+            {
+              "id": '123123123123aasd13asdasdasd',
+              "label": "John Gold 2112",
+              "checked": false
+            },
+            {
+              "id": '',
+              "label": "New card",
+              "checked": true
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "title": "Pay Pal",
+          "icon": "paypal-payment",
+          "disabled": true,
+          "checked": false,
+          "hasInput": false,
+          "inputPlaceholder": null,
+          "items": []
+        },
+        {
+          "id": 3,
+          "title": "Purchase order",
+          "icon": "order-payment",
+          "disabled": false,
+          "checked": true,
+          "hasInput": true,
+          "inputPlaceholder": "Insert your PO number",
+          "items": []
+        }
+      ],
+      isPayable: true
+    },
+    checkedObj: {
+      id: 1,
+      invoice: ''
+    }
+  },
   "pricingInfo": {
     "title": "Pricing",
     "items": [
