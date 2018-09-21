@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -5,6 +6,7 @@ import axios from 'axios';
 import Dialog from 'app.dump/Dialog';
 import Button from 'app.dump/Button';
 import EditOrder from 'app.dump/Product/EditOrder';
+import PaymentMethod from 'app.smart/Checkout/PaymentMethod';
 /* consts */
 import { FAILURE, SUCCESS } from 'app.consts';
 
@@ -35,7 +37,13 @@ class EditModal extends Component {
       orderId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired
     }).isRequired,
     paidByCreditCard: PropTypes.bool.isRequired,
-    maxOrderQuantity: PropTypes.object.isRequired
+    maxOrderQuantity: PropTypes.object.isRequired,
+    paymentMethod: PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      invoice: PropTypes.string
+    }).isRequired,
+    changePaymentMethod: PropTypes.func.isRequired,
+    paymentMethodUI: PropTypes.object.isRequired
   }
 
   state = {
@@ -208,6 +216,14 @@ class EditModal extends Component {
       <div>
         {this.props.description ? <p>{this.props.description}</p> : null}
         {orders}
+        <div className="mt-4">
+          <PaymentMethod
+            validationMessage="String"
+            changePaymentMethod={this.props.changePaymentMethod}
+            checkedObj={this.props.paymentMethod}
+            ui={this.props.paymentMethodUI}
+          />
+        </div>
       </div>
     );
   };
