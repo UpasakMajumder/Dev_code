@@ -1,7 +1,6 @@
 ﻿using Kadena.BusinessLogic.Services.Approval;
 using Kadena.Models;
 using Kadena.Models.Membership;
-using Kadena.Models.Site;
 using Kadena.Models.SiteSettings.Permissions;
 using Kadena.WebAPI.KenticoProviders.Contracts;
 using Kadena2.WebAPI.KenticoProviders.Contracts;
@@ -68,8 +67,7 @@ namespace Kadena.Tests.BusinessLogic.Approval
         public void IsCustomersApproverTest()
         {         
             Setup<IKenticoPermissionsProvider, bool>(p => p.UserHasPermission(approverUserId, ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.ApproveOrders), true);
-            Setup<IKenticoCustomerProvider, Customer>(p => p.GetCustomer(customerId), new Customer { ApproverUserId = approverUserId, SiteId = 1 });
-            Setup<IKenticoSiteProvider, KenticoSite>(p => p.GetKenticoSite(), new KenticoSite { Id = 1, Name = "KDA" });
+            Setup<IKenticoCustomerProvider, Customer>(p => p.GetCustomer(customerId), new Customer { ApproverUserId = approverUserId });
 
             var result = Sut.IsCustomersApprover(approverUserId, customerId);
 
