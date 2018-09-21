@@ -7,6 +7,5 @@
         public string TransactionKey { get; set; }
         public string PaymentGatewayCustomerCode { get; set; }
         public string TokenId { get; set; }
-        public bool ApprovalRequired { get; set; }
     }
 }
