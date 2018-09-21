@@ -252,9 +252,6 @@ const paymentMethods = {
   "unPayableText": "Text 2",
   "title": "Payment",
   "description": null,
-  "approvalRequiredText": "Approval Required",
-  "approvalRequiredDesc": "By selecting this payment method, please be aware that order must first be approved before processing order",
-  "approvalRequiredButton": "Confirm",
   "items": [
     {
       "id": 1,
@@ -263,7 +260,6 @@ const paymentMethods = {
       "disabled": false,
       "checked": false,
       "hasInput": false,
-      "approvalRequired": false,
       "inputPlaceholder": null,
       "items": [
         {
@@ -295,7 +291,6 @@ const paymentMethods = {
       "disabled": true,
       "checked": false,
       "hasInput": false,
-      "approvalRequired": false,
       "inputPlaceholder": null,
       "items": []
     },
@@ -306,7 +301,6 @@ const paymentMethods = {
       "disabled": false,
       "checked": true,
       "hasInput": true,
-      "approvalRequired": true,
       "inputPlaceholder": "Insert your PO number",
       "items": []
     }
