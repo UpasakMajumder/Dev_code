@@ -63,14 +63,6 @@
     }
   }
 
-  &__outer-note {
-    @extend %flex--center--default;
-
-    @include rem(padding-left, 16px);
-    color: $brand-red;
-    transition: all $transition-length ease-in-out;
-  }
-
   &__content {
     @include rem(margin-left, 20px);
     @include rem(padding-left, 20px);

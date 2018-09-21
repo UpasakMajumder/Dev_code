@@ -113,9 +113,6 @@ namespace Kadena.BusinessLogic.Factories.Checkout
                 IsPayable = true,
                 UnPayableText = resources.GetResourceString("Kadena.Checkout.UnpayableText"),
                 Title = resources.GetResourceString("Kadena.Checkout.Payment.Title"),
-                ApprovalRequiredText = resources.GetResourceString("KDA.PaymentMethods.RequiresApprovalTitle"),
-                ApprovalRequiredDesc = resources.GetResourceString("KDA.PaymentMethods.RequiresApprovalPopUpText"),
-                ApprovalRequiredButton = resources.GetResourceString("KDA.PaymentMethods.RequiresApprovalPopUpConfirmButtonText"),
                 Items = ArrangePaymentMethods(paymentMethods)
             };
         }
