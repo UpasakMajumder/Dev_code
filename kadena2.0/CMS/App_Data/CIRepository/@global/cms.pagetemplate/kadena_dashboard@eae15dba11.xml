@@ -622,7 +622,9 @@ config.localization.products = {
           <property name="tag"></property>
           <property name="text">
 <![CDATA[
-<div class='homepage-header__banner banner {%Convert.ToString(DashboardModuleHeaderRightText) == "" ? "col-12" : "col-8" |(user)administrator|(hash)d5b9c6387cdbcb6b8d77ab9171163e8da327e367728ee021eb02270303fe634c%}'>
+{% rightText = !KadenaNamespace.HasCurrentUserAnyRole() && !String.IsNullOrWhiteSpace(DashboardModuleHeaderRightTextFirstTime) ? DashboardModuleHeaderRightTextFirstTime : DashboardModuleHeaderRightText; "" |(user)administrator|(hash)b2b42e45f077352016d65d431ffc0f1ab8e7ec93e1df2e1f5080d8a9ae04fa84%}
+
+<div class='homepage-header__banner banner {% String.IsNullOrWhiteSpace(rightText) ? "col-12" : "col-8" |(user)administrator|(hash)f01fd4ae8ce3352c551d7e48f2db137cc188b8a670611711acd74f08e35dd8f9%}'>
   <div class="banner__headers">
     <h2>{%DashboardModuleHeaderText%}</h2>
     <h4>{%DashboardModuleSubHeaderText%}</h4>
@@ -631,8 +633,8 @@ config.localization.products = {
     <img src="{%DashboardModuleHeaderImage%}" alt="{%DashboardModuleHeaderText%}">
   </div>
 </div>
-<div class="homepage-header__notification col-4" style='{%Convert.ToString(DashboardModuleHeaderRightText) == "" ? "display:none;" : "" |(user)administrator|(hash)082d158738df6e02f4c05576c6729106bd143db5c652ea21192e7dfa884e5d81%}'>
-  <p>{%DashboardModuleHeaderRightText%}</p>
+<div class="homepage-header__notification col-4" style='{%String.IsNullOrWhiteSpace(rightText) ? "display:none;" : "" |(user)administrator|(hash)d4b6d98b718d6ac511e84706c6e01315da0dc8e6a97914b40b9be79701e53142%}'>
+  <p>{%rightText%}</p>
 </div>
 
 ]]>

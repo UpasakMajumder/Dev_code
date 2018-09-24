@@ -37,6 +37,20 @@ namespace Kadena.Old_App_Code.CMSModules.Macros.Kadena
 {
     public class KadenaMacroMethods : MacroMethodContainer
     {
+        [MacroMethod(typeof(bool), "Returns true if current user is in any role", 1)]
+        public static object HasCurrentUserAnyRole(EvaluationContext context, params object[] parameters)
+        {
+            if (parameters.Length != 0)
+            {
+                throw new NotSupportedException();
+            }
+
+            return DIContainer
+                .Resolve<IKenticoRoleProvider>()
+                .GetUserRoles(MembershipContext.AuthenticatedUser.UserID)
+                .Any();
+        }
+
         [MacroMethod(typeof(bool), "Checks whether sku weight is required for given combination of product types", 1)]
         [MacroMethodParam(0, "productTypes", typeof(string), "Product types piped string")]
         public static object IsSKUWeightRequired(EvaluationContext context, params object[] parameters)
