@@ -9,5 +9,6 @@ namespace Kadena.Dto.SubmitOrder.Requests
         public string Invoice { get; set; }
 
         public string Card {get; set; }
+        public bool ApprovalRequired { get; set; }
     }
 }
