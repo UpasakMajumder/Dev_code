@@ -200,7 +200,7 @@ class Checkout extends Component {
 
     const itemFromProps = this.props.checkout.ui.paymentMethods.items.find(item => item.id === checkedPM.id);
 
-    if (itemFromProps.hasInput && !checkedPM.invoice) invalidFields.push('invoice');
+    if (itemFromProps.hasInput && !checkedPM.invoice && !itemFromProps.approvalRequired) invalidFields.push('invoice');
 
     if (itemFromProps.items.length && checkedPM.card === undefined) invalidFields.push('paymentMethod'); // new card has id = ''
   }
