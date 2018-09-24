@@ -115,8 +115,11 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var customer = kenticoCustomers.GetCustomer(data.ClientId) ?? Customer.Unknown;
             var isWaitingForApproval = data.StatusId == (int)OrderStatus.WaitingForApproval;
-            var canCurrentUserApproveOrder = isWaitingForApproval && approverService.IsCustomersApprover(kenticoCustomers.GetCurrentCustomer().UserID, customer.Id);
+            var userId = kenticoCustomers.GetCurrentCustomer().UserID;
+
+            var canCurrentUserApproveOrder = isWaitingForApproval && approverService.IsCustomersApprover(userId, customer.Id);
             var canCurrentUserEditInApproval = permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.EditOrdersInApproval);
+
             var showApprovalButtons = canCurrentUserApproveOrder;
             var showEditButton = canCurrentUserApproveOrder && canCurrentUserEditInApproval;
             var showOrderHistory = isWaitingForApproval;

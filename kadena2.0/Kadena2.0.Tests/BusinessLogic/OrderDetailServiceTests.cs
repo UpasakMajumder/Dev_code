@@ -17,6 +17,7 @@ using Kadena.BusinessLogic.Services.Orders;
 using Kadena.Models.Product;
 using Kadena.Models.Orders;
 using Kadena.Models.SiteSettings.Permissions;
+using Kadena.BusinessLogic.Contracts.Approval;
 
 namespace Kadena.Tests.BusinessLogic
 {
@@ -63,18 +64,18 @@ namespace Kadena.Tests.BusinessLogic
             // A
             const int customerId = 222;
             const int customerUserId = 123;
+            const int approverUserId = 16;
+
             var orderNumber = new OrderNumber(customerId, customerUserId, "17-00006");
             var orderDto = CreateOrderDetailDtoOK();
             orderDto.Payload.ClientId = customerId;
             orderDto.Payload.StatusId = (int)OrderStatus.WaitingForApproval;
 
             SetupBase();
-            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(
-                o => o.GetOrderByOrderId(orderNumber)
-                , Task.FromResult(orderDto));
-            Setup<IKenticoCustomerProvider, Customer>(
-                p => p.GetCustomer(customerId), 
-                new Customer { ApproverUserId = 16 });
+
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId(orderNumber), Task.FromResult(orderDto));
+            Setup<IKenticoCustomerProvider, Customer>(p => p.GetCustomer(customerId), new Customer { Id = customerId, ApproverUserId = approverUserId });
+            Setup<IApproverService, bool>(p => p.IsCustomersApprover(approverUserId, customerId), true);
 
             // A
             var result = await Sut.GetOrderDetail(orderNumber);
@@ -89,19 +90,19 @@ namespace Kadena.Tests.BusinessLogic
             // A
             const int customerId = 222;
             const int customerUserId = 123;
+            const int approverUserId = 16;
+
             var orderNumber = new OrderNumber(customerId, customerUserId, "17-00006");
             var orderDto = CreateOrderDetailDtoOK();
             orderDto.Payload.ClientId = customerId;
             orderDto.Payload.StatusId = (int)OrderStatus.WaitingForApproval;
 
             SetupBase();
-            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(
-                o => o.GetOrderByOrderId(orderNumber)
-                , Task.FromResult(orderDto));
-            Setup<IKenticoCustomerProvider, Customer>(
-                p => p.GetCustomer(customerId),
-                new Customer { ApproverUserId = 16 });
+
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId(orderNumber), Task.FromResult(orderDto));
+            Setup<IKenticoCustomerProvider, Customer>(p => p.GetCustomer(customerId), new Customer { Id = customerId, ApproverUserId = approverUserId });
             Setup<IKenticoPermissionsProvider, bool>(p => p.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.EditOrdersInApproval), true);
+            Setup<IApproverService, bool>(p => p.IsCustomersApprover(approverUserId, customerId), true);
 
             // A
             var result = await Sut.GetOrderDetail(orderNumber);
@@ -117,19 +118,19 @@ namespace Kadena.Tests.BusinessLogic
             // A
             const int customerId = 222;
             const int customerUserId = 123;
+            const int approverUserId = 16;
+
             var orderNumber = new OrderNumber(customerId, customerUserId, "17-00006");
             var orderDto = CreateOrderDetailDtoOK();
             orderDto.Payload.ClientId = customerId;
             orderDto.Payload.StatusId = (int)OrderStatus.WaitingForApproval;
 
             SetupBase();
-            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(
-                o => o.GetOrderByOrderId(orderNumber)
-                , Task.FromResult(orderDto));
-            Setup<IKenticoCustomerProvider, Customer>(
-                p => p.GetCustomer(customerId),
-                new Customer { ApproverUserId = 16 });
+
+            Setup<IOrderViewClient, Task<BaseResponseDto<GetOrderByOrderIdResponseDTO>>>(o => o.GetOrderByOrderId(orderNumber), Task.FromResult(orderDto));
+            Setup<IKenticoCustomerProvider, Customer>(p => p.GetCustomer(customerId), new Customer { Id = customerId, ApproverUserId = approverUserId });
             Setup<IKenticoPermissionsProvider, bool>(p => p.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.EditOrdersInApproval), false);
+            Setup<IApproverService, bool>(p => p.IsCustomersApprover(approverUserId, customerId), true);
 
             // A
             var result = await Sut.GetOrderDetail(orderNumber);
