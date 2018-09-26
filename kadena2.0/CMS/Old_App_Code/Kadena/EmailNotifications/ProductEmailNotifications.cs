@@ -123,7 +123,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                                     Items = ord.Items.GroupJoin(skus, i => i.SKUNumber, s => s.SKUNumber, (i, sks) => new
                                     {
                                         i.SKUNumber,
-                                       // i.Name,
+                                        i.Name,
                                         i.Quantity,
                                         Price = i.UnitPrice,
                                         PosNumber = GetPosNum(sks.DefaultIfEmpty().FirstOrDefault()),
