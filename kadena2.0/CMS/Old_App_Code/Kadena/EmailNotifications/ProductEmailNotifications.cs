@@ -124,7 +124,7 @@ namespace Kadena.Old_App_Code.Kadena.EmailNotifications
                                     {
                                         i.SKUNumber,
                                         i.Name,
-										i.SKUProductCustomerReferenceNumber,
+										i.SKUNumber.GetValue("SKUProductCustomerReferenceNumber", string.Empty),
                                         i.Quantity,
                                         Price = i.UnitPrice,
                                         PosNumber = GetPosNum(sks.DefaultIfEmpty().FirstOrDefault()),
