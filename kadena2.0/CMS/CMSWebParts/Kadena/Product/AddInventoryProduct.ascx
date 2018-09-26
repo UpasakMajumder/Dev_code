@@ -102,7 +102,7 @@
                 <div class="input__inner">
                     <cms:CMSTextBox ID="txtWeight" runat="server" EnableViewState="false" CssClass="input__text"></cms:CMSTextBox>
                     <asp:RequiredFieldValidator ID="rfvWeight" runat="server" ControlToValidate="txtWeight" CssClass="EditingFormErrorLabel"></asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="revWeigth" ValidationExpression="((\d+)((\.\d{1,100})?))$" runat="server" ControlToValidate="txtWeight" CssClass="EditingFormErrorLabel"></asp:RegularExpressionValidator>
+                    <asp:CustomValidator ID="validatorWeight" ControlToValidate="txtWeight" runat="server" CssClass="EditingFormErrorLabel" OnServerValidate="validatorWeight_ServerValidate"></asp:CustomValidator>
                 </div>
             </div>
         </div>
