@@ -104,6 +104,19 @@ ORDER BY ItemOrder
           <WidthUnitType>PX</WidthUnitType>
         </settings>
       </field>
+      <field allowempty="true" column="DashboardModuleHeaderRightTextFirstTime" columntype="longtext" guid="85896f09-3db8-4ee6-bb10-6bcfd01eabb1" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Header Right Text (First time)</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>HtmlAreaControl</controlname>
+          <Dialogs_Content_Hide>False</Dialogs_Content_Hide>
+          <HeightUnitType>PX</HeightUnitType>
+          <MediaDialogConfiguration>True</MediaDialogConfiguration>
+          <ShowAddStampButton>False</ShowAddStampButton>
+          <WidthUnitType>PX</WidthUnitType>
+        </settings>
+      </field>
     </form>
   </ClassFormDefinition>
   <ClassGUID>d704ca6b-5dae-4943-be2a-c3b24006379e</ClassGUID>

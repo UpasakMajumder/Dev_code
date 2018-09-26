@@ -104,7 +104,7 @@ namespace Kadena.CMSWebParts.Kadena.Product
             revBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
             rfvBundleQnt.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.BundleQntRequired");
             rfvWeight.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.WeightRequired");
-            revWeigth.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
+            validatorWeight.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
             revEstPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
             revActualPrice.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.NumberOnly");
             rfvPosCategory.ErrorMessage = ResHelper.GetString("Kadena.InvProductForm.ProductCategoryErrorMessage");
@@ -188,6 +188,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         private void SaveNewProduct()
         {
+            if (!Page.IsValid)
+            {
+                return;
+            }
+
             if (SelectedBrandId == 0 || SelectedProductCategoryId == 0 || string.IsNullOrEmpty(SelectedPosNo))
             {
                 return;
@@ -269,6 +274,11 @@ namespace Kadena.CMSWebParts.Kadena.Product
 
         private void UpdateProduct()
         {
+            if (!Page.IsValid)
+            {
+                return;
+            }
+
             if (SelectedProductCategoryId == 0)
             {
                 return;
@@ -353,6 +363,8 @@ namespace Kadena.CMSWebParts.Kadena.Product
                     ddlPosCategory.SelectedValue = GetPosCategoryId(posNumber);
                     ddlPosCategory.Enabled = false;
                     ddlPosNo.Visible = false;
+                    ddlPosNo.Items.Add(posNumber);
+                    ddlPosNo.SelectedValue = posNumber;
                     txtPOSNumber.Text = posNumber;
                     txtPOSNumber.Visible = true;
 
@@ -611,6 +623,17 @@ namespace Kadena.CMSWebParts.Kadena.Product
                 .Columns("POSCategoryID")
                 .FirstOrDefault()?.POSCategoryID;
             return posCatName?.ToString();
+        }
+
+        protected void validatorWeight_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            if (double.TryParse(args.Value, out var weight))
+            {
+                args.IsValid = weight > 0;
+                return;
+            }
+
+            args.IsValid = false;
         }
     }
 
