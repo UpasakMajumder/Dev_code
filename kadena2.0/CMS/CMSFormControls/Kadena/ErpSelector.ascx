@@ -6,24 +6,21 @@
     }
     .erp-mapping-col {
         padding-right: 5px !important;
+        padding-bottom: 5px !important;
         word-spacing: 0 !important;
     }
 </style>
 <table>
     <tr class="erp-mapping-row">
         <td class="erp-mapping-col">
-            <asp:Literal runat="server" ID="labelDrp"></asp:Literal>
-        </td>
-        <td class="erp-mapping-col">
-            <asp:DropDownList ID="drpERP" runat="server"></asp:DropDownList>
+            <asp:Literal runat="server" ID="labelDrp"></asp:Literal>:<br />
+            <asp:DropDownList ID="drpERP" runat="server" OnSelectedIndexChanged="drpERP_SelectedIndexChanged" CssClass="form-control"></asp:DropDownList>
         </td>    
     </tr>
     <tr class="erp-mapping-row">
         <td class="erp-mapping-col">
-            <asp:Literal runat="server" ID="labelInput"></asp:Literal>
-        </td>
-        <td class="erp-mapping-col">
-            <asp:TextBox ID="inputCustomerERPID" runat="server"></asp:TextBox>
+            <asp:Literal runat="server" ID="labelInput"></asp:Literal>:<br />
+            <asp:TextBox ID="inputCustomerERPID" runat="server" CssClass="form-control" OnTextChanged="inputCustomerERPID_TextChanged"></asp:TextBox>
         </td>
     </tr>
 </table>
