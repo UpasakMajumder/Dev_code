@@ -197,7 +197,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                 return false;
             }
             
-            shoppingCart.RemoveCurrentItemsFromStock(shoppingCartId);
+            shoppingCart.UpdateInventory(shoppingCartId);
             shoppingCart.ClearCart(shoppingCartId);
 
             return true;

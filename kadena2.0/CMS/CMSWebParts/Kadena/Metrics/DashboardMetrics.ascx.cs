@@ -64,34 +64,27 @@ namespace Kadena.CMSWebParts.Kadena.Metrics
                 .OnCurrentSite()
                 .Culture(LocalizationContext.PreferredCultureCode);
 
-            foreach (CMS.DocumentEngine.TreeNode page in pages)
+            foreach (TreeNode page in pages)
             {
                 if (!page.IsLink)
                 {
-                    if (page.GetStringValue("ProductType", string.Empty).Contains(ProductTypes.InventoryProduct))
+                    var inventoryProduct = SKUInfoProvider.GetSKUInfo(page.NodeSKUID);
+                    if (inventoryProduct == null)
                     {
-                        var inventoryProduct = SKUInfoProvider.GetSKUInfo(page.NodeSKUID);
-                        if (inventoryProduct == null)
-                        {
-                            // skip invalid SKU id
-                            continue;
-                        }
+                        // skip invalid SKU id
+                        continue;
+                    }
 
-                        if (inventoryProduct.SKUTrackInventory == TrackInventoryTypeEnum.Disabled)
-                        {
-                            result++;
-                        }
-                        else
-                        {
-                            if (inventoryProduct.SKUAvailableItems > 0)
-                            {
-                                result++;
-                            }
-                        }
+                    if (inventoryProduct.SKUTrackInventory == TrackInventoryTypeEnum.Disabled)
+                    {
+                        result++;
                     }
                     else
                     {
-                        result++;
+                        if (inventoryProduct.SKUAvailableItems > 0)
+                        {
+                            result++;
+                        }
                     }
                 }
             }

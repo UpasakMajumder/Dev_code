@@ -256,7 +256,7 @@
           <controlname>CheckBoxControl</controlname>
         </settings>
       </field>
-      <field allowempty="true" column="SKUApprovalRequired" columntype="boolean" guid="e8895743-9873-453a-919e-5391220cb16c" publicfield="false" visible="true">
+      <field allowempty="true" column="SKUApprovalRequired" columntype="boolean" guid="e8895743-9873-453a-919e-5391220cb16c" publicfield="false">
         <properties>
           <defaultvalue>false</defaultvalue>
           <fieldcaption>Approval Required</fieldcaption>

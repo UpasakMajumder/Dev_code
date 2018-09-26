@@ -149,24 +149,23 @@ namespace Kadena.Old_App_Code.Kadena.Imports.Products
                 }
             }
 
-            if (product.ProductType.Contains(ProductTypes.InventoryProduct) ||
-                product.ProductType.Contains(ProductTypes.POD) ||
-                product.ProductType.Contains(ProductTypes.StaticProduct) ||
-                product.ProductType.Contains(ProductTypes.TemplatedProduct))
+            if (bool.TryParse(product.NeedsShipping, out bool needShipping))
             {
-                decimal weight = 0.0m;
-                if (string.IsNullOrEmpty(product.PackageWeight) || !decimal.TryParse(product.PackageWeight, out weight))
+                if (needShipping)
                 {
-                    isValid = false;
-                    validationErrors.Add($"{nameof(product.PackageWeight)} must be in numeric format");
-                }
-                if (weight <= 0.0m)
-                {
-                    isValid = false;
-                    validationErrors.Add($"{nameof(product.PackageWeight)} must be > 0");
+                    decimal weight = 0.0m;
+                    if (string.IsNullOrEmpty(product.PackageWeight) || !decimal.TryParse(product.PackageWeight, out weight))
+                    {
+                        isValid = false;
+                        validationErrors.Add($"{nameof(product.PackageWeight)} must be in numeric format");
+                    }
+                    if (weight <= 0.0m)
+                    {
+                        isValid = false;
+                        validationErrors.Add($"{nameof(product.PackageWeight)} must be > 0");
+                    }
                 }
             }
-
 
             if (!string.IsNullOrEmpty(product.PublishFrom) && !string.IsNullOrEmpty(product.PublishTo))
             {

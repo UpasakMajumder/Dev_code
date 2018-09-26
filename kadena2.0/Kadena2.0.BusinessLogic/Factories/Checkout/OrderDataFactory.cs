@@ -62,7 +62,8 @@ namespace Kadena.BusinessLogic.Factories.Checkout
             return new PaymentOptionDTO()
             {
                 PaymentOptionName = paymentMethod.ShortClassName,
-                PONumber = request?.PaymentMethod?.Invoice
+                PONumber = request?.PaymentMethod?.Invoice,
+                ApprovalRequired = paymentMethod.ApprovalRequired
             };
         }
     }

@@ -30,27 +30,6 @@ namespace Kadena.Models.Checkout
                 return ProductType.Contains(ProductTypes.TemplatedProduct);
             }
         }
-        public bool IsInventory
-        {
-            get
-            {
-                return ProductType.Contains(ProductTypes.InventoryProduct);
-            }
-        }
-        public bool IsPOD
-        {
-            get
-            {
-                return ProductType.Contains(ProductTypes.POD);
-            }
-        }
-        public bool IsStatic
-        {
-            get
-            {
-                return ProductType.Contains(ProductTypes.StaticProduct);
-            }
-        }
         public string MailingListName { get; set; }
         public Guid MailingListGuid { get; set; }
         public string Delivery { get; set; }
@@ -61,7 +40,7 @@ namespace Kadena.Models.Checkout
         {
             get
             {
-                return IsInventory || IsPOD || IsStatic;
+                return !IsMailingList && !IsTemplated;
             }
         }
         public string QuantityPrefix { get; set; }

@@ -83,7 +83,7 @@ namespace Kadena.WebAPI.KenticoProviders
                 ProductionTime = displayProductionAndShipping ? i.GetValue("ProductProductionTime", string.Empty) : null,
                 ShipTime = displayProductionAndShipping ? i.GetValue("ProductShipTime", string.Empty) : null,
                 Preview = new Button { Exists = false, Text = resources.GetResourceString("Kadena.Checkout.PreviewButton") },
-                RequiresApproval = i.SKU.GetBooleanValue("SKUApprovalRequired", false),
+                RequiresApproval = (i.VariantParent ?? i.SKU).GetBooleanValue("SKUApprovalRequired", false),
                 HiResPdfAllowed = i.SKU.GetBooleanValue("SKUHiResPdfDownloadEnabled", false),
                 Options = GetItemOptions(i)
             };
@@ -179,6 +179,13 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var cart = ECommerceContext.CurrentShoppingCart;
 
+            cartItemInfo.CartItemUnits = quantity;
+            var checkResult = ShoppingCartItemInfoProvider.CheckShoppingCartItem(cartItemInfo);
+            if (checkResult.InventoryUnits > -1)
+            {
+                throw new Exception(checkResult.GetMessage(";"));
+            }
+
             ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(cartItemInfo, quantity);
             cart.InvalidateCalculations();
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
@@ -233,6 +240,11 @@ namespace Kadena.WebAPI.KenticoProviders
             var cart = ECommerceContext.CurrentShoppingCart;
             ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
             var cartItem = cart.SetShoppingCartItem(parameters);
+            var checkResult = ShoppingCartItemInfoProvider.CheckShoppingCartItem(cartItem);
+            if (checkResult.InventoryUnits > -1)
+            {
+                throw new ArgumentException(checkResult.GetMessage(";"));
+            }
             cart.InvalidateCalculations();
             return mapper.Map<CartItemEntity>(cartItem);
         }
