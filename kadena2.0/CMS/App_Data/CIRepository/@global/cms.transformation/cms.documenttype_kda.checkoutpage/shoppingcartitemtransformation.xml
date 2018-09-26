@@ -26,6 +26,7 @@
                 <use xlink:href="/gfx/svg/sprites/icons.svg#products" />
               </svg> 
           <span>Template: <strong><%# SKU.SKUName %></strong></span>
+          <span>customerreferencenumber: <strong></strong></span>
           </p>
       </div>
       <div class="cart-product__quantity"> <span>Quantity: </span> <input type="number" min="1" value="<%# Eval(" CartItemUnits ") %>"> </div>
