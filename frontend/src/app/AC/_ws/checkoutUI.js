@@ -192,6 +192,9 @@ export const staticUI = {
       "unPayableText": "Text 2",
       "title": "Payment",
       "description": null,
+      "approvalRequiredText": "Approval Required",
+      "approvalRequiredDesc": "By selecting this payment method, please be aware that order must first be approved before processing order",
+      "approvalRequiredButton": "Confirm",
       "items": [
         {
           "id": 1,
@@ -200,6 +203,7 @@ export const staticUI = {
           "disabled": true,
           "checked": false,
           "hasInput": false,
+          "approvalRequired": false,
           "inputPlaceholder": null
         },
         {
@@ -209,6 +213,7 @@ export const staticUI = {
           "disabled": true,
           "checked": false,
           "hasInput": false,
+          "approvalRequired": false,
           "inputPlaceholder": null
         },
         {
@@ -218,6 +223,7 @@ export const staticUI = {
           "disabled": false,
           "checked": true,
           "hasInput": true,
+          "approvalRequired": true,
           "inputPlaceholder": "Insert your PO number"
         }
       ]
@@ -318,6 +324,9 @@ export const staticUI2 = {
       "unPayableText": "Text 2",
       "title": "Payment",
       "description": null,
+      "approvalRequiredText": "Approval Required",
+      "approvalRequiredDesc": "By selecting this payment method, please be aware that order must first be approved before processing order",
+      "approvalRequiredButton": "Confirm",
       "items": [
         {
           "id": 1,
@@ -326,6 +335,7 @@ export const staticUI2 = {
           "disabled": true,
           "checked": false,
           "hasInput": false,
+          "approvalRequired": false,
           "inputPlaceholder": null
         },
         {
@@ -335,6 +345,7 @@ export const staticUI2 = {
           "disabled": true,
           "checked": false,
           "hasInput": false,
+          "approvalRequired": false,
           "inputPlaceholder": null
         },
         {
@@ -344,6 +355,7 @@ export const staticUI2 = {
           "disabled": false,
           "checked": true,
           "hasInput": true,
+          "approvalRequired": true,
           "inputPlaceholder": "Insert your PO number"
         }
       ]
@@ -863,6 +875,9 @@ export const completeUI = {
       "unPayableText": "Text 2",
       "title": "Payment",
       "description": null,
+      "approvalRequiredText": "Approval Required",
+      "approvalRequiredDesc": "By selecting this payment method, please be aware that order must first be approved before processing order",
+      "approvalRequiredButton": "Confirm",
       "items": [
         {
           "id": 1,
@@ -871,6 +886,7 @@ export const completeUI = {
           "disabled": true,
           "checked": false,
           "hasInput": false,
+          "approvalRequired": false,
           "inputPlaceholder": null
         },
         {
@@ -880,6 +896,7 @@ export const completeUI = {
           "disabled": true,
           "checked": false,
           "hasInput": false,
+          "approvalRequired": false,
           "inputPlaceholder": null
         },
         {
@@ -889,6 +906,7 @@ export const completeUI = {
           "disabled": false,
           "checked": true,
           "hasInput": true,
+          "approvalRequired": true,
           "inputPlaceholder": "Insert your PO number"
         }
       ]

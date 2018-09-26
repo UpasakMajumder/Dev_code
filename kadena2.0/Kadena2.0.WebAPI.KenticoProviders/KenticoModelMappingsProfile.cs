@@ -24,6 +24,7 @@ using System;
 using System.Data;
 using Kadena.WebAPI.KenticoProviders.AutoMapperResolvers;
 using Kadena.Models.ShoppingCarts;
+using Kadena.Models.OrderDetail;
 
 namespace Kadena2.WebAPI.KenticoProviders
 {
@@ -136,6 +137,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.PaymentOptionDisplayName))
                 .ForMember(dest => dest.ClassName, opt => opt.MapFrom(src => src.PaymentOptionName))
                 .ForMember(dest => dest.IsUnpayable, opt => opt.MapFrom(src => src.GetBooleanValue("IsUnpayable", false)))
+                .ForMember(dest => dest.ApprovalRequired, opt => opt.MapFrom(src => src.GetBooleanValue("ApprovalRequired", false)))
                 .ForMember(dest => dest.Checked, opt => opt.UseValue(false))
                 .ForMember(dest => dest.Title, opt => opt.Ignore())
                 .ForMember(dest => dest.HasInput, opt => opt.Ignore())
@@ -427,6 +429,8 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.SkuId, opt => opt.MapFrom(src => src.NodeSKUID))
                 .ForMember(dest => dest.Use3d, opt => opt.MapFrom(src => src.GetBooleanValue("ProductChili3dEnabled", false)))
                 .ForMember(dest => dest.NodeId, opt => opt.MapFrom(src => src.NodeID))
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(source =>
+                        URLHelper.ResolveUrl(source.GetValue("ProductImage", string.Empty), false)))
                 .ForAllOtherMembers(m => m.Ignore());
 
             CreateMap<TreeNode, CampaignData>()
@@ -486,6 +490,34 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ItemID))
                 .ForMember(dest => dest.AmazonS3Folder, opt => opt.MapFrom(src => src.GetStringValue("AmazonS3Folder", string.Empty)))
                 .ForMember(dest => dest.AmazonS3ExcludedPaths, opt => opt.MapFrom(src => src.GetStringValue("AmazonS3ExcludedPaths", string.Empty)));
+
+            CreateMap<OrderItemInfo, OrderedItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.OrderItemID))
+                .ForMember(dest => dest.Type, opt => opt.Ignore())
+                .ForMember(dest => dest.Image, opt => opt.Ignore())
+                .ForMember(dest => dest.DownloadPdfURL, opt => opt.Ignore())
+                .ForMember(dest => dest.TemplatePrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.Template, opt => opt.Ignore())
+                .ForMember(dest => dest.MailingListPrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.MailingList, opt => opt.Ignore())
+                .ForMember(dest => dest.ShippingDatePrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.ShippingDate, opt => opt.Ignore())
+                .ForMember(dest => dest.TrackingPrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.Tracking, opt => opt.Ignore())
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => string.Format("$ {0:#,0.00}", src.OrderItemPrice)))
+                .ForMember(dest => dest.QuantityPrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.OrderItemUnitCount))
+                .ForMember(dest => dest.QuantityShippedPrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.QuantityShipped, opt => opt.Ignore())
+                .ForMember(dest => dest.UnitOfMeasure, opt => opt.Ignore())
+                .ForMember(dest => dest.ProductStatusPrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.ProductStatus, opt => opt.Ignore())
+                .ForMember(dest => dest.Preview, opt => opt.Ignore())
+                .ForMember(dest => dest.EmailProof, opt => opt.Ignore())
+                .ForMember(dest => dest.Options, opt => opt.Ignore())
+                .ForMember(dest => dest.LineNumber, opt => opt.Ignore())
+                .ForMember(dest => dest.Removed, opt => opt.Ignore())
+                .ForMember(dest => dest.RemoveLabel, opt => opt.Ignore());
         }
     }
 }

@@ -736,6 +736,13 @@
     <Compile Include="CMSFormControls\Kadena\ErpSelector.ascx.designer.cs">
       <DependentUpon>ErpSelector.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CMSFormControls\Kadena\OrderApproverSelector.ascx.cs">
+      <DependentUpon>OrderApproverSelector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSFormControls\Kadena\OrderApproverSelector.ascx.designer.cs">
+      <DependentUpon>OrderApproverSelector.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CMSFormControls\Kadena\TieredPricingSelector.ascx.cs">
       <DependentUpon>TieredPricingSelector.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -756,6 +763,13 @@
     </Compile>
     <Compile Include="CMSFormControls\Kadena\MediaMultiSelector.ascx.designer.cs">
       <DependentUpon>MediaMultiSelector.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Deployment\MigrationTool.aspx.cs">
+      <DependentUpon>MigrationTool.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CMSModules\Kadena\Pages\Deployment\MigrationTool.aspx.designer.cs">
+      <DependentUpon>MigrationTool.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\Kadena\Pages\Orders\FailedOrders.aspx.cs">
       <DependentUpon>FailedOrders.aspx</DependentUpon>
@@ -1407,9 +1421,11 @@
     <Content Include="BrandWebservice.asmx" />
     <Content Include="CMSFormControls\Kadena\BusinessUnitControl.ascx" />
     <Content Include="CMSFormControls\Kadena\ErpSelector.ascx" />
+    <Content Include="CMSFormControls\Kadena\OrderApproverSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\TieredPricingSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\DynamicPricingSelector.ascx" />
     <Content Include="CMSFormControls\Kadena\MediaMultiSelector.ascx" />
+    <Content Include="CMSModules\Kadena\Pages\Deployment\MigrationTool.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Orders\FailedOrders.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Payment\Create3dsiContainer.aspx" />
     <Content Include="CMSModules\Kadena\Pages\Products\CampaignProductsMigration.aspx" />
@@ -1572,7 +1588,16 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2904</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:56000</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

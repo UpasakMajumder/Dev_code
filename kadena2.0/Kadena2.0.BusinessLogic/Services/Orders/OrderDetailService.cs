@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
+using Kadena.BusinessLogic.Contracts.Approval;
 
 namespace Kadena.BusinessLogic.Services.Orders
 {
@@ -41,6 +42,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IImageService imageService;
         private readonly IPdfService pdfService;
         private readonly IKenticoUnitOfMeasureProvider units;
+        private readonly IApproverService approverService;
 
         public OrderDetailService(IMapper mapper,
             IOrderViewClient orderViewClient,
@@ -58,7 +60,8 @@ namespace Kadena.BusinessLogic.Services.Orders
             IKenticoSiteProvider site,
             IImageService imageService,
             IPdfService pdfService,
-            IKenticoUnitOfMeasureProvider units
+            IKenticoUnitOfMeasureProvider units,
+            IApproverService approverService
             )
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -78,6 +81,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
             this.pdfService = pdfService ?? throw new ArgumentNullException(nameof(pdfService));
             this.units = units ?? throw new ArgumentNullException(nameof(units));
+            this.approverService = approverService ?? throw new ArgumentNullException(nameof(approverService));
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
@@ -108,8 +112,11 @@ namespace Kadena.BusinessLogic.Services.Orders
 
             var customer = kenticoCustomers.GetCustomer(data.ClientId) ?? Customer.Unknown;
             var isWaitingForApproval = data.StatusId == (int)OrderStatus.WaitingForApproval;
-            var canCurrentUserApproveOrder = isWaitingForApproval && IsCurrentUserApproverFor(customer);
+            var userId = kenticoCustomers.GetCurrentCustomer().UserID;
+
+            var canCurrentUserApproveOrder = isWaitingForApproval && approverService.IsCustomersApprover(userId, customer.Id);
             var canCurrentUserEditInApproval = permissions.CurrentUserHasPermission(ModulePermissions.KadenaOrdersModule, ModulePermissions.KadenaOrdersModule.EditOrdersInApproval);
+
             var showApprovalButtons = canCurrentUserApproveOrder;
             var showEditButton = canCurrentUserApproveOrder && canCurrentUserEditInApproval;
             var showOrderHistory = isWaitingForApproval;

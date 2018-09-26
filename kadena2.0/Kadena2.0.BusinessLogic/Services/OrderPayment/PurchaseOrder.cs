@@ -30,7 +30,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
 
             if (serviceResult.Success)
             {
-                shoppingCart.RemoveCurrentItemsFromStock();
+                shoppingCart.UpdateInventory();
                 shoppingCart.ClearCart();
             }
 
