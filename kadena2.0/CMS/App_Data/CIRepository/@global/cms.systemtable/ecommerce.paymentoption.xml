@@ -108,7 +108,15 @@
         <settings>
           <controlname>CheckBoxControl</controlname>
         </settings>
-      </field>    
+      </field>
+      <field allowempty="true" column="PaymentOptionErpConfig" columnsize="250" columntype="text" guid="664cb0b9-fe64-44ad-8f5b-4cd5aa9f6b61" publicfield="false" visible="true">
+        <properties>
+          <fieldcaption>Erp Selection</fieldcaption>
+        </properties>
+        <settings>
+          <controlname>kadena.ErpSelector</controlname>
+        </settings>
+      </field>
       <field allowempty="true" column="IconResource" columnsize="200" columntype="text" guid="e499d7f9-61d1-447c-abfa-89fcde76a861" publicfield="false" visible="true">
         <properties>
           <fieldcaption>IconResource</fieldcaption>
