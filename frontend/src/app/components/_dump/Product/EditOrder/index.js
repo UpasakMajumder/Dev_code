@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 /* components */
+import changePaymentMethod from 'app.ac/checkout';
+import Alert from 'app.dump/Alert';
+import Dialog from 'app.dump/Dialog';
 import { Tooltip } from 'react-tippy';
 import TextInput from 'app.dump/Form/TextInput';
+import PaymentMethod from '../../../Checkout/PaymentMethod';
 
 const EditOrder = (props) => {
   const removeButton = props.removeButton
@@ -16,6 +20,9 @@ const EditOrder = (props) => {
       </button>
     ) : null;
 
+  const validationMessage = 'hello';
+  const checkedData = 'aaa';
+  const paymentMethods = { approvalRequiredButton: 'Confirm', approvalRequiredText: 'Approval Required', isPayable: true, items: [{ id: 1, icon: 'credit-card', approvalRequired: false, title: 'Credit card', items: [{ id: '', label: 'XYZ' }] }, { id: 3, icon: 'order-payment', approvalRequired: false, title: 'Purchase Order', items: [{ id: '', label: 'XYZ' }] }] };
   return (
     <div className="edit-order">
       <img
@@ -45,7 +52,12 @@ const EditOrder = (props) => {
           {props.unitOfMeasure}
         </div>
         {removeButton}
-      </div>
+      </div><div><PaymentMethod
+        validationMessage={validationMessage}
+        changePaymentMethod={changePaymentMethod}
+        checkedObj={checkedData}
+        ui={paymentMethods} />
+     </div>
     </div>
   );
 };
