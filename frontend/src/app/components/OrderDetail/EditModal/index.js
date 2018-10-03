@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -6,11 +5,36 @@ import axios from 'axios';
 import Dialog from 'app.dump/Dialog';
 import Button from 'app.dump/Button';
 import EditOrder from 'app.dump/Product/EditOrder';
-import PaymentMethod from 'app.smart/Checkout/PaymentMethod';
 /* consts */
 import { FAILURE, SUCCESS } from 'app.consts';
+import { CHECKOUT as CHECKOUT_URL, NOTIFICATION } from 'app.globals';
 
 class EditModal extends Component {
+  constructor(props) {
+    super(props);
+    this.paymentMethodsDetails();
+    // this.checkedPaymentMethod(this.state.paymentMethods.items);
+  }
+
+  paymentMethodsDetails() {
+    const url = CHECKOUT_URL.initRenderUIURL;
+    axios
+      .get(url)
+      .then((response) => {
+        const { payload, success, errorMessage } = response.data;
+        // console.log(payload);
+        this.setState({ paymentMethods: payload.paymentMethods });
+        for (let i = 0; i < this.state.paymentMethods.items.length; i += 1) {
+          if (this.props.checkedPaymentMethod === this.state.paymentMethods.items[i].icon) {
+            this.setState({ checkedPay: { id: this.state.paymentMethods.items[i].id } });
+          }
+        }
+      })
+      .catch((error) => {
+        // window.store.dispatch({ type: FAILURE, error });
+      });
+  }
+
   static propTypes = {
     open: PropTypes.bool.isRequired,
     proceedUrl: PropTypes.string.isRequired,
@@ -38,16 +62,15 @@ class EditModal extends Component {
     }).isRequired,
     paidByCreditCard: PropTypes.bool.isRequired,
     maxOrderQuantity: PropTypes.object.isRequired,
-    paymentMethod: PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-      invoice: PropTypes.string
-    }).isRequired,
-    changePaymentMethod: PropTypes.func.isRequired,
-    paymentMethodUI: PropTypes.object.isRequired
+    checkedPaymentMethod: PropTypes.object
   }
 
   state = {
     orderedItems: {},
+    paymentMethods: {},
+    checkedPay: {
+      id: null
+    },
     invalids: [],
     isLoading: false
   };
@@ -208,6 +231,8 @@ class EditModal extends Component {
           removeOrder={() => this.handleRemoveOrder(orderedItem.id)}
           value={this.state.orderedItems && this.state.orderedItems[orderedItem.id] && this.state.orderedItems[orderedItem.id].quantity}
           removeButton={this.props.buttons.remove}
+          paymentMethods={this.state.paymentMethods}
+          checkedPayment={this.state.checkedPay}
         />
       );
     });
@@ -216,14 +241,6 @@ class EditModal extends Component {
       <div>
         {this.props.description ? <p>{this.props.description}</p> : null}
         {orders}
-        <div className="mt-4">
-          <PaymentMethod
-            validationMessage="String"
-            changePaymentMethod={this.props.changePaymentMethod}
-            checkedObj={this.props.paymentMethod}
-            ui={this.props.paymentMethodUI}
-          />
-        </div>
       </div>
     );
   };
