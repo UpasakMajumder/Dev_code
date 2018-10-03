@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 /* components */
 import changePaymentMethod from 'app.ac/checkout';
@@ -20,9 +21,7 @@ const EditOrder = (props) => {
       </button>
     ) : null;
 
-  const validationMessage = 'hello';
-  const checkedData = 'aaa';
-  const paymentMethods = { approvalRequiredButton: 'Confirm', approvalRequiredText: 'Approval Required', isPayable: true, items: [{ id: 1, icon: 'credit-card', approvalRequired: false, title: 'Credit card', items: [{ id: '', label: 'XYZ' }] }, { id: 3, icon: 'order-payment', approvalRequired: false, title: 'Purchase Order', items: [{ id: '', label: 'XYZ' }] }] };
+  const validationMessage = '';
   return (
     <div className="edit-order">
       <img
@@ -52,11 +51,11 @@ const EditOrder = (props) => {
           {props.unitOfMeasure}
         </div>
         {removeButton}
-      </div><div><PaymentMethod
+      </div><PaymentMethod
         validationMessage={validationMessage}
         changePaymentMethod={changePaymentMethod}
-        checkedObj={checkedData}
-        ui={paymentMethods} />
+        checkedObj={props.checkedPayment}
+        ui={props.paymentMethods} /><div>
      </div>
     </div>
   );
@@ -75,7 +74,9 @@ EditOrder.propTypes = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   removeButton: PropTypes.string,
-  removeOrder: PropTypes.func
+  removeOrder: PropTypes.func,
+  paymentMethods: PropTypes.object,
+  checkedPayment: PropTypes.object
 };
 
 export default EditOrder;
