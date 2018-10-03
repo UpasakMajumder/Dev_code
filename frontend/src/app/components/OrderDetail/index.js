@@ -62,10 +62,6 @@ type State = {
   emailProof: {
     show: boolean,
     url: string
-  },
-  paymentMethod: {
-    id: number | string,
-    invoice: string
   }
 }
 
@@ -80,11 +76,7 @@ class OrderDetail extends Component<void, void, State> {
       url: ''
     },
     orderHistory: null,
-    showOrderHistory: false,
-    paymentMethod: {
-      id: '',
-      invoice: ''
-    }
+    showOrderHistory: false
   }
 
   componentDidMount() {
@@ -302,15 +294,6 @@ class OrderDetail extends Component<void, void, State> {
     return result;
   };
 
-  changePaymentMethod = (id: string | number, invoice: ?string): void => {
-    this.setState({
-      paymentMethod: {
-        id,
-        invoice
-      }
-    });
-  };
-
   render() {
     const { ui, emailProof } = this.state;
     if (!ui) return <Spinner />;
@@ -346,8 +329,7 @@ class OrderDetail extends Component<void, void, State> {
           maxOrderQuantity={this.getMaxOrderQuantity(isSubmitted)}
           editOrders={this.editOrders}
           clearHistory={this.clearHistory}
-          paymentMethod={this.state.paymentMethod}
-          changePaymentMethod={this.changePaymentMethod}
+          checkedPaymentMethod={paymentInfo.paymentIcon}
         />
       ) : null;
 
