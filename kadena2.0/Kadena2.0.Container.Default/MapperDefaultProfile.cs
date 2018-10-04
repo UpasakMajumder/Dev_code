@@ -280,7 +280,11 @@ namespace Kadena.Container.Default
             CreateMap<OrderedItemsGroup, OrderedItemsGroupDTO>();
             CreateMap<OrderedItemsGroupTracking, OrderedItemsGroupTrackingDTO>();
             CreateMap<OrderedItemsGroupShippingDate, OrderedItemsGroupShippingDateDTO>();
+
+            CreateMap<PaymentMethodSelected, PaymentMethodSelectedDTO>();
+            CreateMap<OrderDetailPaymentMethod, OrderDetailPaymentMethodDTO>();
             CreateMap<OrderDetail, OrderDetailDTO>();
+
             CreateMap<CommonInfo, CommonInfoDTO>();
             CreateMap<OrderStatusInfo, OrderStatusInfoDTO>();
             CreateMap<Link, LinkDto>();

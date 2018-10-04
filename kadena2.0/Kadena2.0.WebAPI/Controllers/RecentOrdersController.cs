@@ -96,8 +96,16 @@ namespace Kadena.WebAPI.Controllers
         public async Task<IHttpActionResult> Get(string orderId)
         {
             var detailPage = await orderDetailService.GetOrderDetail(orderId);
-            var detailPageDto = _mapper.Map<OrderDetailDTO>(detailPage);
-            return ResponseJson(detailPageDto);
+            try
+            {
+                var detailPageDto = _mapper.Map<OrderDetailDTO>(detailPage);
+                return ResponseJson(detailPageDto);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
         [HttpGet]

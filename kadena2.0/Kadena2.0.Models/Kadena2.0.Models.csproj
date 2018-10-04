@@ -80,12 +80,14 @@
     <Compile Include="OrderDetail\EditOrderDialog.cs" />
     <Compile Include="OrderDetail\EditOrderDialogButtons.cs" />
     <Compile Include="OrderDetail\OrderActions.cs" />
+    <Compile Include="OrderDetail\OrderDetailPaymentMethod.cs" />
     <Compile Include="OrderDetail\OrderedItems.cs" />
     <Compile Include="OrderDetail\OrderedItemsGroup.cs" />
     <Compile Include="OrderDetail\OrderedItemsGroupShippingDate.cs" />
     <Compile Include="OrderDetail\OrderedItemsGroupTracking.cs" />
     <Compile Include="OrderDetail\OrderInfo.cs" />
     <Compile Include="OrderDetail\OrderStatusInfo.cs" />
+    <Compile Include="OrderDetail\PaymentMethodSelected.cs" />
     <Compile Include="OrderHistory\ItemChange.cs" />
     <Compile Include="OrderHistory\ItemChanges.cs" />
     <Compile Include="OrderHistory\OrderChange.cs" />

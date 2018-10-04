@@ -85,7 +85,9 @@
     <Compile Include="OrderManualUpdate\MicroserviceRequests\UpdateShipping\UpdateShippingsOrderItemShippingMethod.cs" />
     <Compile Include="OrderManualUpdate\MicroserviceRequests\UpdateShipping\UpdateShippingsRequestDto.cs" />
     <Compile Include="OrderManualUpdate\Requests\OrderItemUpdateDto.cs" />
+    <Compile Include="OrderManualUpdate\Requests\OrderPaymentUpdateDto.cs" />
     <Compile Include="OrderManualUpdate\Requests\OrderUpdateDto.cs" />
+    <Compile Include="OrderManualUpdate\Requests\PaymentOptionsDto.cs" />
     <Compile Include="OrderManualUpdate\Requests\UpdateShippingRowDto.cs" />
     <Compile Include="OrderManualUpdate\Responses\ItemUpdateResultDto.cs" />
     <Compile Include="OrderManualUpdate\Responses\OrderUpdateResultDto.cs" />
@@ -267,6 +269,7 @@
     <Compile Include="ViewOrder\Responses\EditOrderDialogDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderActionsDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderDetailDTO.cs" />
+    <Compile Include="ViewOrder\Responses\OrderDetailPaymentMethodDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemsDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderedItemsGroupDTO.cs" />
@@ -278,6 +281,7 @@
     <Compile Include="ViewOrder\Responses\OrderInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\OrderStatusInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\PaymentInfoDTO.cs" />
+    <Compile Include="ViewOrder\Responses\PaymentMethodSelectedDTO.cs" />
     <Compile Include="ViewOrder\Responses\PricingInfoDTO.cs" />
     <Compile Include="ViewOrder\Responses\PricingInfoItemDTO.cs" />
     <Compile Include="ViewOrder\Responses\ShippingInfoDTO.cs" />

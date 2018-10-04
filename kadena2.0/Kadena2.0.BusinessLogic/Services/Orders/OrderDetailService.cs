@@ -1,5 +1,6 @@
 using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
+using Kadena.BusinessLogic.Factories.Checkout;
 using Kadena.Dto.SubmitOrder.MicroserviceRequests;
 using Kadena.Helpers;
 using Kadena.Helpers.Routes;
@@ -41,6 +42,7 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IImageService imageService;
         private readonly IPdfService pdfService;
         private readonly IKenticoUnitOfMeasureProvider units;
+        private readonly ICheckoutPageFactory checkoutfactory;
 
         public OrderDetailService(IMapper mapper,
             IOrderViewClient orderViewClient,
@@ -58,7 +60,8 @@ namespace Kadena.BusinessLogic.Services.Orders
             IKenticoSiteProvider site,
             IImageService imageService,
             IPdfService pdfService,
-            IKenticoUnitOfMeasureProvider units
+            IKenticoUnitOfMeasureProvider units,
+            ICheckoutPageFactory checkoutfactory
             )
         {
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -78,6 +81,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
             this.pdfService = pdfService ?? throw new ArgumentNullException(nameof(pdfService));
             this.units = units ?? throw new ArgumentNullException(nameof(units));
+            this.checkoutfactory = checkoutfactory ?? throw new ArgumentNullException(nameof(checkoutfactory));
         }
 
         public async Task<OrderDetail> GetOrderDetail(string orderId)
@@ -113,6 +117,9 @@ namespace Kadena.BusinessLogic.Services.Orders
             var showApprovalButtons = canCurrentUserApproveOrder;
             var showEditButton = canCurrentUserApproveOrder && canCurrentUserEditInApproval;
             var showOrderHistory = isWaitingForApproval;
+
+            var paymentMethods = shoppingCart.GetPaymentMethods();
+
             if (!showOrderHistory)
             {
                 var history = await orderHistoryClient.Get(orderId);
@@ -254,6 +261,11 @@ namespace Kadena.BusinessLogic.Services.Orders
                         }
                     }
                 },
+                PaymentMethod = new OrderDetailPaymentMethod()
+                {
+                    CheckedObj = new PaymentMethodSelected() { Id = 1 },
+                    Ui = checkoutfactory.CreatePaymentMethods(paymentMethods)
+                }
             };
 
             var mailingTypeCode = OrderItemTypeDTO.Mailing.ToString();

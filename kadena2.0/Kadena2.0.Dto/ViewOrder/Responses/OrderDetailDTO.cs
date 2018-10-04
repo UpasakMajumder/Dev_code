@@ -13,5 +13,9 @@ namespace Kadena.Dto.ViewOrder.Responses
         public OrderedItemsDTO OrderedItems { get; set; }
         public OrderActionsDTO Actions { get; set; }
         public DialogButtonDTO<EditOrderDialogDTO> EditOrders { get; set; }
+
+        public OrderDetailPaymentMethodDTO PaymentMethod { get; set; }
+
     }
+
 }

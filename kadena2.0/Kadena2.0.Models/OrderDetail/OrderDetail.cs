@@ -24,5 +24,9 @@ namespace Kadena.Models.OrderDetail
             PricingInfo = null;
             OrderedItems.HidePrices();
         }
+
+        public OrderDetailPaymentMethod PaymentMethod { get; set; }
+
     }
+
 }
