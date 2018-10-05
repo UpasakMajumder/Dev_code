@@ -1,6 +1,5 @@
 using AutoMapper;
 using CMS.DocumentEngine;
-using CMS.CustomTables;
 using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.Membership;
@@ -77,7 +76,6 @@ namespace Kadena.WebAPI.KenticoProviders
                 QuantityPrefix = resources.GetResourceString("Kadena.Checkout.QuantityPrefix"),
                 MailingListName = i.GetValue("MailingListName", string.Empty),
                 Template = !string.IsNullOrEmpty(i.CartItemText) ? i.CartItemText : i.SKU.SKUName,
-                CustomerReferenceNumber = !string.IsNullOrEmpty(i.SKU.SKUProductCustomerReferenceNumber) ? i.SKU.SKUProductCustomerReferenceNumber : i.SKU.SKUName,
                 ProductPageId = i.GetIntegerValue("ProductPageID", 0),
                 StockQuantity = i.SKU.SKUAvailableItems,
                 MailingListPrefix = resources.GetResourceString("Kadena.Checkout.MailingListLabel"),
