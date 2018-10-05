@@ -40,6 +40,8 @@ type UI = {
   paymentInfo: {
     paymentIcon: string
   },
+  paymentMethods: {
+  },
   pricingInfo: ?{
     items: []
   },
@@ -62,6 +64,11 @@ type State = {
   emailProof: {
     show: boolean,
     url: string
+  },
+  paymentMethod: {
+    id: number | string,
+    invoice: string,
+    card: string
   }
 }
 
@@ -76,8 +83,25 @@ class OrderDetail extends Component<void, void, State> {
       url: ''
     },
     orderHistory: null,
-    showOrderHistory: false
+    showOrderHistory: false,
+    paymentMethod: {
+      id: '',
+      invoice: '',
+      card: ''
+    }
   }
+
+  setSelectedPaymentOption = (paymentMethods) => {
+    for (let i = 0; i < paymentMethods.items.length; i += 1) {
+      if (paymentMethods.items[i].checked === true) {
+        this.setState({
+          paymentMethod: {
+            id: paymentMethods.items[i].id
+          }
+        });
+      }
+    }
+  };
 
   componentDidMount() {
     const orderID: string = getSearchObj().orderID || '';
@@ -97,6 +121,7 @@ class OrderDetail extends Component<void, void, State> {
           window.store.dispatch({ type: FAILURE, alert: errorMessage });
         } else {
           this.setState({ ui: payload });
+          this.setSelectedPaymentOption(this.state.ui.paymentMethods);
         }
       })
       .catch((error): void => {
@@ -259,6 +284,7 @@ class OrderDetail extends Component<void, void, State> {
         orderedItems: newOrderedItems
       }
     });
+
   };
 
   showOrderHistoryModal = (url: string) => {
@@ -294,6 +320,16 @@ class OrderDetail extends Component<void, void, State> {
     return result;
   };
 
+  changePaymentMethod = (id: string | number, invoice: ?string, card): void => {
+    this.setState({
+      paymentMethod: {
+        id,
+        invoice,
+        card
+      }
+    });
+  };
+
   render() {
     const { ui, emailProof } = this.state;
     if (!ui) return <Spinner />;
@@ -311,7 +347,14 @@ class OrderDetail extends Component<void, void, State> {
     } = ui;
 
     const shippingInfoEl = shippingInfo ? <div className="col-lg-4 mb-4"><ShippingInfo ui={shippingInfo} /></div> : null;
-    const paymentInfoEl = paymentInfo ? <div className="col-lg-4 mb-4"><PaymentInfo ui={paymentInfo} dateTimeNAString={dateTimeNAString} /></div> : null;
+    const paymentInfoEl = paymentInfo ? <div className="col-lg-4 mb-4"><PaymentInfo
+      ui={paymentInfo}
+      dateTimeNAString={dateTimeNAString}
+      paymentMethods={this.state.ui.paymentMethods}
+      changePaymentMethod={this.changePaymentMethod}
+      checkedPaymentOption={this.state.paymentMethod}
+    />
+    </div> : null;
     const pricingInfoEl = pricingInfo ? <div className="col-lg-4 mb-4"><PricingInfo ui={pricingInfo} /></div> : null;
 
     const { nonZeroProductsExist, isSubmitted } = OrderDetail.getIsNonZeroProducExists(orderedItems);
@@ -329,7 +372,9 @@ class OrderDetail extends Component<void, void, State> {
           maxOrderQuantity={this.getMaxOrderQuantity(isSubmitted)}
           editOrders={this.editOrders}
           clearHistory={this.clearHistory}
-          checkedPaymentMethod={paymentInfo.paymentIcon}
+          paymentMethods={this.state.ui.paymentMethods}
+          changePaymentMethod={this.changePaymentMethod}
+          checkedPaymentOption={this.state.paymentMethod}
         />
       ) : null;
 

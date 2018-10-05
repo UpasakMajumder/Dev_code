@@ -5,7 +5,8 @@ import SVG from 'app.dump/SVG';
 /* helpers */
 import timeFormat from 'app.helpers/time';
 
-const PaymentInfo = ({ ui, dateTimeNAString }) => {
+const PaymentInfo = ({ ui, dateTimeNAString, paymentMethods, changePaymentMethod, checkedPaymentOption }) => {
+
   const { title, paymentIcon, paidBy, paymentDetail, date, datePrefix, bUnitName, bUnitLabel } = ui;
 
   const paymentMethodInfo = paymentDetail ? <p>{paidBy},<br /> {paymentDetail}</p> : <p>{paidBy}</p>;
@@ -20,6 +21,9 @@ const PaymentInfo = ({ ui, dateTimeNAString }) => {
         {paymentMethodInfo}
         <p>{datePrefix}: <span className="weight--bold">{timeFormat(date, dateTimeNAString)}</span></p>
         {bUnitInfo}
+      </div>
+      <div>
+
       </div>
     </div>
   );
@@ -36,7 +40,10 @@ PaymentInfo.propTypes = {
     datePrefix: PropTypes.string.isRequired,
     bUnitName: PropTypes.string,
     bUnitLabel: PropTypes.string
-  })
+  }),
+  paymentMethods: PropTypes.object.isRequired,
+  changePaymentMethod: PropTypes.func.isRequired,
+  checkedPaymentOption: PropTypes.object.isRequired
 };
 
 export default PaymentInfo;

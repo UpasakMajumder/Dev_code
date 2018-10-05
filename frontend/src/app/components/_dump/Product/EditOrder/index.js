@@ -53,8 +53,8 @@ const EditOrder = (props) => {
         {removeButton}
       </div><PaymentMethod
         validationMessage={validationMessage}
-        changePaymentMethod={changePaymentMethod}
-        checkedObj={props.checkedPayment}
+        changePaymentMethod={props.changePaymentMethod}
+        checkedObj={props.checkedPaymentOption}
         ui={props.paymentMethods} /><div>
      </div>
     </div>
@@ -75,8 +75,9 @@ EditOrder.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   removeButton: PropTypes.string,
   removeOrder: PropTypes.func,
-  paymentMethods: PropTypes.object,
-  checkedPayment: PropTypes.object
+  paymentMethods: PropTypes.object.isRequired,
+  checkedPaymentOption: PropTypes.object.isRequired,
+  changePaymentMethod: PropTypes.func.isRequired
 };
 
 export default EditOrder;

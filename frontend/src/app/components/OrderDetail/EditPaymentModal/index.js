@@ -9,7 +9,7 @@ import EditOrder from 'app.dump/Product/EditOrder';
 import { FAILURE, SUCCESS } from 'app.consts';
 import { CHECKOUT as CHECKOUT_URL, NOTIFICATION } from 'app.globals';
 
-class EditModal extends Component {
+class EditPaymentModal extends Component {
   static propTypes = {
     open: PropTypes.bool.isRequired,
     proceedUrl: PropTypes.string.isRequired,
@@ -235,4 +235,4 @@ class EditModal extends Component {
   }
 }
 
-export default EditModal;
+export default EditPaymentModal;
