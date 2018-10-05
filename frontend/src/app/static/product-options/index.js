@@ -5,7 +5,6 @@ class ProductOptions {
     this.container = container;
     this.url = container.dataset.url;
     this.priceElement = this.getPriceElement();
-    this.stockElement = this.getStockElement();
 
     this.selected = {};
 
@@ -48,8 +47,7 @@ class ProductOptions {
   };
 
   setNewPrice = (data) => {
-    const { pricePrefix, priceValue, availabilty } = data;
-    if (availabilty) { this.stockElement.availability = `${availabilty}`; }
+    const { pricePrefix, priceValue } = data;
     this.priceElement.innerHTML = `${pricePrefix} ${priceValue}`;
   };
 
@@ -62,17 +60,6 @@ class ProductOptions {
     }
 
     return priceElement;
-  }
-  
-  getStockElement = () => {
-    const stockSelector = this.container.dataset.Stock;
-    const stockElement = document.querySelector(stockSelector);
-
-    if (!stockElement) {
-      console.error(`Element with selector ${stockSelector} is not found`); // eslint-disable-line no-console
-    }
-
-    return stockElement;
   }
 }
 
