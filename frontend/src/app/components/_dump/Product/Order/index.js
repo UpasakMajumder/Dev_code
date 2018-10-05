@@ -58,8 +58,7 @@ const Order = ({
   emailProof,
   toggleEmailProof,
   removed,
-  removeLabel,
-  customerReferenceNumber
+  removeLabel
 }) => {
   const downloadPdfLink = downloadPdfURL
     ? (
@@ -154,7 +153,7 @@ const Order = ({
         <div className="cart-product__template">
           <p>
             <SVG name="products"/>
-            <span>{templatePrefix}: <strong>{template}</strong></span><span>{customerReferenceNumber}</span>
+            <span>{templatePrefix}: <strong>{template}</strong></span>
           </p>
         </div>
 

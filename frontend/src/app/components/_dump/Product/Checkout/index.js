@@ -185,9 +185,7 @@ class CheckoutProduct extends Component {
       mailingListPrefix,
       buttonLabels,
       options,
-      unitOfMeasure,
-      customerReferenceNumber
-      
+      unitOfMeasure
     } = this.props;
     const { quantity } = this.state;
 
@@ -255,7 +253,7 @@ class CheckoutProduct extends Component {
           <div className="cart-product__template">
             <p>
               <SVG name="products"/>
-              <span>{templatePrefix}: <strong>{template}</strong></span><span>{customerReferenceNumber}</span>
+              <span>{templatePrefix}: <strong>{template}</strong></span>
             </p>
           </div>
 
