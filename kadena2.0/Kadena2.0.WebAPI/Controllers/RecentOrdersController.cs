@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Kadena.BusinessLogic.Contracts;
-using Kadena.BusinessLogic.Factories;
 using Kadena.Dto.RecentOrders;
 using Kadena.Dto.ViewOrder.Responses;
 using Kadena.Helpers.Routes;
@@ -21,7 +20,7 @@ namespace Kadena.WebAPI.Controllers
         private readonly IOrderHistoryService _orderHistoryService;
 
         public RecentOrdersController(
-            IOrderDetailService orderDetailService, 
+            IOrderDetailService orderDetailService,
             IOrderListServiceFactory orderListServiceFactory,
             IOrderHistoryService orderHistoryService,
             IMapper mapper)
@@ -96,16 +95,8 @@ namespace Kadena.WebAPI.Controllers
         public async Task<IHttpActionResult> Get(string orderId)
         {
             var detailPage = await orderDetailService.GetOrderDetail(orderId);
-            try
-            {
-                var detailPageDto = _mapper.Map<OrderDetailDTO>(detailPage);
-                return ResponseJson(detailPageDto);
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            var detailPageDto = _mapper.Map<OrderDetailDTO>(detailPage);
+            return ResponseJson(detailPageDto);
         }
 
         [HttpGet]

@@ -100,6 +100,9 @@
     <Compile Include="Orders\OrderReportViewItem.cs" />
     <Compile Include="Orders\OrderStatus.cs" />
     <Compile Include="Orders\OrderUpdate.cs" />
+    <Compile Include="Orders\OrderUpdateItems.cs" />
+    <Compile Include="Orders\OrderUpdatePayment.cs" />
+    <Compile Include="Orders\OrderUpdatePaymentResult.cs" />
     <Compile Include="Orders\OrderUpdateResult.cs" />
     <Compile Include="Orders\UpdateOrdersShippingsResult.cs" />
     <Compile Include="Orders\UpdateShippingRow.cs" />

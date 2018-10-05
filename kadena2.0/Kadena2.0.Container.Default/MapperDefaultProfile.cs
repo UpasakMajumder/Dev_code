@@ -86,7 +86,7 @@ namespace Kadena.Container.Default
             CreateMap<RoutingDto, Routing>();
             CreateMap<DeleteRouting, DeleteRoutingRequestDto>();
             CreateMap<SetRouting, SetRoutingRequestDto>();
-            CreateMap<ShoppingCart, OrderManualUpdateRequestDto>()
+            CreateMap<ShoppingCart, OrderManualUpdateItemsRequestDto>()
                 .ForMember(dest => dest.TotalShipping, opt => opt.MapFrom(src => src.ShippingPrice))
                 .ForMember(dest => dest.OrderId, opt => opt.Ignore());
             CreateMap<CartItemEntity, ItemUpdateDto>()
@@ -485,7 +485,7 @@ namespace Kadena.Container.Default
             CreateMap<Weight, WeightDto>()
                 .ReverseMap();
             CreateMap<OrderItemUpdateDto, OrderItemUpdate>();
-            CreateMap<OrderUpdateDto, OrderUpdate>();
+            CreateMap<OrderUpdateItemsDto, OrderUpdateItems>();
             CreateMap<AddressDTO, Dto.EstimateDeliveryPrice.MicroserviceRequests.AddressDto>()
                 .ForMember(dest => dest.StreetLines, opt => opt.MapFrom(src => new[] { src.AddressLine1, src.AddressLine2 }.Where(s => !string.IsNullOrEmpty(s)).ToList()))
                 .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City))

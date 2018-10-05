@@ -20,9 +20,15 @@ namespace Kadena2.MicroserviceClients.Clients
             _serviceVersionSettingKey = Settings.KDA_OrderManualUpdateVersion;
         }
 
-        public async Task<BaseResponseDto<object>> UpdateOrder(OrderManualUpdateRequestDto request)
+        public async Task<BaseResponseDto<object>> UpdateOrder(OrderManualUpdateItemsRequestDto request)
         {
             var url = $"{BaseUrl}/api/v{Version}/order/items";
+            return await Patch<object>(url, request).ConfigureAwait(false);
+        }
+
+        public async Task<BaseResponseDto<object>> UpdateOrderPayment(OrderManualUpdatePaymentRequestDto request)
+        {
+            var url = $"{BaseUrl}/api/v{Version}/order/payment";
             return await Patch<object>(url, request).ConfigureAwait(false);
         }
 

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Kadena.Models.Orders
 {
-    public class OrderUpdate
+    public class OrderUpdatePayment: OrderUpdate
     {
-        public string OrderId { get; set; }
+        public Kadena.Models.SubmitOrder.PaymentMethod PaymentMethod { get; set; }
     }
 }
