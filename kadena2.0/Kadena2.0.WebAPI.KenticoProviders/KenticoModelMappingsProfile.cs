@@ -292,6 +292,8 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.SellOnlyIfAvailable, opt => opt.MapFrom(src => src.SKUSellOnlyAvailable))
                 .ForMember(dest => dest.AvailableItems,
                     opt => opt.MapFrom(src => (int?)src.GetValue("SKUAvailableItems")))
+                .ForMember(dest => dest.CustomerReferenceNumber,
+                    opt => opt.MapFrom(src => (int?)src.GetValue("SKUProductCustomerReferenceNumber")))
                 .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.SKUWeight))
                 .ForMember(dest => dest.HiResPdfDownloadEnabled,
                     opt => opt.MapFrom(src => src.GetBooleanValue("SKUHiResPdfDownloadEnabled", false)))
@@ -497,6 +499,7 @@ namespace Kadena2.WebAPI.KenticoProviders
                 .ForMember(dest => dest.Image, opt => opt.Ignore())
                 .ForMember(dest => dest.DownloadPdfURL, opt => opt.Ignore())
                 .ForMember(dest => dest.TemplatePrefix, opt => opt.Ignore())
+                .ForMember(dest => dest.CustomerReferenceNumber, opt => opt.Ignore())
                 .ForMember(dest => dest.Template, opt => opt.Ignore())
                 .ForMember(dest => dest.MailingListPrefix, opt => opt.Ignore())
                 .ForMember(dest => dest.MailingList, opt => opt.Ignore())
