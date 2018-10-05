@@ -18,7 +18,7 @@ const Stock = ({ availability }) => {
         className="icon-stock"
         key={0}
       />,
-      <span class="stock_availablity_note" key={1}>{availability.get('text')}</span>
+      <span key={1}>{availability.get('text')}</span>
     ];
   }
 
