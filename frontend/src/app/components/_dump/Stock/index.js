@@ -25,7 +25,7 @@ const Stock = (props: { type: ?string, text: string }) => {
   return (
     <div className={`stock ${stockClass}`}>
       <SVG name={stockClass} className={`icon-stock icon-${stockClass}`}/>
-      <span class = "stock-available-notes">{text}</span>
+      {text}
     </div>
   );
 
