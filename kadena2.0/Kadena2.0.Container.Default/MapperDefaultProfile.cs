@@ -274,15 +274,13 @@ namespace Kadena.Container.Default
             CreateMap<Models.Checkout.AddressDialog, Dto.Checkout.AddressDialogDto>();
             CreateMap<DefaultAddress, DefaultAddressDto>();
             CreateMap<SettingsAddresses, SettingsAddressesDto>();
+
             CreateMap<OrderedItem, OrderedItemDTO>();
             CreateMap<OrderedItems, OrderedItemsDTO>();
             CreateMap<OrderedItemsSection, OrderedItemsSectionDTO>();
             CreateMap<OrderedItemsGroup, OrderedItemsGroupDTO>();
             CreateMap<OrderedItemsGroupTracking, OrderedItemsGroupTrackingDTO>();
             CreateMap<OrderedItemsGroupShippingDate, OrderedItemsGroupShippingDateDTO>();
-
-            CreateMap<PaymentMethodSelected, PaymentMethodSelectedDTO>();
-            CreateMap<OrderDetailPaymentMethod, OrderDetailPaymentMethodDTO>();
             CreateMap<OrderDetail, OrderDetailDTO>();
 
             CreateMap<CommonInfo, CommonInfoDTO>();

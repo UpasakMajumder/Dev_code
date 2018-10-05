@@ -261,12 +261,13 @@ namespace Kadena.BusinessLogic.Services.Orders
                         }
                     }
                 },
-                PaymentMethod = new OrderDetailPaymentMethod()
-                {
-                    CheckedObj = new PaymentMethodSelected() { Id = 1 },
-                    Ui = checkoutfactory.CreatePaymentMethods(paymentMethods)
-                }
+                PaymentMethods = checkoutfactory.CreatePaymentMethods(paymentMethods)
             };
+
+            foreach (var item in orderDetail.PaymentMethods.Items)
+            {
+                item.Checked = item.ClassName.ToLower().EndsWith($".{data.PaymentInfo.PaymentMethod.ToLower()}");
+            }
 
             var mailingTypeCode = OrderItemTypeDTO.Mailing.ToString();
             var hasOnlyMailingListProducts = data.Items?.All(item => item.Type == mailingTypeCode) ?? false;

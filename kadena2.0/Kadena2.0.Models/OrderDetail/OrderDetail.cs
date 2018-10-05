@@ -1,4 +1,5 @@
-﻿using Kadena.Models.Common;
+﻿using Kadena.Models.Checkout;
+using Kadena.Models.Common;
 
 namespace Kadena.Models.OrderDetail
 {
@@ -25,7 +26,7 @@ namespace Kadena.Models.OrderDetail
             OrderedItems.HidePrices();
         }
 
-        public OrderDetailPaymentMethod PaymentMethod { get; set; }
+        public PaymentMethods PaymentMethods { get; set; }
 
     }
 
