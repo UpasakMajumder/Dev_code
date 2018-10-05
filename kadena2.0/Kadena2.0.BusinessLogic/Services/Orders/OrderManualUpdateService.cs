@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Kadena.Dto.OrderManualUpdate.MicroserviceRequests.UpdateShipping;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using Kadena2.BusinessLogic.Contracts.OrderPayment;
 
 namespace Kadena.BusinessLogic.Services.Orders
 {
@@ -38,6 +39,8 @@ namespace Kadena.BusinessLogic.Services.Orders
         private readonly IShoppingCartProvider shoppingCartProvider;
         private readonly ITaxEstimationService taxEstimationService;
         private readonly IKenticoLocalizationProvider localization;
+        private readonly ISubmissionService submissionService;
+        private readonly ICreditCard3dsi creditCard3dsi;
 
         public OrderManualUpdateService(IOrderManualUpdateClient updateService,
                                         IOrderViewClient orderService,
@@ -53,7 +56,9 @@ namespace Kadena.BusinessLogic.Services.Orders
                                         IShoppingCartProvider shoppingCartProvider,
                                         IKenticoUserBudgetProvider budgetProvider,
                                         ITaxEstimationService taxEstimationService,
-                                        IKenticoLocalizationProvider localization)
+                                        IKenticoLocalizationProvider localization,
+                                        ISubmissionService submissionService,
+                                        ICreditCard3dsi creditCard3dsi)
         {
             this.updateService = updateService ?? throw new ArgumentNullException(nameof(updateService));
             this.orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
@@ -70,6 +75,8 @@ namespace Kadena.BusinessLogic.Services.Orders
             this.budgetProvider = budgetProvider ?? throw new ArgumentNullException(nameof(budgetProvider));
             this.taxEstimationService = taxEstimationService ?? throw new ArgumentNullException(nameof(taxEstimationService));
             this.localization = localization ?? throw new ArgumentNullException(nameof(localization));
+            this.submissionService = submissionService ?? throw new ArgumentNullException(nameof(submissionService));
+            this.creditCard3dsi = creditCard3dsi ?? throw new ArgumentNullException(nameof(creditCard3dsi));
         }
 
         public async Task<UpdateOrdersShippingsResult> UpdateOrdersShippings(UpdateShippingRow[] request)
@@ -134,7 +141,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             };
         }
 
-        public async Task<OrderUpdateResult> UpdateOrder(OrderUpdate request)
+        public async Task<OrderUpdateResult> UpdateOrder(OrderUpdateItems request)
         {
             CheckRequestData(request);
 
@@ -228,7 +235,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             cart = shoppingCartProvider.Evaluate(cart);
 
             // get updated data from cart
-            var requestDto = mapper.Map<OrderManualUpdateRequestDto>(cart, opt => updateItems
+            var requestDto = mapper.Map<OrderManualUpdateItemsRequestDto>(cart, opt => updateItems
                 .ForEach(i => opt.Items.Add(i.SkuId.ToString(), i.LineNumber)));
             requestDto.OrderId = request.OrderId;
             requestDto.Items
@@ -274,6 +281,72 @@ namespace Kadena.BusinessLogic.Services.Orders
             return GetUpdatesForFrontend(requestDto);
         }
 
+        public async Task<OrderUpdatePaymentResult> UpdateOrderPayment(OrderUpdatePayment request)
+        {
+
+            var orderDetailResult = await orderService.GetOrderByOrderId(request.OrderId);
+
+            if (!orderDetailResult.Success || orderDetailResult.Payload == null)
+            {
+                throw new Exception($"Failed to retireve data for order {request.OrderId}");
+            }
+
+            var orderDetail = orderDetailResult.Payload;
+
+            if (orderDetail.Type == OrderType.prebuy)
+            {
+                throw new InvalidOperationException("Editing of order isn't supported for Pre-buy orders.");
+            }
+
+            var paymentMethods = shoppingCartProvider.GetPaymentMethods();
+            var selectedPayment = paymentMethods.FirstOrDefault(p => p.Id == (request.PaymentMethod?.Id ?? -1));
+
+            if (IsCreditCardPayment(selectedPayment.ShortClassName))
+            {
+                // there should be a check here to see if this is the first request and no CC information has been collected yet
+                if (string.IsNullOrEmpty(request.PaymentMethod.Card))
+                {
+                    // prep for redirect to cc page
+                    var submission = submissionService.GenerateNewSubmission(orderDetail.SiteId, orderDetail.Customer.KenticoUserID, orderDetail.ClientId, string.Empty);
+                    return new OrderUpdatePaymentResult()
+                    {
+                        RedirectURL = creditCard3dsi.GetInsertCardDetailsUrl(submission.SubmissionId.ToString()),
+                        Success = true
+                    };
+                }
+                else
+                {
+                    // submit approval information
+                    // modify request to micros
+                }
+
+
+            }
+
+            var requestDto = new OrderManualUpdatePaymentRequestDto()
+            {
+                OrderId = orderDetail.Id,
+                PaymentOption = new PaymentOptionsDto()
+                {
+                    PaymentOptionName = selectedPayment.ShortClassName,
+                    PONumber = request.PaymentMethod.Invoice,
+                    PaymentGatewayCustomerCode = string.Empty, // TODO: Populate when appropriate
+                    PaymentGatewayName = string.Empty, // TODO: Populate when appropriate
+                    TokenId = string.Empty, // TODO: Populate when appropriate
+                    TransactionKey = string.Empty // TODO: Populate when appropriate
+                }              
+            };
+
+            // send updated order to the microservice
+            var updateResult = await updateService.UpdateOrderPayment(requestDto);
+            if (!updateResult.Success)
+            {
+                throw new Exception("Failed to call order update microservice. " + updateResult.ErrorMessages);
+            }
+
+            return null;
+        }
+
         private decimal? GetPrice(int documentId, int quantity)
         {
             var unitPrice = products.GetPriceByCustomModel(documentId, quantity);
@@ -284,7 +357,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             return unitPrice;
         }
 
-        void CheckRequestData(OrderUpdate request)
+        void CheckRequestData(OrderUpdateItems request)
         {
             OrderNumber.Parse(request.OrderId);
 
@@ -304,7 +377,7 @@ namespace Kadena.BusinessLogic.Services.Orders
             }
         }
 
-        OrderUpdateResult GetUpdatesForFrontend(OrderManualUpdateRequestDto requestDto)
+        OrderUpdateResult GetUpdatesForFrontend(OrderManualUpdateItemsRequestDto requestDto)
         {
             if (!permissions.UserCanSeePrices())
             {

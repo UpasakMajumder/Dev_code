@@ -106,7 +106,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
         }
 
 
-        private string GetInsertCardDetailsUrl(string submissionId)
+        public string GetInsertCardDetailsUrl(string submissionId)
         {
             var insertCardUrl = resources.GetSiteSettingsKey(Settings.KDA_CreditCard_InsertCardDetailsURL);
             var redirectUrl = documents.GetDocumentUrl(insertCardUrl, absoluteUrl: true);

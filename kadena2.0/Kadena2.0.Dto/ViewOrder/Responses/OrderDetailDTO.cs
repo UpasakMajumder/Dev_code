@@ -1,4 +1,5 @@
-﻿using Kadena.Dto.Common;
+﻿using Kadena.Dto.Checkout;
+using Kadena.Dto.Common;
 
 namespace Kadena.Dto.ViewOrder.Responses
 {
@@ -14,7 +15,7 @@ namespace Kadena.Dto.ViewOrder.Responses
         public OrderActionsDTO Actions { get; set; }
         public DialogButtonDTO<EditOrderDialogDTO> EditOrders { get; set; }
 
-        public OrderDetailPaymentMethodDTO PaymentMethod { get; set; }
+        public PaymentMethodsDTO PaymentMethods { get; set; }
 
     }
 

@@ -38,9 +38,15 @@ namespace Kadena.BusinessLogic.Services
 
         public Submission GenerateNewSubmission(string orderJson = "")
         {
-            int siteId = kenticoSite.GetKenticoSite().Id;
-            int userId = kenticoUsers.GetCurrentUser().UserId;
-            int customerId = kenticoCustomer.GetCurrentCustomer().Id;
+            return GenerateNewSubmission(kenticoSite.GetKenticoSite().Id, 
+                kenticoUsers.GetCurrentUser().UserId, 
+                kenticoCustomer.GetCurrentCustomer().Id, 
+                orderJson
+            );
+        }
+
+        public Submission GenerateNewSubmission(int siteId, int userId, int customerId, string orderJson = "")
+        {
 
             var oldSubmissions = submissionProvider.GetSubmissions(siteId, userId, customerId);
 

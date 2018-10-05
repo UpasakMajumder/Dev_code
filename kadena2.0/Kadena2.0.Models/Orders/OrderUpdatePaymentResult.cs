@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Kadena.Models.Orders
 {
-    public class OrderUpdate
+    public class OrderUpdatePaymentResult
     {
-        public string OrderId { get; set; }
+        public bool Success { get; set; }
+        public string RedirectURL { get; set; }
+        public string Error { get; set; }
     }
 }

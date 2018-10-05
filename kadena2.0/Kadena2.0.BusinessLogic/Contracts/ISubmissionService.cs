@@ -6,6 +6,7 @@ namespace Kadena.BusinessLogic.Contracts
     public interface ISubmissionService
     {
         Submission GenerateNewSubmission(string orderJson = "");
+        Submission GenerateNewSubmission(int siteId, int userId, int customerId, string orderJson = "");
         Guid GenerateNewSubmissionId();
         bool VerifySubmissionId(string submissionId);
         Submission GetSubmission(string submissionId);

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Kadena.Dto.OrderManualUpdate.MicroserviceRequests
 {
-    public class OrderManualUpdateRequestDto
+    public class OrderManualUpdatePaymentRequestDto: OrderManualUpdateRequestDto
     {
-        public string OrderId { get; set; }
+        public PaymentOptionsDto PaymentOption { get; set; }
     }
 }
