@@ -336,7 +336,7 @@ class ProductDetail extends Component {
                 priceElementId={ui.getIn(['productOptions', 'priceElementId'])}
               />
             </div>
-            <div className="product-view__footer">
+            <div className="product-view__footer customClass">
               <Stock
                 availability={this.state.availability}
               />
