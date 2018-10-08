@@ -9,7 +9,6 @@ class MethodsGroup extends Component {
   static propTypes = {
     validationMessage: PropTypes.string.isRequired,
     changePaymentMethod: PropTypes.func.isRequired,
-    toggleDialog: PropTypes.func.isRequired,
     className: PropTypes.string.isRequired,
     checked: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
@@ -42,7 +41,6 @@ class MethodsGroup extends Component {
       changePaymentMethod,
       approvalRequired,
       hasInput,
-      toggleDialog,
       approvalRequiredText,
       items
     } = this.props;
@@ -86,7 +84,6 @@ class MethodsGroup extends Component {
         <div className={className}>
           <input disabled={disabled}
                 onChange={(e) => { changePaymentMethod(id); }}
-                onClick={approvalRequired ? (e) => { toggleDialog(); } : undefined }
                 checked={id === checkedObj.id}
                 id={`pmg-${id}`}
                 name="paymentMethod"
