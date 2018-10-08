@@ -253,8 +253,6 @@ const paymentMethods = {
   "title": "Payment",
   "description": null,
   "approvalRequiredText": "Approval Required",
-  "approvalRequiredDesc": "By selecting this payment method, please be aware that order must first be approved before processing order",
-  "approvalRequiredButton": "Confirm",
   "items": [
     {
       "id": 1,
