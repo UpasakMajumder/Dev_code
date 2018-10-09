@@ -1,6 +1,7 @@
 ﻿using Kadena.BusinessLogic.Services.Orders;
 using Kadena.Infrastructure.Exceptions;
 using Kadena.Models.Product;
+using System;
 using Xunit;
 
 namespace Kadena.Tests.BusinessLogic
@@ -60,6 +61,42 @@ namespace Kadena.Tests.BusinessLogic
             };
 
             Sut.CheckMinMaxQuantity(sku, 0);
+        }
+
+        [Fact]
+        void EnsureInventoryAmountTest_IfAvailable_OK()
+        {
+            var sku = new Sku
+            {
+                AvailableItems = 200,
+                SellOnlyIfAvailable = true
+            };
+
+            Sut.EnsureInventoryAmount(sku, 1,10);
+        }
+
+        [Fact]
+        void EnsureInventoryAmountTest_IfAvailable_TooMany()
+        {
+            var sku = new Sku
+            {
+                AvailableItems = 20,
+                SellOnlyIfAvailable = true
+            };
+
+            Assert.Throws<ArgumentException>(() => Sut.EnsureInventoryAmount(sku, 100, 100));
+        }
+
+        [Fact]
+        void EnsureInventoryAmountTest_OK()
+        {
+            var sku = new Sku
+            {
+                AvailableItems = 0,
+                SellOnlyIfAvailable = false
+            };
+
+            Sut.EnsureInventoryAmount(sku, 100, 100);
         }
     }
 }

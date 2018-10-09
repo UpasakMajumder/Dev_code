@@ -89,7 +89,7 @@ namespace Kadena2.BusinessLogic.Services.OrderPayment
                                     error: "Kadena.OrderByCardFailed.PlaceOrderFailed");
             }
 
-            shoppingCart.UpdateInventory();
+            shoppingCart.RemoveCurrentItemsFromStock();
             shoppingCart.ClearCart();
 
             return ReturnResult(success: true, 

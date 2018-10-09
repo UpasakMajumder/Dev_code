@@ -1,5 +1,4 @@
-﻿using Kadena.Models.OrderDetail;
-using System;
+﻿using System;
 
 namespace Kadena.Models.Checkout
 {
@@ -27,6 +26,5 @@ namespace Kadena.Models.Checkout
         public string ProductProductionTime { get; set; }
         public bool SendPriceToErp { get; set; }
         public string UnitOfMeasure { get; set; }
-        public OrderedItem OrderItem { get; set; }
     }
 }

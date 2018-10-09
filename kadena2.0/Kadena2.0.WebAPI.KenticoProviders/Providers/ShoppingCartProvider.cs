@@ -415,11 +415,23 @@ namespace Kadena.WebAPI.KenticoProviders
                                                 .Sum(x => x.CartItemUnits);
         }
 
-        public void UpdateInventory(int shoppingCartId = 0)
+        public void RemoveCurrentItemsFromStock(int shoppingCartId = 0)
         {
             var shoppingCart = GetShoppingCartInternal(shoppingCartId);
 
-            SKUInfoProvider.UpdateInventory(shoppingCart);
+            var items = shoppingCart.CartItems;
+
+            foreach (var i in items)
+            {
+                if (i.GetValue("ProductType", string.Empty).Contains(ProductTypes.InventoryProduct))
+                {
+                    int toRemove = i.CartItemUnits <= i.SKU.SKUAvailableItems ? i.CartItemUnits : i.SKU.SKUAvailableItems;
+                    i.SKU.SKUAvailableItems -= toRemove;
+                    i.SKU.SubmitChanges(false);
+                    i.SKU.MakeComplete(true);
+                    i.SKU.Update();
+                }
+            }
         }
 
         public void UpdateDistributorCart(DistributorCartItem distributorCartItem, CampaignsProduct product, CampaignProductType cartType = CampaignProductType.GeneralInventory)
@@ -547,24 +559,9 @@ namespace Kadena.WebAPI.KenticoProviders
             {
                 var parameters = new ShoppingCartItemParameters(i.SKUID, i.Quantity);
                 var cartItem = cartInfo.SetShoppingCartItem(parameters);
-                if (cartItem != null)
+                if (cartItem != null && i.CartItemPrice.HasValue)
                 {
-                    if (i.CartItemPrice.HasValue)
-                    {
-                        cartItem.CartItemPrice = (double)i.CartItemPrice.Value;
-                    }
-                    if (i.OrderItem != null)
-                    {
-                        cartItem.OrderItem = new OrderItemInfo
-                        {
-                            OrderItemUnitCount = i.OrderItem.Quantity
-                        };
-                    }
-                    var checkResult = ShoppingCartItemInfoProvider.CheckShoppingCartItem(cartItem);
-                    if (checkResult.InventoryUnits > -1)
-                    {
-                        throw new ArgumentException(checkResult.GetMessage(";"));
-                    }
+                    cartItem.CartItemPrice = (double)i.CartItemPrice.Value;
                 }
             }
             cartInfo.InvalidateCalculations();

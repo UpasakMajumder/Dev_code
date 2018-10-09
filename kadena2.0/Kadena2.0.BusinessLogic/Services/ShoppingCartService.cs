@@ -355,7 +355,7 @@ namespace Kadena.BusinessLogic.Services
                     resources.GetResourceString("Kadena.Product.NegativeQuantityError"), quantity));
             }
 
-            if (item.ProductType.Contains(ProductTypes.MailingProduct) || item.ProductType.Contains(ProductTypes.TemplatedProduct))
+            if (!item.ProductType.Contains(ProductTypes.InventoryProduct) && !item.ProductType.Contains(ProductTypes.POD) && !item.ProductType.Contains(ProductTypes.StaticProduct))
             {
                 throw new Exception(resources.GetResourceString("Kadena.Product.QuantityForTypeError"));
             }
@@ -365,6 +365,12 @@ namespace Kadena.BusinessLogic.Services
             if (itemSku == null)
             {
                 throw new Exception($"SKU with SKUID {item.SKUID} not found");
+            }
+
+            if (item.ProductType.Contains(ProductTypes.InventoryProduct) && itemSku.SellOnlyIfAvailable && quantity > itemSku.AvailableItems)
+            {
+                throw new Exception(string.Format(
+                    resources.GetResourceString("Kadena.Product.SetQuantityForItemError"), quantity, item.CartItemText));
             }
 
             orderChecker.CheckMinMaxQuantity(itemSku, quantity);
@@ -473,6 +479,11 @@ namespace Kadena.BusinessLogic.Services
             mapper.Map(product, cartItem);
             cartItem.ChilliEditorTemplateID = newItem.TemplateId;
             var sku = skus.GetSKU(cartItem.SKUID) ?? throw new ArgumentException($"Unable to find SKU {cartItem.SKUID}");
+
+            if (product.HasProductTypeFlag(ProductTypes.InventoryProduct))
+            {
+                orderChecker.EnsureInventoryAmount(sku, addedAmount, cartItem.Quantity);
+            }
 
             if (product.HasProductTypeFlag(ProductTypes.MailingProduct))
             {

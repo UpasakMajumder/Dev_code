@@ -179,13 +179,6 @@ namespace Kadena.WebAPI.KenticoProviders
 
             var cart = ECommerceContext.CurrentShoppingCart;
 
-            cartItemInfo.CartItemUnits = quantity;
-            var checkResult = ShoppingCartItemInfoProvider.CheckShoppingCartItem(cartItemInfo);
-            if (checkResult.InventoryUnits > -1)
-            {
-                throw new Exception(checkResult.GetMessage(";"));
-            }
-
             ShoppingCartItemInfoProvider.UpdateShoppingCartItemUnits(cartItemInfo, quantity);
             cart.InvalidateCalculations();
             ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
@@ -240,11 +233,6 @@ namespace Kadena.WebAPI.KenticoProviders
             var cart = ECommerceContext.CurrentShoppingCart;
             ShoppingCartInfoProvider.SetShoppingCartInfo(cart);
             var cartItem = cart.SetShoppingCartItem(parameters);
-            var checkResult = ShoppingCartItemInfoProvider.CheckShoppingCartItem(cartItem);
-            if (checkResult.InventoryUnits > -1)
-            {
-                throw new ArgumentException(checkResult.GetMessage(";"));
-            }
             cart.InvalidateCalculations();
             return mapper.Map<CartItemEntity>(cartItem);
         }

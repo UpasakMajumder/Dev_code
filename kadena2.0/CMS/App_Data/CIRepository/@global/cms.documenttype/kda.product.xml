@@ -94,7 +94,7 @@
             <![CDATA[If set to true, "Request kit" button will NOT be displayed even if it is enabled on site level]]>
           </fielddescription>
           <visiblemacro ismacro="true">
-            <![CDATA[{%!ProductType.Contains("KDA.TemplatedProduct") && !ProductType.Contains("KDA.MailingProduct")|(user)administrator|(hash)7cd5b584adcb69f887df0fa1ef660953915776d7571a86c0e40a4dcac2a13873%}]]>
+            <![CDATA[{%ProductType.Contains("KDA.StaticProduct") || ProductType.Contains("KDA.InventoryProduct") || ProductType.Contains("KDA.POD")|(user)administrator|(hash)2e7a532c5549ecdfde008a033ede3220d7aa21dc65f3cbb56a09d5d81d66649f%}]]>
           </visiblemacro>
         </properties>
         <settings>
@@ -205,7 +205,7 @@
           <SortItems>False</SortItems>
         </settings>
       </field>
-      <field allowempty="true" column="ProductType" columnsize="200" columntype="text" guid="b60757d6-eb24-4b23-9c54-468a794b15d2" hasdependingfields="true" publicfield="false" spellcheck="false" visible="true">
+      <field column="ProductType" columnsize="200" columntype="text" guid="b60757d6-eb24-4b23-9c54-468a794b15d2" hasdependingfields="true" publicfield="false" spellcheck="false" visible="true">
         <properties>
           <fieldcaption>Product Type</fieldcaption>
         </properties>
@@ -225,6 +225,9 @@
           </rule>
           <rule errormsg="{$Kadena.StaticProductValidationMessage$}">
             <![CDATA[{%Rule("(KadenaNamespace.IsStaticProductTypeCombinationValid(ProductType.Value)|(user)administrator|(hash)ecb18716566476b14625961bba3a18a199e199cf885c5afe0449147941ae0d9d)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"GeneralCondition\" ><p n=\"condition\"><t>KadenaNamespace.IsStaticProductTypeCombinationValid(ProductType.Value)|(user)administrator|(hash)ecb18716566476b14625961bba3a18a199e199cf885c5afe0449147941ae0d9d</t><v>KadenaNamespace.IsStaticProductTypeCombinationValid(ProductType.Value)|(user)administrator|(hash)ecb18716566476b14625961bba3a18a199e199cf885c5afe0449147941ae0d9d</v><r>0</r><d></d><vt>longtext</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)02d3550a7c0a34ec04d4e2139c946f0a39fcae5df59c0a2c74e083fc71dd62c1%}]]>
+          </rule>
+          <rule errormsg="{$Kadena.InventoryProductValidationMessage$}">
+            <![CDATA[{%Rule("(KadenaNamespace.IsInventoryProductTypeCombinationValid(ProductType.Value)|(user)administrator|(hash)b7ebebb00da9537b7e25f4f97111b38c2a35d692a4662a0e9bb91869cbf8c49c)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"GeneralCondition\" ><p n=\"condition\"><t>KadenaNamespace.IsInventoryProductTypeCombinationValid(ProductType.Value)|(user)administrator|(hash)b7ebebb00da9537b7e25f4f97111b38c2a35d692a4662a0e9bb91869cbf8c49c</t><v>KadenaNamespace.IsInventoryProductTypeCombinationValid(ProductType.Value)|(user)administrator|(hash)b7ebebb00da9537b7e25f4f97111b38c2a35d692a4662a0e9bb91869cbf8c49c</v><r>0</r><d></d><vt>longtext</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)fccf2e23a9b51dfee8788dff510ef8f4551defaa11e74286df59e94bd670abb6%}]]>
           </rule>
           <rule errormsg="{$Kadena.MailingProductValidationMessage$}">
             <![CDATA[{%Rule("(KadenaNamespace.IsMailingProductTypeCombinationValid(ProductType.Value)|(user)administrator|(hash)289496c0eeb13beba009c9e59113cd120c00573f3f2a91b84d591d242f8221b4)", "<rules><r pos=\"0\" par=\"\" op=\"and\" n=\"GeneralCondition\" ><p n=\"condition\"><t>KadenaNamespace.IsMailingProductTypeCombinationValid(ProductType.Value)|(user)administrator|(hash)289496c0eeb13beba009c9e59113cd120c00573f3f2a91b84d591d242f8221b4</t><v>KadenaNamespace.IsMailingProductTypeCombinationValid(ProductType.Value)|(user)administrator|(hash)289496c0eeb13beba009c9e59113cd120c00573f3f2a91b84d591d242f8221b4</v><r>0</r><d></d><vt>longtext</vt><tv>0</tv></p></r></rules>")|(user)administrator|(hash)c587f428e6eb49bb6f7d6d819a31e9570a066c338d0309e58773d172644978fc%}]]>

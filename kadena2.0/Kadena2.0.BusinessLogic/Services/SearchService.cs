@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Kadena.WebAPI.KenticoProviders.Contracts;
+using Kadena.Models.Product;
 using System.Web;
 using System;
 using Kadena.Models.SiteSettings;
@@ -134,7 +135,7 @@ namespace Kadena.BusinessLogic.Services
                         resultItem.ImgUrl = imageService.GetThumbnailLink(product.ImageUrl);
                     }
                     resultItem.Category = product.Category;
-                    if (!string.IsNullOrWhiteSpace(product.Availability))
+                    if (product.ProductType.Contains(ProductTypes.InventoryProduct))
                     {
                         resultItem.Stock = new Stock()
                         {

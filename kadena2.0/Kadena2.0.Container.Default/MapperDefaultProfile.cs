@@ -157,7 +157,7 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.EmailProof, opt => opt.Ignore())
                 .ForMember(dest => dest.Removed, opt => opt.Ignore())
                 .ForMember(dest => dest.RemoveLabel, opt => opt.Ignore())
-                .ForMember(dest => dest.QuantityShipped, opt => opt.ResolveUsing(src =>
+                .ForMember(dest => dest.QuantityShipped, opt => opt.ResolveUsing(src=>
                 {
                     if (src.TrackingInfoList != null)
                     {
@@ -549,8 +549,7 @@ namespace Kadena.Container.Default
                 .ForMember(dest => dest.ProductChiliPdfGeneratorSettingsId, opt => opt.Ignore())
                 .ForMember(dest => dest.ProductShipTime, opt => opt.Ignore())
                 .ForMember(dest => dest.ProductProductionTime, opt => opt.Ignore())
-                .ForMember(dest => dest.SendPriceToErp, opt => opt.Ignore())
-                .ForMember(dest => dest.OrderItem, opt => opt.MapFrom(src => src));
+                .ForMember(dest => dest.SendPriceToErp, opt => opt.Ignore());
             CreateMap<UpdateShippingRowDto, UpdateShippingRow>();
         }
     }

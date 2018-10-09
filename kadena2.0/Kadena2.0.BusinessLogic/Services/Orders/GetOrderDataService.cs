@@ -23,10 +23,12 @@ namespace Kadena2.BusinessLogic.Services.Orders
         private readonly IShoppingCartProvider shoppingCart;
         private readonly IOrderCartItemsProvider orderCartItems;
         private readonly IKenticoCustomerProvider kenticoCustomer;
+        private readonly IKenticoLogger kenticoLog;
         private readonly ITaxEstimationService taxService;
         private readonly IKenticoSiteProvider siteProvider;
         private readonly IKadenaSettings settings;
         private readonly IOrderDataFactory orderDataFactory;
+        private readonly IKenticoResourceService resources;
         private readonly IDeliveryEstimationDataService deliveryEstimationData;
 
         public GetOrderDataService(IMapper mapper,
@@ -34,10 +36,12 @@ namespace Kadena2.BusinessLogic.Services.Orders
            IShoppingCartProvider shoppingCart,
            IOrderCartItemsProvider orderCartItems,
            IKenticoCustomerProvider kenticoCustomer,
+           IKenticoLogger kenticoLog,
            ITaxEstimationService taxService,
            IKenticoSiteProvider site,
            IKadenaSettings settings,
            IOrderDataFactory orderDataFactory,
+           IKenticoResourceService resources,
            IDeliveryEstimationDataService deliveryEstimationData
          )
         {
@@ -46,10 +50,12 @@ namespace Kadena2.BusinessLogic.Services.Orders
             this.shoppingCart = shoppingCart ?? throw new ArgumentNullException(nameof(shoppingCart));
             this.orderCartItems = orderCartItems ?? throw new ArgumentNullException(nameof(orderCartItems));
             this.kenticoCustomer = kenticoCustomer ?? throw new ArgumentNullException(nameof(kenticoCustomer));
+            this.kenticoLog = kenticoLog ?? throw new ArgumentNullException(nameof(kenticoLog));
             this.taxService = taxService ?? throw new ArgumentNullException(nameof(taxService));
             this.siteProvider = site ?? throw new ArgumentNullException(nameof(site));
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
             this.orderDataFactory = orderDataFactory ?? throw new ArgumentNullException(nameof(orderDataFactory));
+            this.resources = resources ?? throw new ArgumentNullException(nameof(resources));
             this.deliveryEstimationData = deliveryEstimationData ?? throw new ArgumentNullException(nameof(deliveryEstimationData));
         }
 
@@ -88,7 +94,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
             var orderDto = new OrderDTO()
             {
                 BillingAddress = orderDataFactory.CreateBillingAddress(billingAddress),
-                ShippingAddressSource = mapper.Map<AddressDTO>(deliveryEstimationData.GetSourceAddress()),
+                ShippingAddressSource = GetSourceAddressForDeliveryEstimation(),
                 ShippingAddressDestination = mapper.Map<AddressDTO>(shippingAddress),
                 Customer = orderDataFactory.CreateCustomer(customer),
                 OrderDate = DateTime.Now,
@@ -125,7 +131,7 @@ namespace Kadena2.BusinessLogic.Services.Orders
             };
 
             // If only mailing list items in cart, we are not picking any delivery option
-            if (!cartItems.All(i => ProductTypes.IsOfType(i.ProductType, ProductTypes.MailingProduct)))
+            if (!cartItems.All( i => ProductTypes.IsOfType( i.ProductType, ProductTypes.MailingProduct)))
             {
                 var deliveryMethod = shoppingCart.GetShippingOption(request.DeliveryMethod);
                 orderDto.ShippingOption = new ShippingOptionDTO()
@@ -150,17 +156,34 @@ namespace Kadena2.BusinessLogic.Services.Orders
 
         private OrderItemTypeDTO ConvertCartItemProductTypeToOrderItemProductType(string productType)
         {
-            if (ProductTypes.IsOfType(productType, ProductTypes.MailingProduct))
+            var cartItemFlags = productType.Split('|');
+
+            var standardTypes = new[]
+            {
+                ProductTypes.POD, ProductTypes.StaticProduct, ProductTypes.InventoryProduct, ProductTypes.ProductWithAddOns
+            };
+
+            if (cartItemFlags.Contains(ProductTypes.MailingProduct))
             {
                 return OrderItemTypeDTO.Mailing;
             }
-
-            if (ProductTypes.IsOfType(productType, ProductTypes.TemplatedProduct))
+            else if (cartItemFlags.Contains(ProductTypes.TemplatedProduct))
             {
                 return OrderItemTypeDTO.TemplatedProduct;
             }
+            else if (cartItemFlags.Any(flag => standardTypes.Contains(flag)))
+            {
+                return OrderItemTypeDTO.StandardOnStockItem;
+            }
+            else
+            {
+                throw new ArgumentException($"Missing mapping or invalid product type '{ productType }'");
+            }
+        }
 
-            return OrderItemTypeDTO.StandardOnStockItem;
+        public AddressDTO GetSourceAddressForDeliveryEstimation()
+        {
+            return mapper.Map<AddressDTO>(deliveryEstimationData.GetSourceAddress());
         }
     }
 }

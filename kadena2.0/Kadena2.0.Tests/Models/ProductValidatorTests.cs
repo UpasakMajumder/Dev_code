@@ -1,10 +1,19 @@
 ﻿using Kadena.Models.Product;
+using System.Linq;
 using Xunit;
 
 namespace Kadena.Tests.Models
 {
     public class ProductValidatorTests
     {
+        private Product GetProductRequiringWeight()
+        {
+            return new Product
+            {
+                ProductType = ProductTypes.InventoryProduct
+            };
+        }
+
         private Product GetProductNotRequiringWeight()
         {
             return new Product
@@ -31,7 +40,7 @@ namespace Kadena.Tests.Models
         [InlineData(5, true)]
         public void ValidateWeight_ShouldValidateCorrectly_WhenProductTypeRequiresWeight(double weight, bool expected)
         {
-            var product = new Product();
+            var product = GetProductRequiringWeight();
             product.Weight = weight;
 
             var actual = new ProductValidator().ValidateWeight(product);
@@ -42,7 +51,7 @@ namespace Kadena.Tests.Models
         [Fact]
         public void IsSKUWeightRequired_ShouldBeTrue_WhenRequired()
         {
-            var product = new Product();
+            var product = GetProductRequiringWeight();
 
             var isRequired = new ProductValidator().IsSKUWeightRequired(product);
 

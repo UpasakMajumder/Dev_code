@@ -281,7 +281,7 @@ namespace Kadena.Tests.BusinessLogic
 
         [Theory(DisplayName = "ProductsService.CanDisplayAddToCartButton() | Inventory type")]
         [InlineData(null, true, false)]
-        [InlineData(null, false, true)]
+        [InlineData(null, false, false)]
         [InlineData(0, true, false)]
         [InlineData(0, false, true)]
         [InlineData(1, true, true)]
@@ -289,7 +289,7 @@ namespace Kadena.Tests.BusinessLogic
         public void CanDisplayAddToCart_Inventory(int? numberOfAvailableProducts, bool sellOnlyAvailable, bool expectedResult)
         {
             // Act
-            var result = Sut.CanDisplayAddToCartButton("", numberOfAvailableProducts, sellOnlyAvailable);
+            var result = Sut.CanDisplayAddToCartButton("KDA.InventoryProduct", numberOfAvailableProducts, sellOnlyAvailable);
 
             // Assert
             Assert.Equal(expectedResult, result);

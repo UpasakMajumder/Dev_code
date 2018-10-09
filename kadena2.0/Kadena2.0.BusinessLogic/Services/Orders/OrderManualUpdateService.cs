@@ -179,7 +179,6 @@ namespace Kadena.BusinessLogic.Services.Orders
                             oi.DocumentId,
                             AdjustedQuantity = (ui?.Quantity ?? oi.Quantity) - oi.Quantity,
                             NewQuantity = ui?.Quantity ?? oi.Quantity,
-                            OldQuantity = oi.Quantity,
                             oi.TemplateId,
                             oi.SkuId
                         };
@@ -223,11 +222,7 @@ namespace Kadena.BusinessLogic.Services.Orders
                 {
                     SKUID = i.SkuId,
                     Quantity = i.NewQuantity,
-                    CartItemPrice = GetPrice(i.DocumentId, i.NewQuantity),
-                    OrderItem = new OrderedItem
-                    {
-                        Quantity = i.OldQuantity
-                    }
+                    CartItemPrice = GetPrice(i.DocumentId, i.NewQuantity)
                 })
                 .ToList();
             cart = shoppingCartProvider.Evaluate(cart);
@@ -377,6 +372,11 @@ namespace Kadena.BusinessLogic.Services.Orders
                 ?? throw new Exception($"Unable to find SKU with id '{product.SkuId}'.");
 
             orderChecker.CheckMinMaxQuantity(sku, newQuantity);
+
+            if (product.HasProductTypeFlag(ProductTypes.InventoryProduct))
+            {
+                orderChecker.EnsureInventoryAmount(sku, adjustedQuantity, newQuantity);
+            }
         }
     }
 }
