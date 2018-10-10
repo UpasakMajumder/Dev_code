@@ -497,7 +497,7 @@ config.localization.productDetail = {
           validationMessage: '{%JSEscape(GetResourceString("Kadena.Product.OptionsValidation")) |(user)administrator|(hash)de8e26963a83950ab5d56f6ff2d4bd487d76c139752a01ab80a337ffb39be4ff%}'
       },   
     description: {
-      title: '{%JSEscape(GetResourceString("Kadena.Product.Description")) |(user)administrator|(hash)5e5c774339a9f9493ac67c8f2198c1b8e35b7d7b75a3855f730fbc98e672f050%}',
+      title: '{%JSEscape(KadenaNamespace.GetPerSiteResourceString("Kadena.Product.Description")) |(user)administrator|(hash)761f47a12f0c2a283d3cf421082f5663aa00e0919dc9ba4da8bc86b607eb4b7e%}',
       text: '{% CurrentDocument.DocumentSKUDescription.Replace("\r\n","\n").Replace("\n","") |(user)administrator|(hash)9af97e18604bfb5272033fcd4ff60b89a9ef23e07a07b80230859fae1ded5d34%}'
     },
     quantityText: '{% KadenaNamespace.GetMinMaxString(ECommerceContext.CurrentProduct.SKUMinItemsInOrder, ECommerceContext.CurrentProduct.SKUMaxItemsInOrder) |(user)administrator|(hash)80b08b883005ff7aaf115de09ea25f2961b1ac8df33f23ee6fcf5338afbdd8ff%}',
